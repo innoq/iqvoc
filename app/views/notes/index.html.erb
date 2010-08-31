@@ -1,0 +1,22 @@
+<h1>Listing notes</h1>
+
+<table>
+  <tr>
+    <th>Value</th>
+    <th>Language</th>
+  </tr>
+
+<% for note in @notes %>
+  <tr>
+    <td><%= note.value %></td>
+    <td><%= note.language %></td>
+    <td><%= link_to 'Show', note %></td>
+    <td><%= link_to 'Edit', edit_note_path(note) %></td>
+    <td><%= link_to 'Destroy', note, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New note', new_note_path %>

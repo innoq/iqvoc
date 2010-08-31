@@ -1,0 +1,3 @@
+class EditorialNote < Note
+  
+end

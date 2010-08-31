@@ -1,0 +1,3 @@
+class ExactMatch < Match
+  
+end

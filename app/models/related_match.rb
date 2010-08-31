@@ -1,0 +1,3 @@
+class RelatedMatch < Match
+  
+end

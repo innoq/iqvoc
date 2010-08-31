@@ -1,0 +1,328 @@
+en:
+  txt:
+   common:
+     iqvoc_title: "iQvoc Vocabulary Management System"
+     concept: "Concept"
+     concepts: "Concepts"
+     label: "Label"
+     pref_label: "Preferred label"
+     edit: "Edit"
+     value: "Value"
+     definition:
+       one: "Definition"
+       other: "Definitions"
+     editorial_note:
+       one: "Editorial note"
+       other: "Editorial note"
+     note_annotation:
+       one: "Annotation"
+       other: "Annotations"
+     umt_source_note:
+       one: "Source note"
+       other: "Source notes"
+     umt_change_note:
+       one: "Change note"
+       other: "Change notes"
+     umt_usage_note:
+       one: "Usage note"
+       other: "Usage notes"
+       values:
+         useNarrower: "Use narrower terms"
+     pagination:
+       previous: "Back"
+       next: "Next"
+     missing:
+       definition: "No definition available."
+       label: "No label"
+     follow_up: "Reminder"
+     expired_at: "Expired at"
+     save: "Save"
+     reset: "Reset"
+     language: "Language"
+     add_note: "Add"
+     delete: "Delete"
+     attributes: "Properties"
+     editor: "Editor"
+     referenced_labels: "Referenced Labels are on edit:"
+     referenced_concepts: "Referenced Concepts are on edit:"
+     association_not_found: "Relation not found. Probably removed from the target side. Please refresh your browser window."
+     default_ajax_error: "Error"
+     to_review: "To review"
+     is_in_review: "Document is in review"
+     state:
+       published: "Published"
+       in_review: "In review"
+       checked_out: "Checked out"
+
+   part_of_speech:
+     plural_form: "Plural form"
+     adjective: "Adjective"
+     proper_name: "Proper name"
+     numeral: "Numeral"
+     pronoun: "Pronouns, articles"
+     abbreviation: "Abbreviation"
+     verb: "Verb"
+     noun:
+       male: "Noun (male)"
+       female: "Noun (female)"
+       neuter: "Noun (neuter)"
+     name_authority: "Name authority"
+
+   views:
+     layouts:
+       application:
+         header: "innoQ Vocabulary Management"
+         select_language: "Choose language"
+         login: "Login"
+         logout: "Logout"
+     alphabetical_concepts:
+     hierarchical_concepts:
+     concepts:
+       definitions: "Definitions"
+       broader: "Broader Terms"
+       narrower: "Narrower Terms"
+       related: "Related Terms"
+       select: "Please select one of the concepts listed below."
+       new: "New concept"
+       versionview: "Version display of Concept"
+       missing:
+         broader: "No broader terms available"
+         narrower: "No narrower terms available"
+         related: "No related terms available"
+       edit:
+         header: "Edit Concept"
+       alt_label: "Alternative Label"
+       pref_label: "PrefLabel"
+       close_match: "CloseMatch"
+       classifiers: "Environment classes"
+     labels:
+       new: "New Label"
+       template_form: "Literal form"
+       language: "Language"
+       definitions: "Definitions"
+       part_of_speech: "Part of speech"
+       base_form: "Base form"
+       inflectional_code: "Inflectional code"
+       inflectionals: "Inflectionals"
+       homographs: "Homograph"
+       qualifiers: "Qualifier"
+       translations: "Translations"
+       pref_label_of: "preferred Label of"
+       alt_label_of: "altLabel of"
+       compound_from: "Compound from"
+       compound_in: "Compound in"
+       versionview: "Version display of Label"
+       follow_up: "Follow up"
+       endings: "Endings"
+       expired_at: "Expired at"
+       label_already_exists: "There already exists a label with the value"
+       edit:
+         header: "Editing of label"
+         save: "Save"
+         base_data: "Properties"
+         delete: "Delete"
+         delete_confirm: "The relation is going to be deleted. Are you sure?"
+         edit: "Edit"
+         apply: "Apply"
+         add_note: "Add"
+         reset: "Reset"
+       inflectionals_used_in: "Same spelling in use by the following Labels:"
+     notes:
+       value: "Value"
+       language: "Language"
+       save: "Save"
+       edit:
+         header: "Edit notes"
+       export_notes: "Export note"
+       source_notes: "Source notes"
+       change_notes: "Change notes"
+       usage_notes: "Usage notes"
+     navigation:
+       back_to_edit_versioned_object: "Back to editing"
+       back_to_show: "Back to original version"
+       back_to_preview: "Back to version preview"
+       back_to_concepts: "Back to concepts list"
+       hierarchical: "Hierachical listings"
+       alphabetical: "Alphabetical listings"
+       search: "Search"
+       about: "About"
+       users: "Users"
+     search_results:
+       header: "Search"
+       inflectionals: "inflectionals"
+       pref_labels: "preferred names (labels)"
+       all_labels: "all names (labels)"
+       all_notes: "all notes and definitions"
+       contains: "contains"
+       ends_with: "ends with"
+       begins_with: "begins with"
+       exact: "exact match"
+       regexp: "regular expression (advanced)"
+       search_term: "Search term(s)"
+       search_term_in_results: "Search term"
+       no_results: "No results"
+       search_languages: "Languages"
+       search_results: "Search results"
+       results_found:
+         one: "Your search for <strong>{{query}}</strong> yielded the following {{count}} result."
+         other: "Your search for <strong>{{query}}</strong> yielded the following {{count}} results."
+       no_results_found: "Your search for <strong>{{query}}</strong> yielded no results. Try searching for other/all languages or a shorter search term."
+       submit: "Search"
+       type: "type"
+       used_as: "used as"
+       language: "language"
+       all: "all"
+       none: "none"
+     user_sessions:
+       header: "Login"
+       login: "Login"
+       email: "Email"
+       password: "Password"
+       remember_me: "Stay logged in"
+       error: "Email and/or password wrong. Please check your given credentials."
+     users:
+       index:
+         header: "User management"
+       new:
+         header: "New user"
+       edit:
+         header: "Edit user"
+       name: "Name"
+       email: "Email"
+       role: "Role"
+       active: "activated"
+       new_link: "New"
+       show_link: "Show"
+       edit_link: "Edit"
+       destroy_link: "Delete"
+       sure: "Are you sure?"
+       submit: "Save"
+       telephone_number: "Telephone number"
+     errors:
+       access_denied:
+         header: "No permission"
+         message: "Your user account has insufficient permissions to display this page."
+       not_found:
+         header: "Not found"
+         tip: "You may want to use the search function to find content:"
+     versioning:
+       edit_mode: "Continue editing"
+       to_edit_mode: "Start editing"
+       publishing: "Release"
+       delete: "Delete copy"
+       delete_confirm: "Do you really want to delete this copy?"
+       versioning_mode: "Create new version"
+       unlock: "Unlock"
+       preview_new_version: "Preview of the version in editing"
+       consistency_check: "Consistency check"
+       current_revision: "Current revision"
+       in_ongoing_editing_by: "in ongoing editing by"
+       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
+       to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
+     labelings:
+       edit:
+         header: "Edit labeling"
+         submit: "Save"
+     widget:
+       hint: "edit term"
+       no_results: "Not found!"
+       searching: "searching ..."
+       delete_compound_form: "Delete Composition"
+       create_compound_form: "Add Composition"
+     dashboard:
+       type: "Type"
+       value: "Name"
+       locking_user: "Locked by"
+       follow_up: "Follow up"
+       updated_at: "Updated at"
+       to_review: "Submission for review"
+       consistent: "consistent"
+       inconsistent: "inconsistent"
+       state: "State"
+
+   helpers:
+     concept_selector:
+       show_concepts:
+         one: "1 Concept"
+         other: "{{count}} Concepts"
+
+   controllers:
+     application:
+       login_required: "You must be logged in to access this page."
+       logout_required: "You must be logged out to access this page."
+     search_results:
+       insufficient_data: "You entered insufficient search data"
+       query_invalid: "Your search query is invalid"
+     users:
+       successfully_created: "User has been successfully created."
+       successfully_updated: "User has been successfully updated."
+     user_sessions:
+       login_success: "Login successful."
+       logout_success: "Logout successful."
+     versioning:
+       branch_error: "A new version already exists!"
+       published: "Instance has been successfully released."
+       published_with_warning: "Instance has been successfully released, but it has no relations!"
+       merged_delete_error: "Label could not be deleted!"
+       merged_publishing_error: "Instance could not be released!"
+       merged: "Instance copy has been created and locked."
+       locked: "Instance has been locked."
+       lock_error: "Instance has been locked already!"
+       unlocked: "Instance has been unlocked."
+       unlock_error: "Instance has been unlocked alraedy!"
+       new_version_blank_error: "A new version does not exist yet!"
+       delete: "Delete inctance."
+       consistency_check_success: "Instance is consistent."
+       consistency_check_success_with_warning: "Instance is consistent but has no relations!"
+       consistency_check_error: "Instance is not consistent"
+       virtuoso_exception: "The object has been published, but could not by synced with Virtuoso. Error: "
+     labelings:
+       save:
+         success: "The labeling has been saved."
+         error: "The labeling could not have been saved."
+     label_versions:
+       delete: "New Label version has been deleted."
+       delete_error: "New Label version could not be deleted."
+     concept_versions:
+       delete: "New Concept version has been deleted."
+       delete_error: "New Concept version could not be deleted"
+     notes:
+       save:
+         success: "The note has been saved."
+     versioned_label:
+       success: "Label has been successfully created."
+       error: "Label could not be created!"
+       empty_value: "Literal form must be given!"
+       update_success: "Label has been successfully modified."
+       update_error: "Label could not be modified!"
+     versioned_concept:
+       success: "Concept has been successfully created."
+       error: "Concept could not be created!"
+       empty_value: "Literal form must be given!"
+       update_success: "Concept has been successfully modified."
+       update_error: "Concept could not be modified!"
+     narrowers:
+       error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
+     virtuoso_syncs:
+       success: "{{concept_count}} published concepts and {{label_count}} published labels have been synced."
+
+   models:
+     label:
+       version_error: "New Label version already exists!"
+       value_error: "Literal form must be given!"
+       qualifier_error: "Qualifier must be given!"
+       homograph_error: "Homograph must be given!"
+       compound_form_contents_error: "Each composition must have at least two components!"
+       object_name: "Label"
+       pref_label_language: "A preferred label in UMTHES must be german."
+       translations_must_be_in_foreign_language: "Translations are not allowed to have the same language like the label."
+     concept:
+       version_error: "New Concept version already exists!"
+       pref_label_error: "One German preferred Label must be selected!"
+       association_pref_labels_unpublished: "The preferred Label has to be published."
+       association_alt_labels_unpublished: "Alternative labels have to be published."
+       association_hidden_labels_unpublished: "Hidden labels have to be published."
+       association_broader_unpublished: "Broader terms have to be published."
+       association_narrower_unpublished: "Specific terms have to be published."
+       association_related_unpublished: "Related terms have to be published."
+       no_pref_label: "-- no PrefLabel --"

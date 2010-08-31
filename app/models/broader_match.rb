@@ -1,0 +1,3 @@
+class BroaderMatch < Match
+  
+end

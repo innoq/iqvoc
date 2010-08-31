@@ -1,0 +1,16 @@
+<% f.fields_for :close_matches do |close_match| %>
+   <fieldset class="matches">
+   <legend><%= t("txt.views.concepts.close_match") %></legend>
+    <ol>
+      <li class="matches <%= "new" if close_match.object.new_record? %>" >
+        <%= close_match.label :value, t("txt.common.value") %>
+        <%= close_match.text_field :value %>
+
+        <% unless close_match.object.new_record? %>
+        <%= close_match.check_box :"_destroy" %>
+        <%= close_match.label :"_destroy", t("txt.common.delete") %>
+        <% end %>
+         </li>
+     </ol>
+    </fieldset>
+<% end %>

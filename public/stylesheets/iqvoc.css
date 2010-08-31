@@ -1,0 +1,362 @@
+body {
+	background-color: #fff;
+	color: #333;
+	font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   13px;
+  line-height: 18px;
+  margin: 0;
+}
+
+img {
+  border: none;
+}
+
+/* 'text-decoration: none' an dieser Stelle ist schlecht,
+die Links sollten standardmäßig unterstrichen und somit sofort als
+Links erkennbar sein. Wenn man 'a' Tag für UI und Menus 'missbraucht',
+dann sollte man dort das Unterstreichen auch abschalten.
+Z.B. 'div.navigation a {text-decoration: none}'
+
+Jetzt einen Hack für 'wirklich als Link zeigen' eingefügt:
+a.distinguishable
+*/
+a {
+  color: #ee3300;
+  text-decoration: none;
+}
+
+a.distinguishable, a:visited.distinguishable {
+  color: #ee3300;
+  text-decoration: underline;
+}
+
+p.flash_error {
+  background: #FCFFD6;
+  border: 1px solid #FF6767;
+  padding: .2em;
+}
+
+p.flash_notice {
+  background: #CAFFD5;
+  border: 1px solid #8FFF9A;
+  padding: .2em;
+}
+
+#container {
+  margin: 0 auto;
+/*   max-width: 75em; */
+  width: 65em;
+}
+
+#container_inner {
+  float: left;
+  border: none;
+  border: 1px solid #006666;
+  padding: 0;
+  margin: 0;
+  width: 65em;
+}
+
+#lang_select {
+  font-size: 80%;
+  display: block;
+  float: right;
+  margin: .5em;
+  padding: 0 .5em;
+  width: 22em;
+  background: white;
+  white-space: nowrap;
+  border: 1px solid black;
+}
+
+#lang_select ul {
+  list-style: none;
+  padding: 0;
+  color: #667;
+  display: block;
+}
+
+#lang_select > li {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+#lang_select a {
+  display: block;
+  padding: .2em .2em;
+  color: #002f61;
+  padding-left: .4em;
+}
+
+#lang_select .active a {
+  background-color: #1bebad;
+  padding-left: .1em;
+  border-left: .3em solid #2b819d;
+}
+
+#lang_select a:hover {
+  background-color: #6fcacc;
+  padding-left: .1em;
+  border-left: .3em solid #1E586C;
+}
+
+#lang_select h2 {
+  color: #667;
+  text-shadow: 2px 2px 3px #aaa;
+}
+
+#lang_select dt {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+#lang_select dd {
+  padding-left: 1.5em;
+  margin-left: 0;
+}
+
+#top_content {
+  display: block;
+  height: 6em;
+  width: 100%;
+  background: white url('images/top_01.png') top right;
+  border-bottom: 1px solid #006666;
+  position: relative;
+}
+
+#top_inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: white url('images/iqvoc.png') center right no-repeat;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#top_inner img {
+  position: relative;
+  top: 0.6em;
+  left: 1.1em;
+}
+
+#top_inner h1 {
+  font-size: 2.5em;
+  margin: 1em;
+  color: #fff;
+  font-weight: normal;
+  text-shadow: .1em .1em .2em #ccc;
+  display: inline;
+}
+
+#top_inner h1 span.subtitle {
+  font-size: small;
+  color: #002F63;
+}
+
+#top_inner h1 a {
+  color: #8EAEC7;
+  text-decoration: none;
+}
+
+#top_inner h1 a:hover {
+  color: #B9D5EA;
+  text-decoration: none;
+}
+
+.main_navigation {
+  width: 100%;
+/*   padding: .3em 0; */
+  clear: both;
+  border-bottom: 1px solid #006666;
+  padding: .3em 0;
+}
+
+.main_navigation ul {
+  display: inline;
+  padding: 0;
+  margin:0;
+}
+
+.main_navigation ul li {
+  display: inline;
+}
+
+.main_navigation ul li a {
+  padding: .3em .4em;
+  color: #002f61;
+  margin-left: .3em;
+}
+
+.main_navigation ul li a:hover {
+  background-color: #6fcacc;
+  margin-left: 0;
+  border-left: .3em solid #1E586C;
+}
+
+.main_navigation ul li.active a {
+  background-color: #1bebad;
+  margin-left: 0;
+  border-left: .3em solid #2b819d;
+}
+
+.main_navigation ul li.active a:hover {
+  background-color: #6fcacc;
+  margin-left: 0;
+  border-left: .3em solid #1E586C;
+}
+
+h2 {
+  font-size: 150%;
+  font-weight: normal;
+}
+
+h3 {
+  font-size: 120%;
+  font-weight: bolder;
+  border-bottom: 1px dashed #3B89AD;
+  margin-bottom: .5em;
+  padding-top: .4em;
+}
+
+label {
+  font-size: smaller;
+  font-weight: bolder;
+}
+
+#content {
+  width: 90%;
+  padding-left: 1em;
+	padding-bottom: 1em;
+  float: left;
+}
+
+table.management th {
+	text-align: left;
+}
+
+tr.additional_information td {
+  vertical-align: top;
+  font-size: smaller;
+  color: #bbb;
+  border-bottom: 1px solid #000;
+}
+
+/*  Edit Concepts */
+ul#formPartLabeler li {
+  padding-left: 18px;
+}
+
+div.form_content {
+  padding: 0 .5em;
+  width: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  border: 1px solid #000;
+  background-color: #eef;
+  margin-top: 2em;
+  z-index: 1;
+}
+
+div.activeFormPart {
+  z-index: 2500;
+}
+
+ul#formPartLabeler li.activeFormPart {
+  background-color: #3B89AD;
+}
+
+ul#formPartLabeler li.unfinished {
+  background-image: url('/images/unfinished.png');
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+
+ul#formPartLabeler li.checked {
+  background-image: url('/images/ok.png');
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+
+div.embedded_form {
+  border: 1px solid #aaa;
+  padding: .3em 1em;
+  background: #eee;
+  font-size: 92%;
+}
+
+#footer {
+  clear: both;
+  border-top: 1px solid #006666;
+  padding: .3em;
+}
+
+.fieldWithErrors {
+  color: red;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+/* Editing and versioning */
+div.editing_versioning_toolbar form { float:left; }
+
+.note_relation { width: 60%; }
+
+.inline_note {
+	border: 1px solid #FFFFFF;
+	margin-bottom: 5px;
+}
+
+.inline_note.new {
+	background-color: #FFFFD0;
+	border: 1px solid #FCE66B;
+}
+
+.inline_note.deleted {
+	background-color: #F8D4D4;
+	border: 1px solid #EE8382;
+}
+
+div.ui-datepicker{
+ font-size:10px;
+}
+
+tr.even { background-color:#FDF3EC; }
+tr.odd  { background-color:#F7FDCF;}
+tr.highlightable {background-color:#F7F7F7;}
+tr.hover { background-color:#E6FCD4; }
+
+td, th {
+	padding: 5px;
+	text-align: left;
+}

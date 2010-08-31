@@ -1,0 +1,7 @@
+<li>
+  <%= link_to(label_relation.range.value, language_label_path(@active_language, label_relation.range)) %>
+  <%= link_to(image_tag("note_edit.png"), edit_label_relation_path(:id => label_relation, :lang => @active_language)) %>
+  <%= link_to(image_tag("note_delete.png"), label_relation_path(:id => label_relation, :lang => @active_language), 
+    :method => :delete, 
+    :confirm => t("txt.views.labels.edit.delete_confirm")) %>
+</li>

@@ -1,0 +1,22 @@
+de:
+  authlogic:
+    error_messages:
+      login_blank: "muss ausgefüllt werden"
+      login_not_found: "ist ungültig"
+      login_invalid: "ist keine gültige E-Mail Adresse"
+      consecutive_failed_logins_limit_exceeded:
+      email_invalid: "ist keine gültige E-Mail Adresse"
+      password_blank: "muss angegeben werden"
+      password_invalid: "ist ungültig"
+      not_active: "Ihr Account ist nicht aktiv"
+      not_confirmed: "Ihr Account ist noch nicht bestätigt"
+      not_approved: "Ihr Account ist noch nicht zugelassen"
+      no_authentication_details: "Sie haben keine Angaben für die Authentifizierung gemacht"
+    models:
+      user_session: "UserSession"
+    attributes:
+      user_session:
+        login:
+        email: "E-Mail"
+        password: "Passwort"
+        remember_me: "Angemeldet bleiben"

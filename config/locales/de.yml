@@ -1,0 +1,330 @@
+de:
+  txt:
+   common:
+     iqvoc_title: "iQvoc Vocabulary Management System"
+     concept: "Konzept"
+     concepts: "Konzepte"
+     label: "Label"
+     pref_label: "Bevorzugtes Label"
+     edit: "Bearbeiten"
+     value: "Wert"
+     definition:
+       one: "Definition"
+       other: "Definitionen"
+     editorial_note:
+       one: "Redaktionelle Anmerkung"
+       other: "Redaktionelle Anmerkungen"
+     note_annotation:
+       one: "Annotation"
+       other: "Annotationen"
+     umt_source_note:
+       one: "Quellenangabe"
+       other: "Quellenangaben"
+     umt_change_note:
+       one: "Änderungsangabe"
+       other: "Änderungsangaben"
+     umt_usage_note:
+       one: "Verwendungsangabe"
+       other: "Verwendungsangaben"
+       values:
+         useNarrower: "Benutze Unterbegriffe"
+     pagination:
+       previous: "Zurück"
+       next: "Weiter"
+     missing:
+       definition: "Keine Definition verfügbar."
+       label: "Kein Label"
+     follow_up: "Wiedervorlage"
+     expired_at: "Abgelaufen am"
+     save: "Speichern"
+     reset: "Zurücksetzen"
+     language: "Sprache"
+     add_note: "Weitere hinzufügen"
+     delete: "Löschen"
+     attributes: "Eigenschaften"
+     editor: "Redakteur"
+     referenced_labels: "Referenzierte Labels befinden sich in Bearbeitung:"
+     referenced_concepts: "Referenzierte Konzepte befinden sich in Bearbeitung:"
+     association_not_found: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden"
+     default_ajax_error: "Fehler"
+     to_review: "Vorlage zur Freigabe"
+     is_in_review: "Dokument befindet sich im Reviewprozess"
+     state:
+       published: "Veröffentlicht"
+       in_review: "Vorlage zur Freigabe"
+       checked_out: "Ausgecheckt"
+
+   part_of_speech:
+     plural_form: "Pluralform"
+     adjective: "Adjektiv"
+     proper_name: "Eigenname"
+     numeral: "Zahlwort"
+     pronoun: "Pronomen, Artikel"
+     abbreviation: "Abkürzung"
+     verb: "Verb"
+     noun:
+       male: "Substantiv (der)"
+       female: "Substantiv (die)"
+       neuter: "Substantiv (das)"
+     name_authority: "Namensform"
+
+   views:
+     layouts:
+       application:
+         header: "innoQ Vocabulary Management"
+         select_language: "Sprache auswählen"
+         login: "Anmelden"
+         logout: "Abmelden"
+     alphabetical_concepts:
+     hierarchical_concepts:
+     concepts:
+       definitions: "Definitionen"
+       broader: "Allgemeinere Begriffe"
+       narrower: "Spezifischere Begriffe"
+       related: "Verwandte Begriffe"
+       select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
+       new: "Neues Konzept"
+       versionview: "Versionsansicht für Konzept"
+       missing:
+         broader: "Keine allgemeineren Begriffe verfügbar"
+         narrower: "Keine spezifischeren Begriffe verfügbar"
+         related: "Kein verwandter Begriff verfügbar"
+       edit:
+         header: "Bearbeitung des Konzepts"
+       alt_label: "Alternatives Label"
+       pref_label: "Bevorzugtes Label"
+       close_match: "CloseMatch"
+       classifiers: "Umweltklassen"
+     labels:
+       new: "Neues Label"
+       template_form: "Vorlageform"
+       language: "Sprache"
+       definitions: "Definitionen"
+       part_of_speech: "Wortart"
+       base_form: "Ansetzungsform"
+       inflectional_code: "Endungscode"
+       inflectionals: "Schreibweisen"
+       homographs: "Homograph"
+       qualifiers: "Namenszusatz"
+       translations: "Übersetzungen"
+       pref_label_of: "Bevorzugtes Label von"
+       alt_label_of: "Alternatives Label von"
+       compound_from: "Zusammengesetzt aus"
+       compound_in: "Zusammengesetzt in"
+       versionview: "Versionsansicht für Label"
+       follow_up: "Wiedervorlage"
+       endings: "Endungen"
+       expired_at: "Abgelaufen am"
+       label_already_exists: "Es gibt bereits ein Label mit der eingegebenen Vorlageform"
+       edit:
+         header: "Bearbeitung von Label"
+         save: "Speichern"
+         base_data: "Eigenschaften"
+         delete: "Löschen"
+         delete_confirm: "Die Relation wird entfernt. Sind Sie sicher?"
+         edit: "Bearbeiten"
+         apply: "Übernehmen"
+         add_note: "Weitere hinzufügen"
+         reset: "Zurücksetzen"
+       inflectionals_used_in: "Schreibweisen werden auch in folgenden Labels verwendet:"
+     notes:
+       value: "Wert"
+       language: "Sprache"
+       save: "Speichern"
+       edit:
+         header: "Notiz bearbeiten"
+       export_notes: "Exportvermerk"
+       source_notes: "Quellenangaben"
+       change_notes: "Änderungsangaben"
+       usage_notes: "Verwendungsangaben"
+     navigation:
+       back_to_edit_versioned_object: "Zurück zur Bearbeitung"
+       back_to_show: "Zurück zur Originalversion"
+       back_to_preview: "Zurück zur Versionsvorschau"
+       back_to_concepts: "Zurück zur Konzeptliste"
+       hierarchical: "Hierarchisch"
+       alphabetical: "Alphabetisch"
+       search: "Suche"
+       about: "Über"
+       users: "Benutzer"
+     search_results:
+       header: "Suche"
+       inflectionals: "Schreibweisen"
+       pref_labels: "bevorzugte Namen (Labels)"
+       all_labels: "alle Namen (Labels)"
+       all_notes: "alle Anmerkungen und Definitionen"
+       contains: "enthält"
+       ends_with: "endet mit"
+       begins_with: "beginnt mit"
+       exact: "exakte Übereinstimmung"
+       regexp: "regulärer Ausdruck (fortgeschritten)"
+       search_term: "Suchbegriff(e)"
+       search_term_in_results: "Suchbegriff"
+       no_results: "Keine Ergebnisse"
+       search_languages: "Sprachen"
+       search_results: "Suchergebnisse"
+       results_found:
+         one: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnis."
+         other: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnisse."
+       no_results_found: "Ihre Suche nach {{query}} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
+       submit: "Suche"
+       type: "Typ"
+       used_as: "benutzt als"
+       language: "Sprache"
+       all: "alle"
+       none: "keine"
+     user_sessions:
+       header: "Anmelden"
+       login: "Anmelden"
+       email: "E-Mail"
+       password: "Passwort"
+       remember_me: "Angemeldet bleiben"
+       error: "E-Mail und/oder Passwort falsch. Bitte überprüfen Sie Ihre Eingabe."
+     users:
+       index:
+         header: "Benutzerverwaltung"
+       new:
+         header: "Neuer Benutzer"
+       edit:
+         header: "Benutzer bearbeiten"
+       name: "Name"
+       email: "E-Mail"
+       role: "Rolle"
+       active: "aktiviert"
+       new_link: "Neu"
+       show_link: "Anzeigen"
+       edit_link: "Bearbeiten"
+       destroy_link: "Löschen"
+       sure: "Sind Sie sicher?"
+       submit: "Speichern"
+       telephone_number: "Telefonnummer"
+     errors:
+       access_denied:
+         header: "Keine Berechtigung"
+         message: "Ihr Benutzerkonto besitzt keine ausreichenden Rechte, um diese Seite anzuzeigen."
+       not_found:
+         header: "Nicht gefunden"
+         tip: "Nutzen Sie die Suchfunktion, um Inhalte zu finden:"
+     versioning:
+       edit_mode: "Bearbeitung fortsetzen"
+       to_edit_mode: "In Bearbeitung versetzen"
+       publishing: "Veröffentlichen"
+       delete: "Kopie löschen"
+       delete_confirm: "Kopie wirklich löschen?"
+       versioning_mode: "Neue Version erstellen"
+       unlock: "Entsperren"
+       preview_new_version: "Vorschau der Version in Bearbeitung"
+       consistency_check: "Konsistenzprüfung"
+       current_revision: "Aktuelle Revision"
+       in_ongoing_editing_by: "in Bearbeitung von"
+       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
+       to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
+     labelings:
+       edit:
+         header: "Labeling bearbeiten"
+         submit: "Speichern"
+     widget:
+       hint: "Begriff eingeben"
+       no_results: "Nichts gefunden!"
+       searching: "Suche..."
+       delete_compound_form: "Zusammensetzung löschen"
+       create_compound_form: "Neue Zusammensetzung"
+     dashboard:
+       type: "Typ"
+       value: "Name"
+       locking_user: "Gesperrt durch"
+       follow_up: "Wiedervorlage"
+       updated_at: "Geändert am"
+       to_review: "Vorlage zur Freigabe"
+       consistent: "konsistent"
+       inconsistent: "inkonsistent"
+       state: "Status"
+
+   helpers:
+     concept_selector:
+       show_concepts:
+         one: "1 Konzept"
+         other: "{{count}} Konzepte"
+
+   controllers:
+     application:
+       login_required: "Sie müssen angemeldet sein, um diese Seite aufzurufen."
+       logout_required: "Sie müssen abgemeldet sein, um diese Seite aufzurufen."
+     search_results:
+       insufficient_data: "Bitte geben Sie mehr Suchkriterien an."
+       query_invalid: "Ihre Suchanfrage ist ungültig."
+     users:
+       successfully_created: "Benutzer wurde erfolgreich erstellt."
+       successfully_updated: "Der Benutzer wurde erfolgreich geändert."
+     user_sessions:
+       login_success: "Anmeldung erfolgreich."
+       logout_success: "Abmeldung erfolgreich."
+     versioning:
+       branch_error: "Es existiert schon eine neue Version!"
+       published: "Instanz wurde erfolgreich veröffentlicht."
+       published_with_warning: "Instanz wurde erfolgreich veröffentlicht, hat aber keine Relationen zu anderen Instanzen!"
+       merged_delete_error: "Das alte Label konnte nicht gelöscht werden!"
+       merged_publishing_error: "Instanz konnte nicht veröffentlicht werden!"
+       merged: "Instanzkopie wurde erfolgreich angelegt und für andere Benutzer gesperrt."
+       locked: "Instanz wurde für andere User gesperrt."
+       lock_error: "Instanz ist bereits gesperrt!"
+       unlocked: "Instanz wurde für andere User entsperrt."
+       unlock_error: "Instanz ist bereits entsperrt!"
+       new_version_blank_error: "Es existiert noch keine neue Version!"
+       delete: "Instanz löschen."
+       consistency_check_success: "Instanz ist konsistent."
+       consistency_check_success_with_warning: "Instanz ist konsistent , hat aber keine Relationen zu anderen Instanzen!"
+       consistency_check_error: "Instanz ist inkonsistent!"
+       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
+       to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
+       virtuoso_exception: "Das Objekt wurde veröffentlicht, konnte aber nicht mit Virtuoso synchronisiert werden. Fehler: "
+     labelings:
+       save:
+         success: "Das Labeling wurde erfolgreich gespeichert."
+         error: "Das Labeling konnte nicht gespeichert werden."
+     label_versions:
+       delete: "Labelversion wurde erfolgreich gelöscht."
+       delete_error: "Labelversion konnte nicht gelöscht werden"
+     concept_versions:
+       delete: "Konzeptversion wurde erfolgreich gelöscht."
+       delete_error: "Konzeptversion konnte nicht gelöscht werden"
+     notes:
+       save:
+         success: "Die Notiz wurde erfolgreich gespeichert."
+     versioned_label:
+       success: "Label wurde erfolgreich angelegt."
+       error: "Label konnte nicht angelegt werden!"
+       empty_value: "Die Vorlageform muss ausgefüllt sein!"
+       update_success: "Label wurde erfolgreich aktualisiert."
+       update_error: "Label konnte nicht aktualisiert werden."
+     versioned_concept:
+       success: "Konzept wurde erfolgreich angelegt."
+       error: "Konzept konnte nicht angelegt werden!"
+       empty_value: "Die Vorlageform muss ausgefüllt sein!"
+       update_success: "Konzept wurde erfolgreich aktualisiert."
+       update_error: "Konzept konnte nicht aktualisiert werden."
+     narrowers:
+       error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
+     virtuoso_syncs:
+       success: "Es wurden {{concept_count}} freigegebene Concepts und {{label_count}} freigegebene Labels synchronisiert."
+
+   models:
+     label:
+       version_error: "Es existieren schon zwei Versionen dieses Labels"
+       value_error: "Die Vorlageform muss ausgefüllt sein!"
+       qualifier_error: "Es muss ein Namenszusatz angegeben werden!"
+       homograph_error: "Es muss ein Homograph angegeben werden!"
+       compound_form_contents_error: "Eine Zusammensetzung muss aus min. 2 Labels bestehen!"
+       object_name: "Label"
+       pref_label_language: "Ein bevorzugtes Label in UMTHES muss deutsch sein."
+       translations_must_be_in_foreign_language: "Übersetzungen dürfen nicht die selbe Sprache wie das Label besitzen."
+     concept:
+       version_error: "Es existieren schon zwei Versionen dieses Konzepts"
+       pref_label_error: "Es muss ein bevorzugtes Label angegeben werden!"
+       association_pref_labels_unpublished: "Das bevorzugte Label muss veröffentlicht sein."
+       association_alt_labels_unpublished: "Alternative Labels müssen veröffentlicht sein."
+       association_hidden_labels_unpublished: "Versteckte Labels müssen veröffentlicht sein."
+       association_broader_unpublished: "Allgemeinere Begriffe müssen veröffentlicht sein."
+       association_narrower_unpublished: "Spezifischere Begriffe müssen veröffentlicht sein."
+       association_related_unpublished: "Verwandte Begriffe müssen veröffentlicht sein."
+       no_pref_label: "-- kein PrefLabel --"

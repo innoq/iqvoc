@@ -1,0 +1,98 @@
+<p class="ajax_error flash_error" style="display: none;"></p>
+<%= error_messages_for :label, :object_name => t("txt.models.label.object_name") %>
+<h2><%= t("txt.views.labels.edit.header") %> <strong><%=h @label.value %></strong></h2>
+
+<% if @association_objects_in_editing_mode.present? %>
+
+   <% if @association_objects_in_editing_mode[:label_relations].present? %>
+    <h4><%= t("txt.common.referenced_labels") %></h4>
+    <%  @association_objects_in_editing_mode[:label_relations].each do |label_relation| %>
+        <%= label_relation.type.demodulize + ': ' + link_to(label_relation.range.value, versioned_label_path(@active_language, label_relation.range)) + user_and_phone_number(t("txt.common.editor"), label_relation.range.locking_user.name, label_relation.range.locking_user.telephone_number) %><br />
+    <% end %>
+   <% end %>
+
+   <% if @association_objects_in_editing_mode[:compound_from_contents].present? %>
+    <%  @association_objects_in_editing_mode[:compound_from_contents].each do |compound_from_content| %>
+        <%= compound_from_content.temporary_name + ': ' + link_to(compound_from_content.label.value, versioned_label_path(@active_language, compound_from_content.label)) + user_and_phone_number(t("txt.common.editor"), compound_from_content.label.locking_user.name, compound_from_content.label.locking_user.telephone_number) %><br />
+    <% end %>
+   <% end %>
+
+<% end %>
+
+<%= render :partial => "versioned_labels/base_data" %>
+
+  <div class="relation-body">
+    <%= render :partial => "versioned_labels/label_relation_widget", 
+    :locals => {:path => versioned_label_homographs_path(:lang => @active_language, :versioned_label_id => @label.origin),
+      :relation => "homographs", 
+      :class_name => "UMT::Homograph", 
+      :token_limit => 1,
+      :legend => t("txt.views.labels.homographs")} %>
+  </div>
+
+	<div class="relation-body">
+    <%= render :partial => "versioned_labels/label_relation_widget", 
+    :locals => {:path => versioned_label_qualifiers_path(:lang => @active_language, :versioned_label_id => @label.origin),
+    :relation => "qualifiers", 
+    :class_name => "UMT::Qualifier", 
+    :token_limit => 1,
+    :legend => t("txt.views.labels.qualifiers")} %>
+  </div>
+
+	<div class="relation-body">
+	   <%= render :partial => "versioned_labels/label_relation_widget", 
+	   :locals => {:path => versioned_label_translations_path(:lang => @active_language, :versioned_label_id => @label.origin),
+     :relation => "translations", 
+     :class_name => "UMT::Translation", 
+     :token_limit => nil,
+     :legend => t("txt.views.labels.translations")} %>
+	</div>
+
+	<div class="relation-body">
+	  <fieldset>
+	    <legend><%= t("txt.views.labels.pref_label_of") %></legend>
+	    <ul>
+        <%= render :partial => "versioned_labels/labeling", :collection => @pref_labelings %>
+      </ul>
+    </fieldset>
+	</div>
+
+
+	<div class="relation-body">
+	  <fieldset>
+	    <legend><%= t("txt.views.labels.alt_label_of") %></legend>
+	    <ul>
+		   <%= render :partial => "versioned_labels/labeling", :collection => @alt_labelings %>
+		  </ul>
+	  </fieldset>
+	</div>
+
+	<div class="relation-body compound_forms">
+    <fieldset>
+      <legend><%= t("txt.views.labels.compound_from") %></legend>
+      <%= render :partial => "versioned_labels/compound_form_widget", 
+      :collection => @label.compound_forms, 
+      :as => :compound_form, 
+      :locals => {:relation => "translations", :token_limit => nil, :compound_form_id => @label.compound_forms} %>
+
+       <%= link_to t("txt.views.widget.create_compound_form"), versioned_label_compound_forms_path(:lang => @active_language, :versioned_label_id => @label.id), :class => "new_compound_form", "data-url" => versioned_label_compound_forms_path(:lang => @active_language, :versioned_label_id => @label.id) %>
+
+        <%= render :partial => "versioned_labels/compound_form_widget", 
+        :locals => {:relation => "translations", :token_limit => nil, :compound_form_id => @label.compound_forms} %>
+    </fieldset>
+  </div>
+
+	<div class="relation-body">
+	  <fieldset>
+	    <legend><%= t("txt.views.labels.compound_in") %></legend>
+	    <%= @compound_in.map {|label| link_to(label.value, language_label_path(@active_language, label))}.join(', ') unless @compound_in.blank? %>
+	  </fieldset>
+  </div>
+  
+  <%= render :partial => '_shared/umt_notes', :locals => {:object => @label, :types => :export_notes} %>
+
+<% content_for :sub_navigation do %>
+  <ul>
+    <li><%= back_link versioned_label_path(@active_language, @label), t('txt.views.navigation.back_to_preview') %></li>
+  </ul>
+<% end %>

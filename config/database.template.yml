@@ -1,0 +1,41 @@
+<% socket = ["/tmp/mysql.sock", 
+           "/opt/local/var/run/mysql5/mysqld.sock", 
+           "/tmp/mysqld.sock", 
+           "/var/run/mysqld.sock"].detect { |socket| File.exist?(socket) } %>
+
+development: &DEVELOPMENT
+  encoding: utf8
+  username: root
+  password:
+  database: iqvoc_development
+<% if defined?(JRuby) %>
+  adapter: jdbcmysql
+  hostname: localhost
+<% else %>
+  adapter: mysql
+  socket: <%= socket %>
+<% end %>
+
+oracle:
+  encoding: utf8
+  username:
+  password: 
+  database: localhost:1521:ORCL
+  adapter: oracle_enhanced
+  
+# Warning: The database defined as 'test' will be erased and
+# re-generated from your development database when you run 'rake'.
+# Do not set this db to the same as development or production.
+test: &TEST
+  adapter: mysql
+  encoding: utf8
+  username: root
+  password: 
+  database: iqvoc_test
+  socket: <%= socket %>
+  
+cucumber: &CUCUMBER
+  <<: *TEST
+
+culerity:
+  <<: *CUCUMBER

@@ -1,0 +1,19 @@
+<% content_for :head do -%>
+<link href="<%= @label.rdf_uri(:format => :"text/turtle") %>" type="text/turtle" rel="alternate" title=""/>
+<link href="<%= @label.rdf_uri() %>" type="application/rdf+xml" rel="alternate" title=""/>
+<link href="<%= @label.rdf_uri(:format => :"text/n3") %>" type="text/n3" rel="alternate" title=""/>
+<% end -%>
+<h2><%= t("txt.common.label") %>: <%= @label.value %></h2>
+<%= link_to @label.rdf_uri(:format => :"text/turtle"), @label.rdf_uri(:format => :"text/turtle"), :id => 'format_link_ttl' %>
+
+<% if can?(:read, :versioned_label) %>
+<div class="editing_versioning_toolbar">
+  <% if @new_label_version.blank? && can?(:write, :versioned_label) %>
+    <%= button_to t("txt.views.versioning.versioning_mode"), label_versions_branch_path(:lang => @active_language, :origin => @label.origin) %>
+  <% elsif can?(:read, :versioned_label) %>
+    <%= link_to t("txt.views.versioning.preview_new_version"), versioned_label_path(:id => @new_label_version, :lang => @active_language) %>  
+  <% end %>
+</div>
+<% end %>
+
+<%= render :partial => "label" %>

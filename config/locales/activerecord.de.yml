@@ -1,0 +1,12 @@
+de:
+  activerecord:
+      attributes:
+        user:
+          forename: "Vorname"
+          surname: "Nachname"
+          email: "E-Mail"
+          password: "Passwort"
+          password_confirmation: "Passwort (Bestätigung)"
+          active: "aktiviert"
+          role: "Rolle"
+          telephone_number: "Telefonnummer"

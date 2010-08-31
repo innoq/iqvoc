@@ -1,0 +1,34 @@
+<h2>Dashboard</h2>
+<p>
+<%= link_to t("txt.views.labels.new"), new_versioned_label_path(:lang => @active_language) %> | 
+<%= link_to t("txt.views.concepts.new"), new_versioned_concept_path(:lang => @active_language) %> |
+<%= link_to "Virtuoso Sync", new_virtuoso_sync_path(:lang => @active_language) %>
+</p>
+<table>
+  <tr>
+    <th><%= t("txt.views.dashboard.type") %><%= sorting_arrows_for(:class) %></th>
+    <th><%= t("txt.views.dashboard.value") %><%= sorting_arrows_for(:value) %></th>
+    <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_arrows_for(:locking_user) %></th>
+    <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_arrows_for(:follow_up) %></th>
+    <th><%= t("txt.views.dashboard.updated_at") %><%= sorting_arrows_for(:updated_at) %></th>
+    <th><%= t("txt.views.dashboard.state") %><%= sorting_arrows_for(:state) %></th>
+    <th><%= t("txt.views.dashboard.consistent") %>?</th>
+  </tr>
+  <% for item in @items -%>
+  <tr class="highlightable" data-url="<%= item.is_a?(Label) ? versioned_label_url(:lang => @active_language, :id => item) : versioned_concept_url(:lang => @active_language, :id => item) %>">
+    <td><%= item.class %></td>
+    <td>
+      <% if item.is_a?(Label) %>
+      <%= link_to truncate(item.to_s, :length => 45), (item.published? ? language_label_path(@active_language, item) : versioned_label_path(:lang => @active_language, :id => item)) %>
+      <% else %>
+      <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? language_concept_path(@active_language, item) : versioned_concept_path(:lang => @active_language, :id => item)) %>
+      <% end %>
+    </td>
+    <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
+    <td><%= l(item.follow_up) if item.follow_up.present? %></td>
+    <td><%= l(item.updated_at, :format => :short) %></td>
+    <td><%= item.state %></td>
+    <td><%= consistency_status(item) %></td>
+  </tr>
+  <% end -%>
+</table>

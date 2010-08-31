@@ -1,0 +1,3 @@
+class HiddenLabeling < Labeling
+  
+end

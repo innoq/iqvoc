@@ -1,0 +1,16 @@
+<h2><%= t("txt.views.user_sessions.header") %></h2>
+ 
+<% form_for @user_session, :url => user_session_path do |f| %>
+  <% if @user_session.errors.any? %>
+  <p class="flash_error"><%= t("txt.views.user_sessions.error") %></p>
+  <% end %>
+  <%= f.label :email, t("txt.views.user_sessions.email") %><br />
+  <%= f.text_field :email %><br />
+  <br />
+  <%= f.label :password, t("txt.views.user_sessions.password") %><br />
+  <%= f.password_field :password %><br />
+  <br />
+  <%= f.check_box :remember_me %><%= f.label :remember_me, t("txt.views.user_sessions.remember_me") %><br />
+  <br />
+  <%= f.submit t("txt.views.user_sessions.login") %>
+<% end %>

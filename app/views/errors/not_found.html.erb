@@ -1,0 +1,8 @@
+<h2><strong><%= t("txt.views.errors.not_found.header") %></strong></h2>
+
+<p><em><%= @exception.message %></em></p>
+
+<p><%= t("txt.views.errors.not_found.tip") %></p>
+<div class="embedded_form">
+  <%= render :file => 'search_results/index' %>
+</div>

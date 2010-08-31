@@ -1,0 +1,97 @@
+class ApplicationController < ActionController::Base
+  
+  before_filter :load_languages
+  before_filter :set_locale
+  before_filter :require_user
+  
+  helper :all
+  helper_method :current_user_session, :current_user
+  
+  filter_parameter_logging :password, :password_confirmation
+
+  rescue_from ActiveRecord::RecordNotFound, Iqvoc::NotFound, :with => :handle_not_found
+  rescue_from Iqvoc::MultipleChoices, :with => :handle_multiple_choices
+  rescue_from CanCan::AccessDenied, :with => :handle_access_denied
+
+  # protect_from_forgery # :secret => '1435541cd4331702e8f0a97a91feced4'
+
+  protected
+
+    def handle_access_denied(exception)
+      @exception = exception
+      render :template => 'errors/access_denied', :status => :access_denied
+    end
+
+    def handle_multiple_choices(exception)
+      @exception = exception
+      render :template => 'errors/multiple_choices', :status => :multiple_choices
+    end
+
+    def handle_not_found(exception)
+      @exception = exception
+      render :template => 'errors/not_found', :status => :not_found
+    end
+  
+    def handle_virtuoso_exception(exception)
+      logger.error "Virtuoso Exception: " + exception
+      flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
+    end
+
+    def load_languages
+      @available_languages = {
+        'Deutsch' =>         :de,
+        'English' =>         :en
+      }
+    end
+
+    def set_locale
+      if request.headers['HTTP_ACCEPT_LANGUAGE'] =~ /#{I18n.available_locales.join('|')}/
+        req_lang = $1
+      end
+      @active_language = params[:lang] ? params[:lang] : req_lang
+      I18n.locale = @active_language
+    end
+  
+  private
+  
+    def check_authorization_for_versioned_label
+      authorize! :write, Label
+    end
+  
+    def current_user_session
+      return @current_user_session if defined?(@current_user_session)
+      @current_user_session = UserSession.find
+    end
+
+    def current_user
+      return @current_user if defined?(@current_user)
+      @current_user = current_user_session && current_user_session.user
+    end
+    
+    def require_user
+      unless current_user
+        store_location
+        flash[:error] = I18n.t("txt.controllers.application.login_required")
+        redirect_to new_user_session_url(:lang => I18n.locale)
+        return false
+      end
+    end
+ 
+    def require_no_user
+      if current_user
+        store_location
+        flash[:error] = I18n.t("txt.controllers.application.logout_required")
+        redirect_to localized_root_path(:lang => @active_language)
+        return false
+      end
+    end
+    
+    def store_location
+      session[:return_to] = request.request_uri
+    end
+    
+    def redirect_back_or_default(default = nil)
+      redirect_to(session[:return_to] || default)
+      session[:return_to] = nil
+    end
+end

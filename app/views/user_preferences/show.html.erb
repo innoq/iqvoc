@@ -1,0 +1,18 @@
+<p>
+  <b>User:</b>
+  <%=h @user_preference.user_id %>
+</p>
+
+<p>
+  <b>Key:</b>
+  <%=h @user_preference.key %>
+</p>
+
+<p>
+  <b>Value:</b>
+  <%=h @user_preference.value %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_preference_path(@user_preference) %> |
+<%= link_to 'Back', user_preferences_path %>

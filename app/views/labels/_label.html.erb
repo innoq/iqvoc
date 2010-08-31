@@ -1,0 +1,97 @@
+<div class="name-note">
+  <div id="concept-left-box" style="float:left; width:70%;">
+  <h3><%= t("txt.views.labels.template_form") %></h3>
+	<div class="relation">
+    <%= @label.value %>
+  </div>
+
+	<h3><%= t("txt.views.labels.language") %></h3>
+	<div class="relation">
+    <%= @label.language %>
+  </div>
+
+  <h3><%= t("txt.views.labels.definitions") %></h3>
+  <% @label.definitions.each do |definition| %>
+    <div class="relation">
+      <%= linkify(definition) %>
+    </div>
+  <% end %>
+
+	<h3><%= t("txt.views.labels.part_of_speech") %></h3>
+	<div class="relation">
+      <%= part_of_speech @label.part_of_speech %>
+  </div>
+
+	<h3><%= t("txt.views.labels.base_form") %></h3>
+	<div class="relation">
+    	<%= @label.base_form %>
+  </div>
+  
+	<h3><%= t("txt.views.labels.inflectional_code") %></h3>
+	<div class="relation">
+    	<%= @label.inflectional_code %>
+  </div>
+  
+  <h3><%= t("txt.views.labels.expired_at") %></h3>
+	<div class="relation">
+    	<%= l(@label.expired_at) if @label.expired_at %>
+  </div>
+
+	<h3><%= t("txt.views.labels.inflectionals") %></h3>
+	<div class="relation">
+	<%= @label.inflectionals.map(&:value).join(', ') %>
+  <% unless @inflectionals_labels.blank? %>
+  <p><%= t("txt.views.labels.inflectionals_used_in") %></p>
+  <ul>
+    <% @inflectionals_labels.each do |inf| %>
+    <% if inf.published? %>
+    <li><%= link_to inf.value, language_label_path(@active_language, inf) %></li>
+    <% else %>
+    <li><%= link_to inf.value, versioned_label_path(:id => inf, :lang => @active_language) %></li>
+    <% end %>
+    <% end %>
+  </ul>
+  <% end %>
+	</div>
+
+	<h3><%= t("txt.views.labels.homographs") %></h3>
+	<div class="relation">
+		<%= UMT::Homograph.published_without_initial_versions(@label.id).map {|h| link_to h.range.value, language_label_path(@active_language, h.range) }.join(', ') %>
+	</div>
+
+	<h3><%= t("txt.views.labels.qualifiers") %></h3>
+	<div class="relation">
+		<%= UMT::Qualifier.published_without_initial_versions(@label.id).map {|h| link_to h.range.value, language_label_path(@active_language, h.range) }.join(', ') %>
+	</div>
+
+	<h3><%= t("txt.views.labels.translations") %></h3>
+	<div class="relation">
+		<%= UMT::Translation.published_without_initial_versions(@label.id).map {|t| link_to t.range.value, language_label_path(@active_language, t.range) }.join(', ') %>
+	</div>
+
+	<h3><%= t("txt.views.labels.pref_label_of") %></h3>
+	<div class="relation">
+	  <%= @concepts_as_pref_label.map {|c| link_to c.origin, language_concept_path(@active_language, c), :alt => c.pref_label }.join(', ') %>
+	</div>
+
+	<h3><%= t("txt.views.labels.alt_label_of") %></h3>
+	<div class="relation">
+		<%= @concepts_as_alt_label.map {|c| link_to c.origin, language_concept_path(@active_language, c), :alt => c.pref_label }.join(', ') %>
+	</div>
+
+	<h3><%= t("txt.views.labels.compound_from") %></h3>
+	<div class="relation">
+    <% @label.compound_forms.each do |cf| %>
+    <%= UMT::CompoundFormContent.published_without_initial_versions(cf.id).collect { |cfc|
+		  link_to(cfc.label.value, language_label_path(@active_language, cfc.label))
+	  }.join(', ') %>
+    <br />
+    <% end %>
+  </div>
+
+	<h3><%= t("txt.views.labels.compound_in") %></h3>
+	<div class="relation">
+    <%= @compound_in.map {|label| link_to(label.value, language_label_path(@active_language, label))}.join(', ') %>
+  </div>
+    <%= render :partial => '_shared/umt_notes', :locals => {:object => @label} %>
+</div>

@@ -1,0 +1,11 @@
+<h2>Multiple Choices</h2>
+
+<p><em><%= @exception.message %></em></p>
+
+<p>You may find what you seek by trying one of the following links:</p>
+
+<ul>
+  <% for choice, url in @exception.choices %>
+    <li><%= link_to choice, url %></li>
+  <% end %>
+</ul>

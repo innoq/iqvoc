@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html data-locale="<%= I18n.locale %>">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>UMTHES&reg; - Der UmweltThesaurus</title>
+    <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
+    <!--[if lt IE 8]>
+    <%= stylesheet_link_tag "/stylesheets/blueprint/ie.css", :media => "screen, projection" %>
+    <![endif]-->
+    <%= stylesheet_link_tag "/stylesheets/iqvoc_new.css" %>
+    <%= stylesheet_link_tag "/stylesheets/forms.css" %>
+    <%= stylesheet_link_tag "/javascripts/jquery-treeview/jquery.treeview.css" %>
+    <%= stylesheet_link_tag "token-input-facebook.css" %>
+    <%= stylesheet_link_tag "jquery-ui-1.7.2.custom.css" %>
+    
+    <%= javascript_include_tag "jquery-1.4.1.min.js" %>
+    <%= javascript_include_tag "jquery-ui-1.7.2.custom.min.js" %>
+    <%= javascript_include_tag "jquery-ui.datepicker-de.js" %>
+    <%= javascript_include_tag "jquery-treeview/jquery.treeview.js" %>
+    <%= javascript_include_tag "jquery-treeview/jquery.treeview.async.js" %>
+    <%#= javascript_include_tag "jquery.autocomplete.js" %>
+    <%= javascript_include_tag "jquery/jquery.tokeninput.js" %>
+    <%= javascript_include_tag "application.js" %>
+    <%= yield :head %>
+  </head>
+<body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
+
+<div class="container">
+    <div id="header" class="span-24 last">
+      <%= render :partial => '_shared/navigation' %>
+    </div>
+    
+    <div id="navi_sub" class="span-24 last">
+      <%= yield :sub_navigation %>
+    </div>
+
+    <div id="content" class="span-24 last">
+      <% if flash[:notice] %>
+        <p class="flash_notice"><%= flash[:notice] %></p>
+      <% end %>
+      <% if flash[:error] %>
+        <p class="flash_error"><%= flash[:error] %></p>
+      <% end %>
+      <%= yield  %>
+    </div>
+    
+    <div id="footer" class="span-24 last">
+      <div id="footer_box">
+        <% if current_user %>
+          <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => @active_language), :method => :delete %>
+        <% else %>
+          <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language) %>
+        <% end %>
+        <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
+      </div>
+      <!-- iQvoc build <%= "#{REVISION_NUMBER} (#{APP_CODENAME})" %> -->
+    </div>
+</div>
+
+</body>
+</html>

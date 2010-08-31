@@ -1,0 +1,32 @@
+<h3><%= t("txt.common.concept") %></h3>
+<% form_for @concept, :url => ((controller.action_name == "new" || controller.action_name == "create") ? versioned_concepts_path(:lang => @active_language) : versioned_concept_path(:id => @concept, :lang => @active_language)), :html => {:class => "form"} do |f| %>
+    <fieldset id="label_base_data">
+      <legend><%= t("txt.common.attributes") %></legend>
+      <ol>
+        <li>
+          <%= f.label :follow_up, t("txt.common.follow_up") %>
+          <%= f.text_field :follow_up, :class => "datepicker" %>
+        </li>
+        <li>
+          <%= f.label :expired_at, t("txt.common.expired_at") %>
+          <%= f.text_field :expired_at, :class => "datepicker" %>
+        </li>
+      </ol>
+    </fieldset>
+
+    <% %w(definition editorial_note umt_source_note).each do |klass| %>
+        <%= render :partial => "versioned_concepts/note", :locals => { :f => f, :klass => klass } %>
+    <% end %>
+    
+    <%= render :partial => "versioned_concepts/change_note", :locals => {:f => f } %>
+    
+    <%= render :partial => "versioned_concepts/usage_note", :locals => {:f => f } %>
+
+    <%= render :partial => "versioned_concepts/close_match", :locals => {:f => f } %>
+
+    <%= f.submit t("txt.common.save") %>
+
+    <% unless controller.action_name == "new" || controller.action_name == "create" %>
+        <%= link_to t("txt.common.reset") %>
+    <% end %>
+<% end %>

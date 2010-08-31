@@ -1,0 +1,10 @@
+db/*.sqlite3
+log/*.log
+tmp/*
+config/database.yml
+config/services.yml
+.DS_Store
+*.tmproj
+nbproject
+.svn
+rerun.txt

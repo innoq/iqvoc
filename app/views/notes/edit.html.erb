@@ -1,0 +1,27 @@
+<h1><%= t("txt.views.notes.edit.header") %></h1>
+
+<%= error_messages_for :note %>
+
+<% form_for @note, :url => note_path(:id => @note, :lang => @active_language), :html => {:class => "form"} do |f| %>
+  <fieldset>
+    <ol>
+      <li>
+        <%= f.label :value, t("txt.views.notes.value") %>
+        <%= f.text_area :value %>
+      </li>
+      <li>
+        <%= f.label :language, t("txt.views.notes.language") %>
+        <%= f.select :language, I18n.available_locales %>
+      </li>
+    </ol>
+  </fieldset>
+  <%= f.submit t("txt.views.notes.save") %>
+<% end %>
+
+<% content_for :sub_navigation do %>
+  <ul>
+    <li>
+      <%= back_link edit_versioned_label_path(:id => @note.owner, :lang => @active_language), t('txt.views.navigation.back_to_edit_versioned_object') %>
+    </li>
+  </ul>
+<% end %>

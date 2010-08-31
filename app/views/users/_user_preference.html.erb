@@ -1,0 +1,12 @@
+<div class="user_preference">
+  <% new_or_existing = user_preference.new_record? ? 'new' : 'existing' %>
+  <% prefix = "user[#{new_or_existing}_preferences_attributes][]" -%>
+
+  <% fields_for prefix, user_preference do |preference_form| %>
+    <label for="<%= dom_id user_preference %>_key"><%= t('Name') %>:</label><br />
+    <%= preference_form.text_field :key, :size => 20 %><br />
+    <label for="<%= dom_id user_preference %>_value"><%= t('Value') %>:</label><br />
+    <%= preference_form.text_field :value, :size => 20 %>
+    <%= link_to_function image_tag('remove.png'), "$(this).up('.user_preference').remove()", :title => t('Remove') %>
+  <% end -%>
+</div>
