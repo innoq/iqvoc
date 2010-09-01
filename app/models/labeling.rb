@@ -2,21 +2,21 @@ class Labeling < ActiveRecord::Base
   belongs_to :owner, :class_name => 'Concept'
   belongs_to :target, :class_name => 'Label'
   
-  named_scope :by_concept, lambda { |concept| {
+  scope :by_concept, lambda { |concept| {
     :conditions => { :owner_id => concept.id }
   }}
   
-  named_scope :by_label, lambda { |label| {
+  scope :by_label, lambda { |label| {
     :conditions => { :target_id => label.id }
   }}
 
-  named_scope :by_lang, lambda { |lang| {
+  scope :by_lang, lambda { |lang| {
           :joins => :target,
           :conditions => ["labels.language LIKE :language", {:language => lang}]
         }
   }
 
-  named_scope :target_in_edit_mode, lambda {|owner_id|
+  scope :target_in_edit_mode, lambda {|owner_id|
     { :joins => :target,
       :include => :target,
       :conditions => "(labelings.owner_id = #{owner_id}) AND (labels.locked_by IS NOT NULL)"

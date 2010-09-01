@@ -62,19 +62,19 @@ class Label < ActiveRecord::Base
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
   
-  named_scope :by_origin_or_id, lambda { |arg|
+  scope :by_origin_or_id, lambda { |arg|
     { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
   }
 
-  named_scope :for_language, lambda {|lang_code|
+  scope :for_language, lambda {|lang_code|
     { :conditions => { :language => lang_code } }
   }
   
-  named_scope :compound_in, lambda {|label|
+  scope :compound_in, lambda {|label|
     { :conditions => {:compound_form_contents => {:label_id => label.id}}, :joins => :compound_form_contents }
   }
 
-  named_scope :with_associations, :include => [
+  scope :with_associations, :include => [
     :inflectionals,
     :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
     {:umt_source_notes => :note_annotations},

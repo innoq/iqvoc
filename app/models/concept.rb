@@ -75,7 +75,7 @@ class Concept < ActiveRecord::Base
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
 
-  named_scope :alphabetical, lambda {|letter| {
+  scope :alphabetical, lambda {|letter| {
       :conditions => ["labelings.type = :type AND LOWER(SUBSTR(labels.value, 1, 1)) = :letter",
         {:type => 'PrefLabeling', :letter => letter.to_s}],
       :include => :pref_labels,
@@ -84,24 +84,24 @@ class Concept < ActiveRecord::Base
   }
 
 
-  named_scope :by_language, lambda { |lang_code| {
+  scope :by_language, lambda { |lang_code| {
       :conditions => { :language => lang_code.to_s } }
   }
 
-  named_scope :tops,
+  scope :tops,
     :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM semantic_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
 
 
-  named_scope :broader_tops,
+  scope :broader_tops,
     :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM semantic_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id'
 
-  named_scope :with_associations, :include => [
+  scope :with_associations, :include => [
     :pref_labels, :alt_labels, :hidden_labels,
     {:broader => :pref_labels}, {:narrower => :pref_labels}, {:related => :pref_labels},
     :classifiers,
@@ -113,7 +113,7 @@ class Concept < ActiveRecord::Base
     {:umt_export_notes => :note_annotations}
   ]
 
-  named_scope :with_pref_labels,
+  scope :with_pref_labels,
     :include => :pref_labels,
     :conditions => {:labelings => {:type => 'PrefLabeling'}},
     :order => 'LOWER(labels.value)'

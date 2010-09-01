@@ -5,7 +5,7 @@ class Note < ActiveRecord::Base
   
   accepts_nested_attributes_for :note_annotations
 
-  named_scope :for_language, lambda {|lang_code|
+  scope :for_language, lambda {|lang_code|
     {:conditions => {:language => lang_code}}
   }
     
