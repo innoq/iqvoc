@@ -15,7 +15,7 @@ class HierarchicalConceptsController < ConceptsController
         @concepts.map! do |c|
           hsh = {
             :text => c.pref_label.to_s,
-            :url  => language_concept_path(@active_language, c),
+            :url  => concept_path(:lang => @active_language, :id => c),
             :id   => c.id
           }
           hsh[:hasChildren] = c.narrower.any?

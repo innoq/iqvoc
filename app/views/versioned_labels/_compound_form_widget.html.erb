@@ -7,7 +7,7 @@
        data-post-url="<%= versioned_label_compound_form_compound_form_contents_path(:lang => @active_language, :versioned_label_id => @label.origin, :compound_form_id => !defined?(compound_form) ? "ID" : compound_form.id ) %>"
        data-get-url="<%= labels_path %>"
        data-branch-url="<%= label_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
-       data-show-url="<%= language_label_path(:lang => @active_language, :id => "ORIGIN")%>"
+       data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
        data-versioned-show-url="<%= versioned_label_path(:lang => @active_language, :id => "ORIGIN") %>"
        data-auth-token="<%= form_authenticity_token %>"
        data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"

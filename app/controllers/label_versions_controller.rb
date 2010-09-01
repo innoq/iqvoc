@@ -18,10 +18,10 @@ class LabelVersionsController < ApplicationController
         end
         if new_version.has_concept_or_label_relations?
           flash[:notice] = t("txt.controllers.versioning.published")
-          redirect_to language_label_path(@active_language, new_version)
+          redirect_to label_path(:lang => @active_language, :id => new_version)
         else
           flash[:error] = t("txt.controllers.versioning.published_with_warning")
-          redirect_to language_label_path(@active_language, new_version)
+          redirect_to label_path(:lang => @active_language, :id => new_version)
         end
       else
         flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
@@ -68,7 +68,7 @@ class LabelVersionsController < ApplicationController
 
     else
       flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to language_label_path(@active_language, current_version)
+      redirect_to label_path(:lang => @active_language, :id => current_version)
     end
   end
 
@@ -91,7 +91,7 @@ class LabelVersionsController < ApplicationController
 
     else
       flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to language_label_path(@active_language, current_version)
+      redirect_to label_path(:lang => @active_language, :id => current_version)
     end
   end
 

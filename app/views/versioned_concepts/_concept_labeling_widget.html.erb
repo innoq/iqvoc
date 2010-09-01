@@ -4,7 +4,7 @@
        data-post-url="<%= path %>"
        data-get-url="<%= defined?(alt_label_lang) ? labels_path(:alt_label_lang => alt_label_lang): labels_path %>"
        data-branch-url="<%= concept_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
-       data-show-url="<%= language_label_path(:lang => @active_language, :id => "ORIGIN")%>"
+       data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
        data-versioned-show-url="<%= versioned_label_path(:lang => @active_language, :id => "ORIGIN") %>"
        data-auth-token="<%= form_authenticity_token %>"
        data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"

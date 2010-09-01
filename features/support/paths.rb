@@ -27,7 +27,7 @@ module NavigationHelpers
       alphabetical_concepts_path(:lang => 'de', :letter => $1)
       
     when /the concept page for "(.+)"/
-      language_concept_path(:de, Concept.find_by_origin($1))
+      concept_path(:lang => :de, :id => Concept.find_by_origin($1))
       
     when /the versioned concept page for "(.+)"/
       versioned_concept_path(:de, Concept.find_by_origin($1))
@@ -36,7 +36,7 @@ module NavigationHelpers
       edit_versioned_concept_path(:de, Concept.find_by_origin($1))
       
     when /the label page for "(.+)"/
-      language_label_path(:de, Label.find_by_origin($1))
+      label_path(:lang => :de, :id => Label.find_by_origin($1))
       
     when /the (.+)-formatted label page for "(.+)"/
       label_path(Label.find_by_origin($2), :format => $1)

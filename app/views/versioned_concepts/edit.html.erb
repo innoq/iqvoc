@@ -1,6 +1,6 @@
 <p class="ajax_error flash_error" style="display: none;"></p>
 <%= error_messages_for :concept, :object_name => t("txt.models.label.object_name") %>
-<h2><%= t("txt.views.concepts.edit.header") %> <strong><%= link_to @concept.origin, language_concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
+<h2><%= t("txt.views.concepts.edit.header") %> <strong><%= link_to @concept.origin, concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
 
 <% if @association_objects_in_editing_mode.present? %>
 

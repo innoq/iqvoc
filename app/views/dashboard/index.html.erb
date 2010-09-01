@@ -19,9 +19,9 @@
     <td><%= item.class %></td>
     <td>
       <% if item.is_a?(Label) %>
-      <%= link_to truncate(item.to_s, :length => 45), (item.published? ? language_label_path(@active_language, item) : versioned_label_path(:lang => @active_language, :id => item)) %>
+      <%= link_to truncate(item.to_s, :length => 45), (item.published? ? label_path(:lang => @active_language, :id => item) : versioned_label_path(:lang => @active_language, :id => item)) %>
       <% else %>
-      <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? language_concept_path(@active_language, item) : versioned_concept_path(:lang => @active_language, :id => item)) %>
+      <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:lang => @active_language, :id => item) : versioned_concept_path(:lang => @active_language, :id => item)) %>
       <% end %>
     </td>
     <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>

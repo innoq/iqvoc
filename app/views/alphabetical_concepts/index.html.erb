@@ -13,7 +13,7 @@
 <ul>
   <% for concept in @concepts %>
   <li>
-    <%= link_to concept.pref_label, language_concept_path(@active_language, concept), :alt => concept.origin %>
+    <%= link_to concept.pref_label, concept_path(:lang => @active_language, :id => concept), :alt => concept.origin %>
   </li>
   <% end %>
 </ul>

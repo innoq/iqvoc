@@ -65,17 +65,17 @@
           <%= t("txt.views.search_results.no_results") %>
           <% else %>
           <% result[:result].each do |l| %>
-          <%= link_to(l.value, language_label_path(@active_language, l)) %> (<%= l.inflectionals.map(&:value).join(", ") %>)<br>
+          <%= link_to(l.value, label_path(:lang => @active_language, :id => l)) %> (<%= l.inflectionals.map(&:value).join(", ") %>)<br>
           <% end %>
           <% end %>
           </span>
         <% elsif result.is_a?(Label) %>
-          <%= link_to highlight_query(result.value, params[:query], @multi_query), language_label_path(@active_language, result) %>
+          <%= link_to highlight_query(result.value, params[:query], @multi_query), label_path(:lang => @active_language, :id => result) %>
         <% elsif result.is_a?(Note) and result.owner.is_a?(Concept) %>
-          <%= link_to result.owner.origin, language_concept_path(@active_language, result.owner) %><br>
+          <%= link_to result.owner.origin, concept_path(:lang => @active_language, :id => result.owner) %><br>
           <%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %>
         <% elsif result.is_a?(Note) and result.owner.is_a?(Label) %>
-          <%= link_to result.owner.value, language_label_path(@active_language, result.owner) %><br>
+          <%= link_to result.owner.value, label_path(:lang => @active_language, :id => result.owner) %><br>
           <%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %>
         <% end %>
       </dt>

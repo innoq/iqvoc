@@ -1,4 +1,4 @@
-<h2><%= t("txt.views.concepts.versionview") %> <strong><%= link_to @concept.origin, language_concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
+<h2><%= t("txt.views.concepts.versionview") %> <strong><%= link_to @concept.origin, concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
 
 <p class="flash_notice">
   <%= t("txt.views.versioning.current_revision") %> <%= @concept.rev %><% if @concept.locked? %> <%= t("txt.views.versioning.in_ongoing_editing_by") %> <%= @concept.locking_user.name %><% end %>

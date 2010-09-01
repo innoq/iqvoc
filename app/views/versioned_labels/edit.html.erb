@@ -85,7 +85,7 @@
 	<div class="relation-body">
 	  <fieldset>
 	    <legend><%= t("txt.views.labels.compound_in") %></legend>
-	    <%= @compound_in.map {|label| link_to(label.value, language_label_path(@active_language, label))}.join(', ') unless @compound_in.blank? %>
+	    <%= @compound_in.map {|label| link_to(label.value, label_path(:lang => @active_language, :id => label))}.join(', ') unless @compound_in.blank? %>
 	  </fieldset>
   </div>
   

@@ -18,7 +18,7 @@ class ConceptVersionsController < ApplicationController
             handle_virtuoso_exception(e.message)
           end
           flash[:notice] = t("txt.controllers.versioning.published")
-          redirect_to language_concept_path(@active_language, new_version)
+          redirect_to concept_path(:lang => @active_language, :id => new_version)
         else
           logger.debug new_version.errors.inspect
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
@@ -74,7 +74,7 @@ class ConceptVersionsController < ApplicationController
 
     else
       flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to language_concept_path(@active_language, current_version)
+      redirect_to concept_path(:lang => @active_language, :id => current_version)
     end
   end
 
@@ -97,7 +97,7 @@ class ConceptVersionsController < ApplicationController
 
     else
       flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to language_concept_path(@active_language, current_version)
+      redirect_to concept_path(:lang => @active_language, :id => current_version)
     end
   end
 
