@@ -37,10 +37,10 @@ class Label < ActiveRecord::Base
   has_many :concepts_as_alt_label, :source => :owner, :through => :alt_labelings, :conditions => "concepts.published_at IS NOT NULL"
   has_many :concepts_as_hidden_label, :source => :owner, :through => :hidden_labelings, :conditions => "concepts.published_at IS NOT NULL"
   
-  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.class_name }, :dependent => :destroy
-  has_many :umt_usage_notes, :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote', :conditions => { :owner_type => self.class_name }, :dependent => :destroy
-  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.class_name }, :dependent => :destroy
-  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.class_name }, :dependent => :destroy
+  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
+  has_many :umt_usage_notes, :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
+  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
+  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
 
   has_many :note_annotations, :through => :notes
 

@@ -50,10 +50,10 @@ class Concept < ActiveRecord::Base
   has_many :classifications, :foreign_key => 'owner_id'
   has_many :classifiers, :through => :classifications, :source => :target
 
-  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.class_name }
-  has_many :umt_usage_notes, :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote', :conditions => { :owner_type => self.class_name }
-  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.class_name }
-  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.class_name }
+  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }
+  has_many :umt_usage_notes, :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote', :conditions => { :owner_type => self.name }
+  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }
+  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }
 
   [:notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions].each do |name|
     has_many name, :as => :owner
