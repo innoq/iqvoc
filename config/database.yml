@@ -1,0 +1,40 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+#
+#
+# Be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+  encoding: utf8
+  username: root
+  password:
+  database: iqvoc_development
+<% if defined?(JRuby) %>
+  adapter: jdbcmysql
+  hostname: localhost
+<% else %>
+  adapter: mysql2
+<% end %>
+  
+import_test:
+  encoding: utf8
+  username: root
+  password:
+  database: iqvoc_test
+<% if defined?(JRuby) %>
+  adapter: jdbcmysql
+  hostname: localhost
+<% else %>
+  adapter: mysql2
+<% end %>
+
+test:
+  encoding: utf8
+  username: root
+  password:
+  database: iqvoc_test
+<% if defined?(JRuby) %>
+  adapter: jdbcmysql
+  hostname: localhost
+<% else %>
+  adapter: mysql2
+<% end %>

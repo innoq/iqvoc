@@ -1,126 +1,138 @@
 # the big ugly ball of meat has been moved to lib/iqvoc/mapper.rb
-require 'lib/iqvoc/mapper'
+# require 'lib/iqvoc/mapper'
 
-ActionController::Routing::Routes.draw do |map|
+Iqvoc::Application.routes.draw do
+  available_locales = /de|en/
+
+  # map.language_dependent_semantic_resources :concepts, :labels
+  # map.semantic_resources :concepts, :labels
   
-  available_locales = /#{I18n.available_locales.join('|')}/
-
-  map.language_dependent_semantic_resources :concepts, :labels
-  map.semantic_resources :concepts, :labels
-
-  map.label_versions_branch ':lang/labels/:origin/versions/branch', 
-    :controller => "label_versions", 
-    :action => "branch", 
-    :conditions => { :method => :post }
-  map.label_versions_merge ':lang/labels/:origin/versions/merge', 
-    :controller => "label_versions", 
-    :action => "merge", 
-    :conditions => { :method => :post }
-  map.label_versions_lock ':lang/labels/:origin/versions/lock', 
-    :controller => "label_versions", 
-    :action => "lock", 
-    :conditions => { :method => :post }
-  map.label_versions_unlock ':lang/labels/:origin/versions/unlock', 
-    :controller => "label_versions", 
-    :action => "unlock", 
-    :conditions => { :method => :post }
-  map.label_consistency_check ':lang/labels/:origin/versions/consistency_check', 
-    :controller => "label_versions",
-    :action => "consistency_check",
-    :conditions => { :method => :get }
-  map.label_versions_to_review ':lang/labels/:origin/versions/to_review',
-    :controller => "label_versions",
-    :action => "to_review",
-    :conditions => { :method => :post }
-
-  map.concept_versions_branch ':lang/concepts/:origin/versions/branch', 
-    :controller => "concept_versions", 
-    :action => "branch", 
-    :conditions => { :method => :post }
-  map.concept_versions_merge ':lang/concepts/:origin/versions/merge', 
-    :controller => "concept_versions", 
-    :action => "merge", 
-    :conditions => { :method => :post }
-  map.concept_versions_lock ':lang/concepts/:origin/versions/lock', 
-    :controller => "concept_versions", 
-    :action => "lock", 
-    :conditions => { :method => :post }
-  map.concept_versions_unlock ':lang/concepts/:origin/versions/unlock', 
-    :controller => "concept_versions", 
-    :action => "unlock", 
-    :conditions => { :method => :post }
-  map.concept_consistency_check ':lang/concepts/:origin/versions/consistency_check',
-    :controller => "concept_versions",
-    :action => "consistency_check",
-    :conditions => { :method => :get }
-  map.concept_versions_to_review ':lang/concepts/:origin/versions/to_review',
-    :controller => "concept_versions",
-    :action => "to_review",
-    :conditions => { :method => :post }
-
-  map.alphabetical_concepts ':lang/concepts/alphabetical/:letter',
-    :controller   => 'alphabetical_concepts',
-    :action       => 'index',
-    :conditions   => { :method => :get },
-    :requirements => { :lang => available_locales }
+  scope '(:lang)', :lang => available_locales do
+    resources :concepts
+    resources :labels
+  end
   
-  map.hierarchical_concepts ':lang/concepts/hierarchical.:format',
-    :controller   => 'hierarchical_concepts',
-    :action       => 'index',
-    :conditions   => { :method => :get },
-    :requirements => { :lang => available_locales }
+  match ':lang/labels/:origin/versions/branch'    => 'label_versions#branch',    :as => 'label_versions_branch'
+  match ':lang/labels/:origin/versions/merge'     => 'label_versions#merge',     :as => 'label_versions_merge'
+  match ':lang/labels/:origin/versions/lock'      => 'label_versions#lock',      :as => 'label_versions_lock'
+  match ':lang/labels/:origin/versions/unlock'    => 'label_versions#unlock',    :as => 'label_versions_unlock'
+  match ':lang/labels/:origin/versions/to_review' => 'label_versions#to_review', :as => 'label_versions_to_review'
+  match ':lang/labels/:origin/versions/consistency_check' => 'label_versions#consistency_check', :as => 'label_consistency_check'
 
-  map.hierarchical_broader_concepts ':lang/concepts/hierarchical_broader.:format',
-    :controller   => 'hierarchical_broader_concepts',
-    :action       => 'index',
-    :conditions   => { :method => :get },
-    :requirements => { :lang => available_locales }
+  match ':lang/concepts/:origin/versions/branch'    => 'concept_versions#branch',    :as => 'concept_versions_branch'
+  match ':lang/concepts/:origin/versions/merge'     => 'concept_versions#merge',     :as => 'concept_versions_merge'
+  match ':lang/concepts/:origin/versions/lock'      => 'concept_versions#lock',      :as => 'concept_versions_lock'
+  match ':lang/concepts/:origin/versions/unlock'    => 'concept_versions#unlock',    :as => 'concept_versions_unlock'
+  match ':lang/concepts/:origin/versions/consistency_check' => 'concept_versions#consistency_check', :as => 'concept_consistency_check'
+  match ':lang/concepts/:origin/versions/to_review' => 'concept_versions#to_review', :as => 'concept_versions_to_review'
 
-  map.search ':lang/search',
-    :controller   => 'search_results',
-    :action       => 'index',
-    :requirements => { :lang => available_locales }
-
-  map.about ':lang/about', :controller => 'pages', :action => 'about'
-  map.concept_suggestion "suggest/concepts.:format", :controller => "concepts", :action => "index"
-  map.label_suggestion   "suggest/labels.:format", :controller => "labels", :action => "index"
-  map.dashboard ":lang/dashboard", :controller => "dashboard"
-  map.resources :virtuoso_syncs, :path_prefix => ":lang", :only => [:new, :create]
+  match ':lang/concepts/alphabetical/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts', :via => :get
+  match ':lang/concepts/hierarchical(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts', :via => :get
+  match ':lang/concepts/hierarchical_broader(.:format)' => 'hierarchical_broader_concepts#index', 
+    :as  => 'hierarchical_broader_concepts',
+    :via => :get
+    
+  match ':lang/search'    => 'search_results#index', :as => 'search'
+  match ':lang/about'     => 'pages#about',          :as => 'about'
+  match ':lang/dashboard' => 'dashboard#index',      :as => 'dashboard'
   
-  map.resources :sns_services, :collection => {:get_synonyms => :get}
+  match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
+  match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
+  
+  scope ':lang' do
+    resource  :user_session
+    resources :virtuoso_syncs, :only => [:new, :create]
+    
+    resources :versioned_concepts, :except => :index do
+      resources :pref_labelings
+      resources :alt_labelings
+      resources :broaders
+      resources :narrowers
+      resources :related
+    end
+    
+    resources :versioned_labels, :except => :index do
+      resources :homographs
+      resources :qualifiers
+      resources :translations
+      resources :compound_forms do
+        resources :compound_form_contents
+      end
+    end
+    
+    resources :labelings
+    resources :users
+    resources :notes
+    resources :label_relations
+    resources :inflectionals, :only => [:index]
+  end
 
-  map.resource :user_session,       :path_prefix => ':lang'
-  map.resources :versioned_labels, :except => :index, :path_prefix => ":lang" do |versioned_label|
-    versioned_label.resources :homographs
-    versioned_label.resources :qualifiers
-    versioned_label.resources :translations
-    versioned_label.resources :compound_forms do |compound_form|
-      compound_form.resources :compound_form_contents
+  resources :sns_services do
+    collection do
+      get :get_synonyms
     end
   end
-  map.resources :versioned_concepts, :except => :index, :path_prefix => ":lang" do |versioned_concept|
-    versioned_concept.resources :pref_labelings
-    versioned_concept.resources :alt_labelings
-    versioned_concept.resources :broaders
-    versioned_concept.resources :narrowers
-    versioned_concept.resources :related
+  
+  match '/:lang' => 'hierarchical_concepts#index', :lang => available_locales
 
-  end
-  map.resources :labelings,          :path_prefix => ":lang"
-  map.resources :users,              :path_prefix => ":lang"
-  map.resources :notes,              :path_prefix => ":lang"
-  map.resources :label_relations,    :path_prefix => ":lang"
-  map.resources :inflectionals,      :path_prefix => ":lang", :only => [:index]
+  # map.localized_root ':lang', :controller => 'hierarchical_concepts'
+  # map.localized_root ':lang', :controller => 'hierarchical_broader_concepts'
+  root :to => redirect("/de")
+  
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
 
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => 'gemet_themes'
-  map.localized_root ':lang', :controller => 'hierarchical_concepts'
-  map.localized_root ':lang', :controller => 'hierarchical_broader_concepts'
-  map.root :controller => 'language_switch'
+  # Sample of regular route:
+  #   match 'products/:id' => 'catalog#view'
+  # Keep in mind you can assign values other than :controller and :action
+
+  # Sample of named route:
+  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  # This route can be invoked with purchase_url(:id => product.id)
+
+  # Sample resource route (maps HTTP verbs to controller actions automatically):
+  #   resources :products
+
+  # Sample resource route with options:
+  #   resources :products do
+  #     member do
+  #       get 'short'
+  #       post 'toggle'
+  #     end
+  #
+  #     collection do
+  #       get 'sold'
+  #     end
+  #   end
+
+  # Sample resource route with sub-resources:
+  #   resources :products do
+  #     resources :comments, :sales
+  #     resource :seller
+  #   end
+
+  # Sample resource route with more complex sub-resources
+  #   resources :products do
+  #     resources :comments
+  #     resources :sales do
+  #       get 'recent', :on => :collection
+  #     end
+  #   end
+
+  # Sample resource route within a namespace:
+  #   namespace :admin do
+  #     # Directs /admin/products/* to Admin::ProductsController
+  #     # (app/controllers/admin/products_controller.rb)
+  #     resources :products
+  #   end
+
+  # You can have the root of your site routed with "root"
+  # just remember to delete public/index.html.
+  # root :to => "welcome#index"
 
   # See how all your routes lay out with "rake routes"
 
-  # Install the default routes as the lowest priority.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  # This is a legacy wild controller route that's not recommended for RESTful applications.
+  # Note: This route will make all actions in every controller accessible via GET requests.
+  # match ':controller(/:action(/:id(.:format)))'
 end

@@ -6,14 +6,12 @@ class ApplicationController < ActionController::Base
   
   helper :all
   helper_method :current_user_session, :current_user
-  
-  filter_parameter_logging :password, :password_confirmation
 
   rescue_from ActiveRecord::RecordNotFound, Iqvoc::NotFound, :with => :handle_not_found
   rescue_from Iqvoc::MultipleChoices, :with => :handle_multiple_choices
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
-  # protect_from_forgery # :secret => '1435541cd4331702e8f0a97a91feced4'
+  protect_from_forgery
 
   protected
 

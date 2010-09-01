@@ -1,10 +1,8 @@
+.bundle
 db/*.sqlite3
 log/*.log
-tmp/*
-config/database.yml
-config/services.yml
-.DS_Store
-*.tmproj
-nbproject
+tmp/**/*
 .svn
+.DS_Store
+nbproject
 rerun.txt

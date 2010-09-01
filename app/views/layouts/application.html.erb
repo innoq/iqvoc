@@ -2,7 +2,8 @@
 
 <html data-locale="<%= I18n.locale %>">
   <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <%= csrf_meta_tag %>
+    
     <title>UMTHES&reg; - Der UmweltThesaurus</title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
@@ -55,7 +56,6 @@
         <% end %>
         <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
       </div>
-      <!-- iQvoc build <%= "#{REVISION_NUMBER} (#{APP_CODENAME})" %> -->
     </div>
 </div>
 
