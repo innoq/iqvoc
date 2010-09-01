@@ -7,11 +7,6 @@ Iqvoc::Application.routes.draw do
   # map.language_dependent_semantic_resources :concepts, :labels
   # map.semantic_resources :concepts, :labels
   
-  scope '(:lang)', :lang => available_locales do
-    resources :concepts
-    resources :labels
-  end
-  
   match ':lang/labels/:origin/versions/branch'    => 'label_versions#branch',    :as => 'label_versions_branch'
   match ':lang/labels/:origin/versions/merge'     => 'label_versions#merge',     :as => 'label_versions_merge'
   match ':lang/labels/:origin/versions/lock'      => 'label_versions#lock',      :as => 'label_versions_lock'
@@ -38,6 +33,11 @@ Iqvoc::Application.routes.draw do
   
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
   match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
+  
+  scope '(:lang)', :lang => available_locales do
+    resources :concepts
+    resources :labels
+  end
   
   scope ':lang' do
     resource  :user_session
