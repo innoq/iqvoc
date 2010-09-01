@@ -38,14 +38,4 @@ class LabelsController < ApplicationController
       
     end
   end
-  
-  def show_non_informational
-    # Man achte auf 2 Blöcke statt einem.
-    # 'and return' ist nötig damit es eh ... funktioniert.
-    respond_to do |format|
-      format.xml  { redirect_to label_url(@label, :format => :rdf) }
-      format.rdf  { redirect_to label_url(@label, :format => :rdf) }
-      format.html { redirect_to label_url(@label, :format => :html) }
-    end
-  end
 end

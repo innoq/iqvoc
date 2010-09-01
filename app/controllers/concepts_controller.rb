@@ -32,23 +32,5 @@ class ConceptsController < ApplicationController
       
     end
   end
-
-  # Bug im Firefox Tabulator Add-on: der setzt keine Priorität für RDF
-  # Wenn man im Tabulator also auf einen Link klickt schickt er blöderweise
-  # Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-  # Ihm ist also egal ob xml oder html (gleiche Priorität von 0.9)
-  # Rails liefert dann in diesem Fall html aus.
-  # Dieses unser Verhalten wäre korrekt, aber blöd bei einer Präsentation
-  # mit Tabulator
-  # Ich baue also einen Hack ein, der RDF bevorzugt.
-  def show_non_informational
-    # Man achte auf 2 Blöcke statt einem.
-    # 'and return' ist nötig damit es eh ... funktioniert.
-    respond_to do |format|
-      format.xml  { redirect_to concept_url(@concept, :format => :rdf) }
-      format.rdf  { redirect_to concept_url(@concept, :format => :rdf) }
-      format.html { redirect_to concept_url(@concept, :format => :html) }
-    end
-  end
   
 end
