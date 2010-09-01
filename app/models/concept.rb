@@ -244,7 +244,7 @@ class Concept < ActiveRecord::Base
   end
     
   def rdf_uri(opts = {})
-    "#{configatron.rdf_data_uri_prefix}#{origin}#{(opts[:format] ? "?format=#{CGI.escape(opts[:format].to_s)}" : "")}"
+    "#{Rails.application.config.rdf_data_uri_prefix}#{origin}#{(opts[:format] ? "?format=#{CGI.escape(opts[:format].to_s)}" : "")}"
   end
 
   protected

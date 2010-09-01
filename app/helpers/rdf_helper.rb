@@ -3,7 +3,7 @@ module RdfHelper
   def render_ttl_for_concept(concept)
     @concept = concept
     
-    document = IqRdf::Document.new(configatron.rdf_data_uri_prefix)
+    document = IqRdf::Document.new(Rails.application.config.rdf_data_uri_prefix)
     
     document.namespaces :skos     => "http://www.w3.org/2004/02/skos/core#", 
                     :skosxl   => "http://www.w3.org/2008/05/skos-xl#", 
@@ -55,7 +55,7 @@ module RdfHelper
   end
   
   def render_ttl_for_label(label_to_render)
-    document = IqRdf::Document.new(configatron.rdf_data_uri_prefix)
+    document = IqRdf::Document.new(Rails.application.config.rdf_data_uri_prefix)
     
     document.namespaces :skos     => "http://www.w3.org/2004/02/skos/core#", 
                     :skosxl   => "http://www.w3.org/2008/05/skos-xl#", 

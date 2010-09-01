@@ -32,7 +32,7 @@ Iqvoc::Application.configure do
   # more details.
   # Example: "jdbc:virtuoso://localhost:1111/UID=dba/PWD=dba"
   # Use nil to disable virtuoso triple synchronization
-  # configatron.virtuoso_jdbc_driver_url = "jdbc:virtuoso://virtuoso.dyndns.org:1111/UID=iqvoc/PWD=vocpass!/charset=UTF-8"
+  # Rails.application.config.virtuoso_jdbc_driver_url = "jdbc:virtuoso://virtuoso.dyndns.org:1111/UID=iqvoc/PWD=vocpass!/charset=UTF-8"
   config.virtuoso_jdbc_driver_url = nil
 
   # Set up the virtuoso synchronization (which is a triggered pull from the

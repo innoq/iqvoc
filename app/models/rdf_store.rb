@@ -6,7 +6,7 @@ class RdfStore
   @@conn = nil
 
   def initialize(graph_uri, ttl_url, do_delete, ttl_content = nil)
-    if configatron.virtuoso_jdbc_driver_url
+    if Rails.application.config.virtuoso_jdbc_driver_url
       @graph_uri = graph_uri
       @ttl_url = ttl_url
       @ttl_content = ttl_content
@@ -17,11 +17,11 @@ class RdfStore
       unless @@conn
         # import "virtuoso.jdbc3.Driver"
         java.lang.Class.forName("virtuoso.jdbc3.Driver", true, JRuby.runtime.jruby_class_loader)
-        @@conn = java.sql.DriverManager.getConnection(configatron.virtuoso_jdbc_driver_url)
+        @@conn = java.sql.DriverManager.getConnection(Rails.application.config.virtuoso_jdbc_driver_url)
         Rails.logger.debug("** [RdfStore] JDBC connection is up.")
       end
 
-      if configatron.virtuoso_sync_threaded
+      if Rails.application.config.virtuoso_sync_threaded
         Rails.logger.debug("** [RdfStore] Starting sync thread.")
         java.lang.Thread.new(self).start
       else
@@ -31,25 +31,25 @@ class RdfStore
   end
 
   def self.insert(graph_uri, ttl_url)
-    return false unless configatron.virtuoso_jdbc_driver_url
+    return false unless Rails.application.config.virtuoso_jdbc_driver_url
     RdfStore.new(graph_uri, ttl_url, false)
     true
   end
 
   def self.update(graph_uri, ttl_url)
-    return false unless configatron.virtuoso_jdbc_driver_url
+    return false unless Rails.application.config.virtuoso_jdbc_driver_url
     RdfStore.new(graph_uri, ttl_url, true)
     true
   end
 
   def self.delete(graph_uri)
-    return false unless configatron.virtuoso_jdbc_driver_url
+    return false unless Rails.application.config.virtuoso_jdbc_driver_url
     RdfStore.new(graph_uri, nil, true)
     true
   end
   
   def self.mass_import(graph_uri, turtle_content)
-    return false unless configatron.virtuoso_jdbc_driver_url
+    return false unless Rails.application.config.virtuoso_jdbc_driver_url
     RdfStore.new(graph_uri, nil, true, turtle_content)
     true
   end
