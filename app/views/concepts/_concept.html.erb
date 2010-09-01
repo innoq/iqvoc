@@ -2,7 +2,7 @@
 <div class="relation">
   <h3><%= t("txt.views.concepts.alt_label") %> (<%= lang %>)</h3>
   <div class="relation-body">
-    <%= @concept.alt_labels_for_language(lang.to_s).map {|label|
+    <%=raw @concept.alt_labels_for_language(lang.to_s).map {|label|
       link_to(label.value, label_path(:lang => @active_language, :id => label))
     }.join(', ') %>
   </div>
@@ -39,7 +39,7 @@
 <div class="relation">
   <h3><%= t('txt.views.concepts.related') %></h3>
   <% if @concept.related.count > 0 %>
-  <%= @concept.related.map {|c|
+  <%=raw @concept.related.map {|c|
         link_to(c.pref_labels.first, concept_path(:lang => @active_language, :id => c))
         }.join(", ")  %>
   <% else %>
@@ -50,7 +50,7 @@
 <div class="relation">
   <h3><%= t("txt.views.concepts.classifiers") %></h3>
   <div class="relation-body">
-    <%= @concept.classifiers.map {|classifier|
+    <%=raw @concept.classifiers.map {|classifier|
   	  classifier.notation
     }.join(', ') %>
   </div>
