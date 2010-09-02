@@ -16,11 +16,11 @@ class TurtleImporter
           @objects[triple.first] = case triple.third
           when 'skos:Concept'
             concept = Concept.new(:origin => triple.first)
-            concept.save(false)
+            concept.save(:validate => false)
             { 'id' => concept.id, 'class' => 'Concept' }
           when 'skosxl:Label'
             label = Label.new(:origin => triple.first)
-            label.save(false)
+            label.save(:validate => false)
             { 'id' => label.id, 'class' => 'Label' }
           end
         end

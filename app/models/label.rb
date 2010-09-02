@@ -137,7 +137,7 @@ class Label < ActiveRecord::Base
   
   def from_rdf!(str)
     from_rdf(str)
-    save(false)
+    save(:validate => false)
   end
   
   def generate_inflectionals!
@@ -165,7 +165,7 @@ class Label < ActiveRecord::Base
     end
     
     self.base_form = new_base_form
-    save(false)
+    save(:validate => false)
     
     inflectionals
   end
