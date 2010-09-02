@@ -151,7 +151,7 @@ class Label < ActiveRecord::Base
       new_base_form = converted_literal_form[0..(base_form.length-1)]
     end
     
-    puts "converted_literal_form => #{converted_literal_form} (#{converted_literal_form.size}) |
+    Rails.logger.debug "converted_literal_form => #{converted_literal_form} (#{converted_literal_form.size}) |
           base_form => #{base_form} (#{base_form.size}) |
           new_base_form => #{new_base_form} | 
           value => #{value} (#{value.size}) |
