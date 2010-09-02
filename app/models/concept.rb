@@ -223,7 +223,7 @@ class Concept < ActiveRecord::Base
   protected
 
   def two_versions_exist
-    errors.add_to_base(I18n.t("txt.models.concept.version_error")) if Concept.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept.by_origin(self.origin).size >= 2
   end
 
   def has_references?
@@ -236,7 +236,7 @@ class Concept < ActiveRecord::Base
 
   def pref_label_existence
     if @full_validation == true
-      errors.add_to_base(I18n.t("txt.models.concept.pref_label_error")) if pref_labels.size == 0
+      errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.size == 0
     end
   end
   
@@ -248,7 +248,7 @@ class Concept < ActiveRecord::Base
       ]
       associations_for_validation.each do |method|
         if self.send(method).unpublished.any?
-          errors.add_to_base(I18n.t("txt.models.concept.association_#{method}_unpublished"))
+          errors.add(:base, I18n.t("txt.models.concept.association_#{method}_unpublished"))
         end
       end
     end

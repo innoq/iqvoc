@@ -239,16 +239,16 @@ class Label < ActiveRecord::Base
 
   #Validations
   def two_versions_exist
-    errors.add_to_base(I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
   end
 
   def homograph_and_qualifier_existence
     if @full_validation == true
       if homographs.size >= 1
-       errors.add_to_base(I18n.t("txt.models.label.qualifier_error")) unless qualifiers.size >= 1
+       errors.add(:base, I18n.t("txt.models.label.qualifier_error")) unless qualifiers.size >= 1
       end
       if qualifiers.length >= 1
-       errors.add_to_base(I18n.t("txt.models.label.homograph_error")) unless homographs.size >= 1
+       errors.add(:base, I18n.t("txt.models.label.homograph_error")) unless homographs.size >= 1
       end
     end
   end
@@ -257,7 +257,7 @@ class Label < ActiveRecord::Base
     if @full_validation == true
     unless compound_forms.blank?
       compound_forms.each do |cf|
-        errors.add_to_base(I18n.t("txt.models.label.compound_form_contents_error")) if cf.compound_form_contents.size < 2 
+        errors.add(:base, I18n.t("txt.models.label.compound_form_contents_error")) if cf.compound_form_contents.size < 2 
       end
     end
    end
@@ -266,7 +266,7 @@ class Label < ActiveRecord::Base
   def pref_label_language
     if @full_validation == true
       if language != "de" && pref_labelings.any?
-        errors.add_to_base(I18n.t("txt.models.label.pref_label_language"))
+        errors.add(:base, I18n.t("txt.models.label.pref_label_language"))
       end
     end
   end
@@ -274,7 +274,7 @@ class Label < ActiveRecord::Base
   def translations_must_be_in_foreign_language
     if @full_validation == true
       if translations.count(:joins => :range, :conditions => {:labels => {:language => language}}) > 0
-        errors.add_to_base(I18n.t("txt.models.label.translations_must_be_in_foreign_language"))
+        errors.add(:base, I18n.t("txt.models.label.translations_must_be_in_foreign_language"))
       end
     end
   end
