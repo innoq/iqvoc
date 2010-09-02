@@ -1,16 +1,14 @@
 class Concept < ActiveRecord::Base
-  #Load some default Scopes
+
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
   include IqvocGlobal::CommonAssociations
   include IqvocGlobal::ConceptAssociationExtensions
 
-  #Validations
-  validates_presence_of :origin
-  validate_on_create :two_versions_exist?
-  validate_on_update :pref_label_existence, :associations_must_be_published
+  validate :origin, :presence => true
+  validate :two_versions_exist,  :on => :create
+  validate :pref_label_existence, :associations_must_be_published, :on => :update
 
-  #Callbacks
   before_destroy :has_references?
 
   has_many :semantic_relations, :foreign_key => 'owner_id'
@@ -224,7 +222,7 @@ class Concept < ActiveRecord::Base
 
   protected
 
-  def two_versions_exist?
+  def two_versions_exist
     errors.add_to_base(I18n.t("txt.models.concept.version_error")) if Concept.by_origin(self.origin).size >= 2
   end
 
