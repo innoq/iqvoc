@@ -7,7 +7,7 @@ class LabelVersionsController < ApplicationController
     
     if (current_label.present? ? current_label.collect_first_level_associated_objects.each(&:destroy) && (current_label.delete) : true)
       new_version.prepare_for_merging
-      if new_version.valid?({:full_validation => true})
+      if new_version.valid_with_full_validation?
         new_version.save
         begin
           if RdfStore.update(new_version.rdf_uri, label_url(new_version, :format => :ttl))
@@ -98,7 +98,7 @@ class LabelVersionsController < ApplicationController
   def consistency_check
     @label = Label.get_new_or_initial_version(params[:origin])
     raise ActiveRecord::RecordNotFound unless @label
-    if @label.valid?({:full_validation => true})
+    if @label.valid_with_full_validation?
       if @label.has_concept_or_label_relations?
         flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
         redirect_to versioned_label_path(@active_language, @label)

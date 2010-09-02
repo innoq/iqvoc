@@ -8,7 +8,7 @@ class ConceptVersionsController < ApplicationController
     ActiveRecord::Base.transaction do
       if (current_concept.present? ? current_concept.collect_first_level_associated_objects.each(&:destroy) && (current_concept.delete) : true)
         new_version.prepare_for_merging
-        if new_version.valid?({:full_validation => true})
+        if new_version.valid_with_full_validation?
           new_version.save
           begin
             if RdfStore.update(new_version.rdf_uri, concept_url(new_version, :format => :ttl))
@@ -104,7 +104,7 @@ class ConceptVersionsController < ApplicationController
   def consistency_check
     @concept = Concept.get_new_or_initial_version(params[:origin])
     raise ActiveRecord::RecordNotFound unless @concept
-    if @concept.valid?(:full_validation => true)
+    if @concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to versioned_concept_path(@active_language, @concept)
     else

@@ -198,18 +198,14 @@ class Concept < ActiveRecord::Base
     pref_label.to_s
   end
 
-  def save!(options = {})
-    if options[:full_validation]
-      @full_validation = true
-    end
-    super()
+  def save_with_full_validation!
+    @full_validation = true
+    save!
   end
 
-  def valid?(options = {})
-    if options[:full_validation]
-      @full_validation = true
-    end
-    super()
+  def valid_with_full_validation?
+    @full_validation = true
+    valid?
   end
 
   def generate_origin

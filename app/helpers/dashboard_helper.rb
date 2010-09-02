@@ -10,7 +10,7 @@ module DashboardHelper
   end
   
   def consistency_status(item)
-    if item.valid?(:full_validation => true)
+    if item.valid_with_full_validation?
       css = "valid"
       msg = "&#x2713;"
     else
