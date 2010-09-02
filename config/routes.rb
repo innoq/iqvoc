@@ -73,7 +73,7 @@ Iqvoc::Application.routes.draw do
     end
   end
   
-  match '/:lang' => 'hierarchical_concepts#index', :lang => available_locales
+  match '/:lang' => 'hierarchical_concepts#index', :lang => available_locales, :as => 'localized_root'
 
   # map.localized_root ':lang', :controller => 'hierarchical_concepts'
   # map.localized_root ':lang', :controller => 'hierarchical_broader_concepts'
