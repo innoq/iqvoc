@@ -1,11 +1,5 @@
-# the big ugly ball of meat has been moved to lib/iqvoc/mapper.rb
-# require 'lib/iqvoc/mapper'
-
 Iqvoc::Application.routes.draw do
   available_locales = /de|en/
-
-  # map.language_dependent_semantic_resources :concepts, :labels
-  # map.semantic_resources :concepts, :labels
   
   match ':lang/labels/:origin/versions/branch'    => 'label_versions#branch',    :as => 'label_versions_branch'
   match ':lang/labels/:origin/versions/merge'     => 'label_versions#merge',     :as => 'label_versions_merge'
