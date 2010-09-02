@@ -183,7 +183,7 @@ class ConceptTest < ActiveSupport::TestCase
 
   def test_should_not_save_concept_if_pref_label_is_empty
     assert_raise ActiveRecord::RecordInvalid do
-      @current_concept.save!(:full_validation => true)
+      @current_concept.save_with_full_validation!
     end
   end
 

@@ -116,7 +116,7 @@ class LabelTest < ActiveSupport::TestCase
     assert current_label.branched?
     current_label.prepare_for_merging
     assert_raise ActiveRecord::RecordInvalid do
-      current_label.save!({:full_validation => true})
+      current_label.save_with_full_validation!
     end
   end
 
@@ -128,7 +128,7 @@ class LabelTest < ActiveSupport::TestCase
     assert current_label.branched?
     current_label.prepare_for_merging
     assert_raise ActiveRecord::RecordInvalid do
-      current_label.save!({:full_validation => true})
+      current_label.save_with_full_validation!
     end
   end
 
@@ -140,7 +140,7 @@ class LabelTest < ActiveSupport::TestCase
     assert current_label.branched?
     current_label.prepare_for_merging
     assert_raise ActiveRecord::RecordInvalid do
-      current_label.save!({:full_validation => true})
+      current_label.save_with_full_validation!
     end
   end
 
@@ -154,14 +154,14 @@ class LabelTest < ActiveSupport::TestCase
     assert current_label.branched?
     current_label.prepare_for_merging
     assert_raise ActiveRecord::RecordInvalid do
-      current_label.save!({:full_validation => true})
+      current_label.save_with_full_validation!
     end
   end
 
   def test_label_valid?
     current_label = Factory.create(:label)
     current_label.compound_forms << UMT::CompoundForm.new
-    assert_equal false, current_label.valid?({:full_validation => true})
+    assert_equal false, current_label.valid_with_full_validation?
   end
 
   def test_has_concept_or_label_relations_should_return_false
