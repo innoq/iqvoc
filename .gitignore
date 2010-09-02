@@ -6,3 +6,4 @@ tmp/**/*
 .DS_Store
 nbproject
 rerun.txt
+config/database.yml
