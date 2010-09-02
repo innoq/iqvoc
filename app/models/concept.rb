@@ -7,7 +7,7 @@ class Concept < ActiveRecord::Base
 
   #Validations
   validates_presence_of :origin
-  validate_on_create :two_versions_exists?
+  validate_on_create :two_versions_exist?
   validate_on_update :pref_label_existence, :associations_must_be_published
 
   #Callbacks
@@ -224,7 +224,7 @@ class Concept < ActiveRecord::Base
 
   protected
 
-  def two_versions_exists?
+  def two_versions_exist?
     errors.add_to_base(I18n.t("txt.models.concept.version_error")) if Concept.by_origin(self.origin).size >= 2
   end
 

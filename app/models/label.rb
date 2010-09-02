@@ -7,7 +7,7 @@ class Label < ActiveRecord::Base
   attr_reader :inflectionals_attributes
 
   #Validations
-  validate_on_create :two_versions_exists?
+  validate_on_create :two_versions_exist?
   validates_presence_of :value, :message => I18n.t("txt.models.label.value_error")
   #Check these validations if full_validation is true
   validate :homograph_and_qualifier_existence, 
@@ -240,7 +240,7 @@ class Label < ActiveRecord::Base
   protected
 
   #Validations
-  def two_versions_exists?
+  def two_versions_exist?
     errors.add_to_base(I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
   end
 
