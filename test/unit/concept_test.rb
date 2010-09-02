@@ -192,6 +192,6 @@ class ConceptTest < ActiveSupport::TestCase
     highest_concept = Concept.find(:first, :select => :origin, :order=> "origin DESC")
     concept.generate_origin
     concept.save!
-    assert_equal "_000000" + (highest_concept.origin.to_i+1).to_s, concept.origin
+    assert_equal sprintf("_%08d", highest_concept.origin.to_i + 1), concept.origin
   end
 end

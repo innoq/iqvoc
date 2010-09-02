@@ -209,30 +209,9 @@ class Concept < ActiveRecord::Base
   end
 
   def generate_origin
-    highest_origin = Concept.find(:first, :select => :origin, :order=> "origin DESC")
-    origin_str = highest_origin.blank? ? 1.to_s : (highest_origin.origin.to_i + 1).to_s
-    case origin_str.length
-    when 1
-      write_attribute(:origin, "_0000000" + origin_str)
-    when 2
-      write_attribute(:origin, "_000000" + origin_str)
-    when 3
-      write_attribute(:origin, "_00000" + origin_str)
-    when 4
-      write_attribute(:origin, "_0000" + origin_str)
-    when 5
-      write_attribute(:origin, "_000" + origin_str)
-    when 6
-      write_attribute(:origin, "_00" + origin_str)
-    when 7
-      write_attribute(:origin, "_0" + origin_str)
-    end
-    true
-  rescue Exception => e
-    logger.error("###generate_origin###")
-    logger.error(e)
-    logger.error("###generate_origin###")
-    false
+    concept = Concept.first(:select => :origin, :order => "origin DESC")
+    value   = concept.blank? ? 1 : concept.origin.to_i + 1
+    write_attribute(:origin, sprintf("_%08d", value))
   end
 
   def associated_objects_in_editing_mode
