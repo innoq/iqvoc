@@ -117,8 +117,9 @@ class Concept < ActiveRecord::Base
     :include => :pref_labels,
     :conditions => {:labelings => {:type => 'PrefLabeling'}},
     :order => 'LOWER(labels.value)'
+    
+  after_initialize :init_label_caches
 
-  #Class-Methods
   def self.associations_for_versioning
     [:labelings, :semantic_relations, :referenced_semantic_relations, :matches, :referenced_matches, :classifications, {:notes => :note_annotations}]
   end
@@ -131,19 +132,18 @@ class Concept < ActiveRecord::Base
     Concept.new_version(origin).first.blank? ? Concept.initial_version(origin).first : Concept.new_version(origin).first
   end
 
-  #Instance-Methods
   def initialize(params = {})
     super(params)
     @full_validation = false
   end
 
-  def after_initialize
-    @pl4l = {} # pref label caching hash to speed things up
-    @al4l = {}
-  end
-
   def pref_label
     pref_labels.first || nil # I18n.t("txt.models.concept.no_pref_label")
+  end
+
+  def init_label_caches
+    @pl4l = {} # pref label caching hash to speed things up
+    @al4l = {}
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
