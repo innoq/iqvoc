@@ -10,7 +10,7 @@ class LabelVersionsController < ApplicationController
       if new_version.valid_with_full_validation?
         new_version.save
         begin
-          if RdfStore.update(new_version.rdf_uri, label_url(new_version, :format => :ttl))
+          if RdfStore.update(new_version.rdf_uri, label_url(:id => new_version, :format => :ttl))
             new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
           end
         rescue Exception => e
