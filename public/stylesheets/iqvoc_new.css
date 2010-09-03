@@ -69,6 +69,10 @@ a:hover {
 	-webkit-border-radius: 5px;
 }
 
+.error_list {
+	list-style-type: none;
+}
+
 a#format_link_ttl {
 	display: block;
 	background: url('http://www.w3.org/RDF/icons/rdf_flyer.24') no-repeat;

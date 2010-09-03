@@ -28,4 +28,15 @@ module ApplicationHelper
         link_to(value, value)
     end
   end
+  
+  def error_messages_for(object)
+    if object.errors.any?
+      content_tag :ul, :class => "flash_error error_list" do
+        object.errors.full_messages.each do |msg|
+          concat content_tag :li, msg
+        end
+      end
+    end
+  end
+  
 end

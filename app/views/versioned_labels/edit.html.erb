@@ -1,5 +1,5 @@
 <p class="ajax_error flash_error" style="display: none;"></p>
-<%= error_messages_for :label, :object_name => t("txt.models.label.object_name") %>
+<%= error_messages_for @label %>
 <h2><%= t("txt.views.labels.edit.header") %> <strong><%=h @label.value %></strong></h2>
 
 <% if @association_objects_in_editing_mode.present? %>

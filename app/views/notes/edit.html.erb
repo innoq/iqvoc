@@ -1,6 +1,12 @@
 <h1><%= t("txt.views.notes.edit.header") %></h1>
 
-<%= error_messages_for :note %>
+<% if @note.errors.any? %>
+<ul>
+<% @post.errors.full_messages.each do |msg| %>
+<li><%= msg %></li>
+<% end %>
+</ul>
+<% end %>
 
 <% form_for @note, :url => note_path(:id => @note, :lang => @active_language), :html => {:class => "form"} do |f| %>
   <fieldset>
