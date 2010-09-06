@@ -20,11 +20,12 @@ group :development do
 end
 
 group :test, :cucumber do
-  gem 'cucumber'
-  gem 'cucumber-rails'
-  gem 'database_cleaner'
   gem 'capybara'
+  gem 'database_cleaner'
+  gem 'cucumber-rails'
+  gem 'cucumber'
+  gem 'rspec-rails'
+  gem 'spork'
+  gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
-  gem 'faker'
-  gem 'culerity'
 end
