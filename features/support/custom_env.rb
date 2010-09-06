@@ -1,1 +1,2 @@
-Capybara.javascript_driver = :culerity
+require 'capybara/envjs'
+Capybara.javascript_driver = :envjs

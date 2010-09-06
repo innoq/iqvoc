@@ -39,13 +39,13 @@ module NavigationHelpers
       label_path(:lang => :de, :id => Label.find_by_origin($1))
       
     when /the (.+)-formatted label page for "(.+)"/
-      label_path(Label.find_by_origin($2), :format => $1)
+      label_path(:id => Label.find_by_origin($2), :format => $1)
       
     when /the (.+)-formatted concept page for "(.+)"/
-      concept_path(Concept.find_by_origin($2), :format => $1)
+      concept_path(:id => Concept.find_by_origin($2), :format => $1)
       
     when /the (.+)-formatted label page for "(.+)"/
-      label_path(Label.find_by_origin($2), :format => $1)
+      label_path(:id => Label.find_by_origin($2), :format => $1)
       
     when /the search page/
       search_path(:lang => 'de')

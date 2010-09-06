@@ -1,3 +1,5 @@
+Feature: Browse concepts tree
+
 @javascript
 
 Scenario: Browse hierarchical concepts tree

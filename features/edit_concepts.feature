@@ -1,3 +1,5 @@
+Feature: Editing concepts
+
 Scenario: Create a new concept version
   Given I am a logged in user with the role administrator
   And I have concepts _0000001 labeled Forest
