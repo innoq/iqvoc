@@ -84,7 +84,7 @@
   :legend => t("txt.views.concepts.alt_label") + " (en)" } %>
 </div>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
     <ul>
       <li><%= back_link versioned_concept_path(:lang => @active_language, :id => @concept), t('txt.views.navigation.back_to_preview') %></li>
     </ul>

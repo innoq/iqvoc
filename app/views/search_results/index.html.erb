@@ -92,5 +92,5 @@
   <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless params[:type] == "inflectional" %>
 <% end %>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
 <% end %>

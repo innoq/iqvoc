@@ -6,7 +6,7 @@
   <%= render :partial => "form", :locals => { :f => f } %>
 <% end %>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
   <ul>
     <li><%= back_link users_path(:lang => @active_language) %></li>
     <li><%= link_to t('txt.views.users.new_link'), new_user_path(:lang => @active_language)%></li>

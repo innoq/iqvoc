@@ -24,7 +24,7 @@
   <%= f.submit t("txt.views.notes.save") %>
 <% end %>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
   <ul>
     <li>
       <%= back_link edit_versioned_label_path(:id => @note.owner, :lang => @active_language), t('txt.views.navigation.back_to_edit_versioned_object') %>

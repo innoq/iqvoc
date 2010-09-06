@@ -4,7 +4,7 @@
   <%= render :partial => "form", :locals => {:f => f} %>
 <% end %>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
   <ul>
     <li>
       <%= back_link edit_versioned_label_path(:id => @labeling.target, :lang => @active_language), t('txt.views.navigation.back_to_edit_versioned_object') %>

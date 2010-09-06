@@ -1,4 +1,4 @@
-<% content_for :head do -%>
+<%= content_for :head do -%>
 <link href="<%= @concept.rdf_uri(:format => :"text/turtle") %>" type="text/turtle" rel="alternate" title=""/>
 <link href="<%= @concept.rdf_uri() %>" type="application/rdf+xml" rel="alternate" title=""/>
 <link href="<%= @concept.rdf_uri(:format => :"text/n3") %>" type="text/n3" rel="alternate" title=""/>

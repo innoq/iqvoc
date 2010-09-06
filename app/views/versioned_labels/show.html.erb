@@ -23,7 +23,7 @@
 
 <%= render :partial => "labels/label" %>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
   <ul>
     <li><%= back_link label_path(:lang => @active_language, :id => @label), t('txt.views.navigation.back_to_show') %></li>
   </ul>

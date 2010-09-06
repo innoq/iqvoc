@@ -22,7 +22,7 @@
 <% end %>
 </table>
 
-<% content_for :sub_navigation do %>
+<%= content_for :sub_navigation do %>
   <ul>
     <li><%= link_to t('txt.views.users.new_link'), new_user_path(:lang => @active_language)%></li>
   </ul>
