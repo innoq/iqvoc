@@ -21,6 +21,7 @@ end
 
 group :test, :cucumber do
   gem 'capybara'
+  gem 'capybara-envjs'
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber'
