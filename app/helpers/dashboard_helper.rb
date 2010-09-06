@@ -18,9 +18,7 @@ module DashboardHelper
       msg = "&#x2717;"
     end
     
-    content_tag :span, :class => css do
-      msg
-    end
+    content_tag :span, raw(msg), :class => css
   end
   
 end
