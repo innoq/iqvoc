@@ -35,11 +35,11 @@ Iqvoc::Application.routes.draw do
     resources :label_relations
     resources :inflectionals, :only => [:index]
 
-    match 'labels/:origin/versions/branch'    => 'label_versions#branch',    :as => 'label_versions_branch'
-    match 'labels/:origin/versions/merge'     => 'label_versions#merge',     :as => 'label_versions_merge'
-    match 'labels/:origin/versions/lock'      => 'label_versions#lock',      :as => 'label_versions_lock'
-    match 'labels/:origin/versions/unlock'    => 'label_versions#unlock',    :as => 'label_versions_unlock'
-    match 'labels/:origin/versions/to_review' => 'label_versions#to_review', :as => 'label_versions_to_review'
+    match 'labels/:origin/versions/branch'      => 'label_versions#branch',    :as => 'label_versions_branch'
+    match 'labels/:origin/versions/merge'       => 'label_versions#merge',     :as => 'label_versions_merge'
+    match 'labels/:origin/versions/lock'        => 'label_versions#lock',      :as => 'label_versions_lock'
+    match 'labels/:origin/versions/unlock'      => 'label_versions#unlock',    :as => 'label_versions_unlock'
+    match 'labels/:origin/versions/to_review'   => 'label_versions#to_review', :as => 'label_versions_to_review'
     match 'labels/:origin/versions/consistency_check' => 'label_versions#consistency_check', :as => 'label_consistency_check'
 
     match 'concepts/:origin/versions/branch'    => 'concept_versions#branch',    :as => 'concept_versions_branch'
@@ -49,9 +49,9 @@ Iqvoc::Application.routes.draw do
     match 'concepts/:origin/versions/consistency_check' => 'concept_versions#consistency_check', :as => 'concept_consistency_check'
     match 'concepts/:origin/versions/to_review' => 'concept_versions#to_review', :as => 'concept_versions_to_review'
 
-    match 'concepts/alphabetical/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
-    match 'concepts/hierarchical(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts'
-    match 'concepts/hierarchical_broader(.:format)' => 'hierarchical_broader_concepts#index', :as  => 'hierarchical_broader_concepts'
+    match 'alphabetical_concepts/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
+    match 'hierarchical_concepts(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts'
+    match 'hierarchical_broader_concepts(.:format)' => 'hierarchical_broader_concepts#index', :as  => 'hierarchical_broader_concepts'
 
     match 'search'    => 'search_results#index', :as => 'search'
     match 'about'     => 'pages#about',          :as => 'about'
