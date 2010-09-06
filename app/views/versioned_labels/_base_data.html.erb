@@ -2,7 +2,7 @@
 
 <p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
 
-<% form_for @label, :url => ((controller.action_name == "new" || controller.action_name == "create") ? versioned_labels_path(:lang => @active_language) : versioned_label_path(:id => @label, :lang => @active_language)), :html => {:class => "form"} do |f| %>
+<%= form_for @label, :url => ((controller.action_name == "new" || controller.action_name == "create") ? versioned_labels_path(:lang => @active_language) : versioned_label_path(:id => @label, :lang => @active_language)), :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>

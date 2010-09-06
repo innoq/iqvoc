@@ -1,6 +1,6 @@
 <h2><%= t("txt.views.user_sessions.header") %></h2>
  
-<% form_for @user_session, :url => user_session_path do |f| %>
+<%= form_for @user_session, :url => user_session_path do |f| %>
   <% if @user_session.errors.any? %>
   <p class="flash_error"><%= t("txt.views.user_sessions.error") %></p>
   <% end %>

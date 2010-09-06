@@ -1,6 +1,6 @@
 <h2><%= t("txt.views.labelings.new.header") %></h2>
 
-<% form_for @labeling, :url => labeling_path(:lang => @active_language), :html => {:class => "form"} do |f| %>
+<%= form_for @labeling, :url => labeling_path(:lang => @active_language), :html => {:class => "form"} do |f| %>
   <%= render :partial => "form" %>
 <% end %>
 
