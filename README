@@ -1,8 +1,8 @@
-== Welcome to iQvoc
+# iQvoc
 
 iQvoc is a vocubulary management system built on the semantic web.
 
-== Getting Started
+## Getting Started
 
-1. Run <tt>rake app:bootstrap</tt> to setup basic users
-2. Start the app with <tt>script/server</tt>
+1. Run rake app:bootstrap to setup basic users
+2. Start the app with rails s
