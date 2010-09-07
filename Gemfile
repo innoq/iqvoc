@@ -21,11 +21,11 @@ end
 
 group :test, :cucumber do
   gem 'capybara'
-  gem 'capybara-envjs'
+  # gem 'capybara-envjs'
+  gem 'culerity'
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber'
-  gem 'rspec-rails'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
