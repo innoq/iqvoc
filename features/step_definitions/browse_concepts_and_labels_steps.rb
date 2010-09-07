@@ -21,14 +21,14 @@ end
 
 Then /^I should see a Turtle representation for the concept "(.+)"$/ do |origin|
   concept = Concept.find_by_origin(origin)
-  visit concept_path(concept, :format => :ttl)
+  visit concept_path(:id => concept, :format => :ttl)
   page.has_content? ":#{concept.origin} rdf:type skos:Concept;"
   page.has_content? "skosxl:prefLabel :Forest;"
 end
 
 Then /^I should see a Turtle representation for the label "(.+)"$/ do |origin|
   label = Label.find_by_origin(origin)
-  visit label_path(label, :format => :ttl)
+  visit label_path(:id => label, :format => :ttl)
   page.has_content? ":#{label.origin} rdf:type skosxl:Label;"
   page.has_content? "skosxl:literalForm #{label.literal_form}."
 end
