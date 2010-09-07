@@ -6,6 +6,7 @@ gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf'
+gem 'warbler'
 
 group :development do
   gem 'mongrel'

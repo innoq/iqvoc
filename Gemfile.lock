@@ -77,6 +77,8 @@ GEM
     i18n (0.4.1)
     iq_rdf (0.0.6)
     jdbc-mysql (5.0.4)
+    jruby-jars (1.5.2)
+    jruby-rack (1.0.3)
     json_pure (1.4.6)
     launchy (0.3.7)
       configuration (>= 0.0.5)
@@ -129,6 +131,11 @@ GEM
       polyglot (>= 0.3.1)
     trollop (1.16.2)
     tzinfo (0.3.23)
+    warbler (1.2.1)
+      jruby-jars (>= 1.4.0)
+      jruby-rack (>= 1.0.0)
+      rake (>= 0.8.7)
+      rubyzip (>= 0.9.4)
     weakling (0.0.4-java)
     will_paginate (3.0.pre2)
 
@@ -152,4 +159,5 @@ DEPENDENCIES
   mysql2
   rails (= 3.0.0)
   spork
+  warbler
   will_paginate (= 3.0.pre2)
