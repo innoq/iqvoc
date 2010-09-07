@@ -1,6 +1,6 @@
 <h2><%= t('txt.views.search_results.header') %></h2>
 
-<% form_tag(search_path(:lang => @active_language), :method => :get, :class => :form, :"data-type" => (params[:type] || ""), :"data-query" => (params[:query] || "")) do %>
+<%= form_tag(search_path(:lang => @active_language), :method => :get, :class => :form, :"data-type" => (params[:type] || ""), :"data-query" => (params[:query] || "")) do %>
   <fieldset id="typecheck">
     <ol>
       <li>

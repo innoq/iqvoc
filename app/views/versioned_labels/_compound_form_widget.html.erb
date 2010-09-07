@@ -19,7 +19,7 @@
  >
 </div>
 <div class="tokenizer_delete_wrapper" style="float:left;">
-  <% form_tag versioned_label_compound_form_path(:versioned_label_id => @label.id, :id => !defined?(compound_form) ? "ID" : compound_form.id), :method => "DELETE" do %>
+  <%= form_tag versioned_label_compound_form_path(:versioned_label_id => @label.id, :id => !defined?(compound_form) ? "ID" : compound_form.id), :method => "DELETE" do %>
       <%= image_submit_tag("tokenizer_delete.png", :class => "compound_form_delete", :title => t("txt.views.widget.delete_compound_form")) %>
    <% end %>
 </div>

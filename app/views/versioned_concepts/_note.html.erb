@@ -3,7 +3,7 @@
   <ol>
     <% @concept.send(klass.pluralize).each do |note| %>
     <li class="inline_note<%= " new" if note.new_record? %>">
-      <% f.fields_for :"#{klass.pluralize}", note do |note_form| %>
+      <%= f.fields_for :"#{klass.pluralize}", note do |note_form| %>
         <%= note_form.label :value, t("txt.common.#{klass}", :count => 1) %>
         <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
         
