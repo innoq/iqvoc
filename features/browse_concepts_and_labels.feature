@@ -18,8 +18,7 @@ Feature: Browse concepts and labels
     And I am on the concept page for "_0000001"
     Then I should see "Bevorzugtes Label: Forest"
     When I follow the link to the format representation for ttl
-    Then I should be on the ttl-formatted concept page for "_0000001"
-    And I should see a Turtle representation for the concept "_0000001"
+    Then I should see a Turtle representation for the concept "_0000001"
   
   Scenario: Showing a label page
     Given I am a logged in user with the role reader
@@ -29,6 +28,5 @@ Feature: Browse concepts and labels
     Then I should be on the label page for "Forest"
     And I should see "Label: Forest"
     When I follow the link to the format representation for ttl
-    Then I should be on the ttl-formatted label page for "Forest"
-    And I should see a Turtle representation for the concept "_0000001"
+    Then I should see a Turtle representation for the concept "_0000001"
     
