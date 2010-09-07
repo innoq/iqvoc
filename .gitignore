@@ -7,3 +7,4 @@ tmp/**/*
 nbproject
 rerun.txt
 config/database.yml
+config/warble.rb
