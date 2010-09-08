@@ -176,7 +176,7 @@ class TurtleImporter
   end
   
   def is_literal_form?(str)
-    RdfHelpers.is_literal_form?(str)
+    IqvocGlobal::RdfHelper.is_literal_form?(str)
   end
   
   def processing_time(start_time)

@@ -6,5 +6,6 @@ module IqvocGlobal
        belongs_to :locking_user, :foreign_key => 'locked_by', :class_name => 'User'
       end
     end
+    
   end
 end
