@@ -24,7 +24,7 @@ namespace :import do
           
           triple[0] = triple.first.gsub("ß", "sz")
           triple[2] = triple.third.gsub(":", "") if triple.third.match(/^:(".+"\.)$/)
-          triple[2] = triple.third.gsub("ß", "sz") unless RdfHelpers.is_literal_form?(triple.third)
+          triple[2] = triple.third.gsub("ß", "sz") unless IqvocGlobal::RdfHelper.is_literal_form?(triple.third)
           
           sanitized_line = ""
           sanitized_line += triple.first

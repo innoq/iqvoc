@@ -16,7 +16,7 @@
 # </rdf:RDF>
 
 xml.instruct!
-xml.rdf :RDF, RdfHelpers.to_xml_attribute_array do
+xml.rdf :RDF, IqvocGlobal::RdfHelper.to_xml_attribute_array do
   xml.skos :Concept, {'rdf:about' => concept_non_informational_resource_url(@concept)} do
     xml.owl :sameAs, {'rdf:resource' => "http://www.eionet.europa.eu/gemet/concept/#{@concept.origin}"}
     @concept.pref_labels.each do |label|

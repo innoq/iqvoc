@@ -1,3 +1,0 @@
-module IqvocGlobal
-  
-end
