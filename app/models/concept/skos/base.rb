@@ -160,20 +160,6 @@ class Concept::SKOS::Base < ActiveRecord::Base
     # @al4l[lang] = alt_labels.for_language(lang.to_s) || alt_labels.new(:language => lang.to_s)
   end
 
-  # returns the first (!) definition for the given language. Remember concepts
-  # may have an arbitrary number or devinitions in either language, so be sure
-  # to use definitions_for_language() to get them all.
-  # if no definition for the requested language is found, a new definition is returned.
-  # Be sure to save it, if you want to keep it!
-  def definition_for_language(lang=:en)
-    self.definitions.find_by_language("#{lang}")
-  end
-
-  def new_definition_for_language(lang=:en)
-    # raise "you shouldn't call #{self.class}.new_definition_for_language() anymore. Goodbye."
-    self.definitions.build(:language => "#{lang}")
-  end
-
   # this find_by_origin method returns only instances of the current class.
   # The dynamic find_by... method would have considered ALL (sub)classes (STI)
   def self.find_by_origin(origin)
