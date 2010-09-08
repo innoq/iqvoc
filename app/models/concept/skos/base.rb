@@ -1,4 +1,4 @@
-class Concept::Base < ActiveRecord::Base
+class Concept::SKOS::Base < ActiveRecord::Base
 
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
