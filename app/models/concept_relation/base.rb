@@ -1,4 +1,4 @@
-class SemanticRelation < ActiveRecord::Base
+class ConceptRelation::Base < ActiveRecord::Base
   belongs_to :owner, :class_name => 'Concept'
   belongs_to :target, :class_name => 'Concept'
 
