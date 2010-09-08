@@ -1,4 +1,4 @@
-class NoteAnnotation < ActiveRecord::Base
+class Note::Annotated::Base < ActiveRecord::Base
   belongs_to :note
 
   def value=(val)
