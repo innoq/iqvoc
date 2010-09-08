@@ -1,4 +1,4 @@
-class Label < ActiveRecord::Base
+class Label::SKOSXL::Base < ActiveRecord::Base
 
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
