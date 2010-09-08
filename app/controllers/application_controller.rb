@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   helper :all
   helper_method :current_user_session, :current_user
 
-  rescue_from ActiveRecord::RecordNotFound, Iqvoc::NotFound, :with => :handle_not_found
-  rescue_from Iqvoc::MultipleChoices, :with => :handle_multiple_choices
+  rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
   protect_from_forgery
