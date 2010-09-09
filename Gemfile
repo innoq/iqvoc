@@ -6,7 +6,6 @@ gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf'
-gem 'warbler'
 
 group :development do
   gem 'mongrel'
@@ -30,4 +29,6 @@ end
 
 platforms :jruby do
   gem 'activerecord-jdbcmysql-adapter'
+  gem 'warbler'
+  gem 'jruby-jars', '1.4.0'
 end
