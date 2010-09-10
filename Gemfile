@@ -30,5 +30,4 @@ end
 platforms :jruby do
   gem 'activerecord-jdbcmysql-adapter'
   gem 'warbler'
-  gem 'jruby-jars', '1.4.0'
 end
