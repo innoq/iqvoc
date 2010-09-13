@@ -1,3 +1,3 @@
-class UMT::ChangeNote < ::Note
+class UMT::ChangeNote < Note::Base
   
 end
