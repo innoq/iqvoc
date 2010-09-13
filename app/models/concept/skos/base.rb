@@ -4,9 +4,11 @@ class Concept::SKOS::Base < ActiveRecord::Base
   include IqvocGlobal::CommonMethods
   include IqvocGlobal::CommonAssociations
   include IqvocGlobal::ConceptAssociationExtensions
+  
+  set_table_name 'concepts'
 
   validate :origin, :presence => true
-  validate :two_versions_exist,  :on => :create
+  validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :associations_must_be_published, :on => :update
 
   before_destroy :has_references?
