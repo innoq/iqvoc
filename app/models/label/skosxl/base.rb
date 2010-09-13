@@ -4,6 +4,8 @@ class Label::SKOSXL::Base < ActiveRecord::Base
   include IqvocGlobal::CommonMethods
   include IqvocGlobal::CommonAssociations
   
+  set_table_name 'labels'
+  
   attr_reader :inflectionals_attributes
 
   validate :two_versions_exist, :on => :create
