@@ -1,3 +1,0 @@
-class NarrowerMatch < Match
-  
-end
