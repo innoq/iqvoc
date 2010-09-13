@@ -1,4 +1,6 @@
-class Inflectional < ActiveRecord::Base
+class Inflectional::Base < ActiveRecord::Base
+  
+  set_table_name 'inflectionals'
   
   belongs_to :label
   
