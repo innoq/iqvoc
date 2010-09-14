@@ -1,3 +1,3 @@
-class Note::SKOS::ChangeNote < Note::Base
+class Note::SKOS::ChangeNote < Note::SKOS::Base
 
 end

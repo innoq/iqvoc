@@ -1,4 +1,4 @@
-class Note::SKOS::Definition < Note::Base
+class Note::SKOS::Definition < Note::SKOS::Base
   
   scope :for_concepts, :conditions => { :owner_type => 'Concept' }
   scope :for_labels,   :conditions => { :owner_type => 'Label' }

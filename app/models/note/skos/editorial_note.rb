@@ -1,3 +1,3 @@
-class Note::SKOS::EditorialNote < Note::Base
+class Note::SKOS::EditorialNote < Note::SKOS::Base
   
 end

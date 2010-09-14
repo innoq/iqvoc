@@ -1,2 +1,2 @@
-class Note::SKOS::Example < Note::Base
+class Note::SKOS::Example < Note::SKOS::Base
 end
