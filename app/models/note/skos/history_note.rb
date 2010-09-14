@@ -1,3 +1,3 @@
-class HistoryNote < Note::Base
+class Note::SKOS::HistoryNote < Note::Base
 
 end
