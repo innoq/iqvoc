@@ -13,18 +13,11 @@ module Iqvoc
     self.pref_labeling_languages  = [ :de, :en ]
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
+
+    # Do not use the following method in models. This will propably cause a
+    # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
-    end
-    
-    def self.relation_classes
-      relation_class_names.map{ |name| name.constantize }
-    end
-
-    def self.further_labeling_classes
-      further_labeling_class_names.keys.each_with_object({}) do |key, hash|
-        hash[key.constantize] = further_labeling_class_names[key]
-      end
     end
 
   end
@@ -40,6 +33,8 @@ module Iqvoc
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example' ]
 
+    # Do not use the following method in models. This will propably cause a
+    # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
     end
