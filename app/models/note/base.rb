@@ -1,7 +1,10 @@
 class Note::Base < ActiveRecord::Base
+  
+  set_table_name 'notes'
+  
   belongs_to :owner, :polymorphic => true
              
-  has_many :note_annotations, :class_name => 'Note::Annotated::Base', :dependent => :destroy
+  has_many :note_annotations, :class_name => Note::Annotated::Base.name, :dependent => :destroy
   
   accepts_nested_attributes_for :note_annotations
 
