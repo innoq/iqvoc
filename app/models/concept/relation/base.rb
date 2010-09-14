@@ -6,9 +6,9 @@ class Concept::Relation::Base < ActiveRecord::Base
   belongs_to :target, :class_name => Iqvoc::Concept.base_class_name
 
   scope :by_owner, lambda { |owner_id| where(:owner_id => owner_id) }
-  scope :published, joins(:target) & Iqvoc::Concept.base_class.published
-  scope :initial_version, joins(:target) & Iqvoc::Concept.base_class.initial_version
-  scope :target_in_edit_mode, joins(:target) & Iqvoc::Concept.base_class.in_edit_mode
+  scope :published, joins(:target) & Concept::Base.published
+  scope :initial_version, joins(:target) & Concept::Base.initial_version
+  scope :target_in_edit_mode, joins(:target) & Concept::Base.in_edit_mode
   
   # Returnes a name for a relation holding Relation-Objects of a specific class.
   # 
