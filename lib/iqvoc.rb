@@ -1,10 +1,13 @@
 module Iqvoc
   
   module Concept
-    mattr_accessor :base_class_name, :note_class_names, :relation_class_names, :labeling_class_names
+    mattr_accessor :base_class_name, 
+      :note_class_names,
+      :relation_class_names,
+      :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names
     
     self.base_class_name          = 'Concept::SKOS::Base'
-    self.relation_class_names     = [ 'Concept::Relation::SKOS::Broader::Poly', 'Concept::Relation::Narrower', 'Concept::Relation::Related' ]
+    self.relation_class_names     = [ 'Concept::Relation::SKOS::Broader::Poly', 'Concept::Relation::SKOS::Narrower', 'Concept::Relation::SKOS::Related' ]
     self.note_class_names         = [ 'Note::SKOS::ChangeNote', 'Note::SKOS::Definition' ]
     self.pref_labeling_class_name = 'Labeling::SKOSXL::PrefLabel'
     self.pref_labeling_languages  = [ :de, :en ]
@@ -14,8 +17,14 @@ module Iqvoc
       base_class_name.constantize
     end
     
+    def self.relation_classes
+      relation_class_names.map{ |name| name.constantize }
+    end
+
     def self.further_labeling_classes
-      # TODO
+      further_labeling_class_names.keys.each_with_object({}) do |key, hash|
+        hash[key.constantize] = further_labeling_class_names[key]
+      end
     end
 
   end
