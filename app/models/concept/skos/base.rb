@@ -13,9 +13,10 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   before_destroy :has_references?
 
-  has_many :semantic_relations, :foreign_key => 'owner_id'
+  has_many :concept_relations, :foreign_key => 'owner_id'
 
-  [:narrower, :broader, :related].each do |name|
+  # FIXME
+  Iqvoc::Concept.relation_class_names.each do |name|
     has_many :"#{name}_relations",
       :foreign_key => :owner_id,
       :class_name => "#{name}".classify, :extend => [PushWithReflectionExtension, DestroyReflectionExtension]
@@ -32,7 +33,8 @@ class Concept::SKOS::Base < ActiveRecord::Base
   end
 
   has_many :labelings, :foreign_key => 'owner_id'
-
+  
+  # FIXME
   [:pref_labels, :alt_labels, :hidden_labels].each do |name|
     klass = "#{name.to_s.singularize}ing" # => pref_labeling
     has_many :"#{klass.pluralize}", :foreign_key => :owner_id
@@ -49,28 +51,29 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   has_many :classifications, :foreign_key => 'owner_id'
   has_many :classifiers, :through => :classifications, :source => :target
-
+  
+  # FIXME
   has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }
-  has_many :umt_usage_notes, :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote', :conditions => { :owner_type => self.name }
+  has_many :umt_usage_notes,  :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote',  :conditions => { :owner_type => self.name }
   has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }
   has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }
 
-  [:notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions].each do |name|
+  Iqvoc::Concept.note_class_names.each do |name|
     has_many name, :as => :owner
   end
 
-  has_many :close_matches
-  has_many :broader_matches
-  has_many :narrower_matches
-  has_many :related_matches
-  has_many :exact_matches
+  has_many :close_matches,    :class_name => Match::SKOS::Close.name
+  has_many :broader_matches,  :class_name => Match::SKOS::Broader.name
+  has_many :narrower_matches, :class_name => Match::SKOS::Narrower.name
+  has_many :related_matches,  :class_name => Match::SKOS::Related.name
+  has_many :exact_matches,    :class_name => Match::SKOS::Exact.name
 
   #Versioning relations
   has_many :matches
   has_many :referenced_matches, :class_name => 'Match', :foreign_key => 'value'
   has_many :referenced_semantic_relations, :class_name => 'SemanticRelation', :foreign_key => 'target_id'
 
-  #Nested Attributes stuff
+  # FIXME
   [:definitions, :editorial_notes, :umt_source_notes, :umt_change_notes, :umt_usage_notes, :close_matches].each do |relation|
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
@@ -82,7 +85,6 @@ class Concept::SKOS::Base < ActiveRecord::Base
       :order => 'LOWER(labels.value)',
       :group => 'concepts.id' }
   }
-
 
   scope :by_language, lambda { |lang_code| {
       :conditions => { :language => lang_code.to_s } }
@@ -121,11 +123,27 @@ class Concept::SKOS::Base < ActiveRecord::Base
   after_initialize :init_label_caches
 
   def self.associations_for_versioning
-    [:labelings, :semantic_relations, :referenced_semantic_relations, :matches, :referenced_matches, :classifications, {:notes => :note_annotations}]
+    [ 
+      :labelings, 
+      :semantic_relations, 
+      :referenced_semantic_relations, 
+      :matches, 
+      :referenced_matches, 
+      :classifications, 
+      {:notes => :note_annotations}
+    ]
   end
 
   def self.first_level_associations
-    [:labelings, :semantic_relations, :referenced_semantic_relations, :referenced_matches, :matches, :classifications, :notes]
+    [
+      :labelings, 
+      :semantic_relations, 
+      :referenced_semantic_relations, 
+      :referenced_matches, 
+      :matches, 
+      :classifications, 
+      :notes
+    ]
   end
 
   def self.get_new_or_initial_version(origin)
@@ -201,7 +219,10 @@ class Concept::SKOS::Base < ActiveRecord::Base
   end
 
   def associated_objects_in_editing_mode
-    {:semantic_relations => SemanticRelation.target_in_edit_mode(id), :labelings => Labeling.target_in_edit_mode(id)}
+    { 
+      :semantic_relations => Concept::Relation::Base.target_in_edit_mode(id), 
+      :labelings => Labeling::SKOSXL::Base.target_in_edit_mode(id)
+    }
   end
     
   def rdf_uri(opts = {})
@@ -209,9 +230,9 @@ class Concept::SKOS::Base < ActiveRecord::Base
   end
 
   protected
-
+  
   def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.concept.version_error")) if self.by_origin(self.origin).size >= 2
   end
 
   def has_references?
@@ -224,7 +245,7 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   def pref_label_existence
     if @full_validation == true
-      errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.size == 0
+      errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.count == 0
     end
   end
   
