@@ -10,7 +10,7 @@ class RelatedController < SemanticRelationsController
   end
 
   def destroy
-    concept = Concept.new_version(params[:versioned_concept_id]).first
+    concept = Iqvoc::Concept.base_class.new_version(params[:versioned_concept_id]).first
     related_relation = Related.find(params[:id])
     raise ActiveRecord::RecordNotFound unless related_relation
     if concept.related_relations.destroy_reflection(related_relation)

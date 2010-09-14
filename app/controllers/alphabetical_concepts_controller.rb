@@ -1,3 +1,4 @@
+# FIXME: => AlphabeticalConceptsController -> Concepts::AlphabeticalController
 class AlphabeticalConceptsController < ConceptsController
   skip_before_filter :require_user
   
@@ -8,7 +9,7 @@ class AlphabeticalConceptsController < ConceptsController
       '['
     ].flatten
     
-    @concepts = Concept.alphabetical(params[:letter]).published.paginate(:page => params[:page], :per_page => 40)
+    @concepts = Iqvoc::Concept.base_class.alphabetical(params[:letter]).published.paginate(:page => params[:page], :per_page => 40)
     
     respond_to do |format|
       format.html { store_location }

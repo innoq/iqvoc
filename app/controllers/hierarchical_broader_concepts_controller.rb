@@ -2,9 +2,9 @@ class HierarchicalBroaderConceptsController < HierarchicalConceptsController
   def index
     case params[:root]
       when 'source'
-        @concepts = Concept.published.broader_tops
+        @concepts = Iqvoc::Concept.base_class.published.broader_tops
       when /\d+/
-        @concepts = Concept.find(params[:root]).broader.published.with_pref_labels.all
+        @concepts = Iqvoc::Concept.base_class.find(params[:root]).broader.published.with_pref_labels.all
     end
 
      respond_to do |format|

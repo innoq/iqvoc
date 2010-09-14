@@ -1,12 +1,13 @@
+# FIXME: => HierarchicalConceptsController -> Concepts::HierarchicalController
 class HierarchicalConceptsController < ConceptsController
   skip_before_filter :require_user
   
   def index
     case params[:root]
     when 'source'
-      @concepts = Concept.published.tops
+      @concepts = Iqvoc::Concept.base_class.published.tops
     when /\d+/
-      @concepts = Concept.find(params[:root]).narrower.published.with_pref_labels.all
+      @concepts = Iqvoc::Concept.base_class.find(params[:root]).narrower.published.with_pref_labels.all
     end
     
     respond_to do |format|

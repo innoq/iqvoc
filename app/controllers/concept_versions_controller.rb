@@ -1,8 +1,8 @@
 class ConceptVersionsController < ApplicationController
   #Merges the current and the new concept vesion
   def merge
-    current_concept = Concept.current_version(params[:origin]).published.first
-    new_version = Concept.get_new_or_initial_version(params[:origin])
+    current_concept = Iqvoc::Concept.base_class.current_version(params[:origin]).published.first
+    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
     raise ActiveRecord::RecordNotFound unless new_version
     #    begin
     ActiveRecord::Base.transaction do
@@ -40,10 +40,10 @@ class ConceptVersionsController < ApplicationController
 
   #Creates a new Version of a Concept
   def branch
-    current_concept = Concept.current_version(params[:origin]).first
-    new_version = Concept.new_version(params[:origin]).first
+    current_concept = Iqvoc::Concept.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::Concept.base_class.new_version(params[:origin]).first
     if new_version.blank?
-      new_version = current_concept.clone :include => Concept.associations_for_versioning
+      new_version = current_concept.clone :include => Iqvoc::Concept.base_class.associations_for_versioning
       new_version.prepare_for_branching(current_user.id)
       if new_version.save
         flash[:notice] = t("txt.controllers.versioning.merged")
@@ -57,8 +57,8 @@ class ConceptVersionsController < ApplicationController
 
   #Locks the Concept
   def lock
-    current_version = Concept.current_version(params[:origin]).first
-    new_version = Concept.get_new_or_initial_version(params[:origin])
+    current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
     if !new_version.blank?
       if !new_version.locked?
         new_version.lock_by_user!(current_user.id)
@@ -80,8 +80,8 @@ class ConceptVersionsController < ApplicationController
 
   #Unlocks the Concept
   def unlock
-    current_version = Concept.current_version(params[:origin]).first
-    new_version = Concept.get_new_or_initial_version(params[:origin])
+    current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
     if !new_version.blank?
       if new_version.locked?
         authorize! :unlock, new_version
@@ -102,7 +102,7 @@ class ConceptVersionsController < ApplicationController
   end
 
   def consistency_check
-    @concept = Concept.get_new_or_initial_version(params[:origin])
+    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
     raise ActiveRecord::RecordNotFound unless @concept
     if @concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
@@ -114,7 +114,7 @@ class ConceptVersionsController < ApplicationController
   end
 
   def to_review
-    @concept = Concept.get_new_or_initial_version(params[:origin])
+    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
     raise ActiveRecord::RecordNotFound unless @concept
     @concept.to_review!
     if @concept.save

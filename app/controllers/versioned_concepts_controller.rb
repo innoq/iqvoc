@@ -3,7 +3,7 @@ class VersionedConceptsController < ConceptsController
   before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }
 
   def show
-    @concept = Concept.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
     respond_to do |format|
       format.html do
         raise ActiveRecord::RecordNotFound unless @concept
@@ -12,7 +12,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def new
-    @concept = Concept.new
+    @concept = Iqvoc::Concept.base_class.new
 
     [:definitions, :editorial_notes, :umt_source_notes, :umt_usage_notes, :umt_change_notes, :close_matches].each do |relation|
       @concept.send(relation).build if @concept.send(relation).empty?
@@ -20,7 +20,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def create
-    @concept = Concept.new(params[:concept])
+    @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.generate_origin
       if @concept.save
         flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
@@ -36,7 +36,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def edit
-    @concept = Concept.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
     raise ActiveRecord::RecordNotFound unless @concept
 
     authorize! :continue_editing, @concept
@@ -51,7 +51,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def update
-    @concept = Concept.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
 
     raise ActiveRecord::RecordNotFound unless @concept
     if @concept.update_attributes(params[:concept])
@@ -64,7 +64,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def destroy
-    @new_concept = Concept.get_new_or_initial_version(params[:id])
+    @new_concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
     raise ActiveRecord::RecordNotFound unless @new_concept
     if (@new_concept.collect_first_level_associated_objects.each(&:destroy)) && (@new_concept.delete)
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")

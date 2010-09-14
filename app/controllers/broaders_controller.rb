@@ -10,7 +10,7 @@ class BroadersController < SemanticRelationsController
   end
 
   def destroy
-    concept = Concept.new_version(params[:versioned_concept_id]).first
+    concept = Iqvoc::Concept.base_class.new_version(params[:versioned_concept_id]).first
     broader_relation = Broader.find(params[:id])
     raise ActiveRecord::RecordNotFound unless broader_relation
     if concept.broader_relations.destroy_reflection(broader_relation)

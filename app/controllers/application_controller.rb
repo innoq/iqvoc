@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   private
   
     def check_authorization_for_versioned_label
-      authorize! :write, Label
+      authorize! :write, Iqvoc::Label.base_class
     end
   
     def current_user_session

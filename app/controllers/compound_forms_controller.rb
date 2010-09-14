@@ -1,6 +1,6 @@
 class CompoundFormsController < ApplicationController
   def create
-    label = Label.find(params[:versioned_label_id])
+    label = Iqvoc::Label.base_class.find(params[:versioned_label_id])
     compound_form = label.compound_forms << UMT::CompoundForm.new
     render :json => { :id => compound_form.last.id}.to_json
     rescue

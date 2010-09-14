@@ -10,7 +10,7 @@ class NarrowersController < SemanticRelationsController
   end
 
   def destroy
-    concept = Concept.new_version(params[:versioned_concept_id]).first
+    concept = Iqvoc::Concept.base_class.new_version(params[:versioned_concept_id]).first
     narrower_relation = Narrower.find(params[:id])
 
     raise ActiveRecord::RecordNotFound unless narrower_relation

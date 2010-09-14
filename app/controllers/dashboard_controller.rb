@@ -3,8 +3,8 @@ class DashboardController < ApplicationController
   before_filter :check_authorization
   
   def index
-    @concepts = Concept.for_dashboard.all(:include => [:locking_user, :pref_labels])
-    @labels   = Label.for_dashboard.all(:include => [:locking_user])
+    @concepts = Iqvoc::Concept.base_class.for_dashboard.all(:include => [:locking_user, :pref_labels])
+    @labels   = Iqvoc::Label.base_class.for_dashboard.all(:include => [:locking_user])
     
     @items    = @concepts + @labels
     
