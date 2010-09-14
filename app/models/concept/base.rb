@@ -48,12 +48,13 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # *** Labels/Labelings
+
+  # All labels
   has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::Base.name
 
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
     :class_name => Iqvoc::Concept.pref_labeling_class_name
-
   has_many :pref_labels,
     :through => :pref_labelings,
     :source => :target
@@ -64,16 +65,8 @@ class Concept::Base < ActiveRecord::Base
       :class_name => labeling_class_name
   end
 
-  # *** Classifications
-  has_many :classifications, :foreign_key => 'owner_id'
-  has_many :classifiers, :through => :classifications, :source => :target
-  
-  # FIXME
-  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }
-  has_many :umt_usage_notes,  :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote',  :conditions => { :owner_type => self.name }
-  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }
-  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }
-  @nested_relations += [:umt_source_notes, :umt_change_notes, :umt_usage_notes]
+  # *** Notes
+  has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
 
   Iqvoc::Concept.note_class_names.each do |class_name|
     relation_name = class_name.to_relation_name
@@ -81,6 +74,10 @@ class Concept::Base < ActiveRecord::Base
     @nested_relations << relation_name
   end
 
+  # *** Classifications
+  has_many :classifications, :foreign_key => 'owner_id'
+  has_many :classifiers, :through => :classifications, :source => :target
+  
   # *** Matches (pointing to an other thesaurus)
   # FIXME: Must be configureable
   has_many :close_matches,    :class_name => Match::SKOS::Close.name
@@ -93,6 +90,8 @@ class Concept::Base < ActiveRecord::Base
   has_many :matches
   has_many :referenced_matches, :class_name => 'Match', :foreign_key => 'value'
   has_many :referenced_semantic_relations, :class_name => 'SemanticRelation', :foreign_key => 'target_id'
+
+  # **************
 
   # FIXME
   @nested_relations.each do |relation|
