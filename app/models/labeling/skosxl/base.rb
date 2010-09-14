@@ -1,6 +1,6 @@
 class Labeling::SKOSXL::Base < ActiveRecord::Base
-  belongs_to :owner,  :class_name => 'Concept::SKOS::Base'
-  belongs_to :target, :class_name => 'Label::SKOSXL::Base'
+  belongs_to :owner,  :class_name => Iqvoc::Concept.base_class_name
+  belongs_to :target, :class_name => Iqvoc::Label.base_class_name
   
   scope :by_concept, lambda { |concept| {
     :conditions => { :owner_id => concept.id } }
