@@ -1,30 +1,20 @@
-class Labeling::SKOSXL::Base < ActiveRecord::Base
-  belongs_to :owner,  :class_name => Iqvoc::Concept.base_class_name
-  belongs_to :target, :class_name => Iqvoc::Label.base_class_name
-  
-  scope :by_concept, lambda { |concept| {
-    :conditions => { :owner_id => concept.id } }
-  }
-  
-  scope :by_label, lambda { |label| {
-    :conditions => { :target_id => label.id } }
-  }
+class Labeling::SKOSXL::Base < Labeling::Base
 
   scope :by_lang, lambda { |lang| {
-    :joins => :target,
-    :conditions => ["labels.language LIKE :language", { :language => lang }] }
+      :joins => :target,
+      :conditions => ["labels.language LIKE :language", { :language => lang }] }
   }
 
   scope :target_in_edit_mode, lambda {|owner_id| { 
-    :joins => :target,
-    :include => :target,
-    :conditions => ["(labelings.owner_id = ?) AND (labels.locked_by IS NOT NULL)", owner_id] }
+      :joins => :target,
+      :include => :target,
+      :conditions => ["(labelings.owner_id = ?) AND (labels.locked_by IS NOT NULL)", owner_id] }
   }
   
   scope :published, lambda { |owner_id| {
-    :joins => :target,
-    :conditions => [
-      "(labelings.owner_id = :owner_id 
+      :joins => :target,
+      :conditions => [
+        "(labelings.owner_id = :owner_id
       AND labels.published_at IS NOT NULL) 
       OR (labelings.owner_id = :owner_id AND labels.rev = 1 
       AND labels.published_at IS NULL)", { :owner_id => owner_id }] }
