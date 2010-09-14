@@ -17,20 +17,20 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Concept2Concept relations
   # e.g. 'concept/relation/skos/narrowers
-  Iqvoc::Concept.relation_classes.each do |relation_class|
-    has_many relation_class.relation_name,
+  Iqvoc::Concept.relation_class_names.each do |relation_class_name|
+    has_many relation_class_name.underscore.pluralize,
       :foreign_key => :owner_id,
-      :class_name  => relation_class.name,
+      :class_name  => relation_class_name,
       :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ]
   end
 
   # *** Labels/Labelings
   has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::SKOSXL::Base.name
   
-  Iqvoc::Concept.further_labeling_classes.keys.each do |labeling_class|
-     has_many labeling_class.relation_name,
+  Iqvoc::Concept.further_labeling_class_names.keys.each do |labeling_class_name|
+     has_many labeling_class_name.underscore.pluralize,
        :foreign_key => 'owner_id',
-       :class_name => labeling_class.name
+       :class_name => labeling_class_name
   end
 
   # *** Classifications
@@ -105,7 +105,10 @@ class Concept::Base < ActiveRecord::Base
     :include => :pref_labels,
     :conditions => {:labelings => {:type => 'PrefLabeling'}},
     :order => 'LOWER(labels.value)'
-    
+
+  scope :in_edit_mode,
+    where(arel_table[:locked_by].eq(nil).complement)
+
   after_initialize :init_label_caches
 
   def self.associations_for_versioning
