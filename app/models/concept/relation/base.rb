@@ -9,12 +9,5 @@ class Concept::Relation::Base < ActiveRecord::Base
   scope :published, joins(:target) & Concept::Base.published
   scope :initial_version, joins(:target) & Concept::Base.initial_version
   scope :target_in_edit_mode, joins(:target) & Concept::Base.in_edit_mode
-  
-  # Returnes a name for a relation holding Relation-Objects of a specific class.
-  # 
-  # Concept::Relation::SKOS::Narrower.relation_name # => "concept_relation_skos_narrowers"
-  def self.relation_name
-    name.underscore.pluralize
-  end
 
 end
