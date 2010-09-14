@@ -16,6 +16,10 @@ module Iqvoc
   module Label
     mattr_accessor :base_class_name, :note_class_names, :relation_class_names
     
+    def base_class
+      base_class_name.constantize
+    end
+    
     base_class_name       = 'Label::SKOSXL::Base'
     relation_class_names  = []
     note_class_names      = [ 'Note::SKOS::Definition', 
