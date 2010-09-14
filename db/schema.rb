@@ -109,12 +109,13 @@ ActiveRecord::Schema.define(:version => 20100913134904) do
   end
 
   add_index "labelings", ["owner_id", "target_id", "type"], :name => "index_labelings_on_owner_id_and_target_id_and_type"
+  add_index "labelings", ["owner_id", "target_id"], :name => "index_labelings_on_owner_id_and_target_id"
   add_index "labelings", ["type"], :name => "index_labelings_on_type"
 
   create_table "labels", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "language",          :limit => 2,    :default => "de", :null => false
+    t.string   "language",          :limit => 2,    :default => "de"
     t.string   "value",             :limit => 1024
     t.string   "base_form"
     t.string   "inflectional_code"
@@ -131,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20100913134904) do
     t.date     "rdf_updated_at"
   end
 
+  add_index "labels", ["language"], :name => "index_labels_on_owner_id_and_language"
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
   add_index "labels", ["value"], :name => "index_labels_on_value"
 
@@ -144,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20100913134904) do
   end
 
   add_index "lexical_variants", ["owner_id", "type"], :name => "index_lexical_variants_on_owner_id_and_type"
+  add_index "lexical_variants", ["owner_id"], :name => "index_lexical_variants_on_owner_id"
   add_index "lexical_variants", ["type"], :name => "index_lexical_variants_on_type"
 
   create_table "matches", :force => true do |t|
@@ -155,6 +158,7 @@ ActiveRecord::Schema.define(:version => 20100913134904) do
   end
 
   add_index "matches", ["concept_id", "type"], :name => "index_matches_on_concept_id_and_type"
+  add_index "matches", ["concept_id"], :name => "index_matches_on_concept_id"
   add_index "matches", ["type"], :name => "index_matches_on_type"
 
   create_table "note_annotations", :force => true do |t|
@@ -174,9 +178,10 @@ ActiveRecord::Schema.define(:version => 20100913134904) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
-    t.string   "owner_type", :limit => 50,                     :null => false
+    t.string   "owner_type", :limit => 50
   end
 
+  add_index "notes", ["owner_id", "language"], :name => "index_notes_on_owner_id_and_language"
   add_index "notes", ["owner_id", "owner_type", "type"], :name => "index_notes_on_owner_id_and_owner_type_and_type"
   add_index "notes", ["type"], :name => "index_notes_on_type"
 
