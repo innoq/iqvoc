@@ -92,14 +92,14 @@ class Concept::Base < ActiveRecord::Base
   }
 
   scope :tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM #{Concept::Relation::Base.table_name} sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
+    :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM  concept_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
 
 
   scope :broader_tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM #{Concept::Relation::Base.table_name} sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
+    :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id'
