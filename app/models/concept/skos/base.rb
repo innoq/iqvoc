@@ -17,19 +17,13 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   # FIXME
   Iqvoc::Concept.relation_class_names.each do |name|
-    has_many :"#{name}_relations",
+    has_many "#{name.underscore}_relations".to_sym,
       :foreign_key => :owner_id,
-      :class_name => "#{name}".classify, :extend => [PushWithReflectionExtension, DestroyReflectionExtension]
-    has_many name,
-      :class_name => 'Concept',
-      :source => :target,
-      :through => "#{name}_relations".to_sym do
-      define_method :'<<' do |target|
-        klass = Kernel.const_get(name.to_s.classify)
-        klass.find_or_create_by_target_id_and_owner_id target.read_attribute(:id), proxy_owner.id
-        proxy_owner.send(name).reload
-      end
-    end
+      :class_name  => name, :extend => [PushWithReflectionExtension, DestroyReflectionExtension]
+    has_many name.underscore.to_sym,
+      :class_name  => Iqvoc::Concept.base_class_name,
+      :source      => :target,
+      :through     => "#{name.underscore}_relations".to_sym
   end
 
   has_many :labelings, :foreign_key => 'owner_id'
@@ -38,15 +32,7 @@ class Concept::SKOS::Base < ActiveRecord::Base
   [:pref_labels, :alt_labels, :hidden_labels].each do |name|
     klass = "#{name.to_s.singularize}ing" # => pref_labeling
     has_many :"#{klass.pluralize}", :foreign_key => :owner_id
-    has_many name, :source => :target, :through => :"#{klass.pluralize}" do
-
-      define_method :'<<' do |target|
-        klass = Kernel.const_get("#{name.to_s.singularize.classify}ing")
-        klass.find_or_create_by_owner_id_and_target_id(proxy_owner.id, target.read_attribute(:id))
-        proxy_owner.send(name).reload
-      end
-
-    end
+    has_many name, :source => :target, :through => :"#{klass.pluralize}"
   end
 
   has_many :classifications, :foreign_key => 'owner_id'
