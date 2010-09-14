@@ -1,3 +1,3 @@
-class Concept::Relation::SKOS::Broader::Poly < ConceptRelation::SKOS::Broader::Base
+class Concept::Relation::SKOS::Broader::Poly < Concept::Relation::SKOS::Broader::Base
   
 end
