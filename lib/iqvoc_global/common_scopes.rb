@@ -26,10 +26,10 @@ module IqvocGlobal
             { :origin => origin }] }
         }
         
-        scope :published, :conditions => "#{self.name.tableize}.published_at IS NOT NULL"
-        scope :unpublished, :conditions => "#{self.name.tableize}.published_at IS NULL"
+        scope :published, :conditions => "#{self.table_name}.published_at IS NOT NULL"
+        scope :unpublished, :conditions => "#{self.table_name}.published_at IS NULL"
         
-        scope :unsynced, :conditions => "#{self.name.tableize}.rdf_updated_at IS NULL"
+        scope :unsynced, :conditions => "#{self.table_name}.rdf_updated_at IS NULL"
           
       end
     end
