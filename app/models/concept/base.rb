@@ -19,12 +19,32 @@ class Concept::Base < ActiveRecord::Base
   has_many :concept_relations, :foreign_key => 'owner_id'
 
   # *** Concept2Concept relations
-  # e.g. 'concept/relation/skos/narrowers
-  Iqvoc::Concept.relation_class_names.each do |relation_class_name|
+
+  # Broader
+  has_many :broader_relations, 
+    :foreign_key => :owner_id,
+    :class_name => Iqvoc::Concept.broader_relation_class_name,
+    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+  has_many :broader,
+    :through => :broader_relations,
+    :source => :target
+
+  # Narrower
+  has_many :narrower_relations,
+    :foreign_key => :owner_id,
+    :class_name => 'Concept::Relations::Narrower', # FIXME: Must this be configureable????
+    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+  has_many :narrower,
+    :through => :broader_relations,
+    :source => :target
+
+  # Further relations
+  # e.g. 'concept_relation_skos_relateds'
+  Iqvoc::Concept.further_relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
       :foreign_key => :owner_id,
       :class_name  => relation_class_name,
-      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ]
+      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
   end
 
   # *** Labels/Labelings
