@@ -1,4 +1,7 @@
 class Labeling::Base < ActiveRecord::Base
+
+  set_table_name 'labelings'
+
   belongs_to :owner,  :class_name => Iqvoc::Concept.base_class_name
   belongs_to :target, :class_name => Iqvoc::Label.base_class_name
   

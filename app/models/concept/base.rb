@@ -1,36 +1,47 @@
 class Concept::Base < ActiveRecord::Base
 
+  set_table_name 'concepts'
+
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
   include IqvocGlobal::CommonAssociations
   include IqvocGlobal::ConceptAssociationExtensions
   
-  set_table_name 'concepts'
-
   validate :origin, :presence => true
   validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :associations_must_be_published, :on => :update
 
   before_destroy :has_references?
 
+  # ********** Relations
+  @nested_relations = [] # Will be marked as nested attributes later
+
   has_many :concept_relations, :foreign_key => 'owner_id'
 
   # *** Concept2Concept relations
   # e.g. 'concept/relation/skos/narrowers
   Iqvoc::Concept.relation_class_names.each do |relation_class_name|
-    has_many relation_class_name.underscore.pluralize,
+    has_many relation_class_name.to_relation_name,
       :foreign_key => :owner_id,
       :class_name  => relation_class_name,
       :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ]
   end
 
   # *** Labels/Labelings
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::SKOSXL::Base.name
-  
+  has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::Base.name
+
+  has_many :pref_labelings,
+    :foreign_key => 'owner_id',
+    :class_name => Iqvoc::Concept.pref_labeling_class_name
+
+  has_many :pref_labels,
+    :through => :pref_labelings,
+    :source => :target
+
   Iqvoc::Concept.further_labeling_class_names.keys.each do |labeling_class_name|
-     has_many labeling_class_name.underscore.pluralize,
-       :foreign_key => 'owner_id',
-       :class_name => labeling_class_name
+    has_many labeling_class_name.to_relation_name,
+      :foreign_key => 'owner_id',
+      :class_name => labeling_class_name
   end
 
   # *** Classifications
@@ -42,9 +53,12 @@ class Concept::Base < ActiveRecord::Base
   has_many :umt_usage_notes,  :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote',  :conditions => { :owner_type => self.name }
   has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }
   has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }
+  @nested_relations += [:umt_source_notes, :umt_change_notes, :umt_usage_notes]
 
-  Iqvoc::Concept.note_class_names.each do |name|
-    has_many name, :as => :owner
+  Iqvoc::Concept.note_class_names.each do |class_name|
+    relation_name = class_name.to_relation_name
+    has_many relation_name, :class_name => class_name, :as => :owner
+    @nested_relations << relation_name
   end
 
   # *** Matches (pointing to an other thesaurus)
@@ -54,13 +68,14 @@ class Concept::Base < ActiveRecord::Base
   has_many :narrower_matches, :class_name => Match::SKOS::Narrower.name
   has_many :related_matches,  :class_name => Match::SKOS::Related.name
   has_many :exact_matches,    :class_name => Match::SKOS::Exact.name
+  @nested_relations += [:close_matches]
 
   has_many :matches
   has_many :referenced_matches, :class_name => 'Match', :foreign_key => 'value'
   has_many :referenced_semantic_relations, :class_name => 'SemanticRelation', :foreign_key => 'target_id'
 
   # FIXME
-  [:definitions, :editorial_notes, :umt_source_notes, :umt_change_notes, :umt_usage_notes, :close_matches].each do |relation|
+  @nested_relations.each do |relation|
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
 
@@ -77,14 +92,14 @@ class Concept::Base < ActiveRecord::Base
   }
 
   scope :tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM semantic_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
+    :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM #{Concept::Relation::Base.table_name} sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
 
 
   scope :broader_tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM semantic_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
+    :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM #{Concept::Relation::Base.table_name} sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id'
