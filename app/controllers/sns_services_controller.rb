@@ -96,13 +96,13 @@ class SnsServicesController < ApplicationController
     elsif label.concepts.size > 1
       num_alt_labels = 0
       num_pref_labels = 0
-      label.concepts.each { |concept| 
+      label.concepts.each { |concept|
         num_alt_labels += concept.alt_labels.size
         num_pref_labels += concept.pref_labels.size
       }
       # 1.3.2.1
       if num_alt_labels > 0 and num_pref_labels == 0
-        # concepte aneinanderhängen ?
+        # concepte aneinanderh�ngen ?
       # 1.3.2.2
       elsif num_pref_labels > 0
         create_error_message_for("multiple pref labels found", term) 
