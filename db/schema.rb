@@ -1,15 +1,16 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100528092450) do
+ActiveRecord::Schema.define(:version => 20100913134904) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -47,6 +48,17 @@ ActiveRecord::Schema.define(:version => 20100528092450) do
   end
 
   add_index "compound_forms", ["domain_id"], :name => "index_compound_forms_on_domain_id"
+
+  create_table "concept_relations", :force => true do |t|
+    t.string   "type",       :limit => 50, :default => "SemanticRelation", :null => false
+    t.integer  "owner_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "concept_relations", ["owner_id", "target_id"], :name => "index_semantic_relations_on_owner_id_and_target_id"
+  add_index "concept_relations", ["target_id"], :name => "index_semantic_relations_on_target_id"
 
   create_table "concepts", :force => true do |t|
     t.string   "type",           :limit => 50, :default => "Concept", :null => false
@@ -167,17 +179,6 @@ ActiveRecord::Schema.define(:version => 20100528092450) do
 
   add_index "notes", ["owner_id", "owner_type", "type"], :name => "index_notes_on_owner_id_and_owner_type_and_type"
   add_index "notes", ["type"], :name => "index_notes_on_type"
-
-  create_table "semantic_relations", :force => true do |t|
-    t.string   "type",       :limit => 50, :default => "SemanticRelation", :null => false
-    t.integer  "owner_id"
-    t.integer  "target_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "semantic_relations", ["owner_id", "target_id"], :name => "index_semantic_relations_on_owner_id_and_target_id"
-  add_index "semantic_relations", ["target_id"], :name => "index_semantic_relations_on_target_id"
 
   create_table "user_preferences", :force => true do |t|
     t.integer  "user_id"
