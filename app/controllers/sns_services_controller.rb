@@ -96,7 +96,7 @@ class SnsServicesController < ApplicationController
     elsif label.concepts.size > 1
       num_alt_labels = 0
       num_pref_labels = 0
-      label.concepts.each { |concept| 
+      label.concepts.each { |concept|
         num_alt_labels += concept.alt_labels.size
         num_pref_labels += concept.pref_labels.size
       }
