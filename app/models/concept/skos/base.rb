@@ -15,12 +15,12 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   has_many :concept_relations, :foreign_key => 'owner_id'
 
-  # FIXME
   Iqvoc::Concept.relation_class_names.each do |name|
     has_many "#{name.underscore}_relations".to_sym,
       :foreign_key => :owner_id,
-      :class_name  => name, :extend => [PushWithReflectionExtension, DestroyReflectionExtension]
-    has_many name.underscore.to_sym,
+      :class_name  => name, 
+      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ]
+    has_many name.underscore.pluralize.to_sym,
       :class_name  => Iqvoc::Concept.base_class_name,
       :source      => :target,
       :through     => "#{name.underscore}_relations".to_sym
@@ -28,11 +28,8 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::SKOSXL::Base.name
   
-  # FIXME
-  [:pref_labels, :alt_labels, :hidden_labels].each do |name|
-    klass = "#{name.to_s.singularize}ing" # => pref_labeling
-    has_many :"#{klass.pluralize}", :foreign_key => :owner_id
-    has_many name, :source => :target, :through => :"#{klass.pluralize}"
+  Iqvoc::Concept.further_labeling_classes.keys.each do |klass_name|
+    # has_many , :foreign_key => 'owner_id', :class_name => name
   end
 
   has_many :classifications, :foreign_key => 'owner_id'
