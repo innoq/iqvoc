@@ -26,7 +26,7 @@ class Concept::SKOS::Base < ActiveRecord::Base
       :through     => "#{name.underscore}_relations".to_sym
   end
 
-  has_many :labelings, :foreign_key => 'owner_id'
+  has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::SKOSXL::Base.name
   
   # FIXME
   [:pref_labels, :alt_labels, :hidden_labels].each do |name|
