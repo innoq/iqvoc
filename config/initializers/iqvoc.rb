@@ -1,3 +1,5 @@
+require 'iqvoc'
+
 require 'iqvoc_global/common_associations'
 require 'iqvoc_global/common_methods'
 require 'iqvoc_global/common_scopes'
