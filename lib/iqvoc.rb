@@ -1,3 +1,5 @@
+require 'string'
+
 module Iqvoc
   
   module Concept
