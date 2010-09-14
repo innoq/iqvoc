@@ -1,4 +1,4 @@
-class Concept::SKOS::Base < ActiveRecord::Base
+class Concept::Base < ActiveRecord::Base
 
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
@@ -15,23 +15,25 @@ class Concept::SKOS::Base < ActiveRecord::Base
 
   has_many :concept_relations, :foreign_key => 'owner_id'
 
-  Iqvoc::Concept.relation_class_names.each do |name|
-    has_many "#{name.underscore}_relations".to_sym,
+  # *** Concept2Concept relations
+  # e.g. 'concept/relation/skos/narrowers
+  Iqvoc::Concept.relation_classes.each do |relation_class|
+    has_many relation_class.relation_name,
       :foreign_key => :owner_id,
-      :class_name  => name, 
+      :class_name  => relation_class.name,
       :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ]
-    has_many name.underscore.pluralize.to_sym,
-      :class_name  => Iqvoc::Concept.base_class_name,
-      :source      => :target,
-      :through     => "#{name.underscore}_relations".to_sym
   end
 
+  # *** Labels/Labelings
   has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::SKOSXL::Base.name
   
-  Iqvoc::Concept.further_labeling_classes.keys.each do |klass_name|
-    # has_many , :foreign_key => 'owner_id', :class_name => name
+  Iqvoc::Concept.further_labeling_classes.keys.each do |labeling_class|
+     has_many labeling_class.relation_name,
+       :foreign_key => 'owner_id',
+       :class_name => labeling_class.name
   end
 
+  # *** Classifications
   has_many :classifications, :foreign_key => 'owner_id'
   has_many :classifiers, :through => :classifications, :source => :target
   
@@ -45,13 +47,14 @@ class Concept::SKOS::Base < ActiveRecord::Base
     has_many name, :as => :owner
   end
 
+  # *** Matches (pointing to an other thesaurus)
+  # FIXME: Must be configureable
   has_many :close_matches,    :class_name => Match::SKOS::Close.name
   has_many :broader_matches,  :class_name => Match::SKOS::Broader.name
   has_many :narrower_matches, :class_name => Match::SKOS::Narrower.name
   has_many :related_matches,  :class_name => Match::SKOS::Related.name
   has_many :exact_matches,    :class_name => Match::SKOS::Exact.name
 
-  #Versioning relations
   has_many :matches
   has_many :referenced_matches, :class_name => 'Match', :foreign_key => 'value'
   has_many :referenced_semantic_relations, :class_name => 'SemanticRelation', :foreign_key => 'target_id'
