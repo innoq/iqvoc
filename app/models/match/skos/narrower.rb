@@ -1,3 +1,3 @@
-class Match::SKOS::Narrower < Match::SKOS::Base
+class Match::SKOS::Narrower < Match::Base
   
 end

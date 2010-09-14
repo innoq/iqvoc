@@ -1,3 +1,3 @@
-class Match::SKOS::Exact < Match::SKOS::Base
+class Match::SKOS::Exact < Match::Base
   
 end
