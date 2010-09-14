@@ -1,10 +1,8 @@
-class Label::SKOSXL::Base < ActiveRecord::Base
+class Label::SKOSXL::Base < Label::Base
 
   include IqvocGlobal::CommonScopes
   include IqvocGlobal::CommonMethods
   include IqvocGlobal::CommonAssociations
-  
-  set_table_name 'labels'
   
   attr_reader :inflectionals_attributes
 
@@ -13,9 +11,9 @@ class Label::SKOSXL::Base < ActiveRecord::Base
   
   # Run these validations if @full_validation is true
   validate :homograph_and_qualifier_existence, 
-           :compound_form_contents_size,
-           :pref_label_language,
-           :translations_must_be_in_foreign_language
+    :compound_form_contents_size,
+    :pref_label_language,
+    :translations_must_be_in_foreign_language
 
   before_destroy :has_references?
   after_save :overwrite_inflectionals!
@@ -116,8 +114,8 @@ class Label::SKOSXL::Base < ActiveRecord::Base
 
   #Instance-Methods
   def initialize(params = {})
-   super(params)
-   @full_validation = false
+    super(params)
+    @full_validation = false
   end
 
   def <=>(other)
@@ -196,13 +194,13 @@ class Label::SKOSXL::Base < ActiveRecord::Base
     "#{value}"
   end
 
- def collect_first_level_associated_objects
-   associated_objects = Array.new
-   Label.first_level_associations.each do |association|
-     associated_objects << self.send(association)
-   end
-   associated_objects.flatten
- end
+  def collect_first_level_associated_objects
+    associated_objects = Array.new
+    Label.first_level_associations.each do |association|
+      associated_objects << self.send(association)
+    end
+    associated_objects.flatten
+  end
 
   def customized_to_json(options = {})
     {
@@ -212,11 +210,11 @@ class Label::SKOSXL::Base < ActiveRecord::Base
   end
 
   def has_concept_or_label_relations?
-   if labelings.size > 0 || label_relations.size > 0 || compound_forms.size > 0
-     true
-   else
-     false
-   end
+    if labelings.size > 0 || label_relations.size > 0 || compound_forms.size > 0
+      true
+    else
+      false
+    end
   end
 
   def save_with_full_validation!
@@ -247,22 +245,22 @@ class Label::SKOSXL::Base < ActiveRecord::Base
   def homograph_and_qualifier_existence
     if @full_validation == true
       if homographs.size >= 1
-       errors.add(:base, I18n.t("txt.models.label.qualifier_error")) unless qualifiers.size >= 1
+        errors.add(:base, I18n.t("txt.models.label.qualifier_error")) unless qualifiers.size >= 1
       end
       if qualifiers.length >= 1
-       errors.add(:base, I18n.t("txt.models.label.homograph_error")) unless homographs.size >= 1
+        errors.add(:base, I18n.t("txt.models.label.homograph_error")) unless homographs.size >= 1
       end
     end
   end
 
   def compound_form_contents_size
     if @full_validation == true
-    unless compound_forms.blank?
-      compound_forms.each do |cf|
-        errors.add(:base, I18n.t("txt.models.label.compound_form_contents_error")) if cf.compound_form_contents.size < 2 
+      unless compound_forms.blank?
+        compound_forms.each do |cf|
+          errors.add(:base, I18n.t("txt.models.label.compound_form_contents_error")) if cf.compound_form_contents.size < 2
+        end
       end
     end
-   end
   end
   
   def pref_label_language
