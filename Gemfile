@@ -8,6 +8,8 @@ gem 'cancan'
 gem 'iq_rdf'
 gem 'warbler'
 
+gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+
 group :development do
   gem 'mongrel'
   
@@ -27,7 +29,7 @@ group :test, :cucumber do
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber'
- # gem 'spork'
+  # gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
 end
