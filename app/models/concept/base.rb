@@ -88,8 +88,10 @@ class Concept::Base < ActiveRecord::Base
   @nested_relations += [:close_matches]
 
   has_many :matches
-  has_many :referenced_matches, :class_name => 'Match', :foreign_key => 'value'
-  has_many :referenced_semantic_relations, :class_name => 'SemanticRelation', :foreign_key => 'target_id'
+  
+  # FIXME: What is this for?
+  has_many :referenced_matches,           :class_name => Match::SKOS::Base.name,       :foreign_key => 'value'
+  has_many :referenced_concept_relations, :class_name => Concept::Relation::Base.name, :foreign_key => 'target_id'
 
   # **************
 
@@ -148,8 +150,8 @@ class Concept::Base < ActiveRecord::Base
   def self.associations_for_versioning
     [ 
       :labelings, 
-      :semantic_relations, 
-      :referenced_semantic_relations, 
+      :concept_relations, 
+      :referenced_concept_relations, 
       :matches, 
       :referenced_matches, 
       :classifications, 
@@ -160,8 +162,8 @@ class Concept::Base < ActiveRecord::Base
   def self.first_level_associations
     [
       :labelings, 
-      :semantic_relations, 
-      :referenced_semantic_relations, 
+      :concept_relations, 
+      :referenced_concept_relations, 
       :referenced_matches, 
       :matches, 
       :classifications, 
@@ -243,8 +245,8 @@ class Concept::Base < ActiveRecord::Base
 
   def associated_objects_in_editing_mode
     { 
-      :semantic_relations => Concept::Relation::Base.target_in_edit_mode(id), 
-      :labelings => Labeling::SKOSXL::Base.target_in_edit_mode(id)
+      :concept_relations => Concept::Relation::Base.target_in_edit_mode(id), 
+      :labelings         => Labeling::SKOSXL::Base.target_in_edit_mode(id)
     }
   end
     

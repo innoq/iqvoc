@@ -12,9 +12,9 @@
     <% end %>
    <% end %>
 
-   <% if @association_objects_in_editing_mode[:semantic_relations].present? %>
+   <% if @association_objects_in_editing_mode[:concept_relations].present? %>
     <h4><%= t("txt.common.referenced_concepts") %></h4>
-    <%  @association_objects_in_editing_mode[:semantic_relations].each do |semantic_relation| %>
+    <%  @association_objects_in_editing_mode[:concept_relations].each do |semantic_relation| %>
         <%= semantic_relation.type.demodulize + ': ' + link_to(semantic_relation.target.pref_labels.first.value, versioned_concept_path(@active_language, semantic_relation.target)) + user_and_phone_number(t("txt.common.editor"), semantic_relation.target.locking_user.name, semantic_relation.target.locking_user.telephone_number)  %><br />
     <% end %>
    <% end %>
