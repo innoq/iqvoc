@@ -1,4 +1,4 @@
-class LabelRelation::Base < ActiveRecord::Base
+class Label::Relation::Base < ActiveRecord::Base
   
   set_table_name 'label_relations'
   
