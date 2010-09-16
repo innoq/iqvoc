@@ -90,7 +90,7 @@ class Concept::Base < ActiveRecord::Base
   has_many :matches
   
   # FIXME: What is this for?
-  has_many :referenced_matches,           :class_name => Match::SKOS::Base.name,       :foreign_key => 'value'
+  has_many :referenced_matches,           :class_name => Match::Base.name,       :foreign_key => 'value'
   has_many :referenced_concept_relations, :class_name => Concept::Relation::Base.name, :foreign_key => 'target_id'
 
   # **************
