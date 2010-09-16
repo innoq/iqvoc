@@ -1,7 +1,7 @@
 PATH
   remote: /Users/rglaser/innoq/iqvoc_umt
   specs:
-    iqvoc_umt (0.0.1)
+    iqvoc_umt (0.0.3)
       activerecord
 
 GEM
