@@ -1,3 +1,3 @@
-class Note::IQVOC::ChangeNote < Note::SKOS::ChangeNote
+class Note::Iqvoc::ChangeNote < Note::SKOS::ChangeNote
 
 end
