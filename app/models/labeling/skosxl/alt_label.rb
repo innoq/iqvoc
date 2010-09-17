@@ -1,3 +1,3 @@
-class Labeling::SKOSXL::AltLabel < Labeling::SKOSXL::Base
+class Labeling::SKOSXL::AltLabel < Labeling::SKOSXL::Base #FIXME: AltLabelING!
 
 end
