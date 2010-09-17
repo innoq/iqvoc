@@ -3,19 +3,19 @@
 <p><%= t("txt.views.concepts.select") %></p>
 
 <div class="letter_selector">
-<% for alpha in @alphas %>
-  <%= link_to alpha, 
-        alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase), 
-        :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) %>
-<% end %>
+  <% for alpha in @alphas %>
+    <%= link_to alpha,
+      alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase),
+      :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) %>
+  <% end %>
 </div>
 
 <ul>
-  <% for concept in @concepts %>
-  <li>
-    <%= link_to concept.pref_label, concept_path(:lang => @active_language, :id => concept), :alt => concept.origin %>
-  </li>
+  <% @pref_labelings.each do |pref_labeling| %>
+    <li>
+      <%= link_to pref_labeling.target.to_s, concept_path(:lang => pref_labeling.target.language, :id => pref_labeling.owner), :alt => pref_labeling.owner.origin %>
+    </li>
   <% end %>
 </ul>
 
-<%= will_paginate @concepts, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>
+<%= will_paginate @pref_labelings, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>

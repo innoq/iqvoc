@@ -51,18 +51,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :alphabetical, lambda {|letter| {
-      :conditions => ["labelings.type = :type AND LOWER(SUBSTR(labels.value, 1, 1)) = :letter",
-        {:type => 'PrefLabeling', :letter => letter.to_s}],
-      :include => :pref_labels,
-      :order => 'LOWER(labels.value)',
-      :group => 'concepts.id' }
-  }
-
-  scope :by_language, lambda { |lang_code| {
-      :conditions => { :language => lang_code.to_s } }
-  }
-
   scope :tops,
     :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM  concept_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
     :include => :pref_labels,
@@ -122,7 +110,7 @@ class Concept::Base < ActiveRecord::Base
     ]
   end
 
-    # ************** "Dynamic"/configureable relations
+  # ************** "Dynamic"/configureable relations
 
   # *** Concept2Concept relations
 
@@ -155,9 +143,13 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Labels/Labelings
 
+  # FIXME: This is buggy! :-(
+  # Specifing a :class_name doesn't result in a type = :class_name condition!
+  # The :conditions don't work with :through (propably a rails 3.0.0 bug!)
+  # I suggest to delete this (very handy) relation and to move the logic to the controllers (=> just woking whith the 'labellings' relation)
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
-    :class_name => Iqvoc::Concept.pref_labeling_class_name
+    :class_name => Iqvoc::Concept.pref_labeling_class_name 
   has_many :pref_labels,
     :through => :pref_labelings,
     :source => :target

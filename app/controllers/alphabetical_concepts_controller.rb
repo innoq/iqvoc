@@ -3,13 +3,18 @@ class AlphabeticalConceptsController < ConceptsController
   skip_before_filter :require_user
   
   def index    
-    @alphas = [
-      (0..9).to_a,
-      ('A'..'Z').to_a,
-      '['
-    ].flatten
+    @alphas = 
+      ('A'..'Z').to_a +
+      (0..9).to_a +
+      ['[']
     
-    @concepts = Iqvoc::Concept.base_class.alphabetical(params[:letter]).published.paginate(:page => params[:page], :per_page => 40)
+    @pref_labelings = Iqvoc::Concept.pref_labeling_class.
+      published.
+      label_begins_with(params[:letter]).
+      by_label_language(@active_language).
+      includes(:target). 
+      order("LOWER(#{Label::Base.table_name}.value)").
+      paginate(:page => params[:page], :per_page => 40)
     
     respond_to do |format|
       format.html { store_location }
