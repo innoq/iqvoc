@@ -9,15 +9,15 @@ class Labeling::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :by_concept do |concept|
+  scope :by_concept, lambda { |concept|
     where(:owner_id => concept.id)
-  end
+  }
   
-  scope :by_label do |label|
+  scope :by_label, lambda { |label|
     where(:target_id => label.id)
-  end
+  }
 
-    scope :by_lang, lambda { |lang| {
+  scope :by_lang, lambda { |lang| {
       :joins => :target,
       :conditions => ["labels.language LIKE :language", { :language => lang }] }
   }

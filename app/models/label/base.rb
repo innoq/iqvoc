@@ -16,9 +16,9 @@ class Label::Base < ActiveRecord::Base
 
   # ********* Scopes
 
-  scope :for_language do |lang_code|
+  scope :for_language, lambda { |lang_code|
     where(:language => lang_code)
-  end
+  }
 
   # ********* Methods
 

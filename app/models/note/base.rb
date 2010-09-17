@@ -16,13 +16,13 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :for_language, lambda {|lang_code|
-    {:conditions => {:language => lang_code}}
+  scope :for_language, lambda { |lang_code|
+    where(:language => lang_code)
   }
 
-  scope :by_owner_type do |klass|
+  scope :by_owner_type, lambda { |klass|
     where(:owner_type => klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
-  end
+  }
 
   scope :for_concepts, where(:owner_type => Iqvoc::Concept.base_class_name )
   scope :for_labels,   where(:owner_type => 'Label') # FIXME: Ohoh... perhaps with type != Iqvoc::Concept.base_class_name ? Or shouldn't we delete both scopes?
