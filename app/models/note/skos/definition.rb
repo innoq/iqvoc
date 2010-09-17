@@ -1,8 +1,6 @@
 class Note::SKOS::Definition < Note::SKOS::Base
-  
-  scope :for_concepts, :conditions => { :owner_type => 'Concept' }
-  scope :for_labels,   :conditions => { :owner_type => 'Label' }
-  
+
+  # FIXME: same as in Note::Base! (deletion?)
   def to_s
     value
   end

@@ -1,4 +1,4 @@
-class Note::Annotated::Base < ActiveRecord::Base
+class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::Annotation::Base? This looks like an annotaed note... but it is an annotation for a note right?
 
   set_table_name('note_annotations')
 
