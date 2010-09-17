@@ -4,8 +4,8 @@ class Labeling::Base < ActiveRecord::Base
 
   # ********** Relations
 
-  belongs_to :owner,  :class_name => Iqvoc::Concept.base_class_name
-  belongs_to :target, :class_name => Iqvoc::Label.base_class_name
+  belongs_to :owner,  :class_name => "Concept::Base"
+  belongs_to :target, :class_name => "Label::Base"
 
   # ********** Scopes
 
@@ -17,9 +17,22 @@ class Labeling::Base < ActiveRecord::Base
     where(:target_id => label.id)
   }
 
-  scope :by_lang, lambda { |lang| {
+  # DEPRECATED: Use by_label_language instead
+  scope :by_lang, lambda { |lang|
+      ActiveSupport::Deprecation.warn('Please use Labeling::Base.by_label_language instead of Labeling::Base.by_lang', caller)
+    {
       :joins => :target,
       :conditions => ["labels.language LIKE :language", { :language => lang }] }
   }
+
+  scope :published, includes(:owner) & Concept::Base.published & Label::Base.published
+
+  scope :label_begins_with, lambda { |letter|
+    includes(:target) & Label::Base.begins_with(letter)
+  }
   
+  scope :by_label_language, lambda { |lang|
+    includes(:target) & Label::Base.by_language(lang)
+  }
+
 end

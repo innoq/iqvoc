@@ -25,6 +25,10 @@ module Iqvoc
       base_class_name.constantize
     end
 
+    def self.pref_labeling_class
+      pref_labeling_class_name.constantize
+    end
+
   end
   
   module Label
