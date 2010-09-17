@@ -18,7 +18,7 @@
   <tr class="highlightable" data-url="<%= item.is_a?(Label) ? versioned_label_url(:lang => @active_language, :id => item) : versioned_concept_url(:lang => @active_language, :id => item) %>">
     <td><%= item.class %></td>
     <td>
-      <% if item.is_a?(Label) %>
+      <% if item.is_a?(Label::Base) %>
       <%= link_to truncate(item.to_s, :length => 45), (item.published? ? label_path(:lang => @active_language, :id => item) : versioned_label_path(:lang => @active_language, :id => item)) %>
       <% else %>
       <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:lang => @active_language, :id => item) : versioned_concept_path(:lang => @active_language, :id => item)) %>
