@@ -1,4 +1,4 @@
-class RdfStore
+class RdfStore # FIXME: This must be modularized and refactored (the thread should be replaced by a direct rack call)
 
   include Java rescue nil
   include java.lang.Runnable rescue nil

@@ -1,4 +1,4 @@
-class OriginMapping
+class OriginMapping # FIXME
   def replace_umlauts(str)
     str.gsub(/Ö/, 'Oe').gsub(/Ä/, 'Ae').gsub(/Ü/, 'Ue').gsub(/ö/, 'oe').gsub(/ä/, 'ae').gsub(/ü/, 'ue').gsub(/ß/, 'ss')
   end
