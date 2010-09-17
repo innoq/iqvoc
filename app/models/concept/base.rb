@@ -7,98 +7,49 @@ class Concept::Base < ActiveRecord::Base
   include IqvocGlobal::CommonAssociations
   include IqvocGlobal::ConceptAssociationExtensions
   
+  # ********** Validations
+
   validate :origin, :presence => true
   validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :associations_must_be_published, :on => :update
 
+  # ********** Hooks
+
   before_destroy :has_references?
 
-  # ********** Relations
+  # ********** "Static"/unconfigureable relations
+
   @nested_relations = [] # Will be marked as nested attributes later
 
   has_many :concept_relations, :foreign_key => 'owner_id'
 
-  # *** Concept2Concept relations
+  has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base"
 
-  # Broader
-  has_many :broader_relations, 
-    :foreign_key => :owner_id,
-    :class_name => Iqvoc::Concept.broader_relation_class_name,
-    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
-  has_many :broader,
-    :through => :broader_relations,
-    :source => :target
+  has_many :labels, :through => :labelings, :source => :target
 
-  # Narrower
-  has_many :narrower_relations,
-    :foreign_key => :owner_id,
-    :class_name => 'Concept::Relations::Narrower', # FIXME: Must this be configureable????
-    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
-  has_many :narrower,
-    :through => :broader_relations,
-    :source => :target
-
-  # Further relations
-  # e.g. 'concept_relation_skos_relateds'
-  Iqvoc::Concept.further_relation_class_names.each do |relation_class_name|
-    has_many relation_class_name.to_relation_name,
-      :foreign_key => :owner_id,
-      :class_name  => relation_class_name,
-      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
-  end
-
-  # *** Labels/Labelings
-
-  # All labels
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => Labeling::Base.name
-
-  has_many :pref_labelings,
-    :foreign_key => 'owner_id',
-    :class_name => Iqvoc::Concept.pref_labeling_class_name
-  has_many :pref_labels,
-    :through => :pref_labelings,
-    :source => :target
-
-  Iqvoc::Concept.further_labeling_class_names.keys.each do |labeling_class_name|
-    has_many labeling_class_name.to_relation_name,
-      :foreign_key => 'owner_id',
-      :class_name => labeling_class_name
-  end
-
-  # *** Notes
   has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
 
-  Iqvoc::Concept.note_class_names.each do |class_name|
-    relation_name = class_name.to_relation_name
-    has_many relation_name, :class_name => class_name, :as => :owner
-    @nested_relations << relation_name
-  end
+  has_many :matches
 
   # *** Classifications
+  # FIXME: Should be a matches (to other skos vocabularies)
   has_many :classifications, :foreign_key => 'owner_id'
   has_many :classifiers, :through => :classifications, :source => :target
   
   # *** Matches (pointing to an other thesaurus)
   # FIXME: Must be configureable
-  has_many :close_matches,    :class_name => Match::SKOS::Close.name
-  has_many :broader_matches,  :class_name => Match::SKOS::Broader.name
-  has_many :narrower_matches, :class_name => Match::SKOS::Narrower.name
-  has_many :related_matches,  :class_name => Match::SKOS::Related.name
-  has_many :exact_matches,    :class_name => Match::SKOS::Exact.name
+  has_many :close_matches,    :class_name => "Match::SKOS::Close"
+  has_many :broader_matches,  :class_name => "Match::SKOS::Broader"
+  has_many :narrower_matches, :class_name => "Match::SKOS::Narrower"
+  has_many :related_matches,  :class_name => "Match::SKOS::Related"
+  has_many :exact_matches,    :class_name => "Match::SKOS::Exact"
   @nested_relations += [:close_matches]
 
-  has_many :matches
-  
   # FIXME: What is this for?
-  has_many :referenced_matches,           :class_name => Match::Base.name,       :foreign_key => 'value'
-  has_many :referenced_concept_relations, :class_name => Concept::Relation::Base.name, :foreign_key => 'target_id'
+  has_many :referenced_matches,           :class_name => "Match::Base",       :foreign_key => 'value'
+  has_many :referenced_concept_relations, :class_name => "Concept::Relation::Base", :foreign_key => 'target_id'
 
-  # **************
-
-  # FIXME
-  @nested_relations.each do |relation|
-    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
-  end
+  # ********** Scopes
 
   scope :alphabetical, lambda {|letter| {
       :conditions => ["labelings.type = :type AND LOWER(SUBSTR(labels.value, 1, 1)) = :letter",
@@ -170,6 +121,69 @@ class Concept::Base < ActiveRecord::Base
       :notes
     ]
   end
+
+    # ************** "Dynamic"/configureable relations
+
+  # *** Concept2Concept relations
+
+  # Broader
+  has_many :broader_relations,
+    :foreign_key => :owner_id,
+    :class_name => Iqvoc::Concept.broader_relation_class_name,
+    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+  has_many :broader,
+    :through => :broader_relations,
+    :source => :target
+
+  # Narrower
+  has_many :narrower_relations,
+    :foreign_key => :owner_id,
+    :class_name => 'Concept::Relations::Narrower', # FIXME: Must this be configureable????
+  :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+  has_many :narrower,
+    :through => :broader_relations,
+    :source => :target
+
+  # Further relations
+  # e.g. 'concept_relation_skos_relateds'
+  Iqvoc::Concept.further_relation_class_names.each do |relation_class_name|
+    has_many relation_class_name.to_relation_name,
+      :foreign_key => :owner_id,
+      :class_name  => relation_class_name,
+      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+  end
+
+  # *** Labels/Labelings
+
+  has_many :pref_labelings,
+    :foreign_key => 'owner_id',
+    :class_name => Iqvoc::Concept.pref_labeling_class_name
+  has_many :pref_labels,
+    :through => :pref_labelings,
+    :source => :target
+
+  Iqvoc::Concept.further_labeling_class_names.keys.each do |labeling_class_name|
+    has_many labeling_class_name.to_relation_name,
+      :foreign_key => 'owner_id',
+      :class_name => labeling_class_name
+  end
+
+  # *** Notes
+
+  Iqvoc::Concept.note_class_names.each do |class_name|
+    relation_name = class_name.to_relation_name
+    has_many relation_name, :class_name => class_name, :as => :owner
+    @nested_relations << relation_name
+  end
+
+  # ********** Relation Stuff
+
+  # FIXME
+  @nested_relations.each do |relation|
+    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
+  end
+
+  # ********** Methods
 
   def self.get_new_or_initial_version(origin)
     Concept.new_version(origin).first.blank? ? Concept.initial_version(origin).first : Concept.new_version(origin).first
