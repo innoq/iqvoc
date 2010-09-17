@@ -12,7 +12,7 @@ development: &DEVELOPMENT
   adapter: jdbcmysql
   hostname: localhost
 <% else %>
-  adapter: mysql
+  adapter: mysql2
   socket: <%= socket %>
 <% end %>
 
@@ -27,7 +27,7 @@ oracle:
 # re-generated from your development database when you run 'rake'.
 # Do not set this db to the same as development or production.
 test: &TEST
-  adapter: mysql
+  adapter: mysql2
   encoding: utf8
   username: root
   password: 

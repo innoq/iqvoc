@@ -1,5 +1,5 @@
 PATH
-  remote: /Users/rglaser/innoq/iqvoc_umt
+  remote: ../iqvoc_umt
   specs:
     iqvoc_umt (0.0.3)
       activerecord
