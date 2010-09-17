@@ -7,7 +7,6 @@ class Label::SKOSXL::Base < Label::Base
   attr_reader :inflectionals_attributes
 
   validate :two_versions_exist, :on => :create
-  validate :value, :presence => true, :message => I18n.t("txt.models.label.value_error")
   
   # Run these validations if @full_validation is true
   validate :homograph_and_qualifier_existence, 
@@ -25,12 +24,10 @@ class Label::SKOSXL::Base < Label::Base
   
   has_many :inflectionals, :dependent => :destroy
 
-  has_many :labelings, :foreign_key => 'target_id'
   has_many :pref_labelings, :foreign_key => 'target_id'
   has_many :alt_labelings, :foreign_key => 'target_id'
   has_many :hidden_labelings, :foreign_key => 'target_id'
   
-  has_many :concepts, :source => :owner, :through => :labelings
   has_many :concepts_as_pref_label, :source => :owner, :through => :pref_labelings, :conditions => "concepts.published_at IS NOT NULL"
   has_many :concepts_as_alt_label, :source => :owner, :through => :alt_labelings, :conditions => "concepts.published_at IS NOT NULL"
   has_many :concepts_as_hidden_label, :source => :owner, :through => :hidden_labelings, :conditions => "concepts.published_at IS NOT NULL"
@@ -64,10 +61,6 @@ class Label::SKOSXL::Base < Label::Base
     { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
   }
 
-  scope :for_language, lambda {|lang_code|
-    { :conditions => { :language => lang_code } }
-  }
-  
   scope :compound_in, lambda {|label|
     { :conditions => {:compound_form_contents => {:label_id => label.id}}, :joins => :compound_form_contents }
   }
@@ -92,6 +85,7 @@ class Label::SKOSXL::Base < Label::Base
     [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, :notes, :compound_forms]
   end
 
+  # FIXME: Seems not to bee used => KILL IT! :-)
   def self.pref_label_alphas
     Label.all(
       :select => "SUBSTR(LOWER(labels.value), 1, 1) AS alpha", 
@@ -118,10 +112,6 @@ class Label::SKOSXL::Base < Label::Base
     @full_validation = false
   end
 
-  def <=>(other)
-    value.to_s.downcase <=> other.to_s.downcase
-  end
-  
   def endings
     Inflectional.for_language_and_code(language, inflectional_code)
   end
@@ -172,10 +162,6 @@ class Label::SKOSXL::Base < Label::Base
     @inflectionals_attributes = str.split("\r\n")
   end
   
-  def literal_form
-    "\"#{value}\"@#{language}"
-  end
-  
   def overwrite_inflectionals!
     return unless inflectionals_attributes
     transaction do
@@ -190,10 +176,6 @@ class Label::SKOSXL::Base < Label::Base
     origin
   end
   
-  def to_s
-    "#{value}"
-  end
-
   def collect_first_level_associated_objects
     associated_objects = Array.new
     Label.first_level_associations.each do |association|
@@ -222,6 +204,7 @@ class Label::SKOSXL::Base < Label::Base
     save!
   end
   
+  # FIXME: should not @full_validation be set back to the value it had before??? This method changes the state!
   def valid_with_full_validation?
     @full_validation = true
     valid?
@@ -262,7 +245,7 @@ class Label::SKOSXL::Base < Label::Base
       end
     end
   end
-  
+
   def pref_label_language
     if @full_validation == true
       if language != "de" && pref_labelings.any?
