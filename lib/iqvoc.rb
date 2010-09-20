@@ -32,6 +32,10 @@ module Iqvoc
       pref_labeling_class_name.constantize
     end
 
+    def self.labeling_classes
+      further_labeling_classes.merge(pref_labeling_class => pref_labeling_languages)
+    end
+
     def self.further_labeling_classes
       further_labeling_class_names.keys.each_with_object({}) do |class_name, hash|
         hash[class_name.constantize] = further_labeling_class_names[class_name]
@@ -40,6 +44,10 @@ module Iqvoc
 
     def self.further_relation_classes
       further_relation_class_names.map(&:constantize)
+    end
+
+    def self.note_classes
+      note_class_names.map(&:constantize)
     end
 
     def self.match_classes
@@ -63,6 +71,10 @@ module Iqvoc
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
+    end
+
+    def self.note_classes
+      note_class_names.map(&:constantize)
     end
 
   end
