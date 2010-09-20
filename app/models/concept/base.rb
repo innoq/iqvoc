@@ -57,10 +57,10 @@ class Concept::Base < ActiveRecord::Base
   # Narrower
   has_many :narrower_relations,
     :foreign_key => :owner_id,
-    :class_name => 'Concept::Relations::Narrower', # FIXME: Must this be configureable????
+    :class_name => 'Concept::Relation::SKOS::Narrower', # FIXME: Must this be configureable????
   :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
   has_many :narrower,
-    :through => :broader_relations,
+    :through => :narrower_relations,
     :source => :target
 
   # Further relations
@@ -110,18 +110,22 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM  concept_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
-    :include => :pref_labels,
-    :order => 'LOWER(labels.value)',
-    :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
+  #scope :tops,
+  #  :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM  concept_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
+  #  :include => :pref_labels,
+  #  :order => 'LOWER(labels.value)',
+  #  :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
+  scope :tops, includes(:broader_relations).
+    where(:concept_relations => {:id => nil})
 
-
-  scope :broader_tops,
-    :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
-    :include => :pref_labels,
-    :order => 'LOWER(labels.value)',
-    :group => 'concepts.id'
+ # scope :broader_tops,
+ #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
+ #   :include => :pref_labels,
+ #   :order => 'LOWER(labels.value)',
+ #   :group => 'concepts.id'
+  scope :broader_tops, includes(:narrower_relations, :pref_labels).
+    where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class}).
+    order('LOWER(labels.value)')
 
   scope :with_associations, includes([
       {:labelings => :target}, :relations, :matches, :notes
@@ -179,11 +183,11 @@ class Concept::Base < ActiveRecord::Base
     lang ||= I18n.locale
     lang = lang.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
-      Rails.logger.warn("Two pref_labels (#{hash[label.lang]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
+      Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
       hash[label.language] = label
     end
     return @cached_pref_labels[lang] if @cached_pref_labels[lang]
-    pref_label = Iqvoc::Concept.pref_labeling_class.label_class.build(:language => lang)
+    pref_label = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang)
     pref_label.concepts << self
     pref_label
   end
