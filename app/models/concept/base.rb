@@ -21,30 +21,22 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :concept_relations, :foreign_key => 'owner_id'
+  has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base"
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base"
 
   has_many :labels, :through => :labelings, :source => :target
 
+  has_many :notes, :class_name => "Note::Base", :as => :owner
   has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
 
-  has_many :matches
+  has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base"
 
   # *** Classifications
   # FIXME: Should be a matches (to other skos vocabularies)
   has_many :classifications, :foreign_key => 'owner_id'
   has_many :classifiers, :through => :classifications, :source => :target
   
-  # *** Matches (pointing to an other thesaurus)
-  # FIXME: Must be configureable
-  has_many :close_matches,    :class_name => "Match::SKOS::Close"
-  has_many :broader_matches,  :class_name => "Match::SKOS::Broader"
-  has_many :narrower_matches, :class_name => "Match::SKOS::Narrower"
-  has_many :related_matches,  :class_name => "Match::SKOS::Related"
-  has_many :exact_matches,    :class_name => "Match::SKOS::Exact"
-  @nested_relations += [:close_matches]
-
   # FIXME: What is this for?
   has_many :referenced_matches,           :class_name => "Match::Base",       :foreign_key => 'value'
   has_many :referenced_concept_relations, :class_name => "Concept::Relation::Base", :foreign_key => 'target_id'
@@ -64,32 +56,22 @@ class Concept::Base < ActiveRecord::Base
     :order => 'LOWER(labels.value)',
     :group => 'concepts.id'
 
-  scope :with_associations, :include => [
-    :pref_labels, :alt_labels, :hidden_labels,
-    {:broader => :pref_labels}, {:narrower => :pref_labels}, {:related => :pref_labels},
-    :classifiers,
-    :close_matches, :broader_matches, :narrower_matches, :related_matches, :exact_matches,
-    :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
-    {:umt_source_notes => :note_annotations},
-    {:umt_usage_notes => :note_annotations},
-    {:umt_change_notes => :note_annotations},
-    {:umt_export_notes => :note_annotations}
-  ]
+  scope :with_associations, includes([
+      {:labelings => :target}, :relations, :matches, :notes
+    ])
 
   scope :with_pref_labels,
-    :include => :pref_labels,
-    :conditions => {:labelings => {:type => 'PrefLabeling'}},
-    :order => 'LOWER(labels.value)'
+    includes(:pref_labels).
+    order("LOWER(#{Label::Base.table_name}.value)").
+    where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   scope :in_edit_mode,
     where(arel_table[:locked_by].eq(nil).complement)
 
-  after_initialize :init_label_caches
-
   def self.associations_for_versioning
     [ 
       :labelings, 
-      :concept_relations, 
+      :relations, 
       :referenced_concept_relations, 
       :matches, 
       :referenced_matches, 
@@ -101,7 +83,7 @@ class Concept::Base < ActiveRecord::Base
   def self.first_level_associations
     [
       :labelings, 
-      :concept_relations, 
+      :relations, 
       :referenced_concept_relations, 
       :referenced_matches, 
       :matches, 
@@ -143,10 +125,6 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Labels/Labelings
 
-  # FIXME: This is buggy! :-(
-  # Specifing a :class_name doesn't result in a type = :class_name condition!
-  # The :conditions don't work with :through (propably a rails 3.0.0 bug!)
-  # I suggest to delete this (very handy) relation and to move the logic to the controllers (=> just woking whith the 'labellings' relation)
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
     :class_name => Iqvoc::Concept.pref_labeling_class_name 
@@ -158,6 +136,12 @@ class Concept::Base < ActiveRecord::Base
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
+  end
+
+  # *** Matches (pointing to an other thesaurus)
+  Iqvoc::Concept.match_class_names.each do |match_class_name|
+    has_many match_class_name.to_relation_name, :class_name => match_class_name
+    @nested_relations << match_class_name.to_relation_name
   end
 
   # *** Notes
@@ -186,29 +170,40 @@ class Concept::Base < ActiveRecord::Base
     @full_validation = false
   end
 
-  def pref_label
-    pref_labels.first || nil # I18n.t("txt.models.concept.no_pref_label")
-  end
-
-  def init_label_caches
-    @pl4l = {} # pref label caching hash to speed things up
-    @al4l = {}
-  end
-
   # returns the (one!) preferred label of a concept for the requested language.
   # lang can either be a (lowercase) string or symbol with the (ISO ....) two letter
   # code of the language (e.g. :en for English, :fr for French, :de for German).
-  # if lang is NIL, :en will be used. If no prefLabel for the requested language exists,
+  # if lang is NIL, the current I18n language will be used will be used. If no prefLabel for the requested language exists,
   # a new label will be returned (if you modify it, don't forget to save it afterwards!)
-  def pref_label_for_language(lang = :en)
-    return @pl4l[lang] unless @pl4l[lang].nil?
-    @pl4l[lang] = pref_labels.for_language(lang.to_s).first || pref_labels.new(:language => lang.to_s)
+  def pref_label(lang = nil)
+    lang ||= I18n.locale
+    lang = lang.to_s
+    @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
+      Rails.logger.warn("Two pref_labels (#{hash[label.lang]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
+      hash[label.language] = label
+    end
+    return @cached_pref_labels[lang] if @cached_pref_labels[lang]
+    pref_label = Iqvoc::Concept.pref_labeling_class.label_class.build(:language => lang)
+    pref_label.concepts << self
+    pref_label
   end
 
-  def alt_labels_for_language(lang = :en)
-    return @al4l[lang] unless @al4l[lang].nil?
-    @al4l[lang] = alt_labels.select {|al| al.language == lang.to_s}
-    # @al4l[lang] = alt_labels.for_language(lang.to_s) || alt_labels.new(:language => lang.to_s)
+  def labels_for_class_and_language(label_class, lang = :en)
+    label_class = label_class.name if label_class.is_a?(ActiveRecord::Base) # Use the class name string
+    @labels ||= labelings.each_with_object({}) do |labeling, hash|
+      ((hash[labeling.type] ||= {})[labeling.target.lang] ||= []) << labeling.target
+    end
+    return @labels && @labels[label_class] && @labels[label_class][lang]
+  end
+
+  def related_concepts_for_relation_class(relation_class)
+    relation_class = relation_class.name if relation_class.is_a?(ActiveRecord::Base) # Use the class name string
+    relations.select{|rel| rel.class.name == relation_class }.map(&:target)
+  end
+
+  def matches_for_class(match_class)
+    match_class = match_class.name if match_class.is_a?(ActiveRecord::Base) # Use the class name string
+    matches.select{|match| match.class.name == match_class }
   end
 
   # this find_by_origin method returns only instances of the current class.
