@@ -57,7 +57,7 @@ class Concept::Base < ActiveRecord::Base
   # Narrower
   has_many :narrower_relations,
     :foreign_key => :owner_id,
-    :class_name => 'Concept::Relation::SKOS::Narrower', # FIXME: Must this be configureable????
+    :class_name => 'Concept::Relation::SKOS::Narrower', # FIXME: Must this be configureable????s
   :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
   has_many :narrower,
     :through => :narrower_relations,
@@ -124,7 +124,7 @@ class Concept::Base < ActiveRecord::Base
  #   :order => 'LOWER(labels.value)',
  #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
-    where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class}).
+    where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
     order('LOWER(labels.value)')
 
   scope :with_associations, includes([
