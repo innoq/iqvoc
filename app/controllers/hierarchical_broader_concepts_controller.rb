@@ -1,13 +1,13 @@
 class HierarchicalBroaderConceptsController < HierarchicalConceptsController
   def index
     case params[:root]
-      when 'source'
-        @concepts = Iqvoc::Concept.base_class.published.broader_tops
-      when /\d+/
-        @concepts = Iqvoc::Concept.base_class.find(params[:root]).broader.published.with_pref_labels.all
+    when 'source'
+      @concepts = Iqvoc::Concept.base_class.published.broader_tops
+    when /\d+/
+      @concepts = Iqvoc::Concept.base_class.find(params[:root]).broader.published.with_pref_labels.all
     end
 
-     respond_to do |format|
+    respond_to do |format|
       format.html { store_location }
       format.json do
         @concepts.map! do |c|

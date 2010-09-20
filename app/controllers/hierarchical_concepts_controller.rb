@@ -5,9 +5,10 @@ class HierarchicalConceptsController < ConceptsController
   def index
     case params[:root]
     when 'source'
-      @concepts = Iqvoc::Concept.base_class.published.tops
+      @concepts = Iqvoc::Concept.base_class.tops.published.with_pref_labels
     when /\d+/
-      @concepts = Iqvoc::Concept.base_class.find(params[:root]).narrower.published.with_pref_labels.all
+      root_concept = Iqvoc::Concept.base_class.find(params[:root])
+      @concepts = root_concept.narrower.published.with_pref_labels.all
     end
     
     respond_to do |format|
@@ -19,7 +20,7 @@ class HierarchicalConceptsController < ConceptsController
             :url  => concept_path(:lang => @active_language, :id => c),
             :id   => c.id
           }
-          hsh[:hasChildren] = c.narrower.any?
+          hsh[:hasChildren] = c.narrower_relations.any?
           hsh
         end
         render :json => @concepts.to_json
