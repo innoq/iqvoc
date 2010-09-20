@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100917122003) do
+ActiveRecord::Schema.define(:version => 20100920142458) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20100917122003) do
   add_index "compound_forms", ["domain_id"], :name => "index_compound_forms_on_domain_id"
 
   create_table "concept_relations", :force => true do |t|
-    t.string   "type",       :limit => 50, :default => "SemanticRelation", :null => false
+    t.string   "type",       :limit => 50, :null => false
     t.integer  "owner_id"
     t.integer  "target_id"
     t.datetime "created_at"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20100917122003) do
   add_index "concept_relations", ["target_id"], :name => "index_semantic_relations_on_target_id"
 
   create_table "concepts", :force => true do |t|
-    t.string   "type",           :limit => 50, :default => "Concept", :null => false
+    t.string   "type",           :limit => 50,                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "origin"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20100917122003) do
   create_table "labels", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "language",          :limit => 2,    :default => "de"
+    t.string   "language",          :limit => 2,                   :null => false
     t.string   "value",             :limit => 1024
     t.string   "base_form"
     t.string   "inflectional_code"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(:version => 20100917122003) do
 
   add_index "labels", ["language"], :name => "index_labels_on_owner_id_and_language"
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
-  add_index "labels", ["value"], :name => "index_labels_on_value"
+  add_index "labels", ["value"], :name => "index_labels_on_value", :length => {"value"=>255}
 
   create_table "lexical_variants", :force => true do |t|
     t.integer  "owner_id"
@@ -173,13 +173,13 @@ ActiveRecord::Schema.define(:version => 20100917122003) do
   add_index "note_annotations", ["note_id"], :name => "index_note_annotations_on_note_id"
 
   create_table "notes", :force => true do |t|
-    t.string   "language",   :limit => 2,    :default => "de"
+    t.string   "language",   :limit => 2
     t.string   "value",      :limit => 1024
     t.string   "type",       :limit => 50
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
-    t.string   "owner_type", :limit => 50
+    t.string   "owner_type", :limit => 50,   :null => false
   end
 
   add_index "notes", ["owner_id", "language"], :name => "index_notes_on_owner_id_and_language"
