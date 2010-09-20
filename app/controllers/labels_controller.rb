@@ -20,14 +20,14 @@ class LabelsController < ApplicationController
   end
 
   def show
-    @label = Iqvoc::Label.base_class.current_version(params[:id]).published.with_associations.first
+    @label = Label::SKOSXL::Base.current_version(params[:id]).published.with_associations.first
     @new_label_version = Iqvoc::Label.base_class.new_version(params[:id]).first
     respond_to do |format|
       
       format.html do
         raise ActiveRecord::RecordNotFound unless @label
-        @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
-        @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
+       # @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
+       # @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
         @compound_in = Iqvoc::Label.base_class.compound_in(@label).all
         store_location
       end
