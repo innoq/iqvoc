@@ -27,7 +27,7 @@ class LabelTest < ActiveSupport::TestCase
     assert_equal @current_label.reverse_compound_form_contents.size, new_label.reverse_compound_form_contents.size
     assert_equal @current_label.notes.size, new_label.notes.size
     # +2 because of the 2 Change Note - note_annotations that get created in the after_branch Callback
-    assert_equal @current_label.note_annotations.size + 2, new_label.note_annotations.size
+    assert_equal @current_label.annotations.size + 2, new_label.annotations.size
     assert_equal @current_label.compound_forms.size, new_label.compound_forms.size
     assert_equal @current_label.compound_form_contents.size, new_label.compound_form_contents.size
   end
@@ -47,7 +47,7 @@ class LabelTest < ActiveSupport::TestCase
     concept.save!
     #Generates a few note annotations :-)
     current_label.notes.each do |note|
-      note.note_annotations << NoteAnnotation.new
+      note.annotations << NoteAnnotation.new
       note.save!
     end
     current_label.reload
@@ -59,7 +59,7 @@ class LabelTest < ActiveSupport::TestCase
     assert_equal current_label.label_relations.size, new_label.label_relations.size
     assert_equal current_label.reverse_compound_form_contents.size, new_label.reverse_compound_form_contents.size
     assert_equal current_label.notes.size, new_label.notes.size
-    assert_equal current_label.note_annotations.size, new_label.note_annotations.size
+    assert_equal current_label.annotations.size, new_label.annotations.size
     assert_equal current_label.compound_forms.size, new_label.compound_forms.size
     assert_equal current_label.compound_form_contents.size, new_label.compound_form_contents.size
   end
@@ -86,7 +86,7 @@ class LabelTest < ActiveSupport::TestCase
     assert_equal @current_label.label_relations.size, 0
     assert_equal @current_label.reverse_compound_form_contents.size, 0
     assert_equal @current_label.notes.size, 0
-    assert_equal @current_label.note_annotations.size, 0
+    assert_equal @current_label.annotations.size, 0
     assert_equal @current_label.compound_forms.size, 0
     assert_equal @current_label.compound_form_contents.size, 0
     assert(@current_label.delete)

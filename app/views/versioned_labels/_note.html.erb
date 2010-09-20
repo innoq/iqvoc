@@ -11,7 +11,7 @@
         
         <% if klass == "umt_change_note" %>
         <label><%= t("txt.common.note_annotation", :count => 2) %></label>
-        <textarea disabled="true" rows="3" cols="40"><%= note.note_annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
+        <textarea disabled="true" rows="3" cols="40"><%= note.annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
         
         <br />
         <% end %>

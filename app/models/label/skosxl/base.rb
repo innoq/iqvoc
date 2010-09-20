@@ -35,7 +35,7 @@ class Label::SKOSXL::Base < Label::Base
   has_many :label_relations, :foreign_key => 'domain_id', :class_name => "Label::Relation::Base"
 
   has_many :notes, :as => :owner, :class_name => "Note::Base", :dependent => :destroy
-  has_many :note_annotations, :through => :notes, :source => :annotations
+  has_many :annotations, :through => :notes, :source => :annotations
 
 
   # FIXME: Most of the following relations should be configureable
@@ -86,10 +86,10 @@ class Label::SKOSXL::Base < Label::Base
   #, :include => [
   # :inflectionals,
   # :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
-  # {:umt_source_notes => :note_annotations},
-  # {:umt_usage_notes => :note_annotations},
-  # {:umt_change_notes => :note_annotations},
-  # {:umt_export_notes => :note_annotations},
+  # {:umt_source_notes => :annotations},
+  # {:umt_usage_notes => :annotations},
+  # {:umt_change_notes => :annotations},
+  # {:umt_export_notes => :annotations},
   # {:homographs => :range}, {:qualifiers => :range}, {:translations => :range},
   # {:compound_form_contents => :label}
   # ]
@@ -98,7 +98,7 @@ class Label::SKOSXL::Base < Label::Base
 
   #Class-Methods
   def self.associations_for_versioning
-    [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, {:notes => :note_annotations}, {:compound_forms => :compound_form_contents}]
+    [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, {:notes => :annotations}, {:compound_forms => :compound_form_contents}]
   end
 
   def self.first_level_associations

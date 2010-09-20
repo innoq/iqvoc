@@ -14,7 +14,7 @@
     <% unless note.new_record? %>
     <%= note.language %> <%= linkify note.value %>
     <ul>
-      <% note.note_annotations.each do |annotation| %>
+      <% note.annotations.each do |annotation| %>
         <li><%= linkify "#{annotation.identifier} #{annotation.value}" %></li>
       <% end %>
     </ul>

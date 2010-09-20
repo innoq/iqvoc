@@ -91,7 +91,7 @@ Factory.define :note do |n|
 end
 
 Factory.define :history_note do |hn|
- hn.note_annotations {|a| [a.association(:note_annotation), a.association(:note_annotation)]}
+ hn.annotations {|a| [a.association(:note_annotation), a.association(:note_annotation)]}
 end
 
 Factory.define :scope_note do |sn|

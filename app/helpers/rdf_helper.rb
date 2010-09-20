@@ -31,11 +31,11 @@ module RdfHelper
       %w(exportNote changeNote sourceNote usageNote).each do |relation|
         relation_name = 'umt_' << relation.underscore.pluralize
         @concept.send(relation_name).each do |element|
-          if element.note_annotations.blank?
+          if element.annotations.blank?
             concept.Umt::build_predicate(relation, IqRdf::Literal.new(element, element.language))
           else
             concept.Umt::build_predicate(relation) do |blank_node|
-              element.note_annotations.each do |na|
+              element.annotations.each do |na|
                 ns, id = na.identifier.split(':')
                 blank_node.send(ns.camelize).build_predicate(id, IqRdf::PlainTurtleLiteral.new(na.value))
               end
@@ -90,11 +90,11 @@ module RdfHelper
       %w(exportNote changeNote sourceNote usageNote).each do |relation|
         relation_name = 'umt_' << relation.underscore.pluralize
         label_to_render.send(relation_name).each do |element|
-          if element.note_annotations.blank?
+          if element.annotations.blank?
             label.Umt::build_predicate(relation, IqRdf::Literal.new(element, element.language))
           else
             label.Umt::build_predicate(relation) do |blank_node|
-              element.note_annotations.each do |na|
+              element.annotations.each do |na|
                 ns, id = na.identifier.split(':')
                 blank_node.send(ns.camelize).build_predicate(id, IqRdf::PlainTurtleLiteral.new(na.value))
               end

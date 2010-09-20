@@ -147,7 +147,7 @@ class Concept::Base < ActiveRecord::Base
       :matches, 
       :referenced_matches, 
       :classifications, 
-      {:notes => :note_annotations}
+      {:notes => :annotations}
     ]
   end
 

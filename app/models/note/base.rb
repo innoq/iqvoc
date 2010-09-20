@@ -12,7 +12,7 @@ class Note::Base < ActiveRecord::Base
              
   has_many :annotations, :class_name => "Note::Annotated::Base", :dependent => :destroy
   
-  accepts_nested_attributes_for :note_annotations
+  accepts_nested_attributes_for :annotations
 
   # ********** Scopes
 
@@ -43,9 +43,8 @@ class Note::Base < ActiveRecord::Base
   end
   
   def from_annotation_list!(str)
-    annotations = str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }
-    annotations.each do |annotation|
-      note_annotations << NoteAnnotation.new(:identifier => annotation.first, :value => annotation.second)
+    str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
+      annotations << NoteAnnotation.new(:identifier => annotation.first, :value => annotation.second)
     end
     self
   end
