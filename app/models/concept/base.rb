@@ -22,9 +22,9 @@ class Concept::Base < ActiveRecord::Base
   @nested_relations = [] # Will be marked as nested attributes later
 
   has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base"
+  has_many :related_concepts, :through => :relations, :source => :target
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base"
-
   has_many :labels, :through => :labelings, :source => :target
 
   has_many :notes, :class_name => "Note::Base", :as => :owner
@@ -118,11 +118,11 @@ class Concept::Base < ActiveRecord::Base
   scope :tops, includes(:broader_relations).
     where(:concept_relations => {:id => nil})
 
- # scope :broader_tops,
- #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
- #   :include => :pref_labels,
- #   :order => 'LOWER(labels.value)',
- #   :group => 'concepts.id'
+  # scope :broader_tops,
+  #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
+  #   :include => :pref_labels,
+  #   :order => 'LOWER(labels.value)',
+  #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
     order('LOWER(labels.value)')
@@ -195,7 +195,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_class_and_language(label_class, lang = :en)
     label_class = label_class.name if label_class.is_a?(ActiveRecord::Base) # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
-      ((hash[labeling.type] ||= {})[labeling.target.lang] ||= []) << labeling.target
+      ((hash[labeling.type.to_s] ||= {})[labeling.target.lang] ||= []) << labeling.target
     end
     return @labels && @labels[label_class] && @labels[label_class][lang]
   end
@@ -280,12 +280,8 @@ class Concept::Base < ActiveRecord::Base
   end
   
   def associations_must_be_published
-    if @full_validation == true
-      associations_for_validation = [
-        :pref_labels, :alt_labels, :hidden_labels,
-        :broader, :narrower, :related
-      ]
-      associations_for_validation.each do |method|
+    if @full_validation == true 
+      [:labels, :related_concepts].each do |method|
         if self.send(method).unpublished.any?
           errors.add(:base, I18n.t("txt.models.concept.association_#{method}_unpublished"))
         end
