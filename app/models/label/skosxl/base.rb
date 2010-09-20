@@ -1,3 +1,4 @@
+# FIXME: Not much flexiblity refactorings done yet
 class Label::SKOSXL::Base < Label::Base
 
   include IqvocGlobal::CommonScopes
@@ -6,56 +7,71 @@ class Label::SKOSXL::Base < Label::Base
   
   attr_reader :inflectionals_attributes
 
+  # ********** Validations
+
   validate :two_versions_exist, :on => :create
   
   # Run these validations if @full_validation is true
-  validate :homograph_and_qualifier_existence, 
-    :compound_form_contents_size,
-    :pref_label_language,
-    :translations_must_be_in_foreign_language
+  validate :compound_form_contents_size
+  #, :homograph_and_qualifier_existence,
+  # :translations_must_be_in_foreign_language
+  # :pref_label_language
+
+  # ********** Hooks
 
   before_destroy :has_references?
   after_save :overwrite_inflectionals!
   after_create :after_branch
 
-  [:notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions].each do |name|
-    has_many name, :as => :owner, :dependent => :destroy
-  end
-  
-  has_many :inflectionals, :dependent => :destroy
+  # ********** "Static"/unconfigureable relations
 
-  has_many :pref_labelings, :foreign_key => 'target_id'
-  has_many :alt_labelings, :foreign_key => 'target_id'
-  has_many :hidden_labelings, :foreign_key => 'target_id'
-  
-  has_many :concepts_as_pref_label, :source => :owner, :through => :pref_labelings, :conditions => "concepts.published_at IS NOT NULL"
-  has_many :concepts_as_alt_label, :source => :owner, :through => :alt_labelings, :conditions => "concepts.published_at IS NOT NULL"
-  has_many :concepts_as_hidden_label, :source => :owner, :through => :hidden_labelings, :conditions => "concepts.published_at IS NOT NULL"
-  
+  @nested_relations = [] # Will be marked as nested attributes later
+
+  has_many :inflectionals, :class_name => "Inflectional::Base", :foreign_key => "label_id", :dependent => :destroy
+
+  has_many :labelings, :class_name => "Labeling::Base", :foreign_key => 'target_id'
+  has_many :concepts, :through => :labelings, :source => :owner
+
+  has_many :label_relations, :foreign_key => 'domain_id', :class_name => "Label::Relation::Base"
+
+  has_many :notes, :as => :owner, :class_name => "Note::Base", :dependent => :destroy
+  has_many :note_annotations, :through => :notes, :source => :annotations
+
+
+  # FIXME: Most of the following relations should be configureable
   has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
   has_many :umt_usage_notes,  :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote',  :conditions => { :owner_type => self.name }, :dependent => :destroy
   has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
   has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
 
-  has_many :note_annotations, :through => :notes
-
   has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'UMT::CompoundForm', :dependent => :destroy
   has_many :compound_form_contents, :through => :compound_forms, :class_name => 'UMT::CompoundFormContent' 
 
   has_many :reverse_compound_form_contents, :foreign_key => 'label_id', :class_name => 'UMT::CompoundFormContent' 
-  
+
   has_many :homographs, :foreign_key => 'domain_id', :class_name => 'UMT::Homograph', :dependent => :destroy
   has_many :qualifiers, :foreign_key => 'domain_id', :class_name => 'UMT::Qualifier', :dependent => :destroy
   has_many :translations, :foreign_key => 'domain_id', :class_name => 'UMT::Translation', :dependent => :destroy
   has_many :lexical_extensions, :foreign_key => 'domain_id', :class_name => 'UMT::LexicalExtension', :dependent => :destroy
 
-  #Helper methods for the versioning
-  has_many :label_relations, :foreign_key => 'domain_id'
+  # Helper methods for the versioning
+  # FIXME: WTF? :-)
   has_many :referenced_label_relations, :class_name => 'LabelRelation', :foreign_key => 'range_id'
+
+  # ************** "Dynamic"/configureable relations
+
+  Iqvoc::Label.note_class_names.each do |note_class_name|
+    has_many note_class_name.to_relation_name, :as => :owner, :class_name => note_class_name, :dependent => :destroy
+    @nested_relations << note_class_name.to_relation_name
+  end
+
+  # ********** Relation Stuff
   
-  [:definitions, :editorial_notes, :umt_source_notes, :umt_change_notes, :umt_usage_notes].each do |relation|
+  @nested_relations.each do |relation|
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
+
+  # ********** Scopes
   
   scope :by_origin_or_id, lambda { |arg|
     { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
@@ -65,16 +81,20 @@ class Label::SKOSXL::Base < Label::Base
     { :conditions => {:compound_form_contents => {:label_id => label.id}}, :joins => :compound_form_contents }
   }
 
-  scope :with_associations, :include => [
-    :inflectionals,
-    :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
-    {:umt_source_notes => :note_annotations},
-    {:umt_usage_notes => :note_annotations},
-    {:umt_change_notes => :note_annotations},
-    {:umt_export_notes => :note_annotations},
-    {:homographs => :range}, {:qualifiers => :range}, {:translations => :range},
-    {:compound_form_contents => :label}
-  ]
+  # FIXME This should be working again
+  scope :with_associations, includes(:labelings => :owner)
+  #, :include => [
+  # :inflectionals,
+  # :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
+  # {:umt_source_notes => :note_annotations},
+  # {:umt_usage_notes => :note_annotations},
+  # {:umt_change_notes => :note_annotations},
+  # {:umt_export_notes => :note_annotations},
+  # {:homographs => :range}, {:qualifiers => :range}, {:translations => :range},
+  # {:compound_form_contents => :label}
+  # ]
+  
+  # ********** Methods
 
   #Class-Methods
   def self.associations_for_versioning
@@ -110,6 +130,11 @@ class Label::SKOSXL::Base < Label::Base
   def initialize(params = {})
     super(params)
     @full_validation = false
+  end
+
+  def concepts_for_labeling_class(labeling_class)
+    labeling_class = labeling_class.name if labeling_class.is_a?(ActiveRecord::Base) # Use the class name string
+    labelings.select{|l| l.class.name == labeling_class.to_s }.map(&:owner)
   end
 
   def endings
@@ -225,16 +250,17 @@ class Label::SKOSXL::Base < Label::Base
     errors.add(:base, I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
   end
 
-  def homograph_and_qualifier_existence
-    if @full_validation == true
-      if homographs.size >= 1
-        errors.add(:base, I18n.t("txt.models.label.qualifier_error")) unless qualifiers.size >= 1
-      end
-      if qualifiers.length >= 1
-        errors.add(:base, I18n.t("txt.models.label.homograph_error")) unless homographs.size >= 1
-      end
-    end
-  end
+  # FIXME: Homographs etc are UMT models... The the validations can't stay here
+  # def homograph_and_qualifier_existence
+  #  if @full_validation == true
+  #    if homographs.size >= 1
+  #      errors.add(:base, I18n.t("txt.models.label.homograph_error")) unless qualifiers.size >= 1
+  #    end
+  #    if qualifiers.length >= 1
+  #      errors.add(:base, I18n.t("txt.models.label.qualifier_error")) unless homographs.size >= 1
+  #    end
+  #  end
+  #end
 
   def compound_form_contents_size
     if @full_validation == true
@@ -246,21 +272,23 @@ class Label::SKOSXL::Base < Label::Base
     end
   end
 
-  def pref_label_language
-    if @full_validation == true
-      if language != "de" && pref_labelings.any?
-        errors.add(:base, I18n.t("txt.models.label.pref_label_language"))
-      end
-    end
-  end
+  # FIXME: This is very UMT specific!
+  # def pref_label_language
+  #  if @full_validation == true
+  #    if language != "de" && pref_labelings.any?
+  #      errors.add(:base, I18n.t("txt.models.label.pref_label_language"))
+  #    end
+  #  end
+  #end
   
-  def translations_must_be_in_foreign_language
-    if @full_validation == true
-      if translations.count(:joins => :range, :conditions => {:labels => {:language => language}}) > 0
-        errors.add(:base, I18n.t("txt.models.label.translations_must_be_in_foreign_language"))
-      end
-    end
-  end
+  # FIXME: Translations are UMT models... The the validation can't stay here
+  # def translations_must_be_in_foreign_language
+  #  if @full_validation == true
+  #    if translations.count(:joins => :range, :conditions => {:labels => {:language => language}}) > 0
+  #      errors.add(:base, I18n.t("txt.models.label.translations_must_be_in_foreign_language"))
+  #    end
+  #  end
+  #end
 
   #Callbacks
   def has_references?
