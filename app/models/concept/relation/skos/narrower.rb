@@ -1,3 +1,3 @@
-class Concept::Relation::SKOS::Narrower < ConceptRelation::Base
+class Concept::Relation::SKOS::Narrower < Concept::Relation::Base
 
 end

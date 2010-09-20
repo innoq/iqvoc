@@ -1,2 +1,2 @@
-class Concept::Relation::SKOS::Related < ConceptRelation::Base
+class Concept::Relation::SKOS::Related < Concept::Relation::Base
 end
