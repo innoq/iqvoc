@@ -43,11 +43,15 @@ class Label::Base < ActiveRecord::Base
   #
   # Attention: This means that label classes without version controll will also
   # have to set the published_at flag to be recognized as published!!
+  # FIXME: This is also defined in the mystical Common mixins included in Label::SKOSXL... 
   scope :published, where(
     arel_table['published_at'].not_eq(nil).or(
       arel_table['rev'].eq(1).and(arel_table['published_at'].eq(nil))
     )
   )
+
+  # FIXME: This is also defined in the mystical Common mixins included in Label::SKOSXL...
+  scope :unpublished, where(arel_table['published_at'].eq(nil))
 
   # ********* Methods
 
