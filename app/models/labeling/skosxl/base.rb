@@ -15,5 +15,9 @@ class Labeling::SKOSXL::Base < Labeling::Base
   def <=>(other)
     owner.pref_label <=> other.owner.pref_label
   end
+
+  def self.label_class
+    Label::SKOSXL::Base
+  end
   
 end
