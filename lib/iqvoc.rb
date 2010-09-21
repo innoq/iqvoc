@@ -81,15 +81,22 @@ module Iqvoc
   end
   
   module Label
-    mattr_accessor :base_class_name, :note_class_names, :relation_class_names
+    mattr_accessor :base_class_name, 
+                   :note_class_names, 
+                   :relation_class_names,
+                   :label_relation_class_names,
+                   :compound_form_class_name,
+                   :compound_form_content_class_name
 
-    self.base_class_name            = 'Label::SKOSXL::Base'
-    self.relation_class_names       = []
-    self.label_relation_class_names = [ 'Label::Relation::UMT::Translation',
-                                        'Label::Relation::UMT::Homograph',
-                                        'Label::Relation::UMT::Qualifier',
-                                        'Label::Relation::UMT::LexicalExtension' ]
-    self.note_class_names           = Iqvoc::Concept.note_class_names
+    self.base_class_name                  = 'Label::SKOSXL::Base'
+    self.relation_class_names             = []
+    self.label_relation_class_names       = [ 'Label::Relation::UMT::Translation',
+                                              'Label::Relation::UMT::Homograph',
+                                              'Label::Relation::UMT::Qualifier',
+                                              'Label::Relation::UMT::LexicalExtension' ]
+    self.note_class_names                 = Iqvoc::Concept.note_class_names
+    self.compound_form_class_name         = 'CompoundForm::UMT::Base'
+    self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
