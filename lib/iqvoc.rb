@@ -20,6 +20,10 @@ module Iqvoc
 
     self.note_class_names             = [ 'Note::SKOS::ChangeNote', 
                                           'Note::SKOS::Definition',
+                                          'Note::SKOS::EditorialNote',
+                                          'Note::SKOS::Example',
+                                          'Note::SKOS::HistoryNote',
+                                          'Note::SKOS::ScopeNote',
                                           'Note::UMT::ChangeNote',
                                           'Note::UMT::ExportNote',
                                           'Note::UMT::SourceNote',
