@@ -5,10 +5,10 @@ class HierarchicalConceptsController < ConceptsController
   def index
     case params[:root]
     when 'source'
-      @concepts = Iqvoc::Concept.base_class.tops.published.with_pref_labels
+      @concepts = Iqvoc::Concept.base_class.tops.published.with_pref_labels.includes(:narrower_relations)
     when /\d+/
       root_concept = Iqvoc::Concept.base_class.find(params[:root])
-      @concepts = root_concept.narrower.published.with_pref_labels.all
+      @concepts = root_concept.narrower.published.with_pref_labels.includes(:narrower_relations).all
     end
     
     respond_to do |format|

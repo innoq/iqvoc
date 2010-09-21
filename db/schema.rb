@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(:version => 20100920143747) do
   end
 
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
-  add_index "labels", ["value"], :name => "index_labels_on_value", :length => {"value"=>255}
+  add_index "labels", ["value"], :name => "index_labels_on_value"
 
   create_table "lexical_variants", :force => true do |t|
     t.integer  "owner_id"
