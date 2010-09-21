@@ -129,7 +129,7 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def concepts_for_labeling_class(labeling_class)
-    labeling_class = labeling_class.name if labeling_class.is_a?(ActiveRecord::Base) # Use the class name string
+    labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     labelings.select{|l| l.class.name == labeling_class.to_s }.map(&:owner)
   end
 

@@ -188,22 +188,27 @@ class Concept::Base < ActiveRecord::Base
     pref_label
   end
 
-  def labels_for_class_and_language(label_class, lang = :en)
-    label_class = label_class.name if label_class.is_a?(ActiveRecord::Base) # Use the class name string
+  def labels_for_labeling_class_and_language(labeling_class, lang = :en)
+    labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
-      ((hash[labeling.type.to_s] ||= {})[labeling.target.lang] ||= []) << labeling.target
+      ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target
     end
-    return @labels && @labels[label_class] && @labels[label_class][lang]
+    return (@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []
   end
 
   def related_concepts_for_relation_class(relation_class)
-    relation_class = relation_class.name if relation_class.is_a?(ActiveRecord::Base) # Use the class name string
+    relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
     relations.select{|rel| rel.class.name == relation_class }.map(&:target)
   end
 
   def matches_for_class(match_class)
-    match_class = match_class.name if match_class.is_a?(ActiveRecord::Base) # Use the class name string
+    match_class = match_class.name if match_class < ActiveRecord::Base # Use the class name string
     matches.select{|match| match.class.name == match_class }
+  end
+
+  def note_for_class(note_class)
+    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+    notes.select{|notes| notes.class.name == note_class }.last
   end
 
   # this find_by_origin method returns only instances of the current class.
