@@ -20,7 +20,11 @@ module Iqvoc
 
     self.note_class_names             = [ 'Note::SKOS::ChangeNote', 'Note::SKOS::Definition' ]
 
-    self.match_class_names            = [ 'Match::SKOS::Close', 'Match::SKOS::Broader', 'Match::SKOS::Narrower', 'Match::SKOS::Related', 'Match::SKOS::Exact' ]
+    self.match_class_names            = [ 'Match::SKOS::Close', 
+                                          'Match::SKOS::Broader', 
+                                          'Match::SKOS::Narrower', 
+                                          'Match::SKOS::Related', 
+                                          'Match::SKOS::Exact' ]
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
