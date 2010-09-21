@@ -33,14 +33,19 @@ class Label::SKOSXL::Base < Label::Base
   has_many :concepts, :through => :labelings, :source => :owner
 
   has_many :label_relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
-  has_many :referenced_label_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base',
+  has_many :referenced_label_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base'
 
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
-
-  has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'CompoundForm::Base', :dependent => :destroy
-  has_many :compound_form_contents, :through => :compound_forms, :class_name => 'CompoundForm::Content::Base', :dependent => :destroy
-  has_many :reverse_compound_form_contents, :foreign_key => 'label_id', :class_name => 'CompoundForm::Content::Base' 
+  
+  if Iqvoc::Label.compound_form_class_name
+    has_many Iqvoc::Label.compound_form_class_name.to_relation_name, 
+      :foreign_key => 'domain_id', 
+      :class_name  => Iqvoc::Label.compound_form_class_name
+    has_many Iqvoc::Label.compound_form_content_class_name.to_relation_name,
+      :class_name  => Iqvoc::Label.compound_form_content_class_name,
+      :through     => Iqvoc::Label.compound_form_class_name.to_relation_name
+  end
 
   # ************** "Dynamic"/configureable relations
 
@@ -51,7 +56,7 @@ class Label::SKOSXL::Base < Label::Base
   
   Iqvoc::Label.label_relation_class_names.each do |label_relation_class_name|
     has_many label_relation_class_name.to_relation_name,
-      :foreign_key => 'domain_id'
+      :foreign_key => 'domain_id',
       :class_name  => label_relation_class_name, 
       :dependent   => :destroy
   end
