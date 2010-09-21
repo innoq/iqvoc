@@ -2,7 +2,7 @@ class ConceptVersionsController < ApplicationController
   #Merges the current and the new concept vesion
   def merge
     current_concept = Iqvoc::Concept.base_class.current_version(params[:origin]).published.first
-    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless new_version
     #    begin
     ActiveRecord::Base.transaction do
@@ -58,7 +58,7 @@ class ConceptVersionsController < ApplicationController
   #Locks the Concept
   def lock
     current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if !new_version.locked?
         new_version.lock_by_user!(current_user.id)
@@ -81,7 +81,7 @@ class ConceptVersionsController < ApplicationController
   #Unlocks the Concept
   def unlock
     current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if new_version.locked?
         authorize! :unlock, new_version
@@ -102,7 +102,7 @@ class ConceptVersionsController < ApplicationController
   end
 
   def consistency_check
-    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @concept
     if @concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
@@ -114,7 +114,7 @@ class ConceptVersionsController < ApplicationController
   end
 
   def to_review
-    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:origin])
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @concept
     @concept.to_review!
     if @concept.save

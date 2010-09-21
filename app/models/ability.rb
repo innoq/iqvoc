@@ -17,11 +17,11 @@ class Ability
       can [:read, :write], [:versioned_label, :versioned_concept]
       can :use, :dashboard
       
-      can :unlock, Concept, :locked_by => user.id
-      can :unlock, Label, :locked_by => user.id
+      can :unlock, Concept::Base, :locked_by => user.id
+      can :unlock, Label::Base, :locked_by => user.id
       
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :continue_editing, Concept::Base, :locked_by => user.id
+      can :continue_editing, Label::Base, :locked_by => user.id
     end
     
     if user && user.owns_role?(:publisher)
@@ -29,11 +29,11 @@ class Ability
       can [:read, :write, :publish], [:versioned_label, :versioned_concept]
       can :use, :dashboard
       
-      can :unlock, Concept
-      can :unlock, Label
+      can :unlock, Concept::Base
+      can :unlock, Label::Base
       
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :continue_editing, Concept::Base, :locked_by => user.id
+      can :continue_editing, Label::Base, :locked_by => user.id
     end
     
     if user && user.owns_role?(:administrator)
@@ -42,11 +42,12 @@ class Ability
       can :manage, User
       can :use, :dashboard
       
-      can :unlock, Concept
-      can :unlock, Label
-      
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :unlock, Concept::Base
+      can :unlock, Label::Base
+
+      # FIXME: shouldn't the Admin be able to do everything? Proposal by tillsc: delete the :locked_by restriction :-)
+      can :continue_editing, Concept::Base, :locked_by => user.id
+      can :continue_editing, Label::Base, :locked_by => user.id
     end
     
   end

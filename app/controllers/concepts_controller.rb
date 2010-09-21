@@ -15,8 +15,8 @@ class ConceptsController < ApplicationController
   end
 
   def show
-    @concept = Iqvoc::Concept.base_class.current_version(params[:id]).published.with_associations.first
-    @new_concept_version = Iqvoc::Concept.base_class.new_version(params[:id]).with_associations.first
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
+    @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     respond_to do |format|
       
       format.html do

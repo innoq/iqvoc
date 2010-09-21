@@ -3,18 +3,16 @@ class VersionedLabelsController < LabelsController
   before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }
   
   def show
-    @label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:id])
+    @label = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
 
-    inflectionals = Inflectional.find_all_by_value(@label.inflectionals.map(&:value))
+    inflectionals = Inflectional::Base.where(:value => @label.inflectionals.map(&:value)).all
     # subtract initial and current version from the inflectionals collection
     @inflectionals_labels = Iqvoc::Label.base_class.find(inflectionals.map(&:label_id)-[Iqvoc::Label.base_class.current_version(params[:id]).first.id, @label.id])
 
     respond_to do |format|
 
       format.html do
-        @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
-        @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
         @compound_in = Iqvoc::Label.base_class.compound_in(@label).all
       end
 
@@ -49,7 +47,7 @@ class VersionedLabelsController < LabelsController
   end
 
   def edit
-    @label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:id])
+    @label = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     
     authorize! :continue_editing, @label
@@ -68,7 +66,7 @@ class VersionedLabelsController < LabelsController
   end
 
   def update
-    @label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:id])
+    @label = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.last
     respond_to do |format|
       format.html do
         raise ActiveRecord::RecordNotFound unless @label
@@ -84,7 +82,7 @@ class VersionedLabelsController < LabelsController
   end
 
   def destroy
-    @new_label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:id])
+    @new_label = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_label
     if (@new_label.collect_first_level_associated_objects.each(&:destroy)) && (@new_label.delete)
       flash[:notice] = I18n.t("txt.controllers.label_versions.delete")

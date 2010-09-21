@@ -64,4 +64,16 @@ class Note::Base < ActiveRecord::Base
     "#{self.value}"
   end
 
+  def self.view_section
+    "notes"
+  end
+
+  def self.view_section_sort_key
+    100
+  end
+
+  def self.partial_name
+    "partials/note/base"
+  end
+
 end

@@ -2,7 +2,7 @@ class LabelVersionsController < ApplicationController
   # Merges the current and the new label version
   def merge
     current_label = Iqvoc::Label.base_class.current_version(params[:origin]).published.first
-    new_version = Iqvoc::Label.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless new_version
     
     if (current_label.present? ? current_label.collect_first_level_associated_objects.each(&:destroy) && (current_label.delete) : true)
@@ -53,7 +53,7 @@ class LabelVersionsController < ApplicationController
   #Locks the label
   def lock
     current_version = Iqvoc::Label.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Label.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if !new_version.locked?
         new_version.lock_by_user!(current_user.id)
@@ -75,7 +75,7 @@ class LabelVersionsController < ApplicationController
   #Unlocks the label
   def unlock
     current_version = Iqvoc::Label.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Label.base_class.get_new_or_initial_version(params[:origin])
+    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if new_version.locked?
         authorize! :unlock, new_version
@@ -96,7 +96,7 @@ class LabelVersionsController < ApplicationController
   end
 
   def consistency_check
-    @label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:origin])
+    @label = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     if @label.valid_with_full_validation?
       if @label.has_concept_or_label_relations?
@@ -116,7 +116,7 @@ class LabelVersionsController < ApplicationController
   end
 
   def to_review
-    @label = Iqvoc::Label.base_class.get_new_or_initial_version(params[:origin])
+    @label = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     @label.to_review!
     if @label.save

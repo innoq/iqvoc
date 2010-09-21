@@ -34,5 +34,17 @@ class Labeling::Base < ActiveRecord::Base
   scope :by_label_language, lambda { |lang|
     includes(:target) & Label::Base.by_language(lang)
   }
+  
+  def self.view_section
+    "labels"
+  end
+
+  def self.view_section_sort_key
+    100
+  end
+
+  def self.partial_name
+    "partials/labeling/base"
+  end
 
 end

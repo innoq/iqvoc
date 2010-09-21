@@ -3,7 +3,7 @@ class VersionedConceptsController < ConceptsController
   before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }
 
   def show
-    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     respond_to do |format|
       format.html do
         raise ActiveRecord::RecordNotFound unless @concept
@@ -36,7 +36,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def edit
-    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @concept
 
     authorize! :continue_editing, @concept
@@ -51,7 +51,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def update
-    @concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
 
     raise ActiveRecord::RecordNotFound unless @concept
     if @concept.update_attributes(params[:concept])
@@ -64,7 +64,7 @@ class VersionedConceptsController < ConceptsController
   end
 
   def destroy
-    @new_concept = Iqvoc::Concept.base_class.get_new_or_initial_version(params[:id])
+    @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_concept
     if (@new_concept.collect_first_level_associated_objects.each(&:destroy)) && (@new_concept.delete)
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
