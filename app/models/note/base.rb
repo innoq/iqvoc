@@ -44,7 +44,7 @@ class Note::Base < ActiveRecord::Base
   
   def from_annotation_list!(str)
     str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
-      annotations << NoteAnnotation.new(:identifier => annotation.first, :value => annotation.second)
+      annotations << Note::Annotated::Base.new(:identifier => annotation.first, :value => annotation.second)
     end
     self
   end
