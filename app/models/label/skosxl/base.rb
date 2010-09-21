@@ -27,22 +27,22 @@ class Label::SKOSXL::Base < Label::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :inflectionals, :class_name => "Inflectional::Base", :foreign_key => "label_id", :dependent => :destroy
+  has_many :inflectionals, :class_name => 'Inflectional::Base', :foreign_key => 'label_id', :dependent => :destroy
 
-  has_many :labelings, :class_name => "Labeling::Base", :foreign_key => 'target_id'
+  has_many :labelings, :class_name => 'Labeling::Base', :foreign_key => 'target_id'
   has_many :concepts, :through => :labelings, :source => :owner
 
-  has_many :label_relations, :foreign_key => 'domain_id', :class_name => "Label::Relation::Base"
+  has_many :label_relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
   # Helper methods for the versioning
   # FIXME: WTF? :-)
   has_many :referenced_label_relations, :class_name => 'Label::Relation::Base', :foreign_key => 'range_id'
 
-  has_many :notes, :as => :owner, :class_name => "Note::Base", :dependent => :destroy
+  has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
 
-  has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'UMT::CompoundForm', :dependent => :destroy
-  has_many :compound_form_contents, :through => :compound_forms, :class_name => 'UMT::CompoundFormContent' 
-  has_many :reverse_compound_form_contents, :foreign_key => 'label_id', :class_name => 'UMT::CompoundFormContent' 
+  has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'CompoundForm::Base', :dependent => :destroy
+  has_many :compound_form_contents, :through => :compound_forms, :class_name => 'CompoundForm::Content::Base', :dependent => :destroy
+  has_many :reverse_compound_form_contents, :foreign_key => 'label_id', :class_name => 'CompoundForm::Content::Base' 
 
   # ************** "Dynamic"/configureable relations
 
