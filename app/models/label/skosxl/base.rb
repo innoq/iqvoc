@@ -37,13 +37,6 @@ class Label::SKOSXL::Base < Label::Base
   has_many :notes, :as => :owner, :class_name => "Note::Base", :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
 
-
-  # FIXME: Most of the following relations should be configureable
-  has_many :umt_source_notes, :foreign_key => 'owner_id', :class_name => 'UMT::SourceNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
-  has_many :umt_usage_notes,  :foreign_key => 'owner_id', :class_name => 'UMT::UsageNote',  :conditions => { :owner_type => self.name }, :dependent => :destroy
-  has_many :umt_change_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ChangeNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
-  has_many :umt_export_notes, :foreign_key => 'owner_id', :class_name => 'UMT::ExportNote', :conditions => { :owner_type => self.name }, :dependent => :destroy
-
   has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'UMT::CompoundForm', :dependent => :destroy
   has_many :compound_form_contents, :through => :compound_forms, :class_name => 'UMT::CompoundFormContent' 
 
