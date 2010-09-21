@@ -18,7 +18,12 @@ module Iqvoc
     self.pref_labeling_languages      = [ :de, :en ]
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
-    self.note_class_names             = [ 'Note::SKOS::ChangeNote', 'Note::SKOS::Definition' ]
+    self.note_class_names             = [ 'Note::SKOS::ChangeNote', 
+                                          'Note::SKOS::Definition',
+                                          'Note::UMT::ChangeNote',
+                                          'Note::UMT::ExportNote',
+                                          'Note::UMT::SourceNote',
+                                          'Note::UMT::UsageNote' ]
 
     self.match_class_names            = [ 'Match::SKOS::Close', 
                                           'Match::SKOS::Broader', 
