@@ -8,11 +8,11 @@ module IqvocGlobal
          where(:origin => origin) 
         }
 
-        scope :for_dashboard, unpublished.where(:follow_up => nil)
-
         scope :published, where(arel_table[:published_at].not_eq(nil))
         scope :unpublished, where(:published_at => nil)
         
+        scope :for_dashboard, unpublished.where(:follow_up => nil)
+
         scope :unsynced, where(:rdf_updated_at => nil)
           
       end
