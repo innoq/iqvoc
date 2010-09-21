@@ -165,10 +165,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Methods
 
-  def self.get_new_or_initial_version(origin)
-    Concept.new_version(origin).first.blank? ? Concept.initial_version(origin).first : Concept.new_version(origin).first
-  end
-
   def initialize(params = {})
     super(params)
     @full_validation = false

@@ -122,10 +122,6 @@ class Label::SKOSXL::Base < Label::Base
     self.from_rdf(str).save!
   end
 
-  def self.get_new_or_initial_version(origin)
-    Label.new_version(origin).first.blank? ? Label.initial_version(origin).first : Label.new_version(origin).first
-  end
-
   #Instance-Methods
   def initialize(params = {})
     super(params)
