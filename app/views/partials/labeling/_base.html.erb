@@ -1,0 +1,8 @@
+<div class="relation">
+  <h3><%= t("txt.partials.labeling.#{klass.name.to_relation_name}") %> (<%= lang %>)</h3>
+  <div class="relation-body">
+    <%=  raw @concept.labels_for_labeling_class_and_language(klass, lang.to_s).each { |label|
+      link_to(label.value, label_path(:lang => @active_language, :id => label))
+    }.join(', ') %>
+  </div>
+</div>
