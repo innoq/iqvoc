@@ -33,9 +33,7 @@ class Label::SKOSXL::Base < Label::Base
   has_many :concepts, :through => :labelings, :source => :owner
 
   has_many :label_relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
-  # Helper methods for the versioning
-  # FIXME: WTF? :-)
-  has_many :referenced_label_relations, :class_name => 'Label::Relation::Base', :foreign_key => 'range_id'
+  has_many :referenced_label_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base',
 
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
