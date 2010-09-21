@@ -72,13 +72,13 @@ module Iqvoc
   module Label
     mattr_accessor :base_class_name, :note_class_names, :relation_class_names
 
-    self.base_class_name       = 'Label::SKOSXL::Base'
-    self.relation_class_names  = []
-    self.note_class_names      = [ 'Note::SKOS::Definition',
-      'Note::SKOS::HistoryNote',
-      'Note::SKOS::ScopeNote',
-      'Note::SKOS::EditorialNote',
-      'Note::SKOS::Example' ]
+    self.base_class_name            = 'Label::SKOSXL::Base'
+    self.relation_class_names       = []
+    self.label_relation_class_names = [ 'Label::Relation::UMT::Translation',
+                                        'Label::Relation::UMT::Homograph',
+                                        'Label::Relation::UMT::Qualifier',
+                                        'Label::Relation::UMT::LexicalExtension' ]
+    self.note_class_names           = Iqvoc::Concept.note_class_names
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")

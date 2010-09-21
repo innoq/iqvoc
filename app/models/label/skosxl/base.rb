@@ -33,29 +33,29 @@ class Label::SKOSXL::Base < Label::Base
   has_many :concepts, :through => :labelings, :source => :owner
 
   has_many :label_relations, :foreign_key => 'domain_id', :class_name => "Label::Relation::Base"
+  # Helper methods for the versioning
+  # FIXME: WTF? :-)
+  has_many :referenced_label_relations, :class_name => 'Label::Relation::Base', :foreign_key => 'range_id'
 
   has_many :notes, :as => :owner, :class_name => "Note::Base", :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
 
   has_many :compound_forms, :foreign_key => 'domain_id', :class_name => 'UMT::CompoundForm', :dependent => :destroy
   has_many :compound_form_contents, :through => :compound_forms, :class_name => 'UMT::CompoundFormContent' 
-
   has_many :reverse_compound_form_contents, :foreign_key => 'label_id', :class_name => 'UMT::CompoundFormContent' 
-
-  has_many :homographs, :foreign_key => 'domain_id', :class_name => 'UMT::Homograph', :dependent => :destroy
-  has_many :qualifiers, :foreign_key => 'domain_id', :class_name => 'UMT::Qualifier', :dependent => :destroy
-  has_many :translations, :foreign_key => 'domain_id', :class_name => 'UMT::Translation', :dependent => :destroy
-  has_many :lexical_extensions, :foreign_key => 'domain_id', :class_name => 'UMT::LexicalExtension', :dependent => :destroy
-
-  # Helper methods for the versioning
-  # FIXME: WTF? :-)
-  has_many :referenced_label_relations, :class_name => 'LabelRelation', :foreign_key => 'range_id'
 
   # ************** "Dynamic"/configureable relations
 
   Iqvoc::Label.note_class_names.each do |note_class_name|
     has_many note_class_name.to_relation_name, :as => :owner, :class_name => note_class_name, :dependent => :destroy
     @nested_relations << note_class_name.to_relation_name
+  end
+  
+  Iqvoc::Label.label_relation_class_names.each do |label_relation_class_name|
+    has_many label_relation_class_name.to_relation_name,
+      :foreign_key => 'domain_id'
+      :class_name  => label_relation_class_name, 
+      :dependent   => :destroy
   end
 
   # ********** Relation Stuff
