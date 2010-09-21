@@ -1,7 +1,9 @@
 require 'string'
 
 module Iqvoc
-  
+
+  VIEW_SECTIONS = ["main", "labels", "notes", "relations", "matches"]
+
   module Concept
     mattr_accessor :base_class_name, 
       :broader_relation_class_name, :further_relation_class_names,
@@ -36,10 +38,19 @@ module Iqvoc
       further_labeling_classes.merge(pref_labeling_class => pref_labeling_languages)
     end
 
+
+    def self.broader_relation_class
+      broader_relation_class_name.constantize
+    end
+
     def self.further_labeling_classes
       further_labeling_class_names.keys.each_with_object({}) do |class_name, hash|
         hash[class_name.constantize] = further_labeling_class_names[class_name]
       end
+    end
+
+    def self.relation_classes
+      further_relation_classes + [broader_relation_class, broader_relation_class.narrower_class]
     end
 
     def self.further_relation_classes
