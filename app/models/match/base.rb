@@ -6,15 +6,15 @@ class Match::Base < ActiveRecord::Base
 
   belongs_to :concept, :class_name => Iqvoc::Concept.base_class_name
 
-  def self.view_section
+  def self.view_section(obj)
     "matches"
   end
 
-  def self.view_section_sort_key
+  def self.view_section_sort_key(obj)
     100
   end
 
-  def self.partial_name
+  def self.partial_name(obj)
     "partials/match/base"
   end
 

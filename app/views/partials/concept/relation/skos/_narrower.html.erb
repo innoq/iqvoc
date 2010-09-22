@@ -1,10 +1,12 @@
 <div class="relation">
   <h4><%= t('txt.views.concepts.narrower') %></h4>
-  <% if concept.narrower.length > 0 %>
-    <div class="selector">
-      <%= treeview concept.id %>
-    </div>
-  <% else %>
-    <p><%= t('txt.views.concepts.missing.narrower') %></p>
-  <% end %>
+  <div class="relation-body">
+    <% if concept.narrower.length > 0 %>
+      <div class="selector">
+        <%= treeview concept.id %>
+      </div>
+    <% else %>
+      <p><%= t('txt.views.concepts.missing.narrower') %></p>
+    <% end %>
+  </div>
 </div>

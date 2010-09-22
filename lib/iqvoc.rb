@@ -87,22 +87,32 @@ module Iqvoc
       :relation_class_names,
       :label_relation_class_names,
       :compound_form_class_name,
-      :compound_form_content_class_name
+      :compound_form_content_class_name,
+      :view_sections
 
     self.base_class_name                  = 'Label::SKOSXL::Base'
-    self.relation_class_names             = []
-    self.label_relation_class_names       = [ 'Label::Relation::UMT::Translation',
+
+    self.relation_class_names             = [
+      'Label::Relation::UMT::Translation',
       'Label::Relation::UMT::Homograph',
       'Label::Relation::UMT::Qualifier',
       'Label::Relation::UMT::LexicalExtension' ]
+
     self.note_class_names                 = Iqvoc::Concept.note_class_names
+
     self.compound_form_class_name         = 'CompoundForm::UMT::Base'
     self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
+
+    self.view_sections = ["main", "concepts", "relations", "notes"]
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
+    end
+
+    def self.relation_classes
+      relation_class_names.map(&:constantize)
     end
 
     def self.note_classes

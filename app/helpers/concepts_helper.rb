@@ -11,11 +11,9 @@ module ConceptsHelper
     render :partial => "hierarchical_concepts/treeview", :locals => { :root => root }
   end
 
-  def render_association(hash, concept, association_class, furter_options = {})
-    hash[association_class.view_section] ||= {}
-    hash[association_class.view_section][association_class.view_section_sort_key] ||= ""
-    hash[association_class.view_section][association_class.view_section_sort_key] += 
-      render association_class.partial_name, furter_options.merge(:concept => concept, :klass => association_class)
+  def render_concept_association(hash, concept, association_class, furter_options = {})
+    ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") <<
+      render(association_class.partial_name(concept), furter_options.merge(:concept => concept, :klass => association_class))
   end
 
   def concept_view_data(concept)
@@ -23,20 +21,20 @@ module ConceptsHelper
 
     Iqvoc::Concept.further_labeling_classes.each do |labeling_class, languages|
       (languages || I18n.available_locales).each do |lang|
-        render_association(res, concept, labeling_class, :lang => lang)
+        render_concept_association(res, concept, labeling_class, :lang => lang)
       end
     end
 
     Iqvoc::Concept.relation_classes.each do |relation_class|
-      render_association(res, concept, relation_class)
+      render_concept_association(res, concept, relation_class)
     end
 
     Iqvoc::Concept.match_classes.each do |match_class|
-      render_association(res, concept, match_class)
+      render_concept_association(res, concept, match_class)
     end
 
     Iqvoc::Concept.note_classes.each do |note_class|
-      render_association(res, concept, note_class)
+      render_concept_association(res, concept, note_class)
     end
 
 

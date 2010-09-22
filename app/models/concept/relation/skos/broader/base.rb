@@ -4,15 +4,15 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
     Concept::Relation::SKOS::Narrower
   end
 
-  def self.view_section
+  def self.view_section(obj)
     "main"
   end
 
-  def self.view_section_sort_key
+  def self.view_section_sort_key(obj)
     100
   end
 
-  def self.partial_name
+  def self.partial_name(obj)
     "partials/concept/relation/skos/broader"
   end
 

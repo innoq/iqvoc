@@ -30,8 +30,9 @@ class Label::SKOSXL::Base < Label::Base
   has_many :labelings, :class_name => 'Labeling::Base', :foreign_key => 'target_id'
   has_many :concepts, :through => :labelings, :source => :owner
 
-  has_many :label_relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
-  has_many :referenced_label_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base'
+  has_many :relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
+  # Which references are pointing to this label?
+  has_many :referenced_by_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base'
 
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
@@ -43,7 +44,7 @@ class Label::SKOSXL::Base < Label::Base
   # Where is this label references as CompoundFormContent?
   has_many :reverse_compound_form_contents, :class_name => 'CompoundForm::Content::Base', :foreign_key => 'label_id'
   has_many :reverse_compound_forms, :class_name => 'CompoundForm::Base', :through => :reverse_compound_form_contents, :source => :compound_form
-  # The following would be nice but in't working :-)
+  # The following would be nice but isn't working :-)
   #has_many :reverse_compound_form_labels, :class_name => 'Label::Base', :through => :reverse_compound_forms, :source => :domain
   
   # ************** "Dynamic"/configureable relations
@@ -53,10 +54,10 @@ class Label::SKOSXL::Base < Label::Base
     @nested_relations << note_class_name.to_relation_name
   end
   
-  Iqvoc::Label.label_relation_class_names.each do |label_relation_class_name|
-    has_many label_relation_class_name.to_relation_name,
+  Iqvoc::Label.relation_class_names.each do |relation_class_name|
+    has_many relation_class_name.to_relation_name,
       :foreign_key => 'domain_id',
-      :class_name  => label_relation_class_name, 
+      :class_name  => relation_class_name,
       :dependent   => :destroy
   end
 
@@ -130,7 +131,17 @@ class Label::SKOSXL::Base < Label::Base
 
   def concepts_for_labeling_class(labeling_class)
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
-    labelings.select{|l| l.class.name == labeling_class.to_s }.map(&:owner)
+    labelings.select{ |l| l.class.name == labeling_class.to_s }.map(&:owner)
+  end
+
+  def related_labels_for_relation_class(relation_class)
+    relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
+    relations.select{ |rel| rel.class.name == relation_class }.map(&:range)
+  end
+
+  def notes_for_class(note_class)
+    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+    notes.select{ |note| note.class.name == note_class }
   end
 
   def endings
