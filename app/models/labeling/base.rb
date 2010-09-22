@@ -25,7 +25,8 @@ class Labeling::Base < ActiveRecord::Base
       :conditions => ["labels.language LIKE :language", { :language => lang }] }
   }
 
-  scope :published, includes(:owner) & Concept::Base.published & Label::Base.published
+  scope :concept_published, includes(:owner) & Concept::Base.published
+  scope :label_published, includes(:target) & Label::Base.published
 
   scope :label_begins_with, lambda { |letter|
     includes(:target) & Label::Base.begins_with(letter)
@@ -34,6 +35,12 @@ class Labeling::Base < ActiveRecord::Base
   scope :by_label_language, lambda { |lang|
     includes(:target) & Label::Base.by_language(lang)
   }
+
+  # FIXME: There should be a validation checking this
+  # Might there be more then one laeling of this type and language per concept?
+  def self.only_one_allowed?
+    false
+  end
   
   def self.view_section(obj)
     obj.is_a?(Label::Base) ? "concepts" : "labels"
@@ -45,6 +52,10 @@ class Labeling::Base < ActiveRecord::Base
 
   def self.partial_name(obj)
     "partials/labeling/base"
+  end
+
+  def self.edit_partial_name(obj)
+    "partials/labeling/edit_base"
   end
 
 end

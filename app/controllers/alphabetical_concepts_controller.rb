@@ -9,7 +9,8 @@ class AlphabeticalConceptsController < ConceptsController
       ['[']
     
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
-      published.
+      label_published.
+      concept_published.
       label_begins_with(params[:letter]).
       by_label_language(@active_language).
       includes(:target). 

@@ -14,15 +14,11 @@
       </ol>
     </fieldset>
 
-    <% %w(definition editorial_note umt_source_note).each do |klass| %>
-        <%= render :partial => "versioned_concepts/note", :locals => { :f => f, :klass => klass } %>
+    <% Iqvoc::Concept.note_classes.each do |note_class| %>
+        <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :concept => @concept, :klass => note_class, :f => f } %>
     <% end %>
     
-    <%= render :partial => "versioned_concepts/change_note", :locals => {:f => f } %>
-    
-    <%= render :partial => "versioned_concepts/usage_note", :locals => {:f => f } %>
-
-    <%= render :partial => "versioned_concepts/close_match", :locals => {:f => f } %>
+    <%#= render :partial => "versioned_concepts/close_match", :locals => {:f => f } %>
 
     <%= f.submit t("txt.common.save") %>
 

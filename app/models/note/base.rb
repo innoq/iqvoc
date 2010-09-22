@@ -76,4 +76,8 @@ class Note::Base < ActiveRecord::Base
     "partials/note/base"
   end
 
+  def self.edit_partial_name(obj)
+    "partials/note/edit_base"
+  end
+
 end

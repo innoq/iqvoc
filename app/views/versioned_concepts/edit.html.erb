@@ -5,87 +5,62 @@
 
 <% if @association_objects_in_editing_mode.present? %>
 
-   <% if @association_objects_in_editing_mode[:labelings].present? %>
+  <% if @association_objects_in_editing_mode[:labelings].present? %>
     <h4><%= t("txt.common.referenced_labels") %></h4>
     <%  @association_objects_in_editing_mode[:labelings].each do |labeling| %>
-        <%= labeling.type.demodulize + ': ' + link_to(labeling.target.value, versioned_label_path(@active_language, labeling.target)) + user_and_phone_number(t("txt.common.editor"), labeling.target.locking_user.name, labeling.target.locking_user.telephone_number)  %><br />
+      <%= labeling.type.demodulize + ': ' + link_to(labeling.target.value, versioned_label_path(@active_language, labeling.target)) + user_and_phone_number(t("txt.common.editor"), labeling.target.locking_user.name, labeling.target.locking_user.telephone_number)  %><br />
     <% end %>
-   <% end %>
+  <% end %>
 
-   <% if @association_objects_in_editing_mode[:concept_relations].present? %>
+  <% if @association_objects_in_editing_mode[:concept_relations].present? %>
     <h4><%= t("txt.common.referenced_concepts") %></h4>
     <%  @association_objects_in_editing_mode[:concept_relations].each do |semantic_relation| %>
-        <%= semantic_relation.type.demodulize + ': ' + link_to(semantic_relation.target.pref_labels.first.value, versioned_concept_path(@active_language, semantic_relation.target)) + user_and_phone_number(t("txt.common.editor"), semantic_relation.target.locking_user.name, semantic_relation.target.locking_user.telephone_number)  %><br />
+      <%= semantic_relation.type.demodulize + ': ' + link_to(semantic_relation.target.pref_labels.first.value, versioned_concept_path(@active_language, semantic_relation.target)) + user_and_phone_number(t("txt.common.editor"), semantic_relation.target.locking_user.name, semantic_relation.target.locking_user.telephone_number)  %><br />
     <% end %>
-   <% end %>
+  <% end %>
 
 <% end %>
 
 <%= render :partial => "versioned_concepts/base_data" %>
 
-<div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_semantic_relation_widget", 
-   :locals => { 
-     :path => versioned_concept_narrowers_path(:lang => @active_language, :versioned_concept_id => @concept),
-     :relation => "narrower_relations", 
-     :token_limit => nil, 
-     :class_name => "Narrower",
-     :legend => t("txt.views.concepts.narrower") } %>
+<div class="relation-body">FIXME
+<%#= render :partial => "versioned_concepts/concept_semantic_relation_widget",
+:locals => { 
+:path => versioned_concept_narrowers_path(:lang => @active_language, :versioned_concept_id => @concept),
+:relation => "narrower_relations", 
+:token_limit => nil, 
+:class_name => "Narrower",
+:legend => t("txt.views.concepts.narrower") } %>
 </div>
 
 <div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_semantic_relation_widget", 
-  :locals => {
+  <%= render :partial => "versioned_concepts/concept_semantic_relation_widget",
+    :locals => {
     :path => versioned_concept_broaders_path(:lang => @active_language, :versioned_concept_id => @concept),
     :relation => "broader_relations",
     :token_limit => nil,
-    :class_name => "Broader",
+    :class_name => Iqvoc::Concept.broader_relation_class_name,
     :legend => t("txt.views.concepts.broader") } %>
 </div>
 
 <div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_semantic_relation_widget", 
-  :locals => {
-    :path => versioned_concept_related_index_path(:lang => @active_language, :versioned_concept_id => @concept),
-    :relation => "related_relations", 
-    :token_limit => nil, 
-    :class_name => "Related",
-    :legend => t("txt.views.concepts.related") } %>
+<%#= render :partial => "versioned_concepts/concept_semantic_relation_widget",
+:locals => {
+:path => versioned_concept_related_index_path(:lang => @active_language, :versioned_concept_id => @concept),
+:relation => "related_relations", 
+:token_limit => nil, 
+:class_name => "Related",
+:legend => t("txt.views.concepts.related") } %>
 </div>
 
-<div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_labeling_widget", 
-  :locals => { 
-    :path => versioned_concept_pref_labelings_path(:lang => @active_language, :versioned_concept_id => @concept),
-    :relation => "pref_labelings", 
-    :token_limit => 1, 
-    :class_name => "PrefLabeling",
-    :legend => t("txt.views.concepts.pref_label") } %>
-</div>
-
-<div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_labeling_widget", 
-  :locals => {
-    :path => versioned_concept_alt_labelings_path(:lang => @active_language, :versioned_concept_id => @concept),
-    :relation => "alt_labelings", 
-    :token_limit => nil, 
-    :class_name => "AltLabeling", 
-    :alt_label_lang => "de",
-    :legend => t("txt.views.concepts.alt_label") + " (de)" } %>
-</div>
-
-<div class="relation-body">
-  <%= render :partial => "versioned_concepts/concept_labeling_widget", 
-  :locals => {:path => versioned_concept_alt_labelings_path(:lang => @active_language, :versioned_concept_id => @concept),
-  :relation => "alt_labelings",
-  :token_limit => nil, 
-  :class_name => "AltLabeling", 
-  :alt_label_lang => "en",
-  :legend => t("txt.views.concepts.alt_label") + " (en)" } %>
-</div>
+<%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
+  <%- languages.each do |language| -%>
+    <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
+  <%- end -%>
+<%- end -%>
 
 <%= content_for :sub_navigation do %>
-    <ul>
-      <li><%= back_link versioned_concept_path(:lang => @active_language, :id => @concept), t('txt.views.navigation.back_to_preview') %></li>
-    </ul>
+  <ul>
+    <li><%= back_link versioned_concept_path(:lang => @active_language, :id => @concept), t('txt.views.navigation.back_to_preview') %></li>
+  </ul>
 <% end %>

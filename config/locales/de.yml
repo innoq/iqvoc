@@ -8,7 +8,7 @@ de:
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
-     welcome: "Hallo {{user_name}}"
+     welcome: "Hallo %{user_name}"
      definition:
        one: "Definition"
        other: "Definitionen"
@@ -154,9 +154,9 @@ de:
        search_languages: "Sprachen"
        search_results: "Suchergebnisse"
        results_found:
-         one: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnis."
-         other: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnisse."
-       no_results_found: "Ihre Suche nach {{query}} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
+         one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
+         other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
+       no_results_found: "Ihre Suche nach %{query} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
        submit: "Suche"
        type: "Typ"
        used_as: "benutzt als"
@@ -277,7 +277,7 @@ de:
      concept_selector:
        show_concepts:
          one: "1 Konzept"
-         other: "{{count}} Konzepte"
+         other: "%{count} Konzepte"
 
    controllers:
      application:
@@ -339,7 +339,7 @@ de:
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
      virtuoso_syncs:
-       success: "Es wurden {{concept_count}} freigegebene Concepts und {{label_count}} freigegebene Labels synchronisiert."
+       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
 
    models:
      label:

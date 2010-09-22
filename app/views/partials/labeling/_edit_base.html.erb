@@ -1,0 +1,22 @@
+<div class="relation-body">
+  <fieldset>
+    <legend><%= t("txt.views.concepts.#{klass.name.to_relation_name}") %> (<%= language %>)</legend>
+    <input type="text"
+           name="<%= klass.name.to_relation_name %>"
+           class="label_relation"
+           data-present-relations="[<%= klass.by_concept(concept).label_published.by_label_language(language).map{|r| "{'id': '#{r.id}', 'name': '#{r.target.value}', 'origin': '#{r.target.origin}', 'published': #{r.target.published?}}"}.join(',')  %>]"
+           data-post-url="<%= versioned_concept_pref_labelings_path(:lang => @active_language, :versioned_concept_id => concept.id) %>"
+           data-get-url="<%= labels_path(:language => language) %>"
+           data-branch-url="<%= concept_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
+           data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
+           data-versioned-show-url="<%= versioned_label_path(:lang => @active_language, :id => "ORIGIN") %>"
+           data-auth-token="<%= form_authenticity_token %>"
+           data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
+           data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
+           data-no-results-text="<%= I18n.t("txt.views.widget.no_results") %>"
+           <% unless klass.only_one_allowed? %>
+             data-token-limit=1
+           <% end %>
+           ></input>
+  </fieldset>
+</div>
