@@ -89,7 +89,9 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Matches (pointing to an other thesaurus)
   Iqvoc::Concept.match_class_names.each do |match_class_name|
-    has_many match_class_name.to_relation_name, :class_name => match_class_name
+    has_many match_class_name.to_relation_name, 
+      :class_name  => match_class_name,
+      :foreign_key => 'concept_id'
     @nested_relations << match_class_name.to_relation_name
   end
 
