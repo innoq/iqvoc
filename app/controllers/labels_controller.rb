@@ -20,15 +20,15 @@ class LabelsController < ApplicationController
   end
 
   def show
-    @label = Label::SKOSXL::Base.current_version(params[:id]).published.with_associations.first
-    @new_label_version = Iqvoc::Label.base_class.new_version(params[:id]).first
+    @label = Label::SKOSXL::Base.by_origin(params[:id]).published.with_associations.first
+    @new_label_version = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.first
     respond_to do |format|
       
       format.html do
         raise ActiveRecord::RecordNotFound unless @label
        # @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
        # @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
-        @compound_in = Iqvoc::Label.base_class.compound_in(@label).all
+        @compound_in = @label.reverse_compound_forms.published.includes(:domain).map(&:domain)
         store_location
       end
       

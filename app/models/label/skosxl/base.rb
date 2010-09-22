@@ -27,8 +27,6 @@ class Label::SKOSXL::Base < Label::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :inflectionals, :class_name => 'Inflectional::Base', :foreign_key => 'label_id', :dependent => :destroy
-
   has_many :labelings, :class_name => 'Labeling::Base', :foreign_key => 'target_id'
   has_many :concepts, :through => :labelings, :source => :owner
 
@@ -37,16 +35,17 @@ class Label::SKOSXL::Base < Label::Base
 
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
-  
-  if Iqvoc::Label.compound_form_class_name
-    has_many Iqvoc::Label.compound_form_class_name.to_relation_name, 
-      :foreign_key => 'domain_id', 
-      :class_name  => Iqvoc::Label.compound_form_class_name
-    has_many Iqvoc::Label.compound_form_content_class_name.to_relation_name,
-      :class_name  => Iqvoc::Label.compound_form_content_class_name,
-      :through     => Iqvoc::Label.compound_form_class_name.to_relation_name
-  end
 
+  has_many :inflectionals, :class_name => 'Inflectional::Base', :foreign_key => 'label_id', :dependent => :destroy
+
+  has_many :compound_forms, :class_name => 'CompoundForm::Base', :foreign_key => 'domain_id'
+  has_many :compound_form_contents, :class_name => "CompoundForm::Content::Base", :through => :compound_forms, :source => :compound_form_contents, :dependent => :destroy
+  # Where is this label references as CompoundFormContent?
+  has_many :reverse_compound_form_contents, :class_name => 'CompoundForm::Content::Base', :foreign_key => 'label_id'
+  has_many :reverse_compound_forms, :class_name => 'CompoundForm::Base', :through => :reverse_compound_form_contents, :source => :compound_form
+  # The following would be nice but in't working :-)
+  #has_many :reverse_compound_form_labels, :class_name => 'Label::Base', :through => :reverse_compound_forms, :source => :domain
+  
   # ************** "Dynamic"/configureable relations
 
   Iqvoc::Label.note_class_names.each do |note_class_name|
@@ -61,6 +60,15 @@ class Label::SKOSXL::Base < Label::Base
       :dependent   => :destroy
   end
 
+  if Iqvoc::Label.compound_form_class_name
+    has_many Iqvoc::Label.compound_form_class_name.to_relation_name,
+      :foreign_key => 'domain_id',
+      :class_name  => Iqvoc::Label.compound_form_class_name
+    has_many Iqvoc::Label.compound_form_content_class_name.to_relation_name,
+      :class_name  => Iqvoc::Label.compound_form_content_class_name,
+      :through     => Iqvoc::Label.compound_form_class_name.to_relation_name
+  end
+
   # ********** Relation Stuff
   
   @nested_relations.each do |relation|
@@ -71,10 +79,6 @@ class Label::SKOSXL::Base < Label::Base
   
   scope :by_origin_or_id, lambda { |arg|
     { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
-  }
-
-  scope :compound_in, lambda {|label|
-    { :conditions => {:compound_form_contents => {:label_id => label.id}}, :joins => :compound_form_contents }
   }
 
   # FIXME This should be working again
