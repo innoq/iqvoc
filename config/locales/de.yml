@@ -8,6 +8,7 @@ de:
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
+     welcome: "Hallo {{user_name}}"
      definition:
        one: "Definition"
        other: "Definitionen"
