@@ -200,17 +200,17 @@ class Concept::Base < ActiveRecord::Base
 
   def related_concepts_for_relation_class(relation_class)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select{|rel| rel.class.name == relation_class }.map(&:target)
+    relations.select{ |rel| rel.class.name == relation_class }.map(&:target)
   end
 
   def matches_for_class(match_class)
     match_class = match_class.name if match_class < ActiveRecord::Base # Use the class name string
-    matches.select{|match| match.class.name == match_class }
+    matches.select{ |match| match.class.name == match_class }
   end
 
-  def note_for_class(note_class)
+  def notes_for_class(note_class)
     note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
-    notes.select{|notes| notes.class.name == note_class }.last
+    notes.select{ |note| note.class.name == note_class }
   end
 
   # this find_by_origin method returns only instances of the current class.

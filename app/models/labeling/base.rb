@@ -35,15 +35,15 @@ class Labeling::Base < ActiveRecord::Base
     includes(:target) & Label::Base.by_language(lang)
   }
   
-  def self.view_section
-    "labels"
+  def self.view_section(obj)
+    obj.is_a?(Label::Base) ? "concepts" : "labels"
   end
 
-  def self.view_section_sort_key
+  def self.view_section_sort_key(obj)
     100
   end
 
-  def self.partial_name
+  def self.partial_name(obj)
     "partials/labeling/base"
   end
 

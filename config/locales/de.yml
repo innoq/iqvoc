@@ -8,6 +8,7 @@ de:
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
+     welcome: "Hallo {{user_name}}"
      definition:
        one: "Definition"
        other: "Definitionen"
@@ -32,7 +33,6 @@ de:
        previous: "Zurück"
        next: "Weiter"
      missing:
-       definition: "Keine Definition verfügbar."
        label: "Kein Label"
      follow_up: "Wiedervorlage"
      expired_at: "Abgelaufen am"
@@ -78,10 +78,8 @@ de:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       definitions: "Definitionen"
        broader: "Allgemeinere Begriffe"
        narrower: "Spezifischere Begriffe"
-       related: "Verwandte Begriffe"
        select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
        new: "Neues Konzept"
        versionview: "Versionsansicht für Konzept"
@@ -91,24 +89,16 @@ de:
          related: "Kein verwandter Begriff verfügbar"
        edit:
          header: "Bearbeitung des Konzepts"
-       alt_label: "Alternatives Label"
        pref_label: "Bevorzugtes Label"
-       close_match: "CloseMatch"
        classifiers: "Umweltklassen"
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
        language: "Sprache"
-       definitions: "Definitionen"
        part_of_speech: "Wortart"
        base_form: "Ansetzungsform"
        inflectional_code: "Endungscode"
        inflectionals: "Schreibweisen"
-       homographs: "Homograph"
-       qualifiers: "Namenszusatz"
-       translations: "Übersetzungen"
-       pref_label_of: "Bevorzugtes Label von"
-       alt_label_of: "Alternatives Label von"
        compound_from: "Zusammengesetzt aus"
        compound_in: "Zusammengesetzt in"
        versionview: "Versionsansicht für Label"
@@ -239,6 +229,49 @@ de:
        consistent: "konsistent"
        inconsistent: "inkonsistent"
        state: "Status"
+
+   partials:
+     note:
+       note_skos_definitions: "Definitionen"
+       note_skos_change_notes:
+         one: "Änderungsangabe"
+         other: "Änderungsangaben"
+       note_skos_editorial_notes:
+         one: Redaktionelle Anmerkung
+         other: Redaktionelle Anmerkungen
+       note_skos_examples:
+         one: Beispiel
+         other: Beispiele
+       note_skos_history_notes:
+         one: History note
+         other: History notes
+       note_skos_scope_notes:
+         one: Scope note
+         other: Scope notes
+       missing: "Keine verfügbar."
+     label:
+       relation:
+         label_relation_umt_translations: Übersetzungen
+         label_relation_umt_homographs: Homograph
+         label_relation_umt_qualifiers: Namenszusatz
+         label_relation_umt_lexical_extensions: Lexikalische Erweiterungen
+         missing: Keine Relationen vorhanden.
+     concept:
+       relation:
+         missing: Keine Relationen vorhanden.
+         concept_relation_skos_relateds: "Verwandte Begriffe"
+     labeling:
+       concept:
+         labeling_skosxl_alt_labels: "Alternatives Label"
+       label:
+         labeling_skosxl_pref_labels: "Bevorzugtes Label von"
+         labeling_skosxl_alt_labels: "Alternatives Label von"
+     match:
+       match_skos_closes: "CloseMatch"
+       match_skos_broaders: BroaderMatch
+       match_skos_narrowers: NarrowerMatch
+       match_skos_relateds: RelatedMatch
+       match_skos_exacts: ExactMatch
 
    helpers:
      concept_selector:

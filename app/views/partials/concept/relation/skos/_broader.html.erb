@@ -1,10 +1,12 @@
 <div class="relation">
   <h4><%= t('txt.views.concepts.broader') %></h4>
-  <% if concept.broader.length > 0 %>
-    <div class="selector">
-      <%= render :partial => "hierarchical_concepts/broader_treeview", :locals => { :root => concept.id } %>
-    </div>
-  <% else %>
-    <p><%= t('txt.views.concepts.missing.broader') %></p>
-  <% end %>
+  <div class="relation-body">
+    <% if concept.broader.length > 0 %>
+      <div class="selector">
+        <%= render :partial => "hierarchical_concepts/broader_treeview", :locals => { :root => concept.id } %>
+      </div>
+    <% else %>
+      <p><%= t('txt.views.concepts.missing.broader') %></p>
+    <% end %>
+  </div>
 </div>

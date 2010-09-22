@@ -1,6 +1,8 @@
-<%- Iqvoc::Concept::view_sections.each do |section_key| -%>
-  <h3><%= section_key.humanize %></h3>
-  <%- sections[section_key].keys.sort.each do |sort_key| -%>
-    <%= raw sections[section_key][sort_key] %>
+<%- sections.each do |section_key| -%>
+  <%- if data[section_key]-%>
+    <h3><%= section_key.humanize %></h3>
+    <%- data[section_key].keys.sort.each do |sort_key| -%>
+      <%= raw data[section_key][sort_key] %>
+    <%- end -%>
   <%- end -%>
 <%- end -%>

@@ -10,7 +10,7 @@ class Note::Base < ActiveRecord::Base
 
   belongs_to :owner, :polymorphic => true
              
-  has_many :annotations, :class_name => "Note::Annotated::Base", :dependent => :destroy
+  has_many :annotations, :class_name => "Note::Annotated::Base", :foreign_key => :note_id, :dependent => :destroy
   
   accepts_nested_attributes_for :annotations
 
@@ -64,15 +64,15 @@ class Note::Base < ActiveRecord::Base
     "#{self.value}"
   end
 
-  def self.view_section
+  def self.view_section(obj)
     "notes"
   end
 
-  def self.view_section_sort_key
+  def self.view_section_sort_key(obj)
     100
   end
 
-  def self.partial_name
+  def self.partial_name(obj)
     "partials/note/base"
   end
 
