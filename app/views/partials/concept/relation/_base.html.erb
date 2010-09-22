@@ -1,5 +1,5 @@
 <div class="relation">
-  <h3><%= t("txt.partials.concept.relation.#{klass.name.to_relation_name}") %></h3>
+  <h4><%= t("txt.partials.concept.relation.#{klass.name.to_relation_name}") %></h4>
   <% related_concepts = concept.related_concepts_for_relation_class(klass) %>
   <% if related_concepts.count > 0 %>
     <%= raw related_concepts.map { |c|

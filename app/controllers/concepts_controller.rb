@@ -18,14 +18,14 @@ class ConceptsController < ApplicationController
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
     @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     respond_to do |format|
-      
+
       format.html do
         raise ActiveRecord::RecordNotFound unless @concept
         store_location
       end
-      
+
       format.rdf
-      
+
       format.ttl do
         head 404 unless @concept
       end

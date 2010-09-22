@@ -1,5 +1,5 @@
 <% matches = concept.matches_for_class(klass) %>
-<h3><%= t("txt.partials.match.#{klass.name.to_relation_name}") %></h3>
+<h4><%= t("txt.partials.match.#{klass.name.to_relation_name}") %></h4>
 <div class="relation-body">
   <%= raw matches.map {|match| match_url(match.value)}.join(', ') %>
 </div>
