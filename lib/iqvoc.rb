@@ -2,14 +2,13 @@ require 'string'
 
 module Iqvoc
 
-  VIEW_SECTIONS = ["main", "labels", "notes", "relations", "matches"]
-
   module Concept
     mattr_accessor :base_class_name, 
       :broader_relation_class_name, :further_relation_class_names,
       :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
       :match_class_names,
-      :note_class_names
+      :note_class_names,
+      :view_sections
     
     self.base_class_name              = 'Concept::SKOS::Base'
 
@@ -21,21 +20,23 @@ module Iqvoc
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
     self.note_class_names             = [ 'Note::SKOS::ChangeNote', 
-                                          'Note::SKOS::Definition',
-                                          'Note::SKOS::EditorialNote',
-                                          'Note::SKOS::Example',
-                                          'Note::SKOS::HistoryNote',
-                                          'Note::SKOS::ScopeNote',
-                                          'Note::UMT::ChangeNote',
-                                          'Note::UMT::ExportNote',
-                                          'Note::UMT::SourceNote',
-                                          'Note::UMT::UsageNote' ]
+      'Note::SKOS::Definition',
+      'Note::SKOS::EditorialNote',
+      'Note::SKOS::Example',
+      'Note::SKOS::HistoryNote',
+      'Note::SKOS::ScopeNote',
+      'Note::UMT::ChangeNote',
+      'Note::UMT::ExportNote',
+      'Note::UMT::SourceNote',
+      'Note::UMT::UsageNote' ]
 
     self.match_class_names            = [ 'Match::SKOS::Close', 
-                                          'Match::SKOS::Broader', 
-                                          'Match::SKOS::Narrower', 
-                                          'Match::SKOS::Related', 
-                                          'Match::SKOS::Exact' ]
+      'Match::SKOS::Broader',
+      'Match::SKOS::Narrower',
+      'Match::SKOS::Related',
+      'Match::SKOS::Exact' ]
+
+    self.view_sections = ["main", "labels", "relations", "notes", "matches"]
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
@@ -82,18 +83,18 @@ module Iqvoc
   
   module Label
     mattr_accessor :base_class_name, 
-                   :note_class_names, 
-                   :relation_class_names,
-                   :label_relation_class_names,
-                   :compound_form_class_name,
-                   :compound_form_content_class_name
+      :note_class_names,
+      :relation_class_names,
+      :label_relation_class_names,
+      :compound_form_class_name,
+      :compound_form_content_class_name
 
     self.base_class_name                  = 'Label::SKOSXL::Base'
     self.relation_class_names             = []
     self.label_relation_class_names       = [ 'Label::Relation::UMT::Translation',
-                                              'Label::Relation::UMT::Homograph',
-                                              'Label::Relation::UMT::Qualifier',
-                                              'Label::Relation::UMT::LexicalExtension' ]
+      'Label::Relation::UMT::Homograph',
+      'Label::Relation::UMT::Qualifier',
+      'Label::Relation::UMT::LexicalExtension' ]
     self.note_class_names                 = Iqvoc::Concept.note_class_names
     self.compound_form_class_name         = 'CompoundForm::UMT::Base'
     self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
