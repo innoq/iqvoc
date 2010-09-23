@@ -5,7 +5,7 @@ class ConceptsController < ApplicationController
   def index
     respond_to do |format|
       format.json do
-        @concepts = Iqvoc::Concept.base_class.all(:joins => :pref_labels, :conditions => ["(labels.value LIKE :query AND concepts.published_at IS NOT NULL) OR (labels.value LIKE :query AND concepts.rev = 1 AND concepts.published_at IS NULL)", {:query => "#{params[:query]}%"}], :group => "labelings.owner_id")
+        @concepts = (Iqvoc::Concept.base_class.editor_selectable.with_pref_labels & Label::Base.where(Label::Base.arel_table[:value].matches("#{params[:query]}%"))).all
         response = []
         @concepts.each { |concept| response << {:id => concept.id, :name => concept.pref_label.value, :origin => concept.origin, :published => concept.published?}}
 
