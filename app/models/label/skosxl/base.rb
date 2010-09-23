@@ -47,25 +47,25 @@ class Label::SKOSXL::Base < Label::Base
   
   # ************** "Dynamic"/configureable relations
 
-  Iqvoc::Label.note_class_names.each do |note_class_name|
+  Iqvoc::XLLabel.note_class_names.each do |note_class_name|
     has_many note_class_name.to_relation_name, :as => :owner, :class_name => note_class_name, :dependent => :destroy
     @nested_relations << note_class_name.to_relation_name
   end
   
-  Iqvoc::Label.relation_class_names.each do |relation_class_name|
+  Iqvoc::XLLabel.relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
       :foreign_key => 'domain_id',
       :class_name  => relation_class_name,
       :dependent   => :destroy
   end
 
-  if Iqvoc::Label.compound_form_class_name
-    has_many Iqvoc::Label.compound_form_class_name.to_relation_name,
+  if Iqvoc::XLLabel.compound_form_class_name
+    has_many Iqvoc::XLLabel.compound_form_class_name.to_relation_name,
       :foreign_key => 'domain_id',
-      :class_name  => Iqvoc::Label.compound_form_class_name
-    has_many Iqvoc::Label.compound_form_content_class_name.to_relation_name,
-      :class_name  => Iqvoc::Label.compound_form_content_class_name,
-      :through     => Iqvoc::Label.compound_form_class_name.to_relation_name
+      :class_name  => Iqvoc::XLLabel.compound_form_class_name
+    has_many Iqvoc::XLLabel.compound_form_content_class_name.to_relation_name,
+      :class_name  => Iqvoc::XLLabel.compound_form_content_class_name,
+      :through     => Iqvoc::XLLabel.compound_form_class_name.to_relation_name
   end
 
   # ********** Relation Stuff

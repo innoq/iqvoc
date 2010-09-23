@@ -84,7 +84,7 @@ module Iqvoc
 
   end
   
-  module Label
+  module XLLabel
     mattr_accessor :base_class_name, 
       :note_class_names,
       :relation_class_names,
@@ -93,7 +93,7 @@ module Iqvoc
       :compound_form_content_class_name,
       :view_sections
 
-    self.base_class_name                  = 'Label::SKOSXL::Base'
+    self.base_class_name                  = 'Label::UMT::Base'
 
     self.relation_class_names             = [
       'Label::Relation::UMT::Translation',

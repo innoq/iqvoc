@@ -23,7 +23,7 @@ class Labeling::SKOSXL::Base < Labeling::Base
   end
 
   def self.label_class
-    Label::SKOSXL::Base
+    Iqvoc::XLLabel.base_class
   end
   
 end

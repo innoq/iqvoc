@@ -2,8 +2,8 @@ class Label::Relation::Base < ActiveRecord::Base
   
   set_table_name 'label_relations'
   
-  belongs_to :domain, :class_name => Iqvoc::Label.base_class_name
-  belongs_to :range,  :class_name => Iqvoc::Label.base_class_name
+  belongs_to :domain, :class_name => "Label::Base"
+  belongs_to :range,  :class_name => "Label::Base"
   
   # FIXME
   scope :range_in_edit_mode, lambda {|domain_id| { 

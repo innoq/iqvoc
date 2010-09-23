@@ -1,8 +1,8 @@
 class LabelVersionsController < ApplicationController
   # Merges the current and the new label version
   def merge
-    current_label = Iqvoc::Label.base_class.current_version(params[:origin]).published.first
-    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
+    current_label = Iqvoc::XLLabel.base_class.current_version(params[:origin]).published.first
+    new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless new_version
     
     if (current_label.present? ? current_label.collect_first_level_associated_objects.each(&:destroy) && (current_label.delete) : true)
@@ -35,10 +35,10 @@ class LabelVersionsController < ApplicationController
 
   #Creates a new Version of a Label
   def branch
-    current_label = Iqvoc::Label.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Label.base_class.new_version(params[:origin]).first
+    current_label = Iqvoc::XLLabel.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::XLLabel.base_class.new_version(params[:origin]).first
     if new_version.blank?
-      new_version = current_label.clone :include => Iqvoc::Label.base_class.associations_for_versioning
+      new_version = current_label.clone :include => Iqvoc::XLLabel.base_class.associations_for_versioning
       new_version.prepare_for_branching(current_user.id)
       if new_version.save
         flash[:notice] = t("txt.controllers.versioning.merged")
@@ -52,8 +52,8 @@ class LabelVersionsController < ApplicationController
 
   #Locks the label
   def lock
-    current_version = Iqvoc::Label.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
+    current_version = Iqvoc::XLLabel.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if !new_version.locked?
         new_version.lock_by_user!(current_user.id)
@@ -74,8 +74,8 @@ class LabelVersionsController < ApplicationController
 
   #Unlocks the label
   def unlock
-    current_version = Iqvoc::Label.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
+    current_version = Iqvoc::XLLabel.base_class.current_version(params[:origin]).first
+    new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if new_version.locked?
         authorize! :unlock, new_version
@@ -96,7 +96,7 @@ class LabelVersionsController < ApplicationController
   end
 
   def consistency_check
-    @label = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     if @label.valid_with_full_validation?
       if @label.has_concept_or_label_relations?
@@ -109,14 +109,14 @@ class LabelVersionsController < ApplicationController
     else
       @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
       @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
-      @compound_in = Iqvoc::Label.base_class.compound_in(@label).all
+      @compound_in = Iqvoc::XLLabel.base_class.compound_in(@label).all
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
       render :template => "versioned_labels/edit"
     end
   end
 
   def to_review
-    @label = Iqvoc::Label.base_class.by_origin(params[:origin]).unpublished.last
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     @label.to_review!
     if @label.save
