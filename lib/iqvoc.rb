@@ -103,7 +103,7 @@ module Iqvoc
     self.compound_form_class_name         = 'CompoundForm::UMT::Base'
     self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
 
-    self.view_sections = ["main", "concepts", "relations", "notes"]
+    self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")

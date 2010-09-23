@@ -21,7 +21,7 @@
   <% end %>
 </div>
 
-<%= render :partial => "labels/label" %>
+<%= render 'layouts/sections', :sections => Iqvoc::Label::view_sections, :data => label_view_data(@label, @inflectionals_labels, @compound_in) %>
 
 <%= content_for :sub_navigation do %>
   <ul>

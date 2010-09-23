@@ -43,12 +43,16 @@ module LabelsHelper
       render(association_class.partial_name(label), furter_options.merge(:label => label, :klass => association_class))
   end
 
-  def label_view_data(label)
-    res = {'main' => {}}
+  def label_view_data(label, inflectionals_labels, compound_in)
+    res = {'main' => {}, 'inflectionals' => {}, 'compound_forms' => {}}
 
     res['main'][10] = render 'labels/value_and_language', :label => label
 
     res['main'][1000] = render 'labels/details', :label => label
+
+    res['inflectionals'][100] = render 'labels/inflectionals', :label => label, :inflectionals_labels => inflectionals_labels
+
+    res['compound_forms'][100] = render 'labels/compound_forms', :label => label, :compound_in => compound_in
 
     Iqvoc::Concept.labeling_classes.keys.each do |labeling_class|
         render_label_association(res, label, labeling_class)
