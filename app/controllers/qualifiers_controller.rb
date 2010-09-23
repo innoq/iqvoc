@@ -1,3 +1,4 @@
+# FIXME: I want to be deleted!
 class QualifiersController < LabelRelationsController
   def create
     super
