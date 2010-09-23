@@ -87,14 +87,14 @@ jQuery(document).ready(function() {
                     }
                 });
             },
-            onAdd: function(id) {
+            onAdd: function(data) {
 
                 var relation_id = null;
                 $.ajax({
                     type: 'POST',
                     async: false,
                     url: data_post_url,
-                    data: {id: id},
+                    data: data,
                     success: function (data) {
                     	relation_id = data;
                     },

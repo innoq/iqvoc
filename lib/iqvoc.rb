@@ -48,10 +48,13 @@ module Iqvoc
       pref_labeling_class_name.constantize
     end
 
+    def self.labeling_class_names
+      further_labeling_class_names.merge(pref_labeling_class_name => pref_labeling_languages)
+    end
+
     def self.labeling_classes
       further_labeling_classes.merge(pref_labeling_class => pref_labeling_languages)
     end
-
 
     def self.broader_relation_class
       broader_relation_class_name.constantize

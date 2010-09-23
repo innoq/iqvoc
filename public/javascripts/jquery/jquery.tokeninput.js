@@ -314,7 +314,7 @@
                                 .appendTo(this_token);
                     }
 
-                    $.data(this_token.get(0), "tokeninput", {"id": li_data[i].id, "name": li_data[i].name});
+                    $.data(this_token.get(0), "tokeninput", {"id": li_data[i].id, "name": li_data[i].name, "origin": li_data[i].origin});
 
 
                     // Clear input box and make sure it keeps focus
@@ -411,7 +411,7 @@
                         .appendTo(this_token);
             }
 
-            $.data(this_token.get(0), "tokeninput", {"id": id, "name": value});
+            $.data(this_token.get(0), "tokeninput", {"id": id, "name": value, "origin": origin});
 
             return this_token;
         }
@@ -422,7 +422,7 @@
             var callback_data = null;
             // Execute the onAdd callback if given
             if ($.isFunction(on_add_callback)) {
-                callback_data = on_add_callback(li_data.id);
+                callback_data = on_add_callback(li_data);
             }
 
             var origin = (typeof callback_data.origin === 'undefined') ? null : callback_data.origin;
@@ -583,7 +583,7 @@
                             select_dropdown_item(this_li);
                         }
 
-                        $.data(this_li.get(0), "tokeninput", {"id": results[i].id, "name": results[i].name});
+                        $.data(this_li.get(0), "tokeninput", {"id": results[i].id, "name": results[i].name, "origin": results[i].origin});
                     }
                 }
 
