@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
   
   def index
     @concepts = Iqvoc::Concept.base_class.for_dashboard.all(:include => [:locking_user, :pref_labels])
-    @labels   = Iqvoc::Label.base_class.for_dashboard.all(:include => [:locking_user])
+    @labels   = Iqvoc::XLLabel.base_class.for_dashboard.all(:include => [:locking_user])
     
     @items    = @concepts + @labels
     

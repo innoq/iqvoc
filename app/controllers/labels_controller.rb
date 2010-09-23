@@ -6,9 +6,9 @@ class LabelsController < ApplicationController
     respond_to do |format|
       format.json do
         if params[:language]
-          @labels = Iqvoc::Label.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL AND language LIKE :language) OR (value LIKE :query AND rev = 1 AND published_at IS NULL AND language LIKE :language)", {:query => "#{params[:query]}%", :language => params[:language]}])
+          @labels = Iqvoc::XLLabel.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL AND language LIKE :language) OR (value LIKE :query AND rev = 1 AND published_at IS NULL AND language LIKE :language)", {:query => "#{params[:query]}%", :language => params[:language]}])
         else
-          @labels = Iqvoc::Label.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL) OR (value LIKE :query AND rev = 1 AND published_at IS NULL)", {:query => "#{params[:query]}%"}])
+          @labels = Iqvoc::XLLabel.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL) OR (value LIKE :query AND rev = 1 AND published_at IS NULL)", {:query => "#{params[:query]}%"}])
         end
 
         response = []
@@ -20,8 +20,8 @@ class LabelsController < ApplicationController
   end
 
   def show
-    @label = Label::SKOSXL::Base.by_origin(params[:id]).published.with_associations.first
-    @new_label_version = Iqvoc::Label.base_class.by_origin(params[:id]).unpublished.first
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).published.with_associations.first
+    @new_label_version = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.first
     respond_to do |format|
       
       format.html do

@@ -75,6 +75,8 @@ class Concept::Base < ActiveRecord::Base
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
     :class_name => Iqvoc::Concept.pref_labeling_class_name
+  # BEWARE: bla.pref_labels wont work, because a Rails bug will kill the
+  # nessacary type="..." condition! FIXME
   has_many :pref_labels,
     :through => :pref_labelings,
     :source => :target
@@ -182,10 +184,11 @@ class Concept::Base < ActiveRecord::Base
       Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
       hash[label.language] = label
     end
-    return @cached_pref_labels[lang] if @cached_pref_labels[lang]
-    pref_label = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang)
-    pref_label.concepts << self
-    pref_label
+    if @cached_pref_labels[lang].nil?
+      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang)
+      @cached_pref_labels[lang].concepts << self
+    end
+    @cached_pref_labels[lang]
   end
 
   def labels_for_labeling_class_and_language(labeling_class, lang = :en)

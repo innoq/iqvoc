@@ -58,11 +58,11 @@ module LabelsHelper
         render_label_association(res, label, labeling_class)
     end
 
-    Iqvoc::Label.relation_classes.each do |relation_class|
+    Iqvoc::XLLabel.relation_classes.each do |relation_class|
       render_label_association(res, label, relation_class)
     end
 
-    Iqvoc::Label.note_classes.each do |note_class|
+    Iqvoc::XLLabel.note_classes.each do |note_class|
       render_label_association(res, label, note_class)
     end
 

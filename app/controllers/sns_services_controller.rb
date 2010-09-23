@@ -102,7 +102,7 @@ class SnsServicesController < ApplicationController
       }
       # 1.3.2.1
       if num_alt_labels > 0 and num_pref_labels == 0
-        # concepte aneinanderhŠngen ?
+        # concepte aneinanderhï¿½ngen ?
       # 1.3.2.2
       elsif num_pref_labels > 0
         create_error_message_for("multiple pref labels found", term) 
@@ -134,7 +134,7 @@ class SnsServicesController < ApplicationController
   end
   
   def get_labels_for(term)
-    Iqvoc::Label.base_class.find(:all, :conditions => { :value => term } )
+    Label::Base.find(:all, :conditions => { :value => term } )
   end
   
   def label_is_part_of_homograph?(label) 
@@ -158,7 +158,7 @@ class SnsServicesController < ApplicationController
   end
   
   def get_base_form_for(label_value)
-    Iqvoc::Label.base_class.find_by_value(label_value).base_form
+    Label::Base.find_by_value(label_value).base_form
   end
   
   def get_labelings_by_label(label)
@@ -172,7 +172,7 @@ class SnsServicesController < ApplicationController
   def get_literal_form_from_labelings(labelings)
     @labels = {}
     labelings.each{ |labeling|
-      label = Iqvoc::Label.base_class.find_by_id(labeling.target_id)
+      label = Label::Base.find_by_id(labeling.target_id)
       @labels[label.id] = label.literal_form
     }
     
@@ -188,12 +188,12 @@ class SnsServicesController < ApplicationController
     compound_labels = []
         
     labelings.each do |labeling|
-      label = Iqvoc::Label.base_class.find_by_id(labeling.target_id)
+      label = Label::Base.find_by_id(labeling.target_id)
       puts label
       label.reverse_compound_form_contents.each{ |compound_form|
           forms = UMT::CompoundFormContent.find(:all, :conditions => {:compound_form_id => compound_form.compound_form_id} )
           forms.each { |form|
-              puts Iqvoc::Label.base_class.find_by_id(form.label_id).inspect
+              puts Label::Base.find_by_id(form.label_id).inspect
               
           }
       }

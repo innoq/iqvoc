@@ -10,11 +10,11 @@ class VirtuosoSyncsController < ApplicationController
     
     rdf_helper = Object.new.extend(RdfHelper)
     
-    Iqvoc::Concept.base_class.published.unsynced.all.each do |concept|
+    Concept::Base.published.unsynced.all.each do |concept|
       concept.update_attribute(:rdf_updated_at, time) if RdfStore.mass_import(concept.rdf_uri, rdf_helper.render_ttl_for_concept(concept))
     end
         
-    Iqvoc::Label.base_class.published.unsynced.all.each do |label|
+    Label::Base.published.unsynced.all.each do |label|
       label.update_attribute(:rdf_updated_at, time) if RdfStore.mass_import(label.rdf_uri, rdf_helper.render_ttl_for_label(label))
     end
     

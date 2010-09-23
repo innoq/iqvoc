@@ -51,10 +51,6 @@ class ApplicationController < ActionController::Base
   
   private
   
-    def check_authorization_for_versioned_label
-      authorize! :write, Iqvoc::Label.base_class
-    end
-  
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
       @current_user_session = UserSession.find
