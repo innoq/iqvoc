@@ -266,7 +266,7 @@ class Inflectional::Base < ActiveRecord::Base
   def self.search(query)
     return nil if query.blank?
     
-    self.first(:conditions => ["inflectionals.value = ? AND labels.published_at IS NOT NULL", query], :include => :label)
+    where(:value => query).includes(:label) & Iqvoc::XLLabel.base_class.published
   end
   
 end
