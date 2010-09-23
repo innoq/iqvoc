@@ -6,6 +6,8 @@ class Labeling::SKOSXL::Base < Labeling::Base
       :include => :target,
       :conditions => ["(labelings.owner_id = ?) AND (labels.locked_by IS NOT NULL)", owner_id] }
   }
+
+  scope :label_editor_selectable, includes(:target) & Label::SKOSXL::Base.editor_selectable
   
   def self.create_for(o, t)
     find_or_create_by_owner_id_and_target_id(o.id, t.id)
