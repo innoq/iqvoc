@@ -1,9 +1,7 @@
 # FIXME: Not much flexiblity refactorings done yet
 class Label::SKOSXL::Base < Label::Base
 
-  include IqvocGlobal::CommonScopes
-  include IqvocGlobal::CommonMethods
-  include IqvocGlobal::CommonAssociations
+  include IqvocGlobal::Versioning
   
   attr_reader :inflectionals_attributes
 

@@ -17,16 +17,10 @@ class Labeling::Base < ActiveRecord::Base
     where(:target_id => label.id)
   }
 
-  # DEPRECATED: Use by_label_language instead
-  scope :by_lang, lambda { |lang|
-      ActiveSupport::Deprecation.warn('Please use Labeling::Base.by_label_language instead of Labeling::Base.by_lang', caller)
-    {
-      :joins => :target,
-      :conditions => ["labels.language LIKE :language", { :language => lang }] }
-  }
-
   scope :concept_published, includes(:owner) & Concept::Base.published
   scope :label_published, includes(:target) & Label::Base.published
+
+  scope :lanbel_editor_selectable, includes(:target) & Label::SKOSXL::Base.editor_selectable
 
   scope :label_begins_with, lambda { |letter|
     includes(:target) & Label::Base.begins_with(letter)

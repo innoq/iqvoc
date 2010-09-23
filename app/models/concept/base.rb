@@ -2,9 +2,7 @@ class Concept::Base < ActiveRecord::Base
 
   set_table_name 'concepts'
 
-  include IqvocGlobal::CommonScopes
-  include IqvocGlobal::CommonMethods
-  include IqvocGlobal::CommonAssociations
+  include IqvocGlobal::Versioning
   include IqvocGlobal::ConceptAssociationExtensions
   
   # ********** Validations
