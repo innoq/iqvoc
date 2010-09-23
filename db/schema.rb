@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(:version => 20100923063421) do
   end
 
   add_index "labelings", ["owner_id", "target_id", "type"], :name => "index_labelings_on_owner_id_and_target_id_and_type"
+  add_index "labelings", ["owner_id", "target_id"], :name => "index_labelings_on_owner_id_and_target_id"
   add_index "labelings", ["type"], :name => "index_labelings_on_type"
 
   create_table "labels", :force => true do |t|
@@ -134,8 +135,9 @@ ActiveRecord::Schema.define(:version => 20100923063421) do
     t.integer  "published_version_id"
   end
 
+  add_index "labels", ["language"], :name => "index_labels_on_owner_id_and_language"
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
-  add_index "labels", ["value"], :name => "index_labels_on_value"
+  add_index "labels", ["value"], :name => "index_labels_on_value", :length => {"value"=>255}
 
   create_table "lexical_variants", :force => true do |t|
     t.integer  "owner_id"
@@ -147,6 +149,7 @@ ActiveRecord::Schema.define(:version => 20100923063421) do
   end
 
   add_index "lexical_variants", ["owner_id", "type"], :name => "index_lexical_variants_on_owner_id_and_type"
+  add_index "lexical_variants", ["owner_id"], :name => "index_lexical_variants_on_owner_id"
   add_index "lexical_variants", ["type"], :name => "index_lexical_variants_on_type"
 
   create_table "matches", :force => true do |t|
@@ -158,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20100923063421) do
   end
 
   add_index "matches", ["concept_id", "type"], :name => "index_matches_on_concept_id_and_type"
+  add_index "matches", ["concept_id"], :name => "index_matches_on_concept_id"
   add_index "matches", ["type"], :name => "index_matches_on_type"
 
   create_table "note_annotations", :force => true do |t|
@@ -180,6 +184,7 @@ ActiveRecord::Schema.define(:version => 20100923063421) do
     t.string   "owner_type",                 :null => false
   end
 
+  add_index "notes", ["owner_id", "language"], :name => "index_notes_on_owner_id_and_language"
   add_index "notes", ["owner_id", "owner_type", "type"], :name => "index_notes_on_owner_id_and_owner_type_and_type"
   add_index "notes", ["type"], :name => "index_notes_on_type"
 
