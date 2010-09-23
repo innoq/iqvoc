@@ -8,12 +8,12 @@ class VersionedLabelsController < LabelsController
 
     inflectionals = Inflectional::Base.where(:value => @label.inflectionals.map(&:value)).all
     # subtract initial and current version from the inflectionals collection
-    @inflectionals_labels = Iqvoc::Label.base_class.find(inflectionals.map(&:label_id)-[Iqvoc::Label.base_class.current_version(params[:id]).first.id, @label.id])
+    @inflectionals_labels = Iqvoc::Label.base_class.find(inflectionals.map(&:label_id)-[@label.published_version_id, @label.id].compact)
 
     respond_to do |format|
 
       format.html do
-        @compound_in = Iqvoc::Label.base_class.compound_in(@label).all
+        @compound_in = @label.reverse_compound_forms.published.includes(:domain).map(&:domain)
       end
 
       format.ttl do
