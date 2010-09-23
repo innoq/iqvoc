@@ -27,4 +27,12 @@ class Concept::Relation::Base < ActiveRecord::Base
     "partials/concept/relation/base"
   end
 
+  def self.edit_partial_name(obj)
+    "partials/concept/relation/edit_base"
+  end
+
+  def self.only_one_allowed?
+    false
+  end
+
 end

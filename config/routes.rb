@@ -1,5 +1,5 @@
 Iqvoc::Application.routes.draw do
-  available_locales = /de|en/
+  available_locales = /de|en/ # FIXME this should be taken from I18n if possible
 
   # Language parameter is optional; rdf uris don't need to be localized in a any way.
   scope '(:lang)', :lang => available_locales do
@@ -8,13 +8,13 @@ Iqvoc::Application.routes.draw do
   end
   
   # Language paramater is mandatory.
-  scope ':lang' do
+  scope ':lang' do # FIXME limit lang to locales
     resource  :user_session
     resources :virtuoso_syncs, :only => [:new, :create]
 
     resources :versioned_concepts, :except => :index do
-      resources :labelings
-      resources :concept_relations
+      resources :labelings, :controller => 'concepts/labelings'
+      resources :relations, :controller => 'concepts/relations'
     end
 
     resources :versioned_labels, :except => :index do

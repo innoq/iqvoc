@@ -5,10 +5,11 @@ class LabelsController < ApplicationController
   def index
     respond_to do |format|
       format.json do
-        if params[:language]
-          @labels = Iqvoc::XLLabel.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL AND language LIKE :language) OR (value LIKE :query AND rev = 1 AND published_at IS NULL AND language LIKE :language)", {:query => "#{params[:query]}%", :language => params[:language]}])
+        if params[:language] # TODO Label::Base should perhaps be replaced by the label_class used in the labeling (s. MyLabeling.label_class). But then the relation class must be passed to this action (max 2 lines of code :-) )
+         # FIXME this querys suck!!!
+          @labels = Label::Base.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL AND language LIKE :language) OR (value LIKE :query AND rev = 1 AND published_at IS NULL AND language LIKE :language)", {:query => "#{params[:query]}%", :language => params[:language]}])
         else
-          @labels = Iqvoc::XLLabel.base_class.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL) OR (value LIKE :query AND rev = 1 AND published_at IS NULL)", {:query => "#{params[:query]}%"}])
+          @labels = Label::Base.all(:conditions => ["(value LIKE :query AND published_at IS NOT NULL) OR (value LIKE :query AND rev = 1 AND published_at IS NULL)", {:query => "#{params[:query]}%"}])
         end
 
         response = []
