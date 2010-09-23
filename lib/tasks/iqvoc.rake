@@ -23,9 +23,6 @@ namespace :iqvoc do
   
     desc 'Deletes all users.' 
     task :delete_all => :environment do
-      # ist es ein guter Stil, das Löschen aller Datensätze als Nebeneffekt
-      # von dem puts zu implementieren?
-      puts "#{UserPreference.delete_all} preferences deleted"
       puts "#{User.delete_all} users deleted"
     end
   end
