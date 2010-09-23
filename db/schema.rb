@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100920143747) do
+ActiveRecord::Schema.define(:version => 20100923063421) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -67,14 +67,15 @@ ActiveRecord::Schema.define(:version => 20100920143747) do
     t.string   "origin"
     t.string   "status"
     t.string   "classified"
-    t.string   "country_code",   :limit => 4
-    t.integer  "rev",                         :default => 1
+    t.string   "country_code",         :limit => 4
+    t.integer  "rev",                               :default => 1
     t.date     "published_at"
     t.integer  "locked_by"
     t.date     "expired_at"
     t.date     "follow_up"
     t.boolean  "to_review"
     t.date     "rdf_updated_at"
+    t.integer  "published_version_id"
   end
 
   add_index "concepts", ["origin"], :name => "index_concepts_on_origin"
@@ -115,13 +116,13 @@ ActiveRecord::Schema.define(:version => 20100920143747) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "language"
-    t.string   "value",             :limit => 1024
+    t.string   "value",                :limit => 1024
     t.string   "base_form"
     t.string   "inflectional_code"
     t.string   "part_of_speech"
     t.string   "status"
     t.string   "origin"
-    t.integer  "rev",                               :default => 1
+    t.integer  "rev",                                  :default => 1
     t.date     "published_at"
     t.integer  "locked_by"
     t.date     "expired_at"
@@ -130,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20100920143747) do
     t.boolean  "to_review"
     t.date     "rdf_updated_at"
     t.string   "type"
+    t.integer  "published_version_id"
   end
 
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
