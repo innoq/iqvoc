@@ -147,7 +147,7 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def endings
-    Inflectional.for_language_and_code(language, inflectional_code)
+    Inflectional::Base.for_language_and_code(language, inflectional_code)
   end
   
   def from_rdf(str)
