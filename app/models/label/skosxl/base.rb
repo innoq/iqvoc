@@ -75,7 +75,11 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   # ********** Scopes
-  
+
+  scope :by_origin, lambda { |origin|
+    where(:origin => origin)
+  }
+
   scope :by_origin_or_id, lambda { |arg|
     { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
   }

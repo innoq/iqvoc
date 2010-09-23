@@ -12,7 +12,7 @@ class LabelsController < ApplicationController
         end
 
         response = []
-        @labels.each { |label| response << {:id => label.id, :name => label.value, :origin => label.origin, :published => label.published?} }
+        @labels.each { |label| response << {:name => label.value, :origin => label.origin, :published => label.published?} }
         
         render :json => response
       end

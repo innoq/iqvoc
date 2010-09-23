@@ -13,11 +13,8 @@ Iqvoc::Application.routes.draw do
     resources :virtuoso_syncs, :only => [:new, :create]
 
     resources :versioned_concepts, :except => :index do
-      resources :pref_labelings
-      resources :alt_labelings
-      resources :broaders
-      resources :narrowers
-      resources :related
+      resources :labelings
+      resources :concept_relations
     end
 
     resources :versioned_labels, :except => :index do

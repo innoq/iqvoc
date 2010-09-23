@@ -7,6 +7,10 @@ class Labeling::SKOSXL::Base < Labeling::Base
       :conditions => ["(labelings.owner_id = ?) AND (labels.locked_by IS NOT NULL)", owner_id] }
   }
 
+  scope :by_label_origin, lambda { |origin|
+    includes(:target) & Label::SKOSXL::Base.by_origin(origin)
+  }
+
   scope :label_editor_selectable, includes(:target) & Label::SKOSXL::Base.editor_selectable
   
   def self.create_for(o, t)

@@ -36,7 +36,7 @@
 <div class="relation-body">
   <%= render :partial => "versioned_concepts/concept_semantic_relation_widget",
     :locals => {
-    :path => versioned_concept_broaders_path(:lang => @active_language, :versioned_concept_id => @concept),
+    :path => versioned_concept_concept_relations_path(:lang => @active_language, :versioned_concept_id => @concept),
     :relation => "broader_relations",
     :token_limit => nil,
     :class_name => Iqvoc::Concept.broader_relation_class_name,
