@@ -14,7 +14,7 @@
            data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
            data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
            data-no-results-text="<%= I18n.t("txt.views.widget.no_results") %>"
-           <% unless klass.only_one_allowed? %>
+           <% if klass.only_one_allowed? %>
              data-token-limit=1
            <% end %>
            ></input>
