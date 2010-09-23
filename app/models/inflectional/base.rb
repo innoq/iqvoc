@@ -2,7 +2,7 @@ class Inflectional::Base < ActiveRecord::Base
   
   set_table_name 'inflectionals'
   
-  belongs_to :label
+  belongs_to :label, :class_name => Iqvoc::XLLabel.base_class_name
   
   MAPPINGS = {
     :de => {
