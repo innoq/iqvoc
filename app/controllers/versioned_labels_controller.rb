@@ -1,3 +1,5 @@
+# FIXME even when VersionedConceptsController inherits ConceptsController there
+# is nearly no object orientation in here. nearly every line is copied!
 class VersionedLabelsController < LabelsController
   before_filter(:only => :show) { |c| c.authorize!(:read, :versioned_label) }
   before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }

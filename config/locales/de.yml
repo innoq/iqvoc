@@ -260,9 +260,12 @@ de:
        relation:
          missing: Keine Relationen vorhanden.
          concept_relation_skos_relateds: "Verwandte Begriffe"
+         concept_relation_skos_broader_polies: "Allgemeinere Begriffe"
+         concept_relation_skos_narrowers: "Spezifischere Begriffe"
      labeling:
        concept:
-         labeling_skosxl_alt_labels: "Alternatives Label"
+         labeling_skosxl_alt_labels: "Alternative Labels"
+         labeling_skosxl_pref_labels: "Bevorzugtes Label"
        label:
          labeling_skosxl_pref_labels: "Bevorzugtes Label von"
          labeling_skosxl_alt_labels: "Alternatives Label von"

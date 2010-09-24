@@ -66,8 +66,12 @@ module Iqvoc
       end
     end
 
+    def self.relation_class_names
+      further_relation_class_names + [broader_relation_class_name, broader_relation_class.narrower_class.name]
+    end
+
     def self.relation_classes
-      further_relation_classes + [broader_relation_class, broader_relation_class.narrower_class]
+      relation_class_names.map(&:constantize)
     end
 
     def self.further_relation_classes

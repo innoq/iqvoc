@@ -3,7 +3,7 @@ module IqvocGlobal
     module PushWithReflectionExtension
       def push_with_reflection_creation(relation_obj)
         ActiveRecord::Base.transaction do
-          current_target = Concept.find(relation_obj.target_id)
+          current_target = Concept::Base.find(relation_obj.target_id)
           target_concept_new_version = Concept.new_version(current_target.origin).first
           prepared_reflection_hash = {:owner_id => relation_obj.target_id, :target_id => proxy_owner.id}
 

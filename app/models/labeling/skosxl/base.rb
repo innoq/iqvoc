@@ -8,10 +8,12 @@ class Labeling::SKOSXL::Base < Labeling::Base
   }
 
   scope :by_label_origin, lambda { |origin|
-    includes(:target) & Label::SKOSXL::Base.by_origin(origin)
+    includes(:target) & self.label_class.by_origin(origin)
   }
 
-  scope :label_editor_selectable, includes(:target) & Label::SKOSXL::Base.editor_selectable
+  scope :label_editor_selectable, lambda { # Lambda because self.label_class is currently not known + we don't want to call it at load time!
+    includes(:target) & self.label_class.editor_selectable
+  }
   
   def self.create_for(o, t)
     find_or_create_by_owner_id_and_target_id(o.id, t.id)
@@ -25,5 +27,5 @@ class Labeling::SKOSXL::Base < Labeling::Base
   def self.label_class
     Iqvoc::XLLabel.base_class
   end
-  
+
 end

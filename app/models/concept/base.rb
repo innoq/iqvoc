@@ -44,12 +44,12 @@ class Concept::Base < ActiveRecord::Base
   # *** Concept2Concept relations
 
   # Broader
-  has_many :broader_relations,
+  has_many Iqvoc::Concept.broader_relation_class_name.to_relation_name,
     :foreign_key => :owner_id,
     :class_name => Iqvoc::Concept.broader_relation_class_name,
     :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
   has_many :broader,
-    :through => :broader_relations,
+    :through =>  Iqvoc::Concept.broader_relation_class_name.to_relation_name,
     :source => :target
 
   # Narrower

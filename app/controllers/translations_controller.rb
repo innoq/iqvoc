@@ -1,3 +1,4 @@
+# FIXME: I want to be deleted!
 class TranslationsController < LabelRelationsController
   def create
     super
