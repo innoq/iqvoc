@@ -244,12 +244,10 @@ class Label::SKOSXL::Base < Label::Base
   
   protected
 
-  #Validations
   def two_versions_exist
     errors.add(:base, I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
   end
 
-  #Callbacks
   def has_references?
     if (self.referenced_label_relations.size != 0) || (self.pref_labelings.size != 0)
       false
