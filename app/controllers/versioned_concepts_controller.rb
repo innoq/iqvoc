@@ -47,10 +47,9 @@ class VersionedConceptsController < ConceptsController
       @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
     end
 
-    # FIXME: This must be fixed later when it is clear how to inster relations in update and create
-    #[:definitions, :editorial_notes, :umt_source_notes, :umt_usage_notes, :umt_change_notes, :close_matches].each do |relation|
-    #  @concept.send(relation).build if @concept.send(relation).empty?
-    #end
+    Iqvoc::Concept.note_class_names.each do |note_class_name|
+      @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
+    end
   end
 
   def update
