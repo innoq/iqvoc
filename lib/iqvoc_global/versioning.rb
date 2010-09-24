@@ -17,20 +17,26 @@ module IqvocGlobal
         where(:origin => origin)
       }
 
-      scope :published, where(arel_table[:published_at].not_eq(nil))
+      scope :published, lambda { 
+        where(arel_table[:published_at].not_eq(nil))
+      }
       scope :unpublished, where(:published_at => nil)
       # The following scope returns all objects which should be selectable by the editor
-      scope :editor_selectable, where(
-        arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR comibne two scopes? [published OROPERATOR where(...)])
-          arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
+      scope :editor_selectable, lambda { 
+        where(
+          arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR comibne two scopes? [published OROPERATOR where(...)])
+            arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
+          )
         )
-      )
+      }
 
-      scope :for_dashboard, where(
-        arel_table[:published_at].eq(nil).or(
-          arel_table[:follow_up].not_eq(nil)
+      scope :for_dashboard, lambda {
+        where(
+          arel_table[:published_at].eq(nil).or(
+            arel_table[:follow_up].not_eq(nil)
+          )
         )
-      )
+      }
 
       scope :unsynced, where(:rdf_updated_at => nil)
 
