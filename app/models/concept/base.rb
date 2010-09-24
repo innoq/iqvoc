@@ -3,7 +3,6 @@ class Concept::Base < ActiveRecord::Base
   set_table_name 'concepts'
 
   include IqvocGlobal::Versioning
-  include IqvocGlobal::ConceptAssociationExtensions
   
   # ********** Validations
 
@@ -44,30 +43,32 @@ class Concept::Base < ActiveRecord::Base
   # *** Concept2Concept relations
 
   # Broader
-  has_many Iqvoc::Concept.broader_relation_class_name.to_relation_name,
+  # FIXME: this is not needed anymore.
+  # BUT: the include in scope :tops doesn't work with
+  # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
+  has_many :broader_relations,
     :foreign_key => :owner_id,
     :class_name => Iqvoc::Concept.broader_relation_class_name,
-    :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
-  has_many :broader,
-    :through =>  Iqvoc::Concept.broader_relation_class_name.to_relation_name,
-    :source => :target
+    :extend => Concept::Relation::ReverseRelationExtension
 
   # Narrower
+  # FIXME: this is not needed anymore.
+  # BUT: the include in scope :tops doesn't work with
+  # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :narrower_relations,
     :foreign_key => :owner_id,
-    :class_name => 'Concept::Relation::SKOS::Narrower', # FIXME: Must this be configureable????s
-  :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
-  has_many :narrower,
-    :through => :narrower_relations,
-    :source => :target
+    :class_name => Iqvoc::Concept.broader_relation_class.narrower_class.name,
+    :extend => Concept::Relation::ReverseRelationExtension
 
-  # Further relations
+  # Relations
   # e.g. 'concept_relation_skos_relateds'
-  Iqvoc::Concept.further_relation_class_names.each do |relation_class_name|
+  # Attetion: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
+  # classes!
+  Iqvoc::Concept.relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
       :foreign_key => :owner_id,
       :class_name  => relation_class_name,
-      :extend => [ PushWithReflectionExtension, DestroyReflectionExtension ] # FIXME: This must be understood and refactored!!!!
+      :extend => Concept::Relation::ReverseRelationExtension
   end
 
   # *** Labels/Labelings
@@ -119,7 +120,7 @@ class Concept::Base < ActiveRecord::Base
   #  :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
   scope :tops, includes(:broader_relations).
     where(:concept_relations => {:id => nil})
-
+  
   # scope :broader_tops,
   #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
   #   :include => :pref_labels,
@@ -191,17 +192,17 @@ class Concept::Base < ActiveRecord::Base
     @cached_pref_labels[lang]
   end
 
-  def labels_for_labeling_class_and_language(labeling_class, lang = :en)
+  def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target
     end
-    return (@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []
+    return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []).select{|l| l.published? || !only_published}
   end
 
-  def related_concepts_for_relation_class(relation_class)
+  def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select{ |rel| rel.class.name == relation_class }.map(&:target)
+    relations.select{ |rel| rel.class.name == relation_class }.map(&:target).select{|c| c.published? || !only_published}
   end
 
   def matches_for_class(match_class)

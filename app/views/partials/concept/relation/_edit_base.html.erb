@@ -3,8 +3,9 @@
     <legend><%= t("txt.partials.concept.relation.#{klass.name.to_relation_name}") %></legend>
     <input type="text" name="<%= klass.name.to_relation_name %>"
            class="label_relation"
-           data-present-relations="[<%= klass.by_owner(concept.id).published.map{|r| "{'name': '#{r.target.pref_label.value}', 'origin': '#{r.target.origin}', 'published': #{r.target.published?}}"}.join(',') %>]"
+           data-present-relations="[<%= klass.by_owner(concept.id).target_editor_selectable.map{|r| "{'name': '#{r.target.pref_label.value}', 'origin': '#{r.target.origin}', 'published': #{r.target.published?}}"}.join(',') %>]"
            data-post-url="<%= versioned_concept_relations_path(:lang => @active_language, :versioned_concept_id => concept.origin, :relation_class => klass.name) %>"
+           data-delete-url="<%= versioned_concept_relation_path(:lang => @active_language, :id => "ORIGIN", :versioned_concept_id => concept.origin, :relation_class => klass.name) %>"
            data-get-url="<%= concepts_path %>"
            data-branch-url="<%= concept_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
            data-show-url="<%= concept_path(:lang => @active_language, :id => "ORIGIN")%>"

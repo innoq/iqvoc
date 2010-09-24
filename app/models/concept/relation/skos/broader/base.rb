@@ -4,6 +4,10 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
     Concept::Relation::SKOS::Narrower
   end
 
+  def self.reverse_relation_class
+    self.narrower_class
+  end
+
   def self.view_section(obj)
     "main"
   end

@@ -4,17 +4,16 @@ class Concepts::LabelingsController < ApplicationController
     concept = load_concept
     labeling_class = load_labeling_class
 
-    labels = labeling_class.label_class.by_origin(params[:origin]) # We'll have to point to unpublished new versions of labels too
-    raise ActiveRecord::RecordNotFound unless labels.count > 0
+    label = labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last
+    raise ActiveRecord::RecordNotFound.new("Couldn't find label with origin '#{params[:origin]}'.") unless label
+    labels_new_version labeling_class.label_class.by_origin(params[:origin]).unpublished.last
 
     ActiveRecord::Base.transaction do
-      labels.each do |label|
-        concept.send(labeling_class.name.to_relation_name) << labeling_class.new(:target_id => label.id)
-      end
+      concept.send(labeling_class.name.to_relation_name).find_or_create_by_target_id(label.id)
+      concept.send(labeling_class.name.to_relation_name).find_or_create_by_target_id(labels_new_version.id) if labels_new_version and labels_new_version.rev > label.rev
     end
     
-    @labeling = labeling_class.by_label_origin(params[:origin]).label_editor_selectable.by_concept(concept).last
-    render :json => { :id => @labeling.id, :origin => @labeling.target.origin, :published => @labeling.target.published?}.to_json
+    render :json => { :origin => label.origin, :published => label.published?}.to_json
   end
 
   def destroy
@@ -35,7 +34,7 @@ class Concepts::LabelingsController < ApplicationController
 
   def load_concept
     concept = Iqvoc::Concept.base_class.by_origin(params[:versioned_concept_id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless concept
+    raise ActiveRecord::RecordNotFound.new("Couldn't find concept with origin '#{params[:versioned_concept_id]}'.") unless concept
     concept
   end
 

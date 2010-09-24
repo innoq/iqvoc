@@ -4,29 +4,32 @@ class Concepts::RelationsController < ApplicationController
     concept = load_concept
     relation_class = load_relation_class
 
-    target_concepts = Concept::Base.by_origin(params[:origin]) # We'll have to point to unpublished new versions too
-    raise ActiveRecord::RecordNotFound unless target_concepts.count > 0
+    target_concept = Concept::Base.by_origin(params[:origin]).editor_selectable.last
+    raise ActiveRecord::RecordNotFound unless concept
+    target_concepts_new_version = Concept::Base.by_origin(params[:origin]).unpublished.last
 
     ActiveRecord::Base.transaction do
-      target_concepts.each do |target_concept|
-        concept.send(relation_class.name.to_relation_name).push_with_reflection_creation(relation_class.new(:target_id => target_concept.id))
+      concept.send(relation_class.name.to_relation_name).create_with_reverse_relation(relation_class, target_concept)
+      if target_concepts_new_version and target_concepts_new_version.rev > target_concept.rev
+        concept.send(relation_class.name.to_relation_name).create_with_reverse_relation(relation_class, target_concepts_new_version)
       end
     end
     
-    @relation = concept.send(relation_class.name.to_relation_name).editor_selectable.last
-    render :json => { :origin => @relation.target.origin, :published => @relation.target.published?}.to_json
+    render :json => { :origin => target_concept.origin, :published => target_concept.published?}.to_json
   end
 
   def destroy
     concept = load_concept
     relation_class = load_relation_class
 
-    relations = concept.send(relation_class.name.to_relation_name).by_target_origin(params[:origin])
-    raise ActiveRecord::RecordNotFound unless relations.count > 0
+    target_concepts = [Concept::Base.by_origin(params[:origin]).editor_selectable.last]
+    raise ActiveRecord::RecordNotFound unless target_concepts.count > 0
+    target_concepts_new_version = Concept::Base.by_origin(params[:origin]).unpublished.last
+    target_concepts << target_concepts_new_version if target_concepts_new_version and target_concepts_new_version.rev > target_concepts.first.rev
 
     ActiveRecord::Base.transaction do
-      relations.each do |relation|
-        concept.send(relation_class.name.to_relation_name).destroy_reflection(relation)
+      target_concepts.each do |target_concept|
+        concept.send(relation_class.name.to_relation_name).destroy_with_reverse_relation(relation_class, target_concept)
       end
     end
 

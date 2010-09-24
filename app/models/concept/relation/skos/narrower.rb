@@ -1,5 +1,9 @@
 class Concept::Relation::SKOS::Narrower < Concept::Relation::Base
 
+  def self.reverse_relation_class
+    Iqvoc::Concept.broader_relation_class
+  end
+
   def self.view_section(obj)
     "main"
   end
