@@ -6,7 +6,7 @@ class Concepts::LabelingsController < ApplicationController
 
     label = labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find label with origin '#{params[:origin]}'.") unless label
-    labels_new_version labeling_class.label_class.by_origin(params[:origin]).unpublished.last
+    labels_new_version = labeling_class.label_class.by_origin(params[:origin]).unpublished.last
 
     ActiveRecord::Base.transaction do
       concept.send(labeling_class.name.to_relation_name).find_or_create_by_target_id(label.id)
@@ -20,11 +20,16 @@ class Concepts::LabelingsController < ApplicationController
     concept = load_concept
     labeling_class = load_labeling_class
 
-    labelings = concept.send(labeling_class.name.to_relation_name).by_label_origin(params[:origin])
+    labels = [labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last].compact
+    raise ActiveRecord::RecordNotFound.new("Couldn't find label with origin '#{params[:origin]}'.") unless labels.count > 0
+    labels_new_version = labeling_class.label_class.by_origin(params[:origin]).unpublished.last
+    labels << labels_new_version if labels_new_version and labels_new_version.rev > labels.first.rev
 
     ActiveRecord::Base.transaction do
-      labelings.each do |labeling|
-        labeling.destroy
+      labels.each do |label|
+        concept.send(labeling_class.name.to_relation_name).by_label(label).each do |labeling|
+          labeling.destroy
+        end
       end
     end
     head :ok

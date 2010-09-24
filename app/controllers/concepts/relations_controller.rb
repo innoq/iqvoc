@@ -22,7 +22,7 @@ class Concepts::RelationsController < ApplicationController
     concept = load_concept
     relation_class = load_relation_class
 
-    target_concepts = [Concept::Base.by_origin(params[:origin]).editor_selectable.last]
+    target_concepts = [Concept::Base.by_origin(params[:origin]).editor_selectable.last].compact
     raise ActiveRecord::RecordNotFound unless target_concepts.count > 0
     target_concepts_new_version = Concept::Base.by_origin(params[:origin]).unpublished.last
     target_concepts << target_concepts_new_version if target_concepts_new_version and target_concepts_new_version.rev > target_concepts.first.rev
