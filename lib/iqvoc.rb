@@ -95,6 +95,7 @@ module Iqvoc
       :label_relation_class_names,
       :compound_form_class_name,
       :compound_form_content_class_name,
+      :addtitional_association_class_names,
       :view_sections
 
     self.base_class_name                  = 'Label::UMT::Base'
@@ -109,6 +110,8 @@ module Iqvoc
 
     self.compound_form_class_name         = 'CompoundForm::UMT::Base'
     self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
+
+    self.addtitional_association_class_names = {"Inflectional::UMT::Base" => 'label_id', "CompoundForm::Base" => "owner_id"}
 
     self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
 
