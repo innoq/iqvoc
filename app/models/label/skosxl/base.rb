@@ -32,10 +32,9 @@ class Label::SKOSXL::Base < Label::Base
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
 
-  has_many :inflectionals, :class_name => 'Inflectional::Base', :foreign_key => 'label_id', :dependent => :destroy
-
-  has_many :compound_forms, :class_name => 'CompoundForm::Base', :foreign_key => 'domain_id'
-  has_many :compound_form_contents, :class_name => "CompoundForm::Content::Base", :through => :compound_forms, :source => :compound_form_contents, :dependent => :destroy
+  Iqvoc::XLLabel.addtitional_association_class_names.each do |class_name, foreign_key|
+    has_many class_name.to_relation_name, :class_name => class_name, :foreign_key => :foreign_key, :dependent => :destroy
+  end
   # Where is this label references as CompoundFormContent?
   has_many :reverse_compound_form_contents, :class_name => 'CompoundForm::Content::Base', :foreign_key => 'label_id'
   has_many :reverse_compound_forms, :class_name => 'CompoundForm::Base', :through => :reverse_compound_form_contents, :source => :compound_form
