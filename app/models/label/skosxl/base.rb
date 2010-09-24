@@ -85,7 +85,7 @@ class Label::SKOSXL::Base < Label::Base
   }
 
   # FIXME This should be working again
-  scope :with_associations, includes(:labelings => :owner)
+  scope :with_associations, lambda { includes(:labelings => :owner) }
   #, :include => [
   # :inflectionals,
   # :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
