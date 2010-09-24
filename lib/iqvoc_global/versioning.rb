@@ -20,7 +20,9 @@ module IqvocGlobal
       scope :published, lambda { 
         where(arel_table[:published_at].not_eq(nil))
       }
-      scope :unpublished, where(:published_at => nil)
+      scope :unpublished,  lambda {
+        where(:published_at => nil)
+      }
       # The following scope returns all objects which should be selectable by the editor
       scope :editor_selectable, lambda { 
         where(
