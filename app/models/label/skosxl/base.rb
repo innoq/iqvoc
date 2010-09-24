@@ -216,7 +216,7 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def has_concept_or_label_relations?
-    if labelings.size > 0 || label_relations.size > 0 || compound_forms.size > 0
+    if labelings.count > 0 || label_relations.count > 0 || compound_forms.count > 0
       true
     else
       false
