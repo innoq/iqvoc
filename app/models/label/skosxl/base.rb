@@ -99,7 +99,6 @@ class Label::SKOSXL::Base < Label::Base
   
   # ********** Methods
 
-  #Class-Methods
   def self.associations_for_versioning
     [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, {:notes => :annotations}, {:compound_forms => :compound_form_contents}]
   end
@@ -117,7 +116,6 @@ class Label::SKOSXL::Base < Label::Base
     self.from_rdf(str).save!
   end
 
-  #Instance-Methods
   def initialize(params = {})
     super(params)
     @full_validation = false
@@ -212,7 +210,7 @@ class Label::SKOSXL::Base < Label::Base
 
   def customized_to_json(options = {})
     {
-      'id' => self.id,
+      'id'   => self.id,
       'name' => self.origin     
     }
   end
