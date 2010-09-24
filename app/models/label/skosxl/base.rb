@@ -15,8 +15,8 @@ class Label::SKOSXL::Base < Label::Base
   # ********** Hooks
 
   before_destroy :has_references?
-  after_save :overwrite_inflectionals!
-  after_create :after_branch
+  after_save     :overwrite_inflectionals!
+  after_create   :after_branch
 
   # ********** "Static"/unconfigureable relations
 
