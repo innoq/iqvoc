@@ -11,9 +11,6 @@ class Label::SKOSXL::Base < Label::Base
   
   # Run these validations if @full_validation is true
   validate :compound_form_contents_size
-  #, :homograph_and_qualifier_existence,
-  # :translations_must_be_in_foreign_language
-  # :pref_label_language
 
   # ********** Hooks
 
