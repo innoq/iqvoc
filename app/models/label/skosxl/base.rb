@@ -107,14 +107,6 @@ class Label::SKOSXL::Base < Label::Base
   def self.first_level_associations
     [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, :notes, :compound_forms]
   end
-
-  # FIXME: Seems not to bee used => KILL IT! :-)
-  def self.pref_label_alphas
-    Label.all(
-      :select => "SUBSTR(LOWER(labels.value), 1, 1) AS alpha", 
-      :joins  => :pref_labelings,
-      :group  => :alpha).map {|label| label.alpha}
-  end
   
   def self.from_rdf(str)
     h = IqvocGlobal::RdfHelper.split_literal(str)
