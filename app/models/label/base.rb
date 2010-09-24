@@ -49,7 +49,7 @@ class Label::Base < ActiveRecord::Base
   }
 
   # FIXME: This is also defined in the mystical Common mixins included in Label::SKOSXL...
-  scope :unpublished, where(arel_table['published_at'].eq(nil))
+  scope :unpublished, lambda { where(arel_table['published_at'].eq(nil)) }
 
   # ********* Methods
 

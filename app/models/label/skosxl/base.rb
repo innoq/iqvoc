@@ -11,15 +11,12 @@ class Label::SKOSXL::Base < Label::Base
   
   # Run these validations if @full_validation is true
   validate :compound_form_contents_size
-  #, :homograph_and_qualifier_existence,
-  # :translations_must_be_in_foreign_language
-  # :pref_label_language
 
   # ********** Hooks
 
   before_destroy :has_references?
-  after_save :overwrite_inflectionals!
-  after_create :after_branch
+  after_save     :overwrite_inflectionals!
+  after_create   :after_branch
 
   # ********** "Static"/unconfigureable relations
 
@@ -85,7 +82,7 @@ class Label::SKOSXL::Base < Label::Base
   }
 
   # FIXME This should be working again
-  scope :with_associations, includes(:labelings => :owner)
+  scope :with_associations, lambda { includes(:labelings => :owner) }
   #, :include => [
   # :inflectionals,
   # :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
@@ -99,21 +96,12 @@ class Label::SKOSXL::Base < Label::Base
   
   # ********** Methods
 
-  #Class-Methods
   def self.associations_for_versioning
     [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, {:notes => :annotations}, {:compound_forms => :compound_form_contents}]
   end
 
   def self.first_level_associations
     [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, :notes, :compound_forms]
-  end
-
-  # FIXME: Seems not to bee used => KILL IT! :-)
-  def self.pref_label_alphas
-    Label.all(
-      :select => "SUBSTR(LOWER(labels.value), 1, 1) AS alpha", 
-      :joins  => :pref_labelings,
-      :group  => :alpha).map {|label| label.alpha}
   end
   
   def self.from_rdf(str)
@@ -125,7 +113,6 @@ class Label::SKOSXL::Base < Label::Base
     self.from_rdf(str).save!
   end
 
-  #Instance-Methods
   def initialize(params = {})
     super(params)
     @full_validation = false
@@ -220,13 +207,13 @@ class Label::SKOSXL::Base < Label::Base
 
   def customized_to_json(options = {})
     {
-      'id' => self.id,
+      'id'   => self.id,
       'name' => self.origin     
     }
   end
 
   def has_concept_or_label_relations?
-    if labelings.size > 0 || label_relations.size > 0 || compound_forms.size > 0
+    if labelings.count > 0 || label_relations.count > 0 || compound_forms.count > 0
       true
     else
       false
@@ -254,12 +241,10 @@ class Label::SKOSXL::Base < Label::Base
   
   protected
 
-  #Validations
   def two_versions_exist
     errors.add(:base, I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
   end
 
-  #Callbacks
   def has_references?
     if (self.referenced_label_relations.size != 0) || (self.pref_labelings.size != 0)
       false
