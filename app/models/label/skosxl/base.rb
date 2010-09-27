@@ -32,12 +32,6 @@ class Label::SKOSXL::Base < Label::Base
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
 
-  Iqvoc::XLLabel.addtitional_association_class_names.each do |class_name, foreign_key|
-    has_many class_name.to_relation_name, :class_name => class_name, :foreign_key => :foreign_key, :dependent => :destroy
-  end
-  # Where is this label references as CompoundFormContent?
-  has_many :reverse_compound_form_contents, :class_name => 'CompoundForm::Content::Base', :foreign_key => 'label_id'
-  has_many :reverse_compound_forms, :class_name => 'CompoundForm::Base', :through => :reverse_compound_form_contents, :source => :compound_form
   # The following would be nice but isn't working :-)
   #has_many :reverse_compound_form_labels, :class_name => 'Label::Base', :through => :reverse_compound_forms, :source => :domain
   
@@ -62,6 +56,10 @@ class Label::SKOSXL::Base < Label::Base
     has_many Iqvoc::XLLabel.compound_form_content_class_name.to_relation_name,
       :class_name  => Iqvoc::XLLabel.compound_form_content_class_name,
       :through     => Iqvoc::XLLabel.compound_form_class_name.to_relation_name
+  end
+
+  Iqvoc::XLLabel.addtitional_association_class_names.each do |class_name, foreign_key|
+    has_many class_name.to_relation_name, :class_name => class_name, :foreign_key => foreign_key, :dependent => :destroy
   end
 
   # ********** Relation Stuff

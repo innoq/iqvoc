@@ -29,7 +29,6 @@ class LabelsController < ApplicationController
         raise ActiveRecord::RecordNotFound unless @label
        # @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
        # @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
-        @compound_in = @label.reverse_compound_forms.published.includes(:domain).map(&:domain)
         store_location
       end
       

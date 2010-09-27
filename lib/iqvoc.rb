@@ -111,7 +111,11 @@ module Iqvoc
     self.compound_form_class_name         = 'CompoundForm::UMT::Base'
     self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
 
-    self.addtitional_association_class_names = {"Inflectional::UMT::Base" => 'label_id', "CompoundForm::Base" => "owner_id"}
+    self.addtitional_association_class_names = {
+      "Inflectional::Base" => "label_id",
+      "CompoundForm::Base" => "domain_id",
+      "CompoundForm::Content::Base" => "label_id" # This is used for the reverse direction ('compound_in')
+    }
 
     self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
 
@@ -127,6 +131,12 @@ module Iqvoc
 
     def self.note_classes
       note_class_names.map(&:constantize)
+    end
+
+    def self.addtitional_association_classes
+      addtitional_association_class_names.keys.each_with_object({}) do |class_name, hash|
+        hash[class_name.constantize] = addtitional_association_class_names[class_name]
+      end
     end
 
   end

@@ -52,7 +52,7 @@ class LabelVersionsController < ApplicationController
 
   #Locks the label
   def lock
-    current_version = Iqvoc::XLLabel.base_class.current_version(params[:origin]).first
+    current_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).published.last
     new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     if !new_version.blank?
       if !new_version.locked?

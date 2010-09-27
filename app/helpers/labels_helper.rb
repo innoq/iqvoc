@@ -1,7 +1,7 @@
 module LabelsHelper
   def options_for_inflectional_code(label)
     collection = "<option value=\"\" data-endings=\"\"></option>"
-    Inflectional.mappings_for_language(label.language).map.each do |e|
+    Inflectional::Base.mappings_for_language(label.language).map.each do |e|
       selected    = " selected=\"selected\"" if e.first.to_s == label.inflectional_code
       endings = e.last.map{|e| e.downcase }.join(" ")
       collection += "<option value=\"#{e.first}\"#{selected} data-endings=\"#{endings}\">#{e.first} (#{endings})</option>"
@@ -39,6 +39,7 @@ module LabelsHelper
   end
 
   def render_label_association(hash, label, association_class, furter_options = {})
+    return unless association_class.partial_name(label)
     ((hash[association_class.view_section(label)] ||= {})[association_class.view_section_sort_key(label)] ||= "") <<
       render(association_class.partial_name(label), furter_options.merge(:label => label, :klass => association_class))
   end
@@ -50,12 +51,8 @@ module LabelsHelper
 
     res['main'][1000] = render 'labels/details', :label => label
 
-    res['inflectionals'][100] = render 'labels/inflectionals', :label => label, :inflectionals_labels => inflectionals_labels
-
-    res['compound_forms'][100] = render 'labels/compound_forms', :label => label, :compound_in => compound_in
-
     Iqvoc::Concept.labeling_classes.keys.each do |labeling_class|
-        render_label_association(res, label, labeling_class)
+      render_label_association(res, label, labeling_class)
     end
 
     Iqvoc::XLLabel.relation_classes.each do |relation_class|
@@ -64,6 +61,10 @@ module LabelsHelper
 
     Iqvoc::XLLabel.note_classes.each do |note_class|
       render_label_association(res, label, note_class)
+    end
+
+    Iqvoc::XLLabel.addtitional_association_classes.keys.each do |assoc_class|
+      render_label_association(res, label, assoc_class)
     end
 
     res

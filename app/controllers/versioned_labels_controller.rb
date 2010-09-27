@@ -5,12 +5,8 @@ class VersionedLabelsController < LabelsController
   before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }
   
   def show
-    @label = Label::Base.by_origin(params[:id]).unpublished.last
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
-
-    inflectionals = Inflectional::Base.where(:value => @label.inflectionals.map(&:value)).all
-    # subtract initial and current version from the inflectionals collection
-    @inflectionals_labels = Label::Base.find(inflectionals.map(&:label_id)-[@label.published_version_id, @label.id].compact)
 
     respond_to do |format|
 
@@ -36,20 +32,20 @@ class VersionedLabelsController < LabelsController
       origin = OriginMapping.new
       @label.origin = origin.merge(params[:label][:value])
       if @label.save
-      flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
-      redirect_to versioned_label_path(:id => @label.origin, :lang => @active_language)
+        flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
+        redirect_to versioned_label_path(:id => @label.origin, :lang => @active_language)
       else
         flash[:error] = I18n.t("txt.controllers.versioned_label.error")
         render :new
       end
     else
-     flash[:error] = I18n.t("txt.controllers.versioned_label.error")
-     render :new
+      flash[:error] = I18n.t("txt.controllers.versioned_label.error")
+      render :new
     end
   end
 
   def edit
-    @label = Label::Base.by_origin(params[:id]).unpublished.last
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
     
     authorize! :continue_editing, @label
@@ -58,17 +54,16 @@ class VersionedLabelsController < LabelsController
       @association_objects_in_editing_mode = @label.associated_objects_in_editing_mode
     end
 
-    @pref_labelings = PrefLabeling.by_label(@label).all(:include => {:owner => :pref_labels}).sort
-    @alt_labelings = AltLabeling.by_label(@label).all(:include => {:owner => :pref_labels}).sort
-    @compound_in = Label::Base.compound_in(@label).all.sort
+    # @pref_labelings = PrefLabeling.by_label(@label).all(:include => {:owner => :pref_labels}).sort
+    # @alt_labelings = AltLabeling.by_label(@label).all(:include => {:owner => :pref_labels}).sort
 
-    [:definitions, :editorial_notes, :umt_source_notes, :umt_usage_notes, :umt_change_notes].each do |relation|
-      @label.send(relation).build if @label.send(relation).empty?
+    Iqvoc::XLLabel.note_class_names.each do |note_class_name|
+      @label.send(note_class_name.to_relation_name).build if @label.send(note_class_name.to_relation_name).empty?
     end
   end
 
   def update
-    @label = Label::Base.by_origin(params[:id]).unpublished.last
+    @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     respond_to do |format|
       format.html do
         raise ActiveRecord::RecordNotFound unless @label
@@ -84,7 +79,7 @@ class VersionedLabelsController < LabelsController
   end
 
   def destroy
-    @new_label = Label::Base.by_origin(params[:id]).unpublished.last
+    @new_label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_label
     if (@new_label.collect_first_level_associated_objects.each(&:destroy)) && (@new_label.delete)
       flash[:notice] = I18n.t("txt.controllers.label_versions.delete")
