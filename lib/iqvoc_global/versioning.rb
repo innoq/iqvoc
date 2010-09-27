@@ -32,6 +32,10 @@ module IqvocGlobal
         )
       }
 
+      scope :in_edit_mode, lambda {
+        where(arel_table[:locked_by].eq(nil).complement)
+      }
+
       scope :for_dashboard, lambda {
         where(
           arel_table[:published_at].eq(nil).or(
@@ -44,23 +48,23 @@ module IqvocGlobal
 
       # ********* Methods
 
-      def after_branch
-        if branched?
-          umt_change_notes.create!(:language => language,
-            :note_annotations_attributes => [
-              { :identifier => "umt:editor", :value => locking_user.try(:name) },
-              { :identifier => "dct:modified", :value => DateTime.now.to_s }
-            ])
-        end
-      end
-
-      def branched?
-        rev > 1
+      def branch(user)
+        new_version = self.clone(:include => self.class.includes_to_deep_cloning)
+        new_version.lock_by_user!(user.id)
+        new_version.increment!(:rev)
+        new_version.unpublish!
+        new_version.note_umt_change_notes.build(:language => I18n.locale.to_s, # FIXME: Hardcoded relation and language!!
+          :annotations_attributes => [
+            { :identifier => "umt:editor", :value => user.try(:name) },
+            { :identifier => "dct:modified", :value => DateTime.now.to_s }
+          ])
+        new_version
       end
 
       def publish!
         write_attribute(:published_at, Time.now)
         write_attribute(:to_review, nil)
+        write_attribute(:published_version_id, nil)
       end
 
       def unpublish!
@@ -101,17 +105,20 @@ module IqvocGlobal
         write_attribute(:to_review, true)
       end
 
-      def prepare_for_branching(user_id)
-        lock_by_user!(user_id)
-        increment!(:rev)
-        write_attribute(:created_at, Time.now)
-        write_attribute(:updated_at, Time.now)
-        unpublish!
+    end
+
+    module ClassMethods
+
+      def include_to_deep_cloning(*association_names)
+        (@@include_to_deep_cloning ||= {})[self] ||= []
+        association_names.each do |association_name|
+          @@include_to_deep_cloning[self] << association_name
+        end
       end
 
-      def prepare_for_merging
-        publish!
-        unlock!
+      def includes_to_deep_cloning
+        (@@include_to_deep_cloning ||= {})[self] ||= []
+        (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
       end
 
     end

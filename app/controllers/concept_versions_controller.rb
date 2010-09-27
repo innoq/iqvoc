@@ -1,13 +1,15 @@
 class ConceptVersionsController < ApplicationController
+
   #Merges the current and the new concept vesion
   def merge
-    current_concept = Iqvoc::Concept.base_class.current_version(params[:origin]).published.first
+    current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless new_version
-    #    begin
+    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
+    authorize! :merge, new_version
     ActiveRecord::Base.transaction do
-      if (current_concept.present? ? current_concept.collect_first_level_associated_objects.each(&:destroy) && (current_concept.delete) : true)
-        new_version.prepare_for_merging
+      if current_concept.blank? || current_concept.destroy
+        new_version.publish!
+        new_version.unlock!
         if new_version.valid_with_full_validation?
           new_version.save
           begin
@@ -29,100 +31,70 @@ class ConceptVersionsController < ApplicationController
         redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
       end
     end
-
-    #    rescue Exception => e
-    #      logger.error(e)
-    #      @concept = new_version
-    #      flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
-    #      render :template => "versioned_concepts/edit"
-    #    end
   end
 
   #Creates a new Version of a Concept
   def branch
-    current_concept = Iqvoc::Concept.base_class.current_version(params[:origin]).first
-    new_version = Iqvoc::Concept.base_class.new_version(params[:origin]).first
-    if new_version.blank?
-      new_version = current_concept.clone :include => Iqvoc::Concept.base_class.associations_for_versioning
-      new_version.prepare_for_branching(current_user.id)
-      if new_version.save
-        flash[:notice] = t("txt.controllers.versioning.merged")
-        redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language, :check_associations_in_editing_mode => true)
-      end
-    else
-      flash[:error] = t("txt.controllers.versioning.branch_error")
-      redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
+    current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
+    raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
+    raise "There is already an unpublished version for Concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    authorize! :branch, current_concept
+    new_version = nil
+    ActiveRecord::Base.transaction do
+      new_version = current_concept.branch(current_user)
+      new_version.save!
     end
+    flash[:notice] = t("txt.controllers.versioning.branched")
+    redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language, :check_associations_in_editing_mode => true)
   end
 
   #Locks the Concept
   def lock
-    current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    if !new_version.blank?
-      if !new_version.locked?
-        new_version.lock_by_user!(current_user.id)
-        if new_version.save
-          flash[:notice] = t("txt.controllers.versioning.locked")
-          flash[:notice] = t("txt.controllers.versioning.locked")
-          redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language)
-        end
-      else
-        flash[:error] = t("txt.controllers.versioning.lock_error")
-        redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
-      end
+    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
+    raise "Concept with origin '#{params[:origin]}' has already been locked." if new_version.locked?
+    authorize! :lock, new_version
 
-    else
-      flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to concept_path(:lang => @active_language, :id => current_version)
-    end
+    new_version.lock_by_user!(current_user.id)
+    new_version.save!
+    
+    flash[:notice] = t("txt.controllers.versioning.locked")
+    redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language)
   end
 
   #Unlocks the Concept
   def unlock
-    current_version = Iqvoc::Concept.base_class.current_version(params[:origin]).first
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    if !new_version.blank?
-      if new_version.locked?
-        authorize! :unlock, new_version
-        new_version.unlock!
-        if new_version.save
-          flash[:notice] = t("txt.controllers.versioning.unlocked")
-          redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
-        end
-      else
-        flash[:error] = t("txt.controllers.versioning.unlock_error")
-        redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
-      end
+    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
+    raise "Concept with origin '#{params[:origin]}' wasn't locked." unless new_version.locked?
+    authorize! :unlock, new_version
 
-    else
-      flash[:error] = t("txt.controllers.versioning.new_version_blank_error")
-      redirect_to concept_path(:lang => @active_language, :id => current_version)
-    end
+    new_version.unlock!
+    new_version.save!
+
+    flash[:notice] = t("txt.controllers.versioning.unlocked")
+    redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
   end
 
   def consistency_check
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
-    if @concept.valid_with_full_validation?
+    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless concept
+    if concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
-      redirect_to versioned_concept_path(@active_language, @concept)
+      redirect_to versioned_concept_path(:id => concept, :lang => @active_language)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      render :template => "versioned_concepts/edit"
+      redirect_to edit_versioned_concept_path(:id => concept, :lang => @active_language)
     end
   end
 
   def to_review
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
-    @concept.to_review!
-    if @concept.save
-      flash[:notice] = t("txt.controllers.versioning.to_review_success")
-      redirect_to versioned_concept_path(@active_language, @concept)
-    else
-      flash[:error] = t("txt.controllers.versioning.to_review_error")
-      redirect_to versioned_concept_path(@active_language, @concept)
-    end
+    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless concept
+    concept.to_review!
+    concept.save!
+    flash[:notice] = t("txt.controllers.versioning.to_review_success")
+    redirect_to versioned_concept_path(@active_language, concept)
   end
+  
 end

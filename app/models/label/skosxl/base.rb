@@ -13,21 +13,23 @@ class Label::SKOSXL::Base < Label::Base
   # ********** Hooks
 
   before_destroy :has_references?
- after_create   :after_branch
 
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :labelings, :class_name => 'Labeling::Base', :foreign_key => 'target_id'
+  has_many :labelings, :class_name => 'Labeling::Base', :foreign_key => 'target_id', :dependent => :destroy
   has_many :concepts, :through => :labelings, :source => :owner
+  include_to_deep_cloning(:labelings)
 
-  has_many :relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base'
+  has_many :relations, :foreign_key => 'domain_id', :class_name => 'Label::Relation::Base', :dependent => :destroy
   # Which references are pointing to this label?
-  has_many :referenced_by_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base'
+  has_many :referenced_by_relations, :foreign_key => 'range_id', :class_name => 'Label::Relation::Base', :dependent => :destroy
+  include_to_deep_cloning(:relations, :referenced_by_relations)
 
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
+  include_to_deep_cloning(:notes => :annotations)
 
   # The following would be nice but isn't working :-)
   #has_many :reverse_compound_form_labels, :class_name => 'Label::Base', :through => :reverse_compound_forms, :source => :domain
@@ -57,6 +59,7 @@ class Label::SKOSXL::Base < Label::Base
 
   Iqvoc::XLLabel.additional_association_classes.each do |association_class, foreign_key|
     has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
+    include_to_deep_cloning(association_class.deep_cloning_relations)
     association_class.referenced_by(self)
   end
 
@@ -91,14 +94,6 @@ class Label::SKOSXL::Base < Label::Base
   
   # ********** Methods
 
-  def self.associations_for_versioning
-    [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, {:notes => :annotations}, {:compound_forms => :compound_form_contents}]
-  end
-
-  def self.first_level_associations
-    [:labelings, :inflectionals, :label_relations, :referenced_label_relations, :reverse_compound_form_contents, :notes, :compound_forms]
-  end
-  
   def self.from_rdf(str)
     h = IqvocGlobal::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
@@ -140,18 +135,10 @@ class Label::SKOSXL::Base < Label::Base
     save(:validate => false)
   end
   
- def to_param
+  def to_param
     origin
   end
   
-  def collect_first_level_associated_objects
-    associated_objects = Array.new
-    Label.first_level_associations.each do |association|
-      associated_objects << self.send(association)
-    end
-    associated_objects.flatten
-  end
-
   def customized_to_json(options = {})
     {
       'id'   => self.id,
@@ -179,7 +166,10 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def associated_objects_in_editing_mode
-    {:label_relations => LabelRelation.range_in_edit_mode(id), :compound_from_contents => UMT::CompoundFormContent.target_in_edit_mode(id)}
+    {
+      :label_relations => Label::Relation::Base.by_domain(id).range_in_edit_mode,
+# FIXME      :compound_from_contents => UMT::CompoundFormContent.target_in_edit_mode(id)
+    }
   end
   
   def rdf_uri(opts = {})

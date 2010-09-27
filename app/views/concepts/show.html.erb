@@ -3,18 +3,18 @@
   <link href="<%= @concept.rdf_uri() %>" type="application/rdf+xml" rel="alternate" title=""/>
   <link href="<%= @concept.rdf_uri(:format => :"text/n3") %>" type="text/n3" rel="alternate" title=""/>
 <% end -%>
-  
+
 <h2><%= t("txt.common.concept") %>: <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept)) %></h2>
 <%= link_to @concept.rdf_uri(:format => :"text/turtle"), @concept.rdf_uri(:format => :"text/turtle"), :id => 'format_link_ttl' %>
 <h2><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.new_record? ? "-" : link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %></h2>
 
-<% if can?(:read, :versioned_concept) %>
+<% if @new_concept_version.blank? && can?(:branch, @concept) %>
   <div class="editing_versioning_toolbar">
-    <% if @new_concept_version.blank? && can?(:write, :versioned_concept) %>
-      <%= button_to t("txt.views.versioning.versioning_mode"), concept_versions_branch_path(:lang => @active_language, :origin => @concept.origin) %>
-    <% elsif can?(:read, :versioned_concept) %>
-      <%= link_to t("txt.views.versioning.preview_new_version"), versioned_concept_path(:id => @new_concept_version, :lang => @active_language) %>
-    <% end %>
+    <%= button_to t("txt.views.versioning.versioning_mode"), concept_versions_branch_path(:lang => @active_language, :origin => @concept.origin) %>
+  </div>
+<% elsif can?(:read, @new_concept_version) %>
+  <div class="editing_versioning_toolbar">
+    <%= link_to t("txt.views.versioning.preview_new_version"), versioned_concept_path(:id => @new_concept_version, :lang => @active_language) %>
   </div>
 <% end %>
 

@@ -301,7 +301,7 @@ de:
        published_with_warning: "Instanz wurde erfolgreich veröffentlicht, hat aber keine Relationen zu anderen Instanzen!"
        merged_delete_error: "Das alte Label konnte nicht gelöscht werden!"
        merged_publishing_error: "Instanz konnte nicht veröffentlicht werden!"
-       merged: "Instanzkopie wurde erfolgreich angelegt und für andere Benutzer gesperrt."
+       branched: "Instanzkopie wurde erfolgreich angelegt und für andere Benutzer gesperrt."
        locked: "Instanz wurde für andere User gesperrt."
        lock_error: "Instanz ist bereits gesperrt!"
        unlocked: "Instanz wurde für andere User entsperrt."

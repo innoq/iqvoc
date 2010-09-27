@@ -18,6 +18,11 @@ class Label::Relation::Base < ActiveRecord::Base
    includes(:range).where("labels.published_at IS NOT NULL OR (labels.published_at IS NULL AND labels.published_version_id IS NULL) ")
   }
 
+  scope :range_in_edit_mode, lambda { 
+    joins(:range) & Iqvoc::XLLabel.base_class.in_edit_mode
+  }
+
+
   def self.view_section(obj)
     "relations"
   end

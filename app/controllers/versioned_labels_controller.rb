@@ -1,12 +1,11 @@
 # FIXME even when VersionedConceptsController inherits ConceptsController there
 # is nearly no object orientation in here. nearly every line is copied!
 class VersionedLabelsController < LabelsController
-  before_filter(:only => :show) { |c| c.authorize!(:read, :versioned_label) }
-  before_filter(:except => :show) { |c| c.authorize!(:write, :versioned_label) }
   
   def show
     @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
+    authorize! :read, @label
 
     respond_to do |format|
 
@@ -21,10 +20,12 @@ class VersionedLabelsController < LabelsController
   end
 
   def new
+    authorize! :create, Iqvoc::XLLabel.base_class
     @label = !defined?(params[:value]) ? Iqvoc::XLLabel.base_class.new : Iqvoc::XLLabel.base_class.new(:value => params[:value])
   end
 
   def create
+    authorize! :create, Iqvoc::XLLabel.base_class
     @label = Iqvoc::XLLabel.base_class.new(params[:label])
     label_value = params[:label][:value]
     if @label.valid?
@@ -46,8 +47,7 @@ class VersionedLabelsController < LabelsController
   def edit
     @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @label
-    
-    authorize! :continue_editing, @label
+    authorize! :update, @label
 
     if params[:check_associations_in_editing_mode]
       @association_objects_in_editing_mode = @label.associated_objects_in_editing_mode
@@ -63,6 +63,9 @@ class VersionedLabelsController < LabelsController
 
   def update
     @label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @label
+    authorize! :update, @label
+
     respond_to do |format|
       format.html do
         raise ActiveRecord::RecordNotFound unless @label
@@ -80,7 +83,9 @@ class VersionedLabelsController < LabelsController
   def destroy
     @new_label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_label
-    if (@new_label.collect_first_level_associated_objects.each(&:destroy)) && (@new_label.delete)
+    authorize! :destroy, @new_label
+
+    if @new_label.destroy
       flash[:notice] = I18n.t("txt.controllers.label_versions.delete")
       redirect_to dashboard_path(:lang => @active_language)
     else

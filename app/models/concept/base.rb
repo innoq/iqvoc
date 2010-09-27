@@ -3,7 +3,7 @@ class Concept::Base < ActiveRecord::Base
   set_table_name 'concepts'
 
   include IqvocGlobal::Versioning
-  
+
   # ********** Validations
 
   validate :origin, :presence => true
@@ -12,31 +12,37 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
-  before_destroy :has_references?
+  # FIXME: The following tests if there are references pointing here... I didn't understand why this must be checked commented this out
+  # before_destroy :has_references?
 
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base"
+  has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
   has_many :related_concepts, :through => :relations, :source => :target
+  has_many :referenced_relations, :foreign_key => 'target_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
+  include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base"
+  has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
   has_many :labels, :through => :labelings, :source => :target
+  include_to_deep_cloning(:labelings)
 
-  has_many :notes, :class_name => "Note::Base", :as => :owner
+  has_many :notes, :class_name => "Note::Base", :as => :owner, :dependent => :destroy
   has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
+  include_to_deep_cloning({:notes => :annotations})
 
-  has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base"
+  has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base", :dependent => :destroy
+  include_to_deep_cloning(:matches)
 
   # *** Classifications
   # FIXME: Should be a matches (to other skos vocabularies)
-  has_many :classifications, :foreign_key => 'owner_id'
+  has_many :classifications, :foreign_key => 'owner_id', :dependent => :destroy
   has_many :classifiers, :through => :classifications, :source => :target
+  include_to_deep_cloning(:classifications)
   
   # FIXME: What is this for?
   has_many :referenced_matches,           :class_name => "Match::Base",       :foreign_key => 'value'
-  has_many :referenced_concept_relations, :class_name => "Concept::Relation::Base", :foreign_key => 'target_id'
 
   # ************** "Dynamic"/configureable relations
 
@@ -90,7 +96,7 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Matches (pointing to an other thesaurus)
   Iqvoc::Concept.match_class_names.each do |match_class_name|
-    has_many match_class_name.to_relation_name, 
+    has_many match_class_name.to_relation_name,
       :class_name  => match_class_name,
       :foreign_key => 'concept_id'
     @nested_relations << match_class_name.to_relation_name
@@ -106,7 +112,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Relation Stuff
 
-  # FIXME
   @nested_relations.each do |relation|
     accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
   end
@@ -138,33 +143,6 @@ class Concept::Base < ActiveRecord::Base
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
-
-  scope :in_edit_mode,
-    where(arel_table[:locked_by].eq(nil).complement)
-
-  def self.associations_for_versioning
-    [ 
-      :labelings, 
-      :relations, 
-      :referenced_concept_relations, 
-      :matches, 
-      :referenced_matches, 
-      :classifications, 
-      {:notes => :annotations}
-    ]
-  end
-
-  def self.first_level_associations
-    [
-      :labelings, 
-      :relations, 
-      :referenced_concept_relations, 
-      :referenced_matches, 
-      :matches, 
-      :classifications, 
-      :notes
-    ]
-  end
 
   # ********** Methods
 
@@ -225,14 +203,6 @@ class Concept::Base < ActiveRecord::Base
     "#{origin}"
   end
 
-  def collect_first_level_associated_objects
-    associated_objects = Array.new
-    Concept.first_level_associations.each do |association|
-      associated_objects << self.send(association)
-    end
-    associated_objects.flatten
-  end
-
   def to_s
     pref_label.to_s
   end
@@ -254,9 +224,9 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def associated_objects_in_editing_mode
-    { 
-      :concept_relations => Concept::Relation::Base.target_in_edit_mode(id), 
-      :labelings         => Labeling::SKOSXL::Base.target_in_edit_mode(id)
+    {
+      :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
+      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
     
@@ -285,7 +255,7 @@ class Concept::Base < ActiveRecord::Base
   end
   
   def associations_must_be_published
-    if @full_validation == true 
+    if @full_validation == true
       [:labels, :related_concepts].each do |method|
         if self.send(method).unpublished.any?
           errors.add(:base, I18n.t("txt.models.concept.association_#{method}_unpublished"))

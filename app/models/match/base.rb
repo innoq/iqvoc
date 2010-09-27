@@ -4,7 +4,7 @@ class Match::Base < ActiveRecord::Base
 
   # ********** Relations
 
-  belongs_to :concept, :class_name => Iqvoc::Concept.base_class_name
+  belongs_to :concept, :class_name => "Concept::Base", :foreign_key => 'concept_id'
 
   def self.view_section(obj)
     "matches"

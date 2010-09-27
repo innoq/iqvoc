@@ -1,10 +1,7 @@
 class Labeling::SKOSXL::Base < Labeling::Base
 
-  # FIXME
-  scope :target_in_edit_mode, lambda {|owner_id| { 
-      :joins => :target,
-      :include => :target,
-      :conditions => ["(labelings.owner_id = ?) AND (labels.locked_by IS NOT NULL)", owner_id] }
+  scope :target_in_edit_mode, lambda { 
+    includes(:target) & Iqvoc::XLLabel.base_class.in_edit_mode
   }
 
   scope :by_label_origin, lambda { |origin|
