@@ -3,8 +3,6 @@ class Label::SKOSXL::Base < Label::Base
 
   include IqvocGlobal::Versioning
   
-  attr_reader :inflectionals_attributes
-
   # ********** Validations
 
   validate :two_versions_exist, :on => :create
@@ -15,8 +13,7 @@ class Label::SKOSXL::Base < Label::Base
   # ********** Hooks
 
   before_destroy :has_references?
-  after_save     :overwrite_inflectionals!
-  after_create   :after_branch
+ after_create   :after_branch
 
   # ********** "Static"/unconfigureable relations
 
@@ -58,8 +55,9 @@ class Label::SKOSXL::Base < Label::Base
       :through     => Iqvoc::XLLabel.compound_form_class_name.to_relation_name
   end
 
-  Iqvoc::XLLabel.additional_association_class_names.each do |class_name, foreign_key|
-    has_many class_name.to_relation_name, :class_name => class_name, :foreign_key => foreign_key, :dependent => :destroy
+  Iqvoc::XLLabel.additional_association_classes.each do |association_class, foreign_key|
+    has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
+    association_class.referenced_by(self)
   end
 
   # ********** Relation Stuff
@@ -130,10 +128,6 @@ class Label::SKOSXL::Base < Label::Base
     notes.select{ |note| note.class.name == note_class }
   end
 
-  def endings
-    Inflectional::Base.for_language_and_code(language, inflectional_code)
-  end
-  
   def from_rdf(str)
     h = IqvocGlobal::RdfHelper.split_literal(str)
     self.value    = h[:value]
@@ -146,51 +140,7 @@ class Label::SKOSXL::Base < Label::Base
     save(:validate => false)
   end
   
-  def generate_inflectionals!
-    return inflectionals if base_form.blank?
-    
-    helper = OriginMapping.new
-    
-    converted_literal_form = helper.replace_umlauts(value)
-    
-    diff = helper.sanitize_for_base_form(converted_literal_form).size - base_form.size
-    
-    unless base_form.blank?
-      new_base_form = converted_literal_form[0..(base_form.length-1)]
-    end
-    
-    Rails.logger.debug "converted_literal_form => #{converted_literal_form} (#{converted_literal_form.size}) |
-          base_form => #{base_form} (#{base_form.size}) |
-          new_base_form => #{new_base_form} | 
-          value => #{value} (#{value.size}) |
-          diff => #{diff}"
-    
-    endings.each do |ending|
-      value = ending == "." ? new_base_form : (new_base_form + ending.downcase)
-      inflectionals.create!(:value => value)
-    end
-    
-    self.base_form = new_base_form
-    save(:validate => false)
-    
-    inflectionals
-  end
-  
-  def inflectionals_attributes=(str)
-    @inflectionals_attributes = str.split("\r\n")
-  end
-  
-  def overwrite_inflectionals!
-    return unless inflectionals_attributes
-    transaction do
-      inflectionals.delete_all
-      inflectionals_attributes.each do |value|
-        inflectionals.create!(:value => value)
-      end
-    end
-  end
-  
-  def to_param
+ def to_param
     origin
   end
   
