@@ -63,7 +63,7 @@ module LabelsHelper
       render_label_association(res, label, note_class)
     end
 
-    Iqvoc::XLLabel.addtitional_association_classes.keys.each do |assoc_class|
+    Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class|
       render_label_association(res, label, assoc_class)
     end
 

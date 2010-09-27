@@ -58,7 +58,7 @@ class Label::SKOSXL::Base < Label::Base
       :through     => Iqvoc::XLLabel.compound_form_class_name.to_relation_name
   end
 
-  Iqvoc::XLLabel.addtitional_association_class_names.each do |class_name, foreign_key|
+  Iqvoc::XLLabel.additional_association_class_names.each do |class_name, foreign_key|
     has_many class_name.to_relation_name, :class_name => class_name, :foreign_key => foreign_key, :dependent => :destroy
   end
 

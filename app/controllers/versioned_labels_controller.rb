@@ -11,7 +11,6 @@ class VersionedLabelsController < LabelsController
     respond_to do |format|
 
       format.html do
-        @compound_in = @label.reverse_compound_forms.published.includes(:domain).map(&:domain)
       end
 
       format.ttl do
