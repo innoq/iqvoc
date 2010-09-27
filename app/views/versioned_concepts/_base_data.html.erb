@@ -1,5 +1,5 @@
 <h3><%= t("txt.common.concept") %></h3>
-<%= form_for @concept, :url => ((controller.action_name == "new" || controller.action_name == "create") ? versioned_concepts_path(:lang => @active_language) : versioned_concept_path(:id => @concept, :lang => @active_language)), :html => {:class => "form"} do |f| %>
+<%= form_for @concept, :as => 'concept', :url => @concept.new_record? ? versioned_concepts_path(:lang => @active_language) : versioned_concept_path(:id => @concept, :lang => @active_language), :html => {:class => "form"} do |f| %>
     <fieldset id="label_base_data">
       <legend><%= t("txt.common.attributes") %></legend>
       <ol>
