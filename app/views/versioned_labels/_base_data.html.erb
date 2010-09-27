@@ -30,13 +30,11 @@
         <%= f.label :inflectional_code, t("txt.views.labels.inflectional_code") %>
         <%= f.select :inflectional_code, options_for_inflectional_code(@label) %>
       </li>
-      <li>
-        <%= f.label :inflectionals_attributes, t("txt.views.labels.inflectionals") %>
-        <%= f.text_area :inflectionals_attributes,
-              :value => @label.inflectionals.map(&:value).join("\n"),
-              :rows => 10,
-              :cols => 40 %>
-      </li>
+      <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
+        <%- if assoc_class.nested_edit_partial_name(@label) -%>
+          <%= render :partial => assoc_class.nested_edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
+        <%- end -%>
+      <%- end -%>
       <li>
         <%= f.label :follow_up, t("txt.common.follow_up") %>
         <%= f.text_field :follow_up, :class => "datepicker" %>
@@ -47,12 +45,12 @@
       </li>
     </ol>
   </fieldset>
-
+  <%# FXIME: shouldn't this ne @label.new_record? %>
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
-    <% %w(definition editorial_note umt_source_note umt_usage_note).each do |klass| %>
-        <%= render :partial => "versioned_labels/note", :locals => { :f => f, :klass => klass } %>
+    <% Iqvoc::Concept.note_classes.each do |note_class| %>
+      <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>
     <% end %>
-    <%= render :partial => "versioned_labels/change_note", :locals => {:f => f }%>
+
   <% end %>
 
   <%= f.submit t("txt.common.save") %>

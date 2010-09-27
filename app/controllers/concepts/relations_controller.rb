@@ -5,7 +5,7 @@ class Concepts::RelationsController < ApplicationController
     relation_class = load_relation_class
 
     target_concept = Concept::Base.by_origin(params[:origin]).editor_selectable.last
-    raise ActiveRecord::RecordNotFound unless concept
+    raise ActiveRecord::RecordNotFound unless target_concept
     target_concepts_new_version = Concept::Base.by_origin(params[:origin]).unpublished.last
 
     ActiveRecord::Base.transaction do

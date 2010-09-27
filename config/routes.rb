@@ -18,12 +18,7 @@ Iqvoc::Application.routes.draw do
     end
 
     resources :versioned_labels, :except => :index do
-      resources :homographs
-      resources :qualifiers
-      resources :translations
-      resources :compound_forms do
-        resources :compound_form_contents
-      end
+      resources :relations, :controller => 'labels/relations'
     end
 
     resources :labelings

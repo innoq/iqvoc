@@ -5,12 +5,18 @@ class Label::Relation::Base < ActiveRecord::Base
   belongs_to :domain, :class_name => "Label::Base"
   belongs_to :range,  :class_name => "Label::Base"
   
-  # FIXME
-  scope :range_in_edit_mode, lambda {|domain_id| { 
-    :joins => :range,
-    :include => :range,
-    :conditions => "(label_relations.domain_id = #{domain_id}) AND (labels.locked_by IS NOT NULL)" }
-   }
+  scope :by_domain, lambda { |domain|
+    where(:domain_id => domain)
+  }
+
+  scope :by_range, lambda { |range|
+    where(:range_id => range)
+  }
+
+  scope :range_editor_selectable, lambda { 
+   # includes(:range) & Iqvoc::XLLabel.base_class.editor_selectable # Doesn't work correctly (kills label_relations.type condition :-( )
+   includes(:range).where("labels.published_at IS NOT NULL OR (labels.published_at IS NULL AND labels.published_version_id IS NULL) ")
+  }
 
   def self.view_section(obj)
     "relations"
@@ -22,6 +28,14 @@ class Label::Relation::Base < ActiveRecord::Base
 
   def self.partial_name(obj)
     "partials/label/relation/base"
+  end
+
+  def self.edit_partial_name(obj)
+    "partials/label/relation/edit_base"
+  end
+
+  def self.only_one_allowed?
+    false
   end
 
 end

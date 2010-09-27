@@ -27,7 +27,7 @@ class Concepts::LabelingsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       labels.each do |label|
-        concept.send(labeling_class.name.to_relation_name).by_label(label).each do |labeling|
+        concept.send(labeling_class.name.to_relation_name).by_range(label.id).each do |labeling|
           labeling.destroy
         end
       end

@@ -16,7 +16,9 @@ class Concept::Relation::Base < ActiveRecord::Base
   belongs_to :owner,  :class_name => "Concept::Base"
   belongs_to :target, :class_name => "Concept::Base"
 
-  scope :by_owner, lambda { |owner_id| where(:owner_id => owner_id) }
+  scope :by_owner, lambda { |owner_id|
+    where(:owner_id => owner_id)
+  }
 
   scope :by_owner_origin, lambda { |owner_id|
     includes(:owner) & Concept::Base.by_origin(owner_id)
@@ -29,7 +31,7 @@ class Concept::Relation::Base < ActiveRecord::Base
   scope :published, lambda { # Lambda because Concept::Base.published is currently not known + we don't want to call it at load time!
     includes(:target) & Concept::Base.published
   }
-  # scope :initial_version, joins(:target) & Concept::Base.initial_version # FIXME: Won't work because initial_version takes an agrument
+
   scope :target_in_edit_mode, lambda { # Lambda because Concept::Base.in_edit_mode is currently not known + we don't want to call it at load time!
     joins(:target) & Concept::Base.in_edit_mode
   }
