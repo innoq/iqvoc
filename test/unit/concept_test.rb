@@ -6,7 +6,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
    def test_should_not_create_more_than_two_versions_of_a_concept
-    first_new_concept = Concept.new(@current_concept.attributes)
+    first_new_concept  = Concept.new(@current_concept.attributes)
     second_new_concept = Concept.new(@current_concept.attributes)
     assert(first_new_concept.save!)
     assert_raise ActiveRecord::RecordInvalid do
