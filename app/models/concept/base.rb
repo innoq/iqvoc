@@ -258,7 +258,7 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation == true
       [:labels, :related_concepts].each do |method|
         if self.send(method).unpublished.any?
-          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished"))
+          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")
         end
       end
     end
