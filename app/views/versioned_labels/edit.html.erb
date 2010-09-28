@@ -52,6 +52,6 @@
 
 <%= content_for :sub_navigation do %>
   <ul>
-    <li><%= back_link versioned_label_path(@active_language, @label), t('txt.views.navigation.back_to_preview') %></li>
+    <li><%= back_link versioned_label_path(:lang => @active_language, :id => @label), t('txt.views.navigation.back_to_preview') %></li>
   </ul>
 <% end %>
