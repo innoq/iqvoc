@@ -12,14 +12,6 @@ gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_u
 
 group :development do
   gem 'mongrel'
-  
-  platforms :mri do
-    gem 'mysql2'
-  end
-  
-  platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
-  end
 end
 
 group :test, :cucumber do
@@ -32,4 +24,12 @@ group :test, :cucumber do
   # gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
+end
+
+platforms :mri do
+  gem 'mysql2'
+end
+
+platforms :jruby do
+  gem 'activerecord-jdbcmysql-adapter'
 end
