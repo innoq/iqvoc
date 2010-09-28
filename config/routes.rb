@@ -25,7 +25,6 @@ Iqvoc::Application.routes.draw do
     resources :users
     resources :notes
     resources :label_relations
-    resources :inflectionals, :only => [:index]
 
     match 'labels/:origin/versions/branch'      => 'label_versions#branch',    :as => 'label_versions_branch'
     match 'labels/:origin/versions/merge'       => 'label_versions#merge',     :as => 'label_versions_merge'
