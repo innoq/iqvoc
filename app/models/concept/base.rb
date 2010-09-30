@@ -88,7 +88,7 @@ class Concept::Base < ActiveRecord::Base
     :through => :pref_labelings,
     :source => :target
 
-  Iqvoc::Concept.further_labeling_class_names.keys.each do |labeling_class_name|
+  Iqvoc::Concept.labeling_class_names.keys.each do |labeling_class_name|
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
