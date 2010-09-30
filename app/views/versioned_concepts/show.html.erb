@@ -9,7 +9,7 @@
 <div class="editing_versioning_toolbar">
   
   <%= button_to t("txt.views.versioning.publishing"), concept_versions_merge_path(:lang => @active_language, :origin => @concept.origin) %>
-  <%= button_to t("txt.views.versioning.consistency_check"), concept_consistency_check_path(:lang => @active_language, :origin => @concept.origin), :method => :get %>
+  <%= button_to t("txt.views.versioning.consistency_check"), concept_versions_consistency_check_path(:lang => @active_language, :origin => @concept.origin), :method => :get %>
 
   <% unless @concept.in_review? %>
     <%= button_to t("txt.common.to_review"), concept_versions_to_review_path(:lang => @active_language, :origin => @concept.origin) %>

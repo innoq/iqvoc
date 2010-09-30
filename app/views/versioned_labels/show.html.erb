@@ -6,7 +6,7 @@
 
 <div class="editing_versioning_toolbar">
   <%= button_to t("txt.views.versioning.publishing"), label_versions_merge_path(:lang => @active_language, :origin => @label.origin) %>
-  <%= button_to t("txt.views.versioning.consistency_check"), label_consistency_check_path(:lang => @active_language, :origin => @label.origin), :method => :get %>
+  <%= button_to t("txt.views.versioning.consistency_check"), label_versions_consistency_check_path(:lang => @active_language, :origin => @label.origin), :method => :get %>
 
   <% unless @label.in_review? %>
     <%= button_to t("txt.common.to_review"), label_versions_to_review_path(:lang => @active_language, :origin => @label.origin) %>
