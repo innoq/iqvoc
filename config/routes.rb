@@ -32,7 +32,7 @@ Iqvoc::Application.routes.draw do
       match "#{type}/versions/:origin/lock"        => "#{type}/versions#lock",      :as => "#{type.singularize}_versions_lock"
       match "#{type}/versions/:origin/unlock"      => "#{type}/versions#unlock",    :as => "#{type.singularize}_versions_unlock"
       match "#{type}/versions/:origin/to_review"   => "#{type}/versions#to_review", :as => "#{type.singularize}_versions_to_review"
-      match "#{type}/versions/:origin/consistency_check" => "#{type}/versions#consistency_check", :as => "#{type}_versions_consistency_check"
+      match "#{type}/versions/:origin/consistency_check" => "#{type}/versions#consistency_check", :as => "#{type.singularize}_versions_consistency_check"
     end
 
     match 'alphabetical_concepts/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
