@@ -1,11 +1,10 @@
-class LabelVersionsController < ApplicationController
-  # Merges the current and the new label version
+class Labels::VersionsController < ApplicationController
+
   def merge
     current_label = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).published.last
     new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished label with origin '#{params[:origin]}'") unless new_version
     authorize! :merge, new_version
-
  
     ActiveRecord::Base.transaction do
       if current_label.blank? || current_label.destroy
@@ -38,7 +37,6 @@ class LabelVersionsController < ApplicationController
     end
   end
 
-  #Creates a new Version of a Label
   def branch
     current_label = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).published.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find published Label with origin '#{params[:origin]}'") unless current_label
@@ -67,7 +65,6 @@ class LabelVersionsController < ApplicationController
     redirect_to edit_versioned_label_path(:id => new_version, :lang => @active_language)
   end
 
-  #Unlocks the label
   def unlock
     new_version = Iqvoc::XLLabel.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished Label with origin '#{params[:origin]}'") unless new_version

@@ -1,4 +1,4 @@
-class ConceptVersionsController < ApplicationController
+class Concepts::VersionsController < ApplicationController
 
   def merge
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last

@@ -26,19 +26,19 @@ Iqvoc::Application.routes.draw do
     resources :notes
     resources :label_relations
 
-    match 'labels/:origin/versions/branch'      => 'label_versions#branch',    :as => 'label_versions_branch'
-    match 'labels/:origin/versions/merge'       => 'label_versions#merge',     :as => 'label_versions_merge'
-    match 'labels/:origin/versions/lock'        => 'label_versions#lock',      :as => 'label_versions_lock'
-    match 'labels/:origin/versions/unlock'      => 'label_versions#unlock',    :as => 'label_versions_unlock'
-    match 'labels/:origin/versions/to_review'   => 'label_versions#to_review', :as => 'label_versions_to_review'
-    match 'labels/:origin/versions/consistency_check' => 'label_versions#consistency_check', :as => 'label_consistency_check'
+    match 'labels/:origin/versions/branch'      => 'labels/versions#branch',    :as => 'label_versions_branch'
+    match 'labels/:origin/versions/merge'       => 'labels/versions#merge',     :as => 'label_versions_merge'
+    match 'labels/:origin/versions/lock'        => 'labels/versions#lock',      :as => 'label_versions_lock'
+    match 'labels/:origin/versions/unlock'      => 'labels/versions#unlock',    :as => 'label_versions_unlock'
+    match 'labels/:origin/versions/to_review'   => 'labels/versions#to_review', :as => 'label_versions_to_review'
+    match 'labels/:origin/versions/consistency_check' => 'labels/versions#consistency_check', :as => 'label_consistency_check'
 
-    match 'concepts/:origin/versions/branch'    => 'concept_versions#branch',    :as => 'concept_versions_branch'
-    match 'concepts/:origin/versions/merge'     => 'concept_versions#merge',     :as => 'concept_versions_merge'
-    match 'concepts/:origin/versions/lock'      => 'concept_versions#lock',      :as => 'concept_versions_lock'
-    match 'concepts/:origin/versions/unlock'    => 'concept_versions#unlock',    :as => 'concept_versions_unlock'
-    match 'concepts/:origin/versions/consistency_check' => 'concept_versions#consistency_check', :as => 'concept_consistency_check'
-    match 'concepts/:origin/versions/to_review' => 'concept_versions#to_review', :as => 'concept_versions_to_review'
+    match 'concepts/:origin/versions/branch'    => 'concepts/versions#branch',    :as => 'concept_versions_branch'
+    match 'concepts/:origin/versions/merge'     => 'concepts/versions#merge',     :as => 'concept_versions_merge'
+    match 'concepts/:origin/versions/lock'      => 'concepts/versions#lock',      :as => 'concept_versions_lock'
+    match 'concepts/:origin/versions/unlock'    => 'concepts/versions#unlock',    :as => 'concept_versions_unlock'
+    match 'concepts/:origin/versions/consistency_check' => 'concepts/versions#consistency_check', :as => 'concept_consistency_check'
+    match 'concepts/:origin/versions/to_review' => 'concepts/versions#to_review', :as => 'concept_versions_to_review'
 
     match 'alphabetical_concepts/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts'
