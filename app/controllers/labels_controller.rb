@@ -34,7 +34,6 @@ class LabelsController < ApplicationController
         raise ActiveRecord::RecordNotFound unless @label
         # @concepts_as_pref_label = @label.concepts_as_pref_label.all(:include => :pref_labels)
         # @concepts_as_alt_label = @label.concepts_as_alt_label.all(:include => :pref_labels)
-        store_location
       end
       
       format.ttl do
