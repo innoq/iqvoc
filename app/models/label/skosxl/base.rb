@@ -75,10 +75,6 @@ class Label::SKOSXL::Base < Label::Base
     where(:origin => origin)
   }
 
-  scope :by_origin_or_id, lambda { |arg|
-    { :conditions => ['origin = :arg OR id = :arg', {:arg => arg}] }
-  }
-
   # FIXME This should be working again
   scope :with_associations, lambda { includes(:labelings => :owner) }
   #, :include => [

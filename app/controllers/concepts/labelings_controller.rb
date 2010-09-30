@@ -13,7 +13,7 @@ class Concepts::LabelingsController < ApplicationController
       concept.send(labeling_class.name.to_relation_name).find_or_create_by_target_id(labels_new_version.id) if labels_new_version and labels_new_version.rev > label.rev
     end
     
-    render :json => { :origin => label.origin, :published => label.published?}.to_json
+    render :json => { :origin => label.origin, :published => label.published? }.to_json
   end
 
   def destroy
@@ -23,11 +23,11 @@ class Concepts::LabelingsController < ApplicationController
     labels = [labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last].compact
     raise ActiveRecord::RecordNotFound.new("Couldn't find label with origin '#{params[:origin]}'.") unless labels.count > 0
     labels_new_version = labeling_class.label_class.by_origin(params[:origin]).unpublished.last
-    labels << labels_new_version if labels_new_version and labels_new_version.rev > labels.first.rev
+    labels << labels_new_version if labels_new_version && labels_new_version.rev > labels.first.rev
 
     ActiveRecord::Base.transaction do
       labels.each do |label|
-        concept.send(labeling_class.name.to_relation_name).by_range(label.id).each do |labeling|
+        concept.send(labeling_class.name.to_relation_name).by_label(label).each do |labeling|
           labeling.destroy
         end
       end

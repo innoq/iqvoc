@@ -1,6 +1,5 @@
 class ConceptVersionsController < ApplicationController
 
-  #Merges the current and the new concept vesion
   def merge
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
@@ -22,7 +21,6 @@ class ConceptVersionsController < ApplicationController
           flash[:notice] = t("txt.controllers.versioning.published")
           redirect_to concept_path(:lang => @active_language, :id => new_version)
         else
-          logger.debug new_version.errors.inspect
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
           redirect_to versioned_concept_path(:id => new_version, :lang => @active_language)
         end
@@ -33,7 +31,6 @@ class ConceptVersionsController < ApplicationController
     end
   end
 
-  #Creates a new Version of a Concept
   def branch
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
@@ -48,7 +45,6 @@ class ConceptVersionsController < ApplicationController
     redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language, :check_associations_in_editing_mode => true)
   end
 
-  #Locks the Concept
   def lock
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
@@ -62,7 +58,6 @@ class ConceptVersionsController < ApplicationController
     redirect_to edit_versioned_concept_path(:id => new_version, :lang => @active_language)
   end
 
-  #Unlocks the Concept
   def unlock
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
@@ -77,14 +72,14 @@ class ConceptVersionsController < ApplicationController
   end
 
   def consistency_check
-    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless concept
-    if concept.valid_with_full_validation?
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @concept
+    if @concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
-      redirect_to versioned_concept_path(:id => concept, :lang => @active_language)
+      redirect_to versioned_concept_path(:id => @concept, :lang => @active_language)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      redirect_to edit_versioned_concept_path(:id => concept, :lang => @active_language)
+      render 'versioned_concepts/edit'
     end
   end
 

@@ -1,7 +1,7 @@
 Iqvoc::Application.routes.draw do
   available_locales = /de|en/ # FIXME this should be taken from I18n if possible
 
-  # Language parameter is optional; rdf uris don't need to be localized in a any way.
+  # Language parameter is optional; rdf uris don't need to be localized in any way.
   scope '(:lang)', :lang => available_locales do
     resources :concepts
     resources :labels
@@ -25,7 +25,6 @@ Iqvoc::Application.routes.draw do
     resources :users
     resources :notes
     resources :label_relations
-    resources :inflectionals, :only => [:index]
 
     match 'labels/:origin/versions/branch'      => 'label_versions#branch',    :as => 'label_versions_branch'
     match 'labels/:origin/versions/merge'       => 'label_versions#merge',     :as => 'label_versions_merge'

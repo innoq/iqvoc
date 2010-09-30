@@ -15,10 +15,6 @@ class AlphabeticalConceptsController < ConceptsController
       includes(:target). 
       order("LOWER(#{Label::Base.table_name}.value)").
       paginate(:page => params[:page], :per_page => 40)
-    
-    respond_to do |format|
-      format.html { store_location }
-    end
   end
 
 end

@@ -9,7 +9,6 @@ class HierarchicalBroaderConceptsController < HierarchicalConceptsController
     end
 
     respond_to do |format|
-      format.html { store_location }
       format.json do
         @concepts.map! do |c|
           hsh = {

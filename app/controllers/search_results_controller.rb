@@ -1,10 +1,8 @@
 class SearchResultsController < ApplicationController
   skip_before_filter :require_user
-  before_filter { |c| c.authorize!(:read, :published_label) }
-  before_filter { |c| c.authorize!(:read, :published_concept) }
   
   def index
-    store_location
+    authorize! :read, Concept::Base
     
     if params[:query]
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank?
