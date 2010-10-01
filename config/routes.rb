@@ -27,7 +27,6 @@ Iqvoc::Application.routes.draw do
       resources :relations, :controller => 'labels/relations'
     end
 
-
     resources :labelings
     resources :users
     resources :notes
