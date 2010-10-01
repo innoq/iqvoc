@@ -18,15 +18,14 @@ Iqvoc::Application.routes.draw do
     
     # The index action is only needed for language-independent
     # JSON URIs, so they are defined in the namespace above this one.
+    resources :concepts, :except => :index do
+      resources :labelings, :controller => 'concepts/labelings'
+      resources :relations, :controller => 'concepts/relations'
+    end
 
-      resources :concepts, :except => :index do
-        resources :labelings, :controller => 'concepts/labelings'
-        resources :relations, :controller => 'concepts/relations'
-      end
-
-      resources :labels, :except => :index do
-        resources :relations, :controller => 'labels/relations'
-      end
+    resources :labels, :except => :index do
+      resources :relations, :controller => 'labels/relations'
+    end
 
 
     resources :labelings
@@ -45,7 +44,6 @@ Iqvoc::Application.routes.draw do
 
     match 'alphabetical_concepts/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts'
-    match 'hierarchical_broader_concepts(.:format)' => 'hierarchical_broader_concepts#index', :as  => 'hierarchical_broader_concepts'
 
     match 'search'    => 'search_results#index', :as => 'search'
     match 'about'     => 'pages#about',          :as => 'about'
