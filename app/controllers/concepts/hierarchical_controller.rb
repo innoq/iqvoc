@@ -1,5 +1,4 @@
-# FIXME: => HierarchicalConceptsController -> Concepts::HierarchicalController
-class HierarchicalConceptsController < ConceptsController
+class Concepts::HierarchicalController < ConceptsController
   skip_before_filter :require_user
   
   def index

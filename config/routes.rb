@@ -42,8 +42,8 @@ Iqvoc::Application.routes.draw do
       match "#{type}/versions/:origin/consistency_check" => "#{type}/versions#consistency_check", :as => "#{type.singularize}_versions_consistency_check"
     end
 
-    match 'alphabetical_concepts/:letter'   => 'alphabetical_concepts#index', :as => 'alphabetical_concepts'
-    match 'hierarchical_concepts(.:format)' => 'hierarchical_concepts#index', :as => 'hierarchical_concepts'
+    match 'alphabetical_concepts/:letter'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
+    match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
     match 'search'    => 'search_results#index', :as => 'search'
     match 'about'     => 'pages#about',          :as => 'about'

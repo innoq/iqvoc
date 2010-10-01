@@ -8,7 +8,7 @@ module ConceptsHelper
   end
   
   def treeview(root = "source")
-    render :partial => "hierarchical_concepts/treeview", :locals => { :root => root }
+    render :partial => "concepts/hierarchical/treeview", :locals => { :root => root }
   end
 
   def render_concept_association(hash, concept, association_class, furter_options = {})
