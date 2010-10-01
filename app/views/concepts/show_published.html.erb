@@ -14,7 +14,7 @@
   </div>
 <% elsif can?(:read, @new_concept_version) %>
   <div class="editing_versioning_toolbar">
-    <%= link_to t("txt.views.versioning.preview_new_version"), versioned_concept_path(:id => @new_concept_version, :lang => @active_language) %>
+    <%= link_to t("txt.views.versioning.preview_new_version"), concept_path(:published => 0, :id => @new_concept_version, :lang => @active_language) %>
   </div>
 <% end %>
 

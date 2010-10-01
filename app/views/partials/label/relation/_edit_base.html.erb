@@ -4,12 +4,12 @@
     <input type="text" name="<%= klass.name.to_relation_name %>"
            class="label_relation"
            data-present-relations="[<%= klass.by_domain(label.id).range_editor_selectable.map{|r| "{'name': '#{r.range.value}', 'origin': '#{r.range.origin}', 'published': #{r.range.published?}}"}.join(',') %>]"
-           data-post-url="<%= versioned_label_relations_path(:lang => @active_language, :versioned_label_id => label.origin, :relation_class => klass.name) %>"
-           data-delete-url="<%= versioned_label_relation_path(:lang => @active_language, :id => "ORIGIN", :versioned_label_id => label.origin, :relation_class => klass.name) %>"
+           data-post-url="<%= label_relations_path(:lang => @active_language, :label_id => label.origin, :relation_class => klass.name) %>"
+           data-delete-url="<%= label_relation_path(:lang => @active_language, :id => "ORIGIN", :label_id => label.origin, :relation_class => klass.name) %>"
            data-get-url="<%= labels_path %>"
            data-branch-url="<%= label_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
            data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
-           data-versioned-show-url="<%= versioned_label_path(:lang => @active_language, :id => "ORIGIN") %>"
+           data-versioned-show-url="<%= label_path(:published => 0, :lang => @active_language, :id => "ORIGIN") %>"
            data-auth-token="<%= form_authenticity_token %>"
            data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
            data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
@@ -18,6 +18,6 @@
              data-token-limit="1"
            <% end %>
            ></input>
-           <%= link_to t("txt.views.labels.new"), new_versioned_label_path(:lang => @active_language), :target => "_blank", :id => "new_#{klass.name.to_relation_name}" %>
+           <%= link_to t("txt.views.labels.new"), new_label_path(:published => 0, :lang => @active_language), :target => "_blank", :id => "new_#{klass.name.to_relation_name}" %>
   </fieldset>
 </div>

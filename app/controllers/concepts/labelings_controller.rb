@@ -38,8 +38,8 @@ class Concepts::LabelingsController < ApplicationController
   protected
 
   def load_concept
-    concept = Iqvoc::Concept.base_class.by_origin(params[:versioned_concept_id]).unpublished.last
-    raise ActiveRecord::RecordNotFound.new("Couldn't find concept with origin '#{params[:versioned_concept_id]}'.") unless concept
+    concept = Iqvoc::Concept.base_class.by_origin(params[:concept_id]).unpublished.last
+    raise ActiveRecord::RecordNotFound.new("Couldn't find concept with origin '#{params[:concept_id]}'.") unless concept
     concept
   end
 

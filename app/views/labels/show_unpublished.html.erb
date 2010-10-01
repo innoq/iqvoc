@@ -14,10 +14,10 @@
 
   <% unless @label.locked? %>
     <%= button_to t("txt.views.versioning.to_edit_mode"), label_versions_lock_path(:lang => @active_language, :origin => @label.origin) %>
-    <%= button_to t("txt.views.versioning.delete"), versioned_label_path(:lang => @active_language, :id => @label.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") %>
+    <%= button_to t("txt.views.versioning.delete"), label_path(:published => 0, :lang => @active_language, :id => @label.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") %>
   <% else %>
     <%= button_to t("txt.views.versioning.unlock"), label_versions_unlock_path(:lang => @active_language, :origin => @label.origin) if can?(:unlock, @label) %>
-    <%= link_to t("txt.views.versioning.edit_mode"), edit_versioned_label_path(:id => @label.origin, :lang => @active_language) if can?(:update, @label) %>
+    <%= link_to t("txt.views.versioning.edit_mode"), edit_label_path(:published => 0, :id => @label.origin, :lang => @active_language) if can?(:update, @label) %>
   <% end %>
 </div>
 

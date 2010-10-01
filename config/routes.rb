@@ -1,32 +1,40 @@
 Iqvoc::Application.routes.draw do
-  available_locales = /de|en/ # FIXME this should be taken from I18n if possible
+  # FIXME 
+  # This should be taken from I18n if possible
+  available_locales = /de|en/
 
-  # Language parameter is optional; rdf uris don't need to be localized in any way.
-  scope '(:lang)', :lang => available_locales do
-    resources :concepts
-    resources :labels
+  # Language parameter is optional
+  # RDF/TTL URIs don't need to be localized in any way.
+  scope '(:lang)' do
+    resources :concepts, :only => [:index]
+    resources :labels,   :only => [:index]
   end
   
   # Language paramater is mandatory.
-  scope ':lang' do # FIXME limit lang to locales
+  # FIXME limit lang to locales
+  scope ':lang' do
     resource  :user_session
     resources :virtuoso_syncs, :only => [:new, :create]
+    
+    # The index action is only needed for language-independent
+    # JSON URIs, so they are defined in the namespace above this one.
 
-    resources :versioned_concepts, :except => :index do
-      resources :labelings, :controller => 'concepts/labelings'
-      resources :relations, :controller => 'concepts/relations'
-    end
+      resources :concepts, :except => :index do
+        resources :labelings, :controller => 'concepts/labelings'
+        resources :relations, :controller => 'concepts/relations'
+      end
 
-    resources :versioned_labels, :except => :index do
-      resources :relations, :controller => 'labels/relations'
-    end
+      resources :labels, :except => :index do
+        resources :relations, :controller => 'labels/relations'
+      end
+
 
     resources :labelings
     resources :users
     resources :notes
     resources :label_relations
     
-    ['labels', 'concepts'].each do |type|
+    %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
       match "#{type}/versions/:origin/merge"       => "#{type}/versions#merge",     :as => "#{type.singularize}_versions_merge"
       match "#{type}/versions/:origin/lock"        => "#{type}/versions#lock",      :as => "#{type.singularize}_versions_lock"

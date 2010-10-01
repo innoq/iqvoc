@@ -33,7 +33,7 @@ class VersionedLabelsController < LabelsController
       @label.origin = origin.merge(params[:label][:value])
       if @label.save
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
-        redirect_to versioned_label_path(:id => @label.origin, :lang => @active_language)
+        redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)
       else
         flash[:error] = I18n.t("txt.controllers.versioned_label.error")
         render :new
@@ -71,7 +71,7 @@ class VersionedLabelsController < LabelsController
         raise ActiveRecord::RecordNotFound unless @label
         if @label.update_attributes(params[:label])
           flash[:notice] = I18n.t("txt.controllers.versioned_label.update_success")
-          redirect_to versioned_label_path(:id => @label, :lang => @active_language)
+          redirect_to label_path(:published => 0, :id => @label, :lang => @active_language)
         else
           flash[:error] = I18n.t("txt.controllers.versioned_label.update_error")
           render :action => :edit
@@ -90,7 +90,7 @@ class VersionedLabelsController < LabelsController
       redirect_to dashboard_path(:lang => @active_language)
     else
       flash[:notice] = I18n.t("txt.controllers.label_versions.delete_error")
-      redirect_to versioned_label_path(:id => @new_label, :lang => @active_language)
+      redirect_to label_path(:published => 0, :id => @new_label, :lang => @active_language)
     end
   end
 end

@@ -41,7 +41,7 @@ class Labels::RelationsController < ApplicationController
   protected
 
   def load_label
-    label = Iqvoc::XLLabel::base_class.by_origin(params[:versioned_label_id]).unpublished.last
+    label = Iqvoc::XLLabel::base_class.by_origin(params[:label_id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless label
     label
   end
