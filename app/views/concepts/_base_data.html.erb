@@ -1,5 +1,5 @@
 <h3><%= t("txt.common.concept") %></h3>
-<%= form_for @concept, :as => 'concept', :url => @concept.new_record? ? versioned_concepts_path(:lang => @active_language) : versioned_concept_path(:id => @concept, :lang => @active_language), :html => {:class => "form"} do |f| %>
+<%= form_for @concept, :as => 'concept', :url => @concept.new_record? ? concepts_path(:lang => @active_language) : concept_path(:published => 0, :id => @concept, :lang => @active_language), :html => {:class => "form"} do |f| %>
     <fieldset id="label_base_data">
       <legend><%= t("txt.common.attributes") %></legend>
       <ol>
@@ -18,7 +18,7 @@
         <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :concept => @concept, :klass => note_class, :f => f } %>
     <% end %>
     
-    <%#= render :partial => "versioned_concepts/close_match", :locals => {:f => f } %>
+    <%#= render :partial => "concepts/close_match", :locals => {:f => f } %>
 
     <%= f.submit t("txt.common.save") %>
 

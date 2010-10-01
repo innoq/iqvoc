@@ -7,19 +7,19 @@
   <% if @association_objects_in_editing_mode[:label_relations].present? %>
     <h4><%= t("txt.common.referenced_labels") %></h4>
     <%  @association_objects_in_editing_mode[:label_relations].each do |label_relation| %>
-      <%= label_relation.type.demodulize + ': ' + link_to(label_relation.range.value, versioned_label_path(@active_language, label_relation.range)) + user_and_phone_number(t("txt.common.editor"), label_relation.range.locking_user.name, label_relation.range.locking_user.telephone_number) %><br />
+      <%= label_relation.type.demodulize + ': ' + link_to(label_relation.range.value, label_path(:published => 0, :lang => @active_language, :id => label_relation.range)) + user_and_phone_number(t("txt.common.editor"), label_relation.range.locking_user.name, label_relation.range.locking_user.telephone_number) %><br />
     <% end %>
   <% end %>
 
   <% if @association_objects_in_editing_mode[:compound_from_contents].present? %>
     <%  @association_objects_in_editing_mode[:compound_from_contents].each do |compound_from_content| %>
-      <%= compound_from_content.temporary_name + ': ' + link_to(compound_from_content.label.value, versioned_label_path(@active_language, compound_from_content.label)) + user_and_phone_number(t("txt.common.editor"), compound_from_content.label.locking_user.name, compound_from_content.label.locking_user.telephone_number) %><br />
+      <%= compound_from_content.temporary_name + ': ' + link_to(compound_from_content.label.value, label_path(:published => 0, :lang => @active_language, :id => compound_from_content.label)) + user_and_phone_number(t("txt.common.editor"), compound_from_content.label.locking_user.name, compound_from_content.label.locking_user.telephone_number) %><br />
     <% end %>
   <% end %>
 
 <% end %>
 
-<%= render :partial => "versioned_labels/base_data" %>
+<%= render :partial => "labels/base_data" %>
 
 <%- Iqvoc::XLLabel.relation_classes.each do |relation_class| -%>
   <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
@@ -29,7 +29,7 @@
   <fieldset>
     <legend><%= t("txt.views.labels.pref_label_of") %></legend>
     <ul>
-      <%= render :partial => "versioned_labels/labeling", :collection => @pref_labelings %>
+      <%= render :partial => "labels/labeling", :collection => @pref_labelings %>
     </ul>
   </fieldset>
 </div>
@@ -39,7 +39,7 @@
   <fieldset>
     <legend><%= t("txt.views.labels.alt_label_of") %></legend>
     <ul>
-      <%= render :partial => "versioned_labels/labeling", :collection => @alt_labelings %>
+      <%= render :partial => "labels/labeling", :collection => @alt_labelings %>
     </ul>
   </fieldset>
 </div>
@@ -52,6 +52,6 @@
 
 <%= content_for :sub_navigation do %>
   <ul>
-    <li><%= back_link versioned_label_path(:lang => @active_language, :id => @label), t('txt.views.navigation.back_to_preview') %></li>
+    <li><%= back_link label_path(:published => 0, :lang => @active_language, :id => @label), t('txt.views.navigation.back_to_preview') %></li>
   </ul>
 <% end %>

@@ -39,7 +39,7 @@ class Concepts::RelationsController < ApplicationController
   protected
 
   def load_concept
-    concept = Iqvoc::Concept.base_class.by_origin(params[:versioned_concept_id]).unpublished.last
+    concept = Iqvoc::Concept.base_class.by_origin(params[:concept_id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless concept
     concept
   end

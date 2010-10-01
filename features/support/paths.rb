@@ -30,10 +30,10 @@ module NavigationHelpers
       concept_path(:lang => :de, :id => Concept.find_by_origin($1))
       
     when /the versioned concept page for "(.+)"/
-      versioned_concept_path(:de, Concept.find_by_origin($1))
+      concept_path(:published => 0, :lang => :de, :id => Concept.find_by_origin($1))
     
     when /the edit versioned concept page for "(.+)"/
-      edit_versioned_concept_path(:de, Concept.find_by_origin($1))
+      edit_concept_path(:published => 0, :lang => :de, :id => Concept.find_by_origin($1))
       
     when /the label page for "(.+)"/
       label_path(:lang => :de, :id => Label.find_by_origin($1))

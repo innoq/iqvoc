@@ -13,18 +13,93 @@ class ConceptsController < ApplicationController
       end
     end
   end
-
+  
   def show
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
+    if params[:published] == '1' || !params[:published]
+      published = true
+      @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
+      @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    elsif params[:published] == '0'
+      published = false
+      @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    end
+    
     raise ActiveRecord::RecordNotFound unless @concept
     authorize! :read, @concept
-    @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    
     respond_to do |format|
       format.html do
-        store_location
+        published ? render('show_published') : render('show_unpublished')
       end
-      format.rdf
       format.ttl
+    end
+  end
+
+  def new
+    authorize! :create, Iqvoc::Concept.base_class
+    @concept = Iqvoc::Concept.base_class.new
+
+    Iqvoc::Concept.note_class_names.each do |note_class_name|
+      @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
+    end
+  end
+
+  def create
+    authorize! :create, Iqvoc::Concept.base_class
+    @concept = Iqvoc::Concept.base_class.new(params[:concept])
+    if @concept.generate_origin
+      if @concept.save
+        flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
+        redirect_to concept_path(:published => 0, :id => @concept.origin, :lang => @active_language)
+      else
+        flash[:error] = I18n.t("txt.controllers.versioned_concept.error")
+        render :new
+      end
+    else
+      flash[:error] = I18n.t("txt.controllers.versioned_concept.error")
+      render :new
+    end
+  end
+
+  def edit
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @concept
+
+    authorize! :update, @concept
+
+    if params[:check_associations_in_editing_mode]
+      @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
+    end
+
+    Iqvoc::Concept.note_class_names.each do |note_class_name|
+      @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
+    end
+  end
+
+  def update
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @concept
+    authorize! :update, @concept
+
+    if @concept.update_attributes(params[:concept])
+      flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
+      redirect_to concept_path(:published => 0, :id => @concept, :lang => @active_language)
+    else
+      flash[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
+      render :action => :edit
+    end
+  end
+
+  def destroy
+    @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @new_concept
+    authorize! :destroy, @concept
+    if @new_concept.destroy
+      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
+      redirect_to dashboard_path(:lang => @active_language)
+    else
+      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
+      redirect_to label_path(:published => 0, :id => @new_concept, :lang => @active_language)
     end
   end
   
