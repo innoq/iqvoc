@@ -58,7 +58,7 @@ Iqvoc::Application.routes.draw do
     end
   end
 
-  match '/:lang' => 'hierarchical_concepts#index', :lang => available_locales, :as => 'localized_root'
+  match '/:lang' => 'concepts/hierarchical#index', :lang => available_locales, :as => 'localized_root'
 
   root :to => redirect("/de")
 end
