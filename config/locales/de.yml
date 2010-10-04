@@ -99,8 +99,6 @@ de:
        base_form: "Ansetzungsform"
        inflectional_code: "Endungscode"
        inflectionals: "Schreibweisen"
-       compound_from: "Zusammengesetzt aus"
-       compound_in: "Zusammengesetzt in"
        versionview: "Versionsansicht für Label"
        follow_up: "Wiedervorlage"
        endings: "Endungen"
@@ -217,8 +215,6 @@ de:
        hint: "Begriff eingeben"
        no_results: "Nichts gefunden!"
        searching: "Suche..."
-       delete_compound_form: "Zusammensetzung löschen"
-       create_compound_form: "Neue Zusammensetzung"
      dashboard:
        type: "Typ"
        value: "Name"
@@ -251,10 +247,6 @@ de:
        missing: "Keine verfügbar."
      label:
        relation:
-         label_relation_umt_translations: Übersetzungen
-         label_relation_umt_homographs: Homograph
-         label_relation_umt_qualifiers: Namenszusatz
-         label_relation_umt_lexical_extensions: Lexikalische Erweiterungen
          missing: Keine Relationen vorhanden.
      concept:
        relation:
@@ -348,12 +340,7 @@ de:
      label:
        version_error: "Es existieren schon zwei Versionen dieses Labels"
        value_error: "Die Vorlageform muss ausgefüllt sein!"
-       qualifier_error: "Es muss ein Namenszusatz angegeben werden!"
-       homograph_error: "Es muss ein Homograph angegeben werden!"
-       compound_form_contents_error: "Eine Zusammensetzung muss aus min. 2 Labels bestehen!"
        object_name: "Label"
-       pref_label_language: "Ein bevorzugtes Label in UMTHES muss deutsch sein."
-       translations_must_be_in_foreign_language: "Übersetzungen dürfen nicht die selbe Sprache wie das Label besitzen."
      concept:
        version_error: "Es existieren schon zwei Versionen dieses Konzepts"
        pref_label_error: "Es muss ein bevorzugtes Label angegeben werden!"
