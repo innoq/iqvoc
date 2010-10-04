@@ -108,8 +108,8 @@ module Iqvoc
 
     self.note_class_names                 = Iqvoc::Concept.note_class_names
 
-    self.compound_form_class_name         = 'CompoundForm::UMT::Base'
-    self.compound_form_content_class_name = 'CompoundForm::Content::UMT::Base'
+    self.compound_form_class_name         = 'CompoundForm::Base'
+    self.compound_form_content_class_name = 'CompoundForm::Content::Base'
 
     self.additional_association_class_names = {
       "Inflectional::Base" => "label_id",
