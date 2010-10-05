@@ -31,7 +31,7 @@ class Label::Base < ActiveRecord::Base
   }
   
   scope :by_query_value, lambda { |query|
-    where("#{Label::Base.arel_table[:value].to_sql} LIKE :query", :query => "#{query}%")
+    where(Label::Base.arel_table[:value].matches(query))
   }
 
   # FIXME this comes from the SKOSXL Labelings.
