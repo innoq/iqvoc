@@ -10,9 +10,9 @@ class LabelsController < ApplicationController
           # Label::Base should perhaps be replaced by the label_class used in the labeling 
           # (s. MyLabeling.label_class). But then the relation class must be passed 
           # to this action (max 2 lines of code :-) )
-          @labels = Label::Base.by_query_value(params[:query]).by_language(params[:language]).published.all
+          @labels = Label::Base.by_query_value("#{params[:query]}%").by_language(params[:language]).published.all
         else
-          @labels = Label::Base.by_query_value(params[:query]).published.all
+          @labels = Label::Base.by_query_value("#{params[:query]}%").published.all
         end
 
         response = []
