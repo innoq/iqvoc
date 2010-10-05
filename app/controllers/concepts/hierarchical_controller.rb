@@ -14,14 +14,12 @@ class Concepts::HierarchicalController < ConceptsController
         Concept::Base.published.
                       with_pref_labels.
                       includes(:narrower_relations).
-                      where(Concept::Relation::Base.arel_table[:target_id].
-                      eq(root_concept.id)).
+                      where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id)).
                       all :
         Concept::Base.published.
                       with_pref_labels.
                       includes(:broader_relations).
-                      where(Concept::Relation::Base.arel_table[:target_id].
-                      eq(root_concept.id)).
+                      where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id)).
                       all
     end
     
