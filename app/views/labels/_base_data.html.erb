@@ -45,7 +45,7 @@
       </li>
     </ol>
   </fieldset>
-  <%# FXIME: shouldn't this ne @label.new_record? %>
+  <%# FIXME: shouldn't this be @label.new_record? %>
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <% Iqvoc::Concept.note_classes.each do |note_class| %>
       <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>
