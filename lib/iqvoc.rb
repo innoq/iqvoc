@@ -120,6 +120,8 @@ module Iqvoc
 
     self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
     
+    # Set this to true if you're having a migration which extends the labels table
+    # and you want to be able to edit these fields.
     self.has_additional_base_data = true
 
     # Do not use the following method in models. This will propably cause a
