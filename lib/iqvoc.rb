@@ -96,7 +96,8 @@ module Iqvoc
       :compound_form_class_name,
       :compound_form_content_class_name,
       :additional_association_class_names,
-      :view_sections
+      :view_sections,
+      :has_additional_base_data
 
     self.base_class_name                  = 'Label::UMT::Base'
 
@@ -118,6 +119,8 @@ module Iqvoc
     }
 
     self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
+    
+    self.has_additional_base_data = true
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
