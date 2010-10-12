@@ -44,8 +44,8 @@ module LabelsHelper
       render(association_class.partial_name(label), furter_options.merge(:label => label, :klass => association_class))
   end
 
-  def label_view_data(label, inflectionals_labels, compound_in)
-    res = {'main' => {}, 'inflectionals' => {}, 'compound_forms' => {}}
+  def label_view_data(label)
+    res = {'main' => {}}
 
     res['main'][10] = render 'labels/value_and_language', :label => label
 
