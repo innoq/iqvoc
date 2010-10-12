@@ -1,6 +1,9 @@
 class Labels::RelationsController < ApplicationController
   def create
     label = load_label
+    
+    authorize! :update, label
+    
     relation_class = load_relation_class
 
     target_label = Iqvoc::XLLabel::base_class.by_origin(params[:origin]).editor_selectable.last
@@ -20,6 +23,9 @@ class Labels::RelationsController < ApplicationController
 
   def destroy
     label = load_label
+    
+    authorize! :update, label
+    
     relation_class = load_relation_class
 
     target_labels = [Iqvoc::XLLabel.base_class.by_origin(params[:origin]).editor_selectable.last].compact

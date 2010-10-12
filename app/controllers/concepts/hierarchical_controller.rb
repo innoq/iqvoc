@@ -2,6 +2,8 @@ class Concepts::HierarchicalController < ConceptsController
   skip_before_filter :require_user
   
   def index
+    authorize! :read, Concept::Base
+    
     # if params[:broader] is given, the action is handling the reversed tree
     case params[:root]
     when 'source'

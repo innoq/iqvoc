@@ -23,6 +23,9 @@ class Ability
       can :create, [Concept::Base, Label::Base]
       can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :locked_by => user.id, :published_at => nil
       can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
+      
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
 
       can :branch, [Concept::Base, Label::Base], &@@if_published
     end
@@ -35,6 +38,9 @@ class Ability
       can :create, [Concept::Base, Label::Base]
       can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :locked_by => user.id, :published_at => nil
       can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
+      
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
 
       can :branch, [Concept::Base, Label::Base], &@@if_published
       can :merge, [Concept::Base, Label::Base], :published_at => nil
@@ -49,6 +55,9 @@ class Ability
       can :create, [Concept::Base, Label::Base]
       can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :published_at => nil
       can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
+      
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
 
       can :branch, [Concept::Base, Label::Base], &@@if_published
       can :merge, [Concept::Base, Label::Base], :published_at => nil
