@@ -68,7 +68,7 @@ class Concept::Base < ActiveRecord::Base
 
   # Relations
   # e.g. 'concept_relation_skos_relateds'
-  # Attetion: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
+  # Attention: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
   # classes!
   Iqvoc::Concept.relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
@@ -218,7 +218,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def generate_origin
-    concept = Concept.select(:origin).order("origin DESC").first
+    concept = Concept::Base.select(:origin).order("origin DESC").first
     value   = concept.blank? ? 1 : concept.origin.to_i + 1
     write_attribute(:origin, sprintf("_%08d", value))
   end
@@ -237,7 +237,7 @@ class Concept::Base < ActiveRecord::Base
   protected
   
   def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if self.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
   end
 
   def has_references?
