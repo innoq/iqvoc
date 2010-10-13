@@ -7,6 +7,7 @@ class Search
     case type.to_sym
     when :inflectional
       scope = Iqvoc::XLLabel.base_class.scoped({})
+      scope = Iqvoc::XLLabel.base_class.published
     when :label
       scope = Iqvoc::XLLabel.base_class.scoped({})
       # scope = scope.scoped :include => :labelings
@@ -16,7 +17,7 @@ class Search
     when :pref_label
       scope = Iqvoc::XLLabel.base_class.scoped({})
       # scope = scope.scoped :conditions => { :labelings => { :type => 'PrefLabeling' } }, :include => :labelings
-      scope = scope.includes(:labelings).where(:labelings => { :type => Iqvoc::XLLabel.pref_labeling_class_name })
+      scope = scope.includes(:labelings).where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name })
       scope = scope.published
     when :note
       scope = Note::Base.scoped({})
@@ -28,8 +29,8 @@ class Search
       if type == "inflectional"
         scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
         # FIXME: UMT-specific!
-        scope = scope.joins(Inflectional::Base.name.to_relation_name)
         scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.joins(:inflectionals)
       else
         scope = scope.by_query_value(query_str)
       end
@@ -39,8 +40,8 @@ class Search
       if type == "inflectional"
         scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
         # FIXME: UMT-specific!
-        scope = scope.joins(Inflectional::Base.name.to_relation_name)
         scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.includes(:inflectionals)
       else
         scope = scope.by_query_value(query_str)
       end
@@ -50,8 +51,8 @@ class Search
       if type == "inflectional"
         scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
         # FIXME: UMT-specific!
-        scope = scope.joins(Inflectional::Base.name.to_relation_name)
         scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.includes(:inflectionals)
       else
         scope = scope.by_query_value(query_str)
       end
@@ -61,8 +62,8 @@ class Search
       if type == "inflectional"
         scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
         # FIXME: UMT-specific!
-        scope = scope.joins(Inflectional::Base.name.to_relation_name)
         scope = scope.where(["#{Inflectional::Base.arel_table[:value].to_sql} REGEXP ?", query_str])
+        scope = scope.includes(:inflectionals)
       else
         scope = scope.where(["#{Label::Base.arel_table[:value].to_sql} REGEXP ?", query_str])
       end
@@ -72,8 +73,8 @@ class Search
       if type == "inflectional"
         scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
         # FIXME: UMT-specific!
-        scope = scope.joins(Inflectional::Base.name.to_relation_name)
         scope = scope.where(Inflectional::Base.arel_table[:value].eq(query_str))
+        scope = scope.includes(:inflectionals)
       else
         scope = scope.by_query_value(query_str)
       end
