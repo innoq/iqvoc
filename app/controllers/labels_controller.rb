@@ -54,8 +54,7 @@ class LabelsController < ApplicationController
     @label = Iqvoc::XLLabel.base_class.new(params[:label])
     label_value = params[:label][:value]
     if @label.valid?
-      origin = OriginMapping.new
-      @label.origin = origin.merge(params[:label][:value])
+      @label.origin = OriginMapping.merge(params[:label][:value])
       if @label.save
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
         redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)
