@@ -1,4 +1,3 @@
-# FIXME: Not much flexiblity refactorings done yet
 class Label::SKOSXL::Base < Label::Base
 
   include IqvocGlobal::Versioning
@@ -131,10 +130,9 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def has_concept_or_label_relations?
-    if labelings.count > 0 || label_relations.count > 0 || compound_forms.count > 0
-      true
-    else
-      false
+    # Check if one of the additional association methods return elements
+    Iqvoc::XLLabel.additional_association_classes.each do |association_class, foreign_key|
+      return true if send(association_class.name.to_relation_name).count > 0
     end
   end
 
