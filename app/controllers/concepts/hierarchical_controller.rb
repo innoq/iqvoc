@@ -15,12 +15,12 @@ class Concepts::HierarchicalController < ConceptsController
       @concepts = params[:broader] ? 
         Concept::Base.published.
                       with_pref_labels.
-                      includes(:narrower_relations).
+                      includes(:narrower_relations, :broader_relations). # D A N G E R: the order matters!!! See the following where
                       where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id)).
                       all :
         Concept::Base.published.
                       with_pref_labels.
-                      includes(:broader_relations).
+                      includes(:broader_relations, :narrower_relations). # D A N G E R: the order matters!!! See the following where
                       where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id)).
                       all
     end
