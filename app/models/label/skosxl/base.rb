@@ -45,15 +45,6 @@ class Label::SKOSXL::Base < Label::Base
       :dependent   => :destroy
   end
 
-  if Iqvoc::XLLabel.compound_form_class_name
-    has_many Iqvoc::XLLabel.compound_form_class_name.to_relation_name,
-      :foreign_key => 'domain_id',
-      :class_name  => Iqvoc::XLLabel.compound_form_class_name
-    has_many Iqvoc::XLLabel.compound_form_content_class_name.to_relation_name,
-      :class_name  => Iqvoc::XLLabel.compound_form_content_class_name,
-      :through     => Iqvoc::XLLabel.compound_form_class_name.to_relation_name
-  end
-
   Iqvoc::XLLabel.additional_association_classes.each do |association_class, foreign_key|
     has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
     include_to_deep_cloning(association_class.deep_cloning_relations)
