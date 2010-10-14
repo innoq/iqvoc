@@ -92,9 +92,6 @@ module Iqvoc
     mattr_accessor :base_class_name, 
       :note_class_names,
       :relation_class_names,
-      :label_relation_class_names,
-      :compound_form_class_name,
-      :compound_form_content_class_name,
       :additional_association_class_names,
       :view_sections
 
@@ -107,9 +104,6 @@ module Iqvoc
       'Label::Relation::UMT::LexicalExtension' ]
 
     self.note_class_names                 = Iqvoc::Concept.note_class_names
-
-    self.compound_form_class_name         = 'CompoundForm::Base'
-    self.compound_form_content_class_name = 'CompoundForm::Content::Base'
 
     self.additional_association_class_names = {
       "Inflectional::Base" => "label_id",
@@ -140,5 +134,13 @@ module Iqvoc
     end
 
   end
-  
+
+  def self.all_classes
+    xllabel_classes = []
+    if const_defined?(:XLLabel)
+      xllabel_classes += [XLLabel.base_class] +  XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
+    end
+    [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + xllabel_classes
+  end
+
 end
