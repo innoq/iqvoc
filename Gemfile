@@ -5,7 +5,7 @@ gem 'rails', '3.0.0'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf'
+gem 'iq_rdf', '~>0.0.8'
 gem 'warbler'
 
 gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'

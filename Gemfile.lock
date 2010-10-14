@@ -71,7 +71,7 @@ GEM
     ffi (0.6.3-java)
     gem_plugin (0.2.3)
     i18n (0.4.1)
-    iq_rdf (0.0.6)
+    iq_rdf (0.0.8)
     jdbc-mysql (5.0.4)
     jruby-jars (1.5.3)
     jruby-rack (1.0.3)
@@ -150,7 +150,7 @@ DEPENDENCIES
   capybara
   database_cleaner
   factory_girl_rails
-  iq_rdf
+  iq_rdf (~> 0.0.8)
   iqvoc_umt!
   launchy
   mongrel
