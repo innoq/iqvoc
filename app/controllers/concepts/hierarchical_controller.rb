@@ -8,8 +8,8 @@ class Concepts::HierarchicalController < ConceptsController
     case params[:root]
     when 'source'
       @concepts = params[:broader] ? 
-        Concept::Base.broader_tops.published.with_pref_labels :
-        Concept::Base.tops.published.with_pref_labels
+        Concept::Base.broader_tops.published.with_pref_labels.includes(:broader_relations) :
+        Concept::Base.tops.published.with_pref_labels.includes(:narrower_relations)
     when /\d+/
       root_concept = Concept::Base.find(params[:root])
       @concepts = params[:broader] ? 
