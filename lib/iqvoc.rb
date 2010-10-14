@@ -93,7 +93,8 @@ module Iqvoc
       :note_class_names,
       :relation_class_names,
       :additional_association_class_names,
-      :view_sections
+      :view_sections,
+      :has_additional_base_data
 
     self.base_class_name                  = 'Label::UMT::Base'
 
@@ -112,6 +113,10 @@ module Iqvoc
     }
 
     self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
+    
+    # Set this to true if you're having a migration which extends the labels table
+    # and you want to be able to edit these fields.
+    self.has_additional_base_data = true
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")

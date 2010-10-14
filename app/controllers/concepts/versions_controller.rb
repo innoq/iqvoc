@@ -72,20 +72,26 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def consistency_check
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
-    if @concept.valid_with_full_validation?
+    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless concept
+    
+    authorize! :check_consistency, concept
+    
+    if concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
-      redirect_to concept_path(:published => 0, :id => @concept, :lang => @active_language)
+      redirect_to concept_path(:published => 0, :id => concept, :lang => @active_language)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      render 'concepts/edit'
+      redirect_to edit_concept_path(:published => 0, :id => concept, :lang => @active_language)
     end
   end
 
   def to_review
     concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless concept
+    
+    authorize! :send_to_review, concept
+    
     concept.to_review!
     concept.save!
     flash[:notice] = t("txt.controllers.versioning.to_review_success")

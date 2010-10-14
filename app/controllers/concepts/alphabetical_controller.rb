@@ -1,8 +1,10 @@
 class Concepts::AlphabeticalController < ConceptsController
   skip_before_filter :require_user
   
-  def index    
-    @alphas = 
+  def index
+    authorize! :read, Concept::Base
+    
+    @alphas =
       ('A'..'Z').to_a +
       (0..9).to_a +
       ['[']

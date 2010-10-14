@@ -2,34 +2,23 @@
 
 <p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
 
-<%= form_for @label, :as => 'label', :url => @label.new_record? ? labels_path(:published => 0, :lang => @active_language) : label_path(:published => 0, :id => @label, :lang => @active_language), :html => {:class => "form"} do |f| %>
+<%= form_for @label, :as => 'label', :url => labels_path(:published => 0, :lang => @active_language), :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
       <li>
         <label><%= t("txt.views.labels.template_form") %></label>
-        <%= f.text_field :value, :"data-remote" => inflectionals_path(:format => :json) %>
+        <%= f.text_field :value %>
       </li>
       <li>
         <%= f.label :language, t("txt.common.language") %>
         <%= f.select :language, options_for_select(I18n.available_locales.map(&:to_s), :selected => @label.language) %>
       </li>
-      <li>
-        <%= f.label :part_of_speech, t("txt.views.labels.part_of_speech") %>
-        <%= f.select :part_of_speech, part_of_speech_options %>
-      </li>
-      <li>
-        <%= f.label :base_form, t("txt.views.labels.base_form") %>
-        <%= f.text_field :base_form %>
-      </li>
-      <li>
-        <%= f.label :endings, t("txt.views.labels.endings") %>
-        <%= f.text_field :endings %>
-      </li>
-      <li>
-        <%= f.label :inflectional_code, t("txt.views.labels.inflectional_code") %>
-        <%= f.select :inflectional_code, options_for_inflectional_code(@label) %>
-      </li>
+      
+      <%- if Iqvoc::XLLabel.has_additional_base_data -%>
+        <%= render :partial => 'partials/label/additional_base_data', :locals => { :f => f } %>
+      <%- end -%>
+      
       <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
         <%- if assoc_class.nested_edit_partial_name(@label) -%>
           <%= render :partial => assoc_class.nested_edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
@@ -45,7 +34,7 @@
       </li>
     </ol>
   </fieldset>
-  <%# FXIME: shouldn't this ne @label.new_record? %>
+  <%# FIXME: shouldn't this be @label.new_record? %>
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <% Iqvoc::Concept.note_classes.each do |note_class| %>
       <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>

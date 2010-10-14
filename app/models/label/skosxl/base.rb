@@ -6,9 +6,6 @@ class Label::SKOSXL::Base < Label::Base
   # ********** Validations
 
   validate :two_versions_exist, :on => :create
-  
-  # Run these validations if @full_validation is true
-  validate :compound_form_contents_size
 
   # ********** Hooks
 
@@ -175,11 +172,11 @@ class Label::SKOSXL::Base < Label::Base
   protected
 
   def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.label.version_error")) if Label.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.label.version_error")) if Label::SKOSXL::Base.by_origin(origin).count >= 2
   end
 
   def has_references?
-    if (self.referenced_label_relations.size != 0) || (self.pref_labelings.size != 0)
+    if (self.referenced_label_relations.count != 0) || (self.pref_labelings.count != 0)
       false
     else
       true

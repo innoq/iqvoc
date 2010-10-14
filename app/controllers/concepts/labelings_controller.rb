@@ -2,6 +2,9 @@ class Concepts::LabelingsController < ApplicationController
 
   def create
     concept = load_concept
+    
+    authorize! :update, concept
+    
     labeling_class = load_labeling_class
 
     label = labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last
@@ -18,6 +21,9 @@ class Concepts::LabelingsController < ApplicationController
 
   def destroy
     concept = load_concept
+    
+    authorize! :update, concept
+    
     labeling_class = load_labeling_class
 
     labels = [labeling_class.label_class.by_origin(params[:origin]).editor_selectable.last].compact

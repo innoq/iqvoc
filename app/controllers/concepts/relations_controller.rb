@@ -2,6 +2,9 @@ class Concepts::RelationsController < ApplicationController
 
   def create
     concept = load_concept
+    
+    authorize! :update, concept
+    
     relation_class = load_relation_class
 
     target_concept = Concept::Base.by_origin(params[:origin]).editor_selectable.last
@@ -20,6 +23,9 @@ class Concepts::RelationsController < ApplicationController
 
   def destroy
     concept = load_concept
+    
+    authorize! :update, concept
+    
     relation_class = load_relation_class
 
     target_concepts = [Concept::Base.by_origin(params[:origin]).editor_selectable.last].compact

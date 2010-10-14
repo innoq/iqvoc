@@ -109,9 +109,7 @@ en:
        qualifiers: "Qualifier"
        translations: "Translations"
        pref_label_of: "preferred Label of"
-       alt_label_of: "altLabel of"
-       compound_from: "Compound from"
-       compound_in: "Compound in"
+       alt_label_of: "alternative Label of"
        versionview: "Version display of Label"
        follow_up: "Follow up"
        endings: "Endings"
@@ -228,8 +226,7 @@ en:
        hint: "edit term"
        no_results: "Not found!"
        searching: "searching ..."
-       delete_compound_form: "Delete Composition"
-       create_compound_form: "Add Composition"
+
      dashboard:
        type: "Type"
        value: "Name"
@@ -309,14 +306,9 @@ en:
 
    models:
      label:
-       version_error: "New Label version already exists!"
-       value_error: "Literal form must be given!"
-       qualifier_error: "Qualifier must be given!"
-       homograph_error: "Homograph must be given!"
-       compound_form_contents_error: "Each composition must have at least two components!"
+       version_error: "New Label version already exists."
+       value_error: "Literal form must be given."
        object_name: "Label"
-       pref_label_language: "A preferred label in UMTHES must be german."
-       translations_must_be_in_foreign_language: "Translations are not allowed to have the same language like the label."
      concept:
        version_error: "New Concept version already exists!"
        pref_label_error: "One German preferred Label must be selected!"

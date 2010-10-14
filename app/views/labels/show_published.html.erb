@@ -6,6 +6,7 @@
 <h2><%= t("txt.common.label") %>: <%= @label.value %></h2>
 <%= link_to @label.rdf_uri(:format => :"text/turtle"), @label.rdf_uri(:format => :"text/turtle"), :id => 'format_link_ttl' %>
 
+<% if can?(:read, @new_label_version) || can?(:branch, @label) %>
   <div class="editing_versioning_toolbar">
     <% if @new_label_version.blank? && can?(:branch, @label) %>
       <%= button_to t("txt.views.versioning.versioning_mode"), label_versions_branch_path(:lang => @active_language, :origin => @label.origin) %>
@@ -13,5 +14,6 @@
       <%= link_to t("txt.views.versioning.preview_new_version"), label_path(:published => 0, :id => @new_label_version, :lang => @active_language) %>
     <% end %>
   </div>
+<% end %>
 
-<%= render 'layouts/sections', :sections => Iqvoc::XLLabel::view_sections, :data => label_view_data(@label, @inflectionals_labels, @compound_in) %>
+<%= render 'layouts/sections', :sections => Iqvoc::XLLabel::view_sections, :data => label_view_data(@label) %>

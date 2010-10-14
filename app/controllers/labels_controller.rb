@@ -10,9 +10,9 @@ class LabelsController < ApplicationController
           # Label::Base should perhaps be replaced by the label_class used in the labeling 
           # (s. MyLabeling.label_class). But then the relation class must be passed 
           # to this action (max 2 lines of code :-) )
-          @labels = Label::Base.by_query_value(params[:query]).by_language(params[:language]).published.all
+          @labels = Label::Base.by_query_value("#{params[:query]}%").by_language(params[:language]).published.all
         else
-          @labels = Label::Base.by_query_value(params[:query]).published.all
+          @labels = Label::Base.by_query_value("#{params[:query]}%").published.all
         end
 
         response = []
@@ -54,8 +54,7 @@ class LabelsController < ApplicationController
     @label = Iqvoc::XLLabel.base_class.new(params[:label])
     label_value = params[:label][:value]
     if @label.valid?
-      origin = OriginMapping.new
-      @label.origin = origin.merge(params[:label][:value])
+      @label.origin = OriginMapping.merge(params[:label][:value])
       if @label.save
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
         redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)

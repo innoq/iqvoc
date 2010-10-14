@@ -6,68 +6,86 @@ class Search
     
     case type.to_sym
     when :inflectional
-      scope = Label.scoped({})
+      scope = Iqvoc::XLLabel.base_class.scoped({})
+      scope = Iqvoc::XLLabel.base_class.published
     when :label
-      scope = Label.scoped({})
-      scope = scope.scoped :include => :labelings
-      scope = scope.scoped :conditions => "published_at IS NOT NULL"
+      scope = Iqvoc::XLLabel.base_class.scoped({})
+      # scope = scope.scoped :include => :labelings
+      scope = scope.includes(:labelings)
+      # scope = scope.scoped :conditions => "published_at IS NOT NULL"
+      scope = scope.published
     when :pref_label
-      scope = Label.scoped({})
-      scope = scope.scoped :conditions => { :labelings => { :type => 'PrefLabeling' } }, :include => :labelings
-      scope = scope.scoped :conditions => "published_at IS NOT NULL"
+      scope = Iqvoc::XLLabel.base_class.scoped({})
+      # scope = scope.scoped :conditions => { :labelings => { :type => 'PrefLabeling' } }, :include => :labelings
+      scope = scope.includes(:labelings).where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name })
+      scope = scope.published
     when :note
-      scope = Note.scoped({})
-      # Die polymorphe Assoziation owner kann nicht per Eager Loading mitgeladen werden.
+      scope = Note::Base.scoped({})
     end
     
     case query_type  
     when 'contains'
+      query_str = "%#{params[:query]}%"
       if type == "inflectional"
-        scope = scope.scoped :select => "DISTINCT labels.*"
-        scope = scope.scoped :joins => :inflectionals, 
-                             :conditions => ["inflectionals.value LIKE ? AND labels.language IN (?)", "%#{params[:query]}%", params[:languages]]
+        scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
+        # FIXME: UMT-specific!
+        scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.joins(:inflectionals)
       else
-        scope = scope.scoped :conditions => ['value LIKE ? AND language IN (?)', "%#{params[:query]}%", params[:languages]]
+        scope = scope.by_query_value(query_str)
       end
+      scope = scope.by_language(params[:languages].to_a)
     when 'begins_with'
+      query_str = "#{params[:query]}%"
       if type == "inflectional"
-        scope = scope.scoped :select => "DISTINCT labels.*"
-        scope = scope.scoped :joins => :inflectionals, 
-                             :conditions => ['inflectionals.value LIKE ? AND labels.language IN (?)', "#{params[:query]}%", params[:languages]]
+        scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
+        # FIXME: UMT-specific!
+        scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.includes(:inflectionals)
       else
-        scope = scope.scoped :conditions => ['value LIKE ? AND language IN (?)', "#{params[:query]}%", params[:languages]]
+        scope = scope.by_query_value(query_str)
       end
+      scope = scope.by_language(params[:languages].to_a)
     when 'ends_with'
+      query_str = "%#{params[:query]}"
       if type == "inflectional"
-        scope = scope.scoped :select => "DISTINCT labels.*"
-        scope = scope.scoped :joins => :inflectionals, 
-                             :conditions => ['inflectionals.value LIKE ? AND labels.language IN (?)', "%#{params[:query]}", params[:languages]]
+        scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
+        # FIXME: UMT-specific!
+        scope = scope.where(Inflectional::Base.arel_table[:value].matches(query_str))
+        scope = scope.includes(:inflectionals)
       else
-        scope = scope.scoped :conditions => ['value LIKE ? AND language IN (?)', "%#{params[:query]}", params[:languages]]
+        scope = scope.by_query_value(query_str)
       end
+      scope = scope.by_language(params[:languages].to_a)
     when 'regexp'
+      query_str = params[:query]
       if type == "inflectional"
-        scope = scope.scoped :select => "DISTINCT labels.*"
-        scope = scope.scoped :joins => :inflectionals, 
-                             :conditions => ['inflectionals.value REGEXP ? AND labels.language IN (?)', "%#{params[:query]}%", params[:languages]]
+        scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
+        # FIXME: UMT-specific!
+        scope = scope.where(["#{Inflectional::Base.arel_table[:value].to_sql} REGEXP ?", query_str])
+        scope = scope.includes(:inflectionals)
       else
-        scope = scope.scoped :conditions => ['value REGEXP ? AND language IN (?)', "%#{params[:query]}%", params[:languages]]
+        scope = scope.where(["#{Label::Base.arel_table[:value].to_sql} REGEXP ?", query_str])
       end
+      scope = scope.by_language(params[:languages].to_a)
     when 'exact'
+      query_str = params[:query]
       if type == "inflectional"
-        scope = scope.scoped :select => "DISTINCT labels.*"
-        scope = scope.scoped :joins => :inflectionals, 
-                             :conditions => ['inflectionals.value = ? AND labels.language IN (?)', params[:query], params[:languages]]
+        scope = scope.select("DISTINCT #{Label::Base.table_name}.*")
+        # FIXME: UMT-specific!
+        scope = scope.where(Inflectional::Base.arel_table[:value].eq(query_str))
+        scope = scope.includes(:inflectionals)
       else
-        scope = scope.scoped :conditions => ['value = ? AND language IN (?)', params[:query], params[:languages]]
+        scope = scope.by_query_value(query_str)
       end
+      scope = scope.by_language(params[:languages].to_a)
     end
     
     if type == "inflectional"
-      scope = scope.scoped :order => 'LOWER(inflectionals.value)'
+      scope = scope.order("LOWER(#{Inflectional::Base.arel_table[:value].to_sql})")
     else
-      scope = scope.scoped :order => 'LOWER(value)'
-      scope = scope.paginate :page => params[:page], :per_page => 50
+      scope = scope.order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
+      scope = scope.paginate(:page => params[:page], :per_page => 50)
     end
     
     scope

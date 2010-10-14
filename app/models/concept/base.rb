@@ -68,7 +68,7 @@ class Concept::Base < ActiveRecord::Base
 
   # Relations
   # e.g. 'concept_relation_skos_relateds'
-  # Attetion: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
+  # Attention: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
   # classes!
   Iqvoc::Concept.relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
@@ -133,7 +133,7 @@ class Concept::Base < ActiveRecord::Base
   #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
-    order('LOWER(labels.value)')
+    order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
 
   scope :with_associations, includes([
       {:labelings => :target}, :relations, :matches, :notes
@@ -141,7 +141,7 @@ class Concept::Base < ActiveRecord::Base
 
   scope :with_pref_labels,
     includes(:pref_labels).
-    order("LOWER(#{Label::Base.table_name}.value)").
+    order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   # ********** Methods
@@ -218,7 +218,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def generate_origin
-    concept = Concept.select(:origin).order("origin DESC").first
+    concept = Concept::Base.select(:origin).order("origin DESC").first
     value   = concept.blank? ? 1 : concept.origin.to_i + 1
     write_attribute(:origin, sprintf("_%08d", value))
   end
@@ -237,7 +237,7 @@ class Concept::Base < ActiveRecord::Base
   protected
   
   def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if self.by_origin(self.origin).size >= 2
+    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
   end
 
   def has_references?
