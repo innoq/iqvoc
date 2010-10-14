@@ -17,12 +17,12 @@ class ApplicationController < ActionController::Base
   protected
 
   def default_url_options(options = nil)
-    {:format => params[:format] || default_format}.merge(options || {})
+    {:format => :html}.merge(options || {})
   end
 
   # Force an extension to every url. (LOD)
   def ensure_extension
-    redirect_to url_for(:format => default_format) unless params[:format]
+    redirect_to url_for(:format => (request.format && request.format.symbol) || :html) unless params[:format]
   end
 
   def handle_access_denied(exception)
@@ -61,10 +61,6 @@ class ApplicationController < ActionController::Base
   end
   
   private
-
-  def default_format
-    (request.format && request.format.symbol) || :html
-  end
   
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
