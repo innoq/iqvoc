@@ -138,7 +138,11 @@ module Iqvoc
   end
   
   def self.searchable_classes
-    @searchable_classes ||= Iqvoc.all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
+    @searchable_classes ||= all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
+  end
+  
+  def self.searchable_class_names
+    searchable_classes.map(&:name)
   end
 
 end
