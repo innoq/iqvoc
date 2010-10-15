@@ -13,6 +13,7 @@ gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_u
 group :development do
   gem 'mongrel'
   gem 'ruby-debug'
+  gem 'awesome_print', :require => 'ap'
 end
 
 group :test, :cucumber do

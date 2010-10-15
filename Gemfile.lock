@@ -42,6 +42,7 @@ GEM
       activesupport (~> 3.0.0)
     authlogic (2.1.6)
       activesupport
+    awesome_print (0.2.1)
     builder (2.1.2)
     cancan (1.4.0)
     capybara (0.3.9)
@@ -147,6 +148,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
   authlogic
+  awesome_print
   cancan
   capybara
   database_cleaner
