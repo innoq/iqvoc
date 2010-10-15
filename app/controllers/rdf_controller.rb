@@ -8,7 +8,7 @@ class RdfController < ApplicationController
       format.html {
         if concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.last
           redirect_to concept_url(:id => concept.origin, :lang => I18n.locale)
-        elsif label = Label::Base.by_origin(params[:id]).published.last
+        elsif label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).published.last
           redirect_to label_url(:id => label.origin, :lang => I18n.locale)
         else
           raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept or a label matching '#{params[:id]}'.")
@@ -17,7 +17,7 @@ class RdfController < ApplicationController
       format.any {
         if @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
           render "show_concept"
-        elsif label = Label::Base.by_origin(params[:id]).published.last
+        elsif label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).published.last
           redirect_to label_url(:id => label.origin, :lang => I18n.locale)
         else
           raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept or a label matching '#{params[:id]}'.")
