@@ -133,7 +133,12 @@ module Iqvoc
     if const_defined?(:XLLabel)
       xllabel_classes += [XLLabel.base_class] +  XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
     end
-    [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + xllabel_classes
+    arr = [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + xllabel_classes
+    arr.uniq
+  end
+  
+  def self.searchable_classes
+    Iqvoc.all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
   end
 
 end
