@@ -145,6 +145,9 @@ class Concept::Base < ActiveRecord::Base
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   # ********** Methods
+  def self.searchable?
+    false
+  end
 
   def initialize(params = {})
     super(params)

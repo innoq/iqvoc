@@ -79,5 +79,9 @@ class Note::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     "partials/note/edit_base"
   end
+  
+  def self.searchable?
+    true
+  end
 
 end
