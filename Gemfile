@@ -13,6 +13,7 @@ gem 'iqvoc_soil', :path => '../iqvoc_soil' # :git => 'git@github.com:innoq/iqvoc
 group :development do
   gem 'mongrel'
   gem 'ruby-debug'
+  gem 'awesome_print', :require => 'ap'
 end
 
 group :test, :cucumber do

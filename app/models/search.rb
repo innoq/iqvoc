@@ -15,9 +15,10 @@ class Search
       # scope = scope.scoped :conditions => "published_at IS NOT NULL"
       scope = scope.published
     when :pref_label
-      scope = Iqvoc::XLLabel.base_class.scoped({})
+      scope = Iqvoc::XLLabel.base_class.scoped
       # scope = scope.scoped :conditions => { :labelings => { :type => 'PrefLabeling' } }, :include => :labelings
-      scope = scope.includes(:labelings).where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name })
+      # scope = scope.where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name })
+      scope = scope.includes(:labelings) & Labeling::SKOSXL::PrefLabel.scoped
       scope = scope.published
     when :note
       scope = Note::Base.scoped({})
@@ -85,7 +86,7 @@ class Search
       scope = scope.order("LOWER(#{Inflectional::Base.arel_table[:value].to_sql})")
     else
       scope = scope.order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
-      scope = scope.paginate(:page => params[:page], :per_page => 50)
+      # scope = scope.paginate(:page => params[:page], :per_page => 50)
     end
     
     scope
