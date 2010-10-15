@@ -8,7 +8,7 @@ gem 'cancan'
 gem 'iq_rdf', '~>0.0.8'
 gem 'warbler'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+gem 'iqvoc_soil', :path => '../iqvoc_soil' # :git => 'git@github.com:innoq/iqvoc_umt.git'
 
 group :development do
   gem 'mongrel'
@@ -19,7 +19,7 @@ group :test, :cucumber do
   gem 'capybara'
   # gem 'capybara-envjs'
   # gem 'culerity'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '0.6.0.rc.3'
   # gem 'cucumber-rails'
   # gem 'cucumber'
   # gem 'spork'
