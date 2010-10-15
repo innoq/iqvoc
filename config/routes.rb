@@ -1,29 +1,18 @@
 Iqvoc::Application.routes.draw do
-  # FIXME 
-  # This should be taken from I18n if possible
-  available_locales = /de|en/
-
-  # Language parameter is optional
-  # RDF/TTL URIs don't need to be localized in any way.
-  scope '(:lang)' do
-    resources :concepts, :only => [:index]
-    resources :labels,   :only => [:index]
-  end
+  available_locales = /#{I18n.available_locales.join('|')}/
   
-  # Language paramater is mandatory.
-  # FIXME limit lang to locales
-  scope ':lang' do
+  scope ':lang', :lang => available_locales do
     resource  :user_session
     resources :virtuoso_syncs, :only => [:new, :create]
     
     # The index action is only needed for language-independent
     # JSON URIs, so they are defined in the namespace above this one.
-    resources :concepts, :except => :index do
+    resources :concepts do
       resources :labelings, :controller => 'concepts/labelings'
       resources :relations, :controller => 'concepts/relations'
     end
 
-    resources :labels, :except => :index do
+    resources :labels do
       resources :relations, :controller => 'labels/relations'
     end
 
@@ -47,6 +36,8 @@ Iqvoc::Application.routes.draw do
     match 'search'    => 'search_results#index', :as => 'search'
     match 'about'     => 'pages#about',          :as => 'about'
     match 'dashboard' => 'dashboard#index',      :as => 'dashboard'
+
+    root :to => 'concepts/hierarchical#index', :as => 'localized_root'
   end
   
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
@@ -58,7 +49,7 @@ Iqvoc::Application.routes.draw do
     end
   end
 
-  match '/:lang' => 'concepts/hierarchical#index', :lang => available_locales, :as => 'localized_root'
-
   root :to => redirect("/de")
+
+  match '/:id' => 'rdf#show', :as => 'rdf'
 end
