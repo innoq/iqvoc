@@ -181,20 +181,6 @@ jQuery(document).ready(function() {
   $("button#language_select_none").click(function() {
     $("input[type=checkbox].lang_check").attr("checked", false);
   });
-	
-  if ($("form").attr("data-type") != "" && $("form").attr("data-type") != "inflectional") {
-    $("textarea#query")
-    .replaceWith('<input type="text" name="query" id="query" value="' + $("form").attr("data-query") + '">');
-  }
-	
-  $("select.search_type").change(function() {
-    if ($(this).val() != "inflectional") {
-      $("textarea#query").replaceWith('<input type="text" name="query" id="query" value="' + $("textarea#query").val() + '">');
-    }
-    else {
-      $("input#query").replaceWith('<textarea id="query" name="query">' + $("input#query").val().split(" ").join("\n") + '</textarea>');
-    }
-  });
 
   // Tree
   var trees = $("ul.treeview");
