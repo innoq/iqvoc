@@ -92,6 +92,7 @@ GEM
       gem_plugin (>= 0.2.3)
     mongrel (1.1.5-java)
       gem_plugin (>= 0.2.3)
+    mysql (2.8.1)
     mysql2 (0.2.4)
     nokogiri (1.4.3.1)
     nokogiri (1.4.3.1-java)
@@ -154,6 +155,7 @@ DEPENDENCIES
   iqvoc_umt!
   launchy
   mongrel
+  mysql
   mysql2
   rails (= 3.0.0)
   ruby-debug

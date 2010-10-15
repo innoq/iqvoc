@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100927135514) do
+ActiveRecord::Schema.define(:version => 20100927101502) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -31,24 +31,6 @@ ActiveRecord::Schema.define(:version => 20100927135514) do
 
   add_index "classifiers", ["notation"], :name => "index_classifiers_on_notation"
 
-  create_table "compound_form_contents", :force => true do |t|
-    t.integer  "compound_form_id"
-    t.integer  "label_id"
-    t.integer  "order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "compound_form_contents", ["compound_form_id", "label_id"], :name => "index_compound_form_contents_on_compound_form_id_and_label_id"
-
-  create_table "compound_forms", :force => true do |t|
-    t.integer  "domain_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "compound_forms", ["domain_id"], :name => "index_compound_forms_on_domain_id"
-
   create_table "concept_relations", :force => true do |t|
     t.string   "type"
     t.integer  "owner_id"
@@ -63,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20100927135514) do
   create_table "concepts", :force => true do |t|
     t.string   "type"
     t.string   "origin"
-    t.integer  "rev",                               :default => 1
+    t.integer  "rev",                  :default => 1
     t.date     "published_at"
     t.integer  "published_version_id"
     t.integer  "locked_by"
@@ -73,23 +55,10 @@ ActiveRecord::Schema.define(:version => 20100927135514) do
     t.date     "rdf_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
-    t.string   "classified"
-    t.string   "country_code",         :limit => 4
   end
 
   add_index "concepts", ["origin"], :name => "index_concepts_on_origin"
   add_index "concepts", ["published_version_id"], :name => "index_concepts_on_published_version_id"
-
-  create_table "inflectionals", :force => true do |t|
-    t.integer  "label_id"
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "inflectionals", ["label_id"], :name => "index_inflectionals_on_label_id"
-  add_index "inflectionals", ["value"], :name => "index_inflectionals_on_value"
 
   create_table "label_relations", :force => true do |t|
     t.string   "type"
@@ -129,29 +98,12 @@ ActiveRecord::Schema.define(:version => 20100927135514) do
     t.date     "rdf_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "base_form"
-    t.string   "inflectional_code"
-    t.string   "part_of_speech"
-    t.string   "status"
   end
 
   add_index "labels", ["language"], :name => "index_labels_on_owner_id_and_language"
   add_index "labels", ["origin"], :name => "index_labels_on_origin"
   add_index "labels", ["published_version_id"], :name => "index_labels_on_published_version_id"
   add_index "labels", ["value"], :name => "index_labels_on_value", :length => {"value"=>255}
-
-  create_table "lexical_variants", :force => true do |t|
-    t.integer  "owner_id"
-    t.string   "type"
-    t.string   "language",   :limit => 2
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "lexical_variants", ["owner_id", "type"], :name => "index_lexical_variants_on_owner_id_and_type"
-  add_index "lexical_variants", ["owner_id"], :name => "index_lexical_variants_on_owner_id"
-  add_index "lexical_variants", ["type"], :name => "index_lexical_variants_on_type"
 
   create_table "matches", :force => true do |t|
     t.integer  "concept_id"

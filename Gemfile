@@ -28,6 +28,7 @@ group :test, :cucumber do
 end
 
 platforms :mri do
+  gem 'mysql' # AR Bug
   gem 'mysql2'
 end
 
