@@ -24,8 +24,18 @@ class Note::Base < ActiveRecord::Base
     where(:owner_type => klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
   }
 
-  scope :for_concepts, where(:owner_type => Iqvoc::Concept.base_class_name )
-  scope :for_labels,   where(:owner_type => 'Label') # FIXME: Ohoh... perhaps with type != Iqvoc::Concept.base_class_name ? Or shouldn't we delete both scopes?
+  scope :for_concepts, where(:owner_type => 'Concept::Base')
+  scope :for_labels,   where(:owner_type => 'Label::Base')
+
+  scope :by_owner, lambda { |owner|
+    if owner.is_a?(Label::Base)
+      for_labels.where(:owner_id => owner.id)
+    elsif owner.is_a?(Concept::Base)
+      for_concepts.where(:owner_id => owner.id)
+    else
+      raise "Note::Base.by_owner: Unknown owner (#{owner.inspect})"
+    end
+  }
 
   # ********** Methods
 

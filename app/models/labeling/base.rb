@@ -42,12 +42,4 @@ class Labeling::Base < ActiveRecord::Base
     100
   end
 
-  def self.partial_name(obj)
-    "partials/labeling/base"
-  end
-
-  def self.edit_partial_name(obj)
-    "partials/labeling/edit_base"
-  end
-
 end

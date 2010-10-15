@@ -19,7 +19,7 @@ module Iqvoc
     self.pref_labeling_languages      = [ :de ]
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
-    self.note_class_names             = [ 'Note::SKOS::ChangeNote', 
+    self.note_class_names             = [ 'Note::SKOS::ChangeNote',
       'Note::SKOS::Definition',
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example',
@@ -83,8 +83,21 @@ module Iqvoc
     end
 
   end
-  
-  module XLLabel
+
+  module Label # This are the settings when using SKOS
+    mattr_accessor :base_class_name
+
+    self.base_class_name = 'Label::SKOS::Base'
+
+    # Do not use the following method in models. This will propably cause a
+    # loading loop (something like "expected file xyz to load ...")
+    def self.base_class
+      base_class_name.constantize
+    end
+    
+  end
+
+  module XLLabel # This are the settings when using SKOSXL
     mattr_accessor :base_class_name, 
       :note_class_names,
       :relation_class_names,
@@ -129,11 +142,14 @@ module Iqvoc
   end
 
   def self.all_classes
-    xllabel_classes = []
-    if const_defined?(:XLLabel)
-      xllabel_classes += [XLLabel.base_class] +  XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
+    label_classes = []
+    if const_defined?(:Label)
+      label_classes += [Label.base_class]
     end
-    [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + xllabel_classes
+    if const_defined?(:XLLabel)
+      label_classes += [XLLabel.base_class] +  XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
+    end
+    [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + label_classes
   end
 
 end

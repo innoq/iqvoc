@@ -53,11 +53,13 @@ module IqvocGlobal
         new_version.lock_by_user!(user.id)
         new_version.increment!(:rev)
         new_version.unpublish!
-        new_version.note_umt_change_notes.build(:language => I18n.locale.to_s, # FIXME: Hardcoded relation and language!!
-          :annotations_attributes => [
-            { :identifier => "umt:editor", :value => user.try(:name) },
-            { :identifier => "dct:modified", :value => DateTime.now.to_s }
-          ])
+        if new_version.class.reflections.symbolize_keys.keys.include?(:note_umt_change_notes)
+          new_version.note_umt_change_notes.build(:language => I18n.locale.to_s, # FIXME: Hardcoded relation and language!!
+            :annotations_attributes => [
+              { :identifier => "umt:editor", :value => user.try(:name) },
+              { :identifier => "dct:modified", :value => DateTime.now.to_s }
+            ])
+        end
         new_version
       end
 

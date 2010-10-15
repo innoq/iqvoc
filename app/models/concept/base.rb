@@ -8,7 +8,7 @@ class Concept::Base < ActiveRecord::Base
 
   validate :origin, :presence => true
   validate :two_versions_exist, :on => :create
-  validate :pref_label_existence, :associations_must_be_published, :on => :update
+  validate :pref_label_existence, :on => :update  #:associations_must_be_published, FIXME!!!
 
   # ********** Hooks
 
@@ -164,7 +164,7 @@ class Concept::Base < ActiveRecord::Base
       hash[label.language] = label
     end
     if @cached_pref_labels[lang].nil?
-      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang)
+      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "&lt;#{self.origin}&gt;")
       @cached_pref_labels[lang].concepts << self
     end
     @cached_pref_labels[lang]

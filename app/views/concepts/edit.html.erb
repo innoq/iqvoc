@@ -35,7 +35,9 @@
 
 <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
   <%- languages.each do |language| -%>
-    <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
+    <%- if labeling_class.edit_partial_name(@concept) -%>
+      <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
+    <%- end -%>
   <%- end -%>
 <%- end -%>
 

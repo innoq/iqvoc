@@ -25,4 +25,16 @@ class Labeling::SKOSXL::Base < Labeling::Base
     Iqvoc::XLLabel.base_class
   end
 
+    def self.partial_name(obj)
+    "partials/labeling/skosxl/base"
+  end
+
+  def self.edit_partial_name(obj)
+    "partials/labeling/skosxl/edit_base"
+  end
+
+  def self.nested_edit_partial_name(obj)
+    nil
+  end
+
 end
