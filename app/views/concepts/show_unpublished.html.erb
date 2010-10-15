@@ -1,5 +1,5 @@
 <h2><%= t("txt.views.concepts.versionview") %> <strong><%= link_to @concept.origin, concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
-<%= link_to @concept.rdf_uri(:format => :"text/turtle"), @concept.rdf_uri(:format => :"text/turtle"), :id => 'format_link_ttl' %>
+<%= link_to rdf_url(:id => @concept, :format => nil), rdf_url(:id => @concept, :format => :ttl), :id => 'format_link_ttl' %>
 <h2><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.new_record? ? "-" : link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %></h2>
 
 <p class="flash_notice">

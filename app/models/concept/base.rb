@@ -233,10 +233,6 @@ class Concept::Base < ActiveRecord::Base
     }
   end
     
-  def rdf_uri(opts = {})
-    "#{Rails.application.config.rdf_data_uri_prefix}#{origin}#{(opts[:format] ? "?format=#{CGI.escape(opts[:format].to_s)}" : "")}"
-  end
-
   protected
   
   def two_versions_exist

@@ -71,7 +71,7 @@ GEM
     ffi (0.6.3-java)
     gem_plugin (0.2.3)
     i18n (0.4.1)
-    iq_rdf (0.0.6)
+    iq_rdf (0.0.8)
     jdbc-mysql (5.0.4)
     jruby-jars (1.5.3)
     jruby-rack (1.0.3)
@@ -92,6 +92,7 @@ GEM
       gem_plugin (>= 0.2.3)
     mongrel (1.1.5-java)
       gem_plugin (>= 0.2.3)
+    mysql (2.8.1)
     mysql2 (0.2.4)
     nokogiri (1.4.3.1)
     nokogiri (1.4.3.1-java)
@@ -150,10 +151,11 @@ DEPENDENCIES
   capybara
   database_cleaner
   factory_girl_rails
-  iq_rdf
+  iq_rdf (~> 0.0.8)
   iqvoc_umt!
   launchy
   mongrel
+  mysql
   mysql2
   rails (= 3.0.0)
   ruby-debug

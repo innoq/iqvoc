@@ -24,11 +24,7 @@ module Iqvoc
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example',
       'Note::SKOS::HistoryNote',
-      'Note::SKOS::ScopeNote',
-      'Note::UMT::ChangeNote',
-      'Note::UMT::ExportNote',
-      'Note::UMT::SourceNote',
-      'Note::UMT::UsageNote' ]
+      'Note::SKOS::ScopeNote' ]
 
     self.match_class_names            = [ 'Match::SKOS::Close', 
       'Match::SKOS::Broader',
@@ -96,27 +92,19 @@ module Iqvoc
       :view_sections,
       :has_additional_base_data
 
-    self.base_class_name                  = 'Label::UMT::Base'
+    self.base_class_name                  = 'Label::SKOSXL::Base'
 
-    self.relation_class_names             = [
-      'Label::Relation::UMT::Translation',
-      'Label::Relation::UMT::Homograph',
-      'Label::Relation::UMT::Qualifier',
-      'Label::Relation::UMT::LexicalExtension' ]
+    self.relation_class_names             = []
 
     self.note_class_names                 = Iqvoc::Concept.note_class_names
 
-    self.additional_association_class_names = {
-      "Inflectional::Base" => "label_id",
-      "CompoundForm::Base" => "domain_id",
-      "CompoundForm::Content::Base" => "label_id" # This is used for the reverse direction ('compound_in')
-    }
+    self.additional_association_class_names = {}
 
-    self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes", "compound_forms"]
+    self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes"]
     
     # Set this to true if you're having a migration which extends the labels table
     # and you want to be able to edit these fields.
-    self.has_additional_base_data = true
+    self.has_additional_base_data = false
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")

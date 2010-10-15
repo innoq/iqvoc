@@ -64,7 +64,7 @@ class Label::Base < ActiveRecord::Base
     self.to_s.downcase <=> other.to_s.downcase
   end
 
-  def literal_form
+  def to_literal
     "\"#{value}\"@#{language}"
   end
 

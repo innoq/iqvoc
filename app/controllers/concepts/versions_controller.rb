@@ -12,7 +12,7 @@ class Concepts::VersionsController < ApplicationController
         if new_version.valid_with_full_validation?
           new_version.save
           begin
-            if RdfStore.update(new_version.rdf_uri, concept_url(:id => new_version, :format => :ttl))
+            if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
               new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
             end
           rescue Exception => e
