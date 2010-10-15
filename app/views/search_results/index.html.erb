@@ -5,12 +5,7 @@
     <ol>
       <li>
         <select name="type" class="search_type">
-        <%= options_for_select [
-            [t('txt.views.search_results.inflectionals'), 'inflectional'],
-            [t('txt.views.search_results.pref_labels'), 'pref_label'], 
-            [t('txt.views.search_results.all_labels'), 'label'], 
-            [t('txt.views.search_results.all_notes'), 'note']
-          ], params[:type] %>
+        <%= options_for_select Iqvoc.searchable_classes.map { |c| [t("txt.views.search_results.#{c.name}"), c.name] }, params[:type] %>
         </select>
       </li>
       <li>
