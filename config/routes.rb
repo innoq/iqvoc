@@ -1,6 +1,5 @@
 Iqvoc::Application.routes.draw do
-  available_locales = /#{I18n.available_locales.join('|')}/ # FIXME I18n.available_locales == [:en]???????????????????
-  available_locales = /en|de/ # FIXME :-(
+  available_locales = /#{I18n.available_locales.map(&:to_s).join('|')}/
 
   scope ':lang', :lang => available_locales do
     resource  :user_session
