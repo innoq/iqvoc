@@ -184,7 +184,7 @@ class Concept::Base < ActiveRecord::Base
       hash[label.language] = label
     end
     if @cached_pref_labels[lang].nil?
-      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "&lt;#{self.origin}&gt;")
+      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "(#{self.origin})")
       @cached_pref_labels[lang].concepts << self
     end
     @cached_pref_labels[lang]
