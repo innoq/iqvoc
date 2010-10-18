@@ -1,0 +1,77 @@
+de:
+  activerecord:
+    models:
+      concept/base:
+        one:   "Concept"
+        other: "Concepts"
+      concept/relation/skos/broader/mono:
+        one:   "Broader term"
+        other: "Broader terms"
+      concept/relation/skos/broader/poly:
+        one:   "Broader term"
+        other: "Broader terms"
+      concept/relation/skos/narrower:
+        one:   "Narrower term"
+        other: "Narrower terms"
+      concept/relation/skos/related:
+        one:   "Related term"
+        other: "Related terms"
+      labeling/skosxl/base:
+        one:   "Label"
+        other: "Labels"
+      labeling/skosxl/pref_label:
+        one:   "Preferred label"
+        other: "Preferred labels"
+      labeling/skosxl/alt_label: 
+        one:   "Alternative label"
+        other: "Alternative labels"
+      match/skos/broader:
+        one:   "Broader Match"
+        other: "Broader Matches"
+      match/skos/close:
+        one:   "Close Match"
+        other: "Close Matches"
+      match/skos/exact:
+        one:   "Exact Match"
+        other: "Exact Matches"
+      match/skos/narrower:
+        one:   "Narrower Match"
+        other: "Narrower Matches"
+      match/skos/related:
+        one:   "Related Match"
+        other: "Related Matches"
+      note/annotated/base:
+        one:   "Annotation"
+        other: "Annotations"
+      note/base:
+        one:   "Note"
+        other: "Notes"
+      note/skos/change_note:
+        one:   "Change note"
+        other: "Change notes"
+      note/skos/definition:
+        one:   "Definition"
+        other: "Definitions"
+      note/skos/editorial_note:
+        one:   "Editorial note"
+        other: "Editorial notes"
+      note/skos/example:
+        one:   "Example"
+        other: "Examples"
+      note/skos/history_note:
+        one:   "History note"
+        other: "History notes"
+      note/skos/scope_note:
+        one:   "Scope note"
+        other: "Scope notes"
+      
+    attributes:
+      user:
+        forename: "Forename"
+        surname: "Surname"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password (Confirmation)"
+        active: "active"
+        role: "Role"
+        telephone_number: "Phone number"

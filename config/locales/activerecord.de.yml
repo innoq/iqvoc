@@ -40,6 +40,9 @@ de:
       match/skos/related:
         one:   "Related Match"
         other: "Related Matches"
+      note/annotated/base:
+        one:   "Annotation"
+        other: "Annotationen"
       note/base:
         one:   "Anmerkung"
         other: "Anmerkungen"
