@@ -1,6 +1,6 @@
 <dt>
   <%= link_to highlight_query(result.value, params[:query], @multi_query), label_path(:lang => @active_language, :id => result) %>
 </dt>
-<dd><%= t('txt.views.search_results.type') %>: <%= result.class.to_s %></dd>
-<dd><%= t('txt.views.search_results.used_as') %>: <%= result.labelings.map {|labeling| labeling.class.to_s}.uniq.join(', ') %></dd>
+<dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
+<dd><%= t('txt.views.search_results.used_as') %>: <%= result.labelings.map {|labeling| labeling.class.model_name.human}.uniq.join(', ') %></dd>
 <dd><%= t('txt.views.search_results.language') %>: <%= result.language %></dd>
