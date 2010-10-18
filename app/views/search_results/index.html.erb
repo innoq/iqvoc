@@ -1,6 +1,6 @@
 <h2><%= t('txt.views.search_results.header') %></h2>
 
-<%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :"data-type" => (params[:type] || ""), :"data-query" => (params[:query] || "")) do %>
+<%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">
     <ol>
       <li>
@@ -13,8 +13,7 @@
             [t('txt.views.search_results.exact'), 'exact'],
             [t('txt.views.search_results.contains'), 'contains'], 
             [t('txt.views.search_results.ends_with'), 'ends_with'], 
-            [t('txt.views.search_results.begins_with'), 'begins_with'],  
-            [t('txt.views.search_results.regexp'), 'regexp']
+            [t('txt.views.search_results.begins_with'), 'begins_with']
           ], params[:query_type]) %>
       </li>
     </ol>
@@ -47,44 +46,11 @@
 <% if @results %>
   <h3><%= t('txt.views.search_results.search_results') %></h3>
 
-  <%#= debug @results %>
-
   <dl id="search_results">
-    <% @results.each do |result| %>
-      <dt>
-        <% if params[:type] == "inflectional" %>
-          <%= t("txt.views.search_results.search_term_in_results") %>: <%= result[:query] %><br>
-          Ergebnisse:<br>
-          <span style="font-weight: normal">
-          <% if result[:result].blank? %>
-          <%= t("txt.views.search_results.no_results") %>
-          <% else %>
-          <% result[:result].each do |l| %>
-          <%= link_to(l.value, label_path(:lang => @active_language, :id => l)) %> (<%= l.inflectionals.map(&:value).join(", ") %>)<br>
-          <% end %>
-          <% end %>
-          </span>
-        <% elsif result.is_a?(Iqvoc::XLLabel.base_class) %>
-          <%= link_to highlight_query(result.value, params[:query], @multi_query), label_path(:lang => @active_language, :id => result) %>
-        <% elsif result.is_a?(Note::Base) and result.owner.is_a?(Concept) %>
-          <%= link_to result.owner.origin, concept_path(:lang => @active_language, :id => result.owner) %><br>
-          <%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %>
-        <% elsif result.is_a?(Note::Base) and result.owner.is_a?(Iqvoc::XLLabel.base_class) %>
-          <%= link_to result.owner.value, label_path(:lang => @active_language, :id => result.owner) %><br>
-          <%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %>
-        <% end %>
-      </dt>
-      <% unless params[:type] == "inflectional" %><dd><%= t('txt.views.search_results.type') %>: <%= result.class.to_s %></dd><% end %>
-      <% if result.is_a?(Label) %>
-      <dd><%= t('txt.views.search_results.used_as') %>: <%= result.labelings.map {|labeling| labeling.class.to_s}.uniq.join(', ') %></dd>
-      <% elsif result.is_a?(Note) %>
-      <!--  -->
-      <% end %>
-      <% unless params[:type] == "inflectional" %><dd><%= t('txt.views.search_results.language') %>: <%= result.language %></dd><% end %>
-    <% end %>
+    <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
   </dl>
   
-  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless params[:type] == "inflectional" %>
+  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
 <% end %>
 
 <%= content_for :sub_navigation do %>

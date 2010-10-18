@@ -78,26 +78,16 @@ class Label::SKOSXL::Base < Label::Base
   # ********** Methods
   
   def self.single_query(params = {})
-    query_type = params[:query_type] || 'contains'
-    
-    query_str = case query_type
-    when 'contains'
-      "%#{params[:query]}%"
-    when 'begins_with'
-      "#{params[:query]}%"
-    when 'ends_with'
-      "%#{params[:query]}"
-    # when 'regexp'
-    #   params[:query]
-    when 'exact'
-      params[:query]
-    end
+    query_str = build_query_string(params)
     
     by_query_value(query_str).
     by_language(params[:languages].to_a).
     published.
-    order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
-    paginate(:page => params[:page], :per_page => 50)
+    order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
+  end
+  
+  def self.search_result_partial_name
+    'partials/label/search/result'
   end
 
   def self.from_rdf(str)

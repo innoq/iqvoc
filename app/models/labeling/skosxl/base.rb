@@ -24,5 +24,24 @@ class Labeling::SKOSXL::Base < Labeling::Base
   def self.label_class
     Iqvoc::XLLabel.base_class
   end
+  
+  def self.searchable?
+    true
+  end
+  
+  def self.single_query(params = {})
+    query_str = build_query_string(params)
+    
+    Iqvoc::XLLabel.base_class.
+                   by_query_value(query_str).
+                   by_language(params[:languages].to_a).
+                   published.
+                   order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
+                   includes(:labelings)
+  end
+  
+  def self.search_result_partial_name
+    'partials/label/search/result'
+  end
 
 end
