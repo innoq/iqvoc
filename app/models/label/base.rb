@@ -55,7 +55,11 @@ class Label::Base < ActiveRecord::Base
   scope :unpublished, lambda { where(arel_table['published_at'].eq(nil)) }
 
   # ********* Methods
-  
+
+  def published?
+    true
+  end
+
   def self.searchable?
     true
   end

@@ -33,8 +33,8 @@ class Labeling::SKOSXL::Base < Labeling::Base
     "partials/labeling/skosxl/edit_base"
   end
 
-  def self.nested_edit_partial_name(obj)
-    nil
+  def self.nested_editable?
+    false
   end
 
 end

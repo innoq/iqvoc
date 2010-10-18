@@ -20,8 +20,8 @@
       <%- end -%>
       
       <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
-        <%- if assoc_class.nested_edit_partial_name(@label) -%>
-          <%= render :partial => assoc_class.nested_edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
+        <%- if assoc_class.nested_editable? -%>
+          <%= render :partial => assoc_class.edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
         <%- end -%>
       <%- end -%>
       <li>

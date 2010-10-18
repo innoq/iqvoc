@@ -8,15 +8,15 @@ class Labeling::SKOS::Base < Labeling::Base
     Iqvoc::Label.base_class
   end
 
+  def self.nested_editable?
+    true
+  end
+
   def self.partial_name(obj)
     "partials/labeling/skos/base"
   end
 
   def self.edit_partial_name(obj)
-    nil
-  end
-
-  def self.nested_edit_partial_name(obj)
     "partials/labeling/skos/edit_base"
   end
 
