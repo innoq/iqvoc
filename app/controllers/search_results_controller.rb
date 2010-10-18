@@ -11,15 +11,15 @@ class SearchResultsController < ApplicationController
         raise "'#{params[:type]}' is not a valid / configured searchable class!"
       end
       
-      klass = params[:type].constantize
+      @klass = params[:type].constantize
       query_size = params[:query].split(/\r\n/).size
       
-      if klass.supports_multi_query? && query_size > 1
+      if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = klass.multi_query(params)
+        @results = @klass.multi_query(params)
       else
         @multi_query = false
-        @results = klass.single_query(params)
+        @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
       end
 
     end
