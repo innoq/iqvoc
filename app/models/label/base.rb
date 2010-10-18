@@ -60,10 +60,6 @@ class Label::Base < ActiveRecord::Base
     true
   end
 
-  def self.searchable?
-    true
-  end
-
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
