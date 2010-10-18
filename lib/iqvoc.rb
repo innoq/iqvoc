@@ -1,6 +1,13 @@
 require 'string'
 
 module Iqvoc
+  
+  mattr_accessor :searchable_class_names
+  
+  self.searchable_class_names = [
+       'Labeling::SKOSXL::Base',
+       'Labeling::SKOSXL::PrefLabel',
+       'Note::Base' ]
 
   module Concept
     mattr_accessor :base_class_name, 
@@ -103,7 +110,8 @@ module Iqvoc
       :relation_class_names,
       :additional_association_class_names,
       :view_sections,
-      :has_additional_base_data
+      :has_additional_base_data,
+      :searchable_class_names
 
     self.base_class_name                  = 'Label::SKOSXL::Base'
 
@@ -147,18 +155,14 @@ module Iqvoc
       label_classes += [Label.base_class]
     end
     if const_defined?(:XLLabel)
-      label_classes += [XLLabel.base_class] +  XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
+      label_classes += [XLLabel.base_class] + XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
     end   
     arr = [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + label_classes
     arr.uniq
   end
   
   def self.searchable_classes
-    @searchable_classes ||= [Labeling::SKOSXL::Base] + all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
-  end
-  
-  def self.searchable_class_names
-    searchable_classes.map(&:name)
+    searchable_class_names.map(&:constantize)
   end
 
 end

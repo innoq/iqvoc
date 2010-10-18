@@ -4,8 +4,4 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
     "partials/note/skos/edit_change_note"
   end
   
-  def self.searchable?
-    false
-  end
-
 end

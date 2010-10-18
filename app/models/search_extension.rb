@@ -15,10 +15,6 @@ module SearchExtension
       # Implement single_query in your specific class that should be searchable!
     end
   
-    def self.searchable?
-      false
-    end
-  
     def self.supports_multi_query?
       false
     end

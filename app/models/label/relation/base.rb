@@ -42,9 +42,5 @@ class Label::Relation::Base < ActiveRecord::Base
   def self.only_one_allowed?
     false
   end
-  
-  def self.searchable?
-    false
-  end
 
 end

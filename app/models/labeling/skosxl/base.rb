@@ -25,10 +25,6 @@ class Labeling::SKOSXL::Base < Labeling::Base
     Iqvoc::XLLabel.base_class
   end
   
-  def self.searchable?
-    true
-  end
-  
   def self.single_query(params = {})
     query_str = build_query_string(params)
     

@@ -16,8 +16,12 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :for_language, lambda { |lang_code|
+  scope :by_language, lambda { |lang_code|
     where(:language => lang_code)
+  }
+  
+  scope :by_query_value, lambda { |query|
+    where(Note::Base.arel_table[:value].matches(query))
   }
 
   scope :by_owner_type, lambda { |klass|
@@ -89,5 +93,16 @@ class Note::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     "partials/note/edit_base"
   end
-
+  
+  def self.single_query(params = {})
+    query_str = build_query_string
+    
+    by_query_value(query_str).
+    by_language(params[:languages].to_a)
+  end
+  
+  def self.search_result_partial_name
+    'partials/note/search/result'
+  end
+  
 end

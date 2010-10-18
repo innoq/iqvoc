@@ -8,10 +8,6 @@ class Labeling::SKOSXL::PrefLabel < Labeling::SKOSXL::Base
   def self.only_one_allowed?
     true
   end
-    
-  def self.searchable?
-    true
-  end
   
   def self.single_query(params = {})
     query_str = build_query_string(params)

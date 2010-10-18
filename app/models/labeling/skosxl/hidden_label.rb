@@ -8,9 +8,5 @@ class Labeling::SKOSXL::HiddenLabel < Labeling::SKOSXL::Base
   def self.view_section(obj)
     "hidden"
   end
-    
-  def self.searchable?
-    false
-  end
 
 end
