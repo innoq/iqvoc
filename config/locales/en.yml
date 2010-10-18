@@ -9,26 +9,6 @@ en:
      edit: "Edit"
      value: "Value"
      welcome: "Hello %{user_name}"
-     definition:
-       one: "Definition"
-       other: "Definitions"
-     editorial_note:
-       one: "Editorial note"
-       other: "Editorial note"
-     note_annotation:
-       one: "Annotation"
-       other: "Annotations"
-     umt_source_note:
-       one: "Source note"
-       other: "Source notes"
-     umt_change_note:
-       one: "Change note"
-       other: "Change notes"
-     umt_usage_note:
-       one: "Usage note"
-       other: "Usage notes"
-       values:
-         useNarrower: "Use narrower terms"
      pagination:
        previous: "Back"
        next: "Next"

@@ -9,26 +9,6 @@ de:
      edit: "Bearbeiten"
      value: "Wert"
      welcome: "Hallo %{user_name}"
-     definition:
-       one: "Definition"
-       other: "Definitionen"
-     editorial_note:
-       one: "Redaktionelle Anmerkung"
-       other: "Redaktionelle Anmerkungen"
-     note_annotation:
-       one: "Annotation"
-       other: "Annotationen"
-     umt_source_note:
-       one: "Quellenangabe"
-       other: "Quellenangaben"
-     umt_change_note:
-       one: "Änderungsangabe"
-       other: "Änderungsangaben"
-     umt_usage_note:
-       one: "Verwendungsangabe"
-       other: "Verwendungsangaben"
-       values:
-         useNarrower: "Benutze Unterbegriffe"
      pagination:
        previous: "Zurück"
        next: "Weiter"
