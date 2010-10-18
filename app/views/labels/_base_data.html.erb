@@ -12,7 +12,8 @@
       </li>
       <li>
         <%= f.label :language, t("txt.common.language") %>
-        <%= f.select :language, options_for_select(I18n.available_locales.map(&:to_s), :selected => @label.language) %>
+        <%= @label.language %>
+        <%= f.hidden_field :language %>
       </li>
       
       <%- if Iqvoc::XLLabel.has_additional_base_data -%>
