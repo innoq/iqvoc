@@ -6,7 +6,7 @@
            data-present-relations="[<%= klass.by_owner(concept.id).target_editor_selectable.map{|r| "{'name': '#{r.target.pref_label.value}', 'origin': '#{r.target.origin}', 'published': #{r.target.published?}}"}.join(',') %>]"
            data-post-url="<%= concept_relations_path(:published => 0, :lang => @active_language, :concept_id => concept.origin, :relation_class => klass.name) %>"
            data-delete-url="<%= concept_relation_path(:published => 0, :lang => @active_language, :id => "ORIGIN", :concept_id => concept.origin, :relation_class => klass.name) %>"
-           data-get-url="<%= concepts_path %>"
+           data-get-url="<%= concepts_path(:format => :json) %>"
            data-branch-url="<%= concept_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
            data-show-url="<%= concept_path(:lang => @active_language, :id => "ORIGIN")%>"
            data-versioned-show-url="<%= concept_path(:published => 0, :lang => @active_language, :id => "ORIGIN") %>"

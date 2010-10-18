@@ -61,3 +61,11 @@ form.form textarea {
 	width: 300px;
 	height: 80px;
 }
+
+form.form span.fieldWithErrors {
+  background: url("../images/red_arrow.png");
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: 1em;
+}

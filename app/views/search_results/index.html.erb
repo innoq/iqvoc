@@ -5,7 +5,7 @@
     <ol>
       <li>
         <select name="type" class="search_type">
-        <%= options_for_select Iqvoc.searchable_classes.map { |c| [t("txt.views.search_results.#{c.name}"), c.name] }, params[:type] %>
+          <%= options_for_select Iqvoc.searchable_classes.map { |c| [t("txt.views.search_results.#{c.name}"), c.name] }, params[:type] %>
         </select>
       </li>
       <li>
@@ -41,6 +41,7 @@
         <%= submit_tag t('txt.views.search_results.submit') %>
       </li>
     </ol>
+  </fieldset>
 <% end %>
 
 <% if @results %>

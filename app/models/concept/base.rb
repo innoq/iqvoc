@@ -8,7 +8,7 @@ class Concept::Base < ActiveRecord::Base
 
   validate :origin, :presence => true
   validate :two_versions_exist, :on => :create
-  validate :pref_label_existence, :associations_must_be_published, :on => :update
+  validate :pref_label_existence, :on => :update  #:associations_must_be_published, FIXME!!!
 
   # ********** Hooks
 
@@ -154,6 +154,23 @@ class Concept::Base < ActiveRecord::Base
     @full_validation = false
   end
 
+  def labelings_by_text=(hash)
+    # hash = {'relation_name' => {'lang' => 'label1, label2, ...'}}
+    hash.each do |relation_name, lang_values|
+      reflection = self.class.reflections.stringify_keys[relation_name]
+      labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
+      if labeling_class && labeling_class < Labeling::Base && labeling_class.nested_editable?
+        self.send(relation_name).all.map(&:destroy)
+        lang_values.each do |lang, values|
+          values.split(",").each do |value|
+            value.squish!
+            self.send(relation_name) << labeling_class.new(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+          end
+        end
+      end
+    end
+  end
+
   # returns the (one!) preferred label of a concept for the requested language.
   # lang can either be a (lowercase) string or symbol with the (ISO ....) two letter
   # code of the language (e.g. :en for English, :fr for French, :de for German).
@@ -167,7 +184,7 @@ class Concept::Base < ActiveRecord::Base
       hash[label.language] = label
     end
     if @cached_pref_labels[lang].nil?
-      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang)
+      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "(#{self.origin})")
       @cached_pref_labels[lang].concepts << self
     end
     @cached_pref_labels[lang]

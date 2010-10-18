@@ -1,7 +1,10 @@
 <h2>Dashboard</h2>
 <p>
-  <%= link_to t("txt.views.labels.new"), new_label_path(:published => 0, :lang => @active_language) %> |
   <%= link_to t("txt.views.concepts.new"), new_concept_path(:published => 0, :lang => @active_language) %> |
+  <%= t("txt.views.labels.new") %>
+  (<%- I18n.available_locales.each do |language| -%>
+    <%= link_to language.to_s, new_label_path(:published => 0, :lang => @active_language, :language => language) %>
+  <%- end -%>) |
   <%= link_to "Virtuoso Sync", new_virtuoso_sync_path(:lang => @active_language) %>
 </p>
 <table>
@@ -15,13 +18,13 @@
     <th><%= t("txt.views.dashboard.consistent") %>?</th>
   </tr>
   <% for item in @items -%>
-    <tr class="highlightable" data-url="<%= item.is_a?(Label) ? label_path(:published => 0, :lang => @active_language, :id => item) : concept_path(:published => 0, :lang => @active_language, :id => item) %>">
+    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin) %>">
       <td><%= item.class %></td>
       <td>
         <% if item.is_a?(Label::Base) %>
-          <%= link_to truncate(item.to_s, :length => 45), (item.published? ? label_path(:lang => @active_language, :id => item) : label_path(:published => 0, :lang => @active_language, :id => item)) %>
+          <%= link_to truncate(item.to_s, :length => 45), (item.published? ? label_path(:lang => @active_language, :id => item.origin) : label_path(:published => 0, :lang => @active_language, :id => item.origin)) %>
         <% else %>
-          <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:lang => @active_language, :id => item) : concept_path(:published => 0, :lang => @active_language, :id => item)) %>
+          <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin)) %>
         <% end %>
       </td>
       <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>

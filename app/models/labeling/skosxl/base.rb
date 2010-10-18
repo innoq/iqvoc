@@ -44,4 +44,16 @@ class Labeling::SKOSXL::Base < Labeling::Base
     'partials/label/search/result'
   end
 
+    def self.partial_name(obj)
+    "partials/labeling/skosxl/base"
+  end
+
+  def self.edit_partial_name(obj)
+    "partials/labeling/skosxl/edit_base"
+  end
+
+  def self.nested_editable?
+    false
+  end
+
 end

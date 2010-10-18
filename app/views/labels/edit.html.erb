@@ -45,7 +45,7 @@
 </div>
 
 <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
-  <%- if association_class.edit_partial_name(@label) -%>
+  <%- unless association_class.nested_editable? -%>
     <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class %>
   <%- end -%>
 <%- end -%>

@@ -4,7 +4,7 @@ class Label::Base < ActiveRecord::Base
 
   # ********** Validations
 
-  validate :value, :presence => true, :message => I18n.t("txt.models.label.value_error")
+  validates :value, :presence => {:message => I18n.t("txt.models.label.value_error")}
 
   # FIXME: why is there no validation for the language? (existence and format)
 
@@ -55,7 +55,11 @@ class Label::Base < ActiveRecord::Base
   scope :unpublished, lambda { where(arel_table['published_at'].eq(nil)) }
 
   # ********* Methods
-  
+
+  def published?
+    true
+  end
+
   def self.searchable?
     true
   end

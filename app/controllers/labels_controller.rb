@@ -46,15 +46,17 @@ class LabelsController < ApplicationController
 
   def new
     authorize! :create, Iqvoc::XLLabel.base_class
-    @label = params[:value] ? Iqvoc::XLLabel.base_class.new : Iqvoc::XLLabel.base_class.new(:value => params[:value])
+    raise "You have to specify a language parameter!" if params[:language].blank?
+    data = {:language => params[:language]}
+    data.merge(:value => params[:value]) if params[:value]
+    @label = Iqvoc::XLLabel.base_class.new(data)
   end
 
   def create
     authorize! :create, Iqvoc::XLLabel.base_class
     @label = Iqvoc::XLLabel.base_class.new(params[:label])
-    label_value = params[:label][:value]
     if @label.valid?
-      @label.origin = OriginMapping.merge(params[:label][:value])
+      @label.origin = OriginMapping.merge(@label.value)
       if @label.save
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
         redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)
