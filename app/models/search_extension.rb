@@ -12,7 +12,7 @@ module SearchExtension
     end
   
     def self.single_query(params = {})
-      # TODO
+      # Implement single_query in your specific class that should be searchable!
     end
   
     def self.searchable?
