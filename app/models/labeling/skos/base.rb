@@ -1,5 +1,7 @@
 class Labeling::SKOS::Base < Labeling::Base
 
+  belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
+
   scope :by_label_with_language, lambda { |label, language|
     includes(:target) & self.label_class.where(:value => label, :language => language)
   }
