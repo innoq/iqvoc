@@ -8,7 +8,7 @@ gem 'cancan'
 gem 'iq_rdf', '~>0.0.8'
 gem 'warbler'
 
-gem 'iqvoc_soil', :path => '../iqvoc_soil' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
 
 group :development do
   gem 'mongrel'

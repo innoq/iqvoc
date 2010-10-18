@@ -1,7 +1,7 @@
 PATH
-  remote: ../iqvoc_soil
+  remote: ../iqvoc_umt
   specs:
-    iqvoc_soil (0.0.3)
+    iqvoc_umt (0.0.3)
       activerecord
 
 GEM
@@ -154,7 +154,7 @@ DEPENDENCIES
   database_cleaner (= 0.6.0.rc.3)
   factory_girl_rails
   iq_rdf (~> 0.0.8)
-  iqvoc_soil!
+  iqvoc_umt!
   launchy
   mongrel
   mysql
