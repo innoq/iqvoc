@@ -138,7 +138,7 @@ module Iqvoc
   end
   
   def self.searchable_classes
-    @searchable_classes ||= all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
+    @searchable_classes ||= [Labeling::SKOSXL::Base] + all_classes.select { |c| c.respond_to?(:searchable?) && c.searchable? }
   end
   
   def self.searchable_class_names
