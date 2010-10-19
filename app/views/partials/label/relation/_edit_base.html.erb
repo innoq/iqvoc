@@ -3,7 +3,7 @@
     <legend><%= klass.model_name.human(:count => 2) %></legend>
     <input type="text" name="<%= klass.name.to_relation_name %>"
            class="label_relation"
-           data-present-relations="[<%= klass.by_domain(label.id).range_editor_selectable.map{|r| "{'name': '#{r.range.value}', 'origin': '#{r.range.origin}', 'published': #{r.range.published?}}"}.join(',') %>]"
+           data-present-relations="[<%= klass.by_domain(label.id).range_editor_selectable.map{|r| "{'name': '#{escape_javascript(r.range.value)}', 'origin': '#{escape_javascript(r.range.origin)}', 'published': #{r.range.published?}}"}.join(',') %>]"
            data-post-url="<%= label_relations_path(:lang => @active_language, :label_id => label.origin, :relation_class => klass.name) %>"
            data-delete-url="<%= label_relation_path(:lang => @active_language, :id => "ORIGIN", :label_id => label.origin, :relation_class => klass.name) %>"
            data-get-url="<%= labels_path(:format => :json) %>"
