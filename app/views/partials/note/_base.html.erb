@@ -1,7 +1,7 @@
 <div class="relation">
   <%- if defined?(concept) -%>
     <% notes = concept.notes_for_class(klass) %>
-    <h4>lalala <%= klass.model_name.human(:count => notes.count) %></h4>
+    <h4><%= klass.model_name.human(:count => notes.count) %></h4>
     <div class="relation-body">
       <span><%= notes.count > 0 ? render(:partial => 'partials/note/note', :collection => notes) : t("txt.partials.note.missing") %></span>
     </div>
