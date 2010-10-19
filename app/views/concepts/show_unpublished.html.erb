@@ -24,4 +24,4 @@
   <% end %>
 </div>
 
-<%= render 'layouts/sections', :sections => Iqvoc::Concept::view_sections, :data => concept_view_data(@concept) %>
+<%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
