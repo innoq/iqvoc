@@ -101,10 +101,6 @@ en:
        save: "Save"
        edit:
          header: "Edit notes"
-       export_notes: "Export note"
-       source_notes: "Source notes"
-       change_notes: "Change notes"
-       usage_notes: "Usage notes"
      navigation:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
@@ -221,12 +217,6 @@ en:
        label:
      match:
 
-   helpers:
-     concept_selector:
-       show_concepts:
-         one: "1 Concept"
-         other: "%{count} Concepts"
-
    controllers:
      application:
        login_required: "You must be logged in to access this page."
@@ -291,7 +281,6 @@ en:
      label:
        version_error: "New Label version already exists."
        value_error: "Literal form must be given."
-       object_name: "Label"
      concept:
        version_error: "New Concept version already exists!"
        pref_label_error: "One German preferred Label must be selected!"

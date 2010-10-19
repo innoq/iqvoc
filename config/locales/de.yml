@@ -93,10 +93,6 @@ de:
        save: "Speichern"
        edit:
          header: "Notiz bearbeiten"
-       export_notes: "Exportvermerk"
-       source_notes: "Quellenangaben"
-       change_notes: "Änderungsangaben"
-       usage_notes: "Verwendungsangaben"
      navigation:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
@@ -212,12 +208,6 @@ de:
        label:
      match:
 
-   helpers:
-     concept_selector:
-       show_concepts:
-         one: "1 Konzept"
-         other: "%{count} Konzepte"
-
    controllers:
      application:
        login_required: "Sie müssen angemeldet sein, um diese Seite aufzurufen."
@@ -284,7 +274,6 @@ de:
      label:
        version_error: "Es existieren schon zwei Versionen dieses Labels"
        value_error: "Die Vorlageform muss ausgefüllt sein!"
-       object_name: "Label"
      concept:
        version_error: "Es existieren schon zwei Versionen dieses Konzepts"
        pref_label_error: "Es muss ein bevorzugtes Label angegeben werden!"
