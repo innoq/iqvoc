@@ -1,8 +1,11 @@
 PATH
   remote: ../iqvoc_umt
   specs:
-    iqvoc_umt (0.0.3)
+    iqvoc_umt (0.0.10)
       activerecord
+      bundler
+      database_cleaner
+      rails
 
 GEM
   remote: http://rubygems.org/
