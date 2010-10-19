@@ -8,6 +8,11 @@ gem 'cancan'
 gem 'iq_rdf', '~>0.0.8'
 gem 'warbler'
 
+# Hotfix for the problem of engine/plugin helpers not being mixed in.
+# https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
+# http://github.com/drogus/rails_helpers_fix
+gem 'rails_helpers_fix'
+
 gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
 
 group :development do
