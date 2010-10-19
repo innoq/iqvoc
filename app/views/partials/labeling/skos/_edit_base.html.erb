@@ -1,6 +1,6 @@
 <div class="relation-body">
   <fieldset>
-    <legend><%= t("txt.partials.labeling.concept.#{klass.name.to_relation_name}") %> (<%= language %>)</legend>
+    <legend><%= klass.model_name.human(:count => 2) %> (<%= language %>)</legend>
     <%= text_area_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]", klass.by_concept(concept).by_label_language(language).map{ |l| l.target.value }.join(", ") %>
   </fieldset>
 </div>

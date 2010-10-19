@@ -2,9 +2,6 @@ en:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
-     concept: "Concept"
-     concepts: "Concepts"
-     label: "Label"
      pref_label: "Preferred label"
      edit: "Edit"
      value: "Value"
@@ -12,11 +9,6 @@ en:
      pagination:
        previous: "Back"
        next: "Next"
-     missing:
-       definition: "No definition available."
-       label: "No label"
-     follow_up: "Reminder"
-     expired_at: "Expired at"
      save: "Save"
      reset: "Reset"
      language: "Language"
@@ -34,6 +26,7 @@ en:
        published: "Published"
        in_review: "In review"
        checked_out: "Checked out"
+     of: of
 
    part_of_speech:
      plural_form: "Plural form"
@@ -59,10 +52,6 @@ en:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       definitions: "Definitions"
-       broader: "Broader Terms"
-       narrower: "Narrower Terms"
-       related: "Related Terms"
        select: "Please select one of the concepts listed below."
        new: "New concept"
        versionview: "Version display of Concept"
@@ -220,27 +209,6 @@ en:
 
    partials:
      note:
-       note_skos_definitions:
-         one: Definition
-         other: "Definitions"
-       note_skos_change_notes:
-         one: "Change note"
-         other: "Change notes"
-       note_skos_editorial_notes:
-         one: Editorial note
-         other: Editorial notes
-       note_skos_examples:
-         one: Example
-         other: Examples
-       note_skos_history_notes:
-         one: History note
-         other: History notes
-       note_skos_scope_notes:
-         one: Scope note
-         other: Scope notes
-       note_skos_bases:
-         one: Note
-         other: Notes
        missing: Not availiable.
      label:
        relation:
@@ -248,24 +216,10 @@ en:
      concept:
        relation:
          missing:  Not availiable.
-         concept_relation_skos_relateds: Related terms
-         concept_relation_skos_broader_polies: Broader terms
-         concept_relation_skos_narrowers: Narrower terms
      labeling:
        concept:
-         labeling_skos_alt_labels: Alternative labels
-         labeling_skos_pref_labels: Preferred labels
-         labeling_skosxl_alt_labels: Alternative labels
-         labeling_skosxl_pref_labels: Preferred labels
        label:
-         labeling_skosxl_pref_labels: Alternative label of
-         labeling_skosxl_alt_labels: Preferred labels of
      match:
-       match_skos_closes: "CloseMatch"
-       match_skos_broaders: BroaderMatch
-       match_skos_narrowers: NarrowerMatch
-       match_skos_relateds: RelatedMatch
-       match_skos_exacts: ExactMatch
 
    helpers:
      concept_selector:

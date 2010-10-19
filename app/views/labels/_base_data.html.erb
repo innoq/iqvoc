@@ -1,4 +1,4 @@
-<h3><%= t("txt.common.label") %></h3>
+<h3><%= Label::Base.model_name.human %></h3>
 
 <p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
 
@@ -11,7 +11,7 @@
         <%= f.text_field :value %>
       </li>
       <li>
-        <%= f.label :language, t("txt.common.language") %>
+        <%= f.label :language %>
         <%= @label.language %>
         <%= f.hidden_field :language %>
       </li>
@@ -26,11 +26,11 @@
         <%- end -%>
       <%- end -%>
       <li>
-        <%= f.label :follow_up, t("txt.common.follow_up") %>
+        <%= f.label :follow_up %>
         <%= f.text_field :follow_up, :class => "datepicker" %>
       </li>
       <li>
-        <%= f.label :expired_at, t("txt.common.expired_at") %>
+        <%= f.label :expired_at %>
         <%= f.text_field :expired_at, :class => "datepicker" %>
       </li>
     </ol>

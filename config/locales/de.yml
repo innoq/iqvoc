@@ -2,9 +2,6 @@ de:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
-     concept: "Konzept"
-     concepts: "Konzepte"
-     label: "Label"
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
@@ -12,10 +9,6 @@ de:
      pagination:
        previous: "Zurück"
        next: "Weiter"
-     missing:
-       label: "Kein Label"
-     follow_up: "Wiedervorlage"
-     expired_at: "Abgelaufen am"
      save: "Speichern"
      reset: "Zurücksetzen"
      language: "Sprache"
@@ -33,6 +26,7 @@ de:
        published: "Veröffentlicht"
        in_review: "Vorlage zur Freigabe"
        checked_out: "Ausgecheckt"
+     of: von
 
    part_of_speech:
      plural_form: "Pluralform"
@@ -58,8 +52,6 @@ de:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       broader: "Allgemeinere Begriffe"
-       narrower: "Spezifischere Begriffe"
        select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
        new: "Neues Konzept"
        versionview: "Versionsansicht für Konzept"
@@ -208,22 +200,6 @@ de:
 
    partials:
      note:
-       note_skos_definitions: "Definitionen"
-       note_skos_change_notes:
-         one: "Änderungsangabe"
-         other: "Änderungsangaben"
-       note_skos_editorial_notes:
-         one: Redaktionelle Anmerkung
-         other: Redaktionelle Anmerkungen
-       note_skos_examples:
-         one: Beispiel
-         other: Beispiele
-       note_skos_history_notes:
-         one: History note
-         other: History notes
-       note_skos_scope_notes:
-         one: Scope note
-         other: Scope notes
        missing: "Keine verfügbar."
      label:
        relation:
@@ -231,22 +207,10 @@ de:
      concept:
        relation:
          missing: Keine Relationen vorhanden.
-         concept_relation_skos_relateds: "Verwandte Begriffe"
-         concept_relation_skos_broader_polies: "Allgemeinere Begriffe"
-         concept_relation_skos_narrowers: "Spezifischere Begriffe"
      labeling:
        concept:
-         labeling_skosxl_alt_labels: "Alternative Labels"
-         labeling_skosxl_pref_labels: "Bevorzugtes Label"
        label:
-         labeling_skosxl_pref_labels: "Bevorzugtes Label von"
-         labeling_skosxl_alt_labels: "Alternatives Label von"
      match:
-       match_skos_closes: "CloseMatch"
-       match_skos_broaders: BroaderMatch
-       match_skos_narrowers: NarrowerMatch
-       match_skos_relateds: RelatedMatch
-       match_skos_exacts: ExactMatch
 
    helpers:
      concept_selector:

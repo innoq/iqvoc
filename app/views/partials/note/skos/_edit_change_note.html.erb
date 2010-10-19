@@ -1,5 +1,5 @@
 <fieldset id="<%= klass.name.to_relation_name %>" class="note_relation">
-  <legend><%= t("txt.partials.note.#{klass.name.to_relation_name}", :count => 2) %></legend>
+  <legend><%= klass.model_name.human(:count => 2) %></legend>
   <ol>
     <%- scope = defined?(concept) ? concept : label -%>
     <% change_notes = scope.send(klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>
@@ -7,12 +7,12 @@
       <li class="inline_note<%= " new" if note.new_record? %>">
         <%= f.fields_for klass.name.to_relation_name, note do |note_form| %>
           <% if note == change_notes.last %>
-            <%= note_form.label :value, t("txt.partials.note.#{klass.name.to_relation_name}", :count => 1) %>
+            <%= note_form.label :value, klass.model_name.human(:count => 1) %>
             <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
 
             <br />
 
-            <label><%= t("txt.common.note_annotation", :count => 2) %></label>
+            <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
             <textarea disabled="true" rows="3" cols="40"><%= note.annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
 
             <br />

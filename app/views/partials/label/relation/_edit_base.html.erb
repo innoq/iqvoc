@@ -1,6 +1,6 @@
 <div class="relation-body">
   <fieldset>
-    <legend><%= t("txt.partials.label.relation.#{klass.name.to_relation_name}") %></legend>
+    <legend><%= klass.model_name.human(:count => 2) %></legend>
     <input type="text" name="<%= klass.name.to_relation_name %>"
            class="label_relation"
            data-present-relations="[<%= klass.by_domain(label.id).range_editor_selectable.map{|r| "{'name': '#{r.range.value}', 'origin': '#{r.range.origin}', 'published': #{r.range.published?}}"}.join(',') %>]"

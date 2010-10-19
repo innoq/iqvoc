@@ -4,7 +4,7 @@
   <link href="<%= rdf_url(@concept.origin, :format => :n3) %>" type="text/n3" rel="alternate" title=""/>
 <% end -%>
 
-<h2><%= t("txt.common.concept") %>: <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept)) %></h2>
+<h2><%= Concept::Base.model_name.human %>: <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept)) %></h2>
 <%= link_to rdf_url(@concept.origin, :format => nil), rdf_url(@concept.origin, :format => :ttl), :id => 'format_link_ttl' %>
 <h2><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.new_record? ? "-" : link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %></h2>
 

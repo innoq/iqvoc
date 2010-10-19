@@ -1,5 +1,5 @@
-<fieldset id="label_<%= klass.name.to_relation_name %>_data" class="note_relation">
-  <legend><%= t("txt.partials.note.#{klass.name.to_relation_name}", :count => 2) %></legend>
+<fieldset id="lalala label_<%= klass.name.to_relation_name %>_data" class="note_relation">
+  <legend><%= klass.model_name.human(:count => 2) %></legend>
   <ol>
     <%- scope = defined?(concept) ? concept : label -%>
     <% scope.send(klass.name.to_relation_name).each do |note| %>

@@ -46,6 +46,9 @@ en:
       note/base:
         one:   "Note"
         other: "Notes"
+      note/skos/base:
+        one:   "Note"
+        other: "Notes"
       note/skos/change_note:
         one:   "Change note"
         other: "Change notes"
@@ -66,6 +69,13 @@ en:
         other: "Scope notes"
       
     attributes:
+      concept/base:
+        follow_up: "Reminder"
+        expired_at: "Expired at"
+      label/base:
+        follow_up: "Reminder"
+        expired_at: "Expired at"
+        language: "Language"
       user:
         forename: "Forename"
         surname: "Surname"

@@ -1,14 +1,14 @@
-<h3><%= t("txt.common.concept") %></h3>
+<h3><%= Concept::Base.model_name.human %></h3>
 <%= form_for @concept, :as => 'concept', :url => @concept.new_record? ? concepts_path(:lang => @active_language) : concept_path(:published => 0, :id => @concept, :lang => @active_language), :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
       <li>
-        <%= f.label :follow_up, t("txt.common.follow_up") %>
+        <%= f.label :follow_up %>
         <%= f.text_field :follow_up, :class => "datepicker" %>
       </li>
       <li>
-        <%= f.label :expired_at, t("txt.common.expired_at") %>
+        <%= f.label :expired_at %>
         <%= f.text_field :expired_at, :class => "datepicker" %>
       </li>
     </ol>

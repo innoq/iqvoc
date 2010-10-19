@@ -1,6 +1,6 @@
 <div class="relation-body">
   <fieldset>
-    <legend><%= t("txt.partials.labeling.concept.#{klass.name.to_relation_name}") %> (<%= language %>)</legend>
+    <legend><%= klass.model_name.human(:count => 2) %> (<%= language %>)</legend>
     <input type="text"
            name="<%= klass.name.to_relation_name %>"
            class="label_relation"

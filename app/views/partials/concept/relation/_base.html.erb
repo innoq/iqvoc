@@ -1,5 +1,5 @@
 <div class="relation">
-  <h4><%= t("txt.partials.concept.relation.#{klass.name.to_relation_name}") %></h4>
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
   <% related_concepts = concept.related_concepts_for_relation_class(klass) %>
   <div class="relation-body">
     <% if related_concepts.count > 0 %>

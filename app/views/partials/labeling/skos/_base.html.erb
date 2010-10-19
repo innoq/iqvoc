@@ -1,13 +1,13 @@
 <div class="relation">
   <%- if defined?(concept) -%>
-    <h4><%= t("txt.partials.labeling.concept.#{klass.name.to_relation_name}") %> (<%= lang %>)</h4>
+    <h4><%= klass.model_name.human(:count => 2) %> (<%= lang %>)</h4>
     <div class="relation-body">
       <%=  raw concept.labels_for_labeling_class_and_language(klass, lang.to_s).each { |label|
         link_to(label.value, label_path(:lang => @active_language, :id => label))
       }.join(', ') %>
     </div>
   <%- elsif defined?(label) -%>
-    <h4><%= t("txt.partials.labeling.label.#{klass.name.to_relation_name}") %></h4>
+    <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
     <div class="relation">
       <%= raw label.concepts_for_labeling_class(klass).map{ |c| link_to c.origin, concept_path(:lang => @active_language, :id => c), :alt => c.pref_label }.join(', ') %>
     </div>
