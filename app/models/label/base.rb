@@ -27,7 +27,7 @@ class Label::Base < ActiveRecord::Base
   }
 
   scope :begins_with, lambda { |letter|
-    where("LOWER(SUBSTR(#{Label::Base.arel_table[:value].to_sql}, 1, 1)) LIKE :letter", :letter => "#{letter.to_s.downcase}%")
+    where("LOWER(SUBSTR(#{Label::Base.arel_table[:value].to_sql}, 1, 1)) = :letter", :letter => letter.to_s.downcase)
   }
   
   scope :by_query_value, lambda { |query|
