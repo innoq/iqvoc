@@ -146,10 +146,11 @@ class Label::SKOSXL::Base < Label::Base
     valid?
   end
 
+  # Responsible for displaying a warning message about
+  # associated objects which are currently edited y another user.
   def associated_objects_in_editing_mode
     {
-      :label_relations => Label::Relation::Base.by_domain(id).range_in_edit_mode,
-# FIXME      :compound_from_contents => UMT::CompoundFormContent.target_in_edit_mode(id)
+      :label_relations => Label::Relation::Base.by_domain(id).range_in_edit_mode
     }
   end
   
