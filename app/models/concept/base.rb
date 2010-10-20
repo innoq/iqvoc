@@ -6,9 +6,11 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Validations
 
-  validate :origin, :presence => true
-  validate :two_versions_exist, :on => :create
-  validate :pref_label_existence, :on => :update  #:associations_must_be_published, FIXME!!!
+  validates :origin, :presence => true
+  validates :two_versions_exist,   :on => :create
+  validates :pref_label_existence, :on => :update
+  # FIXME
+  # validates :associations_must_be_published
 
   # ********** Hooks
 
