@@ -26,9 +26,6 @@ class Label::SKOSXL::Base < Label::Base
   has_many :notes, :as => :owner, :class_name => 'Note::Base', :dependent => :destroy
   has_many :annotations, :through => :notes, :source => :annotations
   include_to_deep_cloning(:notes => :annotations)
-
-  # The following would be nice but isn't working :-)
-  #has_many :reverse_compound_form_labels, :class_name => 'Label::Base', :through => :reverse_compound_forms, :source => :domain
   
   # ************** "Dynamic"/configureable relations
 
@@ -62,18 +59,7 @@ class Label::SKOSXL::Base < Label::Base
     where(:origin => origin)
   }
 
-  # FIXME This should be working again
   scope :with_associations, lambda { includes(:labelings => :owner) }
-  #, :include => [
-  # :inflectionals,
-  # :notes, :history_notes, :scope_notes, :editorial_notes, :examples, :definitions,
-  # {:umt_source_notes => :annotations},
-  # {:umt_usage_notes => :annotations},
-  # {:umt_change_notes => :annotations},
-  # {:umt_export_notes => :annotations},
-  # {:homographs => :range}, {:qualifiers => :range}, {:translations => :range},
-  # {:compound_form_contents => :label}
-  # ]
   
   # ********** Methods
   
