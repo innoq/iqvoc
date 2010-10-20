@@ -8,8 +8,6 @@ class Label::SKOSXL::Base < Label::Base
 
   # ********** Hooks
 
-  before_destroy :has_references?
-
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
@@ -164,11 +162,4 @@ class Label::SKOSXL::Base < Label::Base
     errors.add(:base, I18n.t("txt.models.label.version_error")) if Label::SKOSXL::Base.by_origin(origin).count >= 2
   end
 
-  def has_references?
-    if (self.referenced_label_relations.count != 0) || (self.pref_labelings.count != 0)
-      false
-    else
-      true
-    end
-  end
 end

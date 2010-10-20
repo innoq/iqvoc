@@ -14,9 +14,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
-  # FIXME: The following tests if there are references pointing here... I didn't understand why this must be checked commented this out
-  # before_destroy :has_references?
-
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
@@ -42,9 +39,6 @@ class Concept::Base < ActiveRecord::Base
   has_many :classifications, :foreign_key => 'owner_id', :dependent => :destroy
   has_many :classifiers, :through => :classifications, :source => :target
   include_to_deep_cloning(:classifications)
-  
-  # FIXME: What is this for?
-  has_many :referenced_matches,           :class_name => "Match::Base",       :foreign_key => 'value'
 
   # ************** "Dynamic"/configureable relations
 
@@ -253,14 +247,6 @@ class Concept::Base < ActiveRecord::Base
   
   def two_versions_exist
     errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
-  end
-
-  def has_references?
-    if (self.referenced_matches.size != 0) || (self.referenced_semantic_relations.size != 0)
-      false
-    else
-      true
-    end
   end
 
   def pref_label_existence
