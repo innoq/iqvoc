@@ -11,12 +11,6 @@
     <% end %>
   <% end %>
 
-  <% if @association_objects_in_editing_mode[:compound_from_contents].present? %>
-    <%  @association_objects_in_editing_mode[:compound_from_contents].each do |compound_from_content| %>
-      <%= compound_from_content.temporary_name + ': ' + link_to(compound_from_content.label.value, label_path(:published => 0, :lang => @active_language, :id => compound_from_content.label)) + user_and_phone_number(t("txt.common.editor"), compound_from_content.label.locking_user.name, compound_from_content.label.locking_user.telephone_number) %><br />
-    <% end %>
-  <% end %>
-
 <% end %>
 
 <%= render :partial => "labels/base_data" %>
