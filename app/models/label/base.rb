@@ -16,12 +16,6 @@ class Label::Base < ActiveRecord::Base
 
   # ********* Scopes
 
-  # DEPRECATED (should be called by_language)
-  scope :for_language, lambda { |lang_code|
-    ActiveSupport::Deprecation.warn('Please use Labeling::Base.by_label_language instead of Labeling::Base.by_lang', caller)
-    where(:language => lang_code)
-  }
-
   scope :by_language, lambda { |lang_code|
     where(:language => lang_code)
   }
