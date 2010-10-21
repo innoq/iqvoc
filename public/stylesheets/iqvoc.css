@@ -73,7 +73,7 @@ a:hover {
 	list-style-type: none;
 }
 
-a#format_link_ttl {
+#format_link_ttl {
 	display: block;
 	background: url('http://www.w3.org/RDF/icons/rdf_flyer.24') no-repeat;
 	padding: 4px 0 2px 25px;

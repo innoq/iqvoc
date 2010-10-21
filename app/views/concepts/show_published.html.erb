@@ -5,7 +5,10 @@
 <% end -%>
 
 <h2><%= Concept::Base.model_name.human %>: <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept)) %></h2>
-<%= link_to rdf_url(@concept.origin, :format => nil), rdf_url(@concept.origin, :format => :ttl), :id => 'format_link_ttl' %>
+<div id="format_link_ttl">
+  <%= rdf_url(@concept.origin, :format => nil) %>
+  (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl) %>)
+</div>
 <h2><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.new_record? ? "-" : link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %></h2>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
