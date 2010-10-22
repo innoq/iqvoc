@@ -12,7 +12,7 @@ module SearchExtension
     end
   
     def self.single_query(params = {})
-      # Implement single_query in your specific class that should be searchable!
+      raise NotImplementedError.new("Implement single_query in your specific class that should be searchable!")
     end
   
     def self.supports_multi_query?
