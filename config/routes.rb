@@ -43,12 +43,6 @@ Iqvoc::Application.routes.draw do
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
   match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
 
-  resources :sns_services do
-    collection do
-      get :get_synonyms
-    end
-  end
-
   root :to => redirect("/de")
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
