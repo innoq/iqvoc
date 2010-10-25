@@ -12,7 +12,7 @@ class Concepts::AlphabeticalController < ConceptsController
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
       concept_published.
       label_begins_with(params[:letter]).
-      includes(:target). 
+      includes(:target).
       order("LOWER(#{Label::Base.table_name}.value)").
       paginate(:page => params[:page], :per_page => 40)
   end
