@@ -167,10 +167,13 @@ class Concept::Base < ActiveRecord::Base
   # returns the (one!) preferred label of a concept for the requested language.
   # lang can either be a (lowercase) string or symbol with the (ISO ....) two letter
   # code of the language (e.g. :en for English, :fr for French, :de for German).
-  # if lang is NIL, the current I18n language will be used will be used. If no prefLabel for the requested language exists,
-  # a new label will be returned (if you modify it, don't forget to save it afterwards!)
+  # If no prefLabel for the requested language exists, a new label will be returned
+  # (if you modify it, don't forget to save it afterwards!)
   def pref_label(lang = nil)
-    lang ||= I18n.locale
+    # If the current thesaurus only supports one PrefLabel language, always choose this.
+    unless Iqvoc::Concept.supports_multi_language_pref_labelings?
+      lang = Iqvoc::Concept.pref_labeling_languages.first
+    end
     lang = lang.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
       Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]

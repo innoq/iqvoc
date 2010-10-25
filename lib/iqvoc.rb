@@ -88,6 +88,10 @@ module Iqvoc
     def self.match_classes
       match_class_names.map(&:constantize)
     end
+    
+    def self.supports_multi_language_pref_labelings?
+      pref_labeling_languages.size > 1
+    end
 
   end
 

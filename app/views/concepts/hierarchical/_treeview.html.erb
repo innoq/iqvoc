@@ -1,2 +1,2 @@
-<ul class="treeview" data-remote-settings='{"url":"<%= hierarchical_concepts_path(:lang => @active_language, :format => :json) %>", "root":"<%= root %>"}'>
+<ul class="treeview" data-remote-settings='{"url":"<%= hierarchical_concepts_path(:lang => @active_language, :format => :json, :pref_label_lang => params[:pref_label_lang]) %>", "root":"<%= root %>"}'>
 </ul>
