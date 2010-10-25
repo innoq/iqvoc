@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  var locale = $("html").attr("data-locale");
+  var locale = $("meta[name=i18n-locale]").attr("content");
 
   // Creates the label_relation widget
   var label_relations = $(".label_relation")
