@@ -13,8 +13,6 @@ gem 'warbler'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
-
 group :development do
   gem 'mongrel'
   gem 'ruby-debug'

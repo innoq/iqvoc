@@ -1,7 +1,7 @@
 require 'string'
 
 module Iqvoc
-  
+
   mattr_accessor :searchable_class_names
   
   self.searchable_class_names = [
