@@ -13,7 +13,7 @@
 <ul>
   <% @pref_labelings.each do |pref_labeling| %>
     <li>
-      <%= link_to pref_labeling.target.to_s, concept_path(:lang => pref_labeling.target.language, :id => pref_labeling.owner), :alt => pref_labeling.owner.origin %>
+      <%= link_to pref_labeling.target.to_s, concept_path(:id => pref_labeling.owner), :alt => pref_labeling.owner.origin %>
     </li>
   <% end %>
 </ul>
