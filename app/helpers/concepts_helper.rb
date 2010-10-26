@@ -37,22 +37,10 @@ module ConceptsHelper
       render_concept_association(res, concept, note_class)
     end
 
+    Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class|
+      render_concept_association(res, concept, assoc_class)
+    end
 
-    %q(  
-
-<div class="relation">
-        <h3><%= t("txt.views.concepts.classifiers") %></h3>
-  <div class="relation-body">
-        <%=raw @concept.classifiers.map {|classifier|
-      classifier.notation
-    }.join(', ') %>
-  </div>
-</div>
-
-<%#= render :partial => '_shared/umt_notes', :locals => {:object => @concept} %>
-        <%#= render :partial => '_shared/matches', :locals => {:object => @concept} %>
-
-%)
     res
   end
   

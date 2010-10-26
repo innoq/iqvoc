@@ -106,6 +106,12 @@ class Concept::Base < ActiveRecord::Base
     @nested_relations << relation_name
   end
 
+  Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
+    has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
+    include_to_deep_cloning(association_class.deep_cloning_relations)
+    association_class.referenced_by(self)
+  end
+
   # ********** Relation Stuff
 
   @nested_relations.each do |relation|
