@@ -9,7 +9,15 @@
   <%= rdf_url(@concept.origin, :format => nil) %>
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl) %>)
 </div>
-<h2><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.new_record? ? "-" : link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %></h2>
+<h2><%= t("txt.common.pref_label") %>:
+  <%- if @concept.pref_label.new_record? -%>
+    -
+  <%- elsif @concept.pref_label.is_a?(Label::SKOSXL::Base) -%>
+    <%= link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %>
+  <%- else -%>
+    <%= @concept.pref_label %>
+  <%- end -%>
+</h2>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
   <div class="editing_versioning_toolbar">
