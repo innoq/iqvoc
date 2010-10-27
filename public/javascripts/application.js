@@ -131,12 +131,10 @@ jQuery(document).ready(function() {
       .attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
       .attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
     }
-    else {
-      clone.find("select")
-      .attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
-      .attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
-    }
-		
+    clone.find("select")
+    .attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
+    .attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
+
     clone.addClass("new");
 
     $(this).parent().find("ol").append(clone);
