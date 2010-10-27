@@ -177,7 +177,7 @@ class Concept::Base < ActiveRecord::Base
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label(lang = nil)
     # If the current thesaurus only supports one PrefLabel language, always choose this.
-    unless Iqvoc::Concept.supports_multi_language_pref_labelings?
+    unless Iqvoc::Concept.supports_multi_language_pref_labelings? && lang.present?
       lang = Iqvoc::Concept.pref_labeling_languages.first
     end
     lang = lang.to_s
