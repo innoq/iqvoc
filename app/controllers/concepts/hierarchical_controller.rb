@@ -30,7 +30,7 @@ class Concepts::HierarchicalController < ConceptsController
       format.json do
         @concepts.map! do |c|
           hsh = {
-            :text => c.pref_label(params[:pref_label_lang]).to_s,
+            :text => CGI.escapeHTML(c.pref_label(params[:pref_label_lang]).to_s),
             :url  => concept_path(:lang => @active_language, :id => c),
             :id   => c.id
           }
