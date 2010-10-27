@@ -121,6 +121,11 @@ tr.hover {
 	background-color: #C0FAB4;
 }
 
+.note_language {
+  color: grey;
+  font-size: 75%;
+}
+
 .valid 		{ color: #318210; }
 .invalid 	{ color: #A91B1B; }
 
