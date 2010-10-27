@@ -195,7 +195,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
-      ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target
+      ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
     return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []).select{|l| l.published? || !only_published}
   end
