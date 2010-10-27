@@ -2,7 +2,7 @@
   <legend><%= klass.model_name.human(:count => 2) %></legend>
   <ol>
     <%- scope = defined?(concept) ? concept : label -%>
-    <% scope.send(klass.name.to_relation_name).each do |note| %>
+    <% scope.send(klass.name.to_relation_name).select{|n| n.class == klass}.each do |note| %>
       <li class="inline_note<%= " new" if note.new_record? %>">
         <%= f.fields_for :"#{klass.name.to_relation_name}", note do |note_form| %>
           <%= note_form.label :value, klass.model_name.human(:count => 1) %>
