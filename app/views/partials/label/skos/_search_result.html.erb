@@ -1,0 +1,8 @@
+<%- if concept = search_result.labelings.first && search_result.labelings.first.owner -%>
+  <dt>
+    <%= link_to highlight_query(search_result.value, params[:query], @multi_query), concept_path(:lang => @active_language, :id => concept) %>
+  </dt>
+  <dd><%= t('txt.views.search_results.type') %>: <%= search_result.class.model_name.human %></dd>
+  <dd><%= t('txt.views.search_results.used_as') %>: <%= search_result.labelings.map {|labeling| labeling.class.model_name.human}.uniq.join(', ') %></dd>
+  <dd><%= t('txt.views.search_results.language') %>: <%= search_result.language %></dd>
+<%- end -%>
