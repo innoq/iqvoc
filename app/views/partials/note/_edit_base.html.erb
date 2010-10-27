@@ -5,7 +5,7 @@
     <% scope.send(klass.name.to_relation_name).each do |note| %>
       <li class="inline_note<%= " new" if note.new_record? %>">
         <%= f.fields_for :"#{klass.name.to_relation_name}", note do |note_form| %>
-          <%= note_form.label :value, t("txt.partials.note.#{klass.name.to_relation_name}", :count => 1) %>
+          <%= note_form.label :value, klass.model_name.human(:count => 1) %>
           <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
 
           <br />
