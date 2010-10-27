@@ -19,6 +19,10 @@ document << IqRdf.build_uri(@concept.origin, IqRdf::Skos::build_uri("Concept")) 
     relation.build_rdf(document, concept)
   end
 
+  @concept.notes.each do |note|
+    note.build_rdf(document, concept)
+  end
+
 =begin
   %w(historyNotes scopeNotes editorialNotes examples definitions).each do |name|
     concept.Skos::build_predicate(name.singularize, *@concept.send(name.underscore).map{|note| IqRdf::Literal.new(note, note.language) }) unless @concept.send(name.underscore).empty?

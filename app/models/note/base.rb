@@ -98,11 +98,11 @@ class Note::Base < ActiveRecord::Base
     query_str = build_query_string(params)
     
     by_query_value(query_str).
-    by_language(params[:languages].to_a)
+      by_language(params[:languages].to_a)
   end
   
   def self.search_result_partial_name
     'partials/note/search/result'
   end
-  
+
 end
