@@ -25,7 +25,7 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
   has_many :labels, :through => :labelings, :source => :target
-  include_to_deep_cloning(:labelings)
+  # Deep cloning has to be done in specific relations. S. pref_labels etc
 
   has_many :notes, :class_name => "Note::Base", :as => :owner, :dependent => :destroy
   has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
@@ -88,6 +88,13 @@ class Concept::Base < ActiveRecord::Base
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
+    # When a Label has only one labeling (the "no skosxl" case) we'll have to
+    # clone the label too.
+    if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
+      include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
+    else
+      include_to_deep_cloning(labeling_class_name.to_relation_name)
+    end
   end
 
   # *** Matches (pointing to an other thesaurus)
