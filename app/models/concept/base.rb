@@ -4,6 +4,9 @@ class Concept::Base < ActiveRecord::Base
 
   include IqvocGlobal::Versioning
 
+  class_inheritable_accessor :default_includes
+  self.default_includes = []
+
   # ********** Validations
 
   validates :origin, :presence => true
@@ -226,6 +229,11 @@ class Concept::Base < ActiveRecord::Base
   # The dynamic find_by... method would have considered ALL (sub)classes (STI)
   def self.find_by_origin(origin)
     find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
+  end
+
+  # This shows up to the left of a concept link if it doesn't return nil
+  def additional_info
+    nil
   end
 
   def to_param
