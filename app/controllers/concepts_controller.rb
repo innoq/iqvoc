@@ -71,6 +71,10 @@ class ConceptsController < ApplicationController
       @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
     end
 
+    if params[:full_consitency_check]
+      @concept.valid_with_full_validation?
+    end
+
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
