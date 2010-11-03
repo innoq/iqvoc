@@ -10,7 +10,7 @@ de:
       concept/relation/skos/broader/poly:
         one:   "Allgemeinerer Begriff"
         other: "Allgemeinere Begriffe" 
-      concept/relation/skos/narrower:
+      concept/relation/skos/narrower/base:
         one:   "Spezifischerer Begriff"
         other: "Spezifischere Begriffe"
       concept/relation/skos/related:
