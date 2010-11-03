@@ -1,4 +1,13 @@
 GIT
+  remote: git@github.com:innoq/iq_rdf.git
+  revision: 0ae75fd73589797edc460ed61e38b87b8f7e0377
+  specs:
+    iq_rdf (0.0.9)
+      activerecord
+      bundler
+      rails
+
+GIT
   remote: git@github.com:innoq/iqvoc_spez.git
   revision: 43a9407bd0fa6e72ac9237cef7d9b605415089eb
   specs:
@@ -75,7 +84,6 @@ GEM
     ffi (0.6.3-java)
     gem_plugin (0.2.3)
     i18n (0.4.1)
-    iq_rdf (0.0.8)
     jdbc-mysql (5.0.4)
     jruby-jars (1.5.3)
     jruby-rack (1.0.3)
@@ -158,7 +166,7 @@ DEPENDENCIES
   capybara
   database_cleaner (= 0.6.0.rc.3)
   factory_girl_rails
-  iq_rdf (~> 0.0.8)
+  iq_rdf (~> 0.0.8)!
   iqvoc_spez!
   launchy
   mongrel
