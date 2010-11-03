@@ -64,4 +64,13 @@ namespace :deploy do
   end
 end
 
+task :invoke do
+  if ENV['task'] && ENV['task'] =~ /^iqvoc/
+    run("cd #{deploy_to}/current; rake --trace #{ENV['task']} RAILS_ENV=production")
+  else
+    run("cd #{deploy_to}/current; rake -T iqvoc --trace RAILS_ENV=production")
+  end
+end
+
+
 after 'deploy:update_code', 'deploy:symlink_shared'
