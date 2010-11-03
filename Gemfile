@@ -5,7 +5,7 @@ gem 'rails', '3.0.1'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~>0.0.8'
+gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
 gem 'warbler'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.

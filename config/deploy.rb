@@ -1,10 +1,17 @@
+# RVM bootstrap
+$:.unshift(File.expand_path("~/.rvm/lib"))
+require 'rvm/capistrano'
+set :rvm_ruby_string, '1.8.7-p302'
+set :rvm_type, :user
+
 # bundler bootstrap
 require 'bundler/capistrano'
 
-# main details
+# load history
 capistrano_history = {}
 capistrano_history = YAML::load(File.open(".capistrano_history.yml")) if File.exist?(".capistrano_history.yml")
 
+# main details
 set :application, "iqvoc"
 servername = Capistrano::CLI.ui.ask("Please enter the IP or Hostname of the ec2 instance to deploy to [#{capistrano_history['last_servername']}]: ")
 servername = capistrano_history['last_servername'] if servername == ""
@@ -31,6 +38,7 @@ set :branch, Capistrano::CLI.ui.ask("Please enter the branch or tag we should us
 set :branch, capistrano_history['last_branch'] if fetch(:branch) == ""
 capistrano_history['last_branch'] = fetch(:branch)
 
+# Write history file to prevent too much typing the next time :-)
 File.open(".capistrano_history.yml", 'w') { |f|
   f.write(capistrano_history.to_yaml)
 }
