@@ -10,7 +10,7 @@ en:
       concept/relation/skos/broader/poly:
         one:   "Broader term"
         other: "Broader terms"
-      concept/relation/skos/narrower:
+      concept/relation/skos/narrower/base:
         one:   "Narrower term"
         other: "Narrower terms"
       concept/relation/skos/related:
