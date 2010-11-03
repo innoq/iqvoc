@@ -9,7 +9,7 @@ module Concept
           scope.any? || scope.create!
 
           # The reverse direction
-          scope = relation_class.where(:owner_id => target_concept.id, :target_id => proxy_owner.id)
+          scope = relation_class.reverse_relation_class.where(:owner_id => target_concept.id, :target_id => proxy_owner.id)
           scope.any? || scope.create!
         end
       end
@@ -20,7 +20,7 @@ module Concept
             relation.destroy
           end
 
-          relation_class.where(:owner_id => target_concept.id, :target_id => proxy_owner.id).all.each do |relation|
+          relation_class.reverse_relation_class.where(:owner_id => target_concept.id, :target_id => proxy_owner.id).all.each do |relation|
             relation.destroy
           end
         end
