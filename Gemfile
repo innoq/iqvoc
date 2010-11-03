@@ -13,7 +13,8 @@ gem 'warbler'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+#gem 'iqvoc_spez', :path => '../iqvoc_spez' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
 
 group :development do
   gem 'mongrel'
@@ -31,6 +32,12 @@ group :test, :cucumber do
   # gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
+end
+
+group :production do
+  platforms :ruby do
+    gem 'sqlite3-ruby', :require => 'sqlite3'
+  end
 end
 
 platforms :mri do
