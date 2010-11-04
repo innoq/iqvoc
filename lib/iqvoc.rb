@@ -184,3 +184,5 @@ module Iqvoc
   end
 
 end
+
+ActiveSupport.run_load_hooks(:after_iqvoc_config, Iqvoc)
