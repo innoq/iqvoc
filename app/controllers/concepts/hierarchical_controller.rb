@@ -7,22 +7,22 @@ class Concepts::HierarchicalController < ConceptsController
     scope = Concept::Base.published.with_pref_labels
     # if params[:broader] is given, the action is handling the reversed tree
     @concepts = case params[:root]
-    when 'source'
-      if params[:broader]
-        scope.broader_tops.includes(:broader_relations)
-      else
-        scope.tops.includes(:narrower_relations)
-      end
     when /\d+/
       root_concept = Concept::Base.find(params[:root])
       if params[:broader]
         scope.
           includes(:narrower_relations, :broader_relations). # D A N G E R: the order matters!!! See the following where
-          where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
+        where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
       else
         scope.
           includes(:broader_relations, :narrower_relations). # D A N G E R: the order matters!!! See the following where
-          where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
+        where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
+      end
+    else
+      if params[:broader]
+        scope.broader_tops.includes(:broader_relations)
+      else
+        scope.tops.includes(:narrower_relations)
       end
     end
     # When in single query mode, AR handles ALL includes to be loaded by that
