@@ -1,8 +1,9 @@
 require "#{File.dirname(__FILE__)}/deploy/history"
 load_history
 
-load "#{File.dirname(__FILE__)}/deploy/git.rb"
-load "#{File.dirname(__FILE__)}/deploy/iqvoc.rb"
+set :invokeable_task_prefix, "iqvoc"
+
+load "#{File.dirname(__FILE__)}/deploy/common.rb"
 
 set :default_stage, "ec2"
 set :stages, %w(ec2)
