@@ -93,13 +93,14 @@ class ConceptsController < ApplicationController
   def destroy
     @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_concept
-    authorize! :destroy, @concept
+    authorize! :destroy, @new_concept
+    
     if @new_concept.destroy
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
       redirect_to dashboard_path(:lang => @active_language)
     else
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
-      redirect_to label_path(:published => 0, :id => @new_concept, :lang => @active_language)
+      redirect_to concept_path(:published => 0, :id => @new_concept, :lang => @active_language)
     end
   end
   

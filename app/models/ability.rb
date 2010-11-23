@@ -4,7 +4,6 @@ class Ability
   @@if_published = lambda { |o| o.published? }
 
   def initialize(user = nil)
-    
     if user.nil?
       can :read, [Concept::Base, Label::Base], &@@if_published
     end
