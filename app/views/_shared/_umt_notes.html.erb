@@ -1,25 +1,26 @@
-<%- 
-  if !defined?(types) or types.blank? or types.to_sym == :all
-    types = %w(export_notes source_notes change_notes usage_notes)
-  else
-    types = types.to_a
-  end
+
+<%- FIXME CRASH BOOM BANG!! This should not be used anymore!
+if !defined?(types) or types.blank? or types.to_sym == :all
+  types = %w(export_notes source_notes change_notes usage_notes)
+else
+  types = types.to_a
+end
 -%>
 
 <% types.each do |type| %>
-<div class="relation">
-  <h3><%= t("txt.views.notes.#{type}") %></h3>
-  <div class="relation-body">
-    <% object.send(:"umt_#{type}").each do |note| %>
-    <% unless note.new_record? %>
-    <%= note.language %> <%= linkify note.value %>
-    <ul>
-      <% note.note_annotations.each do |annotation| %>
-        <li><%= linkify "#{annotation.identifier} #{annotation.value}" %></li>
+  <div class="relation">
+    <h3><%= t("txt.views.notes.#{type}") %></h3>
+    <div class="relation-body">
+      <% object.send(:"umt_#{type}").each do |note| %>
+        <% unless note.new_record? %>
+          <%= note.language %> <%= linkify note.value %>
+          <ul>
+            <% note.annotations.each do |annotation| %>
+              <li><%= linkify "#{annotation.identifier} #{annotation.value}" %></li>
+            <% end %>
+          </ul>
+        <% end %>
       <% end %>
-    </ul>
-    <% end %>
-    <% end %>
+    </div>
   </div>
-</div>
 <% end %>

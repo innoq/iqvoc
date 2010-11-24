@@ -1,3 +1,0 @@
-class BroaderMatch < Match
-  
-end

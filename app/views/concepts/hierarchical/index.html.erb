@@ -1,0 +1,9 @@
+<%= content_for :pref_label_language_selection do %>
+<%#= pref_label_language_selection %>
+<% end %>
+
+<h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
+
+<p><%= t('txt.views.concepts.select') %></p>
+
+<%= treeview %>

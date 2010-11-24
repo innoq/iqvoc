@@ -1,0 +1,32 @@
+<%= content_for :head do -%>
+  <link href="<%= rdf_url(@concept.origin, :format => :ttl) %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= rdf_url(@concept.origin, :format => :rdf) %>" type="application/rdf+xml" rel="alternate" title=""/>
+  <link href="<%= rdf_url(@concept.origin, :format => :n3) %>" type="text/n3" rel="alternate" title=""/>
+<% end -%>
+
+<h2><%= Concept::Base.model_name.human %>: <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept)) %></h2>
+<div id="format_link_ttl">
+  <%= rdf_url(@concept.origin, :format => nil) %>
+  (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl) %>)
+</div>
+<h2><%= t("txt.common.pref_label") %>:
+  <%- if @concept.pref_label.new_record? -%>
+    -
+  <%- elsif @concept.pref_label.is_a?(Label::SKOSXL::Base) -%>
+    <%= link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %>
+  <%- else -%>
+    <%= @concept.pref_label %>
+  <%- end -%>
+</h2>
+
+<% if @new_concept_version.blank? && can?(:branch, @concept) %>
+  <div class="editing_versioning_toolbar">
+    <%= button_to t("txt.views.versioning.versioning_mode"), concept_versions_branch_path(:lang => @active_language, :origin => @concept.origin) %>
+  </div>
+<% elsif can?(:read, @new_concept_version) %>
+  <div class="editing_versioning_toolbar">
+    <%= link_to t("txt.views.versioning.preview_new_version"), concept_path(:published => 0, :id => @new_concept_version, :lang => @active_language) %>
+  </div>
+<% end %>
+
+<%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>

@@ -1,0 +1,44 @@
+<fieldset id="label_umt_change_note_data" class="note_relation">
+  <legend><%= t("txt.common.umt_change_note", :count => 2) %></legend>
+  <ol>
+    <% change_notes = @label.umt_change_notes.sort {|a,b| a.created_at <=> b.created_at } %>
+    <% change_notes.each do |note| %>
+    <li class="inline_note<%= " new" if note.new_record? %>">
+      <%= f.fields_for :umt_change_notes, note do |note_form| %>
+        <% if note == change_notes.last %>
+        <%= note_form.label :value, t("txt.common.umt_change_note", :count => 1) %>
+        <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
+        
+        <br />
+        
+        <label><%= t("txt.common.note_annotation", :count => 2) %></label>
+        <textarea disabled="true" rows="3" cols="40"><%= note.annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
+        
+        <br />
+        
+        <%= note_form.label :language, t("txt.common.language") %>
+        <%= note_form.select :language, options_for_language_select(note.new_record? ? @label.language : note.language) %>
+        
+        <br />
+        <% else %>
+        
+        <label><%= t("txt.common.value") %></label>
+        <span><%= note.value %></span>
+        <br/>
+        
+        <% note.annotations.each do |na| %>
+        <label><%= na.identifier %></label>
+        <span><%= na.value %></span>
+        <br/>
+        <% end %>
+        
+        <% end %>
+        
+        <%#= note_form.check_box :"_destroy" %>
+        <%#= note_form.label :"_destroy", t("txt.views.labels.edit.delete") %>
+      <% end %>
+    </li>
+    <% end %>
+  </ol>
+  <input type="button" value="<%= t("txt.common.add_note") %>">
+</fieldset>

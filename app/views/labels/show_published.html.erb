@@ -1,0 +1,19 @@
+<%= content_for :head do -%>
+  <link href="<%= @label.rdf_uri(:format => :"text/turtle") %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= @label.rdf_uri() %>" type="application/rdf+xml" rel="alternate" title=""/>
+  <link href="<%= @label.rdf_uri(:format => :"text/n3") %>" type="text/n3" rel="alternate" title=""/>
+<% end -%>
+<h2><%= Label::Base.model_name.human %>: <%= @label.value %></h2>
+<%= link_to @label.rdf_uri(:format => :"text/turtle"), @label.rdf_uri(:format => :"text/turtle"), :id => 'format_link_ttl' %>
+
+<% if can?(:read, @new_label_version) || can?(:branch, @label) %>
+  <div class="editing_versioning_toolbar">
+    <% if @new_label_version.blank? && can?(:branch, @label) %>
+      <%= button_to t("txt.views.versioning.versioning_mode"), label_versions_branch_path(:lang => @active_language, :origin => @label.origin) %>
+    <% elsif can?(:read, @new_label_version) %>
+      <%= link_to t("txt.views.versioning.preview_new_version"), label_path(:published => 0, :id => @new_label_version, :lang => @active_language) %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render 'layouts/sections', :sections => Iqvoc::XLLabel.view_sections, :data => label_view_data(@label) %>

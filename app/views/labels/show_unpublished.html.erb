@@ -1,0 +1,30 @@
+<h2><%= t("txt.views.labels.versionview") %> <strong><%= @label.value %></strong></h2>
+
+<p class="flash_notice">
+  <%= t("txt.views.versioning.current_revision") %> <%= @label.rev %><% if @label.locked? %> <%= t("txt.views.versioning.in_ongoing_editing_by") %> <%= @label.locking_user.name %><% end %>
+</p>
+
+<div class="editing_versioning_toolbar">
+  <%= button_to t("txt.views.versioning.publishing"), label_versions_merge_path(:lang => @active_language, :origin => @label.origin) %>
+  <%= button_to t("txt.views.versioning.consistency_check"), label_versions_consistency_check_path(:lang => @active_language, :origin => @label.origin), :method => :get %>
+
+  <% unless @label.in_review? %>
+    <%= button_to t("txt.common.to_review"), label_versions_to_review_path(:lang => @active_language, :origin => @label.origin) %>
+  <% end %>
+
+  <% unless @label.locked? %>
+    <%= button_to t("txt.views.versioning.to_edit_mode"), label_versions_lock_path(:lang => @active_language, :origin => @label.origin) %>
+    <%= button_to t("txt.views.versioning.delete"), label_path(:published => 0, :lang => @active_language, :id => @label.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") %>
+  <% else %>
+    <%= button_to t("txt.views.versioning.unlock"), label_versions_unlock_path(:lang => @active_language, :origin => @label.origin) if can?(:unlock, @label) %>
+    <%= link_to t("txt.views.versioning.edit_mode"), edit_label_path(:published => 0, :id => @label.origin, :lang => @active_language) if can?(:update, @label) %>
+  <% end %>
+</div>
+
+<%= render 'layouts/sections', :sections => Iqvoc::XLLabel.view_sections, :data => label_view_data(@label) %>
+
+<%= content_for :sub_navigation do %>
+  <ul>
+    <li><%= back_link label_path(:lang => @active_language, :id => @label), t('txt.views.navigation.back_to_show') %></li>
+  </ul>
+<% end %>

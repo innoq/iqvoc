@@ -1,0 +1,9 @@
+<% unless note.new_record? %>
+  <%= linkify(note.value) %>
+  <div class="note_language <%= note.language %>">(<%= note.language %>)</div>
+  <ul>
+    <% note.annotations.each do |annotation| %>
+      <li><%= linkify "#{annotation.identifier} #{annotation.value}" %></li>
+    <% end %>
+  </ul>
+<% end %>

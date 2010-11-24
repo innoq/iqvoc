@@ -1,0 +1,25 @@
+<fieldset id="label_<%= klass.name.to_relation_name %>_data" class="note_relation">
+  <legend><%= klass.model_name.human(:count => 2) %></legend>
+  <ol>
+    <%- scope = defined?(concept) ? concept : label -%>
+    <% scope.send(klass.name.to_relation_name).select{|n| n.class == klass}.each do |note| %>
+      <li class="inline_note<%= " new" if note.new_record? %>">
+        <%= f.fields_for :"#{klass.name.to_relation_name}", note do |note_form| %>
+          <%= note_form.label :value, klass.model_name.human(:count => 1) %>
+          <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
+
+          <br />
+
+          <%= note_form.label :language, t("txt.common.language") %>
+          <%= note_form.select :language, options_for_language_select(note.language) %>
+
+          <br />
+
+          <%= note_form.check_box :"_destroy" %>
+          <%= note_form.label :"_destroy", t("txt.common.delete") %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+  <input type="button" value="<%= t("txt.common.add_note") %>" />
+</fieldset>

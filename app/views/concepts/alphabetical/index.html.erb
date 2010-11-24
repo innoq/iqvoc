@@ -1,0 +1,17 @@
+<h2><%= Concept::Base.model_name.human(:count => 2) %></h2>
+
+<p><%= t("txt.views.concepts.select") %></p>
+
+<div class="letter_selector">
+  <% for alpha in @alphas %>
+    <%= link_to alpha,
+      alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase),
+      :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) %>
+  <% end %>
+</div>
+
+<ul>
+  <%= render :partial => "pref_labeling", :collection => @pref_labelings %>
+</ul>
+
+<%= will_paginate @pref_labelings, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>

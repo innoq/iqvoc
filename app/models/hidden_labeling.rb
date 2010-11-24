@@ -1,3 +1,0 @@
-class HiddenLabeling < Labeling
-  
-end

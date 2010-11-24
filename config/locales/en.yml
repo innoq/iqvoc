@@ -2,40 +2,13 @@ en:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
-     concept: "Concept"
-     concepts: "Concepts"
-     label: "Label"
      pref_label: "Preferred label"
      edit: "Edit"
      value: "Value"
-     definition:
-       one: "Definition"
-       other: "Definitions"
-     editorial_note:
-       one: "Editorial note"
-       other: "Editorial note"
-     note_annotation:
-       one: "Annotation"
-       other: "Annotations"
-     umt_source_note:
-       one: "Source note"
-       other: "Source notes"
-     umt_change_note:
-       one: "Change note"
-       other: "Change notes"
-     umt_usage_note:
-       one: "Usage note"
-       other: "Usage notes"
-       values:
-         useNarrower: "Use narrower terms"
+     welcome: "Hello %{user_name}"
      pagination:
        previous: "Back"
        next: "Next"
-     missing:
-       definition: "No definition available."
-       label: "No label"
-     follow_up: "Reminder"
-     expired_at: "Expired at"
      save: "Save"
      reset: "Reset"
      language: "Language"
@@ -53,6 +26,7 @@ en:
        published: "Published"
        in_review: "In review"
        checked_out: "Checked out"
+     of: of
 
    part_of_speech:
      plural_form: "Plural form"
@@ -78,10 +52,6 @@ en:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       definitions: "Definitions"
-       broader: "Broader Terms"
-       narrower: "Narrower Terms"
-       related: "Related Terms"
        select: "Please select one of the concepts listed below."
        new: "New concept"
        versionview: "Version display of Concept"
@@ -108,9 +78,7 @@ en:
        qualifiers: "Qualifier"
        translations: "Translations"
        pref_label_of: "preferred Label of"
-       alt_label_of: "altLabel of"
-       compound_from: "Compound from"
-       compound_in: "Compound in"
+       alt_label_of: "alternative Label of"
        versionview: "Version display of Label"
        follow_up: "Follow up"
        endings: "Endings"
@@ -133,10 +101,6 @@ en:
        save: "Save"
        edit:
          header: "Edit notes"
-       export_notes: "Export note"
-       source_notes: "Source notes"
-       change_notes: "Change notes"
-       usage_notes: "Usage notes"
      navigation:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
@@ -164,9 +128,9 @@ en:
        search_languages: "Languages"
        search_results: "Search results"
        results_found:
-         one: "Your search for <strong>{{query}}</strong> yielded the following {{count}} result."
-         other: "Your search for <strong>{{query}}</strong> yielded the following {{count}} results."
-       no_results_found: "Your search for <strong>{{query}}</strong> yielded no results. Try searching for other/all languages or a shorter search term."
+         one: "Your search for <strong>%{query}</strong> yielded the following %{count} result."
+         other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
+       no_results_found: "Your search for <strong>%{query}</strong> yielded no results. Try searching for other/all languages or a shorter search term."
        submit: "Search"
        type: "type"
        used_as: "used as"
@@ -227,8 +191,7 @@ en:
        hint: "edit term"
        no_results: "Not found!"
        searching: "searching ..."
-       delete_compound_form: "Delete Composition"
-       create_compound_form: "Add Composition"
+
      dashboard:
        type: "Type"
        value: "Name"
@@ -240,11 +203,19 @@ en:
        inconsistent: "inconsistent"
        state: "State"
 
-   helpers:
-     concept_selector:
-       show_concepts:
-         one: "1 Concept"
-         other: "{{count}} Concepts"
+   partials:
+     note:
+       missing: Not availiable.
+     label:
+       relation:
+         missing: Not availiable.
+     concept:
+       relation:
+         missing:  Not availiable.
+     labeling:
+       concept:
+       label:
+     match:
 
    controllers:
      application:
@@ -265,7 +236,7 @@ en:
        published_with_warning: "Instance has been successfully released, but it has no relations!"
        merged_delete_error: "Label could not be deleted!"
        merged_publishing_error: "Instance could not be released!"
-       merged: "Instance copy has been created and locked."
+       branched: "Instance copy has been created and locked."
        locked: "Instance has been locked."
        lock_error: "Instance has been locked already!"
        unlocked: "Instance has been unlocked."
@@ -304,18 +275,12 @@ en:
      narrowers:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      virtuoso_syncs:
-       success: "{{concept_count}} published concepts and {{label_count}} published labels have been synced."
+       success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
 
    models:
      label:
-       version_error: "New Label version already exists!"
-       value_error: "Literal form must be given!"
-       qualifier_error: "Qualifier must be given!"
-       homograph_error: "Homograph must be given!"
-       compound_form_contents_error: "Each composition must have at least two components!"
-       object_name: "Label"
-       pref_label_language: "A preferred label in UMTHES must be german."
-       translations_must_be_in_foreign_language: "Translations are not allowed to have the same language like the label."
+       version_error: "New Label version already exists."
+       value_error: "Literal form must be given."
      concept:
        version_error: "New Concept version already exists!"
        pref_label_error: "One German preferred Label must be selected!"

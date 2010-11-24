@@ -1,0 +1,24 @@
+<div class="relation-body">
+  <fieldset>
+    <legend><%= klass.model_name.human(:count => 2) %> (<%= language %>)</legend>
+    <input type="text"
+           name="<%= klass.name.to_relation_name %>"
+           class="label_relation"
+           data-present-relations="[<%= klass.by_concept(concept).label_editor_selectable.by_label_language(language).map{|r| "{'id': '#{r.id}', 'name': '#{escape_javascript(r.target.value)}', 'origin': '#{escape_javascript(r.target.origin)}', 'published': #{r.target.published?}}"}.join(',')  %>]"
+           data-post-url="<%= concept_labelings_path(:published => 0, :lang => @active_language, :concept_id => concept.origin, :labeling_class => klass.name) %>"
+           data-delete-url="<%= concept_labeling_path(:published => 0, :lang => @active_language, :id => "ORIGIN", :concept_id => concept.origin, :labeling_class => klass.name) %>"
+           data-get-url="<%= labels_path(:language => language) %>"
+           data-branch-url="<%= label_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
+           data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
+           data-versioned-show-url="<%= label_path(:published => 0, :lang => @active_language, :id => "ORIGIN") %>"
+           data-auth-token="<%= form_authenticity_token %>"
+           data-auth-token-fixme="<%# FIXME: Make usage of Rails 3 %>"
+           data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
+           data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
+           data-no-results-text="<%= I18n.t("txt.views.widget.no_results") %>"
+           <% if klass.only_one_allowed? %>
+             data-token-limit=1
+           <% end %>
+           ></input>
+  </fieldset>
+</div>

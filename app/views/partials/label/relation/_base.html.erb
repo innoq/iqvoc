@@ -1,0 +1,11 @@
+<div class="relation">
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <div class="relation-body">
+    <% related_labels = label.related_labels_for_relation_class(klass) %>
+    <% if related_labels.count > 0 %>
+      <%= raw related_labels.map {|label| link_to label.value, label_path(:lang => @active_language, :id => label) }.join(', ') %>
+    <% else %>
+      <p class="term-unavailable"><%= t('txt.partials.label.relation.missing') %></p>
+    <% end %>
+  </div>
+</div>

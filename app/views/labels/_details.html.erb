@@ -1,0 +1,21 @@
+<h4><%= t("txt.views.labels.part_of_speech") %></h4>
+<div class="relation">
+  <%= part_of_speech label.part_of_speech %>
+</div>
+
+<h4><%= t("txt.views.labels.base_form") %></h4>
+<div class="relation">
+  <%= label.base_form %>
+</div>
+
+<h4><%= t("txt.views.labels.inflectional_code") %></h4>
+<div class="relation">
+  <%= label.inflectional_code %>
+</div>
+
+<%- if label.expired_at -%>
+  <h4><%= t("txt.views.labels.expired_at") %></h4>
+  <div class="relation">
+    <%= l(label.expired_at)%>
+  </div>
+<%- end -%>

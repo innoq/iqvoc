@@ -1,52 +1,65 @@
 class Ability
   include CanCan::Ability
 
+  @@if_published = lambda { |o| o.published? }
+
   def initialize(user = nil)
-    
     if user.nil?
-      can :read, [:published_concept, :published_label]
+      can :read, [Concept::Base, Label::Base], &@@if_published
     end
       
     if user && user.owns_role?(:reader)
-      can :read, [:published_concept, :published_label]
+      can :read, [Concept::Base, Label::Base], &@@if_published
+
       can :use, :dashboard
     end
       
     if user && user.owns_role?(:editor)
-      can :read, [:published_concept, :published_label]
-      can [:read, :write], [:versioned_label, :versioned_concept]
+      can :read, [Concept::Base, Label::Base]
+
       can :use, :dashboard
       
-      can :unlock, Concept, :locked_by => user.id
-      can :unlock, Label, :locked_by => user.id
+      can :create, [Concept::Base, Label::Base]
+      can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :locked_by => user.id, :published_at => nil
+      can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
       
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
+
+      can :branch, [Concept::Base, Label::Base], &@@if_published
     end
     
     if user && user.owns_role?(:publisher)
-      can :read, [:published_concept, :published_label]
-      can [:read, :write, :publish], [:versioned_label, :versioned_concept]
+      can :read, [Concept::Base, Label::Base]
+
       can :use, :dashboard
+
+      can :create, [Concept::Base, Label::Base]
+      can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :locked_by => user.id, :published_at => nil
+      can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
       
-      can :unlock, Concept
-      can :unlock, Label
-      
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
+
+      can :branch, [Concept::Base, Label::Base], &@@if_published
+      can :merge, [Concept::Base, Label::Base], :published_at => nil
     end
     
     if user && user.owns_role?(:administrator)
-      can :read, [:published_concept, :published_label]
-      can [:read, :write, :publish], [:versioned_label, :versioned_concept]
+      can :read, [Concept::Base, Label::Base]
+
       can :manage, User
       can :use, :dashboard
       
-      can :unlock, Concept
-      can :unlock, Label
+      can :create, [Concept::Base, Label::Base]
+      can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :published_at => nil
+      can :lock, [Concept::Base, Label::Base], :locked_by => nil, :published_at => nil
       
-      can :continue_editing, Concept, :locked_by => user.id
-      can :continue_editing, Label, :locked_by => user.id
+      can :check_consistency, [Concept::Base, Label::Base], :published_at => nil
+      can :send_to_review, [Concept::Base, Label::Base], :published_at => nil
+
+      can :branch, [Concept::Base, Label::Base], &@@if_published
+      can :merge, [Concept::Base, Label::Base], :published_at => nil
     end
     
   end

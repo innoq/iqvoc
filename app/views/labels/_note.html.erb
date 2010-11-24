@@ -1,0 +1,31 @@
+<fieldset id="label_<%= klass %>_data" class="note_relation">
+  <legend><%= t("txt.common.#{klass}", :count => 2) %></legend>
+  <ol>
+    <% @label.send(klass.pluralize).each do |note| %>
+    <li class="inline_note<%= " new" if note.new_record? %>">
+      <%= f.fields_for :"#{klass.pluralize}", note do |note_form| %>
+        <%= note_form.label :value, t("txt.common.#{klass}", :count => 1) %>
+        <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
+        
+        <br />
+        
+        <% if klass == "umt_change_note" %>
+        <label><%= t("txt.common.note_annotation", :count => 2) %></label>
+        <textarea disabled="true" rows="3" cols="40"><%= note.annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
+        
+        <br />
+        <% end %>
+        
+        <%= note_form.label :language, t("txt.common.language") %>
+        <%= note_form.select :language, options_for_language_select(note.new_record? ? @label.language : note.language) %>
+        
+        <br />
+        
+        <%= note_form.check_box :"_destroy" %>
+        <%= note_form.label :"_destroy", t("txt.common.delete") %>
+      <% end %>
+    </li>
+    <% end %>
+  </ol>
+  <input type="button" value="<%= t("txt.common.add_note") %>">
+</fieldset>

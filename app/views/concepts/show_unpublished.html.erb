@@ -1,0 +1,35 @@
+<h2><%= t("txt.views.concepts.versionview") %> <strong><%= link_to @concept.origin, concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
+<%= link_to rdf_url(:id => @concept, :format => nil), rdf_url(:id => @concept, :format => :ttl), :id => 'format_link_ttl' %>
+<h2><%= t("txt.common.pref_label") %>:
+  <%- if @concept.pref_label.new_record? -%>
+    -
+  <%- elsif @concept.pref_label.is_a?(Label::SKOSXL::Base) -%>
+    <%= link_to(@concept.pref_label, label_path(:lang => @active_language, :id => @concept.pref_label)) %>
+  <%- else -%>
+    <%= @concept.pref_label %>
+  <%- end -%>
+</h2>
+
+<p class="flash_notice">
+  <%= t("txt.views.versioning.current_revision") %> <%= @concept.rev %><% if @concept.locked? %> <%= t("txt.views.versioning.in_ongoing_editing_by") %> <%= @concept.locking_user.name %><% end %>
+</p>
+
+<div class="editing_versioning_toolbar">
+  
+  <%= button_to t("txt.views.versioning.publishing"), concept_versions_merge_path(:lang => @active_language, :origin => @concept.origin) %>
+  <%= button_to t("txt.views.versioning.consistency_check"), concept_versions_consistency_check_path(:lang => @active_language, :origin => @concept.origin), :method => :get %>
+
+  <% unless @concept.in_review? %>
+    <%= button_to t("txt.common.to_review"), concept_versions_to_review_path(:lang => @active_language, :origin => @concept.origin) %>
+  <% end %>
+
+  <% unless @concept.locked? %>
+    <%= button_to t("txt.views.versioning.to_edit_mode"), concept_versions_lock_path(:lang => @active_language, :origin => @concept.origin) %>
+    <%= button_to t("txt.views.versioning.delete"), concept_path(:published => 0, :lang => @active_language, :id => @concept.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
+  <% else %>
+    <%= button_to t("txt.views.versioning.unlock"), concept_versions_unlock_path(:lang => @active_language, :origin => @concept.origin) if can?(:unlock, @concept) %>
+    <%= link_to t("txt.views.versioning.edit_mode"), edit_concept_path(:published => 0, :id => @concept.origin, :lang => @active_language) if can?(:update, @concept) %>
+  <% end %>
+</div>
+
+<%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>

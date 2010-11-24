@@ -1,25 +1,25 @@
 class SearchResultsController < ApplicationController
   skip_before_filter :require_user
-  before_filter { |c| c.authorize!(:read, :published_label) }
-  before_filter { |c| c.authorize!(:read, :published_concept) }
   
   def index
-    store_location
+    authorize! :read, Concept::Base
     
     if params[:query]
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank?
       
+      unless Iqvoc.searchable_class_names.include?(params[:type])
+        raise "'#{params[:type]}' is not a valid / configured searchable class!"
+      end
+      
+      @klass = params[:type].constantize
       query_size = params[:query].split(/\r\n/).size
       
-      if params[:type] == "inflectional"
+      if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = Search.multi_query(params)
-      elsif query_size == 1 && params[:type] != "inflectional"
+        @results = @klass.multi_query(params)
+      else
         @multi_query = false
-        @results = Search.single_query(params)
-      elsif query_size > 1 && params[:type] != "inflectional"
-        @multi_query = true
-        @results = Search.multi_query(params)
+        @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
       end
 
     end

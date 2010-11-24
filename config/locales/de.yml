@@ -2,40 +2,13 @@ de:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
-     concept: "Konzept"
-     concepts: "Konzepte"
-     label: "Label"
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
-     definition:
-       one: "Definition"
-       other: "Definitionen"
-     editorial_note:
-       one: "Redaktionelle Anmerkung"
-       other: "Redaktionelle Anmerkungen"
-     note_annotation:
-       one: "Annotation"
-       other: "Annotationen"
-     umt_source_note:
-       one: "Quellenangabe"
-       other: "Quellenangaben"
-     umt_change_note:
-       one: "Änderungsangabe"
-       other: "Änderungsangaben"
-     umt_usage_note:
-       one: "Verwendungsangabe"
-       other: "Verwendungsangaben"
-       values:
-         useNarrower: "Benutze Unterbegriffe"
+     welcome: "Hallo %{user_name}"
      pagination:
        previous: "Zurück"
        next: "Weiter"
-     missing:
-       definition: "Keine Definition verfügbar."
-       label: "Kein Label"
-     follow_up: "Wiedervorlage"
-     expired_at: "Abgelaufen am"
      save: "Speichern"
      reset: "Zurücksetzen"
      language: "Sprache"
@@ -53,6 +26,7 @@ de:
        published: "Veröffentlicht"
        in_review: "Vorlage zur Freigabe"
        checked_out: "Ausgecheckt"
+     of: von
 
    part_of_speech:
      plural_form: "Pluralform"
@@ -78,10 +52,6 @@ de:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       definitions: "Definitionen"
-       broader: "Allgemeinere Begriffe"
-       narrower: "Spezifischere Begriffe"
-       related: "Verwandte Begriffe"
        select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
        new: "Neues Konzept"
        versionview: "Versionsansicht für Konzept"
@@ -91,26 +61,16 @@ de:
          related: "Kein verwandter Begriff verfügbar"
        edit:
          header: "Bearbeitung des Konzepts"
-       alt_label: "Alternatives Label"
        pref_label: "Bevorzugtes Label"
-       close_match: "CloseMatch"
        classifiers: "Umweltklassen"
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
        language: "Sprache"
-       definitions: "Definitionen"
        part_of_speech: "Wortart"
        base_form: "Ansetzungsform"
        inflectional_code: "Endungscode"
        inflectionals: "Schreibweisen"
-       homographs: "Homograph"
-       qualifiers: "Namenszusatz"
-       translations: "Übersetzungen"
-       pref_label_of: "Bevorzugtes Label von"
-       alt_label_of: "Alternatives Label von"
-       compound_from: "Zusammengesetzt aus"
-       compound_in: "Zusammengesetzt in"
        versionview: "Versionsansicht für Label"
        follow_up: "Wiedervorlage"
        endings: "Endungen"
@@ -133,10 +93,6 @@ de:
        save: "Speichern"
        edit:
          header: "Notiz bearbeiten"
-       export_notes: "Exportvermerk"
-       source_notes: "Quellenangaben"
-       change_notes: "Änderungsangaben"
-       usage_notes: "Verwendungsangaben"
      navigation:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
@@ -164,9 +120,9 @@ de:
        search_languages: "Sprachen"
        search_results: "Suchergebnisse"
        results_found:
-         one: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnis."
-         other: "Ihre Suche nach <strong>{{query}}</strong> lieferte {{count}} Ergebnisse."
-       no_results_found: "Ihre Suche nach {{query}} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
+         one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
+         other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
+       no_results_found: "Ihre Suche nach %{query} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
        submit: "Suche"
        type: "Typ"
        used_as: "benutzt als"
@@ -227,8 +183,6 @@ de:
        hint: "Begriff eingeben"
        no_results: "Nichts gefunden!"
        searching: "Suche..."
-       delete_compound_form: "Zusammensetzung löschen"
-       create_compound_form: "Neue Zusammensetzung"
      dashboard:
        type: "Typ"
        value: "Name"
@@ -240,11 +194,19 @@ de:
        inconsistent: "inkonsistent"
        state: "Status"
 
-   helpers:
-     concept_selector:
-       show_concepts:
-         one: "1 Konzept"
-         other: "{{count}} Konzepte"
+   partials:
+     note:
+       missing: "Keine verfügbar."
+     label:
+       relation:
+         missing: Keine Relationen vorhanden.
+     concept:
+       relation:
+         missing: Keine Relationen vorhanden.
+     labeling:
+       concept:
+       label:
+     match:
 
    controllers:
      application:
@@ -265,7 +227,7 @@ de:
        published_with_warning: "Instanz wurde erfolgreich veröffentlicht, hat aber keine Relationen zu anderen Instanzen!"
        merged_delete_error: "Das alte Label konnte nicht gelöscht werden!"
        merged_publishing_error: "Instanz konnte nicht veröffentlicht werden!"
-       merged: "Instanzkopie wurde erfolgreich angelegt und für andere Benutzer gesperrt."
+       branched: "Instanzkopie wurde erfolgreich angelegt und für andere Benutzer gesperrt."
        locked: "Instanz wurde für andere User gesperrt."
        lock_error: "Instanz ist bereits gesperrt!"
        unlocked: "Instanz wurde für andere User entsperrt."
@@ -306,18 +268,12 @@ de:
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
      virtuoso_syncs:
-       success: "Es wurden {{concept_count}} freigegebene Concepts und {{label_count}} freigegebene Labels synchronisiert."
+       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
 
    models:
      label:
        version_error: "Es existieren schon zwei Versionen dieses Labels"
        value_error: "Die Vorlageform muss ausgefüllt sein!"
-       qualifier_error: "Es muss ein Namenszusatz angegeben werden!"
-       homograph_error: "Es muss ein Homograph angegeben werden!"
-       compound_form_contents_error: "Eine Zusammensetzung muss aus min. 2 Labels bestehen!"
-       object_name: "Label"
-       pref_label_language: "Ein bevorzugtes Label in UMTHES muss deutsch sein."
-       translations_must_be_in_foreign_language: "Übersetzungen dürfen nicht die selbe Sprache wie das Label besitzen."
      concept:
        version_error: "Es existieren schon zwei Versionen dieses Konzepts"
        pref_label_error: "Es muss ein bevorzugtes Label angegeben werden!"

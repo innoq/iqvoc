@@ -1,0 +1,13 @@
+<div class="relation">
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <% related_concepts = concept.related_concepts_for_relation_class(klass) %>
+  <div class="relation-body">
+    <% if related_concepts.count > 0 %>
+      <%= raw related_concepts.map { |c|
+        link_to(c.pref_label, concept_path(:lang => c.pref_label.language, :id => c))
+      }.join(", ")  %>
+    <% else %>
+      <p class="term-unavailable"><%= t('txt.partials.concept.relation.missing') %></p>
+    <% end %>
+  </div>
+</div>

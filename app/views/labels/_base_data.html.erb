@@ -1,0 +1,51 @@
+<h3><%= Label::Base.model_name.human %></h3>
+
+<p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
+
+<%= form_for @label, :as => 'label', :url => labels_path(:published => 0, :lang => @active_language), :html => {:class => "form"} do |f| %>
+  <fieldset id="label_base_data">
+    <legend><%= t("txt.common.attributes") %></legend>
+    <ol>
+      <li>
+        <label><%= t("txt.views.labels.template_form") %></label>
+        <%= f.text_field :value %>
+      </li>
+      <li>
+        <%= f.label :language %>
+        <%= @label.language %>
+        <%= f.hidden_field :language %>
+      </li>
+      
+      <%- if Iqvoc::XLLabel.has_additional_base_data -%>
+        <%= render :partial => 'partials/label/additional_base_data', :locals => { :f => f } %>
+      <%- end -%>
+      
+      <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
+        <%- if assoc_class.nested_editable? -%>
+          <%= render :partial => assoc_class.edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
+        <%- end -%>
+      <%- end -%>
+      <li>
+        <%= f.label :follow_up %>
+        <%= f.text_field :follow_up, :class => "datepicker" %>
+      </li>
+      <li>
+        <%= f.label :expired_at %>
+        <%= f.text_field :expired_at, :class => "datepicker" %>
+      </li>
+    </ol>
+  </fieldset>
+  <%# FIXME: shouldn't this be @label.new_record? %>
+  <% unless controller.action_name == "new" || controller.action_name == "create" %>
+    <% Iqvoc::Concept.note_classes.each do |note_class| %>
+      <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>
+    <% end %>
+
+  <% end %>
+
+  <%= f.submit t("txt.common.save") %>
+
+  <% unless controller.action_name == "new" || controller.action_name == "create" %>
+    <%= link_to t("txt.common.reset") %>
+  <% end %>
+<% end %>
