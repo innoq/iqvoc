@@ -10,12 +10,15 @@ en:
       concept/relation/skos/broader/poly:
         one:   "Broader term"
         other: "Broader terms"
-      concept/relation/skos/narrower:
+      concept/relation/skos/narrower/base:
         one:   "Narrower term"
         other: "Narrower terms"
       concept/relation/skos/related:
         one:   "Related term"
         other: "Related terms"
+      label/skos/base:
+        one: "Label"
+        other: "Labels"
       labeling/skosxl/base:
         one:   "Label"
         other: "Labels"

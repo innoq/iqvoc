@@ -18,7 +18,7 @@
 function load(settings, root, child, container) {
 	$.getJSON(settings.url, {root: root}, function(response) {
 		function createNode(parent) {
-			var current = $("<li/>").attr("id", this.id || "").html("<a href=\"" + this.url + "\">" + this.text + "</a>").appendTo(parent);
+			var current = $("<li/>").attr("id", this.id || "").html("<a href=\"" + this.url + "\">" + this.text + "</a>" + (this.additionalText ? this.additionalText : "")).appendTo(parent);
 			if (this.classes) {
 				current.children("span").addClass(this.classes);
 			}

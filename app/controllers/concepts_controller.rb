@@ -71,6 +71,10 @@ class ConceptsController < ApplicationController
       @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
     end
 
+    if params[:full_consitency_check]
+      @concept.valid_with_full_validation?
+    end
+
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
@@ -93,13 +97,14 @@ class ConceptsController < ApplicationController
   def destroy
     @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_concept
-    authorize! :destroy, @concept
+    authorize! :destroy, @new_concept
+    
     if @new_concept.destroy
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
       redirect_to dashboard_path(:lang => @active_language)
     else
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
-      redirect_to label_path(:published => 0, :id => @new_concept, :lang => @active_language)
+      redirect_to concept_path(:published => 0, :id => @new_concept, :lang => @active_language)
     end
   end
   

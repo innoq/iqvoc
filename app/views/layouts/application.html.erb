@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html data-locale="<%= I18n.locale %>">
+<html>
   <head>
+    <meta name="i18n-locale" content="<%= I18n.locale %>">
     <%= csrf_meta_tag %>
     
-    <title>UMTHES&reg; - Der UmweltThesaurus</title>
+    <title><%= t("txt.common.iqvoc_title") %></title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
     <!--[if lt IE 8]>
@@ -38,6 +39,7 @@
 
 <div class="container">
     <div id="header" class="span-24 last">
+      <%= render :partial => 'layouts/header' %>
       <%= render :partial => 'layouts/navigation' %>
     </div>
     
@@ -56,7 +58,7 @@
       <% if flash[:error] %>
         <p class="flash_error"><%= flash[:error] %></p>
       <% end %>
-      <%= yield  %>
+      <%= yield %>
     </div>
     
     <div id="footer" class="span-24 last">

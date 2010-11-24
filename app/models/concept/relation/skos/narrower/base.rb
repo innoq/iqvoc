@@ -1,4 +1,4 @@
-class Concept::Relation::SKOS::Narrower < Concept::Relation::Base
+class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::Base
 
   def build_rdf(document, subject)
     subject.Skos.narrower(IqRdf.build_uri(target.origin))

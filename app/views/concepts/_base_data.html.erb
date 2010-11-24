@@ -11,6 +11,11 @@
         <%= f.label :expired_at %>
         <%= f.text_field :expired_at, :class => "datepicker" %>
       </li>
+      <%- Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class| -%>
+        <%- if assoc_class.nested_editable? -%>
+          <%= render :partial => assoc_class.edit_partial_name(@concept), :locals => { :concept => @concept, :klass => assoc_class, :f => f } %>
+        <%- end -%>
+      <%- end -%>
     </ol>
   </fieldset>
 

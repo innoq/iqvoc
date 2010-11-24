@@ -41,6 +41,12 @@
   <%- end -%>
 <%- end -%>
 
+<%- Iqvoc::Concept.additional_association_classes.keys.each do |association_class| -%>
+  <%- unless association_class.nested_editable? -%>
+    <%= render association_class.edit_partial_name(@concept), :concept => @concept, :klass => association_class %>
+  <%- end -%>
+<%- end -%>
+
 <%= content_for :sub_navigation do %>
   <ul>
     <li><%= back_link concept_path(:published => 0, :lang => @active_language, :id => @concept), t('txt.views.navigation.back_to_preview') %></li>

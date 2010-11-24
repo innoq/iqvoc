@@ -5,7 +5,7 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
   end
 
   def self.narrower_class
-    Concept::Relation::SKOS::Narrower
+    Concept::Relation::SKOS::Narrower::Base
   end
 
   def self.reverse_relation_class

@@ -5,9 +5,9 @@ module Iqvoc
   mattr_accessor :searchable_class_names
   
   self.searchable_class_names = [
-       'Labeling::SKOSXL::Base',
-       'Labeling::SKOSXL::PrefLabel',
-       'Note::Base' ]
+    'Labeling::SKOSXL::Base',
+    'Labeling::SKOSXL::PrefLabel',
+    'Note::Base' ]
 
   module Concept
     mattr_accessor :base_class_name, 
@@ -15,6 +15,7 @@ module Iqvoc
       :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
       :match_class_names,
       :note_class_names,
+      :additional_association_class_names,
       :view_sections
     
     self.base_class_name              = 'Concept::SKOS::Base'
@@ -38,6 +39,8 @@ module Iqvoc
       'Match::SKOS::Narrower',
       'Match::SKOS::Related',
       'Match::SKOS::Exact' ]
+
+    self.additional_association_class_names = {}
 
     self.view_sections = ["main", "labels", "relations", "notes", "matches"]
 
@@ -89,6 +92,12 @@ module Iqvoc
       match_class_names.map(&:constantize)
     end
     
+    def self.additional_association_classes
+      additional_association_class_names.keys.each_with_object({}) do |class_name, hash|
+        hash[class_name.constantize] = additional_association_class_names[class_name]
+      end
+    end
+
     def self.supports_multi_language_pref_labelings?
       pref_labeling_languages.size > 1
     end
@@ -129,6 +138,11 @@ module Iqvoc
     
     # Set this to true if you're having a migration which extends the labels table
     # and you want to be able to edit these fields.
+    # This is done by:
+    #    render :partial => 'partials/label/additional_base_data'
+    # You'll have to define this partial
+    # FIXME: This wouldn't be necessary if there would be an empty partial in
+    # iqvoc and the view loading sequence would be correct.
     self.has_additional_base_data = false
 
     # Do not use the following method in models. This will propably cause a
@@ -161,7 +175,7 @@ module Iqvoc
     if const_defined?(:XLLabel)
       label_classes += [XLLabel.base_class] + XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
     end   
-    arr = [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + label_classes
+    arr = [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + Concept.additional_association_classes.keys + label_classes
     arr.uniq
   end
   
@@ -170,3 +184,5 @@ module Iqvoc
   end
 
 end
+
+ActiveSupport.run_load_hooks(:after_iqvoc_config, Iqvoc)

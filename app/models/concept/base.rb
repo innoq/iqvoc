@@ -4,6 +4,9 @@ class Concept::Base < ActiveRecord::Base
 
   include IqvocGlobal::Versioning
 
+  class_inheritable_accessor :default_includes
+  self.default_includes = []
+
   # ********** Validations
 
   validates :origin, :presence => true
@@ -25,7 +28,7 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
   has_many :labels, :through => :labelings, :source => :target
-  include_to_deep_cloning(:labelings)
+  # Deep cloning has to be done in specific relations. S. pref_labels etc
 
   has_many :notes, :class_name => "Note::Base", :as => :owner, :dependent => :destroy
   has_many :iqvoc_change_notes, :class_name => Note::Iqvoc::ChangeNote, :as => :owner
@@ -88,6 +91,13 @@ class Concept::Base < ActiveRecord::Base
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
+    # When a Label has only one labeling (the "no skosxl" case) we'll have to
+    # clone the label too.
+    if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
+      include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
+    else
+      include_to_deep_cloning(labeling_class_name.to_relation_name)
+    end
   end
 
   # *** Matches (pointing to an other thesaurus)
@@ -104,6 +114,12 @@ class Concept::Base < ActiveRecord::Base
     relation_name = class_name.to_relation_name
     has_many relation_name, :class_name => class_name, :as => :owner
     @nested_relations << relation_name
+  end
+
+  Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
+    has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
+    include_to_deep_cloning(association_class.deep_cloning_relations)
+    association_class.referenced_by(self)
   end
 
   # ********** Relation Stuff
@@ -129,7 +145,7 @@ class Concept::Base < ActiveRecord::Base
   #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
-    order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
+    order("LOWER(#{Label::Base.table_name}.value)")
 
   scope :with_associations, includes([
       {:labelings => :target}, :relations, :matches, :notes
@@ -137,7 +153,7 @@ class Concept::Base < ActiveRecord::Base
 
   scope :with_pref_labels,
     includes(:pref_labels).
-    order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
+    order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   # ********** Methods
@@ -171,7 +187,7 @@ class Concept::Base < ActiveRecord::Base
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label(lang = nil)
     # If the current thesaurus only supports one PrefLabel language, always choose this.
-    unless Iqvoc::Concept.supports_multi_language_pref_labelings?
+    unless Iqvoc::Concept.supports_multi_language_pref_labelings? && lang.present?
       lang = Iqvoc::Concept.pref_labeling_languages.first
     end
     lang = lang.to_s
@@ -189,7 +205,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
-      ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target
+      ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
     return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []).select{|l| l.published? || !only_published}
   end
@@ -213,6 +229,11 @@ class Concept::Base < ActiveRecord::Base
   # The dynamic find_by... method would have considered ALL (sub)classes (STI)
   def self.find_by_origin(origin)
     find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
+  end
+
+  # This shows up to the left of a concept link if it doesn't return nil
+  def additional_info
+    nil
   end
 
   def to_param
