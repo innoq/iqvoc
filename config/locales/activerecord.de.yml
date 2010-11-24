@@ -1,84 +1,137 @@
 de:
   activerecord:
     models:
-      concept/base:
-        one:   "Konzept"
-        other: "Konzepte"
-      concept/relation/skos/broader/mono:
-        one:   "Allgemeinerer Begriff"
-        other: "Allgemeinere Begriffe"
-      concept/relation/skos/broader/poly:
-        one:   "Allgemeinerer Begriff"
-        other: "Allgemeinere Begriffe" 
-      concept/relation/skos/narrower/base:
-        one:   "Spezifischerer Begriff"
-        other: "Spezifischere Begriffe"
-      concept/relation/skos/related:
-        one:   "Verwandter Begriff"
-        other: "Verwandte Begriffe"
-      label/skos/base:
-        one: "Label"
-        other: "Labels"
-      labeling/skosxl/base:
-        one:   "Label"
-        other: "Labels"
-      labeling/skosxl/pref_label:
-        one:   "Bevorzugtes Label"
-        other: "Bevorzugte Labels"
-      labeling/skosxl/alt_label: 
-        one:   "Alternatives Label"
-        other: "Alternative Labels"
-      match/skos/broader:
-        one:   "Broader Match"
-        other: "Broader Matches"
-      match/skos/close:
-        one:   "Close Match"
-        other: "Close Matches"
-      match/skos/exact:
-        one:   "Exact Match"
-        other: "Exact Matches"
-      match/skos/narrower:
-        one:   "Narrower Match"
-        other: "Narrower Matches"
-      match/skos/related:
-        one:   "Related Match"
-        other: "Related Matches"
-      note/annotated/base:
-        one:   "Annotation"
-        other: "Annotationen"
-      note/base:
-        one:   "Anmerkung"
-        other: "Anmerkungen"
-      note/skos/base:
-        one:   "Anmerkung"
-        other: "Anmerkungen"
-      note/skos/change_note:
-        one:   "Änderungsanmerkung"
-        other: "Änderungsanmerkungen"
-      note/skos/definition:
-        one:   "Definition"
-        other: "Definitionen"
-      note/skos/editorial_note:
-        one:   "Redaktionelle Anmerkung"
-        other: "Redaktionelle Anmerkungen"
-      note/skos/example:
-        one:   "Beispiel"
-        other: "Beispiele"
-      note/skos/history_note:
-        one:   "Geschichtliche Anmerkung"
-        other: "Geschichtliche Anmerkungen"
-      note/skos/scope_note:
-        one:   "Bereichsanmerkung"
-        other: "Bereichsanmerkungen"
+      concept:
+        base:
+          one:   "Konzept"
+          other: "Konzepte"
+      concept:
+        relation:
+          skos:
+            broader:
+              mono:
+                one:   "Allgemeinerer Begriff"
+                other: "Allgemeinere Begriffe"
+      concept:
+        relation:
+          skos:
+            broader:
+              poly:
+                one:   "Allgemeinerer Begriff"
+                other: "Allgemeinere Begriffe" 
+      concept:
+        relation:
+          skos:
+            narrower:
+              base:
+                one:   "Spezifischerer Begriff"
+                other: "Spezifischere Begriffe"
+      concept:
+        relation:
+          skos:
+            related:
+              one:   "Verwandter Begriff"
+              other: "Verwandte Begriffe"
+      label:
+        skos:
+          base:
+            one: "Label"
+            other: "Labels"
+      labeling:
+        skosxl:
+          base:
+            one:   "Label"
+            other: "Labels"
+      labeling:
+        skosxl:
+          pref_label:
+            one:   "Bevorzugtes Label"
+            other: "Bevorzugte Labels"
+      labeling:
+        skosxl:
+          alt_label: 
+            one:   "Alternatives Label"
+            other: "Alternative Labels"
+      match:
+        skos:
+          broader:
+            one:   "Broader Match"
+            other: "Broader Matches"
+      match:
+        skos:
+          close:
+            one:   "Close Match"
+            other: "Close Matches"
+      match:
+        skos:
+          exact:
+            one:   "Exact Match"
+            other: "Exact Matches"
+      match:
+        skos:
+          narrower:
+            one:   "Narrower Match"
+            other: "Narrower Matches"
+      match:
+        skos:
+          related:
+            one:   "Related Match"
+            other: "Related Matches"
+      note:
+        annotated:
+          base:
+            one:   "Annotation"
+            other: "Annotationen"
+      note:
+        base:
+          one:   "Anmerkung"
+          other: "Anmerkungen"
+      note:
+        skos:
+          base:
+            one:   "Anmerkung"
+            other: "Anmerkungen"
+      note:
+        skos:
+          change_note:
+            one:   "Änderungsanmerkung"
+            other: "Änderungsanmerkungen"
+      note:
+        skos:
+          definition:
+            one:   "Definition"
+            other: "Definitionen"
+      note:
+        skos:
+          editorial_note:
+            one:   "Redaktionelle Anmerkung"
+            other: "Redaktionelle Anmerkungen"
+      note:
+        skos:
+          example:
+            one:   "Beispiel"
+            other: "Beispiele"
+      note:
+        skos:
+          history_note:
+            one:   "Geschichtliche Anmerkung"
+            other: "Geschichtliche Anmerkungen"
+      note:
+        skos:
+          scope_note:
+            one:   "Bereichsanmerkung"
+            other: "Bereichsanmerkungen"
       
     attributes:
-      concept/base:
-        follow_up: "Wiedervorlage"
-        expired_at: "Abgelaufen am"
-      label/base:
-        follow_up: "Wiedervorlage"
-        expired_at: "Abgelaufen am"
-        language: "Sprache"
+      concept:
+          base:
+            follow_up: "Wiedervorlage"
+            expired_at: "Abgelaufen am"
+      label:
+        base:
+          follow_up: "Wiedervorlage"
+          expired_at: "Abgelaufen am"
+          language: "Sprache"
       user:
         forename: "Vorname"
         surname: "Nachname"
