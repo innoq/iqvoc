@@ -71,7 +71,7 @@ class ConceptsController < ApplicationController
       @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
     end
 
-    if params[:full_consitency_check]
+    if params[:full_consistency_check]
       @concept.valid_with_full_validation?
     end
 
