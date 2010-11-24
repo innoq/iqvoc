@@ -32,7 +32,7 @@ class Labeling::SKOSXL::Base < Labeling::Base
                    by_query_value(query_str).
                    by_language(params[:languages].to_a).
                    published.
-                   order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
+                   order("LOWER(#{Label::Base.table_name}.value)").
                    includes(:labelings)
   end
   

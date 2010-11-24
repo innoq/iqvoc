@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
+gem 'rails', '3.0.3'
 
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
@@ -13,7 +13,7 @@ gem 'warbler'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt' # :git => 'git@github.com:innoq/iqvoc_umt.git'
+gem 'iqvoc_spez', :path => '../iqvoc_spez' # :git => 'git@github.com:innoq/iqvoc_umt.git'
 # gem 'iqvoc_soil', :path => '../iqvoc_soil'
 
 group :development do

@@ -145,7 +145,7 @@ class Concept::Base < ActiveRecord::Base
   #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
-    order("LOWER(#{Label::Base.arel_table[:value].to_sql})")
+    order("LOWER(#{Label::Base.table_name}.value)")
 
   scope :with_associations, includes([
       {:labelings => :target}, :relations, :matches, :notes
@@ -153,7 +153,7 @@ class Concept::Base < ActiveRecord::Base
 
   scope :with_pref_labels,
     includes(:pref_labels).
-    order("LOWER(#{Label::Base.arel_table[:value].to_sql})").
+    order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   # ********** Methods
