@@ -108,8 +108,8 @@ GEM
       gem_plugin (>= 0.2.3)
     mysql (2.8.1)
     mysql2 (0.2.6)
-    nokogiri (1.4.4)
-    nokogiri (1.4.4-java)
+    nokogiri (1.4.3.1)
+    nokogiri (1.4.3.1-java)
       weakling (>= 0.0.3)
     polyglot (0.3.1)
     rack (1.2.1)
@@ -176,6 +176,7 @@ DEPENDENCIES
   mongrel
   mysql
   mysql2
+  nokogiri (= 1.4.3.1)
   rails (= 3.0.3)
   rails_helpers_fix
   ruby-debug
