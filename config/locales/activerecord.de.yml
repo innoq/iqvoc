@@ -84,6 +84,11 @@ de:
           scope_note:
             one:   "Bereichsanmerkung"
             other: "Bereichsanmerkungen"
+      collection:
+        skos:
+          base:
+            one:   "Kollektion"
+            other: "Kollektionen"
       
     attributes:
       concept:

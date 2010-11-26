@@ -84,6 +84,11 @@ en:
           scope_note:
             one:   "Scope note"
             other: "Scope notes"
+      collection:
+        skos:
+          base:
+            one:   "Kollektion"
+            other: "Kollektionen"
       
     attributes:
       concept:
