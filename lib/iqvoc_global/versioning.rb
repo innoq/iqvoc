@@ -33,7 +33,7 @@ module IqvocGlobal
       }
 
       scope :in_edit_mode, lambda {
-        where(arel_table[:locked_by].eq(nil).complement)
+        where(arel_table[:locked_by].not_eq(nil))
       }
 
       scope :for_dashboard, lambda {
