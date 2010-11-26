@@ -103,6 +103,7 @@ de:
        search: "Suche"
        about: "Über"
        users: "Benutzer"
+       collections: "Kollektionen"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"
