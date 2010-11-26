@@ -1,0 +1,9 @@
+<h3><%= Collection::SKOS::Base.model_name.human %></h3>
+
+<%= form_for @collection, :url => collections_path, :html => { :class => 'form' } do |f| %>
+
+<% [ Note::Iqvoc::LanguageNote, Note::SKOS::Definition ].each do |klass| %>
+  <%= render klass.edit_partial_name(@collection) %>
+<% end %>
+  
+<% end %>

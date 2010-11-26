@@ -6,4 +6,8 @@ class Collection::SKOS::Base < ActiveRecord::Base
   has_many :definitions, :class_name => 'Note::SKOS::Definition'
   has_many :contents, :class_name => 'Collection::SKOS::Content', :foreign_key => 'collection_id'
   
+  accepts_nested_attributes_for :language_notes, :definitions, 
+    :allow_destroy => true, 
+    :reject_if => Proc.new { |attrs| attrs[:value].blank? }
+  
 end
