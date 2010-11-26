@@ -26,4 +26,9 @@ class Collection::SKOS::Base < ActiveRecord::Base
     end
   end
   
+  def notes_for_class(note_class)
+    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+    notes.select{ |note| note.class.name == note_class }
+  end
+  
 end
