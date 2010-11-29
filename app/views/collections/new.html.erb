@@ -6,6 +6,10 @@
   <%= render :partial => klass.edit_partial_name(@collection), :locals => { :owner_klass => @collection, :assoc_klass => klass, :f => f } %>
 <% end %>
 
+<fieldset>
+  <input type="text" name="collection_content_ids">
+</fieldset>
+
 <%= f.submit t("txt.common.save") %>
   
 <% end %>
