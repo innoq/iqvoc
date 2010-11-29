@@ -4,6 +4,10 @@ class CollectionsController < ApplicationController
     @collections = Collection::SKOS::Base.all
   end
   
+  def show
+    @collection = Collection::SKOS::Base.find(params[:id])
+  end
+  
   def new
     @collection = Collection::SKOS::Base.new
     @collection.note_iqvoc_language_notes.build if @collection.note_iqvoc_language_notes.empty?
