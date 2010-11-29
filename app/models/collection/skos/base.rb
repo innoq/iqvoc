@@ -18,6 +18,15 @@ class Collection::SKOS::Base < ActiveRecord::Base
     :allow_destroy => true, 
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
     
+  def self.note_class_names
+    ['Note::Iqvoc::LanguageNote', 'Note::SKOS::Definition']
+  end
+  
+  def self.note_classes
+    note_class_names.map(&:constantize)
+  end
+
+    
   def localized_note
     if val = note_iqvoc_language_notes.by_language(I18n.locale).first
       val

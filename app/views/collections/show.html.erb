@@ -1,3 +1,15 @@
 <h2><%= Collection::SKOS::Base.model_name.human %></h2>
 
+<h3><%= Note::Iqvoc::LanguageNote.model_name.human(:count => 2) %></h3>
+<ul>
+<% @collection.note_iqvoc_language_notes.each do |language_note| %>
+  <li><%= language_note.value %> (<%= language_note.language %>)</li>
+<% end %>
+</ul>
 
+<h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
+<ul>
+<% @collection.note_skos_definitions.each do |definition| %>
+  <li><%= definition.value %> (<%= language_note.language %>)</li>
+<% end %>
+</ul>
