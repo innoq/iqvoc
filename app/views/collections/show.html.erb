@@ -13,3 +13,5 @@
   <li><%= definition.value %> (<%= language_note.language %>)</li>
 <% end %>
 </ul>
+
+<%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete %>

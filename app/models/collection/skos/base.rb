@@ -5,14 +5,19 @@ class Collection::SKOS::Base < ActiveRecord::Base
   has_many Note::Iqvoc::LanguageNote.name.to_relation_name, 
     :class_name => 'Note::Iqvoc::LanguageNote', 
     :foreign_key => 'collection_id',
-    :as => :owner
+    :as => :owner,
+    :dependent => :destroy
     
   has_many Note::SKOS::Definition.name.to_relation_name, 
     :class_name => 'Note::SKOS::Definition', 
     :foreign_key => 'collection_id',
-    :as => :owner
+    :as => :owner,
+    :dependent => :destroy
     
-  has_many Collection::SKOS::Content.name.to_relation_name, :class_name => 'Collection::SKOS::Content', :foreign_key => 'collection_id'
+  has_many Collection::SKOS::Content.name.to_relation_name, 
+    :class_name => 'Collection::SKOS::Content', 
+    :foreign_key => 'collection_id',
+    :dependent => :destroy
   
   accepts_nested_attributes_for :note_iqvoc_language_notes, :note_skos_definitions, 
     :allow_destroy => true, 

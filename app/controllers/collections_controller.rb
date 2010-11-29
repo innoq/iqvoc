@@ -26,4 +26,15 @@ class CollectionsController < ApplicationController
     end
   end
   
+  def destroy
+    @collection = Collection::SKOS::Base.find(params[:id])
+    if @collection.destroy
+      flash[:notice] = I18n.t("txt.controllers.collections.destroy.success")
+      redirect_to collections_path(:lang => I18n.locale)
+    else
+      flash[:error] = I18n.t("txt.controllers.collections.destroy.error")
+      render :action => :show
+    end
+  end
+  
 end
