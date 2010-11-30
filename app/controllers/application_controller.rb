@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   # Force an extension to every url. (LOD)
   def ensure_extension
-    redirect_to url_for(:format => (request.format && request.format.symbol) || :html) unless params[:format]
+    redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html)) unless params[:format]
   end
 
   def handle_access_denied(exception)
