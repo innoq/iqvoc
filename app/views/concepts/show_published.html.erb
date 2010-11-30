@@ -8,7 +8,7 @@
   <%= rdf_url(@concept.origin, :format => nil) %>
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl) %>, <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf) %>)
 </div>
-<h2><%= t("txt.common.pref_label") %>:
+<h2><%= Iqvoc::Concept.pref_labeling_class.model_name.human %>:
   <%- if @concept.pref_label.new_record? -%>
     -
   <%- elsif @concept.pref_label.is_a?(Label::SKOSXL::Base) -%>
