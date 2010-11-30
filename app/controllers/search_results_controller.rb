@@ -3,7 +3,11 @@ class SearchResultsController < ApplicationController
   
   def index
     authorize! :read, Concept::Base
-    
+
+    @available_languages = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
+      hsh[lang_sym.to_s] = t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
+    end
+
     if params[:query]
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank?
       
