@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def options_for_language_select(selected = nil)
-    locales_collection = I18n.available_locales.map {|l| [l.to_s, l.to_s]}
+    locales_collection = Iqvoc.available_languages.map {|l| [l.to_s, l.to_s]}
     
     if selected
       options_for_select(locales_collection, selected)
