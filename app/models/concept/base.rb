@@ -170,6 +170,7 @@ class Concept::Base < ActiveRecord::Base
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base && labeling_class.nested_editable?
         self.send(relation_name).all.map(&:destroy)
+        lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
         lang_values.each do |lang, values|
           values.split(",").each do |value|
             value.squish!
@@ -193,7 +194,7 @@ class Concept::Base < ActiveRecord::Base
     lang = lang.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
       Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
-      hash[label.language] = label
+      hash[label.language.to_s] = label
     end
     if @cached_pref_labels[lang].nil?
       @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "(#{self.origin})")

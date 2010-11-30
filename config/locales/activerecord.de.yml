@@ -37,6 +37,16 @@ de:
           alt_label: 
             one:   "Alternatives Label"
             other: "Alternative Labels"
+        skos:
+          base:
+            one:   "Label"
+            other: "Labels"
+          pref_label:
+            one:   "Bevorzugtes Label"
+            other: "Bevorzugte Labels"
+          alt_label:
+            one:   "Alternatives Label"
+            other: "Alternative Labels"
       match:
         skos:
           broader:
