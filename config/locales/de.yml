@@ -1,4 +1,7 @@
 de:
+  languages:
+    de: Deutsch
+    en: Englisch
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"

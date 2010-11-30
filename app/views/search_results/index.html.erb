@@ -26,7 +26,7 @@
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
-        <% for language, lang in @available_languages.sort %>
+        <% for lang, language in @available_languages.sort %>
           <%= check_box_tag "languages[]", lang, select_search_checkbox?(lang), :id => "languages_#{lang}", :class => 'lang_check' %>
           <label for="languages_<%= lang %>"><%= language %></label>
         <% end %>
