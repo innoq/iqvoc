@@ -2,7 +2,7 @@ require 'string'
 
 module Iqvoc
   
-  mattr_accessor :searchable_class_names, :available_languages
+  mattr_accessor :searchable_class_names, :available_languages, :ability_class_name
   
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',
@@ -10,6 +10,12 @@ module Iqvoc
     'Note::Base' ]
 
   self.available_languages = [:de, :en]
+
+  self.ability_class_name = "::Ability"
+
+  def self.ability_class
+    ability_class_name.constantize
+  end
 
   module Concept
     mattr_accessor :base_class_name, 
