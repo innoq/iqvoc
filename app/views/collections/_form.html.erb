@@ -1,0 +1,10 @@
+<% [ Note::Iqvoc::LanguageNote, Note::SKOS::Definition ].each do |klass| %>
+  <%= render :partial => klass.edit_partial_name(@collection), :locals => { :owner_klass => @collection, :assoc_klass => klass, :f => f } %>
+<% end %>
+
+<fieldset>
+  <legend><%= Concept::Base.model_name.human(:count => 2) %></legend>
+  <input type="text" name="collection[content_ids]" class="token_input_widget" data-options="<%= token_widget_options(@collection) %>">
+</fieldset>
+
+<%= f.submit t("txt.common.save") %>

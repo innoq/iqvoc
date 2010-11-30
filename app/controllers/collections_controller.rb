@@ -26,6 +26,22 @@ class CollectionsController < ApplicationController
     end
   end
   
+  def edit
+    @collection = Collection::SKOS::Base.find(params[:id])
+  end
+  
+  def update
+    @collection = Collection::SKOS::Base.find(params[:id])
+    
+    if @collection.update_attributes(params[:collection])
+      flash[:notice] = I18n.t("txt.controllers.collections.save.success")
+      redirect_to collections_path(:lang => I18n.locale)
+    else
+      flash[:error] = I18n.t("txt.controllers.collections.save.error")
+      render :edit
+    end
+  end
+  
   def destroy
     @collection = Collection::SKOS::Base.find(params[:id])
     if @collection.destroy
