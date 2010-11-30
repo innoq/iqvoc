@@ -20,7 +20,7 @@
            >
     </input>
     <%= t("txt.views.labels.new") %>
-    (<%- I18n.available_locales.each do |language| -%>
+    (<%- Iqvoc::Concept::labeling_class_names.values.flatten.uniq do |language| -%>
       <%= link_to language.to_s, new_label_path(:published => 0, :lang => @active_language, :language => language), :target => "_blank" %>
     <%- end -%>)
   </fieldset>

@@ -20,7 +20,7 @@ module ConceptsHelper
     res = {}
 
     Iqvoc::Concept.further_labeling_classes.each do |labeling_class, languages|
-      (languages || I18n.available_locales).each do |lang|
+      (languages || Iqvoc::available_languages).each do |lang|
         render_concept_association(res, concept, labeling_class, :lang => lang)
       end
     end
