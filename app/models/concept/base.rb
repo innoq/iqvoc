@@ -267,7 +267,7 @@ class Concept::Base < ActiveRecord::Base
       :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
-    
+
   protected
   
   def two_versions_exist

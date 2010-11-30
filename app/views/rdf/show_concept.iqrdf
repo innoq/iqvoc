@@ -1,16 +1,13 @@
-document.namespaces :default => root_url(:format => nil), # Hoping this ends with a '/'!!
+document.namespaces(
+  :default => root_url(:format => nil), # FIXME (:trailing_slash option is buggy) Hoping this ends with a '/'!!
   :rdf      => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
   :rdfs     => "http://www.w3.org/2000/01/rdf-schema#",
   :owl      => "http://www.w3.org/2002/07/owl#",
   :skos     => "http://www.w3.org/2004/02/skos/core#",
-  :skosxl   => "http://www.w3.org/2008/05/skos-xl#",
-  :umt      => "http://www.uba.de/2010/03/umthes#", #FIXME: => model
-  :xsd      => "http://www.w3.org/2001/XMLSchema#", #FIXME: => model
-  :dct      => "http://purl.org/dc/elements/1.1/", #FIXME: => model
-  :dce      => "http://purl.org/dc/elements/1.1/", #FIXME: => model
-  :gemet    => "http://www.eionet.europa.eu/gemet/concept/" #FIXME: => model
+  :skosxl   => "http://www.w3.org/2008/05/skos-xl#"
+)
 
-document << IqRdf.build_uri(@concept.origin, IqRdf::Skos::build_uri("Concept")) do |concept|
+document << @concept.build_rdf_subject(document, controller) do |concept|
   @concept.labelings.each do |labeling|
     labeling.build_rdf(document, concept)
   end
@@ -21,6 +18,12 @@ document << IqRdf.build_uri(@concept.origin, IqRdf::Skos::build_uri("Concept")) 
 
   @concept.notes.each do |note|
     note.build_rdf(document, concept)
+  end
+
+  Iqvoc::Concept.additional_association_class_names.keys.each do |class_name|
+    @concept.send(class_name.to_relation_name).each do |additional_object|
+      additional_object.build_rdf(document, concept)
+    end
   end
 
 =begin
