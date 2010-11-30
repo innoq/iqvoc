@@ -24,6 +24,7 @@ group :development do
 end
 
 group :test, :cucumber do
+  gem 'nokogiri', '1.4.3.1'
   gem 'capybara'
   # gem 'capybara-envjs'
   # gem 'culerity'

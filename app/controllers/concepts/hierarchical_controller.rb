@@ -4,7 +4,12 @@ class Concepts::HierarchicalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    scope = Concept::Base.published.with_pref_labels
+    scope = if params[:published] = '0'
+      Concept::Base.editor_selectable.with_pref_labels
+    elsif params[:published] == '1' || !params[:published]
+      Concept::Base.published.with_pref_labels
+    end
+    
     # if params[:broader] is given, the action is handling the reversed tree
     @concepts = case params[:root]
     when /\d+/
