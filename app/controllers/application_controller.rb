@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :ensure_extension
 
-  before_filter :load_languages
   before_filter :set_locale
   before_filter :require_user
   
@@ -43,13 +42,6 @@ class ApplicationController < ActionController::Base
   def handle_virtuoso_exception(exception)
     logger.error "Virtuoso Exception: " + exception
     flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
-  end
-
-  def load_languages
-    @available_languages = {
-      'Deutsch' =>         :de,
-      'English' =>         :en
-    }
   end
 
   def set_locale
