@@ -185,8 +185,8 @@ de:
          submit: "Speichern"
      widget:
        hint: "Begriff eingeben"
-       no_results: "Nichts gefunden!"
-       searching: "Suche..."
+       no_results: "Keine Ergebnisse"
+       searching: "Suchen..."
      dashboard:
        type: "Typ"
        value: "Name"
@@ -197,6 +197,8 @@ de:
        consistent: "konsistent"
        inconsistent: "inkonsistent"
        state: "Status"
+     collections:
+       new: "Neue Kollektion"
 
    partials:
      note:
