@@ -1,0 +1,7 @@
+<h3><%= Collection::SKOS::Base.model_name.human %></h3>
+
+<%= form_for @collection, :as => 'collection', :url => collection_path(:lang => I18n.locale, :id => @collection), :html => { :class => 'form' } do |f| %>
+
+<%= render :partial => 'form', :locals => { :f => f } %>
+  
+<% end %>

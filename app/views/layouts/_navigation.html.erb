@@ -10,6 +10,9 @@
   <li class="<%= params[:controller] == 'concepts/alphabetical' ? 'active' : '' %>">
     <%= link_to t("txt.views.navigation.alphabetical"), alphabetical_concepts_path(:lang => @active_language|| I18n.locale, :letter => 'a') %>
   </li>
+  <li class="<%= params[:controller] == 'collections' ? 'active' : '' %>">
+    <%= link_to t("txt.views.navigation.collections"), collections_path(:lang => @active_language|| I18n.locale) %>
+  </li>
   <li class="<%= params[:controller] == 'search_results' ? 'active' : '' %>">
     <%= link_to t("txt.views.navigation.search"), search_path(:lang => @active_language|| I18n.locale) %>
   </li>

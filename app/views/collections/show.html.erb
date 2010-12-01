@@ -1,0 +1,32 @@
+<h2><%= Collection::SKOS::Base.model_name.human %></h2>
+
+<div class="editing_versioning_toolbar">
+<%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %>
+<%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete %>
+</div>
+
+<div class="relation">
+  <h3><%= Note::Iqvoc::LanguageNote.model_name.human(:count => 2) %></h3>
+  <ul>
+  <% @collection.note_iqvoc_language_notes.each do |language_note| %>
+    <li><%= language_note.value %> (<%= language_note.language %>)</li>
+  <% end %>
+  </ul>
+</div>
+
+<div class="relation">
+  <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
+  <ul>
+  <% @collection.note_skos_definitions.each do |definition| %>
+    <li><%= definition.value %> (<%= definition.language %>)</li>
+  <% end %>
+  </ul>
+</div>
+
+<div class="relation">
+  <h3><%= Concept::Base.model_name.human(:count => 2) %></h3>
+  <div class="relation-body">
+  <%= raw @collection.collection_skos_contents.map{|c| link_to(c.concept.pref_label, concept_path(:id => c.concept, :lang => I18n.locale)) }.join(', ') %>
+  </div>
+</div>
+

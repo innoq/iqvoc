@@ -114,6 +114,7 @@ en:
        search: "Search"
        about: "About"
        users: "Users"
+       collections: "Collections"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"

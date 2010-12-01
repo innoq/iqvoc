@@ -1,6 +1,13 @@
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
+  $.each($(".token_input_widget"), function(index, elem) {
+    var query_url = $(elem).attr("data-query-url");
+    var options   = $.parseJSON($(elem).attr("data-options"));
+    
+    $(elem).tokenInputNew(query_url, options);
+  });
+
   // Creates the label_relation widget
   var label_relations = $(".label_relation")
   $.each(label_relations, function(index, value) {
@@ -47,7 +54,7 @@ jQuery(document).ready(function() {
         });
       },
       onAdd: function(data) {
-
+  
         var relation_id = null;
         $.ajax({
           type: 'POST',

@@ -1,0 +1,9 @@
+<h2><%= Collection::SKOS::Base.model_name.human(:count => 2) %></h2>
+
+<p>
+  <%= link_to "new", new_collection_path(:lang => I18n.locale) %>
+</p>
+
+<ul>
+  <%= render :partial => 'collection', :collection => @collections %>
+</ul>
