@@ -33,7 +33,11 @@ class Concepts::HierarchicalController < ConceptsController
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
-    
+
+    @concepts.sort! do |a, b|
+      a.pref_label(params[:pref_label_lang]).to_s <=> b.pref_label(params[:pref_label_lang]).to_s
+    end
+
     respond_to do |format|
       format.html
       format.json do
