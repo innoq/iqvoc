@@ -4,10 +4,10 @@ class Concepts::HierarchicalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    scope = if params[:published] = '0'
-      Concept::Base.editor_selectable.with_pref_labels
-    elsif params[:published] == '1' || !params[:published]
-      Concept::Base.published.with_pref_labels
+    scope = if params[:published] == '0'
+      Concept::Base.editor_selectable
+    else
+      Concept::Base.published
     end
     
     # if params[:broader] is given, the action is handling the reversed tree
@@ -32,7 +32,7 @@ class Concepts::HierarchicalController < ConceptsController
     end
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes)
+    Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
     
     respond_to do |format|
       format.html
