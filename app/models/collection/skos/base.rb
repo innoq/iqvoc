@@ -23,6 +23,8 @@ class Collection::SKOS::Base < ActiveRecord::Base
     :allow_destroy => true, 
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
     
+  after_save :regenerate_contents
+    
   def self.note_class_names
     ['Note::Iqvoc::LanguageNote', 'Note::SKOS::Definition']
   end
@@ -31,7 +33,18 @@ class Collection::SKOS::Base < ActiveRecord::Base
     note_class_names.map(&:constantize)
   end
 
-    
+  def content_ids=(ids)
+    @content_ids = ids.to_s.split(',').map(&:strip)
+  end
+  
+  def regenerate_contents
+    return if collection_skos_contents.empty? && @content_ids.blank?
+    collection_skos_contents.destroy_all
+    @content_ids.each do |content_id|
+      collection_skos_contents.create!(:concept_id => content_id)
+    end
+  end
+  
   def localized_note
     if val = note_iqvoc_language_notes.by_language(I18n.locale).first
       val
