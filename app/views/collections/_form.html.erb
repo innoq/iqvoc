@@ -4,7 +4,13 @@
 
 <fieldset>
   <legend><%= Concept::Base.model_name.human(:count => 2) %></legend>
-  <input type="text" name="collection[content_ids]" class="token_input_widget" data-options="<%= token_widget_options(@collection) %>">
+  <%-
+    options = {}
+    unless @collection.new_record?
+      options[:prePopulate] = @collection.collection_skos_contents.map{|c| {:id => c.concept.id, :name => c.concept.pref_label.to_s}} 
+    end
+  -%>
+  <input type="text" name="collection[content_ids]" class="token_input_widget" data-query-url="<%= concepts_path(:lang => I18n.locale, :format => :json) %>" data-options="<%= options.to_json %>">
 </fieldset>
 
 <%= f.submit t("txt.common.save") %>
