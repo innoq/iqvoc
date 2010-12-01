@@ -2,14 +2,10 @@ jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
   $.each($(".token_input_widget"), function(index, elem) {
-    var options = $.parseJSON($(elem).attr("data-options"));
+    var query_url = $(elem).attr("data-query-url");
+    var options   = $.parseJSON($(elem).attr("data-options"));
     
-    $(elem).tokenInputNew(options.query_url, {
-      
-      onAdd: function(token_data) {
-        alert("token_data");
-      }
-    });
+    $(elem).tokenInputNew(query_url, options);
   });
 
   // Creates the label_relation widget
