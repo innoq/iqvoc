@@ -84,6 +84,15 @@ en:
           scope_note:
             one:   "Scope note"
             other: "Scope notes"
+        iqvoc:
+          language_note:
+            one:   "Sprachbezeichnung"
+            other: "Sprachbezeichnungen"
+      collection:
+        skos:
+          base:
+            one:   "Kollektion"
+            other: "Kollektionen"
       
     attributes:
       concept:

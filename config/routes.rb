@@ -20,6 +20,7 @@ Iqvoc::Application.routes.draw do
     resources :users
     resources :notes
     resources :label_relations
+    resources :collections
     
     %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"

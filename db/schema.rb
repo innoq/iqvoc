@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100927101502) do
+ActiveRecord::Schema.define(:version => 20101129161528) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -30,6 +30,15 @@ ActiveRecord::Schema.define(:version => 20100927101502) do
   end
 
   add_index "classifiers", ["notation"], :name => "index_classifiers_on_notation"
+
+  create_table "collection_contents", :force => true do |t|
+    t.integer "collection_id"
+    t.integer "concept_id"
+  end
+
+  create_table "collections", :force => true do |t|
+    t.string "type"
+  end
 
   create_table "concept_relations", :force => true do |t|
     t.string   "type"
@@ -59,6 +68,13 @@ ActiveRecord::Schema.define(:version => 20100927101502) do
 
   add_index "concepts", ["origin"], :name => "index_concepts_on_origin"
   add_index "concepts", ["published_version_id"], :name => "index_concepts_on_published_version_id"
+
+  create_table "concepts_taxon_ranks", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "concept_id"
+    t.integer  "taxon_rank_id"
+  end
 
   create_table "label_relations", :force => true do |t|
     t.string   "type"
@@ -140,6 +156,13 @@ ActiveRecord::Schema.define(:version => 20100927101502) do
   add_index "notes", ["owner_id", "language"], :name => "index_notes_on_owner_id_and_language"
   add_index "notes", ["owner_id", "owner_type", "type"], :name => "index_notes_on_owner_id_and_owner_type_and_type"
   add_index "notes", ["type"], :name => "index_notes_on_type"
+
+  create_table "taxon_ranks", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.integer  "rank"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "forename"

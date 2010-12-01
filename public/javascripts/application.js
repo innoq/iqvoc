@@ -1,6 +1,18 @@
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
+  $.each($(".token_input_widget"), function(index, elem) {
+    var query_url    = $(elem).attr("data-query-url");
+    var options      = $.parseJSON($(elem).attr("data-options"));
+    // Widget UI text translations get yielded into a meta tag in the head section of the page.
+    // Parse them and merge the JSON hash with the default options.
+    var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
+    
+    options = $.extend(translations, options);
+    
+    $(elem).tokenInputNew(query_url, options);
+  });
+
   // Creates the label_relation widget
   var label_relations = $(".label_relation")
   $.each(label_relations, function(index, value) {
@@ -47,7 +59,7 @@ jQuery(document).ready(function() {
         });
       },
       onAdd: function(data) {
-
+  
         var relation_id = null;
         $.ajax({
           type: 'POST',

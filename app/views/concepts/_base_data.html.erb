@@ -28,7 +28,7 @@
   <%- end -%>
 
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
-    <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :concept => @concept, :klass => note_class, :f => f } %>
+    <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
   <% end %>
 
   <%#= render :partial => "concepts/close_match", :locals => {:f => f } %>

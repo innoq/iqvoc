@@ -114,6 +114,7 @@ en:
        search: "Search"
        about: "About"
        users: "Users"
+       collections: "Collections"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"
@@ -194,7 +195,6 @@ en:
        hint: "edit term"
        no_results: "Not found!"
        searching: "searching ..."
-
      dashboard:
        type: "Type"
        value: "Name"
@@ -205,6 +205,8 @@ en:
        consistent: "consistent"
        inconsistent: "inconsistent"
        state: "State"
+     collections:
+       new: "New collection"
 
    partials:
      note:
