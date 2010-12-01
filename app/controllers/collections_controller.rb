@@ -10,8 +10,7 @@ class CollectionsController < ApplicationController
   
   def new
     @collection = Collection::SKOS::Unordered.new
-    @collection.note_iqvoc_language_notes.build if @collection.note_iqvoc_language_notes.empty?
-    @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
+    build_note_relations
   end
   
   def create
@@ -28,6 +27,7 @@ class CollectionsController < ApplicationController
   
   def edit
     @collection = Collection::SKOS::Base.find(params[:id])
+    build_note_relations
   end
   
   def update
@@ -51,6 +51,12 @@ class CollectionsController < ApplicationController
       flash[:error] = I18n.t("txt.controllers.collections.destroy.error")
       render :action => :show
     end
+  end
+  
+  private
+  def build_note_relations
+    @collection.note_iqvoc_language_notes.build if @collection.note_iqvoc_language_notes.empty?
+    @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
   end
   
 end
