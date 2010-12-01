@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git@github.com:innoq/iqvoc_spez.git
-  revision: 67639f504216212bd5ce56a3448522b04473c1a5
+  revision: cca687c968c67b9e4f98005406455b30e5530ea9
   specs:
     iqvoc_spez (0.0.1)
       activerecord
@@ -49,7 +49,7 @@ GEM
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
     activesupport (3.0.3)
-    arel (2.0.5)
+    arel (2.0.6)
     authlogic (2.1.6)
       activesupport
     awesome_print (0.3.1)
