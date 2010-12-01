@@ -1,5 +1,10 @@
 <h2><%= Collection::SKOS::Base.model_name.human %></h2>
 
+<div class="editing_versioning_toolbar">
+<%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %>
+<%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete %>
+</div>
+
 <div class="relation">
   <h3><%= Note::Iqvoc::LanguageNote.model_name.human(:count => 2) %></h3>
   <ul>
@@ -25,4 +30,3 @@
   </div>
 </div>
 
-<%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %> <%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete %>
