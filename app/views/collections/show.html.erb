@@ -13,7 +13,7 @@
   <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
   <ul>
   <% @collection.note_skos_definitions.each do |definition| %>
-    <li><%= definition.value %> (<%= language_note.language %>)</li>
+    <li><%= definition.value %> (<%= definition.language %>)</li>
   <% end %>
   </ul>
 </div>
