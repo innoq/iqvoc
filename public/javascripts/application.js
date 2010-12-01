@@ -186,6 +186,23 @@ jQuery(document).ready(function() {
     $(value).treeview($.parseJSON($(value).attr("data-remote-settings")));
   });
 
+  $("ul.hybrid-treeview").each(function() {
+    var url = $(this).attr("data-url");
+    var container = this;
+    $(this).treeview({
+      collapsed: true,
+      toggle: function() {
+        var $this = $(this);
+        if ($this.hasClass("hasChildren")) {
+          var childList = $this.removeClass("hasChildren").find("ul");
+          $.fn.treeviewLoad({
+            "url": url
+          }, this.id, childList, container);
+        }
+      }
+    });
+  });
+
   // New Label (Inflectional search)
   $("form#new_label input#label_value").keyup(function() {
     var notification = $("p.label_warning");
