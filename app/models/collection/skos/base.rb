@@ -49,7 +49,7 @@ class Collection::SKOS::Base < ActiveRecord::Base
     if val = note_iqvoc_language_notes.by_language(I18n.locale).first
       val
     else
-      "( - )"
+      id
     end
   end
   
