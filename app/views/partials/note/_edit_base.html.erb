@@ -11,11 +11,12 @@
 
           <%= note_form.label :language, t("txt.common.language") %>
           <%= note_form.select :language, options_for_language_select(note.language) %>
-
+          
+          <% unless note.new_record? %>
           <br>
-
           <%= note_form.check_box :"_destroy" %>
           <%= note_form.label :"_destroy", t("txt.common.delete") %>
+          <% end %>
         <% end %>
       </li>
     <% end %>
