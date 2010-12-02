@@ -2,7 +2,7 @@ require 'string'
 
 module Iqvoc
   
-  mattr_accessor :searchable_class_names, :available_languages, :ability_class_name
+  mattr_accessor :searchable_class_names, :available_languages, :ability_class_name, :default_rdf_namespace_helper_methods
   
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',
@@ -12,6 +12,8 @@ module Iqvoc
   self.available_languages = [:de, :en]
 
   self.ability_class_name = "::Ability"
+
+  self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
   def self.ability_class
     ability_class_name.constantize

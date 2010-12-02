@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101202094602) do
+ActiveRecord::Schema.define(:version => 20101202135420) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20101202094602) do
 
   add_index "classifiers", ["notation"], :name => "index_classifiers_on_notation"
 
-  create_table "collection_contents", :force => true do |t|
+  create_table "collection_members", :force => true do |t|
     t.integer "collection_id"
     t.integer "concept_id"
   end

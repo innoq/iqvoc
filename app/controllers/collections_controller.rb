@@ -5,15 +5,22 @@ class CollectionsController < ApplicationController
   end
   
   def show
-    @collection = Collection::SKOS::Base.find(params[:id])
+    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
+
+    authorize! :read, @collection
   end
   
   def new
+    authorize! :create, Collection::SKOS::Base
+
     @collection = Collection::SKOS::Unordered.new
     build_note_relations
   end
   
   def create
+    authorize! :create, Collection::SKOS::Base
+
     @collection = Collection::SKOS::Unordered.new(params[:collection])
     
     if @collection.save
@@ -26,12 +33,18 @@ class CollectionsController < ApplicationController
   end
   
   def edit
-    @collection = Collection::SKOS::Base.find(params[:id])
+    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
+
+    authorize! :update, @collection
     build_note_relations
   end
   
   def update
-    @collection = Collection::SKOS::Base.find(params[:id])
+    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
+
+    authorize! :update, @collection
     
     if @collection.update_attributes(params[:collection])
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
@@ -43,7 +56,11 @@ class CollectionsController < ApplicationController
   end
   
   def destroy
-    @collection = Collection::SKOS::Base.find(params[:id])
+    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
+
+    authorize! :destroy, @collection
+
     if @collection.destroy
       flash[:notice] = I18n.t("txt.controllers.collections.destroy.success")
       redirect_to collections_path(:lang => I18n.locale)
@@ -54,6 +71,7 @@ class CollectionsController < ApplicationController
   end
   
   private
+  
   def build_note_relations
     @collection.note_iqvoc_language_notes.build if @collection.note_iqvoc_language_notes.empty?
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
