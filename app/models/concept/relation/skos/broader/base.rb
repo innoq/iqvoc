@@ -20,10 +20,6 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
     100
   end
 
-  def self.partial_name(obj)
-    "partials/concept/relation/skos/broader"
-  end
-
   def self.narrower_editable
     !only_one_allowed?
   end

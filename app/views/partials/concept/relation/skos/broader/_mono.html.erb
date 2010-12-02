@@ -1,0 +1,20 @@
+<div class="relation">
+  <h4><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h4>
+  <div class="relation-body">
+    <% if concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).length > 0 %>
+      <div class="selector">
+        <% parent = concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).first
+        parents = []
+        while (parent && !parents.include?(parent))
+          parents << parent
+          parent = parent.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).first
+        end %>
+        <%= parents.map { |concept| 
+           render(:partial => "layouts/concept", :object => concept)
+         }.join(" &laquo; ").html_safe %>
+      </div>
+    <% else %>
+      <p><%= t('txt.views.concepts.missing.broader') %></p>
+    <% end %>
+  </div>
+</div>
