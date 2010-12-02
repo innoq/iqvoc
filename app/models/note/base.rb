@@ -17,7 +17,11 @@ class Note::Base < ActiveRecord::Base
   # ********** Scopes
 
   scope :by_language, lambda { |lang_code|
-    where(:language => lang_code)
+    if (lang_code.is_a?(Array) && lang_code.include?(nil))
+      where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
+    else
+      where(:language => lang_code)
+    end
   }
   
   scope :by_query_value, lambda { |query|
