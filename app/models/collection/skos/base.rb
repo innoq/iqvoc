@@ -50,7 +50,7 @@ class Collection::SKOS::Base < ActiveRecord::Base
   end
 
   def build_rdf_subject(document, controller, &block)
-    IqRdf.build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
+    IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
   end
 
   def member_ids=(ids)
