@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git@github.com:innoq/iqvoc_spez.git
-  revision: fc0f8bf509e98d21ce323f45a317b85c3762f034
+  revision: 9eed625985a2f50284322acd6c838e29fa5e2fb3
   specs:
     iqvoc_spez (0.0.1)
       activerecord
