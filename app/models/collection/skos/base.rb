@@ -1,7 +1,7 @@
 class Collection::SKOS::Base < ActiveRecord::Base
   
   set_table_name 'collections'
-  
+
   has_many Note::Iqvoc::LanguageNote.name.to_relation_name, 
     :class_name => 'Note::Iqvoc::LanguageNote', 
     :foreign_key => 'collection_id',
@@ -24,7 +24,18 @@ class Collection::SKOS::Base < ActiveRecord::Base
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
     
   after_save :regenerate_contents
-    
+
+  before_validation(:on => :create) do
+    self.origin ||= "_#{(self.class.maximum(:id) || 0) + 1}"
+  end
+
+  scope :by_origin, lambda { |origin|
+    where(:origin => origin)
+  }
+
+  validates_uniqueness_of :origin
+  validates :origin, :presence => true, :length => { :minimum => 2 }
+
   def self.note_class_names
     ['Note::Iqvoc::LanguageNote', 'Note::SKOS::Definition']
   end
