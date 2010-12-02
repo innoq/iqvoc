@@ -1,20 +1,29 @@
+<%= content_for :head do -%>
+  <link href="<%= url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results && @results.current_page)) %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results && @results.current_page))  %>" type="application/rdf+xml" rel="alternate" title=""/>
+<% end -%>
+
 <h2><%= t('txt.views.search_results.header') %></h2>
+<div id="format_link_ttl">
+  <%= url_for(request.query_parameters.merge(:format => nil, :lang => nil, :page => @results && @results.current_page)) %>
+  (<%= link_to "Turtle", url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results && @results.current_page)) %>, <%= link_to "RDF/XML", url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results && @results.current_page)) %>)
+</div>
 
 <%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">
     <ol>
       <li>
-        <select name="type" class="search_type">
-          <%= options_for_select Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name] }, params[:type] %>
+        <select name="t" class="search_type">
+          <%= options_for_select Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name.parameterize] }, params[:t] %>
         </select>
       </li>
       <li>
-        <%= select_tag :query_type, options_for_select([
+        <%= select_tag :qt, options_for_select([
             [t('txt.views.search_results.exact'), 'exact'],
-            [t('txt.views.search_results.contains'), 'contains'], 
-            [t('txt.views.search_results.ends_with'), 'ends_with'], 
+            [t('txt.views.search_results.contains'), 'contains'],
+            [t('txt.views.search_results.ends_with'), 'ends_with'],
             [t('txt.views.search_results.begins_with'), 'begins_with']
-          ], params[:query_type]) %>
+          ], params[:qt]) %>
       </li>
     </ol>
   </fieldset>
@@ -22,13 +31,13 @@
   <fieldset>
     <ol>
       <li>
-        <label for="query"><%= t('txt.views.search_results.search_term') %></label><%= text_area_tag :query, params[:query] %>
+        <label for="query"><%= t('txt.views.search_results.search_term') %></label><%= text_area_tag :q, params[:query] %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
-        <% for lang, language in @available_languages.sort %>
-          <%= check_box_tag "languages[]", lang, select_search_checkbox?(lang), :id => "languages_#{lang}", :class => 'lang_check' %>
-          <label for="languages_<%= lang %>"><%= language %></label>
+        <% @available_languages.sort.each do |lang_tag, label| %>
+          <%= check_box_tag "l[]", lang_tag, select_search_checkbox?(lang_tag), :id => "languages_#{lang_tag}", :class => 'lang_check' %>
+          <label for="languages_<%= lang_tag %>"><%= label %></label>
         <% end %>
         <button type="button" id="language_select_all">
           <%= t('txt.views.search_results.all') %>
@@ -45,12 +54,12 @@
 <% end %>
 
 <% if @results %>
-  <h3><%= t('txt.views.search_results.search_results') %></h3>
+  <h3><%= t('txt.views.search_results.search_results') %> (<%= @results.total_entries %>)</h3>
 
   <dl id="search_results">
     <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
   </dl>
-  
+
   <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
 <% end %>
 

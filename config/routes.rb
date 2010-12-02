@@ -2,7 +2,8 @@ Iqvoc::Application.routes.draw do
   available_locales = /de|en/ # FIXME #{I18n.available_locales.map(&:to_s).join('|')}/
 
   scope '(:lang)' do
-        resources :collections
+    resources :collections
+    match 'search(.:format)'    => 'search_results#index', :as => 'search'
   end
 
   scope ':lang', :lang => available_locales do
@@ -37,7 +38,6 @@ Iqvoc::Application.routes.draw do
     match 'alphabetical_concepts/:letter(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
-    match 'search(.:format)'    => 'search_results#index', :as => 'search'
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 

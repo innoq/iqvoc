@@ -1,14 +1,14 @@
 GIT
   remote: git@github.com:innoq/iq_rdf.git
-  revision: 65c7a2cd1610c6fdc108f7f40ebc2d6f0b966b4d
+  revision: b3f7883180386eeb370b1f77b5e2af54e491387d
   specs:
-    iq_rdf (0.0.10)
+    iq_rdf (0.0.11)
       builder
       bundler
 
 GIT
   remote: git@github.com:innoq/iqvoc_spez.git
-  revision: 9eed625985a2f50284322acd6c838e29fa5e2fb3
+  revision: cbda8aa8a6d2daa2805e7538c60c468f41947b62
   specs:
     iqvoc_spez (0.0.1)
       activerecord

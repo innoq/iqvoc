@@ -5,17 +5,28 @@ class SearchResultsController < ApplicationController
     authorize! :read, Concept::Base
 
     @available_languages = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
+      lang_sym ||= "none"
       hsh[lang_sym.to_s] = t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
     end
 
+    # Query param tricks
+    params[:type] ||= params[:t]
+    params[:query] ||= params[:q]
+    params[:languages] ||= params[:l]
+    params[:query_type] ||= params[:qt]
+    request.query_parameters.delete("commit")
+    request.query_parameters.delete("utf8")
+
     if params[:query]
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank?
+
+      params[:languages] << nil if params[:languages].is_a?(Array) and params[:languages].include?("none")
       
-      unless Iqvoc.searchable_class_names.include?(params[:type])
-        raise "'#{params[:type]}' is not a valid / configured searchable class!"
+      unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
+        raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
       end
       
-      @klass = params[:type].constantize
+      @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       query_size = params[:query].split(/\r\n/).size
       
       if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)

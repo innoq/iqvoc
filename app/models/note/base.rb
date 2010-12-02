@@ -109,4 +109,10 @@ class Note::Base < ActiveRecord::Base
     'partials/note/search/result'
   end
 
+  def build_search_result_rdf(document, result)
+    result.Sdc::link(IqRdf.build_uri(owner.origin))
+    build_rdf(document, result)
+  end
+
+
 end
