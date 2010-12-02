@@ -1,6 +1,10 @@
 Iqvoc::Application.routes.draw do
   available_locales = /de|en/ # FIXME #{I18n.available_locales.map(&:to_s).join('|')}/
 
+  scope '(:lang)' do
+        resources :collections
+  end
+
   scope ':lang', :lang => available_locales do
     resource  :user_session
     resources :virtuoso_syncs, :only => [:new, :create]
@@ -20,7 +24,6 @@ Iqvoc::Application.routes.draw do
     resources :users
     resources :notes
     resources :label_relations
-    resources :collections
     
     %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
