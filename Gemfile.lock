@@ -6,13 +6,13 @@ GIT
       builder
       bundler
 
-GIT
-  remote: git@github.com:innoq/iqvoc_spez.git
-  revision: cbda8aa8a6d2daa2805e7538c60c468f41947b62
+PATH
+  remote: ../iqvoc_umt
   specs:
-    iqvoc_spez (0.0.1)
+    iqvoc_umt (0.0.10)
       activerecord
       bundler
+      database_cleaner
       rails
 
 GEM
@@ -171,7 +171,7 @@ DEPENDENCIES
   database_cleaner (= 0.6.0.rc.3)
   factory_girl_rails
   iq_rdf (~> 0.0.8)!
-  iqvoc_spez!
+  iqvoc_umt!
   launchy
   mongrel
   mysql
