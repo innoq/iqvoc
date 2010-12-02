@@ -10,6 +10,10 @@ document << @collection.build_rdf_subject(document, controller) do |collection|
     ln.build_rdf(document, collection)
   end
 
+  @collection.note_skos_definitions.each do |n|
+    n.build_rdf(document, collection)
+  end
+
   @collection.concepts.each do |concept|
     collection.Skos::member(IqRdf.build_uri(concept.origin))
   end
