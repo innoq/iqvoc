@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101129161528) do
+ActiveRecord::Schema.define(:version => 20101202094602) do
 
   create_table "classifications", :force => true do |t|
     t.integer  "owner_id"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20101129161528) do
 
   create_table "collections", :force => true do |t|
     t.string "type"
+    t.string "origin"
   end
 
   create_table "concept_relations", :force => true do |t|
@@ -158,10 +159,11 @@ ActiveRecord::Schema.define(:version => 20101129161528) do
   add_index "notes", ["type"], :name => "index_notes_on_type"
 
   create_table "taxon_ranks", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "name"
     t.integer  "rank"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "origin"
   end
 
   create_table "users", :force => true do |t|
