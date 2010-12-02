@@ -2,10 +2,6 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces(self.send(meth))
 end
 
-document.namespaces(
-  :default => root_url(:format => nil) # FIXME (:trailing_slash option is buggy) Hoping this ends with a '/'!!
-)
-
 document << @concept.build_rdf_subject(document, controller) do |concept|
   @concept.labelings.each do |labeling|
     labeling.build_rdf(document, concept)
