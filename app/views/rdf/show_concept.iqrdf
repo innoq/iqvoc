@@ -1,10 +1,9 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
 document.namespaces(
-  :default => root_url(:format => nil), # FIXME (:trailing_slash option is buggy) Hoping this ends with a '/'!!
-  :rdf      => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  :rdfs     => "http://www.w3.org/2000/01/rdf-schema#",
-  :owl      => "http://www.w3.org/2002/07/owl#",
-  :skos     => "http://www.w3.org/2004/02/skos/core#",
-  :skosxl   => "http://www.w3.org/2008/05/skos-xl#"
+  :default => root_url(:format => nil) # FIXME (:trailing_slash option is buggy) Hoping this ends with a '/'!!
 )
 
 document << @concept.build_rdf_subject(document, controller) do |concept|
