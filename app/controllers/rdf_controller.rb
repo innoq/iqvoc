@@ -1,7 +1,7 @@
 class RdfController < ApplicationController
 
   skip_before_filter :require_user
-   
+
   def show
     scope = params[:published] == "0" ? Iqvoc::Concept.base_class.scoped.unpublished : Iqvoc::Concept.base_class.scoped.published
     if @concept = scope.by_origin(params[:id]).with_associations.last

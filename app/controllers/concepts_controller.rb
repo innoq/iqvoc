@@ -11,6 +11,13 @@ class ConceptsController < ApplicationController
 
         render :json => response
       end
+      format.all do
+        authorize! :full_export, Concept::Base
+        @concepts = Iqvoc::Concept.base_class.published
+        # When in single query mode, AR handles ALL includes to be loaded by that
+        # one query. We don't want that! So let's do it manually :-)
+        Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:notes, {:relations => :target}, {:labelings => :target}])
+      end
     end
   end
   

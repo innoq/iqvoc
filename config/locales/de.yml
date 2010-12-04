@@ -197,6 +197,7 @@ de:
        consistent: "konsistent"
        inconsistent: "inkonsistent"
        state: "Status"
+       full_rdf_export: Vollständiger RDF Export
      collections:
        new: "Neue Kollektion"
 

@@ -42,6 +42,8 @@ class Ability
       can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :published_at => nil # Mustn't be locked by myself
 
       can :manage, User
+
+      can :full_export, Concept::Base
     end
     
   end
