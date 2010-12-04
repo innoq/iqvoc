@@ -1,7 +1,10 @@
 class CollectionsController < ApplicationController
 
+  skip_before_filter :require_user
+
   def index
-    @collections = Collection::SKOS::Base.all
+    authorize! :read, Collection::SKOS::Base
+    @collections = Collection::SKOS::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}
   end
   
   def show
