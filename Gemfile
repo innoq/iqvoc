@@ -13,9 +13,9 @@ gem 'warbler'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
- gem 'iqvoc_umt', :path => '../iqvoc_umt'
-#gem 'iqvoc_spez', :path => '../iqvoc_spez'
-# gem 'iqvoc_soil', :path => '../iqvoc_soil'
+# gem 'iqvoc_umt', :path => '../iqvoc_umt'
+ gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
+# gem 'iqvoc_spez', :path => '../iqvoc_spez'
 
 group :development do
   gem 'mongrel'
