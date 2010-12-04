@@ -16,7 +16,7 @@ module SearchExtension
     end
 
     def self.supports_multi_query?
-      false
+      false # FIXME Multipquerys don't work with will_paginate! Perhaps we schould remove them completely?
     end
     
     def self.forces_multi_query?
