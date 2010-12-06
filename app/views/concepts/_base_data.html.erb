@@ -31,7 +31,14 @@
     <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
   <% end %>
 
-  <%#= render :partial => "concepts/close_match", :locals => {:f => f } %>
+  <fieldset class="note_relation">
+    <legend>Matches</legend>
+    <ol>
+      <% Iqvoc::Concept.match_classes.each do |match_class| %>
+        <%= render :partial => match_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => match_class, :f => f } %>
+      <% end %>
+    </ol>
+  </fieldset>
 
   <%= f.submit t("txt.common.save") %>
 

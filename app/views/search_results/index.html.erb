@@ -31,7 +31,12 @@
   <fieldset>
     <ol>
       <li>
-        <label for="query"><%= t('txt.views.search_results.search_term') %></label><%= text_area_tag :q, params[:query] %>
+        <label for="query"><%= t('txt.views.search_results.search_term') %></label>
+        <% if Iqvoc.searchable_classes.detect {|c| c.supports_multi_query? } %>
+          <%= text_area_tag :q, params[:query] %>
+        <% else %>
+          <%= text_field_tag :q, params[:query] %>
+        <% end %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
