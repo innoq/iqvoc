@@ -49,19 +49,19 @@ de:
             other: "Alternative Labels"
       match:
         skos:
-          broader:
+          broad_match:
             one:   "Broader Match"
             other: "Broader Matches"
-          close:
+          close_match:
             one:   "Close Match"
             other: "Close Matches"
-          exact:
+          exact_match:
             one:   "Exact Match"
             other: "Exact Matches"
-          narrower:
+          narrow_match:
             one:   "Narrower Match"
             other: "Narrower Matches"
-          related:
+          related_match:
             one:   "Related Match"
             other: "Related Matches"
       note:
