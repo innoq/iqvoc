@@ -59,14 +59,12 @@ de:
      hierarchical_concepts:
      concepts:
        expired_at: "Abgelaufen am %{date}"
-       select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
-       new: "Neues Konzept"
+       select: "Bitte wählen Sie ein %{concept_class_name} aus der unten aufgeführten Liste."
+       new: "Neues %{concept_class_name}"
        missing:
          broader: "Keine allgemeineren Begriffe verfügbar"
          narrower: "Keine spezifischeren Begriffe verfügbar"
          related: "Kein verwandter Begriff verfügbar"
-       edit:
-         header: "Bearbeitung des Konzepts"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
      labels:
@@ -103,7 +101,6 @@ de:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
        back_to_preview: "Zurück zur Versionsvorschau"
-       back_to_concepts: "Zurück zur Konzeptliste"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
        search: "Suche"

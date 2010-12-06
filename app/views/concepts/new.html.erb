@@ -1,3 +1,3 @@
-<h2><%= t("txt.views.concepts.new") %></h2>
+<h2><%= t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></h2>
 <%= error_messages_for @concept %>
 <%= render :partial => "concepts/base_data" %>
