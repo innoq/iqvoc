@@ -52,6 +52,7 @@ module IqvocGlobal
         new_version = self.clone(:include => self.class.includes_to_deep_cloning)
         new_version.lock_by_user!(user.id)
         new_version.increment!(:rev)
+        new_version.published_version_id = self.id
         new_version.unpublish!
         if new_version.class.reflections.symbolize_keys.keys.include?(:note_umt_change_notes)
           new_version.note_umt_change_notes.build(:language => I18n.locale.to_s, # FIXME: Hardcoded relation and language!!
