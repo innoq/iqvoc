@@ -6,6 +6,8 @@ Iqvoc::Application.routes.draw do
     match 'search(.:format)'    => 'search_results#index', :as => 'search'
   end
 
+  match 'schema(.:format)'     => 'pages#schema',          :as => 'schema'
+  
   scope ':lang', :lang => available_locales do
     resource  :user_session
     resources :virtuoso_syncs, :only => [:new, :create]

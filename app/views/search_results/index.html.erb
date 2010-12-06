@@ -1,13 +1,17 @@
-<%= content_for :head do -%>
-  <link href="<%= url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results && @results.current_page)) %>" type="text/turtle" rel="alternate" title=""/>
-  <link href="<%= url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results && @results.current_page))  %>" type="application/rdf+xml" rel="alternate" title=""/>
-<% end -%>
+<%- if @results -%>
+  <%= content_for :head do -%>
+    <link href="<%= url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="text/turtle" rel="alternate" title=""/>
+    <link href="<%= url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false))  %>" type="application/rdf+xml" rel="alternate" title=""/>
+  <%- end -%>
+<%- end -%>
 
 <h2><%= t('txt.views.search_results.header') %></h2>
-<div id="format_link_ttl">
-  <%= url_for(request.query_parameters.merge(:format => nil, :lang => nil, :page => @results && @results.current_page)) %>
-  (<%= link_to "Turtle", url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results && @results.current_page)) %>, <%= link_to "RDF/XML", url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results && @results.current_page)) %>)
-</div>
+<%- if @results -%>
+  <div id="format_link_ttl">
+    <%= url_for(request.query_parameters.merge(:format => nil, :lang => nil, :page => @results.current_page, :only_path => false)) %>
+    (<%= link_to "Turtle", url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>, <%= link_to "RDF/XML", url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false)) %>)
+  </div>
+<%- end -%>
 
 <%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">

@@ -1,0 +1,14 @@
+<div class="relation">
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <div class="relation-body">
+    <%- if concept.collections.any? -%>
+      <ul>
+        <%- concept.collections.each do |collection| -%>
+          <li><%= link_to collection.localized_note, collection_url(collection, :lang => I18n.locale) %></li>
+        <%- end -%>
+      </ul>
+    <%- else -%>
+      <%= t("txt.partials.collection.skos.member.missing") %>
+    <%- end -%>
+  </div>
+</div>

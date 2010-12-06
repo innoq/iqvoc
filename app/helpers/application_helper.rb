@@ -13,7 +13,8 @@ module ApplicationHelper
       :owl        => "http://www.w3.org/2002/07/owl#",
       :skos       => "http://www.w3.org/2004/02/skos/core#",
       :skosxl     => "http://www.w3.org/2008/05/skos-xl#",
-      :coll       => collections_url(:trailing_slash => true, :lang => nil, :format => nil)
+      :coll       => collections_url(:trailing_slash => true, :lang => nil, :format => nil),
+      :schema => controller.schema_url(:format => nil, :anchor => "", :lang => nil)
     }
   end
   

@@ -25,6 +25,9 @@ de:
      default_ajax_error: "Fehler"
      to_review: "Vorlage zur Freigabe"
      is_in_review: "Dokument befindet sich im Reviewprozess"
+     unpublished_version: Unveröffentlichte Version
+     consistent: "konsistent"
+     inconsistent: "inkonsistent"
      state:
        published: "Veröffentlicht"
        in_review: "Vorlage zur Freigabe"
@@ -57,7 +60,6 @@ de:
      concepts:
        select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
        new: "Neues Konzept"
-       versionview: "Versionsansicht für Konzept"
        missing:
          broader: "Keine allgemeineren Begriffe verfügbar"
          narrower: "Keine spezifischeren Begriffe verfügbar"
@@ -204,6 +206,10 @@ de:
    partials:
      note:
        missing: "Keine verfügbar."
+     collection:
+       skos:
+         member:
+           missing: Keine zugewiesen
      label:
        relation:
          missing: Keine Relationen vorhanden.

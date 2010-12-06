@@ -25,6 +25,9 @@ en:
      default_ajax_error: "Error"
      to_review: "To review"
      is_in_review: "Document is in review"
+     unpublished_version: Unpublished version
+     consistent: "consistent"
+     inconsistent: "inconsistent"
      state:
        published: "Published"
        in_review: "In review"
@@ -57,7 +60,6 @@ en:
      concepts:
        select: "Please select one of the concepts listed below."
        new: "New concept"
-       versionview: "Version display of Concept"
        missing:
          broader: "No broader terms available"
          narrower: "No narrower terms available"
@@ -212,6 +214,10 @@ en:
    partials:
      note:
        missing: Not availiable.
+     collection:
+       skos:
+         member:
+           missing: Not assigned
      label:
        relation:
          missing: Not availiable.
