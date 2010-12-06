@@ -45,11 +45,11 @@ module Iqvoc
       'Note::SKOS::ScopeNote' ]
 
     self.match_class_names            = [
-      'Match::SKOS::Close',
-      'Match::SKOS::Exact',
-      'Match::SKOS::Related',
-      'Match::SKOS::Broader',
-      'Match::SKOS::Narrower',
+      'Match::SKOS::CloseMatch',
+      'Match::SKOS::ExactMatch',
+      'Match::SKOS::RelatedMatch',
+      'Match::SKOS::BroadMatch',
+      'Match::SKOS::NarrowMatch',
     ]
 
     self.additional_association_class_names = {}
