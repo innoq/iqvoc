@@ -1,6 +1,6 @@
 <h2>Dashboard</h2>
 <p>
-  <%= link_to t("txt.views.concepts.new"), new_concept_path(:published => 0, :lang => @active_language) %>
+  <%= link_to t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)), new_concept_path(:published => 0, :lang => @active_language) %>
   <%- if Iqvoc::Concept.pref_labeling_class < Labeling::SKOSXL::Base -%>
     | <%= t("txt.views.labels.new") %>
     (<%- Iqvoc::Concept::labeling_class_names.values.flatten.uniq.each do |language| -%>

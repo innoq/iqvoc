@@ -3,7 +3,7 @@
 <% end %>
 
 <fieldset>
-  <legend><%= Concept::Base.model_name.human(:count => 2) %></legend>
+  <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
   <%-
     options = {}
     unless @collection.new_record?
