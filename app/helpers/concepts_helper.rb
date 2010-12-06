@@ -19,6 +19,8 @@ module ConceptsHelper
   def concept_view_data(concept)
     res = {}
 
+    render_concept_association(res, concept, Collection::SKOS::Member)
+
     Iqvoc::Concept.further_labeling_classes.each do |labeling_class, languages|
       (languages || Iqvoc::available_languages).each do |lang|
         render_concept_association(res, concept, labeling_class, :lang => lang)

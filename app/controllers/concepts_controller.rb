@@ -22,13 +22,14 @@ class ConceptsController < ApplicationController
   end
   
   def show
+    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :note_iqvoc_language_notes}).includes(Iqvoc::Concept.base_class.default_includes)
     if params[:published] == '1' || !params[:published]
       published = true
-      @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).published.with_associations.last
+      @concept = scope.published.last
       @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     elsif params[:published] == '0'
       published = false
-      @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+      @concept = scope.unpublished.last
     end
     
     raise ActiveRecord::RecordNotFound unless @concept

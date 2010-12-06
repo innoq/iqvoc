@@ -103,6 +103,7 @@ de:
           base:
             one:   "Kollektion"
             other: "Kollektionen"
+          member: Zugewiesene Kollektionen
       
     attributes:
       concept:
