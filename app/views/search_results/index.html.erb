@@ -31,12 +31,16 @@
   <fieldset>
     <ol>
       <li>
-        <label for="query"><%= t('txt.views.search_results.search_term') %></label>
+        <label for="q"><%= t('txt.views.search_results.search_term') %></label>
         <% if Iqvoc.searchable_classes.detect {|c| c.supports_multi_query? } %>
           <%= text_area_tag :q, params[:query] %>
         <% else %>
           <%= text_field_tag :q, params[:query] %>
         <% end %>
+      </li>
+      <li>
+        <label for"c"><%= Collection::SKOS::Base.model_name.human %></label>
+        <%= select_tag 'c', options_for_select(Collection::SKOS::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}.map {|c| [c.localized_note, c.id] }, params[:c]), :include_blank => true %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
