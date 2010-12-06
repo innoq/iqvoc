@@ -7,7 +7,7 @@ module RdfHelper
         c.Schema::memberOf(IqRdf::Coll::build_uri(collection.origin))
       end
 
-      c.Schema::expiredAt(concept.expired_at) if concept.expired_at
+      c.Schema::expires(concept.expired_at) if concept.expired_at
       c.Owl::deprecated(true) if concept.expired_at and concept.expired_at <= Date.new
 
       concept.labelings.each do |labeling|
