@@ -86,13 +86,14 @@ en:
             other: "Scope notes"
         iqvoc:
           language_note:
-            one:   "Sprachbezeichnung"
-            other: "Sprachbezeichnungen"
+            one:   "Label"
+            other: "Labels"
       collection:
         skos:
           base:
-            one:   "Kollektion"
-            other: "Kollektionen"
+            one:   "Collection"
+            other: "Collections"
+          member: Assigned collections
       
     attributes:
       concept:
