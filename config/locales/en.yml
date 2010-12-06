@@ -58,6 +58,7 @@ en:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
+       expired_at: "expired at %{date}"
        select: "Please select one of the concepts listed below."
        new: "New concept"
        missing:

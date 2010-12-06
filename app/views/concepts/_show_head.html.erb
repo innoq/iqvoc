@@ -14,7 +14,7 @@
   <%= rdf_url(@concept.origin, :format => nil, :published => 0) %>
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => 0) %>, <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => 0) %>)
 </div>
-<h2><%= t("txt.common.pref_label") %>:
+<h3><%= t("txt.common.pref_label") %>:
   <%- if @concept.pref_label.new_record? -%>
     -
   <%- elsif @concept.pref_label.is_a?(Label::SKOSXL::Base) -%>
@@ -22,4 +22,7 @@
   <%- else -%>
     <%= @concept.pref_label %>
   <%- end -%>
-</h2>
+</h3>
+<%- if @concept.expired_at -%>
+  <h4><%= t('txt.views.concepts.expired_at', :date => l(@concept.expired_at, :format => :long)) %></h4>
+<%- end -%>
