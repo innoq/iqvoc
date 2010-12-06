@@ -105,7 +105,27 @@ class Concept::Base < ActiveRecord::Base
     has_many match_class_name.to_relation_name,
       :class_name  => match_class_name,
       :foreign_key => 'concept_id'
-    @nested_relations << match_class_name.to_relation_name
+
+    # Serialized setters and getters (\r\n or , separated)
+    define_method("inline_#{match_class_name.to_relation_name}".to_sym) do |separator|
+      separator ||= "\r\n"
+      self.send(match_class_name.to_relation_name).map(&:value).join(separator)
+    end
+
+    define_method("inline_#{match_class_name.to_relation_name}=".to_sym) do |value|
+      urls = value.split(/\r\n|,/).map(&:strip).reject(&:blank?)
+      self.send(match_class_name.to_relation_name).each do |match|
+        if (urls.include?(match.value))
+          urls.delete(match.value) # We're done with that one
+        else
+          self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
+        end
+      end
+      urls.each do |url|
+        self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(:value => url)
+      end
+    end
+    
   end
 
   # *** Notes

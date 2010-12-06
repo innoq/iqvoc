@@ -35,8 +35,10 @@ module ApplicationHelper
     case value
     when /^\d+$/
       link_to("gemet:#{value}", "http://www.eionet.europa.eu/gemet/concept/#{value}")
-    when /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
+    when /(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?)/ix
       link_to(value, value)
+    else
+      value
     end
   end
   
