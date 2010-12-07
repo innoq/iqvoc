@@ -194,6 +194,7 @@ de:
        follow_up: "Wiedervorlage"
        updated_at: "Geändert am"
        to_review: "Vorlage zur Freigabe"
+       check_consistency: Konsistenz prüfen
        consistent: "konsistent"
        inconsistent: "inkonsistent"
        state: "Status"
