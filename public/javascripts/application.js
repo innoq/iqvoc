@@ -116,7 +116,7 @@ jQuery(document).ready(function() {
       return false;
     }
 		
-    var clone  = source.clone();
+    var clone = source.clone();
 		
     if (!isUsageNote) {
       source.find("textarea").attr("id").match(/_(\d)_/);
@@ -125,17 +125,18 @@ jQuery(document).ready(function() {
       source.find("select").attr("id").match(/_(\d)_/);
     }
 		
-    var count 		 = parseInt(RegExp.$1) + 1;
-		
+    var count 		   = parseInt(RegExp.$1) + 1;
     var newIdCount 	 = '_' + count + '_';
     var newNameCount = '[' + count + ']';
 		
     clone.find("label")
     .attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
+    
+    // console.log(clone);
 			
-    clone.find("input")
-    .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
-    .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
+    // clone.find("input")
+    // .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
+    // .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
 		
     if (!isUsageNote) {
       clone.find("textarea")
