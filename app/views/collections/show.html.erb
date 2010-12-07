@@ -35,7 +35,13 @@
 <div class="relation">
   <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
   <div class="relation-body">
-    <%= raw @collection.members.map{|c| link_to(c.concept.pref_label, concept_path(:id => c.concept, :lang => I18n.locale)) }.join(', ') %>
+    <ul>
+      <%- @collection.concepts.each do |concept| -%>
+        <%- if concept.published? || (!concept.published_version_id && can?(:update, concept)) -%>
+          <li><%= render concept.class.inline_partial_name, :concept => concept %></li>
+        <%- end -%>
+      <%- end -%>
+    </ul>
   </div>
 </div>
 
