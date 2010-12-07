@@ -17,6 +17,18 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
+  after_save do |concept|
+    (@inline_assigned_relations ||= {}).each do |relation_class_name, new_origins|
+      existing_origins = concept.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
+      Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
+        concept.send(relation_class_name.to_relation_name).create_with_reverse_relation(relation_class_name.constantize, c)
+      end
+      concept.send(relation_class_name.to_relation_name).by_target_origin(existing_origins - new_origins).each do |relation| # Iterate over all concepts to be removed
+        concept.send(relation_class_name.to_relation_name).destroy_with_reverse_relation(relation_class_name.constantize, relation.target)
+      end
+    end
+  end
+
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
@@ -78,6 +90,17 @@ class Concept::Base < ActiveRecord::Base
       :foreign_key => :owner_id,
       :class_name  => relation_class_name,
       :extend => Concept::Relation::ReverseRelationExtension
+
+    # Serialized setters and getters (\r\n or , separated)
+    define_method("inline_#{relation_class_name.to_relation_name}".to_sym) do
+      (@inline_assigned_relations && @inline_assigned_relations[relaton_class_name]) || self.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
+    end
+
+    define_method("inline_#{relation_class_name.to_relation_name}=".to_sym) do |value|
+      # write to instance variable and write it when after_safe
+      (@inline_assigned_relations ||= {})[relation_class_name] = value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq
+    end
+
   end
 
   # *** Labels/Labelings
@@ -111,9 +134,8 @@ class Concept::Base < ActiveRecord::Base
       :foreign_key => 'concept_id'
 
     # Serialized setters and getters (\r\n or , separated)
-    define_method("inline_#{match_class_name.to_relation_name}".to_sym) do |separator|
-      separator ||= "\r\n"
-      self.send(match_class_name.to_relation_name).map(&:value).join(separator)
+    define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
+      self.send(match_class_name.to_relation_name).map(&:value).join("\r\n")
     end
 
     define_method("inline_#{match_class_name.to_relation_name}=".to_sym) do |value|

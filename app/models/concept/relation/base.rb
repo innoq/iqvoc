@@ -24,6 +24,10 @@ class Concept::Relation::Base < ActiveRecord::Base
     includes(:owner) & Concept::Base.by_origin(owner_id)
   }
 
+  scope :by_target_origin, lambda { |owner_id|
+    includes(:target) & Concept::Base.by_origin(owner_id)
+  }
+
   scope :target_editor_selectable, lambda { # Lambda because Concept::Base.editor_selectable is currently not known + we don't want to call it at load time!
     includes(:target) & Concept::Base.editor_selectable
   }

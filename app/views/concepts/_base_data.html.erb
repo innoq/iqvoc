@@ -31,7 +31,30 @@
     <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
   <% end %>
 
-  <fieldset class="note_relation">
+  <fieldset>
+    <legend>Relations</legend>
+    <ol>
+      <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
+        <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
+      <%- end -%>
+
+      <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
+
+      <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
+        <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>
+      <%- end -%>
+
+      <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
+        <%- languages.each do |language| -%>
+          <%- unless labeling_class.nested_editable? -%>
+            <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
+          <%- end -%>
+        <%- end -%>
+      <%- end -%>
+    </ol>
+  </fieldset>
+
+  <fieldset>
     <legend>Matches</legend>
     <ol>
       <% Iqvoc::Concept.match_classes.each do |match_class| %>
@@ -45,4 +68,8 @@
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <%= link_to t("txt.common.reset") %>
   <% end %>
+<% end %>
+
+<%= content_for :widget_translations do %>
+  <%= render :partial => 'layouts/widget_translations' %>
 <% end %>
