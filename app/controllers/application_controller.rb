@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
   
   helper :all
-  helper_method :current_user_session, :current_user
+  helper_method :current_user_session, :current_user, :concept_widget_data
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -55,6 +55,15 @@ class ApplicationController < ActionController::Base
     end
     @active_language = params[:lang] ? params[:lang] : req_lang
     I18n.locale = @active_language
+  end
+
+  def concept_widget_data(concept)
+    {
+      :id => concept.id,
+      :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : ""),
+      :origin => concept.origin,
+      :published => concept.published?
+    }
   end
   
   private

@@ -5,10 +5,10 @@
 <fieldset>
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
   <%-
-    options = {}
-    unless @collection.new_record?
-      options[:prePopulate] = @collection.members.map{|c| {:id => c.concept.id, :name => c.concept.pref_label.to_s}}
-    end
+  options = {}
+  unless @collection.new_record?
+    options[:prePopulate] = @collection.concepts.map{|c| concept_widget_data(c)}
+  end
   -%>
   <input type="text" name="collection[member_ids]" class="token_input_widget" data-query-url="<%= concepts_path(:lang => I18n.locale, :format => :json) %>" data-options="<%= options.to_json %>"></input>
 </fieldset>

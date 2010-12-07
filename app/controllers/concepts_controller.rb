@@ -7,7 +7,7 @@ class ConceptsController < ApplicationController
       format.json do
         @concepts = (Iqvoc::Concept.base_class.editor_selectable.with_pref_labels & Label::Base.where(Label::Base.arel_table[:value].matches("#{params[:query]}%"))).all
         response = []
-        @concepts.each { |concept| response << {:id => concept.id, :name => concept.pref_label.value, :origin => concept.origin, :published => concept.published?}}
+        @concepts.each { |concept| response << concept_widget_data(concept)}
 
         render :json => response
       end
