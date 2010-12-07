@@ -16,7 +16,6 @@ Iqvoc::Application.routes.draw do
     # JSON URIs, so they are defined in the namespace above this one.
     resources :concepts do
       resources :labelings, :controller => 'concepts/labelings'
-      resources :relations, :controller => 'concepts/relations'
     end
 
     resources :labels do
