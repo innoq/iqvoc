@@ -27,6 +27,8 @@ class Labeling::SKOS::Base < Labeling::Base
     query_str = build_query_string(params)
 
     scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)") & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+    # Check that the included concept is in published state:
+    scope = scope.includes(:owner) & Iqvoc::Concept.base_class.published
     
     unless params[:collection_origin].blank?
       scope = scope.includes(:owner => { :collection_members => :collection })
