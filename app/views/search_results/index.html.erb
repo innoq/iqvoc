@@ -44,7 +44,7 @@
       </li>
       <li>
         <label for"c"><%= Collection::SKOS::Base.model_name.human %></label>
-        <%= select_tag 'c', options_for_select(Collection::SKOS::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}.map {|c| [c.localized_note, c.id] }, params[:c]), :include_blank => true %>
+        <%= select_tag 'c', options_for_select(Collection::SKOS::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}.map {|c| [c.localized_note, c.origin] }, params[:c]), :include_blank => true %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
