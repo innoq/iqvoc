@@ -59,10 +59,8 @@ class ApplicationController < ActionController::Base
 
   def concept_widget_data(concept)
     {
-      :id => concept.id,
-      :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : ""),
-      :origin => concept.origin,
-      :published => concept.published?
+      :id => concept.origin,
+      :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
     }
   end
   

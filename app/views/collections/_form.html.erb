@@ -4,13 +4,10 @@
 
 <fieldset>
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
-  <%-
-  options = {}
-  unless @collection.new_record?
-    options[:prePopulate] = @collection.concepts.map{|c| concept_widget_data(c)}
-  end
-  -%>
-  <input type="text" name="collection[member_ids]" class="token_input_widget" data-query-url="<%= concepts_path(:lang => I18n.locale, :format => :json) %>" data-options="<%= options.to_json %>"></input>
+  <%= text_field_tag "collection[inline_member_origins]", @collection.inline_member_origins,
+    :class => "token_input_widget",
+    :"data-query-url" => concepts_path(:lang => I18n.locale, :format => :json),
+    :"data-options" => {:prePopulate => @collection.inline_member_concepts.map{|c| concept_widget_data(c)}}.to_json  %>
 </fieldset>
 
 <%= f.submit t("txt.common.save") %>

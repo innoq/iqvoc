@@ -53,16 +53,27 @@ class Collection::SKOS::Base < ActiveRecord::Base
     IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
   end
 
-  def member_ids=(ids)
-    @member_ids = ids.to_s.split(',').map(&:strip)
+  def inline_member_origins=(origins)
+    @member_origins = origins.to_s.split(',').map(&:strip)
   end
-  
+
+  def inline_member_origins
+    @member_origins || members.map{|m| m.concept.origin}.uniq
+  end
+
+  def inline_member_concepts
+    Concept::Base.editor_selectable.where(:origin => inline_member_origins)
+  end
+
   def regenerate_members
-    return if members.empty? && @member_ids.blank?
-    members.destroy_all
-    @member_ids.each do |member_id|
-      members.create!(:concept_id => member_id)
+    return if @member_origins.nil? # There is nothing to do
+    existing_origins = members.map{|m| m.concept.origin}.uniq
+    (@member_origins - existing_origins).each do |new_origin|
+      Concept::Base.by_origin(new_origin).each do |c|
+        members.create!(:concept_id => c.id)
+      end
     end
+    members.includes(:concept).where("#{Concept::Base.table_name}.origin" => (existing_origins - @member_origins)).destroy_all()
   end
   
   def localized_note
