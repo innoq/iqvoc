@@ -2,6 +2,14 @@ module RdfHelper
   
   def render_concept(document, concept)
     document << concept.build_rdf_subject(document, controller) do |c|
+
+      concept.collections.each do |collection|
+        c.Schema::memberOf(IqRdf::Coll::build_uri(collection.origin))
+      end
+
+      c.Schema::expires(concept.expired_at) if concept.expired_at
+      c.Owl::deprecated(true) if concept.expired_at and concept.expired_at <= Date.new
+
       concept.labelings.each do |labeling|
         labeling.build_rdf(document, c)
       end

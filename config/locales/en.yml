@@ -58,14 +58,13 @@ en:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       select: "Please select one of the concepts listed below."
-       new: "New concept"
+       expired_at: "expired at %{date}"
+       select: "Please select one of the %{concept_class_name} listed below."
+       new: "New %{concept_class_name}"
        missing:
          broader: "No broader terms available"
          narrower: "No narrower terms available"
          related: "No related terms available"
-       edit:
-         header: "Edit Concept"
        alt_label: "Alternative Label"
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
@@ -110,7 +109,6 @@ en:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
-       back_to_concepts: "Back to concepts list"
        hierarchical: "Hierachical listings"
        alphabetical: "Alphabetical listings"
        search: "Search"
@@ -204,6 +202,7 @@ en:
        follow_up: "Follow up"
        updated_at: "Updated at"
        to_review: "Submission for review"
+       check_consistency: Check consistency
        consistent: "consistent"
        inconsistent: "inconsistent"
        state: "State"

@@ -1,6 +1,6 @@
 <h2>Dashboard</h2>
 <p>
-  <%= link_to t("txt.views.concepts.new"), new_concept_path(:published => 0, :lang => @active_language) %>
+  <%= link_to t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)), new_concept_path(:published => 0, :lang => @active_language) %>
   <%- if Iqvoc::Concept.pref_labeling_class < Labeling::SKOSXL::Base -%>
     | <%= t("txt.views.labels.new") %>
     (<%- Iqvoc::Concept::labeling_class_names.values.flatten.uniq.each do |language| -%>
@@ -20,7 +20,11 @@
     <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_arrows_for(:follow_up) %></th>
     <th><%= t("txt.views.dashboard.updated_at") %><%= sorting_arrows_for(:updated_at) %></th>
     <th><%= t("txt.views.dashboard.state") %><%= sorting_arrows_for(:state) %></th>
-    <th><%= t("txt.views.dashboard.consistent") %>?</th>
+    <%- if params[:check_consistency] == "1" -%>
+      <th><%= t("txt.views.dashboard.consistent") %>?</th>
+    <%- else -%>
+      <th><%= link_to t("txt.views.dashboard.check_consistency"), dashboard_url(request.query_parameters.merge(:check_consistency => 1)) %></th>
+    <%- end -%>
   </tr>
   <% for item in @items -%>
     <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin) %>">
@@ -39,7 +43,9 @@
       <td><%= l(item.follow_up) if item.follow_up.present? %></td>
       <td><%= l(item.updated_at, :format => :short) %></td>
       <td><%= item.state %></td>
-      <td><%= consistency_status(item) %></td>
+      <%- if params[:check_consistency] == "1" -%>
+        <td><%= consistency_status(item) %></td>
+      <%- end -%>
     </tr>
   <% end -%>
 </table>
