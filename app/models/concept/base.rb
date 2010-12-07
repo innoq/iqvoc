@@ -255,6 +255,10 @@ class Concept::Base < ActiveRecord::Base
     find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
   end
 
+  def self.inline_partial_name
+    "partials/concept/inline_base"
+  end
+
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
     nil

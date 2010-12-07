@@ -9,9 +9,9 @@
           parents << parent
           parent = parent.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).first
         end %>
-        <%= parents.map { |concept| 
-           render(:partial => "layouts/concept", :object => concept)
-         }.join(" &laquo; ").html_safe %>
+        <%= parents.map { |concept|
+          render concept.class.inline_partial_name, :concept => concept
+        }.join(" &laquo; ").html_safe %>
       </div>
     <% else %>
       <p><%= t('txt.views.concepts.missing.broader') %></p>
