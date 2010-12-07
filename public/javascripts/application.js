@@ -1,7 +1,8 @@
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
-  $.each($(".token_input_widget"), function(index, elem) {
+  $.each($("input.token_input_widget"), function(index, elem) {
+    $(elem).val("");
     var query_url    = $(elem).attr("data-query-url");
     var options      = $.parseJSON($(elem).attr("data-options"));
     // Widget UI text translations get yielded into a meta tag in the head section of the page.

@@ -4,7 +4,7 @@
 
 <fieldset>
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
-  <%= text_field_tag "collection[inline_member_origins]", @collection.inline_member_origins,
+  <%= text_field_tag "collection[inline_member_origins]", @collection.inline_member_origins.join(','),
     :class => "token_input_widget",
     :"data-query-url" => concepts_path(:lang => I18n.locale, :format => :json),
     :"data-options" => {:prePopulate => @collection.inline_member_concepts.map{|c| concept_widget_data(c)}}.to_json  %>
