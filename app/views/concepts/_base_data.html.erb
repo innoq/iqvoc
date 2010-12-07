@@ -43,14 +43,6 @@
       <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
         <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>
       <%- end -%>
-
-      <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
-        <%- languages.each do |language| -%>
-          <%- unless labeling_class.nested_editable? -%>
-            <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
-          <%- end -%>
-        <%- end -%>
-      <%- end -%>
     </ol>
   </fieldset>
 
