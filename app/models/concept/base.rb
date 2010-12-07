@@ -93,7 +93,7 @@ class Concept::Base < ActiveRecord::Base
 
     # Serialized setters and getters (\r\n or , separated)
     define_method("inline_#{relation_class_name.to_relation_name}".to_sym) do
-      (@inline_assigned_relations && @inline_assigned_relations[relaton_class_name]) || self.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
+      (@inline_assigned_relations && @inline_assigned_relations[relation_class_name]) || self.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
     end
 
     define_method("inline_#{relation_class_name.to_relation_name}=".to_sym) do |value|
