@@ -10,8 +10,7 @@ class DashboardController < ApplicationController
     
     factor = params[:order] == "desc" ? -1 : 1
 
-    params[:by] = 'to_s' if params[:by] == 'value'
-    if ['class', 'to_s', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
+    if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
       @items.sort! do |x, y|
         xval, yval = x.send(params[:by]), y.send(params[:by])
         xval = xval.to_s.downcase unless xval.is_a?(Date)
@@ -19,7 +18,7 @@ class DashboardController < ApplicationController
         (xval <=> yval) * factor
       end
     else
-      @items.sort! { |x,y| (y.updated_at <=> x.updated_at) * factor } rescue nil
+      @items.sort! { |x,y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
   end
