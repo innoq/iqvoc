@@ -39,6 +39,7 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :collection_members, :foreign_key => 'concept_id', :class_name => "Collection::SKOS::Member", :dependent => :destroy
   has_many :collections, :through => :collection_members
+  include_to_deep_cloning(:collection_members)
 
   # *** Classifications
   # FIXME: Should be a matches (to other skos vocabularies)
