@@ -1,6 +1,7 @@
+<%- published_param = @concept.published? ? nil : 0 %>
 <%= content_for :head do -%>
-  <link href="<%= rdf_url(@concept.origin, :format => :ttl) %>" type="text/turtle" rel="alternate" title=""/>
-  <link href="<%= rdf_url(@concept.origin, :format => :rdf) %>" type="application/rdf+xml" rel="alternate" title=""/>
+  <link href="<%= rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
 <% end -%>
 
 <h2>
@@ -11,8 +12,9 @@
   <%- end -%>
 </h2>
 <div id="format_link_ttl">
-  <%= rdf_url(@concept.origin, :format => nil, :published => 0) %>
-  (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => 0) %>, <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => 0) %>)
+  <%= rdf_url(@concept.origin, :format => nil, :published => published_param, :lang => nil) %>
+  (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
+  <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)
 </div>
 <h3><%= t("txt.common.pref_label") %>:
   <%- if @concept.pref_label.new_record? -%>
