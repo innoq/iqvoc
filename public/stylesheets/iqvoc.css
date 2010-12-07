@@ -33,6 +33,10 @@ a:hover {
   color: #308110;
 }
 
+a.unpublished {
+  color: #808110;
+}
+
 div.letter_selector   { margin-bottom: 20px; }
 div.letter_selector a { border: 1px solid #318210; background-color: #C0FAB4; padding: 2px 5px 2px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 div.letter_selector a.current { background-color: #FEFBDC; border-color: #F3AC40; }
