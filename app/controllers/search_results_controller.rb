@@ -14,6 +14,7 @@ class SearchResultsController < ApplicationController
     params[:query] ||= params[:q]
     params[:languages] ||= params[:l]
     params[:query_type] ||= params[:qt]
+    params[:collection_origin] ||= params[:c]
     request.query_parameters.delete("commit")
     request.query_parameters.delete("utf8")
 

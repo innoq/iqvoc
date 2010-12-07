@@ -1,5 +1,6 @@
 class Labeling::SKOS::Base < Labeling::Base
 
+  belongs_to :owner, :class_name => Iqvoc::Concept.base_class_name
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
 
   scope :by_label_with_language, lambda { |label, language|
@@ -25,7 +26,14 @@ class Labeling::SKOS::Base < Labeling::Base
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
-    includes(:target).order("LOWER(#{Label::Base.table_name}.value)") & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+    scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)") & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+    
+    unless params[:collection_origin].blank?
+      scope = scope.includes(:owner => { :collection_members => :collection })
+      scope = scope & Collection::SKOS::Base.where(:origin => params[:collection_origin])
+    end
+    
+    scope
   end
 
   def self.search_result_partial_name
