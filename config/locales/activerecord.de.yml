@@ -99,11 +99,11 @@ de:
             one:   "Sprachbezeichnung"
             other: "Sprachbezeichnungen"
       collection:
-        skos:
-          base:
-            one:   "Kollektion"
-            other: "Kollektionen"
-          member: Zugewiesene Kollektionen
+        base:
+          one:   "Kollektion"
+          other: "Kollektionen"
+        member: 
+          base: "Zugewiesene Kollektionen"
       
     attributes:
       concept:

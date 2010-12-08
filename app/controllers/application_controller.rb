@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
   
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -61,6 +61,13 @@ class ApplicationController < ActionController::Base
     {
       :id => concept.origin,
       :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
+    }
+  end
+  
+  def collection_widget_data(collection)
+    {
+      :id => collection.origin,
+      :name => collection.localized_note.value
     }
   end
   

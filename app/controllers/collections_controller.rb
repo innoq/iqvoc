@@ -3,28 +3,40 @@ class CollectionsController < ApplicationController
   skip_before_filter :require_user
 
   def index
-    authorize! :read, Collection::SKOS::Base
-    @collections = Collection::SKOS::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}
+    authorize! :read, Collection::Base
+    
+    respond_to do |format|
+      format.html do
+        @collections = Collection::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}
+      end
+      format.json do
+        @collections = (Collection::Base.includes(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.where(Note::Iqvoc::LanguageNote.arel_table[:value].matches("#{params[:query]}%"))).all
+        response = []
+        @collections.each { |c| response << collection_widget_data(c) }
+        logger.ap response
+        render :json => response
+      end
+    end
   end
   
   def show
-    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    @collection = Collection::Base.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :read, @collection
   end
   
   def new
-    authorize! :create, Collection::SKOS::Base
+    authorize! :create, Collection::Base
 
-    @collection = Collection::SKOS::Unordered.new
+    @collection = Collection::Unordered.new
     build_note_relations
   end
   
   def create
-    authorize! :create, Collection::SKOS::Base
+    authorize! :create, Collection::Base
 
-    @collection = Collection::SKOS::Unordered.new(params[:collection])
+    @collection = Collection::Unordered.new(params[:collection])
     
     if @collection.save
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
@@ -36,7 +48,7 @@ class CollectionsController < ApplicationController
   end
   
   def edit
-    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    @collection = Collection::Base.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
@@ -44,7 +56,7 @@ class CollectionsController < ApplicationController
   end
   
   def update
-    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    @collection = Collection::Base.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
@@ -59,7 +71,7 @@ class CollectionsController < ApplicationController
   end
   
   def destroy
-    @collection = Collection::SKOS::Base.by_origin(params[:id]).last
+    @collection = Collection::Base.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :destroy, @collection

@@ -32,7 +32,7 @@ class Labeling::SKOS::Base < Labeling::Base
     
     unless params[:collection_origin].blank?
       scope = scope.includes(:owner => { :collection_members => :collection })
-      scope = scope & Collection::SKOS::Base.where(:origin => params[:collection_origin])
+      scope = scope & Collection::Base.where(:origin => params[:collection_origin])
     end
     
     scope

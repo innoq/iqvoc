@@ -89,11 +89,11 @@ en:
             one:   "Label"
             other: "Labels"
       collection:
-        skos:
-          base:
-            one:   "Collection"
-            other: "Collections"
-          member: Assigned collections
+        base:
+          one:   "Collection"
+          other: "Collections"
+        member:
+          base: "Assigned collections"
       
     attributes:
       concept:

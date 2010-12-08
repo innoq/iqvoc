@@ -45,3 +45,11 @@
   </div>
 </div>
 
+<div class="relation">
+  <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
+  <ul>
+    <% @collection.collections.each do |collection| %>
+      <li><%= link_to collection.localized_note.value, collection_path(:lang => I18n.locale, :id => collection) %></li>
+    <% end %>
+  </ul>
+</div>

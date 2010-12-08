@@ -5,7 +5,7 @@ class Ability
 
   def initialize(user = nil)
 
-    can :read, Collection::SKOS::Base
+    can :read, Collection::Base
 
     if user.nil?
       can :read, [Concept::Base, Label::Base], &@@if_published
@@ -22,7 +22,7 @@ class Ability
 
       can :use, :dashboard
 
-      can :manage, Collection::SKOS::Base
+      can :manage, Collection::Base
       
       can :create, [Concept::Base, Label::Base]
       can [:update, :destroy, :unlock], [Concept::Base, Label::Base], :locked_by => user.id, :published_at => nil
