@@ -14,7 +14,7 @@ class ConceptTest < ActiveSupport::TestCase
 
   test "should not save concept with empty preflabel" do
     assert_raise ActiveRecord::RecordInvalid do
-      @current_concept.save_with_full_validation!
+      Factory.create(:concept, :labelings => []).save_with_full_validation!
     end
   end
 

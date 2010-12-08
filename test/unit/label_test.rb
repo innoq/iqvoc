@@ -3,7 +3,7 @@ require 'test_helper'
 class LabelTest < ActiveSupport::TestCase
   
   def setup
-    @current_label = Factory.create(:label_with_association)
+    @current_label = Factory.create(:xllabel_with_association)
     @user = Factory.create(:user)
   end
 
