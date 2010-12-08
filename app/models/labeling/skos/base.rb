@@ -25,14 +25,25 @@ class Labeling::SKOS::Base < Labeling::Base
 
   def self.single_query(params = {})
     query_str = build_query_string(params)
-
-    scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)") & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+    
+    scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)")
+    
+    if params[:query].present?
+      scope = scope & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+    else
+      scope = scope & Label::Base.by_language(params[:languages].to_a).published
+    end
+    
+    if params[:collection_origin].present?
+      scope = scope.includes(:owner => { :collection_members => :collection })
+      scope = scope & Collection::Base.where(:origin => params[:collection_origin])
+    end
+    
     # Check that the included concept is in published state:
     scope = scope.includes(:owner) & Iqvoc::Concept.base_class.published
     
     unless params[:collection_origin].blank?
-      scope = scope.includes(:owner => { :collection_members => :collection })
-      scope = scope & Collection::Base.where(:origin => params[:collection_origin])
+      #
     end
     
     scope

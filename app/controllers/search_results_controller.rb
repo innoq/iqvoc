@@ -19,7 +19,7 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("utf8")
 
     if params[:query]
-      return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank?
+      return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank? && params[:collection_origin].blank?
 
       params[:languages] << nil if params[:languages].is_a?(Array) and params[:languages].include?("none")
       
