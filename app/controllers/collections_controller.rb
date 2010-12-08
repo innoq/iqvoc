@@ -13,7 +13,6 @@ class CollectionsController < ApplicationController
         @collections = (Collection::Base.includes(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.where(Note::Iqvoc::LanguageNote.arel_table[:value].matches("#{params[:query]}%"))).all
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
-        logger.ap response
         render :json => response
       end
     end
