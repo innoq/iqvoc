@@ -14,5 +14,9 @@ document << @collection.build_rdf_subject(document, controller) do |collection|
   @collection.concepts.each do |concept|
     collection.Skos::member(IqRdf.build_uri(concept.origin))
   end
+  
+  @collection.collections.each do |subcollection|
+    collection.Skos::member(IqRdf::Coll.build_uri(subcollection.origin))
+  end
 
 end
