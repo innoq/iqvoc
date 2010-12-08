@@ -44,7 +44,7 @@ class SearchResultsController < ApplicationController
   protected
   
   def invalid_search(msg=nil)
-    flash[:error] = msg || I18n.t('txt.controllers.search_results.query_invalid')
+    flash.now[:error] = msg || I18n.t('txt.controllers.search_results.query_invalid')
     render :action => 'index', :status => 422
   end
 

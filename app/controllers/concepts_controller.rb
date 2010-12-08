@@ -60,11 +60,11 @@ class ConceptsController < ApplicationController
         flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
         redirect_to concept_path(:published => 0, :id => @concept.origin, :lang => @active_language)
       else
-        flash[:error] = I18n.t("txt.controllers.versioned_concept.error")
+        flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
         render :new
       end
     else
-      flash[:error] = I18n.t("txt.controllers.versioned_concept.error")
+      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
       render :new
     end
   end
@@ -97,7 +97,7 @@ class ConceptsController < ApplicationController
       flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
       redirect_to concept_path(:published => 0, :id => @concept, :lang => @active_language)
     else
-      flash[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
+      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
       render :action => :edit
     end
   end

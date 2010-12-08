@@ -41,7 +41,7 @@ class CollectionsController < ApplicationController
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(@collection, :lang => I18n.locale)
     else
-      flash[:error] = I18n.t("txt.controllers.collections.save.error")
+      flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :new
     end
   end
@@ -64,7 +64,7 @@ class CollectionsController < ApplicationController
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(@collection, :lang => I18n.locale)
     else
-      flash[:error] = I18n.t("txt.controllers.collections.save.error")
+      flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :edit
     end
   end
@@ -79,7 +79,7 @@ class CollectionsController < ApplicationController
       flash[:notice] = I18n.t("txt.controllers.collections.destroy.success")
       redirect_to collections_path(:lang => I18n.locale)
     else
-      flash[:error] = I18n.t("txt.controllers.collections.destroy.error")
+      flash.now[:error] = I18n.t("txt.controllers.collections.destroy.error")
       render :action => :show
     end
   end

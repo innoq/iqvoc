@@ -61,11 +61,11 @@ class LabelsController < ApplicationController
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
         redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)
       else
-        flash[:error] = I18n.t("txt.controllers.versioned_label.error")
+        flash.now[:error] = I18n.t("txt.controllers.versioned_label.error")
         render :new
       end
     else
-      flash[:error] = I18n.t("txt.controllers.versioned_label.error")
+      flash.now[:error] = I18n.t("txt.controllers.versioned_label.error")
       render :new
     end
   end
@@ -99,7 +99,7 @@ class LabelsController < ApplicationController
           flash[:notice] = I18n.t("txt.controllers.versioned_label.update_success")
           redirect_to label_path(:published => 0, :id => @label, :lang => @active_language)
         else
-          flash[:error] = I18n.t("txt.controllers.versioned_label.update_error")
+          flash.now[:error] = I18n.t("txt.controllers.versioned_label.update_error")
           render :action => :edit
         end
       end
