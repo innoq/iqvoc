@@ -4,7 +4,7 @@ require 'integration_test_helper'
 class ConceptTest < ActionDispatch::IntegrationTest
   
   setup do
-    @concept = Factory(:concept_with_associations)
+    @concept = Factory(:concept)
   end
   
   test "showing published concept" do

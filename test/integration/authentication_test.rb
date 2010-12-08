@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'integration_test_helper'
 
-class ConceptTest < ActionDispatch::IntegrationTest
+class AuthenticationTest < ActionDispatch::IntegrationTest
 
   setup do
   end

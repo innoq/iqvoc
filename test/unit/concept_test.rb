@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ConceptTest < ActiveSupport::TestCase
   def setup
-    @current_concept = Factory.create(:concept_with_associations)
+    @current_concept = Factory.create(:concept)
   end
 
   test "should not create more than two versions of a concept" do
