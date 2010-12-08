@@ -9,10 +9,12 @@
   (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
 </div>
 
+<% if can?(:manage, @collection) %>
 <div class="editing_versioning_toolbar">
   <%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %>
   <%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
 </div>
+<% end %>
 
 <div class="relation">
   <h3><%= Note::Iqvoc::LanguageNote.model_name.human(:count => 2) %></h3>
