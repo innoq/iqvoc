@@ -281,6 +281,13 @@ de:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
      virtuoso_syncs:
        success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
+     collections:
+       save:
+         success: "Die Kollektion wurde erfolgreich gespeichert."
+         error: "Die Kollektion konnte nicht gespeichert werden."
+       destroy:
+         success: "Die Kollektion wurde erfolgreich gelöscht."
+         error: "Die Kollektion konnte nicht gelöscht werden."
 
    models:
      label:

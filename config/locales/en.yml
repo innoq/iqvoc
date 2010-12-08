@@ -287,6 +287,13 @@ en:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      virtuoso_syncs:
        success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
+     collections:
+       save:
+         success: "The collection has been successfully created."
+         error: "The collection could not be created."
+       destroy:
+         success: "The collection has been successfully deleted."
+         error: "The collection could not be deleted."
 
    models:
      label:
