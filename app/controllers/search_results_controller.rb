@@ -21,7 +21,7 @@ class SearchResultsController < ApplicationController
     if params[:query]
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank? && params[:collection_origin].blank?
 
-      params[:languages] << nil if params[:languages].is_a?(Array) and params[:languages].include?("none")
+      params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
       
       unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
         raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
