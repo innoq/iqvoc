@@ -20,17 +20,17 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     assert_equal concept_path(@concept1, :lang => 'de', :format => :html), URI.parse(current_url).path
   end
 
+  test "Showing a concept page" do
+    visit concept_url(@concept2, :lang => 'de')
+    assert page.has_content?("Bevorzugtes Label: #{@concept2.pref_label}"), "'Bevorzugtes Label: #{@concept2.pref_label}' missing in concepts#show"
+    assert page.has_link?('Turtle'), "RDF link missing in concepts#show"
+    click_link_or_button('Turtle')
+    assert page.has_content?(":#{@concept2.origin} a skos:Concept"), "'#{@concept2.origin} a skos:Concept' missing in turtle view"
+  end
+
 end
 
 =begin
-  Scenario: Showing a concept page
-    Given I am a logged in user with the role reader
-    And I have concepts _0000001 labeled Forest
-    And I am on the concept page for "_0000001"
-    Then I should see "Bevorzugtes Label: Forest"
-    When I follow the link to the format representation for ttl
-    Then I should see a Turtle representation for the concept "_0000001"
-  
   Scenario: Showing a label page
     Given I am a logged in user with the role reader
     And I have concepts _0000001 labeled Forest
