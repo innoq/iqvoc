@@ -8,7 +8,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     @concept1.pref_label.value = "Tree"
     @concept1.pref_label.save!
     @concept2 = Factory(:concept)
-    @concept2.pref_label.value = "Forrest"
+    @concept2.pref_label.value = "Forest"
     @concept2.pref_label.save!
   end
 
