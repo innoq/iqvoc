@@ -27,6 +27,9 @@ de:
             one: "Label"
             other: "Labels"
       labeling:
+        base:
+          one:   "Label"
+          other: "Labels"
         skosxl:
           base:
             one:   "Label"
