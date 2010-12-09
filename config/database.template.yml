@@ -33,9 +33,3 @@ test: &TEST
   password: 
   database: iqvoc_test
   socket: <%= socket %>
-  
-cucumber: &CUCUMBER
-  <<: *TEST
-
-culerity:
-  <<: *CUCUMBER

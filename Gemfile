@@ -23,15 +23,11 @@ group :development do
   gem 'awesome_print', :require => 'ap'
 end
 
-group :test, :cucumber do
+group :test do
   gem 'nokogiri', '1.4.3.1'
   gem 'capybara'
   # gem 'capybara-envjs'
-  # gem 'culerity'
   gem 'database_cleaner', '0.6.0.rc.3'
-  # gem 'cucumber-rails'
-  # gem 'cucumber'
-  # gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl_rails'
 end
