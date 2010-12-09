@@ -2,6 +2,7 @@ de:
   languages:
     de: Deutsch
     en: Englisch
+    none: Wiss.
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
