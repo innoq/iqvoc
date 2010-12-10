@@ -91,7 +91,7 @@ class Collection::Base < ActiveRecord::Base
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collection_members.map{|m| m.collection.origin}.uniq
+    @member_collection_origins || collection_members.map{|m| m.subcollection.origin}.uniq
   end
 
   def inline_member_collections
