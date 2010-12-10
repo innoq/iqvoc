@@ -1,6 +1,6 @@
 class Collection::Member::Collection < Collection::Member::Base
   
-  belongs_to :collection, :class_name => 'Collection::Base', :foreign_key => 'target_id'
+  belongs_to :subcollection, :class_name => 'Collection::Base', :foreign_key => 'target_id'
   
   def self.view_section(obj)
     "main"

@@ -30,7 +30,7 @@ class Collection::Base < ActiveRecord::Base
     :foreign_key => 'collection_id',
     :dependent   => :destroy
     
-  has_many :collections,
+  has_many :subcollections,
     :through => :collection_members
 
   accepts_nested_attributes_for :note_iqvoc_language_notes, :note_skos_definitions, 
@@ -46,6 +46,10 @@ class Collection::Base < ActiveRecord::Base
   scope :by_origin, lambda { |origin|
     where(:origin => origin)
   }
+  
+  scope :by_language_note_value, lambda { |val|
+    joins(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.by_query_value(val)
+  }
 
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
@@ -56,6 +60,10 @@ class Collection::Base < ActiveRecord::Base
   
   def self.note_classes
     note_class_names.map(&:constantize)
+  end
+  
+  def self.create_with_language_and_value!(lang, val)
+    Collection::Base.create!(:note_iqvoc_language_notes => [Note::Iqvoc::LanguageNote.new(:language => lang, :value => val)])
   end
 
   def to_param
