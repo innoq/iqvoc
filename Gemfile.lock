@@ -8,9 +8,9 @@ GIT
 
 GIT
   remote: git@github.com:innoq/iqvoc_spez.git
-  revision: 6306446f0f12f987259a0f683a9b6a3159f4e8f7
+  revision: fc699efb2f1c009def06190b66e60ae3d1a2523d
   specs:
-    iqvoc_spez (0.0.1)
+    iqvoc_spez (0.0.2)
       activerecord
       bundler
       rails
