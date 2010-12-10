@@ -1,5 +1,5 @@
 class Collection::Member::Concept < Collection::Member::Base
-
+  
   belongs_to :concept, :class_name => Iqvoc::Concept.base_class_name, :foreign_key => 'target_id'
   
   def self.view_section(obj)
