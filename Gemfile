@@ -15,7 +15,8 @@ gem 'rails_helpers_fix'
 
 group :development, :production  do
   # gem 'iqvoc_umt', :path => '../iqvoc_umt'
-  gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
+  gem 'iqvoc_umt', :git => 'git@github.com:innoq/iqvoc_umt.git'
+  # gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
   # gem 'iqvoc_spez', :path => '../iqvoc_spez'
 end
 
