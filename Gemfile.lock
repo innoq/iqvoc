@@ -6,9 +6,8 @@ GIT
       builder
       bundler
 
-GIT
-  remote: git@github.com:innoq/iqvoc_umt.git
-  revision: 2e777fdf4a2c94567b18c06b3ced88368546bf1f
+PATH
+  remote: ../iqvoc_umt
   specs:
     iqvoc_umt (0.0.10)
       activerecord
