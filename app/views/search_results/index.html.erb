@@ -1,15 +1,11 @@
 <%- if @results -%>
-  <%= content_for :head do -%>
-    <link href="<%= url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="text/turtle" rel="alternate" title=""/>
-    <link href="<%= url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false))  %>" type="application/rdf+xml" rel="alternate" title=""/>
-  <%- end -%>
+  <%= (@multi_query ? render(:partial => 'search_results/unpaged/head_contents') : render(:partial => 'search_results/paged/head_contents')) %>
 <%- end -%>
 
 <h2><%= t('txt.views.search_results.header') %></h2>
 <%- if @results -%>
   <div id="format_link_ttl">
-    <%= url_for(request.query_parameters.merge(:format => nil, :lang => nil, :page => @results.current_page, :only_path => false)) %>
-    (<%= link_to "Turtle", url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>, <%= link_to "RDF/XML", url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false)) %>)
+    <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
   </div>
 <%- end -%>
 
@@ -67,7 +63,7 @@
 <% end %>
 
 <% if @results %>
-  <h3><%= t('txt.views.search_results.search_results') %> (<%= @results.total_entries %>)</h3>
+  <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
 
   <dl id="search_results">
     <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
