@@ -7,6 +7,7 @@ gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
 gem 'warbler'
+gem 'activerecord-oracle_enhanced-adapter'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
@@ -47,6 +48,4 @@ group :production do
   platforms :ruby do
     gem 'sqlite3-ruby', :require => 'sqlite3'
   end
-  
-  gem 'activerecord-oracle_enhanced-adapter'
 end
