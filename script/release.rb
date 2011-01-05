@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'fileutils'
 require 'active_support/core_ext'
+require 'lib/iqvoc/version'
 
 FileUtils.rm_rf('tmp/release') if File.directory?('tmp/release')
 FileUtils.mkdir 'tmp/release'
@@ -23,13 +24,13 @@ begin
       puts "Branch must be one of #{branches.join(', ')}"
     end
 
-    `git clone -b #{branch} #{fetch_url} checkout`
+    `git clone -b #{branch} #{fetch_url} iqvoc`
 
-    FileUtils.cd('checkout') do
-      puts `jruby -S bundle install --deployment --without=development test`
+    FileUtils.cd('iqvoc') do
+      system "jruby -S bundle install --deployment --without=development test"
     end
 
-    `tar -czf iqvoc_#{Iqvoc::VERSION}.tgz checkout`
+    `tar -czf iqvoc_#{Iqvoc::VERSION}.tgz iqvoc`
 
   end
 ensure
