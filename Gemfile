@@ -23,6 +23,15 @@ group :development do
   gem 'mongrel'
   gem 'ruby-debug'
   gem 'awesome_print', :require => 'ap'
+  
+  platforms :ruby do
+    gem 'mysql' # AR Bug
+    gem 'mysql2'
+  end
+
+  platforms :jruby do
+    gem 'activerecord-jdbcmysql-adapter'
+  end
 end
 
 group :test do
@@ -38,13 +47,8 @@ group :production do
   platforms :ruby do
     gem 'sqlite3-ruby', :require => 'sqlite3'
   end
-end
-
-platforms :mri do
-  gem 'mysql' # AR Bug
-  gem 'mysql2'
-end
-
-platforms :jruby do
-  gem 'activerecord-jdbcmysql-adapter'
+  
+  platforms :jruby do
+    gem 'activerecord-oracle_enhanced-adapter'
+  end
 end
