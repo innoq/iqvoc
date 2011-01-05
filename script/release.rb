@@ -24,10 +24,11 @@ begin
       break if branches.include?(branch)
       puts "Branch must be one of #{branches.join(', ')}"
     end
-
+    
     `git clone -b #{branch} #{fetch_url} iqvoc`
 
     FileUtils.cd('iqvoc') do
+      `rm -f Gemfile.lock`
       system "jruby -S bundle install --deployment --without=development test"
     end
 
