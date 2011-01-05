@@ -15,13 +15,6 @@ development: &DEVELOPMENT
   adapter: mysql2
   socket: <%= socket %>
 <% end %>
-
-oracle:
-  encoding: utf8
-  username:
-  password: 
-  database: localhost:1521:ORCL
-  adapter: oracle_enhanced
   
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
@@ -33,3 +26,17 @@ test: &TEST
   password: 
   database: iqvoc_test
   socket: <%= socket %>
+  
+production_internal:
+  encoding: utf8
+  username: iqvoc
+  password: iqvoc
+  database: iqvocspez
+  adapter: oracle_enhanced
+
+production:
+  encoding: utf8
+  username: iqvoc
+  password: iqvoc
+  database: iqvocspez
+  adapter: oracle_enhanced
