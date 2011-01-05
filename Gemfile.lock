@@ -164,6 +164,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
+  activerecord-oracle_enhanced-adapter
   authlogic
   awesome_print
   cancan
