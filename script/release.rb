@@ -8,18 +8,19 @@ FileUtils.mkdir 'tmp/release'
 begin
   FileUtils.cd('tmp/release')  do
     git_remotes = `git remote show origin`
-    raise "Couldn't read Fetch URL from #{git_remotes}" unless git_remotes =~ /Fetch URL: (.+)$/
+    raise "Couldn't read Fetch URL from #{git_remotes}" unless git_remotes.match(/Fetch URL: (.+)$/)
     fetch_url = $1
 
-    raise "Couldn't read remote branches from #{git_remotes}" unless git_remotes =~ /^\s*Remote branches:\n((\s*\w+(\s+\w*)?\n)+)/
-    branches = $1.split(/\n/).map do |line|
-      line.gsub(/^\s*(\w+)(\s+\w*)?$/) { $1 }
-    end
+    git_remote_branches = `git branch -r`
+    raise "Couldn't read remote branches from #{git_remote_branches}" unless git_remote_branches.match(/origin\/.+/)
+    
+    git_remote_branches.match(/(origin\/.+)\n/m)
+    branches = $1.squish.gsub("origin/", "").split(" ")
 
     branch = nil
     while true
-      STDOUT.print "Enter branch name [#{branches.first}]: "
-      branch = (STDIN.gets.presence || branches.first).gsub(/\n/, "")
+      STDOUT.print "Enter branch name [master]: "
+      branch = (STDIN.gets.presence || 'master').gsub(/\n/, "")
       break if branches.include?(branch)
       puts "Branch must be one of #{branches.join(', ')}"
     end
