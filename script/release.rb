@@ -1,4 +1,3 @@
-require 'lib/iqvoc/version'
 require 'rubygems'
 require 'fileutils'
 require 'active_support/core_ext'

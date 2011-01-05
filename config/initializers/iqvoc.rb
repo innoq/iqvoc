@@ -1,4 +1,5 @@
 require 'iqvoc'
+require 'iqvoc/version'
 
 require 'iqvoc_global/versioning'
 require 'iqvoc_global/deep_cloning'
