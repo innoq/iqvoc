@@ -48,7 +48,5 @@ group :production do
     gem 'sqlite3-ruby', :require => 'sqlite3'
   end
   
-  platforms :jruby do
-    gem 'activerecord-oracle_enhanced-adapter'
-  end
+  gem 'activerecord-oracle_enhanced-adapter'
 end
