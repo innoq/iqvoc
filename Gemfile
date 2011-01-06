@@ -17,7 +17,7 @@ platforms :jruby do
   gem 'jruby-openssl'
 end
 
-group :development, :production  do
+group :development, :production, :production_internal do
   # gem 'iqvoc_umt', :path => '../iqvoc_umt'
   gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
   # gem 'iqvoc_spez', :path => '../iqvoc_spez'
@@ -42,7 +42,7 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-group :production do
+group :production, :production_internal do
   platforms :ruby do
     gem 'sqlite3-ruby', :require => 'sqlite3'
   end
