@@ -7,7 +7,6 @@ gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
 gem 'warbler'
-gem 'awesome_print', :require => 'ap'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
@@ -26,6 +25,7 @@ end
 
 group :development do
   gem 'mongrel'
+  gem 'awesome_print'
 end
 
 group :development, :test do
