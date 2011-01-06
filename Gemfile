@@ -26,16 +26,11 @@ end
 
 group :development do
   gem 'mongrel'
-  gem 'ruby-debug'
-  
-  platforms :ruby do
-    gem 'mysql' # AR Bug
-    gem 'mysql2'
-  end
+end
 
-  platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
-  end
+group :development, :test do
+  gem 'mysql' # AR Bug
+  gem 'mysql2'
 end
 
 group :test do
