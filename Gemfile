@@ -13,8 +13,13 @@ gem 'warbler'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
+platforms :ruby do
+  gem 'json'
+end
+
 platforms :jruby do
   gem 'jruby-openssl'
+  gem 'json-jruby'
 end
 
 group :development, :production, :production_internal do
