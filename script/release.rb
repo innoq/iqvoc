@@ -29,7 +29,7 @@ begin
 
     FileUtils.cd('iqvoc') do
       `rm -f Gemfile.lock`
-      system "jruby -S bundle install --path vendor/bundle"
+      system "jruby -S bundle install --path vendor/bundle --without development test"
     end
 
     `zip -qr iqvoc_#{Iqvoc::VERSION}.zip iqvoc`
