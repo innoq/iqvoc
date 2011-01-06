@@ -41,10 +41,6 @@ GEM
       activesupport (= 3.0.3)
       arel (~> 2.0.2)
       tzinfo (~> 0.3.23)
-    activerecord-jdbc-adapter (1.0.2-java)
-    activerecord-jdbcmysql-adapter (1.0.2-java)
-      activerecord-jdbc-adapter (= 1.0.2)
-      jdbc-mysql (~> 5.0.0)
     activeresource (3.0.3)
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
@@ -68,7 +64,6 @@ GEM
     cgi_multipart_eof_fix (2.5.0)
     childprocess (0.1.4)
       ffi (~> 0.6.3)
-    columnize (0.3.2)
     configuration (1.2.0)
     culerity (0.2.12)
     daemons (1.1.0)
@@ -85,14 +80,12 @@ GEM
     ffi (0.6.3-java)
     gem_plugin (0.2.3)
     i18n (0.5.0)
-    jdbc-mysql (5.0.4)
     jruby-jars (1.5.5)
     jruby-rack (1.0.3)
     json_pure (1.4.6)
     launchy (0.3.7)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
-    linecache (0.43)
     mail (2.2.12)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -132,11 +125,6 @@ GEM
       rake (>= 0.8.7)
       thor (~> 0.14.4)
     rake (0.8.7)
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
     rubyzip (0.9.4)
     selenium-webdriver (0.1.0)
       childprocess (= 0.1.4)
@@ -163,7 +151,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbcmysql-adapter
   activerecord-oracle_enhanced-adapter
   authlogic
   awesome_print
@@ -173,6 +160,7 @@ DEPENDENCIES
   factory_girl_rails
   iq_rdf (~> 0.0.8)!
   iqvoc_spez!
+  jruby-openssl
   launchy
   mongrel
   mysql
@@ -180,7 +168,6 @@ DEPENDENCIES
   nokogiri (= 1.4.3.1)
   rails (= 3.0.3)
   rails_helpers_fix
-  ruby-debug
   sqlite3-ruby
   warbler
   will_paginate (= 3.0.pre2)
