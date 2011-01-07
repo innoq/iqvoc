@@ -2,11 +2,10 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 
-# gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
-gem 'warbler'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
@@ -20,6 +19,8 @@ end
 platforms :jruby do
   gem 'jruby-openssl'
   gem 'json-jruby'
+  gem 'jruby-jars', '1.5.3'
+  gem 'warbler'
 end
 
 group :development, :production, :production_internal do
