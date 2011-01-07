@@ -24,8 +24,8 @@ end
 
 group :development, :production, :production_internal do
   # gem 'iqvoc_umt', :path => '../iqvoc_umt'
-  # gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
-  gem 'iqvoc_spez', :path => '../iqvoc_spez'
+  gem 'iqvoc_spez', :git => 'git@github.com:innoq/iqvoc_spez.git'
+  # gem 'iqvoc_spez', :path => '../iqvoc_spez'
 end
 
 group :development do

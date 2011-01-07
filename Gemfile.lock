@@ -6,8 +6,9 @@ GIT
       builder
       bundler
 
-PATH
-  remote: ../iqvoc_spez
+GIT
+  remote: git@github.com:innoq/iqvoc_spez.git
+  revision: fc699efb2f1c009def06190b66e60ae3d1a2523d
   specs:
     iqvoc_spez (0.0.2)
       activerecord
