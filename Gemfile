@@ -6,15 +6,12 @@ gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
+gem 'json'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
-
-platforms :ruby do
-  gem 'json'
-end
 
 platforms :jruby do
   gem 'jruby-openssl'
