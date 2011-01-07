@@ -18,7 +18,7 @@ end
 
 platforms :jruby do
   gem 'jruby-openssl'
-  gem 'json-jruby'
+  gem 'jruby-rack', '1.0.3'
   gem 'jruby-jars', '1.5.3'
   gem 'warbler'
 end
