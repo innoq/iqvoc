@@ -63,7 +63,7 @@ class Collection::Base < ActiveRecord::Base
   end
   
   def self.create_with_language_and_value!(lang, val)
-    Collection::Base.create!(:note_iqvoc_language_notes => [Note::Iqvoc::LanguageNote.new(:language => lang, :value => val)])
+    create!(:note_iqvoc_language_notes => [Note::Iqvoc::LanguageNote.new(:language => lang, :value => val)])
   end
 
   def to_param
