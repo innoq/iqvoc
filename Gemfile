@@ -15,8 +15,7 @@ gem 'rails_helpers_fix'
 
 platforms :jruby do
   gem 'jruby-openssl'
-  gem 'jruby-rack', '1.0.3'
-  gem 'jruby-jars', '1.5.3'
+  gem 'jruby-jars', '1.6.0.rc1'
   gem 'warbler'
 end
 
