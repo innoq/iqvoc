@@ -21,7 +21,6 @@ end
 
 group :development do
   gem 'mongrel'
-  gem 'ruby-debug'
   gem 'awesome_print', :require => 'ap'
 end
 
