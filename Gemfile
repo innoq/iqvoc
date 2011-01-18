@@ -13,10 +13,6 @@ gem 'json'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'jruby-openssl'
-gem 'jruby-jars', '1.6.0.rc1'
-gem 'warbler'
-
 gem 'iqvoc_spez', '0.0.3'
 
 gem 'activerecord-oracle_enhanced-adapter'
