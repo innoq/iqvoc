@@ -5,7 +5,7 @@
     <meta name="i18n-locale" content="<%= I18n.locale %>">
     <%= csrf_meta_tag %>
     
-    <title><%= Iqvoc.title %></title>
+    <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
     <!--[if lt IE 8]>
@@ -66,7 +66,7 @@
     <div id="footer" class="span-24 last">
       <div id="footer_box">
         <% if current_user %>
-          <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.to_s.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
+          <%= t('txt.common.welcome', :user_name => current_user.name) %> | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
         <% else %>
           <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language || I18n.locale) %>
         <% end %>
