@@ -143,6 +143,7 @@ GEM
       rake (>= 0.8.7)
       rubyzip (>= 0.9.4)
     weakling (0.0.4-java)
+    will_paginate (3.0.pre2)
     xpath (0.1.2)
       nokogiri (~> 1.3)
 
@@ -160,9 +161,9 @@ DEPENDENCIES
   factory_girl_rails
   iq_rdf (~> 0.0.8)!
   iqvoc_spez!
+  jruby-jars (= 1.6.0.rc1)
   jruby-openssl
   json
-  json-jruby
   launchy
   mongrel
   mysql
@@ -172,3 +173,4 @@ DEPENDENCIES
   rails_helpers_fix
   sqlite3-ruby
   warbler
+  will_paginate (= 3.0.pre2)
