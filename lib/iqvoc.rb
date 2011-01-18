@@ -2,7 +2,11 @@ require 'string'
 
 module Iqvoc
   
-  mattr_accessor :searchable_class_names, :available_languages, :ability_class_name, :default_rdf_namespace_helper_methods
+  mattr_accessor :title, 
+                 :searchable_class_names, 
+                 :available_languages, 
+                 :ability_class_name, 
+                 :default_rdf_namespace_helper_methods
   
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',

@@ -5,7 +5,7 @@
     <meta name="i18n-locale" content="<%= I18n.locale %>">
     <%= csrf_meta_tag %>
     
-    <title><%= t("txt.common.iqvoc_title") %></title>
+    <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
     <!--[if lt IE 8]>
