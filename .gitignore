@@ -14,3 +14,5 @@ public/images/vendor
 public/fonts/vendor
 
 .capistrano_history.yml
+
+ROOT.war
