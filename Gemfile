@@ -21,7 +21,7 @@ end
 
 group :development do
   gem 'mongrel'
-  gem 'awesome_print', :require => 'ap'
+  gem 'awesome_print'
 end
 
 group :test do
