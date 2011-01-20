@@ -37,7 +37,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
-    iq_rdf (0.0.11)
+    iq_rdf (0.0.13)
       builder
       bundler
     iqvoc_spez (0.0.3)
@@ -85,7 +85,7 @@ DEPENDENCIES
   activerecord-oracle_enhanced-adapter
   authlogic
   cancan
-  iq_rdf (= 0.0.11)
+  iq_rdf (~> 0.0.13)
   iqvoc_spez (= 0.0.3)
   json
   rails (= 3.0.3)
