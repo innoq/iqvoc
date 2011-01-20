@@ -91,7 +91,7 @@ class CreateSchema < ActiveRecord::Migration
     add_index "labels", ["value"], :name => "ix_labels_on_value"
     add_index "labels", ["published_version_id"], :name => "ix_labels_published_version_id"
 
-    create_table "matches", :force => true do |t|
+    create_table "matches" do |t|
       t.integer  "concept_id"
       t.string   "type"
       t.string   "value"

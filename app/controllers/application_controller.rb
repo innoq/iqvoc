@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension
-
-  before_filter :set_locale
-  before_filter :require_user
+  before_filter :ensure_extension, :except => [:unlocalized_root]
+  before_filter :set_locale, :except => [:unlocalized_root]
+  before_filter :require_user, :except => [:unlocalized_root]
   
   helper :all
   helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data
@@ -12,6 +11,10 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
   protect_from_forgery
+    
+  def unlocalized_root
+    redirect_to localized_root_path(:lang => I18n.default_locale)
+  end
 
   protected
 

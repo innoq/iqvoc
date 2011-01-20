@@ -4,4 +4,4 @@
 # This file allows the JDBC drivers to be hooked into ActiveRecord
 # such that you don't have to change anything else in your Rails
 # application.
-require 'jdbc_adapter' if defined?(JRUBY_VERSION)
+# require 'jdbc_adapter' if defined?(JRUBY_VERSION)
