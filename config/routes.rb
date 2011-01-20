@@ -42,13 +42,15 @@ Iqvoc::Application.routes.draw do
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
+    # There must be on named route 'localized_root' in order for an unlocalized root call to work
+    # See ApplicationController#unlocalized_root
     root :to => 'concepts/hierarchical#index', :as => 'localized_root'
   end
   
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
   match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
-
-  root :to => redirect("/de")
+  
+  root :to => 'application#unlocalized_root'
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end
