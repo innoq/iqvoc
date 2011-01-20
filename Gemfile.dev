@@ -25,8 +25,13 @@ group :development do
 end
 
 group :development, :test do
-  gem 'mysql' # AR Bug
-  gem 'mysql2'
+  platforms :ruby do
+    gem 'mysql' # AR Bug
+    gem 'mysql2'
+  end
+  platforms :jruby do
+    gem 'activerecord-jdbcmysql-adapter'
+  end
 end
 
 group :test do
