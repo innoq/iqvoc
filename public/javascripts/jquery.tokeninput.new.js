@@ -532,7 +532,7 @@
     // Do a search and show the "searching" dropdown if the input is longer
     // than settings.minChars
     function do_search(immediate) {
-      var query = input_box.val().toLowerCase();
+      var query = input_box.val(); //.toLowerCase();
 
       if (query && query.length) {
         if(selected_token) {
