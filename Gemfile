@@ -30,7 +30,7 @@ group :development, :test do
     gem 'mysql2'
   end
   platforms :jruby do
-    gem 'activerecord-jdbc_mysql-adapter'
+    gem 'activerecord-jdbcmysql-adapter'
   end
 end
 
