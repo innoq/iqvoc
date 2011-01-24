@@ -31,16 +31,16 @@ class SearchResultsController < ApplicationController
       query_size = params[:query].split(/\r\n/).size
       
       if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
-        @multi_query = true
+        @pagination = true
         @results = @klass.multi_query(params)
       else
-        @multi_query = false
+        @pagination = false
         @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
       end
       
       respond_to do |format|
         format.html
-        format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+        format.ttl { @pagination ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
       end
 
     end
