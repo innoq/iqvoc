@@ -37,6 +37,11 @@ class SearchResultsController < ApplicationController
         @multi_query = false
         @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
       end
+      
+      respond_to do |format|
+        format.html
+        format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+      end
 
     end
   end
