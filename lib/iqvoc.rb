@@ -46,7 +46,8 @@ module Iqvoc
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example',
       'Note::SKOS::HistoryNote',
-      'Note::SKOS::ScopeNote' ]
+      'Note::SKOS::ScopeNote',
+      'Note::Iqvoc::ChangeNote' ]
 
     self.match_class_names            = [
       'Match::SKOS::CloseMatch',
