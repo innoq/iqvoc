@@ -106,7 +106,7 @@ class Note::Base < ActiveRecord::Base
   end
   
   def self.search_result_partial_name
-    'partials/note/search/result'
+    'partials/note/search_result'
   end
 
   def build_search_result_rdf(document, result)

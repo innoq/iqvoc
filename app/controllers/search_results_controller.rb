@@ -39,20 +39,20 @@ class SearchResultsController < ApplicationController
       # it's not available if we're searching all classes
       if @klass
         if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
-          @pagination = true
+          @multi_query = true
           @results = @klass.multi_query(params)
         else
-          @pagination = false
+          @multi_query = false
           @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
         end
       else
-        @pagination = false
-        @results = Iqvoc.searchable_classes.map {|klass| klass.single_query(params) }.flatten
+        @multi_query = true
+        @results = Iqvoc.searchable_classes.map { |klass| klass.single_query(params) }.flatten
       end
       
       respond_to do |format|
         format.html
-        format.ttl { @pagination ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+        format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
       end
 
     end

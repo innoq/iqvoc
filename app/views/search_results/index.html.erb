@@ -1,11 +1,11 @@
 <%- if @results -%>
-  <%= (@pagination ? render(:partial => 'search_results/unpaged/head_contents') : render(:partial => 'search_results/paged/head_contents')) %>
+  <%= (@multi_query ? render(:partial => 'search_results/unpaged/head_contents') : render(:partial => 'search_results/paged/head_contents')) %>
 <%- end -%>
 
 <h2><%= t('txt.views.search_results.header') %></h2>
 <%- if @results -%>
   <div id="format_link_ttl">
-    <%= (@pagination ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
+    <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
   </div>
 <%- end -%>
 
@@ -63,13 +63,19 @@
 <% end %>
 
 <% if @results %>
-  <h3><%= t('txt.views.search_results.search_results') %><% unless @pagination %> (<%= @results.total_entries %>)<% end %></h3>
+  <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
 
   <dl id="search_results">
-    <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
+    <% if @klass %>
+      <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
+    <% else %>
+      <% @results.each do |result| %>
+        <%= render :partial => result.class.search_result_partial_name, :locals => {:search_result => result} %>
+      <% end %>
+    <% end %>
   </dl>
 
-  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @pagination %>
+  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
 <% end %>
 
 <%= content_for :sub_navigation do %>
