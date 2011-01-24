@@ -8,7 +8,7 @@ require 'lib/iqvoc/version'
 FileUtils.rm_rf('tmp/release') if File.directory?('tmp/release')
 FileUtils.mkdir 'tmp/release'
 begin
-  FileUtils.cd('tmp/release')  do
+  FileUtils.cd('tmp/release') do
     git_remotes = `git remote show origin`
     raise "Couldn't read Fetch URL from #{git_remotes}" unless git_remotes.match(/Fetch URL: (.+)$/)
     fetch_url = $1
@@ -27,11 +27,18 @@ begin
       puts "Branch must be one of #{branches.join(', ')}"
     end
     
+    app = nil
+    while true
+      STDOUT.print "Enter app name (must match \"Gemfile.[app]_prod\"): "
+      app = STDIN.gets.gsub(/\n/, "")
+      break if app
+      puts "App name can not be blank"
+    end
+    
     `git clone -b #{branch} #{fetch_url} iqvoc`
 
     FileUtils.cd('iqvoc') do
-      `rm -f Gemfile.lock`
-      system "jruby -S bundle install --path vendor/bundle --without development test"
+      FileUtils.cp("Gemfile.#{app}_prod", "Gemfile")
     end
 
     `zip -qr iqvoc_#{Iqvoc::VERSION}.zip iqvoc`
