@@ -23,19 +23,31 @@ class SearchResultsController < ApplicationController
 
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
       
-      unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
-        raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
+      if params[:type] == 'all'
+
+      # Decide whether to search a specific class or ALL classes
+      else
+        unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
+          raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
+        end
+        @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       end
       
-      @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       query_size = params[:query].split(/\r\n/).size
       
-      if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
-        @pagination = true
-        @results = @klass.multi_query(params)
+      # @klass is only available if we're going to search using a specific class
+      # it's not available if we're searching all classes
+      if @klass
+        if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
+          @pagination = true
+          @results = @klass.multi_query(params)
+        else
+          @pagination = false
+          @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
+        end
       else
         @pagination = false
-        @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
+        @results = Iqvoc.searchable_classes.map {|klass| klass.single_query(params) }.flatten
       end
       
       respond_to do |format|
