@@ -110,6 +110,7 @@ de:
        collections: "Kollektionen"
      search_results:
        header: "Suche"
+       all_names: "Alle Namen"
        inflectionals: "Schreibweisen"
        pref_labels: "bevorzugte Namen (Labels)"
        all_labels: "alle Namen (Labels)"

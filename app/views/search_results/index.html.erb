@@ -14,7 +14,7 @@
     <ol>
       <li>
         <select name="t" class="search_type">
-          <%= options_for_select Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name.parameterize] }, params[:t] %>
+          <%= options_for_select ([[I18n.t('txt.views.search_results.all_names'), 'all']] + Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name.parameterize] }), params[:t] %>
         </select>
       </li>
       <li>
@@ -66,12 +66,8 @@
   <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
 
   <dl id="search_results">
-    <% if @klass %>
-      <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
-    <% else %>
-      <% @results.each do |result| %>
-        <%= render :partial => result.class.search_result_partial_name, :locals => {:search_result => result} %>
-      <% end %>
+    <% @results.each do |result| %>
+      <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
     <% end %>
   </dl>
 

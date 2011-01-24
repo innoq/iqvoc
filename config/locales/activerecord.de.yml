@@ -99,8 +99,8 @@ de:
             other: "Bereichsanmerkungen"
         iqvoc:
           language_note:
-            one:   "Sprachbezeichnung"
-            other: "Sprachbezeichnungen"
+            one:   "Sprachbezeichnung (Kollektion)"
+            other: "Sprachbezeichnungen (Kollektion)"
       collection:
         base:
           one:   "Kollektion"

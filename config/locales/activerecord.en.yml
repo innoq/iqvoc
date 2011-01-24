@@ -89,8 +89,8 @@ en:
             other: "Scope notes"
         iqvoc:
           language_note:
-            one:   "Label"
-            other: "Labels"
+            one:   "Label (Collection)"
+            other: "Labels (Collection)"
       collection:
         base:
           one:   "Collection"
