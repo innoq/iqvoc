@@ -12,5 +12,6 @@ public/stylesheets/vendor
 public/javascripts/vendor
 public/images/vendor
 public/fonts/vendor
-
 .capistrano_history.yml
+Gemfile
+Gemfile.lock
