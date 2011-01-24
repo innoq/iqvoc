@@ -25,7 +25,7 @@ class Note::Base < ActiveRecord::Base
   }
   
   scope :by_query_value, lambda { |query|
-    where(Note::Base.arel_table[:value].matches(query))
+    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
 
   scope :by_owner_type, lambda { |klass|

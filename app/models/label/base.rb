@@ -29,7 +29,7 @@ class Label::Base < ActiveRecord::Base
   }
   
   scope :by_query_value, lambda { |query|
-    where(Label::Base.arel_table[:value].matches(query))
+    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
 
   # FIXME this comes from the SKOSXL Labelings.

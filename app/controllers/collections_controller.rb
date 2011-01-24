@@ -10,7 +10,7 @@ class CollectionsController < ApplicationController
         @collections = Collection::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}
       end
       format.json do
-        @collections = (Collection::Base.includes(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.where(Note::Iqvoc::LanguageNote.arel_table[:value].matches("#{params[:query]}%"))).all
+        @collections = (Collection::Base.includes(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.by_query_value("#{params[:query]}%")).all
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
         render :json => response
