@@ -11,6 +11,7 @@
 (function($) {
 
   $.fn.tokenInputNew = function (url, options) {
+    var widget = this;
     var settings = $.extend({
       url: url,
       hintText: "Type in a search term",
@@ -23,7 +24,8 @@
       method: "GET",
       contentType: "json",
       queryParam: "query",
-      onResult: null
+      onResult: null,
+      additionalParams: {}
     }, options);
 
     settings.classes = $.extend({
@@ -40,11 +42,11 @@
     }, options.classes);
 
     return this.each(function () {
-      var list = new $.TokenList(this, settings);
+      var list = new $.TokenList(this, settings, widget);
     });
   };
 
-  $.TokenList = function (input, settings) {
+  $.TokenList = function (input, settings, widget) {
     //
     // Variables
     //
@@ -568,11 +570,16 @@
           cache.add(query, settings.jsonContainer ? results[settings.jsonContainer] : results);
           populate_dropdown(query, settings.jsonContainer ? results[settings.jsonContainer] : results);
         };
-            
+        
+        // Reload the modified options attribute
+        // Otherwise, we would be getting old values in case of the live modification of a dependent element
+        // Example: A selectbox is changed and the event updates the data-options of the widget.
+        var refreshedSettings = $.extend(settings, $.parseJSON(widget.attr("data-options")));
+        
         if(settings.method == "POST") {
-          $.post(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, {}, callback, settings.contentType);
+          $.post(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, refreshedSettings.additionalParams, callback, settings.contentType);
         } else {
-          $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, {}, callback, settings.contentType);
+          $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, refreshedSettings.additionalParams, callback, settings.contentType);
         }
       }
     }
