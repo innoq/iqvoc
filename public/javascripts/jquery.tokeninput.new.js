@@ -472,11 +472,8 @@
         .mouseover(function (event) {
           select_dropdown_item(get_element_from_event(event, "li"));
         })
-        .click(function (event) {
-          add_token(get_element_from_event(event, "li"));
-        })
         .mousedown(function (event) {
-          // Stop user selecting text on tokens
+          add_token(get_element_from_event(event, "li"));
           return false;
         })
         .hide();
