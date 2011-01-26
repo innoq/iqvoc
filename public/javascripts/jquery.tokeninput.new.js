@@ -555,10 +555,10 @@
 
     // Do the actual search
     function run_search(query) {
-      var cached_results = cache.get(query);
-      if(cached_results) {
-        populate_dropdown(query, cached_results);
-      } else {
+      // var cached_results = cache.get(query);
+      // if(cached_results) {
+      //   populate_dropdown(query, cached_results);
+      // } else {
         var queryStringDelimiter = settings.url.indexOf("?") < 0 ? "?" : "&";
         var callback = function(results) {
           if($.isFunction(settings.onResult)) {
@@ -578,7 +578,7 @@
         } else {
           $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, refreshedSettings.additionalParams, callback, settings.contentType);
         }
-      }
+      // }
     }
   };
 
