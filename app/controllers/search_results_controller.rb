@@ -53,6 +53,7 @@ class SearchResultsController < ApplicationController
       respond_to do |format|
         format.html
         format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+        format.rdf { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
       end
 
     end
