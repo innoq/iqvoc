@@ -68,7 +68,7 @@ ul#navi_main li {
 }
 
 #footer {
-  background: url('/images/footer.png') no-repeat top right;
+  background: url('../images/footer.png') no-repeat top right;
   height: 43px;
   margin-top: 15px;
   padding-top: 10px;
