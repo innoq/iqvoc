@@ -42,10 +42,6 @@ class Labeling::SKOS::Base < Labeling::Base
     # Check that the included concept is in published state:
     scope = scope.includes(:owner) & Iqvoc::Concept.base_class.published
     
-    unless params[:collection_origin].blank?
-      #
-    end
-    
     scope
   end
 
