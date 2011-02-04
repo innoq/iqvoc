@@ -23,10 +23,8 @@ class SearchResultsController < ApplicationController
 
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
       
-      if params[:type] == 'all'
-
       # Decide whether to search a specific class or ALL classes
-      else
+      unless params[:type] == 'all'
         unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
           raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
         end
@@ -47,7 +45,8 @@ class SearchResultsController < ApplicationController
         end
       else
         @multi_query = true
-        @results = Iqvoc.searchable_classes.map { |klass| klass.single_query(params) }.flatten
+        # all names == search all Labeling & CollectionLabel classes
+        @results = Iqvoc.searchable_classes.select{ |klass| (klass < Labeling::Base) || (klass <= CollectionLabel) }.map{ |klass| klass.single_query(params) }.flatten
       end
       
       respond_to do |format|

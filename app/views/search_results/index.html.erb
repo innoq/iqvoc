@@ -67,7 +67,11 @@
 
   <dl id="search_results">
     <% @results.each do |result| %>
-      <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
+      <% if @klass %>
+        <%= render :partial => @klass.search_result_partial_name, :locals => {:result => result} %>
+      <% else %>
+        <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
+      <% end %>
     <% end %>
   </dl>
 
