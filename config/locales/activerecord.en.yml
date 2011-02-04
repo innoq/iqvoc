@@ -97,6 +97,9 @@ en:
           other: "Collections"
         member:
           base: "Assigned collections"
+      collection_label:
+        one: "Collection Label"
+        other: "Collection Labels"
       
     attributes:
       concept:

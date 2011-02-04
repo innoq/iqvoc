@@ -107,6 +107,9 @@ de:
           other: "Kollektionen"
         member: 
           base: "Zugewiesene Kollektionen"
+      collection_label:
+        one: "Kollektionsbezeichnung"
+        other: "Kollektionsbezeichnungen"
       
     attributes:
       concept:
