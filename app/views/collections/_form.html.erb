@@ -1,4 +1,6 @@
-<% [ Note::Iqvoc::LanguageNote, Note::SKOS::Definition ].each do |klass| %>
+<%= render :partial => CollectionLabel.edit_partial_name(@collection), :locals => { :collection => @collection, :f => f } %>
+
+<% [ Note::SKOS::Definition ].each do |klass| %>
   <%= render :partial => klass.edit_partial_name(@collection), :locals => { :owner_klass => @collection, :assoc_klass => klass, :f => f } %>
 <% end %>
 

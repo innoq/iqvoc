@@ -4,7 +4,7 @@
     <%- if concept.collections.any? -%>
       <ul>
         <%- concept.collections.each do |collection| -%>
-          <li><%= link_to collection.localized_note, collection_url(collection, :lang => I18n.locale) %></li>
+          <li><%= link_to collection.label.to_s, collection_url(collection, :lang => I18n.locale) %></li>
         <%- end -%>
       </ul>
     <%- else -%>

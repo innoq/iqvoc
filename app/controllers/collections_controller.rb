@@ -7,10 +7,10 @@ class CollectionsController < ApplicationController
     
     respond_to do |format|
       format.html do
-        @collections = Collection::Base.all.sort{ |a, b| a.localized_note <=> b.localized_note}
+        @collections = Collection::Base.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
       end
       format.json do
-        @collections = (Collection::Base.includes(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.by_query_value("#{params[:query]}%")).all
+        @collections = (Collection::Base.includes(:collection_labels) & CollectionLabel.by_query_value("#{params[:query]}%")).all
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
         render :json => response
@@ -87,7 +87,7 @@ class CollectionsController < ApplicationController
   private
   
   def build_note_relations
-    @collection.note_iqvoc_language_notes.build if @collection.note_iqvoc_language_notes.empty?
+    @collection.collection_labels.build if @collection.collection_labels.empty?
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
   end
   

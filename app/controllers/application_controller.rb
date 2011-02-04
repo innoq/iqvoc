@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
   def collection_widget_data(collection)
     {
       :id => collection.origin,
-      :name => collection.localized_note.value
+      :name => collection.label.to_s
     }
   end
   

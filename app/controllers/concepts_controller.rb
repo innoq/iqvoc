@@ -22,7 +22,7 @@ class ConceptsController < ApplicationController
   end
   
   def show
-    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :note_iqvoc_language_notes}).includes(Iqvoc::Concept.base_class.default_includes)
+    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :collection_labels}).includes(Iqvoc::Concept.base_class.default_includes)
     if params[:published] == '1' || !params[:published]
       published = true
       @concept = scope.published.last

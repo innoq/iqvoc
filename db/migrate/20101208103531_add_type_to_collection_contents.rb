@@ -4,7 +4,6 @@ class AddTypeToCollectionContents < ActiveRecord::Migration
     add_column :collection_members, :type, :string
     Collection::Member::Base.update_all(:type => 'Collection::Member::Concept')
     Collection::Base.update_all(:type => 'Collection::Base')
-    Note::Iqvoc::LanguageNote.update_all(:owner_type => 'Collection::Base')
   end
 
   def self.down

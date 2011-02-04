@@ -17,10 +17,10 @@
 <% end %>
 
 <div class="relation">
-  <h3><%= Note::Iqvoc::LanguageNote.model_name.human(:count => 2) %></h3>
+  <h3><%= CollectionLabel.model_name.human(:count => 2) %></h3>
   <ul>
-    <% @collection.note_iqvoc_language_notes.each do |language_note| %>
-      <li><%= language_note.value %> (<%= language_note.language %>)</li>
+    <% @collection.collection_labels.each do |collection_label| %>
+      <li><%= collection_label.value %> (<%= collection_label.language %>)</li>
     <% end %>
   </ul>
 </div>
@@ -51,7 +51,7 @@
   <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
   <ul>
     <% @collection.subcollections.each do |subcollection| %>
-      <li><%= link_to subcollection.localized_note.value, collection_path(:lang => I18n.locale, :id => subcollection) %></li>
+      <li><%= link_to subcollection.label.to_s, collection_path(:lang => I18n.locale, :id => subcollection) %></li>
     <% end %>
   </ul>
 </div>

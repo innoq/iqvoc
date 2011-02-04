@@ -61,18 +61,18 @@ class Label::SKOSXL::Base < Label::Base
   
   # ********** Methods
   
-  def self.single_query(params = {})
-    query_str = build_query_string(params)
-    
-    by_query_value(query_str).
-    by_language(params[:languages].to_a).
-    published.
-    order("LOWER(#{Label::Base.table_name}.value)")
-  end
+  # def self.single_query(params = {})
+  #   query_str = build_query_string(params)
+  #   
+  #   by_query_value(query_str).
+  #   by_language(params[:languages].to_a).
+  #   published.
+  #   order("LOWER(#{Label::Base.table_name}.value)")
+  # end
   
-  def self.search_result_partial_name
-    'partials/label/search/result'
-  end
+  # def self.search_result_partial_name
+  #   'partials/labeling/skosxl/search_result'
+  # end
 
   def self.from_rdf(str)
     h = IqvocGlobal::RdfHelper.split_literal(str)

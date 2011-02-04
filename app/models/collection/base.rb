@@ -2,10 +2,7 @@ class Collection::Base < ActiveRecord::Base
   
   set_table_name 'collections'
 
-  has_many Note::Iqvoc::LanguageNote.name.to_relation_name, 
-    :class_name => 'Note::Iqvoc::LanguageNote', 
-    :as => :owner,
-    :dependent => :destroy
+  has_many :collection_labels, :foreign_key => 'collection_id', :dependent => :destroy
     
   has_many Note::SKOS::Definition.name.to_relation_name, 
     :class_name => 'Note::SKOS::Definition', 
@@ -33,7 +30,7 @@ class Collection::Base < ActiveRecord::Base
   has_many :subcollections,
     :through => :collection_members
 
-  accepts_nested_attributes_for :note_iqvoc_language_notes, :note_skos_definitions, 
+  accepts_nested_attributes_for :collection_labels, :note_skos_definitions, 
     :allow_destroy => true, 
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
     
@@ -47,15 +44,15 @@ class Collection::Base < ActiveRecord::Base
     where(:origin => origin)
   }
   
-  scope :by_language_note_value, lambda { |val|
-    joins(:note_iqvoc_language_notes) & Note::Iqvoc::LanguageNote.by_query_value(val)
+  scope :by_label_value, lambda { |val|
+    joins(:collection_labels) & CollectionLabel.by_query_value(val)
   }
 
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
 
   def self.note_class_names
-    ['Note::Iqvoc::LanguageNote', 'Note::SKOS::Definition']
+    ['Note::SKOS::Definition']
   end
   
   def self.note_classes
@@ -63,7 +60,7 @@ class Collection::Base < ActiveRecord::Base
   end
   
   def self.create_with_language_and_value!(lang, val)
-    create!(:note_iqvoc_language_notes => [Note::Iqvoc::LanguageNote.new(:language => lang, :value => val)])
+    create!(:collection_labels => [CollectionLabel.new(:language => lang, :value => val)])
   end
 
   def to_param
@@ -123,17 +120,17 @@ class Collection::Base < ActiveRecord::Base
       destroy_all()
   end
   
-  def localized_note
-    if val = note_iqvoc_language_notes.by_language(I18n.locale).first || note_iqvoc_language_notes.first
-      val
+  def label
+    if collection_label = collection_labels.by_language(I18n.locale).first || collection_labels.first
+      collection_label
     else
       origin
     end
   end
   
-  def notes_for_class(note_class)
-    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
-    notes.select{ |note| note.class.name == note_class }
-  end
+  # def notes_for_class(note_class)
+  #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+  #   notes.select{ |note| note.class.name == note_class }
+  # end
   
 end
