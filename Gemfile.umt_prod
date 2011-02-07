@@ -11,7 +11,7 @@ gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
 gem 'json'
-gem 'activerecord-jdbcmysql-adapter'
+gem 'activerecord-oracle_enhanced-adapter'
 
 gem 'iq_rdf', '~> 0.0.13'
 gem 'iqvoc_umt', '~> 0.0.11'
