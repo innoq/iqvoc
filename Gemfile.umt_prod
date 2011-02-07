@@ -13,6 +13,6 @@ gem 'json'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt'
+gem 'iqvoc_umt', '~> 0.0.11'
 
 gem 'activerecord-jdbcmysql-adapter'
