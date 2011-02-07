@@ -94,7 +94,7 @@ Warbler::Config.new do |config|
 
   # Name of the war file (without the .war) -- defaults to the basename
   # of RAILS_ROOT
-  config.war_name = "spez"
+  config.war_name = Iqvoc.war_name
 
   # Name of the MANIFEST.MF template for the war file. Defaults to a simple
   # MANIFEST.MF that contains the version of Warbler used to create the war file.

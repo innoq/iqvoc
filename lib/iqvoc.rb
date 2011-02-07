@@ -6,7 +6,8 @@ module Iqvoc
                  :searchable_class_names, 
                  :available_languages, 
                  :ability_class_name, 
-                 :default_rdf_namespace_helper_methods
+                 :default_rdf_namespace_helper_methods,
+                 :war_name
   
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',
