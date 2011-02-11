@@ -5,7 +5,7 @@ gem 'rails', '3.0.4'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
+gem 'iq_rdf', '~> 0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
 gem 'json'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
@@ -13,10 +13,14 @@ gem 'json'
 # http://github.com/drogus/rails_helpers_fix
 gem 'rails_helpers_fix'
 
-gem 'iqvoc_umt', :path => '../iqvoc_umt'
+group :development, :production, :production_internal do
+  gem 'iqvoc_umt', :path => '../iqvoc_umt'
+end
 
-gem 'mongrel'
-gem 'awesome_print'
+group :development do
+  gem 'mongrel'
+  gem 'awesome_print'
+end
 
 platforms :ruby do
   gem 'mysql' # AR Bug
