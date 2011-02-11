@@ -54,13 +54,12 @@ module IqvocGlobal
         new_version.increment!(:rev)
         new_version.published_version_id = self.id
         new_version.unpublish!
-        if new_version.class.reflections.symbolize_keys.keys.include?(:note_iqvoc_change_notes)
-          new_version.note_iqvoc_change_notes.build(:language => I18n.locale.to_s, # FIXME: Hardcoded relation and language!!
-            :annotations_attributes => [
-              { :identifier => "umt:editor", :value => user.try(:name) },
-              { :identifier => "dct:modified", :value => DateTime.now.to_s }
-            ])
-        end
+        new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
+          :language => I18n.locale.to_s,
+          :annotations_attributes => [
+            { :identifier => "umt:editor", :value => user.name },
+            { :identifier => "dct:modified", :value => DateTime.now.to_s }
+          ])
         new_version
       end
 
