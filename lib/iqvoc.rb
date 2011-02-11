@@ -152,7 +152,7 @@ module Iqvoc
 
     self.additional_association_class_names = {}
 
-    self.view_sections = ["main", "concepts", "inflectionals", "relations", "notes"]
+    self.view_sections = ["main", "concepts", "relations", "notes"]
     
     # Set this to true if you're having a migration which extends the labels table
     # and you want to be able to edit these fields.
@@ -203,4 +203,5 @@ module Iqvoc
 
 end
 
+# FIXME: For yet unknown reasons, the load hook gets to run 2 times
 ActiveSupport.run_load_hooks(:after_iqvoc_config, Iqvoc)
