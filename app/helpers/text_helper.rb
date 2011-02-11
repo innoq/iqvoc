@@ -11,7 +11,7 @@ module TextHelper
     s.gsub!(@starts_with_www_regexp, '\1<a href="http://\2">\2</a>')
     s.gsub!(@starts_with_ftp_regexp, '\1<a href="ftp://\2">\2</a>')
     s.gsub!(@email_regexp, '\1<a href="mailto:\2@\3">\2@\3</a>')
-    s
+    raw s
   end
   
 end
