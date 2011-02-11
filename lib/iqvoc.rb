@@ -7,7 +7,7 @@ module Iqvoc
                  :available_languages, 
                  :ability_class_name, 
                  :default_rdf_namespace_helper_methods,
-                 :war_name
+                 :change_note_class_name
   
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',
@@ -19,9 +19,16 @@ module Iqvoc
   self.ability_class_name = "::Ability"
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
+  
+  # The class to use for automatic generation of change notes on every save
+  self.change_note_class_name = 'Note::SKOS::ChangeNote'
 
   def self.ability_class
     ability_class_name.constantize
+  end
+  
+  def self.change_note_class
+    change_note_class_name.constantize
   end
 
   module Concept
@@ -42,13 +49,13 @@ module Iqvoc
     self.pref_labeling_languages      = [ :de ]
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
-    self.note_class_names             = [ 'Note::SKOS::ChangeNote',
+    self.note_class_names             = [ 
+      Iqvoc.change_note_class_name,
       'Note::SKOS::Definition',
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example',
       'Note::SKOS::HistoryNote',
-      'Note::SKOS::ScopeNote',
-      'Note::Iqvoc::ChangeNote' ]
+      'Note::SKOS::ScopeNote' ]
 
     self.match_class_names            = [
       'Match::SKOS::CloseMatch',
@@ -125,7 +132,7 @@ module Iqvoc
   module Label # This are the settings when using SKOS
     mattr_accessor :base_class_name
 
-    self.base_class_name = 'Label::SKOS::Base'
+    self.base_class_name        = 'Label::SKOS::Base'
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
@@ -175,6 +182,10 @@ module Iqvoc
 
     def self.note_classes
       note_class_names.map(&:constantize)
+    end
+    
+    def self.change_note_class
+      change_note_class_name.constantize
     end
 
     def self.additional_association_classes
