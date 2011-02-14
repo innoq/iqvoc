@@ -96,7 +96,7 @@ class Concept::Base < ActiveRecord::Base
     end
 
     define_method("inline_#{relation_class_name.to_relation_name}=".to_sym) do |value|
-      # write to instance variable and write it when after_safe
+      # write to instance variable and write it on after_safe
       (@inline_assigned_relations ||= {})[relation_class_name] = value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq
     end
 
