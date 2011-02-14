@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user, :except => [:unlocalized_root]
   
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -71,6 +71,13 @@ class ApplicationController < ActionController::Base
     {
       :id => collection.origin,
       :name => collection.label.to_s
+    }
+  end
+  
+  def label_widget_data(label)
+    {
+      :id => label.origin,
+      :name => label.value
     }
   end
   

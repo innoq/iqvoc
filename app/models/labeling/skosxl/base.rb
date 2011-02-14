@@ -7,6 +7,10 @@ class Labeling::SKOSXL::Base < Labeling::Base
   scope :by_label_origin, lambda { |origin|
     includes(:target) & self.label_class.by_origin(origin)
   }
+  
+  scope :by_label_language, lambda { |language|
+    includes(:target) & self.label_class.by_language(language)
+  }
 
   scope :label_editor_selectable, lambda { # Lambda because self.label_class is currently not known + we don't want to call it at load time!
     includes(:target) & self.label_class.editor_selectable
@@ -64,7 +68,7 @@ class Labeling::SKOSXL::Base < Labeling::Base
   end
 
   def self.nested_editable?
-    false
+    true
   end
     
   def build_search_result_rdf(document, result)

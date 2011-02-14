@@ -16,7 +16,7 @@ class LabelsController < ApplicationController
         end
 
         response = []
-        @labels.each { |label| response << {:name => label.value, :origin => label.origin, :published => label.published?} }
+        @labels.each { |label| response << label_widget_data(label) }
 
         render :json => response
       end

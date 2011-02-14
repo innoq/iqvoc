@@ -18,6 +18,9 @@ class Concept::Base < ActiveRecord::Base
   # ********** Hooks
 
   after_save do |concept|
+    # Handle save or destruction of inline relations (relations or labelings) for use with widgets
+    
+    # Concept relations
     (@inline_assigned_relations ||= {}).each do |relation_class_name, new_origins|
       existing_origins = concept.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
       Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
@@ -27,6 +30,24 @@ class Concept::Base < ActiveRecord::Base
         concept.send(relation_class_name.to_relation_name).destroy_with_reverse_relation(relation_class_name.constantize, relation.target)
       end
     end
+    
+    # Labelings
+    (@inline_assigned_labelings ||= {}).each do |labeling_class_name, origin_mappings|
+      # Remove all associated labelings of the given type
+      concept.send(labeling_class_name.to_relation_name).destroy_all
+      
+      # (Re)create labelings reflecting a widget's parameters
+      origin_mappings.each do |key, value|
+        language    = key
+        new_origins = value
+
+        # Iterate over all labels to be added and create them
+        Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |l|
+          concept.send(labeling_class_name.to_relation_name).create!(:target => l)
+        end
+      end
+    end
+    
   end
 
   # ********** "Static"/unconfigureable relations
@@ -112,8 +133,22 @@ class Concept::Base < ActiveRecord::Base
   has_many :pref_labels,
     :through => :pref_labelings,
     :source => :target
-
-  Iqvoc::Concept.labeling_class_names.keys.each do |labeling_class_name|
+  
+  
+  # {
+  #   "Labeling::SKOSXL::PrefLabel" => {
+  #     :de => [
+  #       [0] "Aal"
+  #     ]
+  #     },
+  #     "Labeling::SKOSXL::AltLabel" => {
+  #       :de => [
+  #         [0] "EuropaeischerFlussaal",
+  #         [1] "Flussaal"
+  #       ]
+  #     }
+  #   }
+  Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
@@ -123,6 +158,26 @@ class Concept::Base < ActiveRecord::Base
       include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
     else
       include_to_deep_cloning(labeling_class_name.to_relation_name)
+    end
+    
+    languages.each do |language|
+      # Serialized setters and getters (\r\n or , separated)
+      define_method("inline_#{labeling_class_name.to_relation_name}_#{language}".to_sym) do
+        (@inline_assigned_labelings && @inline_assigned_labelings[labeling_class_name][language]) || self.send(labeling_class_name.to_relation_name).by_label_language(language).map{|r| r.target.origin}.uniq
+      end
+
+      define_method("inline_#{labeling_class_name.to_relation_name}_#{language}=".to_sym) do |value|
+        
+        # Write to instance variable and store it on after_safe
+        @inline_assigned_labelings ||= {}
+        origins = { language => value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq }
+        
+        if @inline_assigned_labelings[labeling_class_name]
+          @inline_assigned_labelings[labeling_class_name].merge!(origins)
+        else
+          @inline_assigned_labelings[labeling_class_name] = (origins)
+        end
+      end
     end
   end
 

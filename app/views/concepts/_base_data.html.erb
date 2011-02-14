@@ -19,13 +19,18 @@
     </ol>
   </fieldset>
 
-  <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
-    <%- languages.each do |language| -%>
-      <%- if labeling_class.nested_editable? -%>
-        <%= render labeling_class.edit_partial_name(@concept), :f => f, :concept => @concept, :klass => labeling_class, :language => language %>
+  <fieldset>
+    <legend>Labelings</legend>
+    <ol>
+    <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
+      <%- languages.each do |language| -%>
+        <%- if labeling_class.nested_editable? -%>
+          <%= render labeling_class.edit_partial_name(@concept), :f => f, :concept => @concept, :klass => labeling_class, :language => language %>
+        <%- end -%>
       <%- end -%>
     <%- end -%>
-  <%- end -%>
+    </ol>
+  </fieldset>
 
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
     <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
