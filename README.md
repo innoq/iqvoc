@@ -33,7 +33,7 @@ is extendable via Rails Engines. The core config residing in `lib/iqvoc.rb` prov
 overview of the possibilities. As an example for close vendor tailoring the core to your needs,
 see `EXAMPLE`.
 
-## Glitches/Bugs/ToDo
+## Glitches, Bugs, ToDo
 
 There are still several glitches and bugs we directly know of. They are marked with
 `# TODO` and `# FIXME` in the sources.
