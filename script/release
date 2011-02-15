@@ -35,13 +35,13 @@ begin
       puts "App name can not be blank"
     end
     
-    `git clone -b #{branch} #{fetch_url} iqvoc`
+    `git clone -b #{branch} #{fetch_url} #{app}`
 
-    FileUtils.cd('iqvoc') do
+    FileUtils.cd(app) do
       FileUtils.cp("Gemfile.#{app}_prod", "Gemfile")
     end
 
-    `zip -qr iqvoc_#{Iqvoc::VERSION}.zip iqvoc`
+    `zip -qr iqvoc_#{Iqvoc::VERSION}.zip #{app}`
 
   end
 ensure
