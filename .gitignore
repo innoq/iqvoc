@@ -3,6 +3,7 @@ db/*.sqlite3
 db/schema.rb
 log/*.log
 tmp/**/*
+tmp/*
 .svn
 .DS_Store
 nbproject
