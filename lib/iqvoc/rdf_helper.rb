@@ -1,4 +1,4 @@
-module IqvocGlobal
+module Iqvoc
   class RdfHelper
   
     LITERAL_REGEXP = /"(.*)"@([a-zA-Z]{2})/

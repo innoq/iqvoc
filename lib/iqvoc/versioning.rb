@@ -1,4 +1,4 @@
-module IqvocGlobal
+module Iqvoc
   module Versioning
 
     extend ActiveSupport::Concern

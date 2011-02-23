@@ -1,5 +1,4 @@
-# DeepCloning
-module IqvocGlobal
+module Iqvoc
   module DeepCloning
     def self.included(base) #:nodoc:
       base.alias_method_chain :clone, :deep_cloning
