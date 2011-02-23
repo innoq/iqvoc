@@ -1,8 +1,7 @@
 require 'iqvoc'
 require 'iqvoc/version'
+require 'iqvoc/versioning'
+require 'iqvoc/deep_cloning'
+require 'iqvoc/rdf_helper'
 
-require 'iqvoc_global/versioning'
-require 'iqvoc_global/deep_cloning'
-require 'iqvoc_global/rdf_helper'
-
-ActiveRecord::Base.send :include, IqvocGlobal::DeepCloning
+ActiveRecord::Base.send :include, Iqvoc::DeepCloning

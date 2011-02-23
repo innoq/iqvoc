@@ -48,7 +48,7 @@ class Note::Base < ActiveRecord::Base
   # ********** Methods
 
   def self.from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
   end
   
@@ -68,7 +68,7 @@ class Note::Base < ActiveRecord::Base
   end
   
   def from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.value    = h[:value]
     self.language = h[:language]
     self

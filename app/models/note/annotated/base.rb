@@ -5,7 +5,7 @@ class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::A
   belongs_to :note, :class_name => Note::Base.name
 
   # def value=(val)
-  #   write_attribute(:value, IqvocGlobal::RdfHelper.quote_turtle_literal(val))
+  #   write_attribute(:value, Iqvoc::RdfHelper.quote_turtle_literal(val))
   # end
 
 end

@@ -2,7 +2,7 @@ class Concept::Base < ActiveRecord::Base
 
   set_table_name 'concepts'
 
-  include IqvocGlobal::Versioning
+  include Iqvoc::Versioning
 
   class_inheritable_accessor :default_includes
   self.default_includes = []

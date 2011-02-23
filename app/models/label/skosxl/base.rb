@@ -1,6 +1,6 @@
 class Label::SKOSXL::Base < Label::Base
 
-  include IqvocGlobal::Versioning
+  include Iqvoc::Versioning
   
   # ********** Validations
 
@@ -75,7 +75,7 @@ class Label::SKOSXL::Base < Label::Base
   # end
 
   def self.from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
   end
   
@@ -104,7 +104,7 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.value    = h[:value]
     self.language = h[:language]
     self
