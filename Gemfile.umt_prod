@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.4'
+gem 'rails', '3.0.5'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
 # https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
@@ -13,5 +13,5 @@ gem 'cancan'
 gem 'json'
 gem 'activerecord-oracle_enhanced-adapter'
 
-gem 'iq_rdf', '~> 0.0.13'
+gem 'iq_rdf', '~> 0.0.14'
 gem 'iqvoc_umt', '~> 0.0.11'

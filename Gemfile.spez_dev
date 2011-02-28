@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.4'
+gem 'rails', '3.0.5'
 
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~>0.0.8', :git => 'git@github.com:innoq/iq_rdf.git'
+gem 'iq_rdf', '~> 0.0.14'
 gem 'json'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
