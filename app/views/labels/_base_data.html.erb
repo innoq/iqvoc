@@ -41,10 +41,11 @@
   </fieldset>
   
   <fieldset>
+    <legend>Additional</legend>
     <ol>
     <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
       <%- unless association_class.nested_editable? -%>
-        <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class %>
+        <%#= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class %>
       <%- end -%>
     <%- end -%>
     </ol>
@@ -63,4 +64,8 @@
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <%= link_to t("txt.common.reset") %>
   <% end %>
+<% end %>
+
+<%= content_for :widget_translations do %>
+  <%= render :partial => 'layouts/widget_translations' %>
 <% end %>
