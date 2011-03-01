@@ -11,9 +11,9 @@ module ConceptsHelper
     render :partial => "concepts/hierarchical/treeview", :locals => { :root => root }
   end
 
-  def render_concept_association(hash, concept, association_class, furter_options = {})
+  def render_concept_association(hash, concept, association_class, further_options = {})
     ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") <<
-      render(association_class.partial_name(concept), furter_options.merge(:concept => concept, :klass => association_class))
+      render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
   end
 
   def concept_view_data(concept)
