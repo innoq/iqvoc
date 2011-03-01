@@ -15,10 +15,6 @@
 
 <%= render :partial => "labels/base_data" %>
 
-<%- Iqvoc::XLLabel.relation_classes.each do |relation_class| -%>
-  <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
-<%- end -%>
-
 <div class="relation-body">
   <fieldset>
     <legend><%= t("txt.views.labels.pref_label_of") %></legend>
