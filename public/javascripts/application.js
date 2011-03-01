@@ -22,6 +22,7 @@ jQuery(document).ready(function() {
 		
     // special case for usage notes
     // a usage note contains a select box instead of a textarea
+    // FIXME: Hardcoded UMT stuff
     var isUsageNote = source.find("label:first").attr("for").match(/^concept_umt_usage_notes/);
 		
     if (source.is(":hidden")) {
