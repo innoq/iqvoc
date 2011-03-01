@@ -20,11 +20,6 @@
         <%= render :partial => 'partials/label/additional_base_data', :locals => { :f => f } %>
       <%- end -%>
       
-      <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
-        <%- if assoc_class.nested_editable? -%>
-          <%= render :partial => assoc_class.edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
-        <%- end -%>
-      <%- end -%>
       <li>
         <%= f.label :follow_up %>
         <%= f.text_field :follow_up, :class => "datepicker" %>
