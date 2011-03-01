@@ -2,7 +2,7 @@
 
 <p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
 
-<%= form_for @label, :as => 'label', :url => labels_path(:published => 0, :lang => @active_language), :html => {:class => "form"} do |f| %>
+<%= form_for @label, :as => 'label', :url => @label.new_record? ? labels_path(:lang => I18n.locale) : label_path(:lang => I18n.locale, :id => @label, :published => 0), :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
@@ -35,6 +35,26 @@
       </li>
     </ol>
   </fieldset>
+  
+  <fieldset>
+    <legend>Relations</legend>
+    <ol>
+    <%- Iqvoc::XLLabel.relation_classes.each do |relation_class| -%>
+      <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
+    <%- end -%>
+    </ol>
+  </fieldset>
+  
+  <fieldset>
+    <ol>
+    <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
+      <%- unless association_class.nested_editable? -%>
+        <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class %>
+      <%- end -%>
+    <%- end -%>
+    </ol>
+  </fieldset>
+  
   <%# FIXME: shouldn't this be @label.new_record? %>
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <% Iqvoc::XLLabel.note_classes.each do |note_class| %>

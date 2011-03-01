@@ -12,6 +12,10 @@ class Label::Relation::Base < ActiveRecord::Base
   scope :by_range, lambda { |range|
     where(:range_id => range)
   }
+  
+  scope :by_range_origin, lambda { |origin|
+    includes(:range) & Label::Base.by_origin(origin)
+  }
 
   scope :range_editor_selectable, lambda { 
    # includes(:range) & Iqvoc::XLLabel.base_class.editor_selectable # Doesn't work correctly (kills label_relations.type condition :-( )
