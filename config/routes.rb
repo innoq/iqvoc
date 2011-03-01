@@ -3,29 +3,19 @@ Iqvoc::Application.routes.draw do
 
   scope '(:lang)' do
     resources :collections
-    match 'search(.:format)'    => 'search_results#index', :as => 'search'
+    match 'search(.:format)' => 'search_results#index', :as => 'search'
   end
 
-  match 'schema(.:format)'     => 'pages#schema',          :as => 'schema'
+  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
   
   scope ':lang', :lang => available_locales do
     resource  :user_session
-    resources :virtuoso_syncs, :only => [:new, :create]
-    
-    # The index action is only needed for language-independent
-    # JSON URIs, so they are defined in the namespace above this one.
-    resources :concepts do
-      resources :labelings, :controller => 'concepts/labelings'
-    end
-
-    resources :labels do
-      resources :relations, :controller => 'labels/relations'
-    end
-
-    resources :labelings
     resources :users
-    resources :notes
-    resources :label_relations
+    
+    resources :concepts
+    resources :labels
+    
+    resources :virtuoso_syncs, :only => [:new, :create]
     
     %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
