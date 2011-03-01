@@ -37,8 +37,8 @@
   </fieldset>
   <%# FIXME: shouldn't this be @label.new_record? %>
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
-    <% Iqvoc::Concept.note_classes.each do |note_class| %>
-      <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>
+    <% Iqvoc::XLLabel.note_classes.each do |note_class| %>
+      <%= render :partial => note_class.edit_partial_name(@label), :locals => { :owner_klass => @label, :assoc_klass => note_class, :f => f } %>
     <% end %>
 
   <% end %>
