@@ -1,27 +1,8 @@
-<div class="relation-body">
-  <fieldset>
-    <legend><%= klass.model_name.human(:count => 2) %></legend>
-    <input type="text" name="<%= klass.name.to_relation_name %>"
-           class="label_relation"
-           data-present-relations="[<%= klass.by_domain(label.id).range_editor_selectable.map{|r| "{'name': '#{escape_javascript(r.range.value)}', 'origin': '#{escape_javascript(r.range.origin)}', 'published': #{r.range.published?}}"}.join(',') %>]"
-           data-post-url="<%= label_relations_path(:lang => @active_language, :label_id => label.origin, :relation_class => klass.name) %>"
-           data-delete-url="<%= label_relation_path(:lang => @active_language, :id => "ORIGIN", :label_id => label.origin, :relation_class => klass.name) %>"
-           data-get-url="<%= labels_path(:format => :json) %>"
-           data-branch-url="<%= label_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
-           data-show-url="<%= label_path(:lang => @active_language, :id => "ORIGIN")%>"
-           data-versioned-show-url="<%= label_path(:published => 0, :lang => @active_language, :id => "ORIGIN") %>"
-           data-auth-token="<%= form_authenticity_token %>"
-           data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
-           data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
-           data-no-results-text="<%= I18n.t("txt.views.widget.no_results") %>"
-           <% if klass.only_one_allowed? %>
-             data-token-limit="1"
-           <% end %>
-           >
-    </input>
-    <%= t("txt.views.labels.new") %>
-    (<%- Iqvoc::Concept::labeling_class_names.values.flatten.uniq do |language| -%>
-      <%= link_to language.to_s, new_label_path(:published => 0, :lang => @active_language, :language => language), :target => "_blank" %>
-    <%- end -%>)
-  </fieldset>
-</div>
+<li>
+  <%= label_tag(klass.name.to_relation_name, klass.model_name.human(:count => 2)) %>
+  <%= text_field_tag "label[inline_#{klass.name.to_relation_name}]", label.send("inline_#{klass.name.to_relation_name}"),
+    :id => "#{klass.name.to_relation_name}",
+    :class => "token_input_widget",
+    :"data-query-url" => labels_path(:lang => I18n.locale, :format => :json),
+    :"data-options" => {:prePopulate => Iqvoc::XLLabel.base_class.editor_selectable.by_origin(label.send("inline_#{klass.name.to_relation_name}")).map{|l| label_widget_data(l)}}.to_json %>
+</li>
