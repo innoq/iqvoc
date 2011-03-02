@@ -13,14 +13,14 @@
 %>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>">
   <%- @concepts.each do |concept| -%>
-  <%- has_children = (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) -%>
+  <%- has_children = concept.narrower_relations.any? -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
       <%= link_to(concept.pref_label(params[:pref_label_lang].to_s), concept_url(:id => concept, :lang => I18n.locale)) %>
       <%- if concept.additional_info.present? -%>
         (<%= concept.additional_info %>)
       <%- end -%>
       <%- if has_children -%>
-        <ul >
+        <ul>
           <li><span class="placeholder">&nbsp;</span></li>
         </ul>
       <%- end -%>
