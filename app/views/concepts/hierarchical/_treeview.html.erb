@@ -5,8 +5,7 @@
 %>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>">
   <%-
-    @concept.narrower_relations.each do |relation| # XXX: broader relations irrelevant?
-      concept = Concept::Base.find(relation.target_id) # XXX: use of Concept::Base correct?
+    concepts.each do |concept|
       has_children = concept.narrower_relations.any?
   -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">

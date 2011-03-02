@@ -7,8 +7,8 @@ module ConceptsHelper
     str.match(/^<.*>$/) ? str : "\"#{str}\""
   end
 
-  def treeview(root = "source")
-    render :partial => "concepts/hierarchical/treeview", :locals => { :root => root }
+  def treeview(concepts, root = "source")
+    render :partial => "concepts/hierarchical/treeview", :locals => { :root => root, :concepts => concepts }
   end
 
   def render_concept_association(hash, concept, association_class, further_options = {})
