@@ -6,25 +6,4 @@
 
 <p><%= t('txt.views.concepts.select', :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></p>
 
-<%-
-  hcpath = hierarchical_concepts_path(:lang => @active_language,
-      :format => :json, :pref_label_lang => params[:pref_label_lang],
-      :published => params[:published])
--%>
-<ul class="hybrid-treeview" data-url="<%= hcpath %>">
-  <%- @concepts.each do |concept| -%>
-  <%- has_children = concept.narrower_relations.any? -%>
-    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(concept.pref_label(params[:pref_label_lang].to_s),
-              concept_url(:id => concept, :lang => I18n.locale)) %>
-      <%- if concept.additional_info.present? -%>
-        (<%= concept.additional_info %>)
-      <%- end -%>
-      <%- if has_children -%>
-        <ul>
-          <li><span class="placeholder">&nbsp;</span></li>
-        </ul>
-      <%- end -%>
-    </li>
-  <%- end -%>
-</ul>
+<%= treeview(@concepts) %>
