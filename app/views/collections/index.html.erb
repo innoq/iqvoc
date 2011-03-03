@@ -4,6 +4,10 @@
   <%= link_to t("txt.views.collections.new"), new_collection_path(:lang => I18n.locale) %>
 </p>
 
-<ul>
+<%-
+  hcpath = hierarchical_collections_path(:lang => @active_language,
+      :format => :json)
+-%>
+<ul class="hybrid-treeview" data-url="<%= hcpath %>">
   <%= render :partial => 'collection', :collection => @collections %>
 </ul>

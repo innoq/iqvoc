@@ -29,6 +29,8 @@ Iqvoc::Application.routes.draw do
     match 'alphabetical_concepts/:letter(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
+    match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
+
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
