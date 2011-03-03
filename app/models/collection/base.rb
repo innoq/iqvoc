@@ -1,39 +1,39 @@
 class Collection::Base < ActiveRecord::Base
-  
+
   set_table_name 'collections'
 
   has_many :collection_labels, :foreign_key => 'collection_id', :dependent => :destroy
-    
-  has_many Note::SKOS::Definition.name.to_relation_name, 
-    :class_name => 'Note::SKOS::Definition', 
+
+  has_many Note::SKOS::Definition.name.to_relation_name,
+    :class_name => 'Note::SKOS::Definition',
     :as => :owner,
     :dependent => :destroy
-    
+
   has_many :members,
     :class_name  => 'Collection::Member::Base',
     :foreign_key => 'collection_id',
     :dependent   => :destroy
-  
+
   has_many :concept_members,
     :class_name  => 'Collection::Member::Concept',
     :foreign_key => 'collection_id',
     :dependent   => :destroy
-  
+
   has_many :concepts,
     :through => :concept_members
-    
+
   has_many :collection_members,
     :class_name  => 'Collection::Member::Collection',
     :foreign_key => 'collection_id',
     :dependent   => :destroy
-    
+
   has_many :subcollections,
     :through => :collection_members
 
-  accepts_nested_attributes_for :collection_labels, :note_skos_definitions, 
-    :allow_destroy => true, 
+  accepts_nested_attributes_for :collection_labels, :note_skos_definitions,
+    :allow_destroy => true,
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
-    
+
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   before_validation(:on => :create) do
@@ -43,7 +43,7 @@ class Collection::Base < ActiveRecord::Base
   scope :by_origin, lambda { |origin|
     where(:origin => origin)
   }
-  
+
   scope :by_label_value, lambda { |val|
     joins(:collection_labels) & CollectionLabel.by_query_value(val)
   }
@@ -54,11 +54,11 @@ class Collection::Base < ActiveRecord::Base
   def self.note_class_names
     ['Note::SKOS::Definition']
   end
-  
+
   def self.note_classes
     note_class_names.map(&:constantize)
   end
-  
+
   def self.create_with_language_and_value!(lang, val)
     create!(:collection_labels => [CollectionLabel.new(:language => lang, :value => val)])
   end
@@ -82,7 +82,7 @@ class Collection::Base < ActiveRecord::Base
   def inline_member_concepts
     Concept::Base.editor_selectable.where(:origin => inline_member_concept_origins)
   end
-  
+
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.split(',').map(&:strip)
   end
@@ -105,7 +105,7 @@ class Collection::Base < ActiveRecord::Base
     end
     concept_members.includes(:concept).where("#{Concept::Base.table_name}.origin" => (existing_concept_origins - @member_concept_origins)).destroy_all()
   end
-  
+
   def regenerate_collection_members
     return if @member_collection_origins.nil? # There is nothing to do
     existing_collection_origins = collection_members.map{|m| m.collection.origin}.uniq
@@ -119,7 +119,7 @@ class Collection::Base < ActiveRecord::Base
       where("#{Collection::Base.table_name}.origin" => (existing_collection_origins - @member_collection_origins)).
       destroy_all()
   end
-  
+
   def label
     if collection_label = collection_labels.by_language(I18n.locale).first || collection_labels.first
       collection_label
@@ -127,10 +127,10 @@ class Collection::Base < ActiveRecord::Base
       origin
     end
   end
-  
+
   # def notes_for_class(note_class)
   #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
   #   notes.select{ |note| note.class.name == note_class }
   # end
-  
+
 end

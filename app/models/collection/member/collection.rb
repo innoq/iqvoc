@@ -1,7 +1,7 @@
 class Collection::Member::Collection < Collection::Member::Base
-  
+
   belongs_to :subcollection, :class_name => 'Collection::Base', :foreign_key => 'target_id'
-  
+
   def self.view_section(obj)
     "main"
   end
@@ -13,5 +13,5 @@ class Collection::Member::Collection < Collection::Member::Base
   def self.partial_name(obj)
     "partials/collection/member"
   end
-  
+
 end

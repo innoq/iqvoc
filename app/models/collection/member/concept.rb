@@ -1,7 +1,7 @@
 class Collection::Member::Concept < Collection::Member::Base
-  
+
   belongs_to :concept, :class_name => Iqvoc::Concept.base_class_name, :foreign_key => 'target_id'
-  
+
   def self.view_section(obj)
     "main"
   end
@@ -13,5 +13,5 @@ class Collection::Member::Concept < Collection::Member::Base
   def self.partial_name(obj)
     "partials/collection/member"
   end
-  
+
 end
