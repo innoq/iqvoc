@@ -9,5 +9,19 @@
       :format => :json)
 -%>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>">
-  <%= render :partial => 'collection', :collection => @collections %>
+  <%-
+    # determine non-orphans (items with a parent)
+    children = []
+    @collections.each do |collection| # TODO: use #map along with #flatten?
+      if collection.subcollections.any?
+        children += collection.subcollections
+      end
+    end
+    children.uniq! # TODO: use Set?
+    # determine orphans (root-level items)
+    orphans = @collections.find_all do |collection|
+      not children.include? collection
+    end
+  -%>
+  <%= render :partial => 'collection', :collection => orphans %>
 </ul>
