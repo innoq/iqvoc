@@ -7,16 +7,16 @@ Iqvoc::Application.routes.draw do
   end
 
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
-  
+
   scope ':lang', :lang => available_locales do
     resource  :user_session
     resources :users
-    
+
     resources :concepts
     resources :labels
-    
+
     resources :virtuoso_syncs, :only => [:new, :create]
-    
+
     %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
       match "#{type}/versions/:origin/merge(.:format)"       => "#{type}/versions#merge",     :as => "#{type.singularize}_versions_merge"
@@ -36,10 +36,10 @@ Iqvoc::Application.routes.draw do
     # See ApplicationController#unlocalized_root
     root :to => 'concepts/hierarchical#index', :as => 'localized_root'
   end
-  
+
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
   match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
-  
+
   root :to => 'application#unlocalized_root'
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
