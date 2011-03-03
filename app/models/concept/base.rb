@@ -19,7 +19,7 @@ class Concept::Base < ActiveRecord::Base
 
   after_save do |concept|
     # Handle save or destruction of inline relations (relations or labelings) for use with widgets
-    
+
     # Concept relations
     (@inline_assigned_relations ||= {}).each do |relation_class_name, new_origins|
       existing_origins = concept.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
@@ -30,12 +30,12 @@ class Concept::Base < ActiveRecord::Base
         concept.send(relation_class_name.to_relation_name).destroy_with_reverse_relation(relation_class_name.constantize, relation.target)
       end
     end
-    
+
     # Labelings
     (@inline_assigned_labelings ||= {}).each do |labeling_class_name, origin_mappings|
       # Remove all associated labelings of the given type
       concept.send(labeling_class_name.to_relation_name).destroy_all
-      
+
       # (Re)create labelings reflecting a widget's parameters
       origin_mappings.each do |key, value|
         language    = key
@@ -47,7 +47,7 @@ class Concept::Base < ActiveRecord::Base
         end
       end
     end
-    
+
   end
 
   # ********** "Static"/unconfigureable relations
@@ -132,9 +132,9 @@ class Concept::Base < ActiveRecord::Base
   # nessacary type="..." condition! FIXME
   has_many :pref_labels,
     :through => :pref_labelings,
-    :source  => :target
-  
-  
+    :source => :target
+
+
   # {
   #   "Labeling::SKOSXL::PrefLabel" => {
   #     :de => [
@@ -159,7 +159,7 @@ class Concept::Base < ActiveRecord::Base
     else
       include_to_deep_cloning(labeling_class_name.to_relation_name)
     end
-    
+
     languages.each do |language|
       # Serialized setters and getters (\r\n or , separated)
       define_method("inline_#{labeling_class_name.to_relation_name}_#{language}".to_sym) do
@@ -167,11 +167,11 @@ class Concept::Base < ActiveRecord::Base
       end
 
       define_method("inline_#{labeling_class_name.to_relation_name}_#{language}=".to_sym) do |value|
-        
+
         # Write to instance variable and store it on after_safe
         @inline_assigned_labelings ||= {}
         origins = { language => value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq }
-        
+
         if @inline_assigned_labelings[labeling_class_name]
           @inline_assigned_labelings[labeling_class_name].merge!(origins)
         else
@@ -205,7 +205,7 @@ class Concept::Base < ActiveRecord::Base
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(:value => url)
       end
     end
-    
+
   end
 
   # *** Notes
@@ -237,7 +237,7 @@ class Concept::Base < ActiveRecord::Base
   #  :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
   scope :tops, includes(:broader_relations).
     where(:concept_relations => {:id => nil})
-  
+
   # scope :broader_tops,
   #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
   #   :include => :pref_labels,
@@ -373,7 +373,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   protected
-  
+
   def two_versions_exist
     errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
   end
@@ -383,7 +383,7 @@ class Concept::Base < ActiveRecord::Base
       errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.count == 0
     end
   end
-  
+
   def associations_must_be_published
     if @full_validation == true
       [:labels, :related_concepts].each do |method|
