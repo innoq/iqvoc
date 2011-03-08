@@ -46,5 +46,9 @@ class Label::Relation::Base < ActiveRecord::Base
   def self.only_one_allowed?
     false
   end
+  
+  def self.nested_editable?
+    true
+  end
 
 end
