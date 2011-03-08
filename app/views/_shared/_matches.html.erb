@@ -1,6 +1,0 @@
-<% %w(close_matches).each do |type| %>
-  <h3><%= type.humanize %></h3>
-  <div class="relation-body">
-    <%= object.send(type.to_sym).map {|match| match_url(match.value)}.join(', ') %>
-  </div>
-<% end %>
