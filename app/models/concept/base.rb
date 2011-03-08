@@ -132,7 +132,7 @@ class Concept::Base < ActiveRecord::Base
   # nessacary type="..." condition! FIXME
   has_many :pref_labels,
     :through => :pref_labelings,
-    :source => :target
+    :source  => :target
   
   
   # {
