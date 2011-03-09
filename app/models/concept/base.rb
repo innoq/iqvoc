@@ -10,7 +10,7 @@ class Concept::Base < ActiveRecord::Base
   # ********** Validations
 
   validates :origin, :presence => true
-  validate :two_versions_exist,   :on => :create
+  validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :on => :update
   # FIXME
   # validates :associations_must_be_published
@@ -360,8 +360,8 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def generate_origin
-    concept = Concept::Base.select(:origin).order("origin DESC").first
-    value   = concept.blank? ? 1 : concept.origin.to_i + 1
+    concept = Concept::Base.select(:origin).last
+    value = concept.blank? ? 1 : concept.origin.to_i + 1
     write_attribute(:origin, sprintf("_%08d", value))
   end
 
