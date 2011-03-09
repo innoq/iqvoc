@@ -1,5 +1,8 @@
 <h3><%= Iqvoc::Concept.base_class.model_name.human %></h3>
-<%= form_for @concept, :as => 'concept', :url => @concept.new_record? ? concepts_path(:lang => I18n.locale) : concept_path(:published => 0, :id => @concept, :lang => I18n.locale), :html => {:class => "form"} do |f| %>
+<%= form_for @concept, :as => 'concept',
+        :url => @concept.new_record? ? concepts_path(:lang => I18n.locale) :
+            concept_path(:published => 0, :id => @concept, :lang => I18n.locale),
+        :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
@@ -13,7 +16,8 @@
       </li>
       <%- Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class| -%>
         <%- if assoc_class.nested_editable? -%>
-          <%= render :partial => assoc_class.edit_partial_name(@concept), :locals => { :concept => @concept, :klass => assoc_class, :f => f } %>
+          <%= render :partial => assoc_class.edit_partial_name(@concept),
+                  :locals => { :concept => @concept, :klass => assoc_class, :f => f } %>
         <%- end -%>
       <%- end -%>
     </ol>
@@ -25,7 +29,8 @@
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
       <%- languages.each do |language| -%>
         <%- if labeling_class.nested_editable? -%>
-          <%= render labeling_class.edit_partial_name(@concept), :f => f, :concept => @concept, :klass => labeling_class, :language => language %>
+          <%= render labeling_class.edit_partial_name(@concept), :f => f,
+                  :concept => @concept, :klass => labeling_class, :language => language %>
         <%- end -%>
       <%- end -%>
     <%- end -%>
@@ -33,17 +38,20 @@
   </fieldset>
 
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
-    <%= render :partial => note_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
+    <%= render :partial => note_class.edit_partial_name(@concept),
+            :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
   <% end %>
 
   <fieldset>
     <legend>Relations</legend>
     <ol>
       <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
-        <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
+        <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept),
+                :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
       <%- end -%>
 
-      <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
+      <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept),
+              :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
 
       <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
         <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>
@@ -55,15 +63,17 @@
     <legend>Matches</legend>
     <ol>
       <% Iqvoc::Concept.match_classes.each do |match_class| %>
-        <%= render :partial => match_class.edit_partial_name(@concept), :locals => { :owner_klass => @concept, :assoc_klass => match_class, :f => f } %>
+        <%= render :partial => match_class.edit_partial_name(@concept),
+                :locals => { :owner_klass => @concept, :assoc_klass => match_class, :f => f } %>
       <% end %>
     </ol>
   </fieldset>
-  
+
   <%# FIXME: Just copied over here. In case there are additional concept associations, the markup needs structuring. %>
   <%- Iqvoc::Concept.additional_association_classes.keys.each do |association_class| -%>
   <%- unless association_class.nested_editable? -%>
-    <%= render association_class.edit_partial_name(@concept), :concept => @concept, :klass => association_class %>
+    <%= render association_class.edit_partial_name(@concept),
+            :concept => @concept, :klass => association_class %>
   <%- end -%>
 <%- end -%>
 

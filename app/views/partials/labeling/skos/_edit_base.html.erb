@@ -1,6 +1,11 @@
 <div class="relation-body">
   <fieldset>
-    <legend><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{language}", :default => language.to_s)})" if language %></legend>
-    <%= text_area_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]", klass.by_concept(concept).by_label_language(language).map{ |l| l.target.value }.join(", ") %>
+    <legend>
+      <%= klass.model_name.human(:count => 2) %>
+      <%= "(#{t("languages.#{language}", :default => language.to_s)})" if language %>
+    </legend>
+    <%= text_area_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]",
+            klass.by_concept(concept).by_label_language(language).
+                map{ |l| l.target.value }.join(", ") %>
   </fieldset>
 </div>

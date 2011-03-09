@@ -1,6 +1,6 @@
 class ConceptsController < ApplicationController
   skip_before_filter :require_user
-  
+
   def index
     authorize! :read, Concept::Base
     respond_to do |format|
@@ -20,7 +20,7 @@ class ConceptsController < ApplicationController
       end
     end
   end
-  
+
   def show
     scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :collection_labels}).includes(Iqvoc::Concept.base_class.default_includes)
     if params[:published] == '1' || !params[:published]
@@ -31,10 +31,10 @@ class ConceptsController < ApplicationController
       published = false
       @concept = scope.unpublished.last
     end
-    
+
     raise ActiveRecord::RecordNotFound unless @concept
     authorize! :read, @concept
-    
+
     respond_to do |format|
       format.html do
         published ? render('show_published') : render('show_unpublished')
@@ -106,7 +106,7 @@ class ConceptsController < ApplicationController
     @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_concept
     authorize! :destroy, @new_concept
-    
+
     if @new_concept.destroy
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
       redirect_to dashboard_path(:lang => @active_language)
@@ -115,5 +115,5 @@ class ConceptsController < ApplicationController
       redirect_to concept_path(:published => 0, :id => @new_concept, :lang => @active_language)
     end
   end
-  
+
 end
