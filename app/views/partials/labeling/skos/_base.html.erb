@@ -2,9 +2,7 @@
   <%- if defined?(concept) -%>
     <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
     <div class="relation-body">
-      <%=  raw concept.labels_for_labeling_class_and_language(klass, lang.to_s).each { |label|
-        link_to(label.value, label_path(:lang => @active_language, :id => label))
-      }.join(', ') %>
+      <%= concept.labels_for_labeling_class_and_language(klass, lang).map(&:value).join(', ') %>
     </div>
   <%- elsif defined?(label) -%>
     <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>

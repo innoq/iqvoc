@@ -308,7 +308,7 @@ class Concept::Base < ActiveRecord::Base
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
-    return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang.to_s]) || []).select{|l| l.published? || !only_published}
+    return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{|l| l.published? || !only_published}
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
