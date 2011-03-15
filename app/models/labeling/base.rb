@@ -12,7 +12,7 @@ class Labeling::Base < ActiveRecord::Base
   scope :by_concept, lambda { |concept|
     where(:owner_id => concept.id)
   }
-  
+
   scope :by_label, lambda { |label|
     where(:target_id => label.id)
   }
@@ -20,7 +20,7 @@ class Labeling::Base < ActiveRecord::Base
   scope :concept_published, lambda {
     includes(:owner) & Concept::Base.published
   }
-  
+
   scope :label_published, lambda {
     includes(:target) & Label::Base.published
   }
@@ -28,7 +28,7 @@ class Labeling::Base < ActiveRecord::Base
   scope :label_begins_with, lambda { |letter|
     includes(:target) & Label::Base.begins_with(letter)
   }
-  
+
   scope :by_label_language, lambda { |lang|
     includes(:target) & Label::Base.by_language(lang)
   }
@@ -38,7 +38,7 @@ class Labeling::Base < ActiveRecord::Base
   def self.only_one_allowed?
     false
   end
-  
+
   def self.view_section(obj)
     obj.is_a?(Label::Base) ? "concepts" : "labels"
   end
