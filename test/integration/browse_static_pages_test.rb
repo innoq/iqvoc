@@ -12,5 +12,5 @@ class BrowseStaticPagesTest < ActionDispatch::IntegrationTest
     click_link_or_button("Über")
     assert_equal about_path(:lang => 'de', :format => 'html'), current_path
   end
-  
+
 end

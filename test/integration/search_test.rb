@@ -54,7 +54,7 @@ end
     And I execute the search
     Then there should be <amount> result
     And the results should contain "<result>"
-    
+
     Examples:
       | type                      | query             | languages         | query_type | amount | result               |
       | bevorzugte Namen (Labels) | Forest            | Deutsch, English  | enthält    | 1      | Forest               |

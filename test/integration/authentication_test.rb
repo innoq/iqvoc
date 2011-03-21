@@ -24,5 +24,5 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
     click_link_or_button "Abmelden"
     assert page.has_content?("Abmeldung erfolgreich")
   end
-  
+
 end
