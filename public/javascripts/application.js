@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
-  $.each($("input.token_input_widget"), function(index, elem) {
+  $("input.token_input_widget").each(function(index, elem) {
     $(elem).val("");
     var query_url    = $(elem).attr("data-query-url");
     var options      = $.parseJSON($(elem).attr("data-options"));
