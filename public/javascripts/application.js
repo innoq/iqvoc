@@ -1,3 +1,14 @@
+// IQVOC = function() {
+//   var foo = function() { };
+//   var publicFunc = function() {
+//     return foo();
+//   };
+// 
+//   return {
+//     publicFunc: publicFunc
+//   }
+// };
+
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
