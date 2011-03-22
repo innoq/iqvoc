@@ -1,6 +1,6 @@
 class Concepts::HierarchicalController < ConceptsController
   skip_before_filter :require_user
-  
+
   def index
     authorize! :read, Concept::Base
 
@@ -9,7 +9,7 @@ class Concepts::HierarchicalController < ConceptsController
     else
       Concept::Base.published
     end
-    
+
     # if params[:broader] is given, the action is handling the reversed tree
     @concepts = case params[:root]
     when /\d+/
