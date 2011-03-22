@@ -2,7 +2,7 @@ require 'test_helper'
 require 'integration_test_helper'
 
 class EditConceptsTest < ActionDispatch::IntegrationTest
-  
+
   setup do
     @concept = Factory(:concept)
   end

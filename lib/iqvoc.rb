@@ -1,14 +1,14 @@
 require 'string'
 
 module Iqvoc
-  
-  mattr_accessor :title, 
-                 :searchable_class_names, 
-                 :available_languages, 
-                 :ability_class_name, 
+
+  mattr_accessor :title,
+                 :searchable_class_names,
+                 :available_languages,
+                 :ability_class_name,
                  :default_rdf_namespace_helper_methods,
                  :change_note_class_name
-  
+
   self.searchable_class_names = [
     'Labeling::SKOSXL::Base',
     'Labeling::SKOSXL::PrefLabel',
@@ -19,27 +19,27 @@ module Iqvoc
   self.ability_class_name = "::Ability"
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
-  
+
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
 
   def self.ability_class
     ability_class_name.constantize
   end
-  
+
   def self.change_note_class
     change_note_class_name.constantize
   end
 
   module Concept
-    mattr_accessor :base_class_name, 
+    mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
       :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
       :view_sections
-    
+
     self.base_class_name              = 'Concept::SKOS::Base'
 
     self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Poly'
@@ -49,7 +49,7 @@ module Iqvoc
     self.pref_labeling_languages      = [ :de ]
     self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
 
-    self.note_class_names             = [ 
+    self.note_class_names             = [
       Iqvoc.change_note_class_name,
       'Note::SKOS::Definition',
       'Note::SKOS::EditorialNote',
@@ -116,7 +116,7 @@ module Iqvoc
     def self.match_classes
       match_class_names.map(&:constantize)
     end
-    
+
     def self.additional_association_classes
       additional_association_class_names.keys.each_with_object({}) do |class_name, hash|
         hash[class_name.constantize] = additional_association_class_names[class_name]
@@ -139,11 +139,11 @@ module Iqvoc
     def self.base_class
       base_class_name.constantize
     end
-    
+
   end
 
   module XLLabel # This are the settings when using SKOSXL
-    mattr_accessor :base_class_name, 
+    mattr_accessor :base_class_name,
       :note_class_names,
       :relation_class_names,
       :additional_association_class_names,
@@ -160,7 +160,7 @@ module Iqvoc
     self.additional_association_class_names = {}
 
     self.view_sections = ["main", "concepts", "relations", "notes"]
-    
+
     # Set this to true if you're having a migration which extends the labels table
     # and you want to be able to edit these fields.
     # This is done by:
@@ -183,7 +183,7 @@ module Iqvoc
     def self.note_classes
       note_class_names.map(&:constantize)
     end
-    
+
     def self.change_note_class
       change_note_class_name.constantize
     end
@@ -202,12 +202,16 @@ module Iqvoc
       label_classes += [Label.base_class]
     end
     if const_defined?(:XLLabel)
-      label_classes += [XLLabel.base_class] + XLLabel.note_classes + XLLabel.relation_classes + XLLabel.additional_association_classes.keys
-    end   
-    arr = [Concept.base_class] + Concept.relation_classes + Concept.labeling_classes.keys + Concept.match_classes + Concept.note_classes + Concept.additional_association_classes.keys + label_classes
+      label_classes += [XLLabel.base_class] + XLLabel.note_classes +
+          XLLabel.relation_classes + XLLabel.additional_association_classes.keys
+    end
+    arr = [Concept.base_class] + Concept.relation_classes +
+        Concept.labeling_classes.keys + Concept.match_classes +
+        Concept.note_classes + Concept.additional_association_classes.keys +
+        label_classes
     arr.uniq
   end
-  
+
   def self.searchable_classes
     searchable_class_names.map(&:constantize)
   end
