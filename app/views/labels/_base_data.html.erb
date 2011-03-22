@@ -35,21 +35,24 @@
     <legend>Relations</legend>
     <ol>
     <%- Iqvoc::XLLabel.relation_classes.each do |relation_class| -%>
-      <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
-    <%- end -%>
-    </ol>
-  </fieldset>
-  
-  <fieldset>
-    <legend>Additional</legend>
-    <ol>
-    <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
-      <%- unless association_class.nested_editable? -%>
-        <%#= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class %>
+      <%- if relation_class.nested_editable? -%>
+        <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
       <%- end -%>
     <%- end -%>
     </ol>
   </fieldset>
+  
+  <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
+    <%- if association_class.nested_editable? -%>
+      <fieldset>
+        <legend><%= association_class.model_name.human(:count => 2) %></legend>
+        <ol>
+          <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class, :f => f %>
+        </ol>
+      </fieldset>
+    <%- end -%>
+  <%- end -%>
+
   
   <% unless @label.new_record? %>
     <% Iqvoc::XLLabel.note_classes.each do |note_class| %>
