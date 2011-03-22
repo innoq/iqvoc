@@ -9,10 +9,9 @@
 //   }
 // };
 
-jQuery(document).ready(function() {
-  var locale = $("meta[name=i18n-locale]").attr("content");
-
-  $("input.token_input_widget").each(function(index, elem) {
+function addWidget(index, elem) {
+    if (!elem) return;
+    
     $(elem).val("");
     var query_url    = $(elem).attr("data-query-url");
     var options      = $.parseJSON($(elem).attr("data-options"));
@@ -23,7 +22,12 @@ jQuery(document).ready(function() {
     options = $.extend(translations, options);
     
     $(elem).tokenInputNew(query_url, options);
-  });
+};
+
+jQuery(document).ready(function() {
+  var locale = $("meta[name=i18n-locale]").attr("content");
+
+  $("input.token_input_widget").each(addWidget);
 	
   // Label editing (inline notes)
   $("fieldset.note_relation ol li.inline_note.new").hide();
