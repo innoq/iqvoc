@@ -40,8 +40,10 @@ begin
     FileUtils.cd(app) do
       FileUtils.cp("Gemfile.#{app}_prod", "Gemfile")
     end
+    
+    puts "Release complete. Now build your vendor .gem and copy it to vendor/gems, zip and release."
 
-    `zip -qr iqvoc_#{Iqvoc::VERSION}.zip #{app}`
+    #`zip -qr iqvoc_#{Iqvoc::VERSION}.zip #{app}`
 
   end
 ensure
