@@ -39,6 +39,7 @@ begin
 
     FileUtils.cd(app) do
       FileUtils.cp("Gemfile.#{app}_prod", "Gemfile")
+      FileUtils.rm_f(Dir.glob("Gemfile.*"))
     end
     
     puts "Release complete. Now build your vendor .gem and copy it to vendor/gems, zip and release."
