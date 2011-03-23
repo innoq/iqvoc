@@ -13,5 +13,5 @@ gem 'cancan'
 gem 'json'
 gem 'activerecord-oracle_enhanced-adapter'
 
-gem 'iq_rdf', '~> 0.0.14'
-gem 'iqvoc_spez', '~> 0.0.5'
+gem 'iq_rdf'
+gem 'iqvoc_spez'
