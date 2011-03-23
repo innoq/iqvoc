@@ -280,7 +280,7 @@
           // Clear input box and make sure it keeps focus
           input_box
           .val("")
-          .focus();
+          // .focus();
 
           // Don't show the help dropdown, they've got the idea
           hide_dropdown();
