@@ -44,6 +44,6 @@ namespace :deploy do
   
   desc "Copy vendor specific Gemfile"
   task :copy_gemfile, :roles => :app do
-    run "cp #{release_path}/Gemfile.#{vendor}_prod #{release_path}/Gemfile"
+    run "cp #{release_path}/Gemfile.#{vendor}_demo #{release_path}/Gemfile"
   end
 end

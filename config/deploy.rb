@@ -9,7 +9,7 @@ set :default_stage, "ec2"
 set :stages, %w(ec2)
 require 'capistrano/ext/multistage'
 
-vendor = Capistrano::CLI.ui.ask("Please enter the vendor for your iQvoc instance [#{@capistrano_history['last_vendor']}]: ")
+vendor = Capistrano::CLI.ui.ask("Please enter the vendor for your iQvoc instance (Filename: Gemfile.[vendor]_demo) [#{@capistrano_history['last_vendor']}]: ")
 vendor = @capistrano_history['last_vendor'] if vendor == ""
 @capistrano_history['last_vendor'] = vendor
 set :vendor, vendor
