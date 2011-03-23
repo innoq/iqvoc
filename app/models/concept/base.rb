@@ -268,7 +268,7 @@ class Concept::Base < ActiveRecord::Base
     hash.each do |relation_name, lang_values|
       reflection = self.class.reflections.stringify_keys[relation_name]
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
-      if labeling_class && labeling_class < Labeling::Base && labeling_class.nested_editable?
+      if labeling_class && labeling_class < Labeling::Base
         self.send(relation_name).all.map(&:destroy)
         lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
         lang_values.each do |lang, values|

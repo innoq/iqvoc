@@ -47,8 +47,4 @@ class Label::Relation::Base < ActiveRecord::Base
     false
   end
   
-  def self.nested_editable?
-    true
-  end
-
 end
