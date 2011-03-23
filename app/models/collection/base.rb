@@ -1,8 +1,4 @@
-class Collection::Base < ActiveRecord::Base
-
-  set_table_name 'collections'
-
-  has_many :collection_labels, :foreign_key => 'collection_id', :dependent => :destroy
+class Collection::Base < Concept::Base
 
   has_many Note::SKOS::Definition.name.to_relation_name,
     :class_name => 'Note::SKOS::Definition',
@@ -30,7 +26,7 @@ class Collection::Base < ActiveRecord::Base
   has_many :subcollections,
     :through => :collection_members
 
-  accepts_nested_attributes_for :collection_labels, :note_skos_definitions,
+  accepts_nested_attributes_for :note_skos_definitions,
     :allow_destroy => true,
     :reject_if => Proc.new { |attrs| attrs[:value].blank? }
 
@@ -45,7 +41,7 @@ class Collection::Base < ActiveRecord::Base
   }
 
   scope :by_label_value, lambda { |val|
-    joins(:collection_labels) & CollectionLabel.by_query_value(val)
+    includes(:labels) & Label::Base.by_query_value(val)
   }
 
   validates_uniqueness_of :origin
