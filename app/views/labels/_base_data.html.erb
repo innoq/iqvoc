@@ -44,7 +44,6 @@
       <fieldset>
         <legend><%= association_class.model_name.human(:count => 2) %></legend>
         <ol>
-            <% logger.ap association_class %>
           <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class, :f => f %>
         </ol>
       </fieldset>
