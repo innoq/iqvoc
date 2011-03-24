@@ -1,16 +1,17 @@
 class CollectionsController < ApplicationController
+  @@klass = Iqvoc::Collection.class_name.constantize
 
   skip_before_filter :require_user
 
   def index
-    authorize! :read, Collection::Base
+    authorize! :read, @@klass
 
     respond_to do |format|
       format.html do
-        @collections = Collection::Base.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
+        @collections = @@klass.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
       end
       format.json do
-        @collections = (Collection::Base.includes(:collection_labels) & CollectionLabel.by_query_value("#{params[:query]}%")).all
+        @collections = (@@klass.with_pref_labels & Label::Base.by_query_value("#{params[:query]}%")).all
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
         render :json => response
@@ -19,23 +20,23 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    @collection = Collection::Base.by_origin(params[:id]).last
+    @collection = @@klass.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :read, @collection
   end
 
   def new
-    authorize! :create, Collection::Base
+    authorize! :create, @@klass
 
-    @collection = Collection::Unordered.new
+    @collection = @@klass.new
     build_note_relations
   end
 
   def create
-    authorize! :create, Collection::Base
+    authorize! :create, @@klass
 
-    @collection = Collection::Unordered.new(params[:collection])
+    @collection = @@klass.new(params[:concept])
 
     if @collection.save
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
@@ -47,7 +48,7 @@ class CollectionsController < ApplicationController
   end
 
   def edit
-    @collection = Collection::Base.by_origin(params[:id]).last
+    @collection = @@klass.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
@@ -55,12 +56,12 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    @collection = Collection::Base.by_origin(params[:id]).last
+    @collection = @@klass.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
 
-    if @collection.update_attributes(params[:collection])
+    if @collection.update_attributes(params[:concept])
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(@collection, :lang => I18n.locale)
     else
@@ -70,7 +71,7 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
-    @collection = Collection::Base.by_origin(params[:id]).last
+    @collection = @@klass.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :destroy, @collection
@@ -87,7 +88,6 @@ class CollectionsController < ApplicationController
   private
 
   def build_note_relations
-    @collection.collection_labels.build if @collection.collection_labels.empty?
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
   end
 

@@ -117,11 +117,7 @@ class Collection::Base < Concept::Base
   end
 
   def label
-    if collection_label = collection_labels.by_language(I18n.locale).first || collection_labels.first
-      collection_label
-    else
-      origin
-    end
+    return pref_label(I18n.locale) || labels.first || origin
   end
 
   # def notes_for_class(note_class)

@@ -129,6 +129,12 @@ module Iqvoc
 
   end
 
+  module Collection
+    mattr_accessor :class_name
+
+    self.class_name = 'Collection::Unordered'
+  end
+
   module Label # This are the settings when using SKOS
     mattr_accessor :base_class_name
 

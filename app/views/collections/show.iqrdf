@@ -3,8 +3,8 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
 end
 
 document << @collection.build_rdf_subject(document, controller) do |collection|
-  @collection.collection_labels.each do |ln|
-    ln.build_rdf(document, collection)
+  @collection.labelings.each do |labeling|
+    labeling.build_rdf(document, collection)
   end
 
   @collection.note_skos_definitions.each do |n|
