@@ -11,7 +11,7 @@ class OriginMappingTest < ActiveSupport::TestCase
   end
 
   def test_should_replace_brackets
-    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie-Ressource]")
+    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie/Ressource]")
   end
 
   def test_should_replace_comma
