@@ -26,9 +26,10 @@ class Collection::Base < Concept::Base
   has_many :subcollections,
     :through => :collection_members
 
-  accepts_nested_attributes_for :note_skos_definitions,
-    :allow_destroy => true,
-    :reject_if => Proc.new { |attrs| attrs[:value].blank? }
+  # XXX: fails after removing collection_labels!?
+  #accepts_nested_attributes_for :note_skos_definitions,
+  #  :allow_destroy => true,
+  #  :reject_if => Proc.new { |attrs| attrs[:value].blank? }
 
   after_save :regenerate_concept_members, :regenerate_collection_members
 
