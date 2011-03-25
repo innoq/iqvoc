@@ -56,10 +56,6 @@ class Collection::Base < Concept::Base
     note_class_names.map(&:constantize)
   end
 
-  def self.create_with_language_and_value!(lang, val)
-    create!(:collection_labels => [CollectionLabel.new(:language => lang, :value => val)])
-  end
-
   def to_param
     self.origin
   end

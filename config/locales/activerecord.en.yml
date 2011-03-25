@@ -97,9 +97,6 @@ en:
           other: "Collections"
         member:
           base: "Assigned collections"
-      collection_label:
-        one: "Collection Label"
-        other: "Collection Labels"
       
     attributes:
       concept:
@@ -120,4 +117,3 @@ en:
         active: "active"
         role: "Role"
         telephone_number: "Phone number"
-        
