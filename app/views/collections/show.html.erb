@@ -16,14 +16,25 @@
 </div>
 <% end %>
 
-<div class="relation">
-  <h3><%= CollectionLabel.model_name.human(:count => 2) %></h3>
-  <ul>
-    <% @collection.collection_labels.each do |collection_label| %>
-      <li><%= collection_label.value %> (<%= collection_label.language %>)</li>
-    <% end %>
-  </ul>
-</div>
+<%-
+# preferred label
+# XXX: duplicates parts of app/views/concepts/_show_head.html.erb
+-%>
+<h3><%= t("txt.common.pref_label") %>:
+  <%- if @collection.pref_label.new_record? -%>
+    -
+  <%- elsif @collection.pref_label.is_a?(Label::SKOSXL::Base) -%>
+    <%= link_to(@collection.pref_label, label_path(:lang => @active_language, :id => @collection.pref_label)) %>
+  <%- else -%>
+    <%= @collection.pref_label %>
+  <%- end -%>
+</h3>
+
+<%-
+# alternative labels
+# XXX: use of sections partial inconsistent with the rest of the template structure
+-%>
+<%= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
 
 <div class="relation">
   <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
