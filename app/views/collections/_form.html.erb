@@ -1,4 +1,18 @@
-<%= render :partial => CollectionLabel.edit_partial_name(@collection), :locals => { :collection => @collection, :f => f } %>
+<%-
+# XXX: largely duplicates app/views/concepts/_base_data.html.erb
+# XXX: should probably use separate config (i.e. Iqvoc:Collection)
+-%>
+<fieldset>
+  <legend>Labelings</legend>
+  <ol>
+  <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
+    <%- languages.each do |language| -%>
+       <%= render labeling_class.edit_partial_name(@collection), :f => f,
+                :concept => @collection, :klass => labeling_class, :language => language %>
+    <%- end -%>
+  <%- end -%>
+  </ol>
+</fieldset>
 
 <% [ Note::SKOS::Definition ].each do |klass| %>
   <%= render :partial => klass.edit_partial_name(@collection),
