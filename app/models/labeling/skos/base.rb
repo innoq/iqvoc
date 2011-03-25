@@ -1,6 +1,5 @@
 class Labeling::SKOS::Base < Labeling::Base
 
-  belongs_to :owner, :class_name => Iqvoc::Concept.base_class_name
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
 
   scope :by_label_with_language, lambda { |label, language|
