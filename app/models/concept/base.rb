@@ -304,6 +304,9 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
+    # Convert lang to string in case it's not nil.
+    # nil values play their own role for labels without a language.
+    lang = lang.to_s unless lang.nil?
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
