@@ -114,7 +114,7 @@ class Collection::Base < Concept::Base
   end
 
   def label
-    return pref_label(I18n.locale) || labels.first || origin
+    pref_label(I18n.locale) || labels.first || origin
   end
 
   # def notes_for_class(note_class)

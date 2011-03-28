@@ -1,17 +1,15 @@
 class CollectionsController < ApplicationController
-  @@klass = Iqvoc::Collection.class_name.constantize
-
   skip_before_filter :require_user
 
   def index
-    authorize! :read, @@klass
+    authorize! :read, Iqvoc::Collection.base_class
 
     respond_to do |format|
       format.html do
-        @collections = @@klass.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
+        @collections = Iqvoc::Collection.base_class.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
       end
       format.json do
-        @collections = (@@klass.with_pref_labels & Label::Base.by_query_value("#{params[:query]}%")).all
+        @collections = (Iqvoc::Collection.base_class.with_pref_labels & Label::Base.by_query_value("#{params[:query]}%")).all
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
         render :json => response
@@ -20,23 +18,23 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    @collection = @@klass.by_origin(params[:id]).last
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :read, @collection
   end
 
   def new
-    authorize! :create, @@klass
+    authorize! :create, Iqvoc::Collection.base_class
 
-    @collection = @@klass.new
+    @collection = Iqvoc::Collection.base_class.new
     build_note_relations
   end
 
   def create
-    authorize! :create, @@klass
+    authorize! :create, Iqvoc::Collection.base_class
 
-    @collection = @@klass.new(params[:concept])
+    @collection = Iqvoc::Collection.base_class.new(params[:concept])
 
     if @collection.save
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
@@ -48,7 +46,7 @@ class CollectionsController < ApplicationController
   end
 
   def edit
-    @collection = @@klass.by_origin(params[:id]).last
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
@@ -56,7 +54,7 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    @collection = @@klass.by_origin(params[:id]).last
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :update, @collection
@@ -71,7 +69,7 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
-    @collection = @@klass.by_origin(params[:id]).last
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :destroy, @collection

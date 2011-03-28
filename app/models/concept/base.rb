@@ -70,7 +70,7 @@ class Concept::Base < ActiveRecord::Base
   include_to_deep_cloning(:matches)
 
   has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Concept", :dependent => :destroy
-  has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.class_name
+  has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
   # *** Classifications
