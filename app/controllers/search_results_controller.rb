@@ -45,8 +45,8 @@ class SearchResultsController < ApplicationController
         end
       else
         @multi_query = true
-        # all names == search all Labeling & CollectionLabel classes
-        @results = Iqvoc.searchable_classes.select{ |klass| (klass < Labeling::Base) || (klass <= CollectionLabel) }.map{ |klass| klass.single_query(params) }.flatten
+        # all names (including collection labels)
+        @results = Iqvoc.searchable_classes.select{ |klass| (klass < Labeling::Base) }.map{ |klass| klass.single_query(params) }.flatten
       end
       
       respond_to do |format|
