@@ -32,6 +32,7 @@
   <%= text_field_tag "concept[inline_member_collection_origins]", @collection.inline_member_collection_origins.join(','),
     :class => "token_input_widget",
     :"data-query-url" => collections_path(:lang => I18n.locale, :format => :json),
+    :"data-exclude" => @collection.origin,
     :"data-options" => {:prePopulate => @collection.inline_member_collections.map{|c| collection_widget_data(c)}}.to_json %>
 </fieldset>
 

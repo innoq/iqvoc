@@ -15,11 +15,18 @@ function addWidget(index, elem) {
     $(elem).val("");
     var query_url    = $(elem).attr("data-query-url");
     var options      = $.parseJSON($(elem).attr("data-options"));
+    var excludes     = $(elem).attr("data-exclude") || "";
+    excludes = excludes.split(";");
     // Widget UI text translations get yielded into a meta tag in the head section of the page.
     // Parse them and merge the JSON hash with the default options.
     var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
     
-    options = $.extend(translations, options);
+    options = $.extend(translations, options)
+    options.onResult = excludes.length == 0 ? null : function(results) {
+        return $.grep(results, function(item) {
+            return $.inArray(item.id, excludes) == -1;
+        });
+    };
     
     $(elem).tokenInputNew(query_url, options);
 };
