@@ -3,7 +3,7 @@
 //   var publicFunc = function() {
 //     return foo();
 //   };
-// 
+//
 //   return {
 //     publicFunc: publicFunc
 //   }
@@ -11,23 +11,23 @@
 
 function addWidget(index, elem) {
     if (!elem) return;
-    
+
     $(elem).val("");
-    var query_url    = $(elem).attr("data-query-url");
-    var options      = $.parseJSON($(elem).attr("data-options"));
-    var excludes     = $(elem).attr("data-exclude") || "";
+    var query_url = $(elem).attr("data-query-url");
+    var options = $.parseJSON($(elem).attr("data-options"));
+    var excludes = $(elem).attr("data-exclude") || "";
     excludes = excludes.split(";");
     // Widget UI text translations get yielded into a meta tag in the head section of the page.
     // Parse them and merge the JSON hash with the default options.
     var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
-    
-    options = $.extend(translations, options)
+
+    options = $.extend(translations, options);
     options.onResult = excludes.length == 0 ? null : function(results) {
         return $.grep(results, function(item) {
             return $.inArray(item.id, excludes) == -1;
         });
     };
-    
+
     $(elem).tokenInputNew(query_url, options);
 };
 
@@ -35,45 +35,45 @@ jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
   $("input.token_input_widget").each(addWidget);
-	
+
   // Label editing (inline notes)
   $("fieldset.note_relation ol li.inline_note.new").hide();
-	
+
   $("fieldset.note_relation input[type=button]").click(function() {
     var source = $(this).parent().find("ol li:last-child");
-		
+
     // special case for usage notes
     // a usage note contains a select box instead of a textarea
     // FIXME: Hardcoded UMT stuff
     var isUsageNote = source.find("label:first").attr("for").match(/^concept_umt_usage_notes/);
-		
+
     if (source.is(":hidden")) {
       source.show();
       return false;
     }
-		
+
     var clone = source.clone();
-		
+
     if (!isUsageNote) {
       source.find("textarea").attr("id").match(/_(\d)_/);
     }
     else {
       source.find("select").attr("id").match(/_(\d)_/);
     }
-		
+
     var count 		   = parseInt(RegExp.$1) + 1;
     var newIdCount 	 = '_' + count + '_';
     var newNameCount = '[' + count + ']';
-		
+
     clone.find("label")
     .attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
-    
+
     // console.log(clone);
-			
+
     // clone.find("input")
     // .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
     // .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
-		
+
     if (!isUsageNote) {
       clone.find("textarea")
       .val("")
@@ -90,7 +90,7 @@ jQuery(document).ready(function() {
 
     return false;
   });
-	
+
   // Label editing (inline notes)
   $("li.inline_note input:checkbox").change(function() {
     if (this.checked) {
@@ -100,11 +100,11 @@ jQuery(document).ready(function() {
       $(this).parent().removeClass("deleted");
     }
   });
-	
+
   // Datepicker
   $.datepicker.setDefaults($.datepicker.regional[locale]);
   $("input.datepicker").datepicker();
-	
+
   // Dashboard table row highlighting and click handling
   $("tr.highlightable")
   .hover(
@@ -120,7 +120,7 @@ jQuery(document).ready(function() {
       window.location = $(this).attr("data-url")
     }
     );
-	
+
   // Search
   $("button#language_select_all").click(function() {
     $("input[type=checkbox].lang_check").attr("checked", true);
