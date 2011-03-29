@@ -40,7 +40,7 @@
       </li>
       <li>
         <label for"c"><%= Collection::Base.model_name.human %></label>
-        <%= select_tag 'c', options_for_select(Iqvoc::Collection.class_name.constantize.all.sort { |a, b| a.label.to_s <=> b.label.to_s }.map { |c| [c.label.to_s, c.origin] }, params[:c]), :include_blank => true %>
+        <%= select_tag 'c', options_for_select(Iqvoc::Collection.base_class_name.constantize.all.sort { |a, b| a.label.to_s <=> b.label.to_s }.map { |c| [c.label.to_s, c.origin] }, params[:c]), :include_blank => true %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
