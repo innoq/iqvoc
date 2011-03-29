@@ -4,7 +4,7 @@ class Collections::HierarchicalController < CollectionsController
   def index
     authorize! :read, Collection::Base
 
-    root = Collection::Base.find(params[:root])
+    root = Iqvoc::Collection.base_class.find(params[:root])
     children = root.subcollections
 
     children.sort! do |a, b|
