@@ -43,7 +43,11 @@ class Concept::Base < ActiveRecord::Base
 
         # Iterate over all labels to be added and create them
         Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |l|
-          concept.send(labeling_class_name.to_relation_name).create!(:target => l)
+          if l.language == language
+            concept.send(labeling_class_name.to_relation_name).create!(:target => l)
+          else
+            # skip -- TODO: throw error!?
+          end
         end
       end
     end
