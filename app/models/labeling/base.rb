@@ -18,19 +18,19 @@ class Labeling::Base < ActiveRecord::Base
   }
 
   scope :concept_published, lambda {
-    includes(:owner) & Concept::Base.published
+    includes(:owner).merge(Concept::Base.published)
   }
 
   scope :label_published, lambda {
-    includes(:target) & Label::Base.published
+    includes(:target).merge(Label::Base.published)
   }
 
   scope :label_begins_with, lambda { |letter|
-    includes(:target) & Label::Base.begins_with(letter)
+    includes(:target).merge(Label::Base.begins_with(letter))
   }
 
   scope :by_label_language, lambda { |lang|
-    includes(:target) & Label::Base.by_language(lang)
+    includes(:target).merge(Label::Base.by_language(lang))
   }
 
   # FIXME: There should be a validation checking this
