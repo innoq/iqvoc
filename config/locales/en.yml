@@ -296,6 +296,7 @@ en:
        destroy:
          success: "The collection has been successfully deleted."
          error: "The collection could not be deleted."
+       circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
 
    models:
      label:

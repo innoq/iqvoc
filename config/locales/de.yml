@@ -290,6 +290,7 @@ de:
        destroy:
          success: "Die Kollektion wurde erfolgreich gelöscht."
          error: "Die Kollektion konnte nicht gelöscht werden."
+       circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
 
    models:
      label:

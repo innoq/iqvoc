@@ -31,6 +31,12 @@ class Collection::Base < Concept::Base
   #  :allow_destroy => true,
   #  :reject_if => Proc.new { |attrs| attrs[:value].blank? }
 
+  attr_writer :circular_errors
+  def circular_errors
+    @circular_errors = [] if not @circular_errors # XXX: hack because initialize didn't seem to work
+    @circular_errors
+  end
+
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   before_validation(:on => :create) do
@@ -104,7 +110,11 @@ class Collection::Base < Concept::Base
     existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
     (@member_collection_origins - existing_collection_origins).each do |new_origin|
       Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
-        collection_members.create!(:target_id => c.id)
+        if not c.subcollections.all.include?(self)
+          collection_members.create!(:target_id => c.id)
+        else
+          self.circular_errors.push c
+        end
       end
     end
     collection_members.

@@ -61,6 +61,10 @@ class CollectionsController < ApplicationController
 
     if @collection.update_attributes(params[:concept])
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
+      if @collection.circular_errors.length > 0:
+        flash[:error] = I18n.t("txt.controllers.collections.circular_error") %
+            @collection.circular_errors.map { |c| c.label }.join("\n")
+      end
       redirect_to collection_path(@collection, :lang => I18n.locale)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
