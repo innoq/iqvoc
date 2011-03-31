@@ -29,14 +29,14 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     user.save
     # confirm environment, just to be safe
     assert_equal names.size, Label::Base.all.count
-    assert_equal 0, Concept::Base.all.count
+    assert_equal 0, Iqvoc::Concept.base_class.all.count
     assert_equal 1, User.all.count
 
     auth = Base64::encode64("%s:%s" % [user.email, user.password])
     @env = { "HTTP_AUTHORIZATION" => "Basic " + auth }
   end
 
-  test "invalid alt label languages are rejected" do # XXX: insufficiently descriptive
+  test "invalid alt label languages are rejected" do
     uri = concepts_path(:lang => "de", :format => "html")
     # NB: label language does not match relation language
     params = { "concept[inline_labeling_skosxl_alt_labels_en]" => "Deutsch" }
@@ -45,14 +45,14 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal flash[:error],
         I18n.t("txt.controllers.versioned_concept.label_error") % "Deutsch"
-    assert_equal 1, Concept::Base.all.count
-    assert_equal 0, Concept::Base.first.labels.count
+    assert_equal 1, Iqvoc::Concept.base_class.all.count
+    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
     # reset -- XXX: not very elegant
-    Concept::Base.first.destroy
-    assert_equal 0, Concept::Base.all.count
+    Iqvoc::Concept.base_class.first.destroy
+    assert_equal 0, Iqvoc::Concept.base_class.all.count
   end
 
-  test "invalid pref label languages are rejected" do # XXX: insufficiently descriptive
+  test "invalid pref label languages are rejected during creation" do
     uri = concepts_path(:lang => "de", :format => "html")
     # NB: label language does not match relation language
     params = { "concept[inline_labeling_skosxl_pref_labels_de]" => "English" }
@@ -61,7 +61,7 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal flash[:error],
         I18n.t("txt.controllers.versioned_concept.label_error") % "English"
-    assert_equal 1, Concept::Base.all.count
-    assert_equal 0, Concept::Base.first.labels.count
+    assert_equal 1, Iqvoc::Concept.base_class.all.count
+    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
   end
 end
