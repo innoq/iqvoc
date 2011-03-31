@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class CollectionLabelTest < ActiveSupport::TestCase
-  klass = Iqvoc::Collection.base_class
+  @@klass = Iqvoc::Collection.base_class
 
   test "can have multiple labels" do
-    myColl = klass.new
+    myColl = @@klass.new
     # add a few label[ing]s
     origin = 0
     Iqvoc::Concept.labeling_classes.each { |lnclass, langs|
@@ -25,7 +25,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
   end
 
   test "must have a preferred label" do
-    myColl = klass.new
+    myColl = @@klass.new
 
     # add an alternative label
     lnclass = Labeling::SKOSXL::AltLabel
@@ -52,7 +52,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
   end
 
   test "does not need more than one label" do
-    myColl = klass.new
+    myColl = @@klass.new
 
     # add a preferred label
     lnclass = Labeling::SKOSXL::PrefLabel
@@ -68,7 +68,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
   end
 
   test "can have multiple preferred labels" do
-    myColl = klass.new
+    myColl = @@klass.new
 
     # add multiple preferred labels
     lnclass = Labeling::SKOSXL::PrefLabel

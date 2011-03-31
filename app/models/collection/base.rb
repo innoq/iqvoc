@@ -101,9 +101,9 @@ class Collection::Base < Concept::Base
 
   def regenerate_collection_members
     return if @member_collection_origins.nil? # There is nothing to do
-    existing_collection_origins = collection_members.map{|m| m.collection.origin}.uniq
+    existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
     (@member_collection_origins - existing_collection_origins).each do |new_origin|
-      Collection::Base.where(:origin => new_origin).each do |c|
+      Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
         collection_members.create!(:target_id => c.id)
       end
     end
