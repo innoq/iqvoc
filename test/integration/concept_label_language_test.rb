@@ -43,6 +43,8 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     post_via_redirect uri, params, @env
 
     assert_response :success
+    assert_equal flash[:error],
+        I18n.t("txt.controllers.versioned_concept.label_error") % "Deutsch"
     assert_equal 1, Concept::Base.all.count
     assert_equal 0, Concept::Base.first.labels.count
     # reset -- XXX: not very elegant
@@ -57,6 +59,8 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     post_via_redirect uri, params, @env
 
     assert_response :success
+    assert_equal flash[:error],
+        I18n.t("txt.controllers.versioned_concept.label_error") % "English"
     assert_equal 1, Concept::Base.all.count
     assert_equal 0, Concept::Base.first.labels.count
   end

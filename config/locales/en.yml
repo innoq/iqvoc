@@ -285,6 +285,7 @@ en:
        empty_value: "Literal form must be given!"
        update_success: "Concept has been successfully modified."
        update_error: "Concept could not be modified!"
+       label_error: "Invalid label assignments:\n%s"
      narrowers:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      virtuoso_syncs:

@@ -1,5 +1,11 @@
 class Concept::Base < ActiveRecord::Base
 
+  attr_writer :label_errors
+  def label_errors
+    @label_errors = [] if not @label_errors # XXX: hack because initialize didn't seem to work
+    @label_errors
+  end
+
   set_table_name 'concepts'
 
   include Iqvoc::Versioning
@@ -46,7 +52,7 @@ class Concept::Base < ActiveRecord::Base
           if l.language == language
             concept.send(labeling_class_name.to_relation_name).create!(:target => l)
           else
-            # skip -- TODO: throw error!?
+            self.label_errors.push l
           end
         end
       end

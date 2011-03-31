@@ -279,6 +279,7 @@ de:
        empty_value: "Die Vorlageform muss ausgefüllt sein!"
        update_success: "Konzept wurde erfolgreich aktualisiert."
        update_error: "Konzept konnte nicht aktualisiert werden."
+       label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
      virtuoso_syncs:

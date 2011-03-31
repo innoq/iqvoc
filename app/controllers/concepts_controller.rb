@@ -58,6 +58,10 @@ class ConceptsController < ApplicationController
     if @concept.generate_origin
       if @concept.save
         flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
+        if @concept.label_errors.length > 0:
+          flash[:error] = I18n.t("txt.controllers.versioned_concept.label_error") %
+              @concept.label_errors.map { |l| l.value }.join("\n")
+        end
         redirect_to concept_path(:published => 0, :id => @concept.origin, :lang => @active_language)
       else
         flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
