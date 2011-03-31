@@ -99,6 +99,10 @@ class ConceptsController < ApplicationController
 
     if @concept.update_attributes(params[:concept])
       flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
+      if @concept.label_errors.length > 0:
+        flash[:error] = I18n.t("txt.controllers.versioned_concept.label_error") %
+            @concept.label_errors.map { |l| l.value }.join("\n")
+      end
       redirect_to concept_path(:published => 0, :id => @concept, :lang => @active_language)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")

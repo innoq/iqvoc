@@ -64,4 +64,21 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     assert_equal 1, Iqvoc::Concept.base_class.all.count
     assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
   end
+
+  test "invalid label languages are rejected during update" do
+    con = Iqvoc::Concept.base_class.new :origin => "_666"
+    con.save
+    puts con.errors
+
+    uri = concept_path(:id => con.origin, :lang => "de", :format => "html")
+    # NB: label language does not match relation language
+    params = { "concept[inline_labeling_skosxl_pref_labels_de]" => "English" }
+    put_via_redirect uri, params, @env
+
+    assert_response :success
+    assert_equal flash[:error],
+        I18n.t("txt.controllers.versioned_concept.label_error") % "English"
+    assert_equal 1, Iqvoc::Concept.base_class.all.count
+    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
+  end
 end
