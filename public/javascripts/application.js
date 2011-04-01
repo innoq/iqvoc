@@ -1,13 +1,8 @@
-// IQVOC = function() {
-//   var foo = function() { };
-//   var publicFunc = function() {
-//     return foo();
-//   };
-//
-//   return {
-//     publicFunc: publicFunc
-//   }
-// };
+IQVOC = (function($) {
+
+return {
+    addWidget: addWidget // TODO: rename; too generic / insufficiently descriptive
+};
 
 function addWidget(index, elem) {
     if (!elem) return;
@@ -31,10 +26,12 @@ function addWidget(index, elem) {
     $(elem).tokenInputNew(query_url, options);
 };
 
+}(jQuery)); // /module IQVOC
+
 jQuery(document).ready(function() {
   var locale = $("meta[name=i18n-locale]").attr("content");
 
-  $("input.token_input_widget").each(addWidget);
+  $("input.token_input_widget").each(IQVOC.addWidget);
 
   // Label editing (inline notes)
   $("fieldset.note_relation ol li.inline_note.new").hide();
