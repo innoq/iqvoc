@@ -5,12 +5,15 @@ return {
 };
 
 function addWidget(index, elem) {
-    if (!elem) return;
+    if (!elem) {
+        return;
+    }
 
-    $(elem).val("");
-    var query_url = $(elem).attr("data-query-url");
-    var options = $.parseJSON($(elem).attr("data-options"));
-    var excludes = $(elem).attr("data-exclude") || "";
+    elem = $(elem);
+    elem.val("");
+    var queryUrl = elem.attr("data-query-url");
+    var options = $.parseJSON(elem.attr("data-options"));
+    var excludes = elem.attr("data-exclude") || "";
     excludes = excludes.split(";");
     // Widget UI text translations get yielded into a meta tag in the head section of the page.
     // Parse them and merge the JSON hash with the default options.
@@ -23,7 +26,7 @@ function addWidget(index, elem) {
         });
     };
 
-    $(elem).tokenInputNew(query_url, options);
+    elem.tokenInputNew(queryUrl, options);
 };
 
 }(jQuery)); // /module IQVOC
@@ -53,14 +56,13 @@ jQuery(document).ready(function() {
 
     if (!isUsageNote) {
       source.find("textarea").attr("id").match(/_(\d)_/);
-    }
-    else {
+    } else {
       source.find("select").attr("id").match(/_(\d)_/);
     }
 
-    var count 		   = parseInt(RegExp.$1) + 1;
-    var newIdCount 	 = '_' + count + '_';
-    var newNameCount = '[' + count + ']';
+    var count = parseInt(RegExp.$1) + 1;
+    var newIdCount = "_" + count + "_";
+    var newNameCount = "[" + count + "]";
 
     clone.find("label")
     .attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
@@ -92,8 +94,7 @@ jQuery(document).ready(function() {
   $("li.inline_note input:checkbox").change(function() {
     if (this.checked) {
       $(this).parent().addClass("deleted");
-    }
-    else {
+    } else {
       $(this).parent().removeClass("deleted");
     }
   });
@@ -153,7 +154,7 @@ jQuery(document).ready(function() {
   $("form#new_label input#label_value").keyup(function() {
     var notification = $("p.label_warning");
     $.ajax({
-      type: 'GET',
+      type: "GET",
       url: $(this).attr("data-remote"),
       dataType: "json",
       data: {
@@ -163,8 +164,7 @@ jQuery(document).ready(function() {
         if (data) {
           var msg = notification.attr("data-msg");
           notification.html(msg + " " + data.label.value).show();
-        }
-        else {
+        } else {
           notification.hide();
         }
       }
