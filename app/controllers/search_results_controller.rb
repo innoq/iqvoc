@@ -34,7 +34,7 @@ class SearchResultsController < ApplicationController
       query_size = params[:query].split(/\r\n/).size
       
       # @klass is only available if we're going to search using a specific class
-      # it's not available if we're searching all classes
+      # it's not available if we're searching within all classes
       if @klass
         if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
           @multi_query = true
