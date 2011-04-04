@@ -128,7 +128,7 @@ de:
        results_found:
          one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
          other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
-       no_results_found: "Ihre Suche nach %{query} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
+       no_results_found: "Ihre Suche lieferte keine Ergebnisse."
        submit: "Suche"
        type: "Typ"
        used_as: "benutzt als"
