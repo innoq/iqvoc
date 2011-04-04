@@ -22,8 +22,8 @@ class CollectionLabelTest < ActiveSupport::TestCase
     }
     my_coll.save
 
-    assert my_coll.labels.size > 1
-    assert_equal my_coll.labels.size, Iqvoc::Concept.labeling_classes.
+    assert my_coll.labels.count > 1
+    assert_equal my_coll.labels.count, Iqvoc::Concept.labeling_classes.
         map { |lnclass, langs| langs }.flatten.size
   end
 
