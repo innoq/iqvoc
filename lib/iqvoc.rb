@@ -46,7 +46,7 @@ module Iqvoc
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.pref_labeling_languages      = [ :de ]
+    self.pref_labeling_languages      = [ :en ]
     self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
 
     self.note_class_names             = [
