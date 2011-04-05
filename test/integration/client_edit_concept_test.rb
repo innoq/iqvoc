@@ -1,13 +1,8 @@
 require 'test_helper'
 require 'integration_test_helper'
 require 'capybara/envjs'
-#require 'database_cleaner'
-
-#DatabaseCleaner.strategy = :truncation
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
-
-  #self.use_transactional_fixtures = false
 
   setup do
     @concept = Iqvoc::Concept.base_class.create(:origin => "_666",
@@ -22,11 +17,9 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     @admin.password = password # required because password is only saved in encrypted form
 
     Capybara.current_driver = :envjs
-    #DatabaseCleaner.start
   end
 
   teardown do
-    #DatabaseCleaner.clean
     Capybara.use_default_driver
   end
 
