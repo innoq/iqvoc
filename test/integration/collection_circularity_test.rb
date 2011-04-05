@@ -37,7 +37,8 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     assert_response :success # XXX: is this what we want?
     assert @response.body.include?('id="concept_edit"')
+    assert @response.body.include?(
+        I18n.t("txt.controllers.collections.circular_error") % coll1.label)
     assert_equal 0, @@klass.by_origin(coll2.origin).first.subcollections.count
-    assert_equal flash[:error], I18n.t("txt.controllers.collections.circular_error") % coll1.label
   end
 end

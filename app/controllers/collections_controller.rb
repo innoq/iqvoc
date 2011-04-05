@@ -63,12 +63,7 @@ class CollectionsController < ApplicationController
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(@collection, :lang => I18n.locale)
     else
-      if @collection.circular_errors.length > 0
-        flash.now[:error] = I18n.t("txt.controllers.collections.circular_error") %
-            @collection.circular_errors.map { |c| c.label }.join("\n")
-      else
-        flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
-      end
+      flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :edit
     end
   end

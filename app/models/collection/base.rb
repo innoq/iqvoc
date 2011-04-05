@@ -31,12 +31,6 @@ class Collection::Base < Concept::Base
   #  :allow_destroy => true,
   #  :reject_if => Proc.new { |attrs| attrs[:value].blank? }
 
-  attr_writer :circular_errors
-  def circular_errors
-    @circular_errors = [] if not @circular_errors # XXX: hack because initialize didn't seem to work
-    @circular_errors
-  end
-
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   before_validation(:on => :create) do
@@ -57,8 +51,8 @@ class Collection::Base < Concept::Base
     # protect against circular subcollections
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(collection)
-        self.circular_errors.push subcollection
-        errors.add(:base, I18n.t("txt.controllers.collections.circular_error"))
+        errors.add(:base,
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
       end
     end
   end
