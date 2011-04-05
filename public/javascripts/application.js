@@ -1,10 +1,6 @@
 var IQVOC = (function($) {
 
-return {
-	addWidget: addWidget // TODO: rename; too generic / insufficiently descriptive
-};
-
-function addWidget(index, elem) {
+var addWidget = function(index, elem) {
 	if (!elem) {
 		return;
 	}
@@ -27,7 +23,11 @@ function addWidget(index, elem) {
 	};
 
 	elem.tokenInputNew(queryUrl, options);
-}
+};
+
+return {
+	addWidget: addWidget // TODO: rename; too generic / insufficiently descriptive
+};
 
 }(jQuery)); // /module IQVOC
 
