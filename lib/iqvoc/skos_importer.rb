@@ -21,8 +21,8 @@ module Iqvoc
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
-        klass.select("origin").all.each do |origin|
-          @existing_origins[origin] = klass
+        klass.select("origin").all.each do |thing|
+          @existing_origins[thing.origin] = klass
         end
       end
 
@@ -50,7 +50,7 @@ module Iqvoc
     end
 
     def import_first_level_objects(types, subject, predicate, object)
-      if (predicate == "rdf:type" && types[object] && subject =~ /:(.+)/) 
+      if (predicate == "rdf:type" && types[object] && subject =~ /^:(.+)$/)
         # We've found a subject definition with a class we know and which is in our responsibility (":")
         origin = $1
 
@@ -98,7 +98,7 @@ module Iqvoc
     end
 
     def extract_triple(line)
-      return nil unless line =~ /^(.*)\.\w*$/
+      raise "'#{line}' doesn't look like valid ntriples data." unless line =~ /^(.*)\.\w*$/
       line = $1.squish
 
       triple = line.split(' ', 3) # The first one are uris the last can be a literal too

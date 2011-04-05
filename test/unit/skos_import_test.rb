@@ -28,12 +28,15 @@ class SkosImportTest < ActiveSupport::TestCase
 <http://www.example.com/_monkey> <http://www.w3.org/2008/05/skos#altLabel> "Ape"@en .
 <http://www.example.com/_monkey> <http://www.w3.org/2008/05/skos#broader> <http://www.example.com/_animal> .
 <http://www.example.com/_monkey> <http://www.w3.org/2008/05/skos#exactMatch> <http://dbpedia.org/page/Monkey> .
+<http://not-my-problem.com/me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.
     DATA
   ).split("\n")
 
   test "basic_importer_functionality" do
-    Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
-
+    assert_difference('Concept::Base.count', 4) do
+      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
+    end
+    
     concepts = {}
     ["_animal", "_cow", "_donkey", "_monkey"].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last
