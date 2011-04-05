@@ -45,9 +45,9 @@ module Iqvoc
     self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Poly'
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
-    self.pref_labeling_class_name     = 'Labeling::SKOSXL::PrefLabel'
+    self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
     self.pref_labeling_languages      = [ :de ]
-    self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
+    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
