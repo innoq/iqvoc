@@ -35,7 +35,8 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     params = { "concept[inline_member_collection_origins]" => coll1.origin }
     put_via_redirect uri, params, @env
 
-    assert_response :success
+    assert_response :success # XXX: is this what we want?
+    assert @response.body.include?('id="concept_edit"')
     assert_equal 0, @@klass.by_origin(coll2.origin).first.subcollections.count
     assert_equal flash[:error], I18n.t("txt.controllers.collections.circular_error") % coll1.label
   end
