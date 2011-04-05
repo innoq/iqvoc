@@ -1,5 +1,7 @@
 class Note::SKOS::Definition < Note::SKOS::Base
 
+  self.rdf_predicate = 'definition'
+
   def self.view_section(obj)
     "main"
   end

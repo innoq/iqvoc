@@ -1,8 +1,6 @@
-class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::Base
+class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
 
-  def build_rdf(document, subject)
-    subject.Skos.narrower(IqRdf.build_uri(target.origin))
-  end
+  self.rdf_predicate = 'narrower'
 
   def self.reverse_relation_class
     Iqvoc::Concept.broader_relation_class

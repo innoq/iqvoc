@@ -2,18 +2,18 @@ class Concepts::HierarchicalController < ConceptsController
   skip_before_filter :require_user
 
   def index
-    authorize! :read, Concept::Base
+    authorize! :read, Iqvoc::Concept.base_class
 
     scope = if params[:published] == '0'
-      Concept::Base.editor_selectable
+      Iqvoc::Concept.base_class.editor_selectable
     else
-      Concept::Base.published
+      Iqvoc::Concept.base_class.published
     end
 
     # if params[:broader] is given, the action is handling the reversed tree
     @concepts = case params[:root]
     when /\d+/
-      root_concept = Concept::Base.find(params[:root])
+      root_concept = Iqvoc::Concept.base_class.find(params[:root])
       if params[:broader]
         scope.
           includes(:narrower_relations, :broader_relations). # D A N G E R: the order matters!!! See the following where
@@ -32,7 +32,7 @@ class Concepts::HierarchicalController < ConceptsController
     end
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
+    Iqvoc::Concept.base_class.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
 
     @concepts.sort! do |a, b|
       a.pref_label(params[:pref_label_lang]).to_s <=> b.pref_label(params[:pref_label_lang]).to_s

@@ -7,6 +7,10 @@ class Concept::Base < ActiveRecord::Base
   class_inheritable_accessor :default_includes
   self.default_includes = []
 
+  class_inheritable_accessor :rdf_namespace, :rdf_class
+  self.rdf_namespace = nil
+  self.rdf_class = nil
+
   # ********** Validations
 
   validates :origin, :presence => true

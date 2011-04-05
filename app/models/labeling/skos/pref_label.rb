@@ -1,8 +1,6 @@
 class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
 
-  def build_rdf(document, subject)
-    subject.Skos.prefLabel(target.to_s, :lang => target.language)
-  end
+  self.rdf_predicate = 'prefLabel'
 
   def self.only_one_allowed?
     true

@@ -1,5 +1,7 @@
 class Labeling::SKOS::Base < Labeling::Base
 
+  self.rdf_namespace = "skos"
+
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
 
   scope :by_label_with_language, lambda { |label, language|
@@ -42,6 +44,19 @@ class Labeling::SKOS::Base < Labeling::Base
 
   def self.search_result_partial_name
     'partials/labeling/skos/search_result'
+  end
+
+  def self.build_from_rdf(subject, predicate, object)
+    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
+    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
+    value = $1
+    lang = $3
+
+    subject.send(self.name.to_relation_name) << self.new(:target => self.label_class.new(:value => value, :language => lang))
+  end
+
+  def build_rdf(document, subject)
+    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.to_s, :lang => target.language)
   end
 
   def build_search_result_rdf(document, result)
