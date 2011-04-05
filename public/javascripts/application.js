@@ -1,3 +1,6 @@
+/*jslint browser: true */
+/*global jQuery */
+
 var IQVOC = (function($) {
 
 var addWidget = function(index, elem) {
@@ -16,9 +19,9 @@ var addWidget = function(index, elem) {
 	var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
 
 	options = $.extend(translations, options);
-	options.onResult = excludes.length == 0 ? null : function(results) {
+	options.onResult = excludes.length === 0 ? null : function(results) {
 		return $.grep(results, function(item) {
-			return $.inArray(item.id, excludes) == -1;
+			return $.inArray(item.id, excludes) === -1;
 		});
 	};
 
@@ -54,20 +57,14 @@ jQuery(document).ready(function($) {
 
 		var clone = source.clone();
 
-		if (!isUsageNote) {
-			source.find("textarea").attr("id").match(/_(\d)_/);
-		} else {
-			source.find("select").attr("id").match(/_(\d)_/);
-		}
-
-		var count = parseInt(RegExp.$1) + 1;
+		var count = source.find(isUsageNote ? "select" : "textarea").attr("id").
+				match(/_(\d)_/)[1];
+		count = parseInt(count, 10) + 1;
 		var newIdCount = "_" + count + "_";
 		var newNameCount = "[" + count + "]";
 
 		clone.find("label")
 			.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
-
-		// console.log(clone);
 
 		// clone.find("input")
 		// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
