@@ -40,6 +40,7 @@ module Iqvoc
         import_first_level_objects(types, *extract_triple(line))
       end
 
+      file.rewind if file.is_a?(IO)
       types = {}
       SECOND_LEVEL_OBJECT_CLASSES.each do |klass|
         types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
@@ -56,9 +57,9 @@ module Iqvoc
 
         if (@existing_origins[origin])
           if (types[object] == @existing_origins[origin])
-            logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be not problem)."
+            Rails.logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be not problem)."
           else
-            logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
+            Rails.logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
           @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
@@ -68,18 +69,21 @@ module Iqvoc
 
     def import_second_level_objects(types, subject, predicate, object)
       return unless (subject =~ /^:(.*)$/ && types[predicate]) # We're not responsible for this
+
+      # Load the subject and replace the string by the respective data object
       subject_origin = $1
       subject = load_first_level_object(subject_origin)
       unless subject
-        logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
+        Rails.logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
         return
       end
 
+      # Load the data object for the object string if this is representing a thing in our domain
       if (object =~ /^:(.*)$/ && types[predicate])
         object_origin = $1
         object = load_first_level_object(object_origin)
         unless object
-          logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+          Rails.logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
           return
         end
       end
