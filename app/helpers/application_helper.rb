@@ -2,7 +2,7 @@ module ApplicationHelper
   
   def back_link(url, text=nil)
     text ||= I18n.t('txt.common.pagination.previous')
-    link_to image_tag('back.png', :style => 'vertical-align: middle; margin-right: .5em') + text, url
+    link_to image_tag('iqvoc/back.png', :style => 'vertical-align: middle; margin-right: .5em') + text, url
   end
 
   def iqvoc_default_rdf_namespaces

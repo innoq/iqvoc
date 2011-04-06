@@ -1,77 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="i18n-locale" content="<%= I18n.locale %>">
-    <meta charset="utf-8">
+    <meta name="i18n-locale" content="<%= I18n.locale %>"></meta>
+    <meta charset="utf-8"></meta>
     <%= csrf_meta_tag %>
-    
+
     <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
-    <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
-    <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
+    <%= stylesheet_link_tag "iqvoc/blueprint/screen.css", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "iqvoc/blueprint/print.css", :media => "print" %>
     <!--[if lt IE 8]>
-    <%= stylesheet_link_tag "/stylesheets/blueprint/ie.css", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "iqvoc/blueprint/ie.css", :media => "screen, projection" %>
     <![endif]-->
-    <%= stylesheet_link_tag "/stylesheets/iqvoc.css", :media => "all" %>
-    <%= stylesheet_link_tag "/stylesheets/forms.css" %>
-    <%= stylesheet_link_tag "/javascripts/jquery-treeview/jquery.treeview.css" %>
-    <%= stylesheet_link_tag "/stylesheets/token-input-iqvoc.css" %>
-    <%= stylesheet_link_tag "/stylesheets/jquery-ui-1.7.2.custom.css" %>
+    <%= stylesheet_link_tag "iqvoc/iqvoc.css", :media => "all" %>
+    <%= stylesheet_link_tag "iqvoc/forms.css" %>
+    <%= stylesheet_link_tag "iqvoc/jquery-treeview/jquery.treeview.css" %>
+    <%= stylesheet_link_tag "iqvoc/token-input-iqvoc.css" %>
+    <%= stylesheet_link_tag "iqvoc/jquery-ui-1.7.2.custom.css" %>
     <% Rails.application.config.additional_css_files.each do |file| %>
-    <%= stylesheet_link_tag file %>
+      <%= stylesheet_link_tag file %>
     <% end %>
-    
-    <%= javascript_include_tag "jquery-1.5.1.min.js" %>
-    <%= javascript_include_tag "jquery-ui-1.7.2.custom.min.js" %>
-    <%= javascript_include_tag "jquery-ui.datepicker-de.js" %>
-    <%= javascript_include_tag "jquery-treeview/jquery.treeview.js" %>
-    <%= javascript_include_tag "jquery-treeview/jquery.treeview.async.js" %>
-    <%= javascript_include_tag "jquery.tokeninput.js" %>
-    <%= javascript_include_tag "application.js" %>
-    <%= javascript_include_tag "rails.js" %>
+
+    <%= javascript_include_tag "iqvoc/jquery-1.5.1.min.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-ui-1.7.2.custom.min.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.async.js" %>
+    <%= javascript_include_tag "iqvoc/jquery.tokeninput.js" %>
+    <%= javascript_include_tag "iqvoc/application.js" %>
+    <%= javascript_include_tag "iqvoc/rails.js" %>
     <% Rails.application.config.additional_js_files.each do |file| %>
-    <%= javascript_include_tag file %>
+      <%= javascript_include_tag file %>
     <% end %>
-    
+
     <%= yield :head %>
     <%= yield :widget_translations %>
   </head>
-<body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
+  <body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
 
-<div class="container">
-    <div id="header" class="span-24 last">
-      <%= render :partial => 'layouts/header' %>
-      <%= render :partial => 'layouts/navigation' %>
-    </div>
-    
-    <div id="navi_sub" class="span-24 last">
-      <%= yield :sub_navigation %>
-    </div>
-    
-    <div id="pref_label_language_selection" class="span-24 last">
-      <%= yield :pref_label_language_selection %>
-    </div>
+    <div class="container">
+      <div id="header" class="span-24 last">
+        <%= render :partial => 'layouts/header' %>
+        <%= render :partial => 'layouts/navigation' %>
+      </div>
 
-    <div id="content" class="span-24 last">
-      <% if flash[:notice] %>
-        <p class="flash_notice"><%= flash[:notice] %></p>
-      <% end %>
-      <% if flash[:error] %>
-        <p class="flash_error"><%= flash[:error] %></p>
-      <% end %>
-      <%= yield %>
-    </div>
-    
-    <div id="footer" class="span-24 last">
-      <div id="footer_box">
-        <% if current_user %>
-          <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
-        <% else %>
-          <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language || I18n.locale) %>
+      <div id="navi_sub" class="span-24 last">
+        <%= yield :sub_navigation %>
+      </div>
+
+      <div id="pref_label_language_selection" class="span-24 last">
+        <%= yield :pref_label_language_selection %>
+      </div>
+
+      <div id="content" class="span-24 last">
+        <% if flash[:notice] %>
+          <p class="flash_notice"><%= flash[:notice] %></p>
         <% end %>
-        <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
+        <% if flash[:error] %>
+          <p class="flash_error"><%= flash[:error] %></p>
+        <% end %>
+        <%= yield %>
+      </div>
+
+      <div id="footer" class="span-24 last">
+        <div id="footer_box">
+          <% if current_user %>
+            <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
+          <% else %>
+            <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language || I18n.locale) %>
+          <% end %>
+          <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
+        </div>
       </div>
     </div>
-</div>
 
-</body>
+  </body>
 </html>
