@@ -2,6 +2,10 @@ class Labeling::Base < ActiveRecord::Base
 
   set_table_name 'labelings'
 
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   # ********** Relations
 
   belongs_to :owner,  :class_name => "Concept::Base"
@@ -12,20 +16,25 @@ class Labeling::Base < ActiveRecord::Base
   scope :by_concept, lambda { |concept|
     where(:owner_id => concept.id)
   }
-  
+
   scope :by_label, lambda { |label|
     where(:target_id => label.id)
   }
 
-  scope :concept_published, includes(:owner) & Concept::Base.published
-  scope :label_published, includes(:target) & Label::Base.published
+  scope :concept_published, lambda {
+    includes(:owner).merge(Concept::Base.published)
+  }
+
+  scope :label_published, lambda {
+    includes(:target).merge(Label::Base.published)
+  }
 
   scope :label_begins_with, lambda { |letter|
-    includes(:target) & Label::Base.begins_with(letter)
+    includes(:target).merge(Label::Base.begins_with(letter))
   }
-  
+
   scope :by_label_language, lambda { |lang|
-    includes(:target) & Label::Base.by_language(lang)
+    includes(:target).merge(Label::Base.by_language(lang))
   }
 
   # FIXME: There should be a validation checking this
@@ -33,7 +42,7 @@ class Labeling::Base < ActiveRecord::Base
   def self.only_one_allowed?
     false
   end
-  
+
   def self.view_section(obj)
     obj.is_a?(Label::Base) ? "concepts" : "labels"
   end

@@ -5,18 +5,18 @@ class LabelsController < ApplicationController
     authorize! :read, Iqvoc::XLLabel.base_class
     respond_to do |format|
       format.json do
-        if params[:language] 
-          # TODO 
-          # Label::Base should perhaps be replaced by the label_class used in the labeling 
-          # (s. MyLabeling.label_class). But then the relation class must be passed 
+        scope = Label::Base.by_query_value("#{params[:query]}%")
+        if params[:language] # XXX: isn't this always the case; language is required, supplied via route!?
+          # TODO
+          # Label::Base should perhaps be replaced by the label_class used in the labeling
+          # (s. MyLabeling.label_class). But then the relation class must be passed
           # to this action (max 2 lines of code :-) )
-          @labels = Label::Base.by_query_value("#{params[:query]}%").by_language(params[:language]).published.all
-        else
-          @labels = Label::Base.by_query_value("#{params[:query]}%").published.all
+          scope = scope.by_language(params[:language])
         end
+        @labels = scope.published.order("LOWER(value)").all
 
         response = []
-        @labels.each { |label| response << {:name => label.value, :origin => label.origin, :published => label.published?} }
+        @labels.each { |label| response << label_widget_data(label) }
 
         render :json => response
       end
@@ -61,11 +61,11 @@ class LabelsController < ApplicationController
         flash[:notice] = I18n.t("txt.controllers.versioned_label.success")
         redirect_to label_path(:published => 0, :id => @label.origin, :lang => @active_language)
       else
-        flash[:error] = I18n.t("txt.controllers.versioned_label.error")
+        flash.now[:error] = I18n.t("txt.controllers.versioned_label.error")
         render :new
       end
     else
-      flash[:error] = I18n.t("txt.controllers.versioned_label.error")
+      flash.now[:error] = I18n.t("txt.controllers.versioned_label.error")
       render :new
     end
   end
@@ -99,7 +99,7 @@ class LabelsController < ApplicationController
           flash[:notice] = I18n.t("txt.controllers.versioned_label.update_success")
           redirect_to label_path(:published => 0, :id => @label, :lang => @active_language)
         else
-          flash[:error] = I18n.t("txt.controllers.versioned_label.update_error")
+          flash.now[:error] = I18n.t("txt.controllers.versioned_label.update_error")
           render :action => :edit
         end
       end

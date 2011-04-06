@@ -1,8 +1,6 @@
-class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
+class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
 
-  def build_rdf(document, subject)
-    subject.Skos.broader(IqRdf.build_uri(target.origin))
-  end
+  self.rdf_predicate = 'broader'
 
   def self.narrower_class
     Concept::Relation::SKOS::Narrower::Base
@@ -18,10 +16,6 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::Base
 
   def self.view_section_sort_key(obj)
     100
-  end
-
-  def self.partial_name(obj)
-    "partials/concept/relation/skos/broader"
   end
 
   def self.narrower_editable

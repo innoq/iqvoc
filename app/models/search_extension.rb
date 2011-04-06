@@ -12,11 +12,11 @@ module SearchExtension
     end
   
     def self.single_query(params = {})
-      raise NotImplementedError.new("Implement single_query in your specific class (#{self.name}) that should be searchable!")
+      raise NotImplementedError.new("Implement self.single_query in your specific class (#{self.name}) that should be searchable!")
     end
-  
+
     def self.supports_multi_query?
-      false
+      false # FIXME Multipquerys don't work with will_paginate! Perhaps we schould remove them completely?
     end
     
     def self.forces_multi_query?
@@ -45,5 +45,9 @@ module SearchExtension
     end
     
   end
-  
+
+  def build_search_result_rdf(document, result)
+    raise NotImplementedError.new("Implement build_search_result_rdf in your specific class (#{self.class.name}) that should be searchable!")
+  end
+ 
 end

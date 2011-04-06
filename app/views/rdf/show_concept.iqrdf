@@ -1,52 +1,5 @@
-document.namespaces :default => root_url(:format => nil), # Hoping this ends with a '/'!!
-  :rdf      => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  :rdfs     => "http://www.w3.org/2000/01/rdf-schema#",
-  :owl      => "http://www.w3.org/2002/07/owl#",
-  :skos     => "http://www.w3.org/2004/02/skos/core#",
-  :skosxl   => "http://www.w3.org/2008/05/skos-xl#",
-  :umt      => "http://www.uba.de/2010/03/umthes#", #FIXME: => model
-  :xsd      => "http://www.w3.org/2001/XMLSchema#", #FIXME: => model
-  :dct      => "http://purl.org/dc/elements/1.1/", #FIXME: => model
-  :dce      => "http://purl.org/dc/elements/1.1/", #FIXME: => model
-  :gemet    => "http://www.eionet.europa.eu/gemet/concept/" #FIXME: => model
-
-document << IqRdf.build_uri(@concept.origin, IqRdf::Skos::build_uri("Concept")) do |concept|
-  @concept.labelings.each do |labeling|
-    labeling.build_rdf(document, concept)
-  end
-
-  @concept.relations.each do |relation|
-    relation.build_rdf(document, concept)
-  end
-
-  @concept.notes.each do |note|
-    note.build_rdf(document, concept)
-  end
-
-=begin
-  %w(historyNotes scopeNotes editorialNotes examples definitions).each do |name|
-    concept.Skos::build_predicate(name.singularize, *@concept.send(name.underscore).map{|note| IqRdf::Literal.new(note, note.language) }) unless @concept.send(name.underscore).empty?
-  end
-
-  %w(exportNote changeNote sourceNote usageNote).each do |relation|
-    relation_name = 'umt_' << relation.underscore.pluralize
-    @concept.send(relation_name).each do |element|
-      if element.annotations.blank?
-        concept.Umt::build_predicate(relation, IqRdf::Literal.new(element, element.language))
-      else
-        concept.Umt::build_predicate(relation) do |blank_node|
-          element.annotations.each do |na|
-            ns, id = na.identifier.split(':')
-            blank_node.send(ns.camelize).build_predicate(id, IqRdf::PlainTurtleLiteral.new(na.value))
-          end
-        end
-      end
-    end
-  end
-  %w(closeMatch broaderMatch narrowerMatch exactMatch).each do |relation|
-    concept.Skos::build_predicate(relation, *@concept.send(relation.pluralize.underscore).map{|match| URI.parse(match.value)}) unless @concept.send(relation.pluralize.underscore).empty?
-  end
-  concept.Skos::build_predicate("classified", *@concept.classifiers.map{|classifier| classifier.notation}) unless @concept.classifiers.empty?
-  concept.Skos::build_predicate("status", @concept.status)
-=end
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
 end
+
+render_concept(document, @concept)

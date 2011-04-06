@@ -1,0 +1,33 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+document.namespaces(
+  :search => url_for(request.query_parameters.merge(:page => @results && @results.current_page, :only_path => false, :anchor => "")),
+  :sdc => "http://sindice.com/vocab/search#"
+)
+
+document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_parameters.merge(:page => nil, :only_path => false))), IqRdf::Sdc::build_uri('Query')) do |query|
+  query.Sdc::totalResults(@results.total_entries)
+  query.Sdc::itemsPerPage(@results.per_page)
+  query.Sdc::searchTerms(params[:query])
+  query.Sdc::first(URI.parse(url_for(request.query_parameters.merge(:page => 1, :only_path => false))))
+  query.Sdc::last(URI.parse(url_for(request.query_parameters.merge(:page => @results.total_pages, :only_path => false))))
+  i = 0
+  @results.each do
+    query.Sdc::result(IqRdf::Search::build_uri("result#{i+=1}"))
+  end
+end
+
+document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page, :only_path => false))), IqRdf::Sdc::build_uri('Page')) do |page|
+  page.Sdc::startIndex((@results.current_page - 1) * @results.per_page + 1)
+  page.Sdc::previous(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page - 1, :only_path => false)))) if @results.current_page > 1
+  page.Sdc::next(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page + 1, :only_path => false)))) if @results.current_page < @results.total_pages
+end
+
+i = 0
+@results.each do |concept|
+  document << IqRdf::Search::build_uri("result#{i+=1}", IqRdf::Sdc::build_uri('Result')) do |result|
+    concept.build_search_result_rdf(document, result)
+  end
+end

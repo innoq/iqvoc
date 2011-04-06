@@ -1,4 +1,8 @@
 en:
+  languages:
+    de: German
+    en: English
+    none: Sci.
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
@@ -22,6 +26,9 @@ en:
      default_ajax_error: "Error"
      to_review: "To review"
      is_in_review: "Document is in review"
+     unpublished_version: Unpublished version
+     consistent: "consistent"
+     inconsistent: "inconsistent"
      state:
        published: "Published"
        in_review: "In review"
@@ -52,15 +59,13 @@ en:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       select: "Please select one of the concepts listed below."
-       new: "New concept"
-       versionview: "Version display of Concept"
+       expired_at: "expired at %{date}"
+       select: "Please select one of the %{concept_class_name} listed below."
+       new: "New %{concept_class_name}"
        missing:
          broader: "No broader terms available"
          narrower: "No narrower terms available"
          related: "No related terms available"
-       edit:
-         header: "Edit Concept"
        alt_label: "Alternative Label"
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
@@ -105,14 +110,15 @@ en:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
-       back_to_concepts: "Back to concepts list"
        hierarchical: "Hierachical listings"
        alphabetical: "Alphabetical listings"
        search: "Search"
        about: "About"
        users: "Users"
+       collections: "Collections"
      search_results:
        header: "Search"
+       all_names: "All names"
        inflectionals: "inflectionals"
        pref_labels: "preferred names (labels)"
        all_labels: "all names (labels)"
@@ -130,7 +136,7 @@ en:
        results_found:
          one: "Your search for <strong>%{query}</strong> yielded the following %{count} result."
          other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
-       no_results_found: "Your search for <strong>%{query}</strong> yielded no results. Try searching for other/all languages or a shorter search term."
+       no_results_found: "Your search yielded no results."
        submit: "Search"
        type: "type"
        used_as: "used as"
@@ -191,7 +197,6 @@ en:
        hint: "edit term"
        no_results: "Not found!"
        searching: "searching ..."
-
      dashboard:
        type: "Type"
        value: "Name"
@@ -199,13 +204,21 @@ en:
        follow_up: "Follow up"
        updated_at: "Updated at"
        to_review: "Submission for review"
+       check_consistency: Check consistency
        consistent: "consistent"
        inconsistent: "inconsistent"
        state: "State"
+       full_rdf_export: Complete RDF export
+     collections:
+       new: "New collection"
 
    partials:
      note:
        missing: Not availiable.
+     collection:
+       skos:
+         member:
+           missing: Not assigned
      label:
        relation:
          missing: Not availiable.
@@ -276,6 +289,13 @@ en:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      virtuoso_syncs:
        success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
+     collections:
+       save:
+         success: "The collection has been successfully created."
+         error: "The collection could not be created."
+       destroy:
+         success: "The collection has been successfully deleted."
+         error: "The collection could not be deleted."
 
    models:
      label:

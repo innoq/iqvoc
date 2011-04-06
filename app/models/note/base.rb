@@ -2,6 +2,10 @@ class Note::Base < ActiveRecord::Base
   
   set_table_name 'notes'
 
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   # ********** Validations
 
   # FIXME: None?? What about language and value?
@@ -17,11 +21,15 @@ class Note::Base < ActiveRecord::Base
   # ********** Scopes
 
   scope :by_language, lambda { |lang_code|
-    where(:language => lang_code)
+    if (lang_code.is_a?(Array) && lang_code.include?(nil))
+      where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
+    else
+      where(:language => lang_code)
+    end
   }
   
   scope :by_query_value, lambda { |query|
-    where(Note::Base.arel_table[:value].matches(query))
+    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
 
   scope :by_owner_type, lambda { |klass|
@@ -44,7 +52,7 @@ class Note::Base < ActiveRecord::Base
   # ********** Methods
 
   def self.from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
   end
   
@@ -64,7 +72,7 @@ class Note::Base < ActiveRecord::Base
   end
   
   def from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.value    = h[:value]
     self.language = h[:language]
     self
@@ -102,7 +110,13 @@ class Note::Base < ActiveRecord::Base
   end
   
   def self.search_result_partial_name
-    'partials/note/search/result'
+    'partials/note/search_result'
   end
+
+  def build_search_result_rdf(document, result)
+    result.Sdc::link(IqRdf.build_uri(owner.origin))
+    build_rdf(document, result)
+  end
+
 
 end

@@ -1,20 +1,29 @@
+<%- if @results -%>
+  <%= (@multi_query ? render(:partial => 'search_results/unpaged/head_contents') : render(:partial => 'search_results/paged/head_contents')) %>
+<%- end -%>
+
 <h2><%= t('txt.views.search_results.header') %></h2>
+<%- if @results -%>
+  <div id="format_link_ttl">
+    <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
+  </div>
+<%- end -%>
 
 <%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">
     <ol>
       <li>
-        <select name="type" class="search_type">
-          <%= options_for_select Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name] }, params[:type] %>
+        <select name="t" class="search_type">
+          <%= options_for_select ([[I18n.t('txt.views.search_results.all_names'), 'all']] + Iqvoc.searchable_classes.map { |c| [c.model_name.human(:count => 2), c.name.parameterize] }), params[:t] %>
         </select>
       </li>
       <li>
-        <%= select_tag :query_type, options_for_select([
+        <%= select_tag :qt, options_for_select([
             [t('txt.views.search_results.exact'), 'exact'],
-            [t('txt.views.search_results.contains'), 'contains'], 
-            [t('txt.views.search_results.ends_with'), 'ends_with'], 
+            [t('txt.views.search_results.contains'), 'contains'],
+            [t('txt.views.search_results.ends_with'), 'ends_with'],
             [t('txt.views.search_results.begins_with'), 'begins_with']
-          ], params[:query_type]) %>
+          ], params[:qt]) %>
       </li>
     </ol>
   </fieldset>
@@ -22,13 +31,22 @@
   <fieldset>
     <ol>
       <li>
-        <label for="query"><%= t('txt.views.search_results.search_term') %></label><%= text_area_tag :query, params[:query] %>
+        <label for="q"><%= t('txt.views.search_results.search_term') %></label>
+        <% if Iqvoc.searchable_classes.detect {|c| c.supports_multi_query? } %>
+          <%= text_area_tag :q, params[:query] %>
+        <% else %>
+          <%= text_field_tag :q, params[:query] %>
+        <% end %>
+      </li>
+      <li>
+        <label for"c"><%= Collection::Base.model_name.human %></label>
+        <%= select_tag 'c', options_for_select(Iqvoc::Collection.base_class_name.constantize.all.sort { |a, b| a.label.to_s <=> b.label.to_s }.map { |c| [c.label.to_s, c.origin] }, params[:c]), :include_blank => true %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>
-        <% for language, lang in @available_languages.sort %>
-          <%= check_box_tag "languages[]", lang, select_search_checkbox?(lang), :id => "languages_#{lang}", :class => 'lang_check' %>
-          <label for="languages_<%= lang %>"><%= language %></label>
+        <% @available_languages.sort.each do |lang_tag, label| %>
+          <%= check_box_tag "l[]", lang_tag, select_search_checkbox?(lang_tag), :id => "languages_#{lang_tag}", :class => 'lang_check' %>
+          <label for="languages_<%= lang_tag %>"><%= label %></label>
         <% end %>
         <button type="button" id="language_select_all">
           <%= t('txt.views.search_results.all') %>
@@ -43,14 +61,24 @@
     </ol>
   </fieldset>
 <% end %>
-
 <% if @results %>
-  <h3><%= t('txt.views.search_results.search_results') %></h3>
+    <% if @results.any? %>
+    <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
+    <% else %>
+    <h3><%= t('txt.views.search_results.search_results') %></h3>
+    <p><%= t('txt.views.search_results.no_results_found') %></p>
+    <% end %>
 
-  <dl id="search_results">
-    <%= render :partial => @klass.search_result_partial_name, :collection => @results %>
-  </dl>
-  
+    <dl id="search_results">
+    <% @results.each do |result| %>
+      <% if @klass %>
+        <%= render :partial => @klass.search_result_partial_name, :locals => {:result => result} %>
+      <% else %>
+        <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
+      <% end %>
+    <% end %>
+    </dl>
+
   <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
 <% end %>
 

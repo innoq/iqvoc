@@ -13,6 +13,10 @@ class Concept::Relation::Base < ActiveRecord::Base
   
   set_table_name 'concept_relations'
   
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   belongs_to :owner,  :class_name => "Concept::Base"
   belongs_to :target, :class_name => "Concept::Base"
 
@@ -21,19 +25,23 @@ class Concept::Relation::Base < ActiveRecord::Base
   }
 
   scope :by_owner_origin, lambda { |owner_id|
-    includes(:owner) & Concept::Base.by_origin(owner_id)
+    includes(:owner).merge(Concept::Base.by_origin(owner_id))
+  }
+
+  scope :by_target_origin, lambda { |owner_id|
+    includes(:target).merge(Concept::Base.by_origin(owner_id))
   }
 
   scope :target_editor_selectable, lambda { # Lambda because Concept::Base.editor_selectable is currently not known + we don't want to call it at load time!
-    includes(:target) & Concept::Base.editor_selectable
+    includes(:target).merge(Concept::Base.editor_selectable)
   }
 
   scope :published, lambda { # Lambda because Concept::Base.published is currently not known + we don't want to call it at load time!
-    includes(:target) & Concept::Base.published
+    includes(:target).merge(Concept::Base.published)
   }
 
   scope :target_in_edit_mode, lambda { # Lambda because Concept::Base.in_edit_mode is currently not known + we don't want to call it at load time!
-    joins(:target) & Concept::Base.in_edit_mode
+    joins(:target).merge(Concept::Base.in_edit_mode)
   }
 
   def self.reverse_relation_class

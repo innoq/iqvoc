@@ -1,0 +1,66 @@
+<%= content_for :head do -%>
+  <link href="<%= collection_url(@collection.origin, :format => :ttl, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= collection_url(@collection.origin, :format => :rdf, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
+<% end -%>
+
+<h2><%= @collection.class.model_name.human %>: <%= link_to(@collection.origin, collection_url(:lang => I18n.locale, :id => @collection)) %></h2>
+<div id="format_link_ttl">
+  <%= collection_url(@collection.origin, :format => nil, :lang => nil) %>
+  (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
+</div>
+
+<% if can?(:manage, @collection) %>
+<div class="editing_versioning_toolbar">
+  <%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %>
+  <%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
+</div>
+<% end %>
+
+<%-
+# preferred label
+# XXX: duplicates parts of app/views/concepts/_show_head.html.erb
+-%>
+<h3><%= t("txt.common.pref_label") %>:
+  <%- if @collection.pref_label.new_record? -%>
+    -
+  <%- elsif @collection.pref_label.is_a?(Label::SKOSXL::Base) -%>
+    <%= link_to(@collection.pref_label, label_path(:lang => @active_language, :id => @collection.pref_label)) %>
+  <%- else -%>
+    <%= @collection.pref_label %>
+  <%- end -%>
+</h3>
+
+<%-
+# alternative labels
+# XXX: use of sections partial inconsistent with the rest of the template structure
+-%>
+<%= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
+
+<div class="relation">
+  <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
+  <ul>
+    <% @collection.note_skos_definitions.each do |definition| %>
+      <li><%= definition.value %> (<%= definition.language %>)</li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="relation">
+  <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
+  <div class="relation-body">
+    <ul>
+      <%- @collection.concepts.each do |concept| -%>
+        <%- if concept.published? || (!concept.published_version_id && can?(:update, concept)) -%>
+          <li><%= render concept.class.inline_partial_name, :concept => concept %></li>
+        <%- end -%>
+      <%- end -%>
+    </ul>
+  </div>
+</div>
+
+<div class="relation">
+  <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
+  <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
+    <%= render :partial => 'collection', :collection => @collection.subcollections %>
+  </ul>
+</div>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta name="i18n-locale" content="<%= I18n.locale %>">
+    <meta charset="utf-8">
     <%= csrf_meta_tag %>
     
-    <title><%= t("txt.common.iqvoc_title") %></title>
+    <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
     <!--[if lt IE 8]>
@@ -17,23 +17,23 @@
     <%= stylesheet_link_tag "/stylesheets/token-input-iqvoc.css" %>
     <%= stylesheet_link_tag "/stylesheets/jquery-ui-1.7.2.custom.css" %>
     <% Rails.application.config.additional_css_files.each do |file| %>
-      <%= stylesheet_link_tag file %>
+    <%= stylesheet_link_tag file %>
     <% end %>
     
-    <%= javascript_include_tag "jquery-1.4.2.min.js" %>
+    <%= javascript_include_tag "jquery-1.5.1.min.js" %>
     <%= javascript_include_tag "jquery-ui-1.7.2.custom.min.js" %>
     <%= javascript_include_tag "jquery-ui.datepicker-de.js" %>
     <%= javascript_include_tag "jquery-treeview/jquery.treeview.js" %>
     <%= javascript_include_tag "jquery-treeview/jquery.treeview.async.js" %>
-    <%#= javascript_include_tag "jquery.autocomplete.js" %>
     <%= javascript_include_tag "jquery.tokeninput.js" %>
     <%= javascript_include_tag "application.js" %>
     <%= javascript_include_tag "rails.js" %>
     <% Rails.application.config.additional_js_files.each do |file| %>
-      <%= javascript_include_tag file %>
+    <%= javascript_include_tag file %>
     <% end %>
     
     <%= yield :head %>
+    <%= yield :widget_translations %>
   </head>
 <body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
 
@@ -64,7 +64,7 @@
     <div id="footer" class="span-24 last">
       <div id="footer_box">
         <% if current_user %>
-          <%= t('txt.common.welcome', :user_name => current_user.name) %> | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => @active_language), :method => :delete %>
+          <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
         <% else %>
           <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language || I18n.locale) %>
         <% end %>

@@ -1,0 +1,23 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+document.namespaces(
+  :search => url_for(request.query_parameters.merge(:only_path => false, :anchor => "")),
+  :sdc => "http://sindice.com/vocab/search#"
+)
+
+document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_parameters.merge(:only_path => false))), IqRdf::Sdc::build_uri('Query')) do |query|
+  query.Sdc::searchTerms(params[:query])
+  i = 0
+  @results.each do
+    query.Sdc::result(IqRdf::Search::build_uri("result#{i+=1}"))
+  end
+end
+
+i = 0
+@results.each do |concept|
+  document << IqRdf::Search::build_uri("result#{i+=1}", IqRdf::Sdc::build_uri('Result')) do |result|
+    concept.build_search_result_rdf(document, result)
+  end
+end

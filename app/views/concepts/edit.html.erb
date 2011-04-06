@@ -1,21 +1,38 @@
 <p class="ajax_error flash_error" style="display: none;"></p>
 <%= error_messages_for @concept %>
 
-<h2><%= t("txt.views.concepts.edit.header") %> <strong><%= link_to @concept.origin, concept_path(:lang => @active_language, :id => @concept) %></strong></h2>
+<h2>
+  <%= Iqvoc::Concept.base_class.model_name.human %>:
+  <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept.origin)) %>
+</h2>
 
 <% if @association_objects_in_editing_mode.present? %>
 
   <% if @association_objects_in_editing_mode[:labelings].present? %>
     <h4><%= t("txt.common.referenced_labels") %></h4>
-    <%  @association_objects_in_editing_mode[:labelings].each do |labeling| %>
-      <%= labeling.type.demodulize + ': ' + link_to(labeling.target.value, label_path(:published => 0, :lang => @active_language, :id => labeling.target)) + user_and_phone_number(t("txt.common.editor"), labeling.target.locking_user.name, labeling.target.locking_user.telephone_number)  %><br />
+    <% @association_objects_in_editing_mode[:labelings].each do |labeling| %>
+      <%= labeling.type.demodulize + ': ' +
+              link_to(labeling.target.value,
+                  label_path(:published => 0, :lang => @active_language,
+                      :id => labeling.target)) +
+              user_and_phone_number(t("txt.common.editor"),
+                  labeling.target.locking_user.name,
+                  labeling.target.locking_user.telephone_number) %>
+      <br />
     <% end %>
   <% end %>
 
   <% if @association_objects_in_editing_mode[:concept_relations].present? %>
     <h4><%= t("txt.common.referenced_concepts") %></h4>
-    <%  @association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>
-      <%= concept_relation.type.to_s + ': ' + link_to(concept_relation.target.pref_label.to_s, concept_path(:published => 0, :lang => @active_language, :id => concept_relation.target)) + user_and_phone_number(t("txt.common.editor"), concept_relation.target.locking_user.name, concept_relation.target.locking_user.telephone_number)  %><br />
+    <% @association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>
+      <%= concept_relation.type.to_s + ': ' +
+              link_to(concept_relation.target.pref_label.to_s,
+                  concept_path(:published => 0, :lang => @active_language,
+                      :id => concept_relation.target)) +
+              user_and_phone_number(t("txt.common.editor"),
+                  concept_relation.target.locking_user.name,
+                   concept_relation.target.locking_user.telephone_number) %>
+      <br />
     <% end %>
   <% end %>
 
@@ -23,32 +40,11 @@
 
 <%= render :partial => "concepts/base_data" %>
 
-<%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
-  <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
-<%- end -%>
-
-<%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept), :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
-
-<%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
-  <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>
-<%- end -%>
-
-<%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
-  <%- languages.each do |language| -%>
-    <%- unless labeling_class.nested_editable? -%>
-      <%= render labeling_class.edit_partial_name(@concept), :concept => @concept, :klass => labeling_class, :language => language %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
-
-<%- Iqvoc::Concept.additional_association_classes.keys.each do |association_class| -%>
-  <%- unless association_class.nested_editable? -%>
-    <%= render association_class.edit_partial_name(@concept), :concept => @concept, :klass => association_class %>
-  <%- end -%>
-<%- end -%>
-
 <%= content_for :sub_navigation do %>
   <ul>
-    <li><%= back_link concept_path(:published => 0, :lang => @active_language, :id => @concept), t('txt.views.navigation.back_to_preview') %></li>
+    <li>
+      <%= back_link concept_path(:published => 0, :lang => @active_language,
+              :id => @concept), t('txt.views.navigation.back_to_preview') %>
+    </li>
   </ul>
 <% end %>

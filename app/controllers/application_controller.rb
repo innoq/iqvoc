@@ -1,18 +1,20 @@
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension
-
-  before_filter :load_languages
-  before_filter :set_locale
-  before_filter :require_user
+  before_filter :ensure_extension, :except => [:unlocalized_root]
+  before_filter :set_locale, :except => [:unlocalized_root]
+  before_filter :require_user, :except => [:unlocalized_root]
   
   helper :all
-  helper_method :current_user_session, :current_user
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
   protect_from_forgery
+    
+  def unlocalized_root
+    redirect_to localized_root_path(:lang => I18n.default_locale)
+  end
 
   protected
 
@@ -22,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   # Force an extension to every url. (LOD)
   def ensure_extension
-    redirect_to url_for(:format => (request.format && request.format.symbol) || :html) unless params[:format]
+    redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html)) unless params[:format]
   end
 
   def handle_access_denied(exception)
@@ -37,19 +39,17 @@ class ApplicationController < ActionController::Base
 
   def handle_not_found(exception)
     @exception = exception
+    @available_languages = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
+      lang_sym ||= "none"
+      hsh[lang_sym.to_s] = t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
+    end
+
     render :template => 'errors/not_found', :status => :not_found
   end
   
   def handle_virtuoso_exception(exception)
     logger.error "Virtuoso Exception: " + exception
     flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
-  end
-
-  def load_languages
-    @available_languages = {
-      'Deutsch' =>         :de,
-      'English' =>         :en
-    }
   end
 
   def set_locale
@@ -59,9 +59,35 @@ class ApplicationController < ActionController::Base
     @active_language = params[:lang] ? params[:lang] : req_lang
     I18n.locale = @active_language
   end
+
+  def concept_widget_data(concept)
+    {
+      :id => concept.origin,
+      :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
+    }
+  end
+  
+  def collection_widget_data(collection)
+    {
+      :id => collection.origin,
+      :name => collection.label.to_s
+    }
+  end
+  
+  def label_widget_data(label)
+    {
+      :id => label.origin,
+      :name => label.value
+    }
+  end
   
   private
-  
+
+  # Configurable Ability class
+  def current_ability
+    @current_ability ||= Iqvoc.ability_class.new(current_user)
+  end
+
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find

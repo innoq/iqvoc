@@ -1,26 +1,22 @@
 Rails.application.routes.draw do
   available_locales = /de|en/ # FIXME #{I18n.available_locales.map(&:to_s).join('|')}/
 
+  scope '(:lang)' do
+    resources :collections
+    match 'search(.:format)' => 'search_results#index', :as => 'search'
+  end
+
+  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
+
   scope ':lang', :lang => available_locales do
     resource  :user_session
-    resources :virtuoso_syncs, :only => [:new, :create]
-    
-    # The index action is only needed for language-independent
-    # JSON URIs, so they are defined in the namespace above this one.
-    resources :concepts do
-      resources :labelings, :controller => 'concepts/labelings'
-      resources :relations, :controller => 'concepts/relations'
-    end
-
-    resources :labels do
-      resources :relations, :controller => 'labels/relations'
-    end
-
-    resources :labelings
     resources :users
-    resources :notes
-    resources :label_relations
-    
+
+    resources :concepts
+    resources :labels
+
+    resources :virtuoso_syncs, :only => [:new, :create]
+
     %w(concepts labels).each do |type|
       match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
       match "#{type}/versions/:origin/merge(.:format)"       => "#{type}/versions#merge",     :as => "#{type.singularize}_versions_merge"
@@ -33,17 +29,20 @@ Rails.application.routes.draw do
     match 'alphabetical_concepts/:letter(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
-    match 'search(.:format)'    => 'search_results#index', :as => 'search'
+    match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
+
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
+    # There must be on named route 'localized_root' in order for an unlocalized root call to work
+    # See ApplicationController#unlocalized_root
     root :to => 'concepts/hierarchical#index', :as => 'localized_root'
   end
-  
+
   match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
   match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
 
-  root :to => redirect("/de")
+  root :to => 'application#unlocalized_root'
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end

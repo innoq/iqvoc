@@ -1,4 +1,8 @@
 de:
+  languages:
+    de: Deutsch
+    en: Englisch
+    none: Wiss.
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
@@ -22,6 +26,9 @@ de:
      default_ajax_error: "Fehler"
      to_review: "Vorlage zur Freigabe"
      is_in_review: "Dokument befindet sich im Reviewprozess"
+     unpublished_version: Unveröffentlichte Version
+     consistent: "konsistent"
+     inconsistent: "inkonsistent"
      state:
        published: "Veröffentlicht"
        in_review: "Vorlage zur Freigabe"
@@ -52,15 +59,13 @@ de:
      alphabetical_concepts:
      hierarchical_concepts:
      concepts:
-       select: "Bitte wählen Sie ein Konzept aus der unten aufgeführten Liste."
-       new: "Neues Konzept"
-       versionview: "Versionsansicht für Konzept"
+       expired_at: "Abgelaufen am %{date}"
+       select: "Bitte wählen Sie ein %{concept_class_name} aus der unten aufgeführten Liste."
+       new: "Neues %{concept_class_name}"
        missing:
          broader: "Keine allgemeineren Begriffe verfügbar"
          narrower: "Keine spezifischeren Begriffe verfügbar"
          related: "Kein verwandter Begriff verfügbar"
-       edit:
-         header: "Bearbeitung des Konzepts"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
      labels:
@@ -97,14 +102,15 @@ de:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
        back_to_preview: "Zurück zur Versionsvorschau"
-       back_to_concepts: "Zurück zur Konzeptliste"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
        search: "Suche"
        about: "Über"
        users: "Benutzer"
+       collections: "Kollektionen"
      search_results:
        header: "Suche"
+       all_names: "Alle Namen"
        inflectionals: "Schreibweisen"
        pref_labels: "bevorzugte Namen (Labels)"
        all_labels: "alle Namen (Labels)"
@@ -122,7 +128,7 @@ de:
        results_found:
          one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
          other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
-       no_results_found: "Ihre Suche nach %{query} lieferte keine Ergebnisse. Versuchen Sie, in anderen/allen Sprachen zu suchen oder wählen Sie einen kürzeren Suchbegriff."
+       no_results_found: "Ihre Suche lieferte keine Ergebnisse."
        submit: "Suche"
        type: "Typ"
        used_as: "benutzt als"
@@ -181,8 +187,8 @@ de:
          submit: "Speichern"
      widget:
        hint: "Begriff eingeben"
-       no_results: "Nichts gefunden!"
-       searching: "Suche..."
+       no_results: "Keine Ergebnisse"
+       searching: "Suchen..."
      dashboard:
        type: "Typ"
        value: "Name"
@@ -190,13 +196,21 @@ de:
        follow_up: "Wiedervorlage"
        updated_at: "Geändert am"
        to_review: "Vorlage zur Freigabe"
+       check_consistency: Konsistenz prüfen
        consistent: "konsistent"
        inconsistent: "inkonsistent"
        state: "Status"
+       full_rdf_export: Vollständiger RDF Export
+     collections:
+       new: "Neue Kollektion"
 
    partials:
      note:
        missing: "Keine verfügbar."
+     collection:
+       skos:
+         member:
+           missing: Keine zugewiesen
      label:
        relation:
          missing: Keine Relationen vorhanden.
@@ -269,6 +283,13 @@ de:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
      virtuoso_syncs:
        success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
+     collections:
+       save:
+         success: "Die Kollektion wurde erfolgreich gespeichert."
+         error: "Die Kollektion konnte nicht gespeichert werden."
+       destroy:
+         success: "Die Kollektion wurde erfolgreich gelöscht."
+         error: "Die Kollektion konnte nicht gelöscht werden."
 
    models:
      label:

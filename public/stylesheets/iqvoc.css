@@ -2,7 +2,7 @@
 /* # Customizable in your engine's CSS # */
 /* ##################################### */
 #header {
-  background: url('/images/header_long.png') no-repeat;
+  background: url('../images/header_long.png') no-repeat;
   height: 85px;
   padding: 9px 1em 1em 135px;
   position: relative;
@@ -31,6 +31,10 @@ a {
 a:hover {
   text-decoration: underline;
   color: #308110;
+}
+
+a.unpublished {
+  color: #808110;
 }
 
 div.letter_selector   { margin-bottom: 20px; }
@@ -64,7 +68,7 @@ ul#navi_main li {
 }
 
 #footer {
-  background: url('/images/footer.png') no-repeat top right;
+  background: url('../images/footer.png') no-repeat top right;
   height: 43px;
   margin-top: 15px;
   padding-top: 10px;

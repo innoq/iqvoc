@@ -18,7 +18,7 @@ class VirtuosoSyncsController < ApplicationController
       label.update_attribute(:rdf_updated_at, time) if RdfStore.mass_import(label.rdf_uri, rdf_helper.render_ttl_for_label(label))
     end
     
-    flash[:notice] = I18n.t("txt.controllers.virtuoso_syncs.success")
+    flash.now[:notice] = I18n.t("txt.controllers.virtuoso_syncs.success")
     
     render :action => "new"
   end

@@ -1,22 +1,8 @@
-<div class="relation-body">
-  <fieldset>
-    <legend><%= klass.model_name.human(:count => 2) %></legend>
-    <input type="text" name="<%= klass.name.to_relation_name %>"
-           class="label_relation"
-           data-present-relations="[<%= klass.by_owner(concept.id).target_editor_selectable.map{|r| "{'name': '#{escape_javascript(r.target.pref_label.value)}', 'origin': '#{escape_javascript(r.target.origin)}', 'published': #{r.target.published?}}"}.join(',') %>]"
-           data-post-url="<%= concept_relations_path(:published => 0, :lang => @active_language, :concept_id => concept.origin, :relation_class => klass.name) %>"
-           data-delete-url="<%= concept_relation_path(:published => 0, :lang => @active_language, :id => "ORIGIN", :concept_id => concept.origin, :relation_class => klass.name) %>"
-           data-get-url="<%= concepts_path(:format => :json) %>"
-           data-branch-url="<%= concept_versions_branch_path(:lang => @active_language, :origin => "ORIGIN") %>"
-           data-show-url="<%= concept_path(:lang => @active_language, :id => "ORIGIN")%>"
-           data-versioned-show-url="<%= concept_path(:published => 0, :lang => @active_language, :id => "ORIGIN") %>"
-           data-auth-token="<%= form_authenticity_token %>"
-           data-hint-text="<%= I18n.t("txt.views.widget.hint") %>"
-           data-searching-text="<%= I18n.t("txt.views.widget.searching") %>"
-           data-no-results-text="<%= I18n.t("txt.views.widget.no_results") %>"
-           <% if klass.only_one_allowed? %>
-             data-token-limit="1"
-           <% end %>
-           ></input>
-  </fieldset>
-</div>
+<li>
+  <%= label_tag klass.name.to_relation_name, klass.model_name.human %>
+  <%= text_field_tag "concept[inline_#{klass.name.to_relation_name}]", concept.send("inline_#{klass.name.to_relation_name}"),
+    :id => klass.name.to_relation_name,
+    :class => "token_input_widget",
+    :"data-query-url" => concepts_path(:lang => I18n.locale, :format => :json),
+    :"data-options" => {:prePopulate => Concept::Base.editor_selectable.by_origin(concept.send("inline_#{klass.name.to_relation_name}")).map{|c| concept_widget_data(c)}}.to_json  %>
+</li>

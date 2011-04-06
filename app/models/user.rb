@@ -25,4 +25,8 @@ class User < ActiveRecord::Base
     self.role == name.to_s
   end
 
+  def to_s
+    self.name.to_s
+  end
+
 end

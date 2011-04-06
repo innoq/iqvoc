@@ -1,63 +1,37 @@
 module RdfHelper
   
-  def render_ttl_for_label(label_to_render)
-    document = IqRdf::Document.new(Rails.application.config.rdf_data_uri_prefix)
-    
-    document.namespaces :skos     => "http://www.w3.org/2004/02/skos/core#", 
-                    :skosxl   => "http://www.w3.org/2008/05/skos-xl#", 
-                    :umt      => "http://www.uba.de/2010/03/umthes#",
-                    :rdf      => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                    :rdfs     => "http://www.w3.org/2000/01/rdf-schema#",
-                    :owl      => "http://www.w3.org/2002/07/owl#",
-                    :xsd      => "http://www.w3.org/2001/XMLSchema#",
-                    :dct      => "http://purl.org/dc/elements/1.1/",
-                    :dce      => "http://purl.org/dc/elements/1.1/"
+  def render_concept(document, concept)
+    document << concept.build_rdf_subject(document, controller) do |c|
 
-    document << IqRdf::build_uri(label_to_render.origin, IqRdf::Skos::build_uri("Label")) do |label|
-      if label_to_render.base_form
-        label.Umt::build_predicate("baseForm", label_to_render.base_form)
+      concept.collections.each do |collection|
+        c.Schema::memberOf(IqRdf::Coll::build_uri(collection.origin))
       end
-      if label_to_render.part_of_speech
-        label.Umt::build_predicate("partOfSpeech", label_to_render.part_of_speech)
+
+      c.Schema::expires(concept.expired_at) if concept.expired_at
+      c.Owl::deprecated(true) if concept.expired_at and concept.expired_at <= Date.new
+
+      concept.labelings.each do |labeling|
+        labeling.build_rdf(document, c)
       end
-      if label_to_render.inflectional_code
-        label.Umt::build_predicate("inflectionalCode", label_to_render.inflectional_code) 
+
+      concept.relations.each do |relation|
+        relation.build_rdf(document, c)
       end
-      %w(homograph qualifier translation).each do |name|
-        label.Umt::build_predicate(name, *label_to_render.send(name.tableize).map{|relation| IqRdf::build_uri(relation.range.origin)}) unless label_to_render.send(name.tableize).empty?
+
+      concept.notes.each do |note|
+        note.build_rdf(document, c)
       end
-      unless label_to_render.compound_forms.blank?
-        RAILS_DEFAULT_LOGGER.debug(label_to_render.compound_form_contents.map{|cfc| cfc.label }.inspect)
-        label.Skos::build_predicate("compoundForm", label_to_render.compound_form_contents.map{|cfc| IqRdf::build_uri(cfc.label.origin)})
+
+      concept.matches.each do |match|
+        match.build_rdf(document, c)
       end
-      %w(historyNotes scopeNotes editorialNotes examples definitions).each do |name|
-        label.Skos::build_predicate(name.singularize, *label_to_render.send(name.underscore).map{|note| IqRdf::Literal.new(note, note.language) }) unless label_to_render.send(name.underscore).empty?
-      end
-      %w(exportNote changeNote sourceNote usageNote).each do |relation|
-        relation_name = 'umt_' << relation.underscore.pluralize
-        label_to_render.send(relation_name).each do |element|
-          if element.annotations.blank?
-            label.Umt::build_predicate(relation, IqRdf::Literal.new(element, element.language))
-          else
-            label.Umt::build_predicate(relation) do |blank_node|
-              element.annotations.each do |na|
-                ns, id = na.identifier.split(':')
-                blank_node.send(ns.camelize).build_predicate(id, IqRdf::PlainTurtleLiteral.new(na.value))
-              end
-            end
-          end
+
+      Iqvoc::Concept.additional_association_class_names.keys.each do |class_name|
+        concept.send(class_name.to_relation_name).each do |additional_object|
+          additional_object.build_rdf(document, c)
         end
       end
-      label_to_render.inflectionals.each do |inflectional|
-        label.Umt::build_predicate("inflectional", inflectional.value)
-      end
-      if label_to_render.status
-        label.Umt::build_predicate("status", label_to_render.status)  
-      end
-      label.Skosxl::build_predicate("literalForm", IqRdf::Literal.new(label_to_render.value, label_to_render.language))
     end
-    
-    document.to_turtle
-  end
   
+  end
 end

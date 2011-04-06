@@ -3,7 +3,8 @@ namespace :iqvoc do
   namespace :users do
     desc 'Creates first test users (Administrator and Demo-User).'
     task :init => :environment do
-      admin = User.create!(
+      if User.where(:email => 'admin@iqvoc').none?
+        User.create!(
         :forename => 'Admin', 
         :surname => 'Istrator', 
         :email => 'admin@iqvoc', 
@@ -11,7 +12,10 @@ namespace :iqvoc do
         :password_confirmation => 'admin',
         :active => true,
         :role => "administrator")
-      user  = User.create!(
+      end
+
+      if User.where(:email => 'demo@iqvoc').none?
+        User.create!(
         :forename => 'Demo', 
         :surname => 'User', 
         :email => 'demo@iqvoc', 
@@ -19,6 +23,7 @@ namespace :iqvoc do
         :password_confirmation => 'cooluri',
         :active => true,
         :role => "reader")
+      end
     end
   
     desc 'Deletes all users.' 

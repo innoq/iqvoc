@@ -3,7 +3,12 @@
   <div class="relation-body">
     <% if concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class.narrower_class).length > 0 %>
       <div class="selector">
-        <%= treeview concept.id %>
+        <%-
+          concepts = concept.narrower_relations.map do |relation|
+            Concept::Base.find(relation.target_id) # XXX: use of Concept::Base correct?
+          end
+        -%>
+        <%= treeview(concepts, concept.id) %>
       </div>
     <% else %>
       <p><%= t('txt.views.concepts.missing.narrower') %></p>

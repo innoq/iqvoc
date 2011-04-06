@@ -1,12 +1,25 @@
 class Label::SKOSXL::Base < Label::Base
 
-  include IqvocGlobal::Versioning
+  include Iqvoc::Versioning
   
   # ********** Validations
 
   validate :two_versions_exist, :on => :create
 
   # ********** Hooks
+  
+  after_save do |label|
+    # Handle save or destruction of inline relations for use with widgets
+    (@inline_assigned_relations ||= {}).each do |relation_class_name, origins|
+      # Remove all associated labelings of the given type
+      label.send(relation_class_name.to_relation_name).destroy_all
+      
+      # Recreate relations reflecting the widget's parameters
+      Iqvoc::XLLabel.base_class.by_origin(origins).each do |l|
+        label.send(relation_class_name.to_relation_name).create(:range => l)
+      end
+    end
+  end
 
   # ********** "Static"/unconfigureable relations
 
@@ -37,6 +50,16 @@ class Label::SKOSXL::Base < Label::Base
       :foreign_key => 'domain_id',
       :class_name  => relation_class_name,
       :dependent   => :destroy
+      
+    # Serialized setters and getters (\r\n or , separated)
+    define_method("inline_#{relation_class_name.to_relation_name}".to_sym) do
+      (@inline_assigned_relations && @inline_assigned_relations[relation_class_name]) || self.send(relation_class_name.to_relation_name).map{|r| r.range.origin}.uniq
+    end
+
+    define_method("inline_#{relation_class_name.to_relation_name}=".to_sym) do |value|
+      # write to instance variable and write it on after_safe
+      (@inline_assigned_relations ||= {})[relation_class_name] = value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq
+    end
   end
 
   Iqvoc::XLLabel.additional_association_classes.each do |association_class, foreign_key|
@@ -61,21 +84,21 @@ class Label::SKOSXL::Base < Label::Base
   
   # ********** Methods
   
-  def self.single_query(params = {})
-    query_str = build_query_string(params)
-    
-    by_query_value(query_str).
-    by_language(params[:languages].to_a).
-    published.
-    order("LOWER(#{Label::Base.table_name}.value)")
-  end
+  # def self.single_query(params = {})
+  #   query_str = build_query_string(params)
+  #   
+  #   by_query_value(query_str).
+  #   by_language(params[:languages].to_a).
+  #   published.
+  #   order("LOWER(#{Label::Base.table_name}.value)")
+  # end
   
-  def self.search_result_partial_name
-    'partials/label/search/result'
-  end
+  # def self.search_result_partial_name
+  #   'partials/labeling/skosxl/search_result'
+  # end
 
   def self.from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
   end
   
@@ -104,7 +127,7 @@ class Label::SKOSXL::Base < Label::Base
   end
 
   def from_rdf(str)
-    h = IqvocGlobal::RdfHelper.split_literal(str)
+    h = Iqvoc::RdfHelper.split_literal(str)
     self.value    = h[:value]
     self.language = h[:language]
     self

@@ -1,13 +1,12 @@
-<fieldset id="<%= klass.name.to_relation_name %>" class="note_relation">
-  <legend><%= klass.model_name.human(:count => 2) %></legend>
+<fieldset id="<%= assoc_klass.name.to_relation_name %>" class="note_relation">
+  <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
-    <%- scope = defined?(concept) ? concept : label -%>
-    <% change_notes = scope.send(klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>
+    <% change_notes = owner_klass.send(assoc_klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>
     <% change_notes.each do |note| %>
       <li class="inline_note<%= " new" if note.new_record? %>">
-        <%= f.fields_for klass.name.to_relation_name, note do |note_form| %>
+        <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
           <% if note == change_notes.last %>
-            <%= note_form.label :value, klass.model_name.human(:count => 1) %>
+            <%= note_form.label :value, assoc_klass.model_name.human(:count => 1) %>
             <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
 
             <br />

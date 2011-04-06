@@ -1,7 +1,5 @@
-class Concept::Relation::SKOS::Related < Concept::Relation::Base
+class Concept::Relation::SKOS::Related < Concept::Relation::SKOS::Base
 
-  def build_rdf(document, subject)
-    subject.Skos.related(IqRdf.build_uri(target.origin))
-  end
+  self.rdf_predicate = 'related'
 
 end

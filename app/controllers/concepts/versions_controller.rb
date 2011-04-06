@@ -53,7 +53,7 @@ class Concepts::VersionsController < ApplicationController
 
     new_version.lock_by_user!(current_user.id)
     new_version.save!
-    
+
     flash[:notice] = t("txt.controllers.versioning.locked")
     redirect_to edit_concept_path(:published => 0, :id => new_version, :lang => @active_language)
   end
@@ -74,28 +74,28 @@ class Concepts::VersionsController < ApplicationController
   def consistency_check
     concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless concept
-    
+
     authorize! :check_consistency, concept
-    
+
     if concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to concept_path(:published => 0, :id => concept, :lang => @active_language)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      redirect_to edit_concept_path(:published => 0, :id => concept, :lang => @active_language, :full_consitency_check => "1")
+      redirect_to edit_concept_path(:published => 0, :id => concept, :lang => @active_language, :full_consistency_check => "1")
     end
   end
 
   def to_review
     concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound unless concept
-    
+
     authorize! :send_to_review, concept
-    
+
     concept.to_review!
     concept.save!
     flash[:notice] = t("txt.controllers.versioning.to_review_success")
     redirect_to concept_path(:published => 0, :lang => @active_language, :id => concept)
   end
-  
+
 end

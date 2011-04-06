@@ -2,7 +2,7 @@
 
 <p class="flash_error label_warning" style="display:none;" data-msg="<%= I18n.t("txt.views.labels.label_already_exists") %>"></p>
 
-<%= form_for @label, :as => 'label', :url => labels_path(:published => 0, :lang => @active_language), :html => {:class => "form"} do |f| %>
+<%= form_for @label, :as => 'label', :url => @label.new_record? ? labels_path(:lang => I18n.locale) : label_path(:lang => I18n.locale, :id => @label, :published => 0), :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
@@ -20,11 +20,6 @@
         <%= render :partial => 'partials/label/additional_base_data', :locals => { :f => f } %>
       <%- end -%>
       
-      <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |assoc_class| -%>
-        <%- if assoc_class.nested_editable? -%>
-          <%= render :partial => assoc_class.edit_partial_name(@label), :locals => { :label => @label, :klass => assoc_class, :f => f } %>
-        <%- end -%>
-      <%- end -%>
       <li>
         <%= f.label :follow_up %>
         <%= f.text_field :follow_up, :class => "datepicker" %>
@@ -35,12 +30,30 @@
       </li>
     </ol>
   </fieldset>
-  <%# FIXME: shouldn't this be @label.new_record? %>
-  <% unless controller.action_name == "new" || controller.action_name == "create" %>
-    <% Iqvoc::Concept.note_classes.each do |note_class| %>
-      <%= render :partial => note_class.edit_partial_name(@label), :locals => { :label => @label, :klass => note_class, :f => f } %>
-    <% end %>
+  
+  <fieldset>
+    <legend>Relations</legend>
+    <ol>
+    <%- Iqvoc::XLLabel.relation_classes.each do |relation_class| -%>
+        <%= render relation_class.edit_partial_name(@label), :label => @label, :klass => relation_class %>
+    <%- end -%>
+    </ol>
+  </fieldset>
+  
+  <%- Iqvoc::XLLabel.additional_association_classes.keys.each do |association_class| -%>
+      <fieldset>
+        <legend><%= association_class.model_name.human(:count => 2) %></legend>
+        <ol>
+          <%= render association_class.edit_partial_name(@label), :label => @label, :klass => association_class, :f => f %>
+        </ol>
+      </fieldset>
+  <%- end -%>
 
+  
+  <% unless @label.new_record? %>
+    <% Iqvoc::XLLabel.note_classes.each do |note_class| %>
+      <%= render note_class.edit_partial_name(@label), :owner_klass => @label, :assoc_klass => note_class, :f => f %>
+    <% end %>
   <% end %>
 
   <%= f.submit t("txt.common.save") %>
@@ -48,4 +61,8 @@
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
     <%= link_to t("txt.common.reset") %>
   <% end %>
+<% end %>
+
+<%= content_for :widget_translations do %>
+  <%= render :partial => 'layouts/widget_translations' %>
 <% end %>

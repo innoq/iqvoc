@@ -1,0 +1,9 @@
+<%- if concept = result.owner -%>
+  <dt>
+    <%= link_to highlight_query(result.target.value, params[:query], @multi_query), concept_path(:lang => I18n.locale, :id => concept) %>
+  </dt>
+  <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
+  <%- if result.target.language -%>
+    <dd><%= t('txt.views.search_results.language') %>: <%= result.target.language %></dd>
+  <%- end -%>
+<%- end -%>

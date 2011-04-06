@@ -1,0 +1,7 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+@concepts.each do |concept|
+  render_concept(document, concept)
+end

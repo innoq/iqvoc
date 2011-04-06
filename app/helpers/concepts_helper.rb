@@ -1,26 +1,30 @@
 module ConceptsHelper
   def select_search_checkbox?(lang)
-    (params[:languages] && params[:languages].include?(lang.to_s)) || (!params[:query] && I18n.locale.to_s == lang.to_s)
+    (params[:languages] && params[:languages].include?(lang.to_s)) ||
+        (!params[:query] && I18n.locale.to_s == lang.to_s)
   end
-  
+
   def quote_turtle_value(str)
     str.match(/^<.*>$/) ? str : "\"#{str}\""
   end
-  
-  def treeview(root = "source")
-    render :partial => "concepts/hierarchical/treeview", :locals => { :root => root }
+
+  def treeview(concepts, root = "source")
+    render :partial => "concepts/hierarchical/treeview",
+        :locals => { :root => root, :concepts => concepts }
   end
 
-  def render_concept_association(hash, concept, association_class, furter_options = {})
+  def render_concept_association(hash, concept, association_class, further_options = {})
     ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") <<
-      render(association_class.partial_name(concept), furter_options.merge(:concept => concept, :klass => association_class))
+      render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
   end
 
   def concept_view_data(concept)
     res = {}
 
+    render_concept_association(res, concept, Collection::Member::Concept)
+
     Iqvoc::Concept.further_labeling_classes.each do |labeling_class, languages|
-      (languages || I18n.available_locales).each do |lang|
+      (languages || Iqvoc::available_languages).each do |lang|
         render_concept_association(res, concept, labeling_class, :lang => lang)
       end
     end
@@ -43,5 +47,5 @@ module ConceptsHelper
 
     res
   end
-  
+
 end

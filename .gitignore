@@ -1,7 +1,9 @@
 .bundle
 db/*.sqlite3
+db/schema.rb
 log/*.log
 tmp/**/*
+tmp/*
 .svn
 .DS_Store
 nbproject
@@ -11,5 +13,6 @@ public/stylesheets/vendor
 public/javascripts/vendor
 public/images/vendor
 public/fonts/vendor
-
 .capistrano_history.yml
+*.war
+vendor/gems/*.gem

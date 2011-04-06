@@ -1,3 +1,3 @@
- module Iqvoc
-   VERSION = "0.0.1"
- end
+module Iqvoc
+  VERSION = "2.0.0"
+end

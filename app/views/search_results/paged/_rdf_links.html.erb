@@ -1,0 +1,2 @@
+<%= url_for(request.query_parameters.merge(:format => nil, :lang => nil, :page => @results.current_page, :only_path => false)) %>
+(<%= link_to "Turtle", url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>, <%= link_to "RDF/XML", url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false)) %>)

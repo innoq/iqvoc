@@ -1,8 +1,8 @@
-desc "Runs a rake task on the remote system. Use task='<taskname + parameters>' to specify the task."
+desc "Runs a rake task on the remote system. Use TASK'<taskname + parameters>' to specify the task."
 task :invoke_task do
   prefix = fetch(:invokeable_task_prefix, "")
-  if ENV['task'] and ENV['task'] =~ /^#{prefix}/
-    run("cd #{deploy_to}/current; rake --trace #{ENV['task']} RAILS_ENV=production")
+  if ENV['TASK'] and ENV['TASK'] =~ /^#{prefix}/
+    run("cd #{deploy_to}/current; rake --trace #{ENV['TASK']} RAILS_ENV=production")
   else
     run("cd #{deploy_to}/current; rake -T #{prefix} --trace RAILS_ENV=production")
   end
@@ -38,7 +38,12 @@ namespace :deploy do
       }
     }
     run "mkdir -p #{shared_path}/config/"
+    run "mkdir -p #{shared_path}/db/"
     put config.to_yaml, "#{shared_path}/config/database.yml"
   end
-
+  
+  desc "Copy vendor specific Gemfile"
+  task :copy_gemfile, :roles => :app do
+    run "cp #{release_path}/Gemfile.#{vendor}_demo #{release_path}/Gemfile"
+  end
 end

@@ -94,7 +94,7 @@ Warbler::Config.new do |config|
 
   # Name of the war file (without the .war) -- defaults to the basename
   # of RAILS_ROOT
-  config.war_name = "ROOT"
+  # config.war_name = "ROOT"
 
   # Name of the MANIFEST.MF template for the war file. Defaults to a simple
   # MANIFEST.MF that contains the version of Warbler used to create the war file.
@@ -106,7 +106,7 @@ Warbler::Config.new do |config|
   # config.compiled_ruby_files = FileList['app/**/*.rb']
 
   # Value of RAILS_ENV for the webapp -- default as shown below
-  # config.webxml.rails.env = ENV['RAILS_ENV'] || 'production'
+  config.webxml.rails.env = ENV['RAILS_ENV'] || 'production'
 
   # Application booter to use, one of :rack, :rails, or :merb (autodetected by default)
   # config.webxml.booter = :rails
@@ -127,8 +127,8 @@ Warbler::Config.new do |config|
   # Control the pool of Rails runtimes. Leaving unspecified means
   # the pool will grow as needed to service requests. It is recommended
   # that you fix these values when running a production server!
-  # config.webxml.jruby.min.runtimes = 2
-  # config.webxml.jruby.max.runtimes = 4
+  config.webxml.jruby.min.runtimes = 2
+  config.webxml.jruby.max.runtimes = 4
 
   # JNDI data source name
   # config.webxml.jndi = 'jdbc/rails'
