@@ -29,7 +29,8 @@ var addWidget = function(index, elem) {
 };
 
 var createNote = function(ev) {
-	var source = $(this).parent().find("ol li:last-child");
+	var container = $(this).closest("fieldset");
+	var source = $("ol li:last-child", container);
 
 	// special case for usage notes
 	// a usage note contains a select box instead of a textarea
@@ -69,7 +70,7 @@ var createNote = function(ev) {
 
 	clone.addClass("new");
 
-	$(this).parent().find("ol").append(clone);
+	$("ol", container).append(clone);
 
 	return false;
 };
@@ -91,7 +92,7 @@ jQuery(document).ready(function($) {
 	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
 	$("li.inline_note input:checkbox").change(function() { // XXX: obsolete?
 		var action = this.checked ? "addClass" : "removeClass";
-		$(this).parent()[action]("deleted");
+		$(this).closest("li")[action]("deleted");
 	});
 
 	// Datepicker
