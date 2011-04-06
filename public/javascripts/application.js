@@ -90,11 +90,8 @@ jQuery(document).ready(function($) {
 	$("fieldset.note_relation ol li.inline_note.new").hide();
 	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
 	$("li.inline_note input:checkbox").change(function() { // XXX: obsolete?
-		if (this.checked) {
-			$(this).parent().addClass("deleted");
-		} else {
-			$(this).parent().removeClass("deleted");
-		}
+		var action = this.checked ? "addClass" : "removeClass";
+		$(this).parent()[action]("deleted");
 	});
 
 	// Datepicker
