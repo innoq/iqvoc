@@ -1,19 +1,10 @@
-require 'test_helper'
+require 'integration_test_helper'
 require 'capybara/envjs'
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept = Iqvoc::Concept.base_class.create(:origin => "_666",
-        :published_at => Time.now)
-
-    # create a user
-    password = "FooBar"
-    @admin = User.create(:forename => "John", :surname => "Doe",
-        :email => "foo@example.org",
-        :password => password, :password_confirmation => password,
-        :active => true, :role => "administrator")
-    @admin.password = password # required because password is only saved in encrypted form
+    @concept = Factory.create(:concept)
 
     Capybara.current_driver = :envjs
   end
@@ -23,13 +14,8 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
   end
 
   test "dynamic addition of notes" do
-    # login
-    visit new_user_session_path(:lang => :de)
-    fill_in "E-Mail", :with => @admin.email
-    fill_in "Passwort", :with => @admin.password
-    click_button "Anmelden"
-    assert page.has_no_css?(".flash_error")
-    assert page.has_content?("Anmeldung erfolgreich")
+    login("administrator")
+
     # concept edit view
     visit concept_path(@concept, :lang => "de", :format => "html")
     click_link_or_button("Neue Version erstellen")
