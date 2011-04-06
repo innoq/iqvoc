@@ -3,6 +3,12 @@ require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
 
+  def setup
+    Iqvoc::Concept.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
+    Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
+    Iqvoc::Concept.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
+  end
+
   TEST_DATA = (<<-DATA
 <http://www.example.com/_animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .

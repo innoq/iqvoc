@@ -19,7 +19,7 @@ class SearchTest < ActionDispatch::IntegrationTest
         :active => true, :role => "administrator")
     admin.save
 
-    # create a few XL labels
+    # create a few labels
     labels = {}
     {
       "terra" => "la",
