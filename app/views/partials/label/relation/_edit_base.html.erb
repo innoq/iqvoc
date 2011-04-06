@@ -1,8 +1,0 @@
-<li>
-  <%= label_tag(klass.name.to_relation_name, klass.model_name.human(:count => 2)) %>
-  <%= text_field_tag "label[inline_#{klass.name.to_relation_name}]", label.send("inline_#{klass.name.to_relation_name}"),
-    :id => "#{klass.name.to_relation_name}",
-    :class => "token_input_widget",
-    :"data-query-url" => labels_path(:lang => I18n.locale, :format => :json),
-    :"data-options" => {:prePopulate => Iqvoc::XLLabel.base_class.editor_selectable.by_origin(label.send("inline_#{klass.name.to_relation_name}")).map{|l| label_widget_data(l)}}.to_json %>
-</li>
