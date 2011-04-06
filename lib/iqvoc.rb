@@ -5,15 +5,16 @@ module Iqvoc
   require File.join(File.dirname(__FILE__), '../config/engine') unless Iqvoc.const_defined?(:Application)
 
   mattr_accessor :title,
-                 :searchable_class_names,
-                 :available_languages,
-                 :ability_class_name,
-                 :default_rdf_namespace_helper_methods,
-                 :change_note_class_name
+    :searchable_class_names,
+    :available_languages,
+    :ability_class_name,
+    :default_rdf_namespace_helper_methods,
+    :change_note_class_name,
+    :rdf_namespaces
 
   self.searchable_class_names = [
-    'Labeling::SKOSXL::Base',
-    'Labeling::SKOSXL::PrefLabel',
+    'Labeling::SKOS::Base',
+    'Labeling::SKOS::PrefLabel',
     'Note::Base' ]
 
   self.available_languages = [:de, :en]
@@ -21,6 +22,13 @@ module Iqvoc
   self.ability_class_name = "::Ability"
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
+
+  self.rdf_namespaces = {
+    :rdf        => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    :rdfs       => "http://www.w3.org/2000/01/rdf-schema#",
+    :owl        => "http://www.w3.org/2002/07/owl#",
+    :skos       => "http://www.w3.org/2004/02/skos/core#",
+  }
 
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
@@ -152,22 +160,6 @@ module Iqvoc
       base_class_name.constantize
     end
 
-  end
-
-  def self.all_classes
-    label_classes = []
-    if const_defined?(:Label)
-      label_classes += [Label.base_class]
-    end
-    if const_defined?(:XLLabel)
-      label_classes += [XLLabel.base_class] + XLLabel.note_classes +
-          XLLabel.relation_classes + XLLabel.additional_association_classes.keys
-    end
-    arr = [Concept.base_class] + Concept.relation_classes +
-        Concept.labeling_classes.keys + Concept.match_classes +
-        Concept.note_classes + Concept.additional_association_classes.keys +
-        label_classes
-    arr.uniq
   end
 
   def self.searchable_classes

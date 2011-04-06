@@ -13,18 +13,15 @@ Rails.application.routes.draw do
     resources :users
 
     resources :concepts
-    resources :labels
 
     resources :virtuoso_syncs, :only => [:new, :create]
 
-    %w(concepts labels).each do |type|
-      match "#{type}/versions/:origin/branch(.:format)"      => "#{type}/versions#branch",    :as => "#{type.singularize}_versions_branch"
-      match "#{type}/versions/:origin/merge(.:format)"       => "#{type}/versions#merge",     :as => "#{type.singularize}_versions_merge"
-      match "#{type}/versions/:origin/lock(.:format)"        => "#{type}/versions#lock",      :as => "#{type.singularize}_versions_lock"
-      match "#{type}/versions/:origin/unlock(.:format)"      => "#{type}/versions#unlock",    :as => "#{type.singularize}_versions_unlock"
-      match "#{type}/versions/:origin/to_review(.:format)"   => "#{type}/versions#to_review", :as => "#{type.singularize}_versions_to_review"
-      match "#{type}/versions/:origin/consistency_check(.:format)" => "#{type}/versions#consistency_check", :as => "#{type.singularize}_versions_consistency_check"
-    end
+    match "concepts/versions/:origin/branch(.:format)"      => "concepts/versions#branch",    :as => "concept_versions_branch"
+    match "concepts/versions/:origin/merge(.:format)"       => "concepts/versions#merge",     :as => "concept_versions_merge"
+    match "concepts/versions/:origin/lock(.:format)"        => "concepts/versions#lock",      :as => "concept_versions_lock"
+    match "concepts/versions/:origin/unlock(.:format)"      => "concepts/versions#unlock",    :as => "concept_versions_unlock"
+    match "concepts/versions/:origin/to_review(.:format)"   => "concepts/versions#to_review", :as => "concept_versions_to_review"
+    match "concepts/versions/:origin/consistency_check(.:format)" => "concepts/versions#consistency_check", :as => "concept_versions_consistency_check"
 
     match 'alphabetical_concepts/:letter(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
@@ -38,9 +35,6 @@ Rails.application.routes.draw do
     # See ApplicationController#unlocalized_root
     root :to => 'concepts/hierarchical#index', :as => 'localized_root'
   end
-
-  match 'suggest/concepts.:format' => 'concepts#index', :as => 'concept_suggestion'
-  match 'suggest/labels.:format'   => 'labels#index',   :as => 'label_suggestion'
 
   root :to => 'application#unlocalized_root'
 
