@@ -35,6 +35,7 @@ class Concept::Base < ActiveRecord::Base
       end
     end
 
+=begin TODO
     # Labelings
     (@inline_assigned_labelings ||= {}).each do |labeling_class_name, origin_mappings|
       # Remove all associated labelings of the given type
@@ -51,7 +52,7 @@ class Concept::Base < ActiveRecord::Base
         end
       end
     end
-
+=end
   end
 
   # ********** "Static"/unconfigureable relations
@@ -375,7 +376,7 @@ class Concept::Base < ActiveRecord::Base
   def associated_objects_in_editing_mode
     {
       :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
-      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
+ # TODO: move to mixin      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
 
