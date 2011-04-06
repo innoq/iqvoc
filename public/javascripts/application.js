@@ -28,8 +28,55 @@ var addWidget = function(index, elem) {
 	elem.tokenInputNew(queryUrl, options);
 };
 
+var createNote = function(ev) {
+	var source = $(this).parent().find("ol li:last-child");
+
+	// special case for usage notes
+	// a usage note contains a select box instead of a textarea
+	// FIXME: Hardcoded UMT stuff
+	var isUsageNote = source.find("label:first").attr("for").
+			match(/^concept_note_umt_usage_notes/);
+
+	if (source.is(":hidden")) {
+		source.show();
+		return false;
+	}
+
+	var clone = source.clone();
+
+	var count = source.find(isUsageNote ? "select" : "textarea").attr("id").
+			match(/_(\d)_/)[1];
+	count = parseInt(count, 10) + 1;
+	var newIdCount = "_" + count + "_";
+	var newNameCount = "[" + count + "]";
+
+	clone.find("label")
+		.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
+
+	// clone.find("input")
+	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
+	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
+
+	if (!isUsageNote) {
+		clone.find("textarea")
+			.val("")
+			.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
+			.attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
+	}
+	clone.find("select")
+		.attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
+		.attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
+
+	clone.addClass("new");
+
+	$(this).parent().find("ol").append(clone);
+
+	return false;
+};
+
 return {
-	addWidget: addWidget // TODO: rename; too generic / insufficiently descriptive
+	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
+	createNote: createNote // TODO: rename?
 };
 
 }(jQuery)); // /module IQVOC
@@ -41,55 +88,8 @@ jQuery(document).ready(function($) {
 
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
-
-	$("fieldset.note_relation input[type=button]").click(function() {
-		var source = $(this).parent().find("ol li:last-child");
-
-		// special case for usage notes
-		// a usage note contains a select box instead of a textarea
-		// FIXME: Hardcoded UMT stuff
-		var isUsageNote = source.find("label:first").attr("for").
-				match(/^concept_note_umt_usage_notes/);
-
-		if (source.is(":hidden")) {
-			source.show();
-			return false;
-		}
-
-		var clone = source.clone();
-
-		var count = source.find(isUsageNote ? "select" : "textarea").attr("id").
-				match(/_(\d)_/)[1];
-		count = parseInt(count, 10) + 1;
-		var newIdCount = "_" + count + "_";
-		var newNameCount = "[" + count + "]";
-
-		clone.find("label")
-			.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
-
-		// clone.find("input")
-		// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
-		// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
-
-		if (!isUsageNote) {
-			clone.find("textarea")
-				.val("")
-				.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
-				.attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
-		}
-		clone.find("select")
-			.attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
-			.attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
-
-		clone.addClass("new");
-
-		$(this).parent().find("ol").append(clone);
-
-		return false;
-	});
-
-	// Label editing (inline notes)
-	$("li.inline_note input:checkbox").change(function() {
+	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
+	$("li.inline_note input:checkbox").change(function() { // XXX: obsolete?
 		if (this.checked) {
 			$(this).parent().addClass("deleted");
 		} else {
