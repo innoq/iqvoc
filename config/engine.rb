@@ -17,6 +17,14 @@ module Iqvoc
     config.additional_js_files  = []
     config.additional_css_files = []
 
+    paths.lib.tasks  << "lib/engine_tasks"
+
+    # TODO Will defined in Rails 3.1 (as well as the tasks in lib/engine_tasks)
+    def self.load_seed
+        seed_file = Iqvoc::Engine.find_root_with_flag("db").join('db/seeds.rb')
+        load(seed_file) if File.exist?(seed_file)
+      end
+
   end
 
 end
