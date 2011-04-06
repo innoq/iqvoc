@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
 	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
-	$("li.inline_note input:checkbox").change(function() { // XXX: obsolete?
+	$("li.inline_note input:checkbox").change(function(ev) {
 		var action = this.checked ? "addClass" : "removeClass";
 		$(this).closest("li")[action]("deleted");
 	});
@@ -101,15 +101,10 @@ jQuery(document).ready(function($) {
 
 	// Dashboard table row highlighting and click handling
 	$("tr.highlightable")
-		.hover(
-			function() {
-				$(this).addClass("hover");
-			},
-			function() {
-				$(this).removeClass("hover");
-			}
-		)
-		.click(function() {
+		.hover(function(ev) {
+			$(this).toggleClass("hover");
+		})
+		.click(function(ev) {
 			window.location = $(this).attr("data-url");
 		});
 
