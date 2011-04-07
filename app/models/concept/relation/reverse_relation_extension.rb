@@ -2,7 +2,8 @@ module Concept
   module Relation
     module ReverseRelationExtension
 
-      def create_with_reverse_relation(relation_class, target_concept)
+      def create_with_reverse_relation(target_concept)
+        relation_class = proxy_reflection.class_name.constantize
         ActiveRecord::Base.transaction do 
           # The one direction
           scope = relation_class.where(:owner_id => proxy_owner.id, :target_id => target_concept.id)
@@ -14,7 +15,8 @@ module Concept
         end
       end
       
-      def destroy_with_reverse_relation(relation_class, target_concept)
+      def destroy_with_reverse_relation(target_concept)
+        relation_class = proxy_reflection.class_name.constantize
         ActiveRecord::Base.transaction do
           relation_class.where(:owner_id => proxy_owner.id, :target_id => target_concept.id).all.each do |relation|
             relation.destroy
