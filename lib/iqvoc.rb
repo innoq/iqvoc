@@ -48,7 +48,8 @@ module Iqvoc
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
-      :view_sections
+      :view_sections,
+      :include_module_names
 
     self.base_class_name              = 'Concept::SKOS::Base'
 
@@ -78,6 +79,8 @@ module Iqvoc
     self.additional_association_class_names = {}
 
     self.view_sections = ["main", "labels", "relations", "notes", "matches"]
+
+    self.include_module_names = []
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
@@ -135,6 +138,10 @@ module Iqvoc
 
     def self.supports_multi_language_pref_labelings?
       pref_labeling_languages.size > 1
+    end
+
+    def self.include_modules
+      include_module_names.map(&:constantize)
     end
 
   end

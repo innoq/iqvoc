@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
       :name => label.value
     }
   end
-  
+
   private
 
   # Configurable Ability class

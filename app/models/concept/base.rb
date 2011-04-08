@@ -19,6 +19,10 @@ class Concept::Base < ActiveRecord::Base
   # FIXME
   # validates :associations_must_be_published
 
+  Iqvoc::Concept.include_modules.each do |mod|
+    include mod
+  end
+
   # ********** Hooks
 
   after_save do |concept|
@@ -54,25 +58,6 @@ class Concept::Base < ActiveRecord::Base
         concept.send(relation_name).destroy_with_reverse_relation(relation.target)
       end
     end
-
-=begin TODO
-    # Labelings
-    (@inline_assigned_labelings ||= {}).each do |labeling_class_name, origin_mappings|
-      # Remove all associated labelings of the given type
-      concept.send(labeling_class_name.to_relation_name).destroy_all
-
-      # (Re)create labelings reflecting a widget's parameters
-      origin_mappings.each do |key, value|
-        language    = key
-        new_origins = value
-
-        # Iterate over all labels to be added and create them
-        Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |l|
-          concept.send(labeling_class_name.to_relation_name).create!(:target => l)
-        end
-      end
-    end
-=end
   end
 
   # ********** "Static"/unconfigureable relations
