@@ -7,12 +7,14 @@ module Iqvoc
   mattr_accessor :title,
     :searchable_class_names,
     :available_languages,
-    :ability_class_name,
     :default_rdf_namespace_helper_methods,
-    :change_note_class_name,
     :rdf_namespaces,
+    :change_note_class_name,
     :additional_js_files,
-    :additional_css_files
+    :additional_css_files,
+    :first_level_class_configuration_modules
+
+  self.title = "Iqvoc"
 
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
@@ -20,8 +22,6 @@ module Iqvoc
     'Note::Base' ]
 
   self.available_languages = [:de, :en]
-
-  self.ability_class_name = "::Ability"
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
@@ -32,22 +32,33 @@ module Iqvoc
     :skos       => "http://www.w3.org/2004/02/skos/core#",
   }
 
-  # Use these config hooks in your engine to inject your custom js and css includes.
-  self.additional_js_files  = []
-  self.additional_css_files = []
-    
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
 
-  def self.ability_class
-    ability_class_name.constantize
-  end
+  # Use these config hooks in your engine to inject your custom js and css includes.
+  self.additional_js_files  = []
+  self.additional_css_files = []
 
+  self.first_level_class_configuration_modules = [] # Will be set in the modules
+    
   def self.change_note_class
     change_note_class_name.constantize
   end
 
+  def self.searchable_classes
+    searchable_class_names.map(&:constantize)
+  end
+
+  def self.first_level_classes
+    self.first_level_class_configuration_modules.map { |mod| mod.send(:base_class) }
+  end
+
+  # ************** Concept specific settings **************
+
   module Concept
+
+    Iqvoc.first_level_class_configuration_modules << self
+
     mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
       :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
@@ -152,7 +163,10 @@ module Iqvoc
 
   end
 
+  # ************** Collection specific settings **************
+
   module Collection
+
     mattr_accessor :base_class_name
 
     self.base_class_name = 'Collection::Unordered'
@@ -162,7 +176,10 @@ module Iqvoc
     end
   end
 
-  module Label # This are the settings when using SKOS
+  # ************** Label specific settings **************
+
+  module Label
+    
     mattr_accessor :base_class_name
 
     self.base_class_name        = 'Label::SKOS::Base'
@@ -173,10 +190,6 @@ module Iqvoc
       base_class_name.constantize
     end
 
-  end
-
-  def self.searchable_classes
-    searchable_class_names.map(&:constantize)
   end
 
 end
