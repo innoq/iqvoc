@@ -31,12 +31,6 @@ class Collection::Base < Concept::Base
   #  :allow_destroy => true,
   #  :reject_if => Proc.new { |attrs| attrs[:value].blank? }
 
-  attr_writer :circular_errors
-  def circular_errors
-    @circular_errors = [] if not @circular_errors # XXX: hack because initialize didn't seem to work
-    @circular_errors
-  end
-
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   before_validation(:on => :create) do
@@ -53,6 +47,7 @@ class Collection::Base < Concept::Base
 
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
+  validate :circular_subcollections
 
   def self.note_class_names
     ['Note::SKOS::Definition']
@@ -110,11 +105,7 @@ class Collection::Base < Concept::Base
     existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
     (@member_collection_origins - existing_collection_origins).each do |new_origin|
       Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
-        if not c.subcollections.all.include?(self)
-          collection_members.create!(:target_id => c.id)
-        else
-          self.circular_errors.push c
-        end
+        collection_members.create!(:target_id => c.id)
       end
     end
     collection_members.
@@ -131,5 +122,14 @@ class Collection::Base < Concept::Base
   #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
   #   notes.select{ |note| note.class.name == note_class }
   # end
+
+  def circular_subcollections
+    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
+      if subcollection.subcollections.all.include?(self)
+        errors.add(:base,
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
+      end
+    end
+  end
 
 end
