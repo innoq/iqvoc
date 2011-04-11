@@ -9,7 +9,7 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
       "English" => "en",
       "Deutsch" => "de"
     }.each { |name, lang|
-      @labels[name] = Factory.create(:xllabel, :origin => "_%s" % name,
+      @labels[name] = Factory.create(:xllabel, :origin => "_#{name}",
           :language => lang, :value => name, :published_at => Time.now)
     }
   end
@@ -20,7 +20,7 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     visit new_concept_path(:lang => "de", :format => "html")
     # NB: label language does not match relation language
     fill_in "labeling_skosxl_alt_labels_en",
-        :with => "%s," % @labels["Deutsch"].origin
+        :with => "#{@labels["Deutsch"].origin},"
     click_button "Speichern"
 
     assert page.has_css?(".flash_error")
@@ -39,7 +39,7 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
     visit new_concept_path(:lang => "de", :format => "html")
     # NB: label language does not match relation language
     fill_in "labeling_skosxl_pref_labels_de",
-        :with => "%s," % @labels["English"].origin
+        :with => "#{@labels["English"].origin},"
     click_button "Speichern"
 
     assert page.has_css?(".flash_error")
@@ -64,9 +64,9 @@ class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
 
     # NB: label languages do not match relation languages
     fill_in "labeling_skosxl_pref_labels_de",
-        :with => "%s," % @labels["English"].origin
+        :with => "#{@labels["English"].origin},"
     fill_in "labeling_skosxl_alt_labels_en",
-        :with => "%s," % @labels["Deutsch"].origin
+        :with => "#{@labels["Deutsch"].origin},"
     click_button "Speichern"
 
     assert page.has_css?(".flash_error")

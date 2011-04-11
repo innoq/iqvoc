@@ -10,8 +10,8 @@ class CollectionLabelTest < ActiveSupport::TestCase
     Iqvoc::Concept.labeling_classes.each { |lnclass, langs|
       langs.each { |lang|
         origin += 1
-        label = lnclass.label_class.new(:origin => "_%s" % origin,
-            :value => "lipsum_%s" % origin, :language => lang)
+        label = lnclass.label_class.new(:origin => "_#{origin}",
+            :value => "lipsum_#{origin}", :language => lang)
         label.save
         labeling = lnclass.new(:owner => myColl, :target => label)
         labeling.save
@@ -75,8 +75,8 @@ class CollectionLabelTest < ActiveSupport::TestCase
     origin = 0
     5.times {
       origin += 1
-      label = lnclass.label_class.new(:origin => "_%s" % origin,
-          :value => "lipsum_%s" % origin, :language => "de")
+      label = lnclass.label_class.new(:origin => "_#{origin}",
+          :value => "lipsum_#{origin}", :language => "de")
       label.save
       labeling = lnclass.new(:owner => myColl, :target => label)
       labeling.save

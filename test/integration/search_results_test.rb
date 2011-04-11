@@ -19,7 +19,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       "uninhabited" => "en",
       "unbewohnt" => "de"
     }.map { |name, lang|
-      label = Factory.create(:xllabel, :origin => "_%s" % name,
+      label = Factory.create(:xllabel, :origin => "_#{name}",
           :language => lang, :value => name, :published_at => Time.now)
       labels[name] = label
     }
@@ -29,7 +29,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       ["Erde", "earth"],
       ["Sonne", "sun"]
     ].each { |pref, alt|
-        concept = Factory.create(:concept, :origin => "_%s" % pref,
+        concept = Factory.create(:concept, :origin => "_#{pref}",
             :labelings => [], :narrower_relations => [], # avoid creating additional concepts/label[ing]s
             :published_at => Time.now)
         Factory.create(:pref_labeling, :owner => concept, :target => labels[pref])
@@ -65,7 +65,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       "c" => "" # collection
     }
     params.each { |key, value|
-      uri += "&%s=%s" % [key, value] # XXX: hacky and brittle (e.g. lack of URL-encoding)
+      uri += "&#{key}=#{value}" # XXX: hacky and brittle (e.g. lack of URL-encoding)
     }
 
     visit uri
