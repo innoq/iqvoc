@@ -3,7 +3,7 @@ class Labeling::SKOS::Base < Labeling::Base
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
 
   scope :by_label_with_language, lambda { |label, language|
-    includes(:target) & self.label_class.where(:value => label, :language => language)
+    includes(:target).merge(self.label_class.where(:value => label, :language => language))
   }
 
   def self.label_class
@@ -24,18 +24,18 @@ class Labeling::SKOS::Base < Labeling::Base
     scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)")
 
     if params[:query].present?
-      scope = scope & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published)
     else
-      scope = scope & Label::Base.by_language(params[:languages].to_a).published
+      scope = scope.merge(Label::Base.by_language(params[:languages].to_a).published)
     end
 
     if params[:collection_origin].present?
       scope = scope.includes(:owner => { :collection_members => :collection })
-      scope = scope & Collection::Base.where(:origin => params[:collection_origin])
+      scope = scope.merge(Collection::Base.where(:origin => params[:collection_origin]))
     end
 
     # Check that the included concept is in published state:
-    scope = scope.includes(:owner) & Iqvoc::Concept.base_class.published
+    scope = scope.includes(:owner).merge(Iqvoc::Concept.base_class.published)
 
     scope
   end

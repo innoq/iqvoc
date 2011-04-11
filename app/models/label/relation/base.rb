@@ -14,7 +14,7 @@ class Label::Relation::Base < ActiveRecord::Base
   }
   
   scope :by_range_origin, lambda { |origin|
-    includes(:range) & Label::Base.by_origin(origin)
+    includes(:range).merge(Label::Base.by_origin(origin))
   }
 
   scope :range_editor_selectable, lambda { 
@@ -23,7 +23,7 @@ class Label::Relation::Base < ActiveRecord::Base
   }
 
   scope :range_in_edit_mode, lambda { 
-    joins(:range) & Iqvoc::XLLabel.base_class.in_edit_mode
+    joins(:range).merge(Iqvoc::XLLabel.base_class.in_edit_mode)
   }
 
 

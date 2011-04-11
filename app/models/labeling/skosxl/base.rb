@@ -1,19 +1,19 @@
 class Labeling::SKOSXL::Base < Labeling::Base
 
   scope :target_in_edit_mode, lambda {
-    includes(:target) & Iqvoc::XLLabel.base_class.in_edit_mode
+    includes(:target).merge(Iqvoc::XLLabel.base_class.in_edit_mode)
   }
 
   scope :by_label_origin, lambda { |origin|
-    includes(:target) & self.label_class.by_origin(origin)
+    includes(:target).merge(self.label_class.by_origin(origin))
   }
 
   scope :by_label_language, lambda { |language|
-    includes(:target) & self.label_class.by_language(language)
+    includes(:target).merge(self.label_class.by_language(language))
   }
 
   scope :label_editor_selectable, lambda { # Lambda because self.label_class is currently not known + we don't want to call it at load time!
-    includes(:target) & self.label_class.editor_selectable
+    includes(:target).merge(self.label_class.editor_selectable)
   }
 
   def self.create_for(o, t)
@@ -35,18 +35,18 @@ class Labeling::SKOSXL::Base < Labeling::Base
     scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)")
 
     if params[:query].present?
-      scope = scope & Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published
+      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published)
     else
-      scope = scope & Label::Base.by_language(params[:languages].to_a).published
+      scope = scope.merge(Label::Base.by_language(params[:languages].to_a).published)
     end
 
     if params[:collection_origin].present?
       scope = scope.includes(:owner => { :collection_members => :collection })
-      scope = scope & Collection::Base.where(:origin => params[:collection_origin])
+      scope = scope.merge(Collection::Base.where(:origin => params[:collection_origin]))
     end
 
     # Check that the included concept is in published state:
-    scope = scope.includes(:owner) & Iqvoc::Concept.base_class.published
+    scope = scope.includes(:owner).merge(Iqvoc::Concept.base_class.published)
 
     unless params[:collection_origin].blank?
       #

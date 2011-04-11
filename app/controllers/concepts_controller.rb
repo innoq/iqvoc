@@ -5,7 +5,7 @@ class ConceptsController < ApplicationController
     authorize! :read, Concept::Base
     respond_to do |format|
       format.json do
-        @concepts = (Iqvoc::Concept.base_class.editor_selectable.with_pref_labels & Label::Base.by_query_value("#{params[:query]}%")).all
+        @concepts = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%")).all
         response = []
         @concepts.each { |concept| response << concept_widget_data(concept)}
 
