@@ -1,14 +1,8 @@
 <h2>Dashboard</h2>
 <p>
-  <%= link_to t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)), new_concept_path(:published => 0, :lang => @active_language) %>
-  <% if false #TODO %>
-    <%- if Iqvoc::Concept.pref_labeling_class < Labeling::SKOSXL::Base -%>
-      | <%= t("txt.views.labels.new") %>
-      (<%- Iqvoc::Concept::labeling_class_names.values.flatten.uniq.each do |language| -%>
-        <%= link_to language.to_s, new_label_path(:published => 0, :lang => @active_language, :language => language) %>
-      <%- end -%>)
-    <%- end -%>
-  <% end %>
+  <%= Iqvoc.first_level_classes.map { |klass|
+    render klass.new_link_partial_name
+   }.select{|s| s.squish.present? }.join(" | ").html_safe -%>
   <%- if can?(:full_export, Concept::Base) -%>
     | <%= t('txt.views.dashboard.full_rdf_export') %> (<%= link_to("Turtle", concepts_url(:format => :ttl)) %>, <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %> )
   <%- end -%>
@@ -28,18 +22,11 @@
       <th><%= link_to t("txt.views.dashboard.check_consistency"), dashboard_url(request.query_parameters.merge(:check_consistency => 1)) %></th>
     <%- end -%>
   </tr>
-  <% for item in @items -%>
+  <% @items.each do |item| -%>
     <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin) %>">
       <td><%= item.class.model_name.human %></td>
       <td>
-        <% if item.is_a?(Label::Base) %>
-          <%= link_to truncate(item.to_s, :length => 45), (item.published? ? label_path(:lang => @active_language, :id => item.origin) : label_path(:published => 0, :lang => @active_language, :id => item.origin)) %>
-        <% else %>
-          <%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin)) %>
-          <%- if (item.additional_info) -%>
-            (<%= item.additional_info %>)
-          <%- end -%>
-        <% end %>
+        <%= render item.class.edit_link_partial_name, :item => item %>
       </td>
       <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
       <td><%= l(item.follow_up) if item.follow_up.present? %></td>

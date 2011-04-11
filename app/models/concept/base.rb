@@ -318,6 +318,14 @@ class Concept::Base < ActiveRecord::Base
     "partials/concept/inline_base"
   end
 
+  def self.new_link_partial_name
+    "partials/concept/new_link_base"
+  end
+
+  def self.edit_link_partial_name
+    "partials/concept/edit_link_base"
+  end
+  
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
     nil

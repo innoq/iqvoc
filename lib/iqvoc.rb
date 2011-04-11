@@ -1,8 +1,8 @@
 require 'string'
 
-module Iqvoc
+require File.join(File.dirname(__FILE__), '../config/engine') unless Iqvoc.const_defined?(:Application)
 
-  require File.join(File.dirname(__FILE__), '../config/engine') unless Iqvoc.const_defined?(:Application)
+module Iqvoc
 
   mattr_accessor :title,
     :searchable_class_names,
