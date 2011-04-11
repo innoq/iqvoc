@@ -5,6 +5,10 @@ Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
   c.narrower_relations{ |narrower_relations| [narrower_relations.association(:narrower_relation)]}
 end
 
+Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
+  c.sequence(:origin) { |n| "_100000#{n}" }
+end
+
 Factory.define :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
 end
 
@@ -19,6 +23,10 @@ end
 
 Factory.define :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |lab|
   lab.target { |target| target.association(:pref_label) }
+end
+
+Factory.define :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab| # XXX: .first.first hacky!?
+  # TODO: should define target (YAGNI?)
 end
 
 Factory.sequence(:label_number) { |n| n + 1 }

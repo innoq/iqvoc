@@ -5,20 +5,6 @@ require 'integration_test_helper'
 class SearchTest < ActionDispatch::IntegrationTest
 
   setup do
-    password = "FooBar"
-    # create an editor user
-    editor = User.new(:forename => "John", :surname => "Doe",
-        :email => "foo@example.org",
-        :password => password, :password_confirmation => password,
-        :active => true, :role => "editor")
-    editor.save
-    # create an admin user
-    admin = User.new(:forename => "Jane", :surname => "Doe",
-        :email => "bar@example.org",
-        :password => password, :password_confirmation => password,
-        :active => true, :role => "administrator")
-    admin.save
-
     # create a few XL labels
     labels = {}
     {
@@ -33,8 +19,8 @@ class SearchTest < ActionDispatch::IntegrationTest
       "uninhabited" => "en",
       "unbewohnt" => "de"
     }.map { |name, lang|
-      label = Iqvoc::XLLabel.base_class.create(:origin => "_%s" % name,
-          :value => name, :language => lang, :published_at => Time.now)
+      label = Factory.create(:xllabel, :origin => "_%s" % name,
+          :language => lang, :value => name, :published_at => Time.now)
       labels[name] = label
     }
 
@@ -43,12 +29,11 @@ class SearchTest < ActionDispatch::IntegrationTest
       ["Erde", "earth"],
       ["Sonne", "sun"]
     ].each { |pref, alt|
-        concept = Iqvoc::Concept.base_class.create(:origin => "_%s" % pref,
+        concept = Factory.create(:concept, :origin => "_%s" % pref,
+            :labelings => [], :narrower_relations => [], # avoid creating additional concepts/label[ing]s
             :published_at => Time.now)
-        labeling = Labeling::SKOSXL::PrefLabel.create(
-            :owner => concept, :target => labels[pref])
-        labeling = Labeling::SKOSXL::AltLabel.create(
-            :owner => concept, :target => labels[alt])
+        Factory.create(:pref_labeling, :owner => concept, :target => labels[pref])
+        Factory.create(:alt_labeling, :owner => concept, :target => labels[alt])
     }
 
     # create a few collections
@@ -56,27 +41,18 @@ class SearchTest < ActionDispatch::IntegrationTest
       ["bewohnt", "inhabited"],
       ["unbewohnt", "uninhabited"]
     ].each { |pref, alt|
-        collection = Iqvoc::Collection.base_class.create
-        labeling = Labeling::SKOSXL::PrefLabel.create(
-            :owner => collection, :target => labels[pref])
-        labeling = Labeling::SKOSXL::AltLabel.create(
-            :owner => collection, :target => labels[alt])
+        collection = Factory.create(:collection)
+        Factory.create(:pref_labeling, :owner => collection, :target => labels[pref])
+        Factory.create(:alt_labeling, :owner => collection, :target => labels[alt])
     }
 
-    # confirm environment, just to be safe
-    assert_equal 2, User.all.count
+    # confirm environment, just to be safe (i.e. ensure that factories,
+    # for example, don't introduce unexpected side-effects)
     assert_equal 10, Label::Base.all.count
     assert_equal 8, Labeling::Base.all.count
     assert_equal 2, Iqvoc::Concept.base_class.all.count
     assert_equal 2, Iqvoc::Collection.base_class.all.count
     assert_equal 4, Concept::Base.all.count
-
-    # provide auth headers -- XXX: unused?
-    @env = {}
-    auth = Base64::encode64("%s:%s" % [editor.email, editor.password])
-    @env[:editor] = { "HTTP_AUTHORIZATION" => "Basic " + auth }
-    auth = Base64::encode64("%s:%s" % [admin.email, admin.password])
-    @env[:admin] = { "HTTP_AUTHORIZATION" => "Basic " + auth }
   end
 
   test "HTML search returns matches" do
@@ -108,7 +84,6 @@ class SearchTest < ActionDispatch::IntegrationTest
     }
     get uri, params
 
-    assert_response :success
     assert_match /<sdc:result rdf:resource.*#result1"\/>/, @response.body
     assert_no_match /#result2"\/>/, @response.body
   end
