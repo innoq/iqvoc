@@ -8,7 +8,7 @@ class LabelsOrderTest < ActionDispatch::IntegrationTest
     # create a few labels
     label_class = Iqvoc::Concept.labeling_classes.first.first.label_class
     names.each { |name|
-      label = label_class.new(:origin => "_%s" % name, :value => name,
+      label = label_class.new(:origin => "_#{name}", :value => name,
         :language => lang, :published_at => Time.now)
       label.save
     }
