@@ -1,84 +1,79 @@
-require 'test_helper'
+require 'integration_test_helper'
 
 class ConceptLabelLanguageTest < ActionDispatch::IntegrationTest
 
   setup do
-    # ensure we're in SKOS-XL mode -- XXX: side-effects!
-    #Iqvoc::Concept.pref_labeling_class_name = "Labeling::SKOSXL::PrefLabel"
-    #Iqvoc::Concept.pref_labeling_languages = [:de]
-    #Iqvoc::Concept.further_labeling_class_names = {
-    #  "Labeling::SKOSXL::AltLabel" => [:de, :en]
-    #}
-
     # create a few XL labels
-    names = {
+    @labels = {}
+    {
       "English" => "en",
       "Deutsch" => "de"
+    }.each { |name, lang|
+      @labels[name] = Factory.create(:xllabel, :origin => "_%s" % name,
+          :language => lang, :value => name, :published_at => Time.now)
     }
-    names.each { |name, lang|
-      label = Iqvoc::XLLabel.base_class.new(:origin => name, :value => name,
-          :language => lang, :published_at => Time.now)
-      label.save
-    }
-    # create a user
-    password = "FooBar"
-    user = User.new(:forename => "John", :surname => "Doe",
-        :email => "foo@example.org",
-        :password => password, :password_confirmation => password,
-        :active => true, :role => "administrator")
-    user.save
-    # confirm environment, just to be safe
-    assert_equal names.size, Label::Base.all.count
-    assert_equal 0, Iqvoc::Concept.base_class.all.count
-    assert_equal 1, User.all.count
-
-    auth = Base64::encode64("%s:%s" % [user.email, user.password])
-    @env = { "HTTP_AUTHORIZATION" => "Basic " + auth }
   end
 
   test "invalid alt label languages are rejected" do
-    uri = concepts_path(:lang => "de", :format => "html")
-    # NB: label language does not match relation language
-    params = { "concept[inline_labeling_skosxl_alt_labels_en]" => "Deutsch" }
-    post_via_redirect uri, params, @env
+    login("administrator")
 
-    assert_response :success
-    assert_equal flash[:error],
-        I18n.t("txt.controllers.versioned_concept.label_error") % "Deutsch"
-    assert_equal 1, Iqvoc::Concept.base_class.all.count
-    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
-    # reset -- XXX: not very elegant
-    Iqvoc::Concept.base_class.first.destroy
-    assert_equal 0, Iqvoc::Concept.base_class.all.count
+    visit new_concept_path(:lang => "de", :format => "html")
+    # NB: label language does not match relation language
+    fill_in "labeling_skosxl_alt_labels_en",
+        :with => "%s," % @labels["Deutsch"].origin
+    click_button "Speichern"
+
+    assert page.has_css?(".flash_error")
+    assert page.has_css?("#concept_new")
+    assert page.source.include?( # XXX: page.has_content? didn't work
+        I18n.t("txt.controllers.versioned_concept.label_error") % "Deutsch")
+
+    # ensure concept was not saved
+    visit dashboard_path(:lang => "de", :format => "html")
+    assert page.has_no_css?("td")
   end
 
   test "invalid pref label languages are rejected during creation" do
-    uri = concepts_path(:lang => "de", :format => "html")
-    # NB: label language does not match relation language
-    params = { "concept[inline_labeling_skosxl_pref_labels_de]" => "English" }
-    post_via_redirect uri, params, @env
+    login("administrator")
 
-    assert_response :success
-    assert_equal flash[:error],
-        I18n.t("txt.controllers.versioned_concept.label_error") % "English"
-    assert_equal 1, Iqvoc::Concept.base_class.all.count
-    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
+    visit new_concept_path(:lang => "de", :format => "html")
+    # NB: label language does not match relation language
+    fill_in "labeling_skosxl_pref_labels_de",
+        :with => "%s," % @labels["English"].origin
+    click_button "Speichern"
+
+    assert page.has_css?(".flash_error")
+    assert page.has_css?("#concept_new")
+    assert page.source.include?( # XXX: page.has_content? didn't work
+        I18n.t("txt.controllers.versioned_concept.label_error") % "English")
+
+    # ensure concept was not saved
+    visit dashboard_path(:lang => "de", :format => "html")
+    assert page.has_no_css?("td")
   end
 
   test "invalid label languages are rejected during update" do
-    con = Iqvoc::Concept.base_class.new :origin => "_666"
-    con.save
-    puts con.errors
+    login("administrator")
 
-    uri = concept_path(:id => con.origin, :lang => "de", :format => "html")
-    # NB: label language does not match relation language
-    params = { "concept[inline_labeling_skosxl_pref_labels_de]" => "English" }
-    put_via_redirect uri, params, @env
+    # create, then edit concept
+    visit new_concept_path(:lang => "de", :format => "html")
+    click_button "Speichern"
+    visit dashboard_path(:lang => "de", :format => "html")
+    page.find("td a").click
+    page.click_link_or_button "In Bearbeitung versetzen"
 
-    assert_response :success
-    assert_equal flash[:error],
-        I18n.t("txt.controllers.versioned_concept.label_error") % "English"
-    assert_equal 1, Iqvoc::Concept.base_class.all.count
-    assert_equal 0, Iqvoc::Concept.base_class.first.labels.count
+    # NB: label languages do not match relation languages
+    fill_in "labeling_skosxl_pref_labels_de",
+        :with => "%s," % @labels["English"].origin
+    fill_in "labeling_skosxl_alt_labels_en",
+        :with => "%s," % @labels["Deutsch"].origin
+    click_button "Speichern"
+
+    assert page.has_css?(".flash_error")
+    assert page.has_css?("#concept_edit")
+    assert page.source.include?( # XXX: page.has_content? didn't work
+        I18n.t("txt.controllers.versioned_concept.label_error") % "English")
+    assert page.source.include?( # XXX: page.has_content? didn't work
+        I18n.t("txt.controllers.versioned_concept.label_error") % "Deutsch")
   end
 end
