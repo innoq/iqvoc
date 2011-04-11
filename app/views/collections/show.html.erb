@@ -60,9 +60,7 @@
 
 <div class="relation">
   <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
-  <ul>
-    <% @collection.subcollections.each do |subcollection| %>
-      <li><%= link_to subcollection.label.to_s, collection_path(:lang => I18n.locale, :id => subcollection) %></li>
-    <% end %>
+  <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
+    <%= render :partial => 'collection', :collection => @collection.subcollections %>
   </ul>
 </div>

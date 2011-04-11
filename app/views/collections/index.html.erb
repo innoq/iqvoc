@@ -4,11 +4,7 @@
   <%= link_to t("txt.views.collections.new"), new_collection_path(:lang => I18n.locale) %>
 </p>
 
-<%-
-  hcpath = hierarchical_collections_path(:lang => @active_language,
-      :format => :json)
--%>
-<ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
   <%-
     # determine non-orphans (items with a parent)
     children = []
@@ -19,9 +15,7 @@
     end
     children.uniq! # TODO: use Set?
     # determine orphans (root-level items)
-    orphans = @collections.find_all do |collection|
-      not children.include? collection
-    end
+    orphans = @collections.select {|collection| !children.include?(collection) }
   -%>
   <%= render :partial => 'collection', :collection => orphans %>
 </ul>

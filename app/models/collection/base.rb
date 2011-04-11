@@ -42,7 +42,7 @@ class Collection::Base < Concept::Base
   }
 
   scope :by_label_value, lambda { |val|
-    includes(:labels) & Label::Base.by_query_value(val)
+    includes(:labels).merge(Label::Base.by_query_value(val))
   }
 
   validates_uniqueness_of :origin
