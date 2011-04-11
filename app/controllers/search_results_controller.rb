@@ -1,6 +1,6 @@
 class SearchResultsController < ApplicationController
   skip_before_filter :require_user
-  
+
   def index
     authorize! :read, Concept::Base
 
@@ -22,7 +22,7 @@ class SearchResultsController < ApplicationController
       return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank? && params[:collection_origin].blank?
 
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
-      
+
       # Decide whether to search a specific class or ALL classes
       unless params[:type] == 'all'
         unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
@@ -30,11 +30,11 @@ class SearchResultsController < ApplicationController
         end
         @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       end
-      
+
       query_size = params[:query].split(/\r\n/).size
-      
+
       # @klass is only available if we're going to search using a specific class
-      # it's not available if we're searching all classes
+      # it's not available if we're searching within all classes
       if @klass
         if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
           @multi_query = true
@@ -46,9 +46,12 @@ class SearchResultsController < ApplicationController
       else
         @multi_query = true
         # all names (including collection labels)
-        @results = Iqvoc.searchable_classes.select{ |klass| (klass < Labeling::Base) }.map{ |klass| klass.single_query(params) }.flatten
+        @results = Iqvoc.searchable_classes.
+            select { |klass| (klass < Labeling::Base) }.
+            map { |klass| klass.single_query(params) }.
+            flatten.uniq
       end
-      
+
       respond_to do |format|
         format.html
         format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
@@ -57,9 +60,9 @@ class SearchResultsController < ApplicationController
 
     end
   end
-  
+
   protected
-  
+
   def invalid_search(msg=nil)
     flash.now[:error] = msg || I18n.t('txt.controllers.search_results.query_invalid')
     render :action => 'index', :status => 422

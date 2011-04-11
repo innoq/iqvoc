@@ -136,7 +136,7 @@ en:
        results_found:
          one: "Your search for <strong>%{query}</strong> yielded the following %{count} result."
          other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
-       no_results_found: "Your search for <strong>%{query}</strong> yielded no results. Try searching for other/all languages or a shorter search term."
+       no_results_found: "Your search yielded no results."
        submit: "Search"
        type: "type"
        used_as: "used as"
@@ -297,6 +297,7 @@ en:
        destroy:
          success: "The collection has been successfully deleted."
          error: "The collection could not be deleted."
+       circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
 
    models:
      label:

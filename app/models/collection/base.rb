@@ -42,11 +42,12 @@ class Collection::Base < Concept::Base
   }
 
   scope :by_label_value, lambda { |val|
-    includes(:labels) & Label::Base.by_query_value(val)
+    includes(:labels).merge(Label::Base.by_query_value(val))
   }
 
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
+  validate :circular_subcollections
 
   def self.note_class_names
     ['Note::SKOS::Definition']
@@ -101,9 +102,9 @@ class Collection::Base < Concept::Base
 
   def regenerate_collection_members
     return if @member_collection_origins.nil? # There is nothing to do
-    existing_collection_origins = collection_members.map{|m| m.collection.origin}.uniq
+    existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
     (@member_collection_origins - existing_collection_origins).each do |new_origin|
-      Collection::Base.where(:origin => new_origin).each do |c|
+      Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
         collection_members.create!(:target_id => c.id)
       end
     end
@@ -121,5 +122,14 @@ class Collection::Base < Concept::Base
   #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
   #   notes.select{ |note| note.class.name == note_class }
   # end
+
+  def circular_subcollections
+    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
+      if subcollection.subcollections.all.include?(self)
+        errors.add(:base,
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
+      end
+    end
+  end
 
 end
