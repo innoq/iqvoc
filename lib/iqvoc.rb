@@ -10,7 +10,9 @@ module Iqvoc
     :ability_class_name,
     :default_rdf_namespace_helper_methods,
     :change_note_class_name,
-    :rdf_namespaces
+    :rdf_namespaces,
+    :additional_js_files,
+    :additional_css_files
 
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
@@ -30,6 +32,10 @@ module Iqvoc
     :skos       => "http://www.w3.org/2004/02/skos/core#",
   }
 
+  # Use these config hooks in your engine to inject your custom js and css includes.
+  self.additional_js_files  = []
+  self.additional_css_files = []
+    
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
 

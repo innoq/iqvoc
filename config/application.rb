@@ -59,8 +59,5 @@ module Iqvoc
     # mode.
     config.virtuoso_sync_threaded = false
     
-    # Use these config hooks in your engine to inject your custom js and css includes.
-    config.additional_js_files  = []
-    config.additional_css_files = []
   end
 end

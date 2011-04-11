@@ -12,11 +12,6 @@ module Iqvoc
 
   class Engine < Rails::Engine
 
-    # TODO: Is this configuration (s. Application too) still required if iqvoc
-    # runs as engine?
-    config.additional_js_files  = []
-    config.additional_css_files = []
-
     paths.lib.tasks  << "lib/engine_tasks"
 
     # TODO Will defined in Rails 3.1 (as well as the tasks in lib/engine_tasks)

@@ -16,7 +16,7 @@
     <%= stylesheet_link_tag "iqvoc/jquery-treeview/jquery.treeview.css" %>
     <%= stylesheet_link_tag "iqvoc/token-input-iqvoc.css" %>
     <%= stylesheet_link_tag "iqvoc/jquery-ui-1.7.2.custom.css" %>
-    <% Rails.application.config.additional_css_files.each do |file| %>
+    <% Iqvoc.additional_css_files.each do |file| %>
       <%= stylesheet_link_tag file %>
     <% end %>
 
@@ -28,7 +28,7 @@
     <%= javascript_include_tag "iqvoc/jquery.tokeninput.js" %>
     <%= javascript_include_tag "iqvoc/application.js" %>
     <%= javascript_include_tag "iqvoc/rails.js" %>
-    <% Rails.application.config.additional_js_files.each do |file| %>
+    <% Iqvoc.additional_js_files.each do |file| %>
       <%= javascript_include_tag file %>
     <% end %>
 
