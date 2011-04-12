@@ -96,11 +96,11 @@ module Iqvoc
     end
 
     def self.labeling_class_names
-      further_labeling_class_names.merge(pref_labeling_class_name => pref_labeling_languages)
+      { pref_labeling_class_name => pref_labeling_languages }.merge(further_labeling_class_names)
     end
 
     def self.labeling_classes
-      further_labeling_classes.merge(pref_labeling_class => pref_labeling_languages)
+      { pref_labeling_class => pref_labeling_languages }.merge(further_labeling_classes)
     end
 
     def self.broader_relation_class
