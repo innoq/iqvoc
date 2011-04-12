@@ -39,6 +39,23 @@ class ConceptsController < ApplicationController
       format.html do
         published ? render('show_published') : render('show_unpublished')
       end
+      format.json do
+        scope = published ? scope.published : scope.unpublished
+        @concept = scope.includes(:labels).last # XXX: inefficient; database was already queried above
+        # XXX: do we really need _all_ attributes here? (e.g. IDs are meaningless to the client)
+        concept_data = @concept.attributes.merge({
+          :labels => @concept.labels.map { |label| label.attributes }, # XXX: does not include information on labeling type (i.e. pref or alt)
+          :relations => @concept.relations.map { |relation|
+            relation.attributes.merge({
+              # XXX: inefficient: currently queries the database for both target concept and its pref label
+              # XXX: is it _always_ target we want?
+              :origin => relation.target.origin,
+              :label => relation.target.to_s
+            })
+          }
+        })
+        render :json => concept_data
+      end
       format.ttl
     end
   end
