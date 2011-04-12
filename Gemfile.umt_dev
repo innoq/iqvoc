@@ -18,7 +18,6 @@ group :development, :production, :production_internal do
 end
 
 group :development do
-  gem 'mongrel'
   gem 'awesome_print'
 end
 
