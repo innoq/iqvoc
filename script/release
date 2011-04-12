@@ -18,7 +18,7 @@
 require 'rubygems'
 require 'fileutils'
 require 'active_support/core_ext'
-require 'lib/iqvoc/version'
+require File.join('.', File.dirname(__FILE__), '../lib/iqvoc/version')
 
 FileUtils.rm_rf('tmp/release') if File.directory?('tmp/release')
 FileUtils.mkdir 'tmp/release'
