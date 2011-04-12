@@ -1,96 +1,57 @@
-MOCKDATA = {
-	"classified": null,
-	"country_code": null,
-	"created_at": "2011-04-11T12:13:30Z",
-	"expired_at": null,
-	"follow_up": null,
-	"id": 5,
-	"labels": [
-		{
-			"base_form": "",
-			"created_at": "2011-04-11T12:02:27Z",
-			"endings": "",
-			"expired_at": null,
-			"follow_up": null,
-			"id": 3,
-			"inflectional_code": "",
-			"language": "de",
-			"locked_by": null,
-			"origin": "Erde",
-			"part_of_speech": "2",
-			"published_at": "2011-04-11",
-			"published_version_id": null,
-			"rdf_updated_at": null,
-			"rev": 1,
-			"status": null,
-			"to_review": null,
-			"type": "Label::UMT::Base",
-			"updated_at": "2011-04-11T12:02:37Z",
-			"value": "Erde"
-		},
-		{
-			"base_form": "",
-			"created_at": "2011-04-11T12:02:27Z",
-			"endings": "",
-			"expired_at": null,
-			"follow_up": null,
-			"id": 3,
-			"inflectional_code": "",
-			"language": "de",
-			"locked_by": null,
-			"origin": "Erde",
-			"part_of_speech": "2",
-			"published_at": "2011-04-11",
-			"published_version_id": null,
-			"rdf_updated_at": null,
-			"rev": 1,
-			"status": null,
-			"to_review": null,
-			"type": "Label::UMT::Base",
-			"updated_at": "2011-04-11T12:02:37Z",
-			"value": "Erde"
-		}
-	],
-	"locked_by": null,
-	"origin": "_00000003",
-	"published_at": "2011-04-12",
-	"published_version_id": null,
-	"rdf_updated_at": null,
-	"relations": [
-		{
-			"created_at": "2011-04-12T10:06:25Z",
-			"id": 1,
-			"label": "Sonne",
-			"origin": "_00000004",
-			"owner_id": 5,
-			"target_id": 4,
-			"type": "Concept::Relation::SKOS::Related",
-			"updated_at": "2011-04-12T10:06:25Z"
-		},
-		{
-			"created_at": "2011-04-12T10:06:26Z",
-			"id": 3,
-			"label": "Mond",
-			"origin": "_00000005",
-			"owner_id": 5,
-			"target_id": 4,
-			"type": "Concept::Relation::SKOS::Broader::Poly",
-			"updated_at": "2011-04-12T10:06:26Z"
-		},
-		{
-			"created_at": "2011-04-12T10:06:25Z",
-			"id": 7,
-			"label": "Sterne",
-			"origin": "_00000006",
-			"owner_id": 5,
-			"target_id": 6,
-			"type": "Concept::Relation::SKOS::Related",
-			"updated_at": "2011-04-12T10:06:25Z"
-		}
-	],
-	"rev": 2,
-	"status": null,
-	"to_review": null,
-	"type": "Concept::SKOS::Base",
-	"updated_at": "2011-04-12T10:06:38Z"
+var MOCKDATA;
+
+(function($) {
+
+var planets = [
+	{
+		labels: ["Mercury", "Merkur"]
+	}, {
+		labels: ["Venus", "Venus"]
+	}, {
+		labels: ["Earth", "Erde"],
+		moons: [{
+			labels: ["Moon", "Mond"]
+		}]
+	}, {
+		labels: ["Mars", "Mars"]
+	}, {
+		labels: ["Jupiter", "Jupiter"]
+	}, {
+		labels: ["Saturn", "Saturn"]
+	}, {
+		labels: ["Uranus", "Uranus"]
+	}, {
+		labels: ["Neptune", "Neptun"]
+	}
+];
+
+var star = {
+	labels: ["Sun", "Sonne"]
 };
+
+MOCKDATA = {
+	origin: "_concept_" + star.labels[0],
+	labels: $.map(star.labels, function(label, i) {
+		return {
+			origin: "_label_" + i,
+			value: label
+		};
+	}),
+	relations: $.map(planets, function(planet, i) {
+		var sats = planet.moons;
+		var concept = {
+			origin: "_concept_" + i,
+			label: planet.labels[0],
+			labels: planet.labels,
+			relations: !sats ? undefined : $.map(sats, function(moon, j) {
+				return {
+					origin: "_concept_" + i + "-" + j,
+					label: moon.labels[0]
+				};
+			})
+		};
+		return concept;
+	})
+};
+
+}(jQuery));

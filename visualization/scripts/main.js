@@ -33,6 +33,8 @@ var init = function() { // TODO: namespace!
 
 		// styles
 		Node: {
+			overridable: true,
+			transform: false, // XXX: DEBUG temporary workaround to avoid tiny label label symbols
 			dim: 9,
 			color: "#F00"
 		},
@@ -76,19 +78,55 @@ var init = function() { // TODO: namespace!
 
 // create a JIT-compatible JSON tree structure from a concept representation
 var transformData = function(concept) {
-	var children = $.map(concept.relations, function(rel, i) {
-		return {
+	var relations = $.map(concept.relations, function(rel, i) {
+		var node = {
 			id: rel.origin,
-			name: rel.label
-			//data: {}, // TODO?
-			//children: [] // TODO (dynamically, on click?)
+			name: rel.label,
+			data: {
+				type: "concept",
+				$color: "#A00"
+			}
+		};
+		var relations = !rel.relations ? undefined : $.map(rel.relations, function(rel, j) { // TODO (dynamically, on click?)
+			return {
+				id: rel.origin,
+				name: rel.label
+			}
+		});
+		var labels = !rel.labels ? undefined : $.map(rel.labels, function(label, j) {
+			return {
+				id: "_" + j + label,
+				name: label,
+				data: {
+					type: "label",
+					$type: "triangle",
+					$color: "#00A"
+				}
+			}
+		});
+		if(labels && relations) {
+			node.children = labels.concat(relations);
+		} else if(labels || relations) {
+			node.children = labels || relations;
+		}
+		return node;
+	});
+	var labels = $.map(concept.labels, function(label, i) {
+		return {
+			id: label.origin,
+			name: label.value,
+			data: {
+				type: "label",
+				$type: "triangle",
+				$color: "#00A"
+			}
 		};
 	});
 	return {
 		id: concept.origin,
 		name: concept.labels[0].value, // XXX: hack; canonical label should be provided by server
 		//data: {}, // TODO?
-		children: children
+		children: relations.concat(labels)
 	};
 };
 
