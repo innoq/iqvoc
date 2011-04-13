@@ -3,6 +3,8 @@
 
 (function($) {
 
+var LEVELDISTANCE = 100;
+
 var init = function() { // TODO: namespace!
 	var viz,
 		container = document.getElementById("infovis"); // XXX: hardcoded!?
@@ -22,7 +24,7 @@ var init = function() { // TODO: namespace!
 			}
 		},
 		// styles
-		levelDistance: 100,
+		levelDistance: LEVELDISTANCE,
 		Node: {
 			overridable: true,
 			dim: 9,
@@ -62,7 +64,6 @@ var init = function() { // TODO: namespace!
 
 		onBeforePlotLine: function(adj) {
 			if(adj.nodeTo.data.etype === "label") {
-				adj.nodeTo.pos.rho = adj.nodeTo.pos.rho * 0.9; // XXX: hacky!?
 				adj.nodeTo.data.$type = "square";
 				adj.nodeTo.data.$color = "#00D";
 				adj.data.$alpha = 0.5;
@@ -74,6 +75,15 @@ var init = function() { // TODO: namespace!
 	viz.loadJSON(MOCKDATA); // XXX: DEBUG
 	viz.refresh();
 	$(document).ready(function() { viz.onClick("3"); }); // XXX: DEBUG; for demo purposes only
+};
+
+// hijack setPos method to reduce the relative distance for label nodes -- XXX: modifies all Node instances!
+var _setPos = $jit.Graph.Node.prototype.setPos;
+$jit.Graph.Node.prototype.setPos = function(value, type) {
+	if(this.data.etype === "label") {
+		value.rho = value.rho - (LEVELDISTANCE * 0.5);
+	}
+	return _setPos.apply(this, arguments);
 };
 
 init(); // XXX: should not be run by the module itself
