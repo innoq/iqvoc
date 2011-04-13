@@ -3,24 +3,6 @@
 
 (function($) {
 
-var labelType, nativeTextSupport, useGradients, animate;
-
-// basic settings -- XXX: cargo-culted from JIT examples
-(function() {
-	var ua = navigator.userAgent,
-		iOS = ua.match(/iPhone/i) || ua.match(/iPad/i),
-		typeOfCanvas = typeof HTMLCanvasElement,
-		nativeCanvasSupport = (typeOfCanvas === "object" || typeOfCanvas === "function"),
-		textSupport = nativeCanvasSupport
-				&& (typeof document.createElement("canvas").getContext("2d").fillText === "function");
-	// settings based on the fact that ExCanvas provides text support for IE
-	// and that as of today iPhone/iPad current text support is lame
-	labelType = (!nativeCanvasSupport || (textSupport && !iOS)) ? "Native" : "HTML";
-	nativeTextSupport = labelType === "Native";
-	useGradients = nativeCanvasSupport;
-	animate = !(iOS || !nativeCanvasSupport);
-}());
-
 var init = function() { // TODO: namespace!
 	var ht,
 		container = document.getElementById("infovis"); // XXX: hardcoded!?
