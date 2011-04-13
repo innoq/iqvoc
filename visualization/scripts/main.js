@@ -4,19 +4,27 @@
 (function($) {
 
 var init = function() { // TODO: namespace!
-	var ht,
+	var viz,
 		container = document.getElementById("infovis"); // XXX: hardcoded!?
 
-	ht = new $jit.Hypertree({
+	viz = new $jit.RGraph({
 		injectInto: container,
 
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
+		// concentric circle as background (cargo-culted from RGraph example)
+		background: {
+			"CanvasStyles": {
+				"strokeStyle": "#AAA",
+				"shadowBlur": 50,
+				"shadowColor": "#EEE"
+			}
+		},
 		// styles
+		levelDistance: 100,
 		Node: {
 			overridable: true,
-			transform: false, // XXX: DEBUG temporary workaround to avoid tiny label symbols
 			dim: 9,
 			color: "#F00"
 		},
@@ -30,44 +38,42 @@ var init = function() { // TODO: namespace!
 		onCreateLabel: function(domEl, node) {
 			domEl.innerHTML = node.name; // TODO: use jQuery?
 			$jit.util.addEvent(domEl, "click", function(ev) {
-				ht.onClick(node.id);
+				viz.onClick(node.id);
 			});
 		},
 
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
-			var style = domEl.style; // TODO: use jQuery
-			style.display = "";
-			style.cursor = "pointer";
+			var style = {
+				display: "block",
+				cursor: "pointer"
+			};
 			if(node._depth <= 1) {
 				style.fontSize = "0.8em";
-				style.color = "#ddd";
+				style.color = "#DDD";
 			} else if(node._depth === 2) {
 				style.fontSize = "0.7em";
 				style.color = "#555";
 			} else {
 				style.display = "none";
 			}
-			var left = parseInt(style.left, 10);
-			var width = domEl.offsetWidth;
-			style.left = (left - width / 2) + "px";
+			$(domEl).css(style);
 		},
 
 		onBeforePlotLine: function(adj) {
 			if(adj.nodeTo.data.etype === "label") {
-				//adj.nodeTo.pos.rho = adj.nodeTo.pos.rho * 0.9; // XXX: hacky?
+				adj.nodeTo.pos.rho = adj.nodeTo.pos.rho * 0.9; // XXX: hacky!?
 				adj.nodeTo.data.$type = "square";
-				adj.nodeTo.data.$color = "#00A";
+				adj.nodeTo.data.$color = "#00D";
 				adj.data.$alpha = 0.5;
-				adj.data.$type = "arrow";
 				adj.data.$color = "#00A";
 			}
 		}
 	});
 
-	ht.loadJSON(MOCKDATA); // XXX: DEBUG
-	ht.refresh();
-	$(document).ready(function() { ht.onClick("3"); }); // XXX: DEBUG; for demo purposes only
+	viz.loadJSON(MOCKDATA); // XXX: DEBUG
+	viz.refresh();
+	$(document).ready(function() { viz.onClick("3"); }); // XXX: DEBUG; for demo purposes only
 };
 
 init(); // XXX: should not be run by the module itself
