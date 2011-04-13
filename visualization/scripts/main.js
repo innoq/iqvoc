@@ -16,7 +16,7 @@ var init = function() { // TODO: namespace!
 		// styles
 		Node: {
 			overridable: true,
-			transform: false, // XXX: DEBUG temporary workaround to avoid tiny label label symbols
+			transform: false, // XXX: DEBUG temporary workaround to avoid tiny label symbols
 			dim: 9,
 			color: "#F00"
 		},
@@ -53,64 +53,9 @@ var init = function() { // TODO: namespace!
 		}
 	});
 
-	var data = transformData(MOCKDATA); // XXX: DEBUG
-	ht.loadJSON(data);
+	ht.loadJSON(MOCKDATA); // XXX: DEBUG
 	ht.refresh();
-	$(document).ready(function() { ht.onClick("_concept_2"); }); // XXX: DEBUG; for demo purposes only
-};
-
-// create a JIT-compatible JSON tree structure from a concept representation
-var transformData = function(concept) {
-	var relations = $.map(concept.relations, function(rel, i) {
-		var node = {
-			id: rel.origin,
-			name: rel.label,
-			data: {
-				type: "concept",
-				$color: "#A00"
-			}
-		};
-		var relations = !rel.relations ? undefined : $.map(rel.relations, function(rel, j) { // TODO (dynamically, on click?)
-			return {
-				id: rel.origin,
-				name: rel.label
-			}
-		});
-		var labels = !rel.labels ? undefined : $.map(rel.labels, function(label, j) {
-			return {
-				id: "_" + j + label,
-				name: label,
-				data: {
-					type: "label",
-					$type: "triangle",
-					$color: "#00A"
-				}
-			}
-		});
-		if(labels && relations) {
-			node.children = labels.concat(relations);
-		} else if(labels || relations) {
-			node.children = labels || relations;
-		}
-		return node;
-	});
-	var labels = $.map(concept.labels, function(label, i) {
-		return {
-			id: label.origin,
-			name: label.value,
-			data: {
-				type: "label",
-				$type: "triangle",
-				$color: "#00A"
-			}
-		};
-	});
-	return {
-		id: concept.origin,
-		name: concept.labels[0].value, // XXX: hack; canonical label should be provided by server
-		//data: {}, // TODO?
-		children: relations.concat(labels)
-	};
+	$(document).ready(function() { ht.onClick("3"); }); // XXX: DEBUG; for demo purposes only
 };
 
 init(); // XXX: should not be run by the module itself

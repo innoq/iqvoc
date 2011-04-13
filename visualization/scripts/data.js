@@ -4,54 +4,56 @@ var MOCKDATA;
 
 var planets = [
 	{
-		labels: ["Mercury", "Merkur"]
+		name: "Mercury",
+		data: { altNames: ["Merkur"] }
 	}, {
-		labels: ["Venus", "Venus"]
+		name: "Venus"
 	}, {
-		labels: ["Earth", "Erde"],
-		moons: [{
-			labels: ["Moon", "Mond"]
+		name: "Earth",
+		data: { altNames: ["Erde"] },
+		children: [{
+			id: null,
+			name: "Moon",
+			data: { altNames: ["Mond"] }
 		}]
 	}, {
-		labels: ["Mars", "Mars"]
+		name: "Mars"
 	}, {
-		labels: ["Jupiter", "Jupiter"]
+		name: "Jupiter"
 	}, {
-		labels: ["Saturn", "Saturn"]
+		name: "Saturn"
 	}, {
-		labels: ["Uranus", "Uranus"]
+		name: "Uranus"
 	}, {
-		labels: ["Neptune", "Neptun"]
+		name: "Neptune",
+		data: { altNames: ["Neptun"] }
 	}
 ];
+// add IDs, turn labels into children
+planets = $.map(planets, function(planet, i) {
+	planet.id = (i + 1).toString(); // NB: Sun is 0
+	var children = planet.children || [];
+	if(planet.data && planet.data.altNames) {
+		$.each(planet.data.altNames, function(j, name) {
+			children.unshift({
+				id: "_" + i + "_" + j,
+				name: name,
+				data: { etype: "label" }
+			});
+		});
+		planet.children = children;
+	}
+	return planet;
+});
 
 var star = {
-	labels: ["Sun", "Sonne"]
+	id: "0",
+	name: "Sun",
+	data: { altNames: ["Sonne"] }
 };
 
-MOCKDATA = {
-	origin: "_concept_" + star.labels[0],
-	labels: $.map(star.labels, function(label, i) {
-		return {
-			origin: "_label_" + i,
-			value: label
-		};
-	}),
-	relations: $.map(planets, function(planet, i) {
-		var sats = planet.moons;
-		var concept = {
-			origin: "_concept_" + i,
-			label: planet.labels[0],
-			labels: planet.labels,
-			relations: !sats ? undefined : $.map(sats, function(moon, j) {
-				return {
-					origin: "_concept_" + i + "-" + j,
-					label: moon.labels[0]
-				};
-			})
-		};
-		return concept;
-	})
-};
+MOCKDATA = $.extend({}, star, {
+	children: planets
+});
 
 }(jQuery));
