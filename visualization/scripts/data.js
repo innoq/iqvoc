@@ -4,45 +4,55 @@ var MOCKDATA;
 
 var planets = [
 	{
-		name: "Mercury",
-		data: { altNames: ["Merkur"] }
+		data: { altNames: ["Mercury", "Merkur"] }
 	}, {
-		name: "Venus"
+		data: { altNames: [""] }
 	}, {
-		name: "Earth",
-		data: { altNames: ["Erde"] },
+		data: { altNames: ["Earth", "Erde"] },
 		children: [{
-			id: null,
+			id: "_m0",
 			name: "Moon",
-			data: { altNames: ["Mond"] }
+			data: { altNames: ["Moon", "Mond"] }
 		}]
 	}, {
-		name: "Mars"
+		data: { altNames: ["Mars"] },
+		children: [
+			{
+				id: "_m1",
+				name: "Phobos"
+			}, {
+				id: null,
+				id: "_m2",
+				name: "Deimos"
+			}
+		]
 	}, {
-		name: "Jupiter"
+		data: { altNames: ["Jupiter"] }
 	}, {
-		name: "Saturn"
+		data: { altNames: ["Saturn"] }
 	}, {
-		name: "Uranus"
+		data: { altNames: ["Uranus"] }
 	}, {
-		name: "Neptune",
-		data: { altNames: ["Neptun"] }
+		data: { altNames: ["Neptune", "Neptun"] }
 	}
 ];
 // add IDs, turn labels into children
 planets = $.map(planets, function(planet, i) {
 	planet.id = (i + 1).toString(); // NB: Sun is 0
+
+	var names = planet.data.altNames;
+	planet.name = names[0];
+
 	var children = planet.children || [];
-	if(planet.data && planet.data.altNames) {
-		$.each(planet.data.altNames, function(j, name) {
-			children.unshift({
-				id: "_" + i + "_" + j,
-				name: name,
-				data: { etype: "label" }
-			});
+	$.each(names, function(j, name) {
+		children.unshift({
+			id: "_" + i + "_" + j,
+			name: name,
+			data: { etype: "label" }
 		});
-		planet.children = children;
-	}
+	});
+	planet.children = children;
+
 	return planet;
 });
 
