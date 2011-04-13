@@ -1,8 +1,28 @@
+# encoding: UTF-8
+
+# Copyright 2011 innoQ Deutschland GmbH
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
   c.sequence(:origin) { |n| "_000000#{n}" }
   c.published_at 3.days.ago
   c.labelings { |labelings| [labelings.association(:pref_labeling)] }
   c.narrower_relations{ |narrower_relations| [narrower_relations.association(:narrower_relation)]}
+end
+
+Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
+  c.sequence(:origin) { |n| "_100000#{n}" }
 end
 
 Factory.define :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
@@ -19,6 +39,10 @@ end
 
 Factory.define :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |lab|
   lab.target { |target| target.association(:pref_label) }
+end
+
+Factory.define :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab| # XXX: .first.first hacky!?
+  # TODO: should define target (YAGNI?)
 end
 
 Factory.sequence(:label_number) { |n| n + 1 }

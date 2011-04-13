@@ -1,3 +1,19 @@
+# encoding: UTF-8
+
+# Copyright 2011 innoQ Deutschland GmbH
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 class Collection::Base < Concept::Base
 
   has_many Note::SKOS::Definition.name.to_relation_name,
@@ -47,6 +63,7 @@ class Collection::Base < Concept::Base
 
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
+  validate :circular_subcollections
 
   def self.note_class_names
     ['Note::SKOS::Definition']
@@ -101,9 +118,9 @@ class Collection::Base < Concept::Base
 
   def regenerate_collection_members
     return if @member_collection_origins.nil? # There is nothing to do
-    existing_collection_origins = collection_members.map{|m| m.collection.origin}.uniq
+    existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
     (@member_collection_origins - existing_collection_origins).each do |new_origin|
-      Collection::Base.where(:origin => new_origin).each do |c|
+      Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
         collection_members.create!(:target_id => c.id)
       end
     end
@@ -121,5 +138,14 @@ class Collection::Base < Concept::Base
   #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
   #   notes.select{ |note| note.class.name == note_class }
   # end
+
+  def circular_subcollections
+    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
+      if subcollection.subcollections.all.include?(self)
+        errors.add(:base,
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
+      end
+    end
+  end
 
 end
