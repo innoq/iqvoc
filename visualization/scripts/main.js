@@ -36,8 +36,8 @@ var init = function() { // TODO: namespace!
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
 			var style = domEl.style; // TODO: use jQuery
-			style.display = '';
-			style.cursor = 'pointer';
+			style.display = "";
+			style.cursor = "pointer";
 			if(node._depth <= 1) {
 				style.fontSize = "0.8em";
 				style.color = "#ddd";
@@ -45,11 +45,11 @@ var init = function() { // TODO: namespace!
 				style.fontSize = "0.7em";
 				style.color = "#555";
 			} else {
-				style.display = 'none';
+				style.display = "none";
 			}
 			var left = parseInt(style.left, 10);
 			var width = domEl.offsetWidth;
-			style.left = (left - width / 2) + 'px';
+			style.left = (left - width / 2) + "px";
 		}
 	});
 
