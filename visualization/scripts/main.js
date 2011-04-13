@@ -21,6 +21,7 @@ var init = function() { // TODO: namespace!
 			color: "#F00"
 		},
 		Edge: {
+			overridable: true,
 			lineWidth: 2,
 			color: "#088"
 		},
@@ -50,6 +51,17 @@ var init = function() { // TODO: namespace!
 			var left = parseInt(style.left, 10);
 			var width = domEl.offsetWidth;
 			style.left = (left - width / 2) + "px";
+		},
+
+		onBeforePlotLine: function(adj) {
+			if(adj.nodeTo.data.etype === "label") {
+				//adj.nodeTo.pos.rho = adj.nodeTo.pos.rho * 0.9; // XXX: hacky?
+				adj.nodeTo.data.$type = "square";
+				adj.nodeTo.data.$color = "#00A";
+				adj.data.$alpha = 0.5;
+				adj.data.$type = "arrow";
+				adj.data.$color = "#00A";
+			}
 		}
 	});
 
