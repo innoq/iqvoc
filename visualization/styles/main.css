@@ -3,5 +3,9 @@
 	height: 600px;
 	overflow: hidden;
 	margin: auto;
-	background-color: #111;
+	/* background-color: #111; XXX: DEBUG'd for printing */
+}
+
+#infovis .node {
+	color: #111 !important; /* XXX: DEBUG'd for printing */
 }

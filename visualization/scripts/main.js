@@ -74,6 +74,7 @@ var init = function() { // TODO: namespace!
 	var data = transformData(MOCKDATA); // XXX: DEBUG
 	ht.loadJSON(data);
 	ht.refresh();
+	$(document).ready(function() { ht.onClick("_concept_2"); }); // XXX: DEBUG; for demo purposes only
 };
 
 // create a JIT-compatible JSON tree structure from a concept representation
