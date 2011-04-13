@@ -19,8 +19,8 @@ var init = function() { // TODO: namespace!
 		background: {
 			"CanvasStyles": {
 				"strokeStyle": "#AAA",
-				"shadowBlur": 50,
-				"shadowColor": "#EEE"
+				"shadowBlur": 50
+				//"shadowColor": "#EEE" // XXX: fills entire background in Chrome!?
 			}
 		},
 		// styles
@@ -74,7 +74,6 @@ var init = function() { // TODO: namespace!
 
 	viz.loadJSON(MOCKDATA); // XXX: DEBUG
 	viz.refresh();
-	$(document).ready(function() { viz.onClick("3"); }); // XXX: DEBUG; for demo purposes only
 };
 
 // hijack setPos method to reduce the relative distance for label nodes -- XXX: modifies all Node instances!
