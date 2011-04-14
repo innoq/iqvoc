@@ -46,6 +46,16 @@ div.pagination span { border: 1px solid #318210; background-color: #C0FAB4; padd
 div.pagination span.disabled { background-color: transparent; border-color: silver; color: silver; }
 div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; }
 
+/* visualizations */
+
+#infovis {
+	float: right;
+	width: 600px;
+	height: 600px;
+	overflow: hidden;
+	background-color: #111;
+}
+
 /* ######################################## */
 /* # Core CSS. Customizing is discouraged # */
 /* ######################################## */

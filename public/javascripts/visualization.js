@@ -1,9 +1,8 @@
 /*jslint browser: true, nomen: false */
-/*global jQuery, $jit, HTMLCanvasElement */
-
-var labelType, nativeTextSupport, useGradients, animate;
+/*global jQuery, $jit, IQVOC, HTMLCanvasElement */
 
 // basic settings -- XXX: cargo-culted from JIT examples
+var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals!?
 (function() {
 	var ua = navigator.userAgent,
 		iOS = ua.match(/iPhone/i) || ua.match(/iPad/i),
@@ -19,11 +18,11 @@ var labelType, nativeTextSupport, useGradients, animate;
 	animate = !(iOS || !nativeCanvasSupport);
 }());
 
-(function($) {
+IQVOC.visualization = (function($) {
 
 var LEVELDISTANCE = 100;
 
-var init = function() { // TODO: namespace!
+var init = function() {
 	var viz,
 		container = document.getElementById("infovis"); // XXX: hardcoded!?
 
@@ -103,7 +102,7 @@ var init = function() { // TODO: namespace!
 		}
 	});
 
-	viz.loadJSON(MOCKDATA); // XXX: DEBUG
+	viz.loadJSON({ id: 0, name: 0 }); // XXX: DEBUG
 	viz.refresh();
 };
 
