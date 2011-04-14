@@ -27,7 +27,7 @@ var init = function() { // TODO: namespace!
 		levelDistance: LEVELDISTANCE,
 		Node: {
 			overridable: true,
-			dim: 9,
+			dim: 5,
 			color: "#F00"
 		},
 		Edge: {
@@ -63,7 +63,7 @@ var init = function() { // TODO: namespace!
 			var style = domEl.style;
 			var y = parseInt(style.top, 10);
 			if(node.data.etype === "label") {
-				style.top = (y + 10) + "px";
+				style.top = (y + 5) + "px";
 			} else {
 				// ensure empty label (i.e. link) is centered on the symbol -- XXX: brittle!?
 				var x = parseInt(style.left, 10);
@@ -79,6 +79,7 @@ var init = function() { // TODO: namespace!
 			if(adj.nodeTo.data.etype === "label") {
 				adj.nodeTo.data.$type = "square";
 				adj.nodeTo.data.$color = "#00D";
+				adj.data.$lineWidth = adj.Edge.lineWidth / 2;
 				adj.data.$alpha = 0.5;
 				adj.data.$color = "#00A";
 			}
