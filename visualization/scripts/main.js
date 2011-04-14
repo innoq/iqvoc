@@ -50,6 +50,11 @@ var init = function() { // TODO: namespace!
 				display: "block",
 				cursor: "pointer"
 			};
+			if(node.data.etype === "label") {
+				css.height = css.lineHeight = node.Node.height + "px";
+				css.padding = "0 2px";
+				css.backgroundColor = node.data.$color;
+			}
 			if(node._depth <= 1) {
 				css.fontSize = "0.8em";
 				css.color = "#DDD";
@@ -59,26 +64,20 @@ var init = function() { // TODO: namespace!
 			} else {
 				css.display = "none";
 			}
-
-			var style = domEl.style;
-			var y = parseInt(style.top, 10);
-			if(node.data.etype === "label") {
-				style.top = (y + 5) + "px";
-			} else {
-				// ensure empty label (i.e. link) is centered on the symbol -- XXX: brittle!?
-				var x = parseInt(style.left, 10);
-				var width = domEl.offsetWidth;
-				style.top = (y - 10) + "px";
-				style.left = (x - width / 2) + "px";
-			}
-
 			$(domEl).css(css);
+
+			// ensure label is centered on the symbol
+			var style = domEl.style;
+			var x = parseInt(style.left, 10);
+			var y = parseInt(style.top, 10);
+			style.top = (y - domEl.offsetHeight / 2) + "px";
+			style.left = (x - domEl.offsetWidth / 2) + "px";
 		},
 
 		onBeforePlotLine: function(adj) {
 			if(adj.nodeTo.data.etype === "label") {
 				adj.nodeTo.data.$type = "square";
-				adj.nodeTo.data.$color = "#00D";
+				adj.nodeTo.data.$color = "#EEE";
 				adj.data.$lineWidth = adj.Edge.lineWidth / 2;
 				adj.data.$alpha = 0.5;
 				adj.data.$color = "#00A";
