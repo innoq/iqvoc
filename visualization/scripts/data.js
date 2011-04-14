@@ -21,7 +21,6 @@ var planets = [
 				id: "_m1",
 				name: "Phobos"
 			}, {
-				id: null,
 				id: "_m2",
 				name: "Deimos"
 			}

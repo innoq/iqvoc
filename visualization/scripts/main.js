@@ -46,20 +46,28 @@ var init = function() { // TODO: namespace!
 
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
-			var style = {
+			var css = {
 				display: "block",
 				cursor: "pointer"
 			};
 			if(node._depth <= 1) {
-				style.fontSize = "0.8em";
-				style.color = "#DDD";
+				css.fontSize = "0.8em";
+				css.color = "#DDD";
 			} else if(node._depth === 2) {
-				style.fontSize = "0.7em";
-				style.color = "#555";
+				css.fontSize = "0.7em";
+				css.color = "#555";
 			} else {
-				style.display = "none";
+				css.display = "none";
 			}
-			$(domEl).css(style);
+
+			var style = domEl.style;
+			//var x = parseInt(style.left, 10);
+			var y = parseInt(style.top, 10);
+			//var width = domEl.offsetWidth;
+			style.top = (y + 10) + "px";
+			//style.left = (x - width / 2) + "px";
+
+			$(domEl).css(css);
 		},
 
 		onBeforePlotLine: function(adj) {
