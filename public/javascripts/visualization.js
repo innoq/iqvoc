@@ -1,6 +1,10 @@
 /*jslint browser: true, nomen: false */
 /*global jQuery, $jit, IQVOC, HTMLCanvasElement */
 
+jQuery(document).ready(function() {
+	IQVOC.visualization.init("infovis");
+});
+
 // basic settings -- XXX: cargo-culted from JIT examples
 var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals!?
 (function() {
@@ -22,9 +26,18 @@ IQVOC.visualization = (function($) {
 
 var LEVELDISTANCE = 100;
 
-var init = function() {
-	var viz,
-		container = document.getElementById("infovis"); // XXX: hardcoded!?
+var init = function(container) {
+	var uri = $("head link[type='application/json']").attr("href"); // XXX: could just use window.location (minus extension)!?
+	$.getJSON(uri, function(data, status, xhr) {
+		data = transformData(data);
+		spawn(container, data);
+	});
+};
+
+// container can be an ID or a DOM element
+var spawn = function(container, data) {
+	var viz;
+	container = container.nodeType ? container : document.getElementById(container);
 
 	viz = new $jit.RGraph({
 		injectInto: container,
@@ -102,8 +115,18 @@ var init = function() {
 		}
 	});
 
-	viz.loadJSON({ id: 0, name: 0 }); // XXX: DEBUG
+	viz.loadJSON(data);
 	viz.refresh();
+};
+
+// create a JIT-compatible JSON tree structure from a concept representation
+var transformData = function(concept) {
+	labels = relations = []; // TODO
+	return {
+		id: concept.origin,
+		name: "&nbsp", // XXX: hacky?
+		children: labels.concat(relations)
+	};
 };
 
 // hijack setPos method to reduce the relative distance for label nodes -- XXX: modifies all Node instances!
@@ -115,10 +138,8 @@ $jit.Graph.Node.prototype.setPos = function(value, type) {
 	return _setPos.apply(this, arguments);
 };
 
-init(); // XXX: should not be run by the module itself
-
 return {
-	init: init // TODO: rename?
+	init: init
 };
 
 }(jQuery));
