@@ -61,11 +61,16 @@ var init = function() { // TODO: namespace!
 			}
 
 			var style = domEl.style;
-			//var x = parseInt(style.left, 10);
 			var y = parseInt(style.top, 10);
-			//var width = domEl.offsetWidth;
-			style.top = (y + 10) + "px";
-			//style.left = (x - width / 2) + "px";
+			if(node.data.etype === "label") {
+				style.top = (y + 10) + "px";
+			} else {
+				// ensure empty label (i.e. link) is centered on the symbol -- XXX: brittle!?
+				var x = parseInt(style.left, 10);
+				var width = domEl.offsetWidth;
+				style.top = (y - 10) + "px";
+				style.left = (x - width / 2) + "px";
+			}
 
 			$(domEl).css(css);
 		},

@@ -11,7 +11,7 @@ var planets = [
 		data: { altNames: ["Earth", "Erde"] },
 		children: [{
 			id: "_m0",
-			name: "Moon",
+			name: "&nbsp;",
 			data: { altNames: ["Moon", "Mond"] }
 		}]
 	}, {
@@ -19,10 +19,12 @@ var planets = [
 		children: [
 			{
 				id: "_m1",
-				name: "Phobos"
+				name: "&nbsp;",
+				data: { altNames: ["Phobos"] }
 			}, {
 				id: "_m2",
-				name: "Deimos"
+				name: "&nbsp;",
+				data: { altNames: ["Deimos"] }
 			}
 		]
 	}, {
@@ -56,7 +58,7 @@ var transformData = function(item, i) {
 
 	return {
 		id: id.toString(),
-		name: names[0],
+		name: "&nbsp;",
 		children: children
 	};
 };
