@@ -6,7 +6,7 @@ var planets = [
 	{
 		data: { altNames: ["Mercury", "Merkur"] }
 	}, {
-		data: { altNames: [""] }
+		data: { altNames: ["Venus"] }
 	}, {
 		data: { altNames: ["Earth", "Erde"] },
 		children: [{
@@ -35,34 +35,37 @@ var planets = [
 		data: { altNames: ["Neptune", "Neptun"] }
 	}
 ];
-// add IDs, turn labels into children
-planets = $.map(planets, function(planet, i) {
-	planet.id = (i + 1).toString(); // NB: Sun is 0
 
-	var names = planet.data.altNames;
-	planet.name = names[0];
+var star = {
+	data: { altNames: ["Sun", "Sonne"] }
+};
 
-	var children = planet.children || [];
+// create a node from raw data -- XXX: modifies nested objects in place
+var transformData = function(item, i) {
+	var id = i + 1;
+	var names = item.data.altNames;
+
+	var children = item.children || [];
 	$.each(names, function(j, name) {
-		children.unshift({
-			id: "_" + i + "_" + j,
+		children.unshift({ // TODO: use recursion to transform data automatically
+			id: "_" + id + "_" + j,
 			name: name,
 			data: { etype: "label" }
 		});
 	});
-	planet.children = children;
 
-	return planet;
-});
-
-var star = {
-	id: "0",
-	name: "Sun",
-	data: { altNames: ["Sonne"] }
+	return {
+		id: id.toString(),
+		name: names[0],
+		children: children
+	};
 };
 
-MOCKDATA = $.extend({}, star, {
-	children: planets
+planets = $.map(planets, transformData);
+star = transformData(star, -1);
+
+MOCKDATA = $.extend(star, {
+	children: star.children.concat(planets)
 });
 
 }(jQuery));
