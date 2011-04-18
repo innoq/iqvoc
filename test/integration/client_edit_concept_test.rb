@@ -33,11 +33,11 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     assert section.has_css?("li", :count => 1)
 
     # unhide default note input
-    section.click_link_or_button("Weitere hinzufügen")
+    section.find("input[type=button]").click
     assert section.has_css?("li", :count => 1)
 
     # add another note input
-    section.click_link_or_button("Weitere hinzufügen")
+    section.find("input[type=button]").click
     assert section.has_css?("li", :count => 2)
 
     # add some note text
@@ -63,8 +63,9 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     assert section.has_no_css?("li.deleted")
 
     # mark note for deletion
-    section.check("Löschen")
-    section.find("[type=checkbox]").trigger("change") # apparently `check` doesn't do this automatically
+    checkbox_id = "concept_note_skos_definitions_attributes_1__destroy"
+    section.check(checkbox_id)
+    section.find("##{checkbox_id}").trigger("change") # apparently `check` doesn't do this automatically
     assert section.has_css?("li.deleted", :count => 1)
   end
 
