@@ -1,15 +1,21 @@
 require 'integration_test_helper'
-require 'capybara/envjs'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
+
+  self.use_transactional_fixtures = false
 
   setup do
     @concept = Factory.create(:concept)
 
-    Capybara.current_driver = :envjs
+    Capybara.current_driver = Capybara.javascript_driver
+    DatabaseCleaner.start
   end
 
   teardown do
+    DatabaseCleaner.clean
     Capybara.use_default_driver
   end
 
