@@ -21,6 +21,8 @@ module ActionController
   class IntegrationTest
     include Capybara
 
+    Capybara.javascript_driver = :webkit
+
     def login(role = nil)
       logout
       user(role)
