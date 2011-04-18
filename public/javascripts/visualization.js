@@ -121,11 +121,26 @@ var spawn = function(container, data) {
 
 // create a JIT-compatible JSON tree structure from a concept representation
 var transformData = function(concept) {
-	labels = relations = []; // TODO
+	return generateConceptNode(concept);
+};
+
+var generateConceptNode = function(concept) {
+	var labels = $.map(concept.labels || [], generateLabelNode);
+	var relations = $.map(concept.relations || [], generateConceptNode);
 	return {
 		id: concept.origin,
-		name: "&nbsp", // XXX: hacky?
+		name: "&nbsp", // XXX: hacky; better solved with CSS!?
 		children: labels.concat(relations)
+	};
+};
+
+var generateLabelNode = function(label) {
+	// TODO: support for non-XL labels
+	return {
+		id: label.origin,
+		name: label.value,
+		data: { etype: "label" }
+		// TODO: relations to other concepts (XL only)
 	};
 };
 
