@@ -25,10 +25,11 @@ var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals
 IQVOC.visualization = (function($) {
 
 var LEVELDISTANCE = 100;
+var CONCEPT_URI;
 
 var init = function(container) {
-	var uri = $("head link[type='application/json']").attr("href"); // XXX: could just use window.location (minus extension)!?
-	$.getJSON(uri, function(data, status, xhr) {
+	CONCEPT_URI = $("head link[type='application/json']").attr("href");
+	$.getJSON(CONCEPT_URI, function(data, status, xhr) {
 		data = transformData(data);
 		spawn(container, data);
 	});
@@ -69,9 +70,11 @@ var spawn = function(container, data) {
 		// add text and attach event handlers to labels
 		onCreateLabel: function(domEl, node) {
 			$(domEl).html(node.name);
-			$jit.util.addEvent(domEl, "click", function(ev) {
-				viz.onClick(node.id);
-			});
+			if(node.data.etype !== "label") {
+				$jit.util.addEvent(domEl, "click", function(ev) {
+					visitConcept(node.id);
+				});
+			}
 		},
 
 		// change node styles when labels are placed/moved
@@ -114,6 +117,12 @@ var spawn = function(container, data) {
 
 	viz.loadJSON(data);
 	viz.refresh();
+};
+
+var visitConcept = function(conceptID) {
+	var cue = "/concepts/";
+	var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
+	window.location = host + cue + conceptID;
 };
 
 // create a JIT-compatible JSON tree structure from a concept representation
