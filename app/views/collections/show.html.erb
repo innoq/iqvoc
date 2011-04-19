@@ -37,7 +37,7 @@
   <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
   <div class="relation-body">
     <ul>
-      <%- @collection.concepts.each do |concept| -%>
+      <%- @collection.concepts.sort {|a, b| a.pref_label <=> b.pref_label }.each do |concept| -%>
         <%- if concept.published? || (!concept.published_version_id && can?(:update, concept)) -%>
           <li><%= render concept.class.inline_partial_name, :concept => concept %></li>
         <%- end -%>
@@ -49,6 +49,6 @@
 <div class="relation">
   <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
   <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
-    <%= render :partial => 'collection', :collection => @collection.subcollections %>
+    <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.label <=> b.label } %>
   </ul>
 </div>

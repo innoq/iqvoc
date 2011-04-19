@@ -1,10 +1,9 @@
+/*jslint browser: true */
+/*global jQuery */
+
 var IQVOC = (function($) {
 
-return {
-	addWidget: addWidget // TODO: rename; too generic / insufficiently descriptive
-};
-
-function addWidget(index, elem) {
+var addWidget = function(index, elem) {
 	if (!elem) {
 		return;
 	}
@@ -20,14 +19,66 @@ function addWidget(index, elem) {
 	var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
 
 	options = $.extend(translations, options);
-	options.onResult = excludes.length == 0 ? null : function(results) {
+	options.onResult = excludes.length === 0 ? null : function(results) {
 		return $.grep(results, function(item) {
-			return $.inArray(item.id, excludes) == -1;
+			return $.inArray(item.id, excludes) === -1;
 		});
 	};
 
 	elem.tokenInputNew(queryUrl, options);
-}
+};
+
+var createNote = function(ev) {
+	var container = $(this).closest("fieldset");
+	var source = $("ol li:last-child", container);
+
+	// special case for usage notes
+	// a usage note contains a select box instead of a textarea
+	// FIXME: Hardcoded UMT stuff
+	var isUsageNote = source.find("label:first").attr("for").
+			match(/^concept_note_umt_usage_notes/);
+
+	if (source.is(":hidden")) {
+		source.show();
+		return false;
+	}
+
+	var clone = source.clone();
+
+	var count = source.find(isUsageNote ? "select" : "textarea").attr("id").
+			match(/_(\d)_/)[1];
+	count = parseInt(count, 10) + 1;
+	var newIdCount = "_" + count + "_";
+	var newNameCount = "[" + count + "]";
+
+	clone.find("label")
+		.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
+
+	// clone.find("input")
+	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
+	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
+
+	if (!isUsageNote) {
+		clone.find("textarea")
+			.val("")
+			.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
+			.attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
+	}
+	clone.find("select")
+		.attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
+		.attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
+
+	clone.addClass("new");
+
+	$("ol", container).append(clone);
+
+	return false;
+};
+
+return {
+	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
+	createNote: createNote // TODO: rename?
+};
 
 }(jQuery)); // /module IQVOC
 
@@ -38,65 +89,10 @@ jQuery(document).ready(function($) {
 
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
-
-	$("fieldset.note_relation input[type=button]").click(function() {
-		var source = $(this).parent().find("ol li:last-child");
-
-		// special case for usage notes
-		// a usage note contains a select box instead of a textarea
-		// FIXME: Hardcoded UMT stuff
-		var isUsageNote = source.find("label:first").attr("for").match(/^concept_umt_usage_notes/);
-
-		if (source.is(":hidden")) {
-			source.show();
-			return false;
-		}
-
-		var clone = source.clone();
-
-		if (!isUsageNote) {
-			source.find("textarea").attr("id").match(/_(\d)_/);
-		} else {
-			source.find("select").attr("id").match(/_(\d)_/);
-		}
-
-		var count = parseInt(RegExp.$1) + 1;
-		var newIdCount = "_" + count + "_";
-		var newNameCount = "[" + count + "]";
-
-		clone.find("label")
-			.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
-
-		// console.log(clone);
-
-		// clone.find("input")
-		// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
-		// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
-
-		if (!isUsageNote) {
-			clone.find("textarea")
-				.val("")
-				.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
-				.attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
-		}
-		clone.find("select")
-			.attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
-			.attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
-
-		clone.addClass("new");
-
-		$(this).parent().find("ol").append(clone);
-
-		return false;
-	});
-
-	// Label editing (inline notes)
-	$("li.inline_note input:checkbox").change(function() {
-		if (this.checked) {
-			$(this).parent().addClass("deleted");
-		} else {
-			$(this).parent().removeClass("deleted");
-		}
+	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
+	$("li.inline_note input:checkbox").change(function(ev) {
+		var action = this.checked ? "addClass" : "removeClass";
+		$(this).closest("li")[action]("deleted");
 	});
 
 	// Datepicker
@@ -105,15 +101,10 @@ jQuery(document).ready(function($) {
 
 	// Dashboard table row highlighting and click handling
 	$("tr.highlightable")
-		.hover(
-			function() {
-				$(this).addClass("hover");
-			},
-			function() {
-				$(this).removeClass("hover");
-			}
-		)
-		.click(function() {
+		.hover(function(ev) {
+			$(this).toggleClass("hover");
+		})
+		.click(function(ev) {
 			window.location = $(this).attr("data-url");
 		});
 
