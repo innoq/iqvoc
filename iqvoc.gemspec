@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = "iQvoc"
   s.description = ""
   
-  s.add_dependency "rails", '3.0.5'
+  s.add_dependency "rails", '3.0.7'
   s.add_dependency "bundler"
   s.add_dependency 'will_paginate', '3.0.pre2'
   s.add_dependency 'authlogic'
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf', '~> 0.0.14'
   s.add_dependency 'json'
 
-  s.files = %w(LICENSE README.md Gemfile Gemfile.lock Rakefile iqvoc_skosxl.gemspec) + Dir.glob("{app,config,public,lib,test}/**/*")
+  s.files = %w(LICENSE README.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) + Dir.glob("{app,config,public,lib,test}/**/*")
   s.test_files = Dir.glob("{test}/**/*")
   s.executables = Dir.glob("{bin}/**/*")
   s.require_paths = ["lib"]
