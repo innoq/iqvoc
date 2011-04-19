@@ -132,9 +132,6 @@ var transformData = function(concept) {
 
 // generate node from iQvoc concept representation
 var generateConceptNode = function(concept) {
-	if(typeof concept.labels === "number") {
-		concept.labels = generateDummyLabels(concept.labels);
-	}
 	if(typeof concept.relations === "number") {
 		concept.relations = generateDummyConcepts(concept.relations);
 	}
@@ -163,13 +160,6 @@ var generateLabelNode = function(label) {
 var generateDummyConcepts = function(count) {
 	return $.map(new Array(count), function(item, i) {
 		return { origin: Math.random(), dummy: true };
-	});
-};
-
-// generate dummy iQvoc label representations
-var generateDummyLabels = function(count) {
-	return $.map(new Array(count), function(item, i) {
-		return { origin: Math.random(), value: "", dummy: true };
 	});
 };
 

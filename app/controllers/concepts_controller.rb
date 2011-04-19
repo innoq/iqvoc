@@ -50,21 +50,12 @@ class ConceptsController < ApplicationController
         # XXX: rather than being generic, this is currently tailored for visualizations
         concept_data = {
           :origin => @concept.origin,
-          :labels => @concept.labelings.map { |ln|
-            label = ln.target
-            {
-              :origin => label.origin,
-              :reltype => ln.type.to_relation_name,
-              :value => label.value,
-              :lang => label.language
-              # TODO: relations (XL only)
-            }
-          },
+          :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
           :relations => @concept.relations.map { |relation|
             concept = relation.target
             {
               :origin => concept.origin,
-              :labels => concept.labelings.length, # XXX: using number is hacky?
+              :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
               :relations => concept.relations.length # XXX: using number is hacky?
             }
           }
@@ -148,4 +139,15 @@ class ConceptsController < ApplicationController
     end
   end
 
+end
+
+def labeling_as_json(labeling)
+  label = labeling.target
+  return {
+    :origin => label.origin,
+    :reltype => labeling.type.to_relation_name,
+    :value => label.value,
+    :lang => label.language
+    # TODO: relations (XL only)
+  }
 end
