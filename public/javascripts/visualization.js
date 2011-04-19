@@ -80,7 +80,9 @@ var spawn = function(container, data) {
 				display: "block",
 				cursor: "pointer"
 			};
-			if(node.data.etype === "label") {
+			if(node.data.dummy) {
+				css.display = "none";
+			} else if(node.data.etype === "label") {
 				css.height = css.lineHeight = node.Node.height + "px";
 				css.padding = "0 2px";
 				css.backgroundColor = node.data.$color;
@@ -124,24 +126,47 @@ var transformData = function(concept) {
 	return generateConceptNode(concept);
 };
 
+// generate node from iQvoc concept representation
 var generateConceptNode = function(concept) {
+	if(typeof concept.labels === "number") {
+		concept.labels = generateDummyLabels(concept.labels);
+	}
+	if(typeof concept.relations === "number") {
+		concept.relations = generateDummyConcepts(concept.relations);
+	}
 	var labels = $.map(concept.labels || [], generateLabelNode);
 	var relations = $.map(concept.relations || [], generateConceptNode);
 	return {
 		id: concept.origin,
 		name: "&nbsp", // XXX: hacky; better solved with CSS!?
-		children: labels.concat(relations)
+		children: labels.concat(relations),
+		data: { dummy: concept.dummy }
 	};
 };
 
+// generate node from iQvoc label representation
 var generateLabelNode = function(label) {
 	// TODO: support for non-XL labels
 	return {
 		id: label.origin,
 		name: label.value,
-		data: { etype: "label" }
+		data: { etype: "label", dummy: label.dummy }
 		// TODO: relations to other concepts (XL only)
 	};
+};
+
+// generate dummy iQvoc label representations
+var generateDummyConcepts = function(count) {
+	return $.map(new Array(count), function(item, i) {
+		return { origin: Math.random(), dummy: true };
+	});
+};
+
+// generate dummy iQvoc label representations
+var generateDummyLabels = function(count) {
+	return $.map(new Array(count), function(item, i) {
+		return { origin: Math.random(), value: "", dummy: true };
+	});
 };
 
 // hijack setPos method to reduce the relative distance for label nodes -- XXX: modifies all Node instances!

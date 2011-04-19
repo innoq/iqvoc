@@ -25,12 +25,19 @@ class ConceptsController < ApplicationController
     scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :labels}).includes(Iqvoc::Concept.base_class.default_includes)
     if params[:published] == '1' || !params[:published]
       published = true
-      @concept = scope.published.last
+      scope = scope.published
       @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     elsif params[:published] == '0'
       published = false
-      @concept = scope.unpublished.last
+      scope = scope.unpublished
     end
+
+    if params[:format] == "json"
+      scope = scope.includes([:labels,
+          { :relations => { :target => [:labelings, :relations] } }]) # XXX: expensive!?
+    end
+
+    @concept = scope.last
 
     raise ActiveRecord::RecordNotFound unless @concept
     authorize! :read, @concept
@@ -40,20 +47,28 @@ class ConceptsController < ApplicationController
         published ? render('show_published') : render('show_unpublished')
       end
       format.json do
-        scope = published ? scope.published : scope.unpublished
-        @concept = scope.includes(:labels).last # XXX: inefficient; database was already queried above
-        # XXX: do we really need _all_ attributes here? (e.g. IDs are meaningless to the client)
-        concept_data = @concept.attributes.merge({
-          :labels => @concept.labels.map { |label| label.attributes }, # XXX: does not include information on labeling type (i.e. pref or alt)
+        # XXX: rather than being generic, this is currently tailored for visualizations
+        concept_data = {
+          :origin => @concept.origin,
+          :labels => @concept.labelings.map { |ln|
+            label = ln.target
+            {
+              :origin => label.origin,
+              :reltype => ln.type.to_relation_name,
+              :value => label.value,
+              :lang => label.language
+              # TODO: relations (XL only)
+            }
+          },
           :relations => @concept.relations.map { |relation|
-            relation.attributes.merge({
-              # XXX: inefficient: currently queries the database for both target concept and its pref label
-              # XXX: is it _always_ target we want?
-              :origin => relation.target.origin,
-              :label => relation.target.to_s
-            })
+            concept = relation.target
+            {
+              :origin => concept.origin,
+              :labels => concept.labelings.length, # XXX: using number is hacky?
+              :relations => concept.relations.length # XXX: using number is hacky?
+            }
           }
-        })
+        }
         render :json => concept_data
       end
       format.ttl
