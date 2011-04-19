@@ -56,19 +56,16 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 	background-color: #111;
 }
 
+#infovis .concept {
+	width: 1em;
+	cursor: pointer;
+}
+
 #infovis .label {
 	padding: 0 2px;
 	font-size: 0.8em;
 	color: #555;
 	background-color: #EEE;
-}
-
-#infovis .node {
-	cursor: pointer;
-}
-
-#infovis .hidden {
-	display: none;
 }
 
 /* ######################################## */

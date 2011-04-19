@@ -79,14 +79,10 @@ var spawn = function(container, data) {
 
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
-			var css = {}, classes = ["level" + node._depth];
-			if(node.data.dummy) {
-				classes.push("hidden");
-			}
-			if(node.data.etype === "label") {
-				classes.push("label");
-				css.height = css.lineHeight = node.Node.height + "px";
-			}
+			var css = {},
+				classes = ["level" + node._depth, node.data.etype || "concept"];
+			// ensure label covers the underlying node
+			css.height = css.lineHeight = node.Node.height + "px";
 			$(domEl).addClass(classes.join(" ")).css(css);
 
 			// ensure label is centered on the symbol
@@ -140,8 +136,7 @@ var generateConceptNode = function(concept) {
 	return {
 		id: concept.origin,
 		name: "&nbsp", // XXX: hacky; better solved with CSS!?
-		children: labels.concat(relations),
-		data: { dummy: concept.dummy }
+		children: labels.concat(relations)
 	};
 };
 
@@ -151,7 +146,7 @@ var generateLabelNode = function(label) {
 	return {
 		id: label.origin,
 		name: label.value,
-		data: { etype: "label", dummy: label.dummy }
+		data: { etype: "label" }
 		// TODO: relations to other concepts (XL only)
 	};
 };
@@ -159,7 +154,7 @@ var generateLabelNode = function(label) {
 // generate dummy iQvoc label representations
 var generateDummyConcepts = function(count) {
 	return $.map(new Array(count), function(item, i) {
-		return { origin: Math.random(), dummy: true };
+		return { origin: Math.random() };
 	});
 };
 
