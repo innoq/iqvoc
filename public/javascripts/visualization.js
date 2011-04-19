@@ -68,7 +68,7 @@ var spawn = function(container, data) {
 
 		// add text and attach event handlers to labels
 		onCreateLabel: function(domEl, node) {
-			domEl.innerHTML = node.name; // TODO: use jQuery?
+			$(domEl).html(node.name);
 			$jit.util.addEvent(domEl, "click", function(ev) {
 				viz.onClick(node.id);
 			});
@@ -76,27 +76,15 @@ var spawn = function(container, data) {
 
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
-			var css = {
-				display: "block",
-				cursor: "pointer"
-			};
+			var css = {}, classes = ["level" + node._depth];
 			if(node.data.dummy) {
-				css.display = "none";
-			} else if(node.data.etype === "label") {
+				classes.push("hidden");
+			}
+			if(node.data.etype === "label") {
+				classes.push("label");
 				css.height = css.lineHeight = node.Node.height + "px";
-				css.padding = "0 2px";
-				css.backgroundColor = node.data.$color;
 			}
-			if(node._depth <= 1) {
-				css.fontSize = "0.8em";
-				css.color = "#DDD";
-			} else if(node._depth === 2) {
-				css.fontSize = "0.7em";
-				css.color = "#555";
-			} else {
-				css.display = "none";
-			}
-			$(domEl).css(css);
+			$(domEl).addClass(classes.join(" ")).css(css);
 
 			// ensure label is centered on the symbol
 			var style = domEl.style;
@@ -111,8 +99,15 @@ var spawn = function(container, data) {
 				adj.nodeTo.data.$type = "square";
 				adj.nodeTo.data.$color = "#EEE";
 				adj.data.$lineWidth = adj.Edge.lineWidth / 2;
-				adj.data.$alpha = 0.5;
 				adj.data.$color = "#00A";
+				adj.data.$alpha = 0.5;
+			} else {
+				var node = adj.nodeTo; // nodeTo is always the inner node!?
+				var alpha = determineTransparency(node._depth);
+				if(alpha) {
+					node.setData("alpha", alpha);
+					adj.setData("alpha", alpha);
+				}
 			}
 		}
 	});
@@ -167,6 +162,14 @@ var generateDummyLabels = function(count) {
 	return $.map(new Array(count), function(item, i) {
 		return { origin: Math.random(), value: "", dummy: true };
 	});
+};
+
+var determineTransparency = function(depth) {
+	if(depth === 2) {
+		return 0.6;
+	} else if(depth > 2) {
+		return 0.3;
+	}
 };
 
 // hijack setPos method to reduce the relative distance for label nodes -- XXX: modifies all Node instances!
