@@ -60,9 +60,9 @@ namespace :iqvoc do
 
           puts `unset BUNDLE_GEMFILE && unset RUBYOPT && bundle exec rake iqvoc:assets:copy`
 
-        end
+          `zip -qr #{path}.zip *`
 
-        `zip -qr #{path}.zip #{path}`
+        end
 
         puts "Release complete: #{path}.zip"
 
