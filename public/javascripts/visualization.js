@@ -43,6 +43,12 @@ var spawn = function(container, data) {
 	viz = new $jit.RGraph({
 		injectInto: container,
 
+		Navigation: {
+			enable: true,
+			panning: "avoid nodes",
+			zooming: 100
+		},
+
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
