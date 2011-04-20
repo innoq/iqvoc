@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # encoding: UTF-8
 
 # Copyright 2011 innoQ Deutschland GmbH
@@ -18,7 +17,7 @@
 namespace :iqvoc do
   namespace :release do
 
-    desc "Migrate the database through scripts in db/migrate and update db/schema.rb by invoking db:schema:dump. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
+    desc "Build a production ready release to tmp/release.zip"
     task :build => :environment do
 
       path = Rails.root.join('tmp/release')
@@ -45,6 +44,7 @@ namespace :iqvoc do
         end
 
         `git clone -b #{branch} #{fetch_url} #{path}`
+        `rm -rf #{File.join(path, ".git")}`
 
         FileUtils.cd(path) do
 
