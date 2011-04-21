@@ -63,9 +63,12 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 #infovis .label {
 	padding: 0 2px;
-	font-size: 0.8em;
 	color: #555;
 	background-color: #EEE;
+}
+
+#infovis-label .label {
+	font-size: 0.8em;
 }
 
 /* ######################################## */

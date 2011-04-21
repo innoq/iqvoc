@@ -27,12 +27,13 @@ IQVOC.visualization = (function($) {
 var LEVELDISTANCE = 100;
 var CONCEPT_URI;
 var MAX_CHILDREN = 10; // TODO: rename
+var VIZ; // XXX: singleton; hacky - there should be a more elegant way!?
 
 var init = function(container) {
 	CONCEPT_URI = $("head link[type='application/json']").attr("href");
 	$.getJSON(CONCEPT_URI, function(data, status, xhr) {
 		data = transformData(data);
-		spawn(container, data);
+		VIZ = spawn(container, data);
 	});
 };
 
@@ -40,10 +41,34 @@ var init = function(container) {
 var spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
 
-	var viz = generateGraph(container[0], { levelDistance: LEVELDISTANCE });
+	$.each(["label", "relation"], function(i, item) {
+		var cb = $('<input type="checkbox" name="entities" checked="checked">')
+			.val(item);
+		$('<div class="label" />').text(item).prepend(cb).appendTo(container);
+	});
+	$("input[type=checkbox]", container).live("change", onFilter);
 
+	var viz = generateGraph(container, { levelDistance: LEVELDISTANCE });
+	viz.filters = []; // TODO: rename? (ambiguous)
+	viz.data = data; // XXX: hacky (cf. onFilter below)
 	viz.loadJSON(data);
 	viz.refresh();
+
+	return viz;
+};
+
+var onFilter = function(ev, viz) {
+	var el = $(this),
+		checked = el.attr("checked"),
+		value = el.val();
+	if(checked) {
+		var pos = VIZ.filters.indexOf(value);
+		VIZ.filters.splice(pos, 1);
+	} else {
+		VIZ.filters.push(value);
+	}
+	VIZ.loadJSON(VIZ.data); // XXX: this seems like overkill
+	VIZ.refresh();
 };
 
 var visitConcept = function(conceptID) {
@@ -128,6 +153,19 @@ var generateGraph = function(container, options) {
 					adj.setData("alpha", alpha);
 				}
 			}
+
+			$.each([adj.nodeFrom, adj.nodeTo], function(i, node) { // XXX: inefficient and fugly
+				var etype = node.data ? node.data.etype : null;
+				if(VIZ) {
+					var hideRelations = VIZ.filters.indexOf("relation") !== -1;
+					var rootLabel = node._depth === 1 && etype === "label";
+					if((hideRelations && node._depth > 0 && !rootLabel) ||
+							(etype && VIZ.filters.indexOf(etype) !== -1)) {
+						adj.data.$alpha = 0;
+						node.data.$alpha = 0;
+					}
+				}
+			});
 		}
 	});
 	return new $jit.RGraph(options);
