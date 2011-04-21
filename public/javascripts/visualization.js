@@ -143,10 +143,14 @@ var generateConceptNode = function(concept) {
 	groupChildNodes(labels, "label");
 	var relations = $.map(concept.relations || [], generateConceptNode);
 	groupChildNodes(relations);
+	// combine labels and relations in alternating order
+	var children = $.map(labels, function(label, i) {
+		return relations.length ? [label, relations.pop()] : label;
+	});
 	return {
 		id: concept.origin,
 		name: "&nbsp", // XXX: hacky; better solved with CSS!?
-		children: labels.concat(relations)
+		children: children
 	};
 };
 
