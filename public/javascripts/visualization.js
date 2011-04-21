@@ -26,6 +26,7 @@ IQVOC.visualization = (function($) {
 
 var LEVELDISTANCE = 100;
 var CONCEPT_URI;
+var MAX_CHILDREN = 10; // TODO: rename
 
 var init = function(container) {
 	CONCEPT_URI = $("head link[type='application/json']").attr("href");
@@ -139,7 +140,9 @@ var generateConceptNode = function(concept) {
 		concept.relations = generateDummyConcepts(concept.relations);
 	}
 	var labels = $.map(concept.labels || [], generateLabelNode);
+	groupChildNodes(labels, "label");
 	var relations = $.map(concept.relations || [], generateConceptNode);
+	groupChildNodes(relations);
 	return {
 		id: concept.origin,
 		name: "&nbsp", // XXX: hacky; better solved with CSS!?
@@ -149,7 +152,6 @@ var generateConceptNode = function(concept) {
 
 // generate node from iQvoc label representation
 var generateLabelNode = function(label) {
-	// TODO: support for non-XL labels
 	return {
 		id: label.origin,
 		name: label.value,
@@ -163,6 +165,22 @@ var generateDummyConcepts = function(count) {
 	return $.map(new Array(count), function(item, i) {
 		return { origin: Math.random() };
 	});
+};
+
+// combine excessive child nodes in a single placeholder node
+var groupChildNodes = function(nodes, etype) { // TODO: rename
+	if(nodes.length > MAX_CHILDREN) {
+		var excess = nodes.splice(MAX_CHILDREN - 1);
+		var placeholder = {
+			id: Math.random(),
+			name: "&hellip;",
+			data: { nodes: excess } // XXX: currently unused
+		};
+		if(etype) {
+			placeholder.data.etype = etype;
+		}
+		nodes.push(placeholder);
+	};
 };
 
 var determineTransparency = function(depth) {
