@@ -52,16 +52,17 @@ var spawn = function(container, data) {
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
+		levelDistance: LEVELDISTANCE,
+
 		// concentric circle as background (cargo-culted from RGraph example)
 		background: {
-			"CanvasStyles": {
-				"strokeStyle": "#AAA",
-				"shadowBlur": 50
-				//"shadowColor": "#EEE" // XXX: fills entire background in Chrome!?
+			CanvasStyles: {
+				strokeStyle: "#AAA",
+				shadowBlur: 50
+				//shadowColor: "#EEE" // XXX: fills entire background in Chrome!?
 			}
 		},
 		// styles
-		levelDistance: LEVELDISTANCE,
 		Node: {
 			overridable: true,
 			dim: 5,
