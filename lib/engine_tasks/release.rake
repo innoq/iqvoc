@@ -17,7 +17,7 @@
 namespace :iqvoc do
   namespace :release do
 
-    desc "Build a production ready release to tmp/release.zip"
+    desc "Build a production ready release to tmp/release. Use the parameter RUBY_CMD to speficy weather to use ruby or jruby to bundle the release."
     task :build => :environment do
 
       path = Rails.root.join('tmp/release')
@@ -40,34 +40,42 @@ namespace :iqvoc do
           STDOUT.print "Enter branch name [master]: "
           branch = (STDIN.gets.presence || 'master').gsub(/\n/, "")
           break if branches.include?(branch)
-          puts "Branch must be one of #{branches.join(', ')}"
+          puts "Branch must be one of #{branches.inspect}"
         end
 
         `git clone -b #{branch} #{fetch_url} #{path}`
         `rm -rf #{File.join(path, ".git")}`
 
-        FileUtils.cd(path) do
-
-          if (File.exist?('Gemfile.production'))
-            FileUtils.mv('Gemfile.production', 'Gemfile')
-            if File.exist?('Gemfile.lock')
-              FileUtils.rm('Gemfile.lock')
-              puts `unset BUNDLE_GEMFILE && unset RUBYOPT && bundle install --path=vendor/bundle`
-            end
-          end
-
-          puts `unset BUNDLE_GEMFILE && unset RUBYOPT && bundle install --deployment`
-
-          puts `unset BUNDLE_GEMFILE && unset RUBYOPT && bundle exec rake iqvoc:assets:copy`
-
-          `zip -qr #{path}.zip *`
-
+        ruby_cmd = if ENV['RUBY_CMD']
+          "#{ENV['RUBY_CMD']} -S"
+        else
+          RUBY_PLATFORM == 'java' ? "jruby -S" : "ruby -S"
         end
+        gemfile = File.join(path, "Gemfile")
 
-        puts "Release complete: #{path}.zip"
+        Bundler.with_clean_env do 
+          FileUtils.cd(path) do
+
+            if (File.exist?('Gemfile.production'))
+              FileUtils.mv('Gemfile.production', 'Gemfile')
+              if File.exist?('Gemfile.lock')
+                FileUtils.rm('Gemfile.lock')
+                
+                puts `#{ruby_cmd} bundle install --path=vendor/bundle --gemfile=#{gemfile}`
+              end
+            end
+
+            puts `#{ruby_cmd} bundle install --deployment --gemfile=#{gemfile}`
+
+            puts `#{ruby_cmd} bundle --gemfile=#{gemfile} exec rake iqvoc:assets:copy`
+
+          end
+        end
+        
+        puts "Release complete: #{path}"
 
       ensure
-        # FileUtils.rm_rf('tmp/release')
+
       end
 
     end
