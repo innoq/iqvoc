@@ -42,6 +42,14 @@ var spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
 	$(container).addClass("infvovis");
 
+	// controls
+	$.each(["+", "-"], function(i, item) {
+		$('<input type="button" class="button" />').val(item).click(function(ev) {
+			var d = VIZ.config.Navigation.zooming / 1000;
+			d = item == "-" ? 1 - d : 1 + d;
+			VIZ.canvas.scale(d, d);
+		}).appendTo(container);
+	});
 	$.each(["label", "relation"], function(i, item) {
 		var cb = $('<input type="checkbox" name="entities" checked="checked">')
 			.val(item);

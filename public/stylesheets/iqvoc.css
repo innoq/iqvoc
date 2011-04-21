@@ -56,6 +56,10 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 	background-color: #111;
 }
 
+#infovis .button {
+	float: right;
+}
+
 #infovis .concept {
 	width: 1em;
 	overflow: hidden;
