@@ -38,10 +38,22 @@ var init = function(container) {
 
 // container can be an ID or a DOM element
 var spawn = function(container, data) {
-	var viz;
 	container = container.nodeType ? container : document.getElementById(container);
 
-	viz = new $jit.RGraph({
+	var viz = generateGraph(container[0], { levelDistance: LEVELDISTANCE });
+
+	viz.loadJSON(data);
+	viz.refresh();
+};
+
+var visitConcept = function(conceptID) {
+	var cue = "/concepts/";
+	var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
+	window.location = host + cue + conceptID;
+};
+
+var generateGraph = function(container, options) {
+	options = $.extend(options, {
 		injectInto: container,
 
 		Navigation: {
@@ -53,7 +65,7 @@ var spawn = function(container, data) {
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
-		levelDistance: LEVELDISTANCE,
+		levelDistance: options.leveldistance,
 
 		// concentric circle as background (cargo-culted from RGraph example)
 		background: {
@@ -118,15 +130,7 @@ var spawn = function(container, data) {
 			}
 		}
 	});
-
-	viz.loadJSON(data);
-	viz.refresh();
-};
-
-var visitConcept = function(conceptID) {
-	var cue = "/concepts/";
-	var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
-	window.location = host + cue + conceptID;
+	return new $jit.RGraph(options);
 };
 
 // create a JIT-compatible JSON tree structure from a concept representation
@@ -184,7 +188,7 @@ var groupChildNodes = function(nodes, etype) { // TODO: rename
 			placeholder.data.etype = etype;
 		}
 		nodes.push(placeholder);
-	};
+	}
 };
 
 var determineTransparency = function(depth) {
