@@ -40,6 +40,7 @@ var init = function(container) {
 // container can be an ID or a DOM element
 var spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
+	$(container).addClass("infvovis");
 
 	$.each(["label", "relation"], function(i, item) {
 		var cb = $('<input type="checkbox" name="entities" checked="checked">')
@@ -61,12 +62,16 @@ var onFilter = function(ev, viz) {
 	var el = $(this),
 		checked = el.attr("checked"),
 		value = el.val();
+
 	if(checked) {
 		var pos = VIZ.filters.indexOf(value);
 		VIZ.filters.splice(pos, 1);
 	} else {
 		VIZ.filters.push(value);
 	}
+
+	el.closest(".infvovis").toggleClass("filtered", VIZ.filters.length > 0);
+
 	VIZ.loadJSON(VIZ.data); // XXX: this seems like overkill
 	VIZ.refresh();
 };
@@ -191,7 +196,7 @@ var generateConceptNode = function(concept) {
 	});
 	return {
 		id: concept.origin,
-		name: "&nbsp", // XXX: hacky; better solved with CSS!?
+		name: labels.length ? labels[0].name : "", // XXX: should use actual pref label
 		children: children
 	};
 };
