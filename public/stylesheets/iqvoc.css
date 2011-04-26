@@ -53,7 +53,6 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 	width: 600px;
 	height: 600px;
 	overflow: hidden;
-	background-color: #111;
 }
 
 #infovis .button {
@@ -69,12 +68,12 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 #infovis.filtered .concept {
 	overflow: visible;
-	color: #EEE;
+	color: #111;
 }
 
 #infovis .label {
 	padding: 0 2px;
-	color: #555;
+	color: #111;
 	background-color: #EEE;
 }
 

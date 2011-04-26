@@ -122,7 +122,7 @@ var generateGraph = function(container, options) {
 		Edge: {
 			overridable: true,
 			lineWidth: 2,
-			color: "#088"
+			color: "#888"
 		},
 
 		// add text and attach event handlers to labels
