@@ -23,6 +23,10 @@ class Concept::Base < ActiveRecord::Base
   class_inheritable_accessor :default_includes
   self.default_includes = []
 
+  class_inheritable_accessor :rdf_namespace, :rdf_class
+  self.rdf_namespace = nil
+  self.rdf_class = nil
+
   # ********** Validations
 
   validates :origin, :presence => true
@@ -32,36 +36,45 @@ class Concept::Base < ActiveRecord::Base
   # FIXME
   # validates :associations_must_be_published
 
+  Iqvoc::Concept.include_modules.each do |mod|
+    include mod
+  end
+
   # ********** Hooks
 
   after_save do |concept|
-    # Handle save or destruction of inline relations (relations or labelings) for use with widgets
+    # Handle save or destruction of inline relations (relations or labelings)
+    # for use with widgets etc.
 
-    # Concept relations
-    (@inline_assigned_relations ||= {}).each do |relation_class_name, new_origins|
-      existing_origins = concept.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
-      Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
-        concept.send(relation_class_name.to_relation_name).create_with_reverse_relation(relation_class_name.constantize, c)
-      end
-      concept.send(relation_class_name.to_relation_name).by_target_origin(existing_origins - new_origins).each do |relation| # Iterate over all concepts to be removed
-        concept.send(relation_class_name.to_relation_name).destroy_with_reverse_relation(relation_class_name.constantize, relation.target)
-      end
-    end
-
-    # Labelings
-    (@inline_assigned_labelings ||= {}).each do |labeling_class_name, origin_mappings|
-      # Remove all associated labelings of the given type
-      concept.send(labeling_class_name.to_relation_name).destroy_all
-
-      # (Re)create labelings reflecting a widget's parameters
-      origin_mappings.each do |language, new_origins|
-        # Iterate over all labels to be added and create them
-        Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |l|
-          concept.send(labeling_class_name.to_relation_name).create!(:target => l)
+    # Inline assigned SKOS::Labels
+    # @labelings_by_text # => {'relation_name' => {'lang' => 'label1, label2, ...'}}
+    (@labelings_by_text ||= {}).each do |relation_name, lang_values|
+      reflection = self.class.reflections.stringify_keys[relation_name]
+      labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
+      if labeling_class && labeling_class < Labeling::Base
+        self.send(relation_name).all.map(&:destroy)
+        lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
+        lang_values.each do |lang, values|
+          values.split(",").each do |value|
+            value.squish!
+            self.send(relation_name) << labeling_class.new(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+          end
         end
       end
     end
 
+    # Concept relations
+    # @concept_relations_by_id # => {'relation_name' => 'origin1, origin2, ...'}
+    (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
+      new_origins = new_origins.split(/[,\n]/).map(&:squish)
+      existing_origins = concept.send(relation_name).map{|r| r.target.origin}.uniq
+      Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
+        concept.send(relation_name).create_with_reverse_relation(c)
+      end
+      concept.send(relation_name).by_target_origin(existing_origins - new_origins).each do |relation| # Iterate over all concepts to be removed
+        concept.send(relation_name).destroy_with_reverse_relation(relation.target)
+      end
+    end
   end
 
   # ********** "Static"/unconfigureable relations
@@ -124,17 +137,6 @@ class Concept::Base < ActiveRecord::Base
       :foreign_key => :owner_id,
       :class_name  => relation_class_name,
       :extend => Concept::Relation::ReverseRelationExtension
-
-    # Serialized setters and getters (\r\n or , separated)
-    define_method("inline_#{relation_class_name.to_relation_name}".to_sym) do
-      (@inline_assigned_relations && @inline_assigned_relations[relation_class_name]) || self.send(relation_class_name.to_relation_name).map{|r| r.target.origin}.uniq
-    end
-
-    define_method("inline_#{relation_class_name.to_relation_name}=".to_sym) do |value|
-      # write to instance variable and write it on after_safe
-      (@inline_assigned_relations ||= {})[relation_class_name] = value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq
-    end
-
   end
 
   # *** Labels/Labelings
@@ -172,26 +174,6 @@ class Concept::Base < ActiveRecord::Base
       include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
     else
       include_to_deep_cloning(labeling_class_name.to_relation_name)
-    end
-
-    languages.each do |language|
-      # Serialized setters and getters (\r\n or , separated)
-      define_method("inline_#{labeling_class_name.to_relation_name}_#{language}".to_sym) do
-        (@inline_assigned_labelings && @inline_assigned_labelings[labeling_class_name][language]) || self.send(labeling_class_name.to_relation_name).by_label_language(language).map{|r| r.target.origin}.uniq
-      end
-
-      define_method("inline_#{labeling_class_name.to_relation_name}_#{language}=".to_sym) do |value|
-
-        # Write to instance variable and store it on after_safe
-        @inline_assigned_labelings ||= {}
-        origins = { language => value.split(/\r\n|,/).map(&:strip).reject(&:blank?).uniq }
-
-        if @inline_assigned_labelings[labeling_class_name]
-          @inline_assigned_labelings[labeling_class_name].merge!(origins)
-        else
-          @inline_assigned_labelings[labeling_class_name] = (origins)
-        end
-      end
     end
   end
 
@@ -278,21 +260,21 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def labelings_by_text=(hash)
-    # hash = {'relation_name' => {'lang' => 'label1, label2, ...'}}
-    hash.each do |relation_name, lang_values|
-      reflection = self.class.reflections.stringify_keys[relation_name]
-      labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
-      if labeling_class && labeling_class < Labeling::Base
-        self.send(relation_name).all.map(&:destroy)
-        lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
-        lang_values.each do |lang, values|
-          values.split(",").each do |value|
-            value.squish!
-            self.send(relation_name) << labeling_class.new(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
-          end
-        end
-      end
-    end
+    @labelings_by_text = hash
+  end
+
+  def labelings_by_text(relation_name, language)
+    (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
+      self.send(relation_name).by_label_language(language).map{ |l| l.target.value }.join(", ")
+  end
+  
+  def concept_relations_by_id=(hash)
+    @concept_relations_by_id = hash
+  end
+
+  def concept_relations_by_id(relation_name)
+    (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
+      self.send(relation_name).map{ |l| l.target.origin }.join(", ")
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
@@ -353,6 +335,14 @@ class Concept::Base < ActiveRecord::Base
     "partials/concept/inline_base"
   end
 
+  def self.new_link_partial_name
+    "partials/concept/new_link_base"
+  end
+
+  def self.edit_link_partial_name
+    "partials/concept/edit_link_base"
+  end
+  
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
     nil
@@ -385,7 +375,7 @@ class Concept::Base < ActiveRecord::Base
   def associated_objects_in_editing_mode
     {
       :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
-      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
+      # TODO: move to mixin      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
 

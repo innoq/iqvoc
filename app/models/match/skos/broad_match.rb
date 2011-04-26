@@ -14,5 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::BroadMatch < Match::SKOS::MappingRelation  
+class Match::SKOS::BroadMatch < Match::SKOS::MappingRelation
+  
+  self.rdf_predicate = 'broadMatch'
+
 end

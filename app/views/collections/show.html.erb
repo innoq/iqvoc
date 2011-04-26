@@ -16,19 +16,7 @@
 </div>
 <% end %>
 
-<%-
-# preferred label
-# XXX: duplicates parts of app/views/concepts/_show_head.html.erb
--%>
-<h3><%= t("txt.common.pref_label") %>:
-  <%- if @collection.pref_label.new_record? -%>
-    -
-  <%- elsif @collection.pref_label.is_a?(Label::SKOSXL::Base) -%>
-    <%= link_to(@collection.pref_label, label_path(:lang => @active_language, :id => @collection.pref_label)) %>
-  <%- else -%>
-    <%= @collection.pref_label %>
-  <%- end -%>
-</h3>
+<h3><%= t("txt.common.pref_label") %>: <%= render_label(@collection.pref_label) %></h3>
 
 <%-
 # alternative labels

@@ -56,10 +56,6 @@ module Iqvoc
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
     
-    # The default URI prefix for RDF data. This will be followed by a document
-    # specific shnippet like (specimenType) and the id.
-    config.rdf_data_uri_prefix = "http://virtuoso.dyndns.org/umthes/"
-
     # The JDBC driver url for the coinnection to the virtuoso triple store.
     # Login crdentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
@@ -79,8 +75,5 @@ module Iqvoc
     # mode.
     config.virtuoso_sync_threaded = false
     
-    # Use these config hooks in your engine to inject your custom js and css includes.
-    config.additional_js_files  = []
-    config.additional_css_files = []
   end
 end

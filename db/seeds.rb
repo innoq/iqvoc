@@ -14,10 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+if User.where(:email => 'admin@iqvoc').none?
+  User.create!(
+    :forename => 'Admin',
+    :surname => 'Istrator',
+    :email => 'admin@iqvoc',
+    :password => 'admin',
+    :password_confirmation => 'admin',
+    :active => true,
+    :role => "administrator")
+end
+
+if User.where(:email => 'demo@iqvoc').none?
+  User.create!(
+    :forename => 'Demo',
+    :surname => 'User',
+    :email => 'demo@iqvoc',
+    :password => 'cooluri',
+    :password_confirmation => 'cooluri',
+    :active => true,
+    :role => "reader")
+end

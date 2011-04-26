@@ -30,10 +30,8 @@ class RdfController < ApplicationController
           render "show_concept"
         }
       end
-    elsif label = Iqvoc::XLLabel.base_class.by_origin(params[:id]).published.last
-      redirect_to label_url(:id => label.origin, :lang => I18n.locale, :published => params[:published])
     else
-      raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept or a label matching '#{params[:id]}'.")
+      raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept matching '#{params[:id]}'.")
     end
   end
 

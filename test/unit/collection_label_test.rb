@@ -43,7 +43,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
     my_coll = Factory.build(:collection)
 
     # add an alternative label
-    lnclass = Labeling::SKOSXL::AltLabel
+    lnclass = Labeling::SKOS::AltLabel
     label = lnclass.label_class.new(:origin => "_666", :value => "lipsum",
         :language => "de")
     label.save
@@ -56,7 +56,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
     assert_equal 1, my_coll.labels.count
 
     # add a preferred label
-    lnclass = Labeling::SKOSXL::PrefLabel
+    lnclass = Labeling::SKOS::PrefLabel
     label = lnclass.label_class.new(:origin => "_666", :value => "lipsum",
         :language => "de")
     label.save
@@ -70,7 +70,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
     my_coll = Factory.build(:collection)
 
     # add a preferred label
-    lnclass = Labeling::SKOSXL::PrefLabel
+    lnclass = Labeling::SKOS::PrefLabel
     label = lnclass.label_class.new(:origin => "_666", :value => "lipsum",
         :language => "de")
     label.save
@@ -86,7 +86,7 @@ class CollectionLabelTest < ActiveSupport::TestCase
     my_coll = Factory.build(:collection)
 
     # add multiple preferred labels
-    lnclass = Labeling::SKOSXL::PrefLabel
+    lnclass = Labeling::SKOS::PrefLabel
     origin = 0
     5.times {
       origin += 1

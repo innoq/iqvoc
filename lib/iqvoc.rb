@@ -18,52 +18,80 @@ require 'string'
 
 module Iqvoc
 
+  require File.join(File.dirname(__FILE__), '../config/engine') unless Iqvoc.const_defined?(:Application)
+
   mattr_accessor :title,
-                 :searchable_class_names,
-                 :available_languages,
-                 :ability_class_name,
-                 :default_rdf_namespace_helper_methods,
-                 :change_note_class_name
+    :searchable_class_names,
+    :available_languages,
+    :default_rdf_namespace_helper_methods,
+    :rdf_namespaces,
+    :change_note_class_name,
+    :additional_js_files,
+    :additional_css_files,
+    :first_level_class_configuration_modules
+
+  self.title = "Iqvoc"
 
   self.searchable_class_names = [
-    'Labeling::SKOSXL::Base',
-    'Labeling::SKOSXL::PrefLabel',
+    'Labeling::SKOS::Base',
+    'Labeling::SKOS::PrefLabel',
     'Note::Base' ]
 
   self.available_languages = [:de, :en]
 
-  self.ability_class_name = "::Ability"
-
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
+
+  self.rdf_namespaces = {
+    :rdf        => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    :rdfs       => "http://www.w3.org/2000/01/rdf-schema#",
+    :owl        => "http://www.w3.org/2002/07/owl#",
+    :skos       => "http://www.w3.org/2004/02/skos/core#",
+  }
 
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
 
-  def self.ability_class
-    ability_class_name.constantize
-  end
+  # Use these config hooks in your engine to inject your custom js and css includes.
+  self.additional_js_files  = []
+  self.additional_css_files = []
 
+  self.first_level_class_configuration_modules = [] # Will be set in the modules
+    
   def self.change_note_class
     change_note_class_name.constantize
   end
 
+  def self.searchable_classes
+    searchable_class_names.map(&:constantize)
+  end
+
+  def self.first_level_classes
+    self.first_level_class_configuration_modules.map { |mod| mod.send(:base_class) }
+  end
+
+  # ************** Concept specific settings **************
+
   module Concept
+
+    Iqvoc.first_level_class_configuration_modules << self
+
     mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
       :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
-      :view_sections
+      :view_sections,
+      :include_module_names
 
     self.base_class_name              = 'Concept::SKOS::Base'
 
     self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Poly'
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
-    self.pref_labeling_class_name     = 'Labeling::SKOSXL::PrefLabel'
-    self.pref_labeling_languages      = [ :de ]
-    self.further_labeling_class_names = { 'Labeling::SKOSXL::AltLabel' => [ :de, :en ] }
+    self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
+    self.pref_labeling_languages      = [ :en ]
+    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
@@ -84,6 +112,8 @@ module Iqvoc
     self.additional_association_class_names = {}
 
     self.view_sections = ["main", "labels", "relations", "notes", "matches"]
+
+    self.include_module_names = []
 
     # Do not use the following method in models. This will propably cause a
     # loading loop (something like "expected file xyz to load ...")
@@ -143,9 +173,16 @@ module Iqvoc
       pref_labeling_languages.size > 1
     end
 
+    def self.include_modules
+      include_module_names.map(&:constantize)
+    end
+
   end
 
+  # ************** Collection specific settings **************
+
   module Collection
+
     mattr_accessor :base_class_name
 
     self.base_class_name = 'Collection::Unordered'
@@ -155,7 +192,10 @@ module Iqvoc
     end
   end
 
-  module Label # This are the settings when using SKOS
+  # ************** Label specific settings **************
+
+  module Label
+    
     mattr_accessor :base_class_name
 
     self.base_class_name        = 'Label::SKOS::Base'
@@ -166,80 +206,6 @@ module Iqvoc
       base_class_name.constantize
     end
 
-  end
-
-  module XLLabel # This are the settings when using SKOSXL
-    mattr_accessor :base_class_name,
-      :note_class_names,
-      :relation_class_names,
-      :additional_association_class_names,
-      :view_sections,
-      :has_additional_base_data,
-      :searchable_class_names
-
-    self.base_class_name                  = 'Label::SKOSXL::Base'
-
-    self.relation_class_names             = []
-
-    self.note_class_names                 = Iqvoc::Concept.note_class_names
-
-    self.additional_association_class_names = {}
-
-    self.view_sections = ["main", "concepts", "relations", "notes"]
-
-    # Set this to true if you're having a migration which extends the labels table
-    # and you want to be able to edit these fields.
-    # This is done by:
-    #    render :partial => 'partials/label/additional_base_data'
-    # You'll have to define this partial
-    # FIXME: This wouldn't be necessary if there would be an empty partial in
-    # iqvoc and the view loading sequence would be correct.
-    self.has_additional_base_data = false
-
-    # Do not use the following method in models. This will propably cause a
-    # loading loop (something like "expected file xyz to load ...")
-    def self.base_class
-      base_class_name.constantize
-    end
-
-    def self.relation_classes
-      relation_class_names.map(&:constantize)
-    end
-
-    def self.note_classes
-      note_class_names.map(&:constantize)
-    end
-
-    def self.change_note_class
-      change_note_class_name.constantize
-    end
-
-    def self.additional_association_classes
-      additional_association_class_names.keys.each_with_object({}) do |class_name, hash|
-        hash[class_name.constantize] = additional_association_class_names[class_name]
-      end
-    end
-
-  end
-
-  def self.all_classes
-    label_classes = []
-    if const_defined?(:Label)
-      label_classes += [Label.base_class]
-    end
-    if const_defined?(:XLLabel)
-      label_classes += [XLLabel.base_class] + XLLabel.note_classes +
-          XLLabel.relation_classes + XLLabel.additional_association_classes.keys
-    end
-    arr = [Concept.base_class] + Concept.relation_classes +
-        Concept.labeling_classes.keys + Concept.match_classes +
-        Concept.note_classes + Concept.additional_association_classes.keys +
-        label_classes
-    arr.uniq
-  end
-
-  def self.searchable_classes
-    searchable_class_names.map(&:constantize)
   end
 
 end
