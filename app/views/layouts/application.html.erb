@@ -4,7 +4,7 @@
     <meta name="i18n-locale" content="<%= I18n.locale %>">
     <meta charset="utf-8">
     <%= csrf_meta_tag %>
-    
+
     <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
     <%= stylesheet_link_tag "/stylesheets/blueprint/screen.css", :media => "screen, projection" %>
     <%= stylesheet_link_tag "/stylesheets/blueprint/print.css", :media => "print" %>
@@ -19,7 +19,7 @@
     <% Rails.application.config.additional_css_files.each do |file| %>
     <%= stylesheet_link_tag file %>
     <% end %>
-    
+
     <%= javascript_include_tag "jquery-1.5.1.min.js" %>
     <%= javascript_include_tag "jquery-ui-1.7.2.custom.min.js" %>
     <%= javascript_include_tag "jquery-ui.datepicker-de.js" %>
@@ -31,7 +31,7 @@
     <% Rails.application.config.additional_js_files.each do |file| %>
     <%= javascript_include_tag file %>
     <% end %>
-    
+
     <%= yield :head %>
     <%= yield :widget_translations %>
   </head>
@@ -42,13 +42,9 @@
       <%= render :partial => 'layouts/header' %>
       <%= render :partial => 'layouts/navigation' %>
     </div>
-    
+
     <div id="navi_sub" class="span-24 last">
       <%= yield :sub_navigation %>
-    </div>
-    
-    <div id="pref_label_language_selection" class="span-24 last">
-      <%= yield :pref_label_language_selection %>
     </div>
 
     <div id="content" class="span-24 last">
@@ -60,7 +56,7 @@
       <% end %>
       <%= yield %>
     </div>
-    
+
     <div id="footer" class="span-24 last">
       <div id="footer_box">
         <% if current_user %>
