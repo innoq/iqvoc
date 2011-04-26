@@ -3,7 +3,7 @@
   <div class="relation-body">
     <% if concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).length > 0 %>
       <div class="selector">
-        <%= render :partial => "concepts/hierarchical/broader_treeview", :locals => { :root => concept.id } %>
+        <%= treeview(@concept.broader_relations.map { |rel| rel.target }) %>
       </div>
     <% else %>
       <p><%= t('txt.views.concepts.missing.broader') %></p>

@@ -1,8 +1,0 @@
-<%
-  hcpath = hierarchical_concepts_path(:lang => @active_language,
-      :format => :json, :pref_label_lang => params[:pref_label_lang],
-      :published => params[:published], :broader => 1)
-%>
-<ul class="treeview"
-    data-remote-settings='{"url":"<%= hcpath %>", "root":"<%= root %>"}'>
-</ul>
