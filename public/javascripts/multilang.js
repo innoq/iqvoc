@@ -1,69 +1,114 @@
 /*jslint browser: true */
-/*global localStorage, jQuery */
+/*global localStorage, jQuery, IQVOC */
 
-jQuery(document).ready(function($) {
+IQVOC.LanguageSelector = (function($) {
 
-var sections = $("[lang]"),
-	checkboxes = $(".lang-widget input:checkbox");
-
-var getSelection = function() {
-	var langs = localStorage.getItem("lang_selected");
+var getSelection = function(namespace) {
+	var langs = localStorage.getItem(namespace);
 	return langs ? langs.split(",") : [];
 };
 
-var setSelection = function(langs) {
-	localStorage.setItem("lang_selected", langs.join(","));
+var setSelection = function(langs, namespace) {
+	localStorage.setItem(namespace, langs.join(","));
+	$(document).trigger(namespace, { langs: langs });
 };
 
-var setCheckboxes = function(langSelected) {
-	console.log("setCB", langSelected);
-	if(langSelected.length) {
-		checkboxes.removeAttr("checked");
+// namespace is used both for localStorage and the event being triggered
+var LanguageSelector = function(container, namespace) {
+	this.container = container;
+	this.namespace = namespace;
+
+	$(this.container).addClass("widget").data("widget", this); // XXX: possible memory leak?
+
+	this.langs = getSelection(namespace);
+	this.checkboxes = $("input:checkbox", this.container)
+			.live("change", this.onChange);
+
+	if(this.langs.length === 0) {
+		this.reset();
 	} else {
-		checkboxes.attr("checked", "checked");
+		var self = this;
+		this.checkboxes.each(function(i, node) {
+			var el = $(node);
+			if($.inArray(el.val(), self.langs) !== -1) {
+				el.attr("checked", "checked");
+			} else {
+				el.removeAttr("checked");
+			}
+		});
 	}
-	$.each(langSelected, function(i, lang) {
-		checkboxes.filter("[value=" + lang + "]").attr("checked", "checked");
-	});
 };
-
-var toggleSections = function(langSelected) {
-	console.log("toggle", langSelected, sections);
-	sections.each(function(i, node) {
-		var el = $(node);
-		if(langSelected.length && $.inArray(el.attr("lang"), langSelected) === -1) {
-			el.addClass("hidden");
+$.extend(LanguageSelector.prototype, {
+	onChange: function(ev) {
+		var el = $(this);
+		var widget = el.closest(".widget").data("widget");
+		if(el.attr("checked")) {
+			widget.add(el.val());
 		} else {
-			el.removeClass("hidden");
+			widget.remove(el.val());
 		}
-	});
-};
-
-var init = function() {
-	var langSelected = getSelection();
-	console.log("init", langSelected);
-	toggleSections(langSelected);
-	setCheckboxes(langSelected);
-};
-
-checkboxes.live("change", function(ev) {
-	var el = $(this);
-	var langs = getSelection();
-	var pos = langs.indexOf(el.val());
-	console.log("changed", langs, pos, this);
-	if(el.attr("checked")) {
-		if(pos === -1) {
-			langs.push(el.val());
+		if(widget.langs.length === 0) {
+			widget.reset(true);
 		}
-	} else {
-		langs.splice(pos, 1);
+	},
+	reset: function(animate) {
+		var cbs = this.checkboxes;
+		if(animate) {
+			var self = this;
+			var i = cbs.length;
+			cbs.fadeOut().fadeIn(function() {
+				i--;
+				if(i === 0) {
+					self.reset();
+				}
+			});
+		} else {
+			this.langs = $.map(cbs, function(node, i) {
+				return $(node).val();
+			});
+			cbs.attr("checked", "checked");
+			setSelection(this.langs, this.namespace);
+		}
+	},
+	add: function(value) {
+		if($.inArray(value, this.langs) === -1) {
+			this.langs.push(value);
+			setSelection(this.langs, this.namespace);
+		}
+	},
+	remove: function(value) {
+		var pos = $.inArray(value, this.langs);
+		if(pos !== -1) {
+			this.langs.splice(pos, 1);
+			setSelection(this.langs, this.namespace);
+		}
 	}
-	setSelection(langs);
-	setCheckboxes(langs);
-	toggleSections(langs);
-	console.log("changed", getSelection());
 });
 
-init();
+return LanguageSelector;
 
+}(jQuery));
+
+
+jQuery(document).ready(function($) {
+	var sections = $("[lang]"),
+		container = $(".lang-widget")[0];
+
+	var toggleSections = function(langSelected) {
+		sections.each(function(i, node) {
+			var el = $(node);
+			if($.inArray(el.attr("lang"), langSelected) === -1) {
+				el.addClass("hidden");
+			} else {
+				el.removeClass("hidden");
+			}
+		});
+	};
+
+	var widget = new IQVOC.LanguageSelector(container, "lang_selected");
+	$(document).bind("lang_selected", function(ev, data) {
+		if(data.langs.length) {
+			toggleSections(data.langs);
+		}
+	});
 });
