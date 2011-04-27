@@ -18,6 +18,10 @@ class Note::Base < ActiveRecord::Base
   
   set_table_name 'notes'
 
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   # ********** Validations
 
   # FIXME: None?? What about language and value?

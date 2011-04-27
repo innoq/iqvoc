@@ -48,24 +48,12 @@ class Label::Base < ActiveRecord::Base
     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
 
-  # FIXME this comes from the SKOSXL Labelings.
-  # Original:
-  # scope :published, lambda { |owner_id| {
-  #    :joins => :target,
-  #    :conditions => [
-  #      "(labelings.owner_id = :owner_id
-  #    AND labels.published_at IS NOT NULL)
-  #    OR (labelings.owner_id = :owner_id AND labels.rev = 1
-  #    AND labels.published_at IS NULL)", { :owner_id => owner_id }] }
-  # }
-  #
-  # Attention: This means that label classes without version controll will also
+  # Attention: This means that even label classes without version controll will also
   # have to set the published_at flag to be recognized as published!!
   scope :published, lambda {
     where(arel_table['published_at'].not_eq(nil))
   }
 
-  # FIXME: This is also defined in the mystical Common mixins included in Label::SKOSXL...
   scope :unpublished, lambda { where(arel_table['published_at'].eq(nil)) }
 
   # ********* Methods

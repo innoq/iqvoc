@@ -29,6 +29,10 @@ class Concept::Relation::Base < ActiveRecord::Base
   
   set_table_name 'concept_relations'
   
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   belongs_to :owner,  :class_name => "Concept::Base"
   belongs_to :target, :class_name => "Concept::Base"
 

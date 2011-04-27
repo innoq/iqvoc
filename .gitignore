@@ -16,5 +16,3 @@ public/fonts/vendor
 .capistrano_history.yml
 *.war
 vendor/gems/*.gem
-Gemfile
-Gemfile.lock

@@ -22,6 +22,8 @@ Warbler::Config.new do |config|
   # Features: additional options controlling how the jar is built.
   # Currently the following features are supported:
   # - gemjar: package the gem repository in a jar file in WEB-INF/lib
+  # - executable: embed a web server and make the war executable
+  # - compiled: compile .rb files to .class files
   # config.features = %w(gemjar)
 
   # Application directories to be included in the webapp.
@@ -39,19 +41,14 @@ Warbler::Config.new do |config|
   # own versions if you directly set the value
   # config.java_libs += FileList["lib/java/*.jar"]
 
-  # Loose Java classes and miscellaneous files to be placed in WEB-INF/classes.
+  # Loose Java classes and miscellaneous files to be included.
   # config.java_classes = FileList["target/classes/**.*"]
 
   # One or more pathmaps defining how the java classes should be copied into
-  # WEB-INF/classes. The example pathmap below accompanies the java_classes
+  # the archive. The example pathmap below accompanies the java_classes
   # configuration above. See http://rake.rubyforge.org/classes/String.html#M000017
   # for details of how to specify a pathmap.
   # config.pathmaps.java_classes << "%{target/classes/,}p"
-
-  # Path to the pre-bundled gem directory inside the war file. Default
-  # is 'WEB-INF/gems'. Specify path if gems are already bundled
-  # before running Warbler. This also sets 'gem.path' inside web.xml.
-  # config.gem_path = "WEB-INF/vendor/bundler_gems"
 
   # Bundler support is built-in. If Warbler finds a Gemfile in the
   # project directory, it will be used to collect the gems to bundle
@@ -63,17 +60,11 @@ Warbler::Config.new do |config|
   # Defaults to ["development", "test"].
   # config.bundle_without = []
 
-  # Files for WEB-INF directory (next to web.xml). This contains
-  # web.xml by default. If there is an .erb-File it will be processed
-  # with webxml-config. You may want to exclude this file via
-  # config.excludes.
-  # config.webinf_files += FileList["jboss-web.xml"]
-
-  # Other gems to be included. You need to tell Warbler which gems
-  # your application needs so that they can be packaged in the war
-  # file.
-  # The Rails gems are included by default unless the vendor/rails
-  # directory is present.
+  # Other gems to be included. If you don't use Bundler or a gemspec
+  # file, you need to tell Warbler which gems your application needs
+  # so that they can be packaged in the archive.
+  # For Rails applications, the Rails gems are included by default
+  # unless the vendor/rails directory is present.
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
 
@@ -82,10 +73,10 @@ Warbler::Config.new do |config|
 
   # The most recent versions of gems are used.
   # You can specify versions of gems by using a hash assignment:
-  # config.gems["rails"] = "2.0.2"
+  # config.gems["rails"] = "2.3.10"
 
   # You can also use regexps or Gem::Dependency objects for flexibility or
-  # fine-grained control.
+  # finer-grained control.
   # config.gems << /^merb-/
   # config.gems << Gem::Dependency.new("merb-core", "= 0.9.3")
 
@@ -98,19 +89,12 @@ Warbler::Config.new do |config|
   # below, which excludes test files.
   # config.gem_excludes = [/^(test|spec)\//]
 
-  # Files to be included in the root of the webapp.  Note that files in public
-  # will have the leading 'public/' part of the path stripped during staging.
-  # config.public_html = FileList["public/**/*", "doc/**/*"]
-
-  # Pathmaps for controlling how public HTML files are copied into the .war
-  # config.pathmaps.public_html = ["%{public/,}p"]
-
-  # Pathmaps for controlling how application files are copied into the .war
+  # Pathmaps for controlling how application files are copied into the archive
   # config.pathmaps.application = ["WEB-INF/%p"]
 
-  # Name of the war file (without the .war) -- defaults to the basename
-  # of RAILS_ROOT
-  # config.war_name = "ROOT"
+  # Name of the archive (without the extension). Defaults to the basename
+  # of the project directory.
+  # config.jar_name = "mywar"
 
   # Name of the MANIFEST.MF template for the war file. Defaults to a simple
   # MANIFEST.MF that contains the version of Warbler used to create the war file.
@@ -121,11 +105,34 @@ Warbler::Config.new do |config|
   # the application.
   # config.compiled_ruby_files = FileList['app/**/*.rb']
 
+  # === War files only below here ===
+
+  # Path to the pre-bundled gem directory inside the war file. Default
+  # is 'WEB-INF/gems'. Specify path if gems are already bundled
+  # before running Warbler. This also sets 'gem.path' inside web.xml.
+  # config.gem_path = "WEB-INF/vendor/bundler_gems"
+
+  # Files for WEB-INF directory (next to web.xml). This contains
+  # web.xml by default. If there is an .erb-File it will be processed
+  # with webxml-config. You may want to exclude this file via
+  # config.excludes.
+  # config.webinf_files += FileList["jboss-web.xml"]
+
+  # Files to be included in the root of the webapp.  Note that files in public
+  # will have the leading 'public/' part of the path stripped during staging.
+  # config.public_html = FileList["public/**/*", "doc/**/*"]
+
+  # Pathmaps for controlling how public HTML files are copied into the .war
+  # config.pathmaps.public_html = ["%{public/,}p"]
+
   # Value of RAILS_ENV for the webapp -- default as shown below
   config.webxml.rails.env = ENV['RAILS_ENV'] || 'production'
 
   # Application booter to use, one of :rack, :rails, or :merb (autodetected by default)
   # config.webxml.booter = :rails
+
+  # Set JRuby to run in 1.9 mode.
+  # config.webxml.jruby.compat.version = "1.9"
 
   # When using the :rack booter, "Rackup" script to use.
   # - For 'rackup.path', the value points to the location of the rackup

@@ -57,15 +57,6 @@ Factory.define :pref_label, :class => Iqvoc::Concept.pref_labeling_class.label_c
   end
 end
 
-Factory.define :xllabel, :class => Iqvoc::XLLabel.base_class do |l|
-  l.origin 'Forest'
-  l.language 'en'
-  l.value 'Forest'
-end
-
-Factory.define :xllabel_with_association, :parent => :xllabel do |l|
-end
-
 Factory.define :user do |u|
   u.forename 'Test'
   u.surname 'User'

@@ -18,6 +18,10 @@ class Match::Base < ActiveRecord::Base
 
   set_table_name 'matches'
 
+  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+
   # ********** Relations
 
   belongs_to :concept, :class_name => "Concept::Base", :foreign_key => 'concept_id'
