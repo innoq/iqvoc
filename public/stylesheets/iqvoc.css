@@ -75,6 +75,10 @@ ul#navi_main li {
   border-top: 1px solid #000;
 }
 
+.hidden {
+	display: none;
+}
+
 .flash_notice {
   border: 1px solid #318210;
   background-color: #C0FAB4;

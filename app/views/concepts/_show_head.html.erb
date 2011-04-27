@@ -2,8 +2,21 @@
 <%= content_for :head do -%>
   <link href="<%= rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
   <link href="<%= rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
-  <meta name="content-languages" content="<%= Iqvoc::available_languages.join(",") %>">
+  <%= javascript_include_tag "storage.js" %>
+  <%= javascript_include_tag "multilang.js" %>
 <% end -%>
+
+<% content_for :controls do -%>
+  <!-- TODO: move to separate partial -->
+  <div class="lang-widget">
+    <h3><%= t("txt.views.widget.hint") %></h3> <!-- XXX: placeholder -->
+    <ul>
+      <% Iqvoc::available_languages.each do |lang| %> <!-- XXX: is this authoritative? -->
+      <li><input type="checkbox" value="<%= lang %>"> <%= lang %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
 <h2>
   <%= Iqvoc::Concept.base_class.model_name.human %>:

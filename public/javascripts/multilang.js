@@ -18,10 +18,10 @@ var LanguageSelector = function(container, namespace) {
 	this.container = container;
 	this.namespace = namespace;
 
-	$(this.container).addClass("widget").data("widget", this); // XXX: possible memory leak?
+	$(container).addClass("widget").data("widget", this);
 
 	this.langs = getSelection(namespace);
-	this.checkboxes = $("input:checkbox", this.container)
+	this.checkboxes = $("input:checkbox", container)
 			.live("change", this.onChange);
 
 	if(this.langs.length === 0) {
@@ -36,6 +36,7 @@ var LanguageSelector = function(container, namespace) {
 				el.removeAttr("checked");
 			}
 		});
+		$(document).trigger(namespace, { langs: this.langs });
 	}
 };
 $.extend(LanguageSelector.prototype, {
@@ -105,10 +106,10 @@ jQuery(document).ready(function($) {
 		});
 	};
 
-	var widget = new IQVOC.LanguageSelector(container, "lang_selected");
 	$(document).bind("lang_selected", function(ev, data) {
 		if(data.langs.length) {
 			toggleSections(data.langs);
 		}
 	});
+	var widget = new IQVOC.LanguageSelector(container, "lang_selected");
 });
