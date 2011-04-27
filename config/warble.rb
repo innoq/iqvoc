@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Disable Rake-environment-task framework detection by uncommenting/setting to false
-=======
 # encoding: UTF-8
 
 # Copyright 2011 innoQ Deutschland GmbH
@@ -18,7 +15,6 @@
 # limitations under the License.
 
 # Disable automatic framework detection by uncommenting/setting to false
->>>>>>> 79053cbd2d07d3139b4472b10ab31a6427a9992c
 # Warbler.framework_detection = false
 
 # Warbler web application assembly configuration file
