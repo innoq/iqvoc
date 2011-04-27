@@ -18,7 +18,7 @@ class Concepts::HierarchicalController < ConceptsController
   skip_before_filter :require_user
 
   def index
-    authorize! :read, Concept::Base
+    authorize! :read, Iqvoc::Concept.base_class
 
     scope = if params[:published] == '0'
       Iqvoc::Concept.base_class.editor_selectable

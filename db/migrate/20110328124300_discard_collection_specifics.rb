@@ -21,6 +21,7 @@ class DiscardCollectionSpecifics < ActiveRecord::Migration
   end
 
   def self.down
-    # irreversible
+    create_table :collections
+    create_table :collection_labels
   end
 end

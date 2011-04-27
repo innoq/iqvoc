@@ -1,8 +1,0 @@
-<li>
-  <%= label_tag(klass.name.to_relation_name, klass.model_name.human(:count => 2) + " (#{language})") %>
-  <%= text_field_tag "concept[inline_#{klass.name.to_relation_name}_#{language}]", concept.send("inline_#{klass.name.to_relation_name}_#{language}"),
-    :id => "#{klass.name.to_relation_name}_#{language}",
-    :class => "token_input_widget",
-    :"data-query-url" => labels_path(:lang => I18n.locale, :format => :json),
-    :"data-options" => {:prePopulate => Iqvoc::XLLabel.base_class.editor_selectable.by_language(language).by_origin(concept.send("inline_#{klass.name.to_relation_name}_#{language}")).map{|l| label_widget_data(l)}}.to_json  %>
-</li>

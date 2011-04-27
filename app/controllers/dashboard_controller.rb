@@ -19,10 +19,10 @@ class DashboardController < ApplicationController
   before_filter :check_authorization
   
   def index
-    @concepts = Iqvoc::Concept.base_class.for_dashboard.all(:include => [:locking_user, :pref_labels])
-    @labels   = Iqvoc::XLLabel.base_class.for_dashboard.all(:include => [:locking_user])
-    
-    @items    = @concepts + @labels
+    @items = []
+    Iqvoc.first_level_classes.each do |klass|
+      @items += klass.for_dashboard.all # TODO (:include => [:locking_user, :pref_labels])
+    end
     
     factor = params[:order] == "desc" ? -1 : 1
 
