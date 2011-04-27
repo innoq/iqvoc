@@ -100,12 +100,6 @@ class Concept::Base < ActiveRecord::Base
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
-  # *** Classifications
-  # FIXME: Should be a matches (to other skos vocabularies)
-  has_many :classifications, :foreign_key => 'owner_id', :dependent => :destroy
-  has_many :classifiers, :through => :classifications, :source => :target
-  include_to_deep_cloning(:classifications)
-
   # ************** "Dynamic"/configureable relations
 
   # *** Concept2Concept relations
