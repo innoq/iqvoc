@@ -39,14 +39,14 @@
   </head>
   <body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
 
+    <div id="controls">
+      <%= render :partial => 'layouts/langselect' %>
+    </div>
+
     <div class="container">
       <div id="header" class="span-24 last">
         <%= render :partial => 'layouts/header' %>
         <%= render :partial => 'layouts/navigation' %>
-      </div>
-
-      <div id="controls">
-        <%= render :partial => 'layouts/langselect' %>
       </div>
 
       <div id="navi_sub" class="span-24 last">

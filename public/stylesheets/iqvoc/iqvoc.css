@@ -49,6 +49,37 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 /* ######################################## */
 /* # Core CSS. Customizing is discouraged # */
 /* ######################################## */
+
+#controls {
+  height: 1.1em;
+  text-align: right;
+  border-bottom: 2px solid #AAA;
+  padding: 2px 5px 3px;
+  line-height: 1.1em;
+  background-color: #000;
+}
+
+#controls * {
+  z-index: 99; /* work around overly wide header */
+}
+
+#controls a {
+  color: #EEE;
+}
+
+#controls .lang-widget ul {
+  position: absolute;
+  right: 0;
+  margin: 3px 1em; /* top margin corresponds to #controls bottom padding */
+  border: 1px solid #AAA;
+  border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  padding: 5px 1em 5px 5px;
+  text-align: left;
+  list-style-type: none;
+  background-color: #EEE;
+}
+
 ul#navi_main li {
   list-style-type: none;
   display: inline;
@@ -75,8 +106,12 @@ ul#navi_main li {
   border-top: 1px solid #000;
 }
 
+.button {
+  outline: 0;
+}
+
 .hidden {
-	display: none;
+  display: none;
 }
 
 .flash_notice {
@@ -137,12 +172,12 @@ tr.hover {
   font-size: 75%;
 }
 
-.valid 		{ color: #318210; }
-.invalid 	{ color: #A91B1B; }
+.valid { color: #318210; }
+.invalid { color: #A91B1B; }
 
 div.sorting_arrows { display: inline; margin-left: 3px; }
 div.sorting_arrows a img.arrow_down { vertical-align: -5px; }
-div.sorting_arrows a img.arrow_up	  { vertical-align: -4px; }
+div.sorting_arrows a img.arrow_up { vertical-align: -4px; }
 
 dl#search_results dt { margin-top: 15px; }
 

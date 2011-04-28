@@ -80,6 +80,10 @@ jQuery(document).ready(function($) {
 
 	$("input[value=" + mainLang + "]", container).closest("li").remove();
 
+	$("> a", container).click(function(ev) {
+		$("ul", container).toggleClass("hidden");
+	});
+
 	var toggleSections = function(langSelected) {
 		sections.each(function(i, node) {
 			var el = $(node);
