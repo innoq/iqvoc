@@ -70,12 +70,16 @@ return LanguageSelector;
 
 jQuery(document).ready(function($) {
 	var sections = $("[lang]"),
-		container = $(".lang-widget")[0];
+		container = $(".lang-widget")[0],
+		mainLang = $("head meta[name=i18n-locale]").attr("content");
+
+	$("input[value=" + mainLang + "]", container).closest("li").hide();
 
 	var toggleSections = function(langSelected) {
 		sections.each(function(i, node) {
 			var el = $(node);
-			if($.inArray(el.attr("lang"), langSelected) === -1) {
+			var lang = el.attr("lang");
+			if(lang !== mainLang && $.inArray(lang, langSelected) === -1) {
 				el.addClass("hidden");
 			} else {
 				el.removeClass("hidden");
