@@ -27,6 +27,11 @@ $.extend(LanguageSelector.prototype, {
 		}
 	},
 	init: function() {
+		if(this.langs === null) {
+			this.langs = $.map(this.checkboxes, function(node, i) {
+				return $(node).val();
+			});
+		}
 		var self = this;
 		this.checkboxes.each(function(i, node) {
 			var el = $(node);
@@ -55,7 +60,7 @@ $.extend(LanguageSelector.prototype, {
 
 getSelection = function(namespace) {
 	var langs = localStorage.getItem(namespace);
-	return langs ? langs.split(",") : [];
+	return langs ? langs.split(",") : null;
 };
 
 setSelection = function(langs, namespace) {
@@ -73,7 +78,7 @@ jQuery(document).ready(function($) {
 		container = $(".lang-widget")[0],
 		mainLang = $("head meta[name=i18n-locale]").attr("content");
 
-	$("input[value=" + mainLang + "]", container).closest("li").hide();
+	$("input[value=" + mainLang + "]", container).closest("li").remove();
 
 	var toggleSections = function(langSelected) {
 		sections.each(function(i, node) {
