@@ -28,6 +28,8 @@
     <%= javascript_include_tag "iqvoc/jquery.tokeninput.js" %>
     <%= javascript_include_tag "iqvoc/application.js" %>
     <%= javascript_include_tag "iqvoc/rails.js" %>
+    <%= javascript_include_tag "iqvoc/storage.js" %>
+    <%= javascript_include_tag "iqvoc/multilang.js" %>
     <% Iqvoc.additional_js_files.each do |file| %>
       <%= javascript_include_tag file %>
     <% end %>
@@ -37,7 +39,16 @@
   </head>
   <body data-default-ajax-error="<%= t("txt.common.default_ajax_error")%>">
 
-    <div id="controls"><%= yield :controls %></div>
+    <div id="controls">
+      <div class="lang-widget"> <!-- TODO: move to separate partial -->
+        <h3><%= t("txt.views.widget.hint") %></h3> <!-- XXX: placeholder -->
+        <ul>
+          <% Iqvoc::available_languages.each do |lang| %>
+          <li><input type="checkbox" value="<%= lang %>"> <%= lang %></li> <!-- TODO: display names instead of language codes -->
+          <% end %>
+        </ul>
+      </div>
+    </div>
 
     <div class="container">
       <div id="header" class="span-24 last">
