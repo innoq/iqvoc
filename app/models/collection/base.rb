@@ -107,27 +107,22 @@ class Collection::Base < Concept::Base
 
   def regenerate_concept_members
     return if @member_concept_origins.nil? # There is nothing to do
-    existing_concept_origins = concept_members.map{|m| m.concept.origin}.uniq
-    (@member_concept_origins - existing_concept_origins).each do |new_origin|
+    concept_members.destroy_all
+    @member_concept_origins.each do |new_origin|
       Concept::Base.by_origin(new_origin).each do |c|
         concept_members.create!(:target_id => c.id)
       end
     end
-    concept_members.includes(:concept).where("#{Concept::Base.table_name}.origin" => (existing_concept_origins - @member_concept_origins)).destroy_all()
   end
 
   def regenerate_collection_members
     return if @member_collection_origins.nil? # There is nothing to do
-    existing_collection_origins = collection_members.map{ |m| m.collection.origin }.uniq
-    (@member_collection_origins - existing_collection_origins).each do |new_origin|
+    collection_members.destroy_all
+    @member_collection_origins.each do |new_origin|
       Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
         collection_members.create!(:target_id => c.id)
       end
     end
-    collection_members.
-      includes(:collection).
-      where("#{Collection::Base.table_name}.origin" => (existing_collection_origins - @member_collection_origins)).
-      destroy_all()
   end
 
   def label
