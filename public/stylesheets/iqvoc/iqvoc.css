@@ -67,7 +67,7 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   color: #EEE;
 }
 
-#controls .lang-widget ul {
+#controls ul.lang-widget {
   position: absolute; /* horizontal position calculated using JavaScript */
   margin: 3px 1em 0 0; /* top margin corresponds to #controls bottom padding */
   border: 1px solid #AAA;

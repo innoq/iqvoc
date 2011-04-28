@@ -75,14 +75,14 @@ return LanguageSelector;
 
 jQuery(document).ready(function($) {
 	var sections = $(".translation[lang]"),
-		container = $(".lang-widget")[0],
+		container = $("ul.lang-widget")[0],
 		mainLang = $("head meta[name=i18n-locale]").attr("content");
 
 	$("input[value=" + mainLang + "]", container).closest("li").remove();
 
-	$("> a", container).click(function(ev) {
+	$("#controls a.lang-widget").click(function(ev) {
 		var pos = $(this).offset();
-		$("ul", container).css({ left: pos.left }).toggleClass("hidden");
+		$(container).css({ left: pos.left }).toggleClass("hidden");
 	});
 
 	var toggleSections = function(langSelected) {
