@@ -81,7 +81,8 @@ jQuery(document).ready(function($) {
 	$("input[value=" + mainLang + "]", container).closest("li").remove();
 
 	$("> a", container).click(function(ev) {
-		$("ul", container).toggleClass("hidden");
+		var pos = $(this).offset();
+		$("ul", container).css({ left: pos.left }).toggleClass("hidden");
 	});
 
 	var toggleSections = function(langSelected) {
