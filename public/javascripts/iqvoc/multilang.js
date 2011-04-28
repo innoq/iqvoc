@@ -74,7 +74,7 @@ return LanguageSelector;
 
 
 jQuery(document).ready(function($) {
-	var sections = $("[lang]"),
+	var sections = $(".translation[lang]"),
 		container = $(".lang-widget")[0],
 		mainLang = $("head meta[name=i18n-locale]").attr("content");
 

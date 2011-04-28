@@ -1,5 +1,5 @@
 <% unless note.new_record? %>
-  <%= tag("div", { :lang => note.language || nil }, true) %>
+  <%= tag("div", { :class => "translation", :lang => note.language || nil }, true) %>
     <div class="note_language <%= note.language %>"><%= "(#{note.language ? note.language : '-'})" %></div>
     <span><%= linkify(note.value) %></span>
     <ul>
