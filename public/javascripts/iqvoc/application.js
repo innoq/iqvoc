@@ -85,6 +85,26 @@ return {
 jQuery(document).ready(function($) {
 	var locale = $("meta[name=i18n-locale]").attr("content");
 
+	// Login -- TODO: move to separate module -- XXX: hacky!?
+	var controlBar = $("#controls");
+	var baseURI = "/" + locale + "/user_session";
+	var uri = baseURI + "/new.html";
+	var loginLink = $("a[href='" + uri + "']");
+	if(loginLink.length > 0) {
+		var label = loginLink.text() + " &#9660;";
+		var btn = $('<a href="javascript:;" class="button" />').html(label)
+			.appendTo(controlBar);
+		var menu = $('<div class="dropdown hidden" />')
+			.appendTo(controlBar);
+		btn.click(function(ev) {
+			menu.text("...").load(uri + " #new_user_session");
+			menu.css({ right: 0 }).toggleClass("hidden"); // XXX: `right: 0` is a brittle hack to ensure visibility
+		});
+	} else {
+		uri = baseURI + ".html";
+		$("a[href='" + uri + "']").clone(true).appendTo(controlBar);
+	}
+
 	$("input.token_input_widget").each(IQVOC.addWidget);
 
 	// Label editing (inline notes)
