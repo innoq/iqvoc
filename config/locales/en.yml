@@ -213,6 +213,8 @@ en:
        hint: "edit term"
        no_results: "Not found!"
        searching: "searching ..."
+     lang_widget:
+       caption: "Language selection"
      dashboard:
        type: "Type"
        value: "Name"

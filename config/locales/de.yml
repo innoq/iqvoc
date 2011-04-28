@@ -205,6 +205,8 @@ de:
        hint: "Begriff eingeben"
        no_results: "Keine Ergebnisse"
        searching: "Suchen..."
+     lang_widget:
+       caption: "Sprachauswahl"
      dashboard:
        type: "Typ"
        value: "Name"

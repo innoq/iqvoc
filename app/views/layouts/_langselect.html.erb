@@ -1,0 +1,8 @@
+<div class="lang-widget">
+  <h3><%= t("txt.views.lang_widget.caption") %></h3>
+  <ul>
+    <% Iqvoc::available_languages.each do |lang| %>
+    <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+    <% end %>
+  </ul>
+</div>
