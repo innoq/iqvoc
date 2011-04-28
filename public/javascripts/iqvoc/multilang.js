@@ -3,17 +3,9 @@
 
 IQVOC.LanguageSelector = (function($) {
 
-var getSelection = function(namespace) {
-	var langs = localStorage.getItem(namespace);
-	return langs ? langs.split(",") : [];
-};
+var getSelection, setSelection;
 
-var setSelection = function(langs, namespace) {
-	localStorage.setItem(namespace, langs.join(","));
-	$(document).trigger(namespace, { langs: langs });
-};
-
-// namespace is used both for localStorage and the event being triggered
+// namespace is used for both localStorage and the event being triggered
 var LanguageSelector = function(container, namespace) {
 	this.container = container;
 	this.namespace = namespace;
@@ -58,7 +50,7 @@ $.extend(LanguageSelector.prototype, {
 			var self = this;
 			var i = cbs.length;
 			cbs.fadeOut().fadeIn(function() {
-				i--;
+				i -= 1;
 				if(i === 0) {
 					self.reset();
 				}
@@ -86,6 +78,16 @@ $.extend(LanguageSelector.prototype, {
 	}
 });
 
+getSelection = function(namespace) {
+	var langs = localStorage.getItem(namespace);
+	return langs ? langs.split(",") : [];
+};
+
+setSelection = function(langs, namespace) {
+	localStorage.setItem(namespace, langs.join(","));
+	$(document).trigger(namespace, { langs: langs });
+};
+
 return LanguageSelector;
 
 }(jQuery));
@@ -111,5 +113,5 @@ jQuery(document).ready(function($) {
 			toggleSections(data.langs);
 		}
 	});
-	var widget = new IQVOC.LanguageSelector(container, "lang_selected");
+	new IQVOC.LanguageSelector(container, "lang_selected");
 });
