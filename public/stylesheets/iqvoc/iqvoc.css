@@ -76,11 +76,21 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   border: 1px solid #AAA;
   border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
-  padding-bottom: 5px;
+  padding: 5px;
 }
 
 #controls ul {
   text-align: left;
+}
+
+#auth_controls ul,
+#auth_controls li {
+  width: auto;
+}
+
+#auth_controls:hover ul,
+#auth_controls.hover ul {
+  right: 5px;
 }
 
 .menu,

@@ -90,24 +90,20 @@ jQuery(document).ready(function($) {
 		$(this).toggleClass("hover"); // XXX: this can sometimes get confused by rapid mouse movements
 	});
 
-	// Login -- TODO: move to separate module -- XXX: hacky!?
-	var controlBar = $("#controls");
-	var baseURI = "/" + locale + "/user_session";
-	var uri = baseURI + "/new.html";
-	var loginLink = $("a[href='" + uri + "']");
-	if(loginLink.length > 0) {
-		var label = loginLink.text() + " &#9660;";
-		var btn = $('<a href="javascript:;" class="button" />').html(label)
-			.appendTo(controlBar);
-		var menu = $('<div class="dropdown hidden" />')
-			.appendTo(controlBar);
-		btn.click(function(ev) {
-			menu.text("...").load(uri + " #new_user_session");
-			menu.css({ right: 0 }).toggleClass("hidden"); // XXX: `right: 0` is a brittle hack to ensure visibility
+	// Login -- TODO: move to separate module
+	var authControls = $("#auth_controls");
+	var authLink = $("a", authControls);
+	var uri = authLink.attr("href");
+	if(uri.indexOf("/new.html") !== -1) {
+		authLink.addClass("button");
+		var menu = $("ul", authControls);
+		var label = authLink.text() + " &#9660;";
+		authLink.click(function(ev) {
+			authLink.html(label);
+			menu.removeClass("hidden")
+				.find("li").html("&hellip;").load(uri + " #new_user_session");
+			ev.preventDefault();
 		});
-	} else {
-		uri = baseURI + ".html";
-		$("a[href='" + uri + "']").clone(true).appendTo(controlBar);
 	}
 
 	$("input.token_input_widget").each(IQVOC.addWidget);
