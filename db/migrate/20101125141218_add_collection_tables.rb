@@ -16,15 +16,17 @@
 
 class AddCollectionTables < ActiveRecord::Migration
   def self.up
-    create_table :collections do |t|
+    create_table :collections, :force => true do |t|
     end
     
-    create_table :collection_contents do |t|
+    create_table :collection_contents, :force => true do |t|
       t.integer :collection_id
       t.integer :concept_id
     end
   end
 
   def self.down
+    drop_table :collections
+    drop_table :collection_contents
   end
 end
