@@ -51,12 +51,17 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 /* ######################################## */
 
 #controls {
-  height: 1.1em;
-  line-height: 1.1em;
   border-bottom: 2px solid #AAA;
   padding: 2px 5px;
   text-align: right;
   background-color: #000;
+}
+
+#controls,
+#controls a {
+  height: 1.1em;
+  overflow: hidden;
+  line-height: 1.1em;
 }
 
 #controls * {
