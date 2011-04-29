@@ -31,7 +31,6 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 ## Deeper customization
 
 There are many hooks providing support for your own classes and configuration. The core app
-is extendable via Rails Engines. The core config residing in `lib/iqvoc.rb` provides a basic
-overview of the possibilities. As an example for close vendor tailoring the core to your needs,
-see `EXAMPLE`.
+also works as a Rails Engine. The config residing in `lib/iqvoc.rb` provides a basic
+overview of the possibilities.
 
