@@ -117,7 +117,7 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 .menu li ul {
   position: absolute;
-  right: -999em;
+  left: -999em;
   background-color: #EEE;
 }
 
