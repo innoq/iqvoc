@@ -39,6 +39,7 @@ module Iqvoc
       file.each do |line|
         import_first_level_objects(types, *extract_triple(line))
       end
+      new_subjects = @seen_first_level_objects.dup # Remember the objects seen yet, because they are the ones to be published later
 
       file.rewind if file.is_a?(IO)
       types = {}
@@ -48,6 +49,16 @@ module Iqvoc
       file.each do |line|
         import_second_level_objects(types, *extract_triple(line))
       end
+
+      new_subjects.each do |id, subject|
+        if subject.valid_with_full_validation?
+          subject.publish!
+          subject.save!
+        else
+          Rails.logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
+        end
+      end
+
     end
 
     def import_first_level_objects(types, subject, predicate, object)
