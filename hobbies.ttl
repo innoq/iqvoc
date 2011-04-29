@@ -1,0 +1,356 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix : <http://hobbies.com#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+:indoors a skos:Collection.
+:outdoors a skos:Collection.
+
+# Achievement
+:achievement_hobbies a skos:Concept;
+  skos:prefLabel "Achievement hobbies"@en.
+
+:gardening a skos:Concept;
+  skos:prefLabel "Gardening"@en;
+  skos:broader :achievement_hobbies.
+
+:model_building a skos:Concept;
+  skos:prefLabel "Model building"@en;
+  skos:broader :achievement_hobbies.
+
+:model_rocketry a skos:Concept;
+  skos:prefLabel "Model rocketry"@en;
+  skos:broader :model_building.
+
+:radio-controlled_modeling a skos:Concept;
+  skos:prefLabel "Radio-controlled modeling"@en;
+  skos:broader :model_building.
+
+:scale_modeling a skos:Concept;
+  skos:prefLabel "Scale modeling"@en;
+  skos:broader :model_building.
+
+:photography a skos:Concept;
+  skos:prefLabel "Photography"@en;
+  skos:broader :achievement_hobbies.
+
+## Indoors
+:audiophilia a skos:Concept;
+  skos:prefLabel "Audiophilia"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :audiophilia.
+
+:baton_twirling a skos:Concept;
+  skos:prefLabel "Baton twirling"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :baton_twirling.
+
+:bonsai a skos:Concept;
+  skos:prefLabel "Bonsai"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :bonsai.
+
+:computer_programming a skos:Concept;
+  skos:prefLabel "Computer programming"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :computer_programming.
+
+:dance a skos:Concept;
+  skos:prefLabel "Dance"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :dance.
+
+:amateur_radio a skos:Concept;
+  skos:prefLabel "Amateur radio"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :amateur_radio.
+
+:home_automation a skos:Concept;
+  skos:prefLabel "Home automation"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :home_automation.
+
+:knapping a skos:Concept;
+  skos:prefLabel "Knapping"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :knapping.
+
+:lapidary a skos:Concept;
+  skos:prefLabel "Lapidary"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :lapidary.
+
+:locksport a skos:Concept;
+  skos:prefLabel "Locksport"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :locksport.
+
+:scrapbooking a skos:Concept;
+  skos:prefLabel "Scrapbooking"@en;
+  skos:broader :achievement_hobbies.
+:indoors skos:member :scrapbooking.
+
+## Outdoors
+:air_sports a skos:Concept;
+  skos:prefLabel "Air sports"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :air_sports.
+
+:board_sports a skos:Concept;
+  skos:prefLabel "Board sports"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :board_sports.
+
+:kayaking a skos:Concept;
+  skos:prefLabel "Kayaking"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :kayaking.
+
+:kitesurfing a skos:Concept;
+  skos:prefLabel "Kitesurfing"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :kitesurfing.
+
+:mountainbiking a skos:Concept;
+  skos:prefLabel "Mountainbiking"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :mountainbiking.
+
+:scuba_diving a skos:Concept;
+  skos:prefLabel "Scuba diving"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :scuba_diving.
+
+:snowmobiling a skos:Concept;
+  skos:prefLabel "Snowmobiling"@en;
+  skos:broader :achievement_hobbies.
+:outdoors skos:member :snowmobiling.
+
+# Collection hobbies
+:collection_hobbies a skos:Concept;
+  skos:prefLabel "Collection hobbies"@en.
+
+## Indoors
+:coin_collecting a skos:Concept;
+  skos:prefLabel "Coin collecting"@en;
+  skos:broader :collection_hobbies.
+:indoors skos:member :coin_collecting.
+
+:stamp_collecting a skos:Concept;
+  skos:prefLabel "Stamp collecting"@en;
+  skos:broader :collection_hobbies.
+:indoors skos:member :stamp_collecting.
+
+## Outdoors
+:antiquities a skos:Concept;
+  skos:prefLabel "Antiquities"@en;
+  skos:broader :collection_hobbies.
+:outdoors skos:member :antiquities.
+
+:auto_audiophilia a skos:Concept;
+  skos:prefLabel "Auto audiophilia"@en;
+  skos:broader :collection_hobbies.
+:outdoors skos:member :auto_audiophilia.
+
+:fossil_collecting a skos:Concept;
+  skos:prefLabel "Fossil collecting"@en;
+  skos:broader :collection_hobbies.
+:outdoors skos:member :fossil_collecting.
+
+:metal_detecting a skos:Concept;
+  skos:prefLabel "Metal detecting"@en;
+  skos:broader :collection_hobbies.
+:outdoors skos:member :metal_detecting.
+
+:mineral_collecting a skos:Concept;
+  skos:prefLabel "Mineral collecting"@en;
+  skos:broader :collection_hobbies.
+:outdoors skos:member :mineral_collecting.
+
+# Competition hobbies
+:competition_hobbies a skos:Concept;
+  skos:prefLabel "Competition hobbies"@en.
+
+## Indoors
+:billiards a skos:Concept;
+  skos:prefLabel "Billiards"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :billiards.
+
+:bowling a skos:Concept;
+  skos:prefLabel "Bowling"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :bowling.
+
+:boxing a skos:Concept;
+  skos:prefLabel "Boxing"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :boxing.
+
+:chess a skos:Concept;
+  skos:prefLabel "Chess"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :chess.
+
+:darts a skos:Concept;
+  skos:prefLabel "Darts"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :darts.
+
+:fencing a skos:Concept;
+  skos:prefLabel "Fencing"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :fencing.
+
+:role-playing_games a skos:Concept;
+  skos:prefLabel "Role-playing games"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :role-playing_games.
+
+:table_football a skos:Concept;
+  skos:prefLabel "Table football"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :table_football.
+
+:handball a skos:Concept;
+  skos:prefLabel "Handball"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :handball.
+
+:martial_arts a skos:Concept;
+  skos:prefLabel "Martial arts"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :martial_arts.
+
+:video_gaming a skos:Concept;
+  skos:prefLabel "Video gaming"@en;
+  skos:broader :competition_hobbies.
+:indoors skos:member :video_gaming.
+
+## Outdoors
+:airsoft a skos:Concept;
+  skos:prefLabel "Airsoft"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :airsoft.
+
+:archery a skos:Concept;
+  skos:prefLabel "Archery"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :archery.
+
+:auto_racing a skos:Concept;
+  skos:prefLabel "Auto racing"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :auto_racing.
+
+:badminton a skos:Concept;
+  skos:prefLabel "Badminton"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :badminton.
+
+:baseball a skos:Concept;
+  skos:prefLabel "Baseball"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :baseball.
+
+:basketball a skos:Concept;
+  skos:prefLabel "Basketball"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :basketball.
+
+:climbing a skos:Concept;
+  skos:prefLabel "Climbing"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :climbing.
+
+:cricket a skos:Concept;
+  skos:prefLabel "Cricket"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :cricket.
+
+:cycling a skos:Concept;
+  skos:prefLabel "Cycling"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :cycling.
+
+:disc_golf a skos:Concept;
+  skos:prefLabel "Disc golf"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :disc_golf.
+
+:equestrianism a skos:Concept;
+  skos:prefLabel "Equestrianism"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :equestrianism.
+
+:figure_skating a skos:Concept;
+  skos:prefLabel "Figure skating"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :figure_skating.
+
+:fishing a skos:Concept;
+  skos:prefLabel "Fishing"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :fishing.
+
+:golfing a skos:Concept;
+  skos:prefLabel "Golfing"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :golfing.
+
+:gymnastics a skos:Concept;
+  skos:prefLabel "Gymnastics"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :gymnastics.
+
+:ice_hockey a skos:Concept;
+  skos:prefLabel "Ice hockey"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :ice_hockey.
+
+:kart_racing a skos:Concept;
+  skos:prefLabel "Kart racing"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :kart_racing.
+
+:paintball a skos:Concept;
+  skos:prefLabel "Paintball"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :paintball.
+
+:rugby_league a skos:Concept;
+  skos:prefLabel "Rugby league"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :rugby_league.
+
+:swimming a skos:Concept;
+  skos:prefLabel "Swimming"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :swimming.
+
+:tennis a skos:Concept;
+  skos:prefLabel "Tennis"@en;
+  skos:broader :competition_hobbies.
+:outdoors skos:member :tennis.
+
+:the_rest rdfs:comment """
+== Observation hobbies ==
+=== Indoors ===
+* [[Audiophile|Audiophilia]]
+* [[Microscopy]]
+* [[Reading (process)|Reading]]
+* [[Shortwave listening]]
+* [[Videophile|Videophilia]] (Home theater)
+{{Portal box|Astronomy|College football|Formula One}}
+
+=== Outdoors ===
+* [[Amateur astronomy]]
+* [[Amateur geology]]
+* [[Birdwatching|Bird watching]]
+* [[College football]]
+* [[Meteorology]]
+* [[Surveillance]]
+* [[Travel]]
+* [[Parkour]]
+""".

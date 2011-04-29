@@ -16,8 +16,6 @@ class SkosImportTest < ActiveSupport::TestCase
 <http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#altLabel> "Viehzeug"@de .
 <http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#definition> "Ein Tier ist kein Mensch."@de .
 <http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#narrower> <http://www.example.com/_cow> .
-<http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#narrower> <http://www.example.com/_donkey> .
-<http://www.example.com/_animal> <http://www.w3.org/2008/05/skos#narrower> <http://www.example.com/_monkey> .
 <http://www.example.com/_cow> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/_cow> <http://www.w3.org/2008/05/skos#prefLabel> "Kuh"@de .
 <http://www.example.com/_cow> <http://www.w3.org/2008/05/skos#prefLabel> "Cow"@en .
@@ -47,13 +45,18 @@ class SkosImportTest < ActiveSupport::TestCase
     ["_animal", "_cow", "_donkey", "_monkey"].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last
       assert_not_nil(concepts[origin], "Couldn't find concept '#{origin}'.")
+      assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
     assert_equal "Tier", concepts["_animal"].pref_label('de').to_s
 
     broader_relation = concepts["_cow"].broader_relations.first
     assert_not_nil broader_relation
+    assert_not_nil broader_relation.target
     assert_equal concepts["_animal"].origin, broader_relation.target.origin
+
+    narrower_relations = concepts["_animal"].narrower_relations
+    assert_equal 3, narrower_relations.count
 
     note = concepts["_animal"].note_skos_definitions.first
     assert_not_nil note
