@@ -68,7 +68,7 @@ module Iqvoc
 
         if (@existing_origins[origin])
           if (types[object] == @existing_origins[origin])
-            Rails.logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be not problem)."
+            Rails.logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be no problem)."
           else
             Rails.logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
