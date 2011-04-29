@@ -386,8 +386,9 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def valid_label_language
-    (@inline_assigned_labelings || {}).each { |labeling_class_name, origin_mappings|
+    (@labelings_by_id || {}).each { |labeling_class_name, origin_mappings|
       origin_mappings.each { |language, new_origins|
+        new_origins = new_origins.split(",")
         Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |label|
           if label.language != language.to_s
             errors.add(:base,
