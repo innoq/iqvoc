@@ -50,6 +50,7 @@ de:
        in_review: "Vorlage zur Freigabe"
        checked_out: "Ausgecheckt"
      of: von
+     pending: "Lade…"
 
    part_of_speech:
      plural_form: "Pluralform"

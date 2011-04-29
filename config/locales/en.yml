@@ -50,6 +50,7 @@ en:
        in_review: "In review"
        checked_out: "Checked out"
      of: of
+     pending: "Loading…"
 
    part_of_speech:
      plural_form: "Plural form"

@@ -4,7 +4,7 @@
       <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete %>
     <% else %>
       <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => @active_language || I18n.locale) %>
-      <ul class="hidden"><li></li></ul>
+      <ul class="hidden"><li><%= t("txt.common.pending") %></li></ul>
     <% end %>
   </li>
 

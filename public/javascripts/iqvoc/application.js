@@ -3,6 +3,23 @@
 
 var IQVOC = (function($) {
 
+var dynamicAuth = function(container) {
+	container = container.nodeType ? container : $(container)[0];
+	var authLink = $("a", container);
+	var uri = authLink.attr("href");
+	if(uri.indexOf("/new.html") !== -1) {
+		authLink.addClass("button");
+		var menu = $("ul", container);
+		var label = authLink.text() + " &#9660;";
+		authLink.click(function(ev) {
+			authLink.html(label);
+			menu.removeClass("hidden")
+				.find("li").load(uri + " #new_user_session");
+			ev.preventDefault();
+		});
+	}
+};
+
 var addWidget = function(index, elem) {
 	if (!elem) {
 		return;
@@ -76,8 +93,9 @@ var createNote = function(ev) {
 };
 
 return {
+	dynamicAuth: dynamicAuth,
 	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
-	createNote: createNote // TODO: rename?
+	createNote: createNote
 };
 
 }(jQuery)); // /module IQVOC
@@ -90,21 +108,7 @@ jQuery(document).ready(function($) {
 		$(this).toggleClass("hover"); // XXX: this can sometimes get confused by rapid mouse movements
 	});
 
-	// Login -- TODO: move to separate module
-	var authControls = $("#auth_controls");
-	var authLink = $("a", authControls);
-	var uri = authLink.attr("href");
-	if(uri.indexOf("/new.html") !== -1) {
-		authLink.addClass("button");
-		var menu = $("ul", authControls);
-		var label = authLink.text() + " &#9660;";
-		authLink.click(function(ev) {
-			authLink.html(label);
-			menu.removeClass("hidden")
-				.find("li").html("&hellip;").load(uri + " #new_user_session");
-			ev.preventDefault();
-		});
-	}
+	IQVOC.dynamicAuth("#auth_controls");
 
 	$("input.token_input_widget").each(IQVOC.addWidget);
 
