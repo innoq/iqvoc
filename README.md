@@ -24,7 +24,8 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 2. `bundle install`
 3. Run `rake db:create` to create the database
 4. Create the necessary tables by running `rake db:migrate`
-5. Boot up the app using `rails s` (or `passenger start` if you use passenger)
+5. Load some base data by running `rake db:seed`
+6. Boot up the app using `rails s` (or `passenger start` if you use passenger)
 
 ## Deeper customization
 
@@ -33,15 +34,3 @@ is extendable via Rails Engines. The core config residing in `lib/iqvoc.rb` prov
 overview of the possibilities. As an example for close vendor tailoring the core to your needs,
 see `EXAMPLE`.
 
-## Glitches, Bugs, ToDo
-
-There are still several glitches and bugs we directly know of. They are marked with
-`# TODO` and `# FIXME` in the sources.
-
-### "Nested Validations"
-Validations have to be specified directly in the class they belong to. E.g. if
-you want to check that there is only one pref_label per concept this should be
-done in the Labeling class and not in the Concept or Label.
-
-The problem in which form validation errors from nested invalid objects are
-shown up when saving the "main" object is still open.
