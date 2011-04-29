@@ -21,7 +21,7 @@ require 'active_support/core_ext'
 require File.join('.', File.dirname(__FILE__), '../lib/iqvoc/version')
 
 FileUtils.rm_rf('tmp/release') if File.directory?('tmp/release')
-FileUtils.mkdir 'tmp/release'
+FileUtils.mkdir_p 'tmp/release'
 begin
   FileUtils.cd('tmp/release') do
     git_remotes = `git remote show origin`
