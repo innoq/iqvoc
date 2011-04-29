@@ -26,7 +26,7 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 4. Create the necessary tables by running `rake db:migrate`
 5. Load some base data by running `rake db:seed`
 6. Boot up the app using `rails s` (or `passenger start` if you use passenger)
-7. Login via admin@iqvoc / cooluri
+7. Login via `admin@iqvoc` / `cooluri` (requires step 5. to be run)
 
 ## Deeper customization
 
