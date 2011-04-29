@@ -85,6 +85,11 @@ return {
 jQuery(document).ready(function($) {
 	var locale = $("meta[name=i18n-locale]").attr("content");
 
+	// Son of Suckerfish drop-down menus
+	$(".menu > li").hover(function(ev) {
+		$(this).toggleClass("hover"); // XXX: this can sometimes get confused by rapid mouse movements
+	});
+
 	// Login -- TODO: move to separate module -- XXX: hacky!?
 	var controlBar = $("#controls");
 	var baseURI = "/" + locale + "/user_session";

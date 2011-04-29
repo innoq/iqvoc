@@ -1,5 +1,5 @@
 /*jslint browser: true */
-/*global localStorage, jQuery, IQVOC */
+/*global jQuery, IQVOC */
 
 IQVOC.LanguageSelector = (function($) {
 
@@ -79,11 +79,6 @@ jQuery(document).ready(function($) {
 		mainLang = $("head meta[name=i18n-locale]").attr("content");
 
 	$("input[value=" + mainLang + "]", container).closest("li").remove();
-
-	$("#controls a.lang-widget").click(function(ev) {
-		var pos = $(this).offset();
-		$(container).css({ left: pos.left }).toggleClass("hidden");
-	});
 
 	var toggleSections = function(langSelected) {
 		sections.each(function(i, node) {

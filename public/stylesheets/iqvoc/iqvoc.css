@@ -11,7 +11,7 @@
 ul#navi_main {
   top: 85px;
   position: absolute;
-  margin: 0 0 0 0px;
+  margin: 0;
   padding: 0;
 }
 
@@ -52,10 +52,10 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 #controls {
   height: 1.1em;
-  text-align: right;
-  border-bottom: 2px solid #AAA;
-  padding: 2px 5px 3px;
   line-height: 1.1em;
+  border-bottom: 2px solid #AAA;
+  padding: 2px 5px;
+  text-align: right;
   background-color: #000;
 }
 
@@ -63,20 +63,57 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   z-index: 99; /* work around overly wide header */
 }
 
+#controls,
+#controls a {
+  padding-bottom: 3px;
+}
+
 #controls a {
   color: #EEE;
 }
 
-#controls .dropdown {
-  position: absolute; /* horizontal position calculated using JavaScript */
-  margin: 3px 1em 0 0; /* top margin corresponds to #controls bottom padding */
+#controls ul {
   border: 1px solid #AAA;
   border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
-  padding: 5px 1em 5px 5px;
+  padding-bottom: 5px;
+}
+
+#controls ul {
   text-align: left;
+}
+
+.menu,
+.menu ul {
+  margin: 0;
+  padding: 0;
   list-style-type: none;
+}
+
+.menu li,
+.menu a,
+.menu li ul {
+  width: 10em;
+}
+
+.menu a {
+  display: block;
+  text-decoration: none;
+}
+
+.menu li {
+  float: right;
+}
+
+.menu li ul {
+  position: absolute;
+  right: -999em;
   background-color: #EEE;
+}
+
+.menu li:hover ul,
+.menu li.hover ul {
+  right: auto;
 }
 
 ul#navi_main li {

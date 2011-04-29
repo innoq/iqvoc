@@ -1,8 +1,10 @@
-<div id="controls">
-  <a href="javascript:;" class="button lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
-  <ul class="lang-widget dropdown hidden">
-    <% Iqvoc::available_languages.each do |lang| %>
-    <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
-    <% end %>
-  </ul>
-</div>
+<ul id="controls" class="menu">
+  <li>
+    <a href="javascript:;" class="button lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
+    <ul class="lang-widget">
+      <% Iqvoc::available_languages.each do |lang| %>
+      <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+      <% end %>
+    </ul>
+  </li>
+</ul>
