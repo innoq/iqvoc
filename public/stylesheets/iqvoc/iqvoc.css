@@ -123,6 +123,7 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 .menu li:hover ul,
 .menu li.hover ul {
+  left: auto;
   right: auto;
 }
 
