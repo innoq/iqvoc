@@ -20,6 +20,26 @@ var dynamicAuth = function(container) {
 	}
 };
 
+// augment Son of Suckerfish drop-down menus
+var enhancedDropdown = function(container) {
+	container = container.jquery ? container : $(container);
+	container.children("li").hover(function(ev) {
+		clearTimeout(IQVOC.ddtimer);
+		$(this).addClass("hover")
+			.find("ul").not(".hidden").slideDown();
+	}, function(ev) {
+		var el = $(this);
+		var collapse = function() {
+			el.find("ul").slideUp(function() {
+				el.removeClass("hover");
+			});
+		};
+		clearTimeout(IQVOC.ddtimer);
+		IQVOC.ddtimer = setTimeout(collapse, 600); // XXX: singleton
+	}).find("ul").hide();
+
+};
+
 var addWidget = function(index, elem) {
 	if (!elem) {
 		return;
@@ -94,6 +114,7 @@ var createNote = function(ev) {
 
 return {
 	dynamicAuth: dynamicAuth,
+	enhancedDropdown: enhancedDropdown,
 	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
 	createNote: createNote
 };
@@ -103,22 +124,7 @@ return {
 jQuery(document).ready(function($) {
 	var locale = $("meta[name=i18n-locale]").attr("content");
 
-	// Son of Suckerfish drop-down menus
-	$(".menu > li").hover(function(ev) {
-		clearTimeout(IQVOC.ddtimer);
-		$(this).addClass("hover")
-			.find("ul").not(".hidden").slideDown();
-	}, function(ev) {
-		var el = $(this);
-		var collapse = function() {
-			el.find("ul").slideUp(function() {
-				el.removeClass("hover");
-			});
-		};
-		clearTimeout(IQVOC.ddtimer);
-		IQVOC.ddtimer = setTimeout(collapse, 600); // XXX: singleton
-	}).find("ul").hide();
-
+	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
 
 	$("input.token_input_widget").each(IQVOC.addWidget);
