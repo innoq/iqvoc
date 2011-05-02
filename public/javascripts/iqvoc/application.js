@@ -105,13 +105,18 @@ jQuery(document).ready(function($) {
 
 	// Son of Suckerfish drop-down menus
 	$(".menu > li").hover(function(ev) {
+		clearTimeout(IQVOC.ddtimer);
 		$(this).addClass("hover")
 			.find("ul").not(".hidden").slideDown();
 	}, function(ev) {
 		var el = $(this);
-		el.find("ul").slideUp(function() {
-			el.removeClass("hover");
-		});
+		var collapse = function() {
+			el.find("ul").slideUp(function() {
+				el.removeClass("hover");
+			});
+		};
+		clearTimeout(IQVOC.ddtimer);
+		IQVOC.ddtimer = setTimeout(collapse, 600); // XXX: singleton
 	}).find("ul").hide();
 
 	IQVOC.dynamicAuth("#auth_controls");
