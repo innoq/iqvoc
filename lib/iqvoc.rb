@@ -30,8 +30,6 @@ module Iqvoc
     :additional_css_files,
     :first_level_class_configuration_modules
 
-  self.title = "Iqvoc"
-
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
     'Labeling::SKOS::PrefLabel',
