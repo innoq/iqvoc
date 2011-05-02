@@ -105,7 +105,9 @@ jQuery(document).ready(function($) {
 
 	// Son of Suckerfish drop-down menus
 	$(".menu > li").hover(function(ev) {
-		$(this).toggleClass("hover"); // XXX: this can sometimes get confused by rapid mouse movements
+		$(this).addClass("hover");
+	}, function(ev) {
+		$(this).removeClass("hover");
 	});
 
 	IQVOC.dynamicAuth("#auth_controls");
