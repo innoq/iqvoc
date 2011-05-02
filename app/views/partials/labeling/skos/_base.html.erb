@@ -1,4 +1,4 @@
-<%= tag("div", { :class => "relation translation", :lang => lang || nil }, true) %>
+<%= tag("div", { :class => "relation translation", :lang => defined?(concept) ? lang || nil : nil }, true) %>
   <%- if defined?(concept) -%>
     <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
     <div class="relation-body">
