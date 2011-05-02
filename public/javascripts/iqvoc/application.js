@@ -13,7 +13,7 @@ var dynamicAuth = function(container) {
 		var label = authLink.text() + " &#9660;";
 		authLink.click(function(ev) {
 			authLink.html(label);
-			menu.removeClass("hidden")
+			menu.removeClass("hidden").slideDown()
 				.find("li").load(uri + " #new_user_session");
 			ev.preventDefault();
 		});
@@ -105,10 +105,14 @@ jQuery(document).ready(function($) {
 
 	// Son of Suckerfish drop-down menus
 	$(".menu > li").hover(function(ev) {
-		$(this).addClass("hover");
+		$(this).addClass("hover")
+			.find("ul").not(".hidden").slideDown();
 	}, function(ev) {
-		$(this).removeClass("hover");
-	});
+		var el = $(this);
+		el.find("ul").slideUp(function() {
+			el.removeClass("hover");
+		});
+	}).find("ul").hide();
 
 	IQVOC.dynamicAuth("#auth_controls");
 
