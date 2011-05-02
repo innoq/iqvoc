@@ -20,23 +20,33 @@ var dynamicAuth = function(container) {
 	}
 };
 
-// augment Son of Suckerfish drop-down menus
+var collapseDropdown = function(node) {
+	var el = $(node || this);
+	el.find("ul").slideUp(function() {
+		el.removeClass("hover");
+	});
+};
+
+// augments Son of Suckerfish drop-down menus
 var enhancedDropdown = function(container) {
 	container = container.jquery ? container : $(container);
-	container.children("li").hover(function(ev) {
-		clearTimeout(IQVOC.ddtimer);
-		$(this).addClass("hover")
-			.find("ul").not(".hidden").slideDown();
-	}, function(ev) {
-		var el = $(this);
-		var collapse = function() {
-			el.find("ul").slideUp(function() {
-				el.removeClass("hover");
+	var menuItems = $("> li", container),
+		ddtimer;
+	menuItems.find("ul").hide();
+	menuItems.live({
+		mouseenter: function(ev) {
+			clearTimeout(ddtimer);
+			menuItems.each(function(i, node) {
+				collapseDropdown(node);
 			});
-		};
-		clearTimeout(IQVOC.ddtimer);
-		IQVOC.ddtimer = setTimeout(collapse, 600); // XXX: singleton
-	}).find("ul").hide();
+			$(this).addClass("hover")
+				.find("ul").not(".hidden").slideDown();
+		},
+		mouseleave: function(ev) {
+			clearTimeout(ddtimer);
+			ddtimer = setTimeout(jQuery.proxy(collapseDropdown, this), 600);
+		}
+	});
 
 };
 
