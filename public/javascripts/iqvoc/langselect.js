@@ -71,29 +71,3 @@ setSelection = function(langs, namespace) {
 return LanguageSelector;
 
 }(jQuery));
-
-
-jQuery(document).ready(function($) {
-	var sections = $(".translation[lang]"),
-		container = $("ul.lang-widget")[0],
-		mainLang = $("head meta[name=i18n-locale]").attr("content");
-
-	$("input[value=" + mainLang + "]", container).closest("li").remove();
-
-	var toggleSections = function(langSelected) {
-		sections.each(function(i, node) {
-			var el = $(node);
-			var lang = el.attr("lang");
-			if(lang !== mainLang && $.inArray(lang, langSelected) === -1) {
-				el.addClass("hidden");
-			} else {
-				el.removeClass("hidden");
-			}
-		});
-	};
-
-	$(document).bind("lang_selected", function(ev, data) {
-		toggleSections(data.langs);
-	});
-	new IQVOC.LanguageSelector(container, "lang_selected");
-});

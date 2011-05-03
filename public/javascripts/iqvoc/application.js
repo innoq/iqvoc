@@ -131,10 +131,29 @@ return {
 }(jQuery)); // /module IQVOC
 
 jQuery(document).ready(function($) {
-	var locale = $("meta[name=i18n-locale]").attr("content");
+	var locale = $("head meta[name=i18n-locale]").attr("content");
 
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
+
+	// language selection
+	var langWidget = $("ul.lang-widget")[0];
+	$("input[value=" + locale + "]", langWidget).closest("li").remove();
+	var toggleSections = function(langSelected) {
+		$(".translation[lang]").each(function(i, node) {
+			var el = $(node);
+			var lang = el.attr("lang");
+			if(lang !== locale && $.inArray(lang, langSelected) === -1) {
+				el.addClass("hidden");
+			} else {
+				el.removeClass("hidden");
+			}
+		});
+	};
+	$(document).bind("lang_selected", function(ev, data) {
+		toggleSections(data.langs);
+	});
+	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
 	$("input.token_input_widget").each(IQVOC.addWidget);
 
