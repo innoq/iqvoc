@@ -2,7 +2,7 @@
 
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
-iQvoc supports vocabularies that are common to many knowledge organisation systems, such as:
+iQvoc supports vocabularies that are common to many knowledge organization systems, such as:
 
 * Thesauri
 * Taxonomies
@@ -28,9 +28,8 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 6. Boot up the app using `rails s` (or `passenger start` if you use passenger)
 7. Login via `admin@iqvoc` / `cooluri` (requires step 5. to be run)
 
-## Deeper customization
+## Customization
 
 There are many hooks providing support for your own classes and configuration. The core app
 also works as a Rails Engine. The config residing in `lib/iqvoc.rb` provides a basic
 overview of the possibilities.
-
