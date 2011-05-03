@@ -20,6 +20,6 @@ class AddOriginToCollections < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :collections, :origin
+    remove_column :collections, :origin if column_exists? :collections, :origin
   end
 end

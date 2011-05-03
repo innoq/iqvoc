@@ -32,7 +32,6 @@ class Concept::Base < ActiveRecord::Base
   validates :origin, :presence => true
   validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :on => :update
-  validate :valid_label_language
   # FIXME
   # validates :associations_must_be_published
 
@@ -99,12 +98,6 @@ class Concept::Base < ActiveRecord::Base
   has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Concept", :dependent => :destroy
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
-
-  # *** Classifications
-  # FIXME: Should be a matches (to other skos vocabularies)
-  has_many :classifications, :foreign_key => 'owner_id', :dependent => :destroy
-  has_many :classifiers, :through => :classifications, :source => :target
-  include_to_deep_cloning(:classifications)
 
   # ************** "Dynamic"/configureable relations
 
@@ -389,19 +382,6 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation == true
       errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.count == 0
     end
-  end
-
-  def valid_label_language
-    (@inline_assigned_labelings || {}).each { |labeling_class_name, origin_mappings|
-      origin_mappings.each { |language, new_origins|
-        Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |label|
-          if label.language != language.to_s
-            errors.add(:base,
-                I18n.t("txt.controllers.versioned_concept.label_error") % label)
-          end
-        end
-      }
-    }
   end
 
   def associations_must_be_published
