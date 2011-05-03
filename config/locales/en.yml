@@ -216,6 +216,8 @@ en:
        searching: "searching ..."
      lang_widget:
        caption: "Language selection"
+       primary: "Primary"
+       secondary: "Secondary"
      dashboard:
        type: "Type"
        value: "Name"

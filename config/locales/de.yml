@@ -208,6 +208,8 @@ de:
        searching: "Suchen..."
      lang_widget:
        caption: "Sprachauswahl"
+       primary: "Primärsprache"
+       secondary: "Sekundärsprachen"
      dashboard:
        type: "Typ"
        value: "Name"

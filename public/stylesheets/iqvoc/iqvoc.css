@@ -73,7 +73,7 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   padding-bottom: 3px;
 }
 
-#controls a {
+#controls a.button {
   color: #EEE;
 }
 
@@ -86,6 +86,12 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 #controls ul {
   text-align: left;
+}
+
+#controls h3 {
+  margin: 0.2em 0;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 #auth_controls ul,
