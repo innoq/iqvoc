@@ -35,7 +35,7 @@ var enhancedDropdown = function(container) {
 	menuItems.live({
 		mouseenter: function(ev) {
 			clearTimeout(ddtimer);
-			menuItems.each(function(i, node) {
+			menuItems.not(this).filter(".hover").each(function(i, node) {
 				collapseDropdown(node);
 			});
 			$(this).addClass("hover")
