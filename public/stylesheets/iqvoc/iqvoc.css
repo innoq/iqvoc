@@ -82,10 +82,11 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
   padding: 5px;
+  text-align: left;
 }
 
-#controls ul {
-  text-align: left;
+#controls ul a {
+  display: inline;
 }
 
 #controls h3 {

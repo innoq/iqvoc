@@ -11,17 +11,13 @@
   <li>
     <a href="javascript:;" class="button lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
     <ul class="lang-widget">
-      <%-
-        primary_languages = Iqvoc::Concept.pref_labeling_languages.find_all do |lang|
-          lang != I18n.locale
-        end
-      -%>
+      <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
 
-      <% if primary_languages.length > 0 %>
-        <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
-        <% primary_languages.each do |lang| %>
-        <li><%= link_to t("languages.#{lang}"), params.merge(:lang => lang) %></li>
-        <% end %>
+      <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
+      <li>
+        <%= radio_button_tag "primary_language", lang, lang == I18n.locale %>
+        <%= link_to t("languages.#{lang}"), params.merge(:lang => lang) %>
+      </li>
       <% end %>
 
       <% if Iqvoc::available_languages.length > 1 %>

@@ -138,7 +138,10 @@ jQuery(document).ready(function($) {
 
 	// language selection
 	var langWidget = $("ul.lang-widget")[0];
-	$("input[value=" + locale + "]", langWidget).closest("li").remove();
+	$("input:radio", langWidget).live("change", function(ev) {
+		window.location = $(this).next("a").attr("href"); // XXX: hacky?
+	});
+	$("input:checkbox[value=" + locale + "]", langWidget).closest("li").remove();
 	var toggleSections = function(langSelected) {
 		$(".translation[lang]").each(function(i, node) {
 			var el = $(node);
