@@ -15,7 +15,7 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
-  available_locales = /de|en/ # FIXME #{I18n.available_locales.map(&:to_s).join('|')}/
+  available_locales = /#{Iqvoc::Concept.pref_labeling_languages.map(&:to_s).join('|')}/
 
   scope '(:lang)' do
     resources :collections
