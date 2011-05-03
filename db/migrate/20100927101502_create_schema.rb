@@ -107,7 +107,7 @@ class CreateSchema < ActiveRecord::Migration
     add_index "labels", ["value"], :name => "ix_labels_on_value"
     add_index "labels", ["published_version_id"], :name => "ix_labels_published_version_id"
 
-    create_table "matches" do |t|
+    create_table "matches", :force => true do |t|
       t.integer  "concept_id"
       t.string   "type"
       t.string   "value"
@@ -159,5 +159,16 @@ class CreateSchema < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table "classifications"
+    drop_table "classifiers"
+    drop_table "concept_relations"
+    drop_table "concepts"
+    drop_table "label_relations"
+    drop_table "labelings"
+    drop_table "labels"
+    drop_table "matches"
+    drop_table "note_annotations"
+    drop_table "notes"
+    drop_table "users"
   end
 end

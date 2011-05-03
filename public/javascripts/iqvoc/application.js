@@ -116,12 +116,6 @@ jQuery(document).ready(function($) {
 		$("input[type=checkbox].lang_check").attr("checked", false);
 	});
 
-	// Tree
-	var trees = $("ul.treeview");
-	$.each(trees, function(index, value) {
-		$(value).treeview($.parseJSON($(value).attr("data-remote-settings")));
-	});
-
 	$("ul.hybrid-treeview").each(function() {
 		var url = $(this).attr("data-url");
 		var container = this;

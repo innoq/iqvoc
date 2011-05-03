@@ -82,7 +82,7 @@ namespace :iqvoc do
 
             # We'll have to "rebundle" the Gemfile.lock
             puts "Gemfile was replaced by Gemfile.production. Rebundling Gemfile.lock..."
-            puts `#{ruby_cmd} -S bundle install --path=vendor/bundle --gemfile=#{gemfile}`
+            puts `#{ruby_cmd} -S bundle install --path=vendor/bundle --gemfile=#{gemfile} --without=development:test`
           end
 
           puts `#{ruby_cmd} -S bundle install --deployment --gemfile=#{gemfile}`
