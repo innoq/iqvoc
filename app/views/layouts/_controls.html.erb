@@ -11,15 +11,24 @@
   <li>
     <a href="javascript:;" class="button lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
     <ul class="lang-widget">
-      <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
-      <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
-        <% if lang != I18n.locale %>
+      <%-
+        primary_languages = Iqvoc::Concept.pref_labeling_languages.find_all do |lang|
+          lang != I18n.locale
+        end
+      -%>
+
+      <% if primary_languages.length > 0 %>
+        <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
+        <% primary_languages.each do |lang| %>
         <li><%= link_to t("languages.#{lang}"), params.merge(:lang => lang) %></li>
         <% end %>
       <% end %>
-      <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
-      <% Iqvoc::available_languages.each do |lang| %>
-      <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+
+      <% if Iqvoc::available_languages.length > 1 %>
+        <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
+        <% Iqvoc::available_languages.each do |lang| %>
+        <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+        <% end %>
       <% end %>
     </ul>
   </li>
