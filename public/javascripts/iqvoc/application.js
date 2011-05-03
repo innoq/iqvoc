@@ -8,7 +8,6 @@ var dynamicAuth = function(container) {
 	var authLink = $("a", container);
 	var uri = authLink.attr("href");
 	if(uri.indexOf("/new.html") !== -1) {
-		authLink.addClass("button");
 		var menu = $("ul", container);
 		var label = authLink.text() + " &#9660;";
 		authLink.click(function(ev) {
