@@ -60,7 +60,7 @@ $.extend(LanguageSelector.prototype, {
 
 getSelection = function(namespace) {
 	var langs = localStorage.getItem(namespace);
-	return langs ? langs.split(",") : null;
+	return langs === null ? null : (langs ? langs.split(",") : []);
 };
 
 setSelection = function(langs, namespace) {
