@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Disable Rake-environment-task framework detection by uncommenting/setting to false
+# Disable automatic framework detection by uncommenting/setting to false
 # Warbler.framework_detection = false
 
 # Warbler web application assembly configuration file
