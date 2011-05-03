@@ -32,7 +32,6 @@ class Concept::Base < ActiveRecord::Base
   validates :origin, :presence => true
   validate :two_versions_exist, :on => :create
   validate :pref_label_existence, :on => :update
-  validate :valid_label_language
   # FIXME
   # validates :associations_must_be_published
 
@@ -383,20 +382,6 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation == true
       errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.count == 0
     end
-  end
-
-  def valid_label_language
-    (@labelings_by_id || {}).each { |labeling_class_name, origin_mappings|
-      origin_mappings.each { |language, new_origins|
-        new_origins = new_origins.split(",")
-        Iqvoc::XLLabel.base_class.by_origin(new_origins).each do |label|
-          if label.language != language.to_s
-            errors.add(:base,
-                I18n.t("txt.controllers.versioned_concept.label_error") % label)
-          end
-        end
-      }
-    }
   end
 
   def associations_must_be_published
