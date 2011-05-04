@@ -95,6 +95,12 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   font-weight: bold;
 }
 
+#controls label {
+  display: block;
+  width: 100%;
+  font-weight: normal;
+}
+
 #auth_controls ul,
 #auth_controls li {
   width: auto;

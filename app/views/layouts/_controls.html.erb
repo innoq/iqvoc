@@ -15,15 +15,19 @@
 
       <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
       <li>
-        <%= radio_button_tag "primary_language", lang, lang == I18n.locale %>
-        <%= link_to t("languages.#{lang}"), params.merge(:lang => lang) %>
+        <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
+                :class => lang == I18n.locale ? "current" : nil %>
       </li>
       <% end %>
 
       <% if Iqvoc::available_languages.length > 1 %>
         <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
         <% Iqvoc::available_languages.each do |lang| %>
-        <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+        <li>
+          <label>
+            <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>
+          </label>
+        </li>
         <% end %>
       <% end %>
     </ul>
