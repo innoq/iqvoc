@@ -44,6 +44,14 @@ If you want to help out there are several options:
 
 If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
 
+## Maintainer & Contributors
+
+iQvoc has beed created and is maintained by [innoQ Deutschland GmbH](http://innoq.com).
+
+* Robert Glaser ([mrreynolds](http://github.com/mrreynolds))
+* Till Schulte-Coerne ([tillsc](http://github.com/tillsc))
+* Frederik N. Dohr ([fnd](http://github.com/fnd))
+
 ## License
 
 Copyright 2011 innoQ Deutschland GmbH
