@@ -46,7 +46,7 @@ If you make changes to existing code please make sure that the test suite stays 
 
 ## Maintainer & Contributors
 
-iQvoc has beed created and is maintained by [innoQ Deutschland GmbH](http://innoq.com).
+iQvoc has been created and is maintained by [innoQ Deutschland GmbH](http://innoq.com).
 
 * Robert Glaser ([mrreynolds](http://github.com/mrreynolds))
 * Till Schulte-Coerne ([tillsc](http://github.com/tillsc))
