@@ -43,3 +43,8 @@ If you want to help out there are several options:
 * Proposal, discussion and implementation of new features on our mailing list or on the issue tracker
 
 If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
+
+## License
+
+Copyright 2011 innoQ Deutschland GmbH
+Licensed under the Apache License, Version 2.0
