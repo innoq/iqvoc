@@ -33,3 +33,13 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 There are many hooks providing support for your own classes and configuration. The core app
 also works as a Rails Engine. The config residing in `lib/iqvoc.rb` provides a basic
 overview of the possibilities.
+
+## Contributing
+
+If you want to help out there are several options:
+
+* Found a bug? Just create an issue on the [GitHub Issue tracker](https://github.com/innoq/iqvoc/issues) and/or submit a patch by initiating a pull request
+* You're welcome to fix bugs listed under [Issues](https://github.com/innoq/iqvoc/issues)
+* Proposal, discussion and implementation of new features on our mailing list or on the issue tracker
+
+If you make changes to existing code please make sure that the test suite stays green. Please include tests for your additional code contributions.
