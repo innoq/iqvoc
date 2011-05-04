@@ -23,7 +23,11 @@
       <% if Iqvoc::available_languages.length > 1 %>
         <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
         <% Iqvoc::available_languages.each do |lang| %>
-        <li><input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %></li>
+        <li>
+          <label>
+            <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>
+          </label>
+        </li>
         <% end %>
       <% end %>
     </ul>
