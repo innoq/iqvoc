@@ -230,17 +230,17 @@ en:
 
    partials:
      note:
-       missing: Not availiable.
+       missing: Not available.
      collection:
        skos:
          member:
            missing: Not assigned
      label:
        relation:
-         missing: Not availiable.
+         missing: Not available.
      concept:
        relation:
-         missing:  Not availiable.
+         missing:  Not available.
      labeling:
        concept:
        label:
