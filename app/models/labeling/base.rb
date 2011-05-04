@@ -50,7 +50,7 @@ class Labeling::Base < ActiveRecord::Base
   }
 
   scope :by_label_language, lambda { |lang|
-    includes(:target).merge(Label::Base.by_language(lang))
+    includes(:target).merge(Label::Base.by_language(lang.to_s))
   }
 
   # FIXME: There should be a validation checking this
