@@ -42,4 +42,4 @@ If you want to help out there are several options:
 * You're welcome to fix bugs listed under [Issues](https://github.com/innoq/iqvoc/issues)
 * Proposal, discussion and implementation of new features on our mailing list or on the issue tracker
 
-If you make changes to existing code please make sure that the test suite stays green. Please include tests for your additional code contributions.
+If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
