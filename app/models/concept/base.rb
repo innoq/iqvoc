@@ -276,14 +276,11 @@ class Concept::Base < ActiveRecord::Base
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale
-    # If the current thesaurus only supports one PrefLabel language, always choose this.
-    unless Iqvoc::Concept.supports_multi_language_pref_labelings? && lang.present?
-      lang = Iqvoc::Concept.pref_labeling_languages.first
-    end
-    lang = lang.to_s
+    lang = I18n.locale.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
-      Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
+      if hash[label.language]
+        Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
+      end
       hash[label.language.to_s] = label
     end
     if @cached_pref_labels[lang].nil?
