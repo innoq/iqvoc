@@ -51,7 +51,7 @@ class Concepts::HierarchicalController < ConceptsController
     Iqvoc::Concept.base_class.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
 
     @concepts.sort! do |a, b|
-      a.pref_label(params[:pref_label_lang]).to_s <=> b.pref_label(params[:pref_label_lang]).to_s
+      a.pref_label.to_s <=> b.pref_label.to_s
     end
 
     respond_to do |format|
@@ -59,7 +59,7 @@ class Concepts::HierarchicalController < ConceptsController
       format.json do
         @concepts.map! do |c|
           hsh = {
-            :text => CGI.escapeHTML(c.pref_label(params[:pref_label_lang]).to_s),
+            :text => CGI.escapeHTML(c.pref_label.to_s),
             :url  => concept_path(:lang => @active_language, :id => c),
             :id   => c.id
           }

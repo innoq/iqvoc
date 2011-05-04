@@ -275,7 +275,8 @@ class Concept::Base < ActiveRecord::Base
   # code of the language (e.g. :en for English, :fr for French, :de for German).
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
-  def pref_label(lang = nil)
+  def pref_label
+    lang = I18n.locale
     # If the current thesaurus only supports one PrefLabel language, always choose this.
     unless Iqvoc::Concept.supports_multi_language_pref_labelings? && lang.present?
       lang = Iqvoc::Concept.pref_labeling_languages.first
