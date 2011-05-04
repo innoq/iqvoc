@@ -28,6 +28,10 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 6. Boot up the app using `rails s` (or `passenger start` if you use passenger)
 7. Login via `admin@iqvoc` / `cooluri` (requires step 5. to be run)
 
+## Compatibility
+
+iQvoc is fully compatible with Ruby 1.9.2, 1.8.7 and JRuby 1.6.
+
 ## Customization
 
 There are many hooks providing support for your own classes and configuration. The core app
