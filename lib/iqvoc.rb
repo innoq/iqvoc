@@ -37,7 +37,7 @@ module Iqvoc
     'Labeling::SKOS::PrefLabel',
     'Note::Base' ]
 
-  self.available_languages = [:de, :en]
+  self.available_languages = [:en, :de]
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
@@ -90,8 +90,8 @@ module Iqvoc
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.pref_labeling_languages      = [ :en ]
-    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
+    self.pref_labeling_languages      = [:en, :de]
+    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [:de, :en] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
