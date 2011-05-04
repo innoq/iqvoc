@@ -136,11 +136,25 @@ jQuery(document).ready(function($) {
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
 
-	// language selection
+	// language selection -- TODO: move to separate module
 	var langWidget = $("ul.lang-widget")[0];
-	$("input:radio", langWidget).live("change", function(ev) {
-		window.location = $(this).next("a").attr("href"); // XXX: hacky?
+	// primary language (converting links to radio buttons)
+	$("a", langWidget).map(function(i, node) {
+		var link = $(node);
+		var btn = $('<input type="radio" name="primary_language">')
+			.data("uri", link.attr("href"))[0];
+		if(link.hasClass("current")) {
+			btn.checked = true;
+		}
+		var label = $("<label />").text(link.text())
+			.prepend(btn);
+		link.closest("li").empty().append(label);
+		return label[0];
 	});
+	$("input:radio", langWidget).live("change", function(ev) {
+		window.location = $(this).data("uri");
+	});
+	// secondary language
 	$("input:checkbox[value=" + locale + "]", langWidget).closest("li").remove();
 	var toggleSections = function(langSelected) {
 		$(".translation[lang]").each(function(i, node) {
