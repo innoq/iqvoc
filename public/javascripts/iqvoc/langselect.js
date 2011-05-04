@@ -20,7 +20,7 @@ $.extend(LanguageSelector.prototype, {
 	onChange: function(ev) {
 		var el = $(this),
 			widget = el.closest(".widget").data("widget");
-		if(el.attr("checked")) {
+		if(this.checked) {
 			widget.add(el.val());
 		} else {
 			widget.remove(el.val());
@@ -34,12 +34,7 @@ $.extend(LanguageSelector.prototype, {
 		}
 		var self = this;
 		this.checkboxes.each(function(i, node) {
-			var el = $(node);
-			if($.inArray(el.val(), self.langs) !== -1) {
-				el.attr("checked", "checked");
-			} else {
-				el.removeAttr("checked");
-			}
+			node.checked = $.inArray($(node).val(), self.langs) !== -1;
 		});
 		$(document).trigger(this.namespace, { langs: this.langs });
 	},
