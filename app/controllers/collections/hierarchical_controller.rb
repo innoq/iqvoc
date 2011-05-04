@@ -24,7 +24,7 @@ class Collections::HierarchicalController < CollectionsController
     children = root.subcollections
 
     children.sort! do |a, b|
-      a.label.to_s <=> b.label.to_s
+      a.pref_label.to_s <=> b.pref_label.to_s
     end
 
     respond_to do |format|
@@ -33,7 +33,7 @@ class Collections::HierarchicalController < CollectionsController
           {
             :id => collection.id,
             :url => collection_path(:lang => @active_language, :id => collection),
-            :text => CGI.escapeHTML(collection.label.to_s),
+            :text => CGI.escapeHTML(collection.pref_label.to_s),
             :hasChildren => collection.subcollections.any?
           }
         end

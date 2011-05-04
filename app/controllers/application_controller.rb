@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
   def collection_widget_data(collection)
     {
       :id => collection.origin,
-      :name => collection.label.to_s
+      :name => collection.pref_label.to_s
     }
   end
   

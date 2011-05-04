@@ -126,7 +126,7 @@ class Collection::Base < Concept::Base
   end
 
   def label
-    pref_label || labels.first || origin
+    pref_label
   end
 
   # def notes_for_class(note_class)
@@ -138,7 +138,7 @@ class Collection::Base < Concept::Base
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(self)
         errors.add(:base,
-            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.pref_label)
       end
     end
   end

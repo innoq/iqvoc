@@ -49,6 +49,6 @@
 <div class="relation">
   <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
   <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
-    <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.label <=> b.label } %>
+    <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.pref_label <=> b.pref_label } %>
   </ul>
 </div>

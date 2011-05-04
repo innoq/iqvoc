@@ -22,7 +22,7 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @collections = Iqvoc::Collection.base_class.with_pref_labels.all.sort{ |a, b| a.label.to_s <=> b.label.to_s }
+        @collections = Iqvoc::Collection.base_class.with_pref_labels.all.sort{ |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
       end
       format.json do
         @collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))

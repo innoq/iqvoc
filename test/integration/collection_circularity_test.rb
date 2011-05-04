@@ -32,7 +32,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     assert page.has_no_css?(".flash_error")
     assert page.has_content?(I18n.t("txt.controllers.collections.save.success"))
-    assert page.has_link?(coll2.label.to_s,
+    assert page.has_link?(coll2.pref_label.to_s,
         :href => collection_path(coll2, :lang => "de", :format => "html"))
 
     # add coll1 as subcollection of coll2
@@ -44,10 +44,10 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     assert page.has_css?(".flash_error")
     assert page.has_css?("#concept_edit")
     assert page.source.include?( # XXX: page.has_content? didn't work
-        I18n.t("txt.controllers.collections.circular_error") % coll1.label)
+        I18n.t("txt.controllers.collections.circular_error") % coll1.pref_label)
 
     # ensure coll1 is not a subcollection of coll2
     visit collection_path(coll2, :lang => "de", :format => "html")
-    assert page.has_no_link?(coll1.label.to_s)
+    assert page.has_no_link?(coll1.pref_label.to_s)
   end
 end
