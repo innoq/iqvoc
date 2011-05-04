@@ -42,4 +42,19 @@ If you want to help out there are several options:
 * You're welcome to fix bugs listed under [Issues](https://github.com/innoq/iqvoc/issues)
 * Proposal, discussion and implementation of new features on our mailing list or on the issue tracker
 
-If you make changes to existing code please make sure that the test suite stays green. Please include tests for your additional code contributions.
+If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
+
+Tests can be run via `rake test`. We're using capybara-webkit for integration tests with Javascript support.
+
+## Maintainer & Contributors
+
+iQvoc has been created and is maintained by [innoQ Deutschland GmbH](http://innoq.com).
+
+* Robert Glaser ([mrreynolds](http://github.com/mrreynolds))
+* Till Schulte-Coerne ([tillsc](http://github.com/tillsc))
+* Frederik N. Dohr ([fnd](http://github.com/fnd))
+
+## License
+
+Copyright 2011 innoQ Deutschland GmbH
+Licensed under the Apache License, Version 2.0
