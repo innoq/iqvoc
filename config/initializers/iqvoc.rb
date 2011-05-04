@@ -21,3 +21,4 @@ require 'iqvoc/deep_cloning'
 require 'iqvoc/rdf_helper'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
+Rails.application.config.i18n.default_locale = Iqvoc::Concept.pref_labeling_languages.first
