@@ -26,7 +26,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       flash[:notice] = I18n.t("txt.controllers.user_sessions.login_success")
-      redirect_back_or_default localized_root_path(@active_language)
+      redirect_to params[:back_to] || root_path
     else
       render :action => :new
     end
@@ -35,6 +35,6 @@ class UserSessionsController < ApplicationController
   def destroy
     current_user_session.destroy
     flash[:notice] = I18n.t("txt.controllers.user_sessions.logout_success")
-    redirect_back_or_default new_user_session_path(:lang => @active_language)
+    redirect_to root_path
   end
 end
