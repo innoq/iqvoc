@@ -24,7 +24,7 @@ class ConceptTest < ActionDispatch::IntegrationTest
   end
 
   test "showing published concept" do
-    visit "/de/concepts/#{@concept.origin}.html"
+    visit "/en/concepts/#{@concept.origin}.html"
     assert page.has_content?("#{@concept.origin}")
     assert page.has_content?("#{@concept.pref_label}")
   end
