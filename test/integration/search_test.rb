@@ -20,19 +20,27 @@ require 'integration_test_helper'
 class SearchTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept1 = Factory(:concept)
-    @concept1.pref_label.value = "Tree"
-    @concept1.pref_label.save!
-    @concept2 = Factory(:concept)
-    @concept2.pref_label.value = "Forest"
-    @concept2.pref_label.save!
+    # create concepts with labels (avoiding factories due to side-effects)
+    @concepts = [
+      [:en, "Tree"],
+      [:en, "Forest"]
+    ].each_with_index.map { |pref_label, i|
+      lang, name = pref_label
+      concept = Iqvoc::Concept.base_class.create(:origin => "_c00#{i}",
+          :published_at => 3.days.ago)
+      label = Iqvoc::Concept.pref_labeling_class.label_class.create(
+          :origin => "_l00#{i}", :value => name, :language => lang,
+          :published_at => 2.days.ago)
+      Iqvoc::Concept.pref_labeling_class.create(:owner => concept, :target => label)
+      concept
+    }
   end
 
   test "Searching" do
-    visit search_path(:lang => 'de', :format => 'html')
+    visit search_path(:lang => 'en', :format => 'html')
 
     [
-      {:type => 'Labels', :query => 'Forest', :query_type => 'enthält', :amount => 1, :result => 'Forest'}
+      {:type => 'Labels', :query => 'Forest', :query_type => 'contains', :amount => 1, :result => 'Forest'}
     ].each do |q|
       select q[:type], :from => "t"
       fill_in "q", :with => q[:query]
@@ -43,9 +51,10 @@ class SearchTest < ActionDispatch::IntegrationTest
         check cb[:id]
       end
 
-      click_button("Suche")
+      click_button("Search")
 
-      assert page.has_css?("#search_results dt", :count => q[:amount]), "Page has #{page.all(:css, "#search_results dt").count} '#search_results dt' nodes. Should be #{q[:amount]}."
+      assert page.has_css?("#search_results dt", :count => q[:amount]),
+          "Page has #{page.all(:css, "#search_results dt").count} '#search_results dt' nodes. Should be #{q[:amount]}."
 
       within("#search_results dt") do
         assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '#search_results dt'."

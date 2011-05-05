@@ -48,7 +48,7 @@ class SkosImportTest < ActiveSupport::TestCase
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
-    assert_equal "Tier", concepts["_animal"].pref_label.to_s
+    assert_equal "Animal", concepts["_animal"].pref_label.to_s
 
     broader_relation = concepts["_cow"].broader_relations.first
     assert_not_nil broader_relation
