@@ -18,9 +18,9 @@ require 'iqvoc/ability'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension, :except => [:unlocalized_root]
-  before_filter :set_locale, :except => [:unlocalized_root]
-  before_filter :require_user, :except => [:unlocalized_root]
+  before_filter :ensure_extension
+  before_filter :set_locale
+  before_filter :require_user
   
   helper :all
   helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -71,11 +71,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    if request.headers['HTTP_ACCEPT_LANGUAGE'] =~ /#{I18n.available_locales.join('|')}/
-      req_lang = $1
+    if params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
+      I18n.locale = params[:lang]
+    else
+      I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
+      redirect_to url_for(params.merge(:lang => I18n.locale))
     end
-    @active_language = params[:lang] ? params[:lang] : req_lang
-    I18n.locale = @active_language
   end
 
   def concept_widget_data(concept)
