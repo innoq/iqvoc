@@ -17,6 +17,7 @@
 class RdfController < ApplicationController
 
   skip_before_filter :require_user
+  skip_before_filter :set_locale
 
   def show
     scope = params[:published] == "0" ? Iqvoc::Concept.base_class.scoped.unpublished : Iqvoc::Concept.base_class.scoped.published
