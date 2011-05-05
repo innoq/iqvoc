@@ -17,7 +17,7 @@
 Rails.application.routes.draw do
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
-  scope '(:lang)' do
+  scope '(:lang)', :lang => /#{Iqvoc::Concept.pref_labeling_languages.join("|")}/ do
     resource  :user_session
     resources :users
 
