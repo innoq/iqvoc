@@ -15,20 +15,14 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
-  available_locales = /#{Iqvoc::Concept.pref_labeling_languages.map(&:to_s).join('|')}/
-
-  scope '(:lang)' do
-    resources :collections
-    match 'search(.:format)' => 'search_results#index', :as => 'search'
-  end
-
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
-  scope ':lang', :lang => available_locales do
+  scope '(:lang)' do
     resource  :user_session
     resources :users
 
     resources :concepts
+    resources :collections
 
     resources :virtuoso_syncs, :only => [:new, :create]
 
@@ -46,13 +40,11 @@ Rails.application.routes.draw do
 
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
+    
+    match 'search(.:format)' => 'search_results#index', :as => 'search'
 
-    # There must be on named route 'localized_root' in order for an unlocalized root call to work
-    # See ApplicationController#unlocalized_root
-    root :to => 'concepts/hierarchical#index', :as => 'localized_root'
+    root :to => 'concepts/hierarchical#index'
   end
-
-  root :to => 'application#unlocalized_root'
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end
