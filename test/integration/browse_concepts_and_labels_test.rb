@@ -29,16 +29,16 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
   end
 
   test "Selecting a concept in alphabetical view" do
-    visit alphabetical_concepts_path(:lang => 'de', :letter => @concept1.pref_label.to_s[0, 1], :format => :html)
+    visit alphabetical_concepts_path(:lang => 'en', :letter => @concept1.pref_label.to_s[0, 1], :format => :html)
     assert page.has_link?(@concept1.pref_label.to_s), "Concept '#{@concept1.pref_label}' not found on alphabetical concepts list (letter: #{@concept1.pref_label.to_s[0, 1]})"
     assert !page.has_content?(@concept2.pref_label.to_s), "Found concept '#{@concept2.pref_label}' on alphabetical concepts list (letter: #{@concept1.pref_label.to_s[0, 1]})"
     click_link_or_button(@concept1.pref_label.to_s)
-    assert_equal concept_path(@concept1, :lang => 'de', :format => :html), URI.parse(current_url).path
+    assert_equal concept_path(@concept1, :lang => 'en', :format => :html), URI.parse(current_url).path
   end
 
   test "Showing a concept page" do
-    visit concept_url(@concept2, :lang => 'de')
-    assert page.has_content?("Bevorzugtes Label: #{@concept2.pref_label}"), "'Bevorzugtes Label: #{@concept2.pref_label}' missing in concepts#show"
+    visit concept_url(@concept2, :lang => 'en')
+    assert page.has_content?("Preferred label: #{@concept2.pref_label}"), "'Preferred label: #{@concept2.pref_label}' missing in concepts#show"
     assert page.has_link?('Turtle'), "RDF link missing in concepts#show"
     click_link_or_button('Turtle')
     assert page.has_content?(":#{@concept2.origin} a skos:Concept"), "'#{@concept2.origin} a skos:Concept' missing in turtle view"
