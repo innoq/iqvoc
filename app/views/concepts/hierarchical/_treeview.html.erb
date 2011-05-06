@@ -9,7 +9,7 @@
       has_children = concept.narrower_relations.any?
   -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(render_label(concept.pref_label),
+      <%= link_to(concept.pref_label.to_s,
               concept_url(:id => concept)) %>
       <%- if concept.additional_info.present? -%>
         (<%= concept.additional_info %>)

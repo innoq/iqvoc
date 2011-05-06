@@ -16,7 +16,7 @@
 </div>
 <% end %>
 
-<h3><%= t("txt.common.pref_label") %>: <%= render_label(@collection.pref_label) %></h3>
+<h3><%= t("txt.common.pref_label") %>: <%= @collection.pref_label.to_s %></h3>
 
 <%-
 # alternative labels

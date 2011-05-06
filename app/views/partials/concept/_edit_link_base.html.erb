@@ -1,4 +1,4 @@
-<%= link_to truncate(render_label(item.pref_label), :length => 45), (item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)) %>
+<%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)) %>
 <%- if (item.additional_info) -%>
   (<%= item.additional_info %>)
 <%- end -%>

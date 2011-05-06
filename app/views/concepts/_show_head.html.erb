@@ -16,7 +16,7 @@
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
   <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)
 </div>
-<h3><%= t("txt.common.pref_label") %>: <%= render_label(@concept.pref_label) %></h3>
+<h3><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.to_s %></h3>
 <%- if @concept.expired_at -%>
   <h4><%= t('txt.views.concepts.expired_at', :date => l(@concept.expired_at, :format => :long)) %></h4>
 <%- end -%>

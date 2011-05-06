@@ -23,8 +23,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
   
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data,
-    :render_label
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data#, :render_label
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -106,13 +105,13 @@ class ApplicationController < ActionController::Base
     }
   end
   
-  def render_label(label)
-    if label && label.language != I18n.locale.to_s
-      label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
-    else
-      label.to_s
-    end
-  end
+  # def render_label(label)
+  #   if label && label.language != I18n.locale.to_s
+  #     label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
+  #   else
+  #     label.to_s
+  #   end
+  # end
 
   private
 
