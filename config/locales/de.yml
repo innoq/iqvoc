@@ -51,6 +51,7 @@ de:
        checked_out: "Ausgecheckt"
      of: von
      pending: "Lade…"
+     translation_missing_for: "keine Übersetzung für"
 
    part_of_speech:
      plural_form: "Pluralform"
