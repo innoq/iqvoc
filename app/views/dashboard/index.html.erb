@@ -6,7 +6,7 @@
   <%- if can?(:full_export, Concept::Base) -%>
     | <%= t('txt.views.dashboard.full_rdf_export') %> (<%= link_to("Turtle", concepts_url(:format => :ttl)) %>, <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %> )
   <%- end -%>
-<%#= link_to "Virtuoso Sync", new_virtuoso_sync_path(:lang => @active_language) %>
+<%#= link_to "Virtuoso Sync", new_virtuoso_sync_path(:lang => I18n.locale) %>
 </p>
 <table>
   <tr>
@@ -23,7 +23,7 @@
     <%- end -%>
   </tr>
   <% @items.each do |item| -%>
-    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin) %>">
+    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => I18n.locale, :id => item.origin) : concept_path(:published => 0, :lang => I18n.locale, :id => item.origin) %>">
       <td><%= item.class.model_name.human %></td>
       <td>
         <%= render item.class.edit_link_partial_name, :item => item %>

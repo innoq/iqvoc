@@ -2,11 +2,11 @@
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
   <div class="editing_versioning_toolbar">
-    <%= button_to t("txt.views.versioning.versioning_mode"), concept_versions_branch_path(:lang => @active_language, :origin => @concept.origin) %>
+    <%= button_to t("txt.views.versioning.versioning_mode"), concept_versions_branch_path(:lang => I18n.locale, :origin => @concept.origin) %>
   </div>
 <% elsif can?(:read, @new_concept_version) %>
   <div class="editing_versioning_toolbar">
-    <%= link_to t("txt.views.versioning.preview_new_version"), concept_path(:published => 0, :id => @new_concept_version, :lang => @active_language) %>
+    <%= link_to t("txt.views.versioning.preview_new_version"), concept_path(:published => 0, :id => @new_concept_version, :lang => I18n.locale) %>
   </div>
 <% end %>
 

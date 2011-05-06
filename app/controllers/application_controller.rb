@@ -144,7 +144,7 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to localized_root_path(:lang => @active_language)
+      redirect_to localized_root_path(:lang => I18n.locale)
       return false
     end
   end

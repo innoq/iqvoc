@@ -7,7 +7,7 @@
   <%- elsif defined?(label) -%>
     <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
     <div class="relation">
-      <%= raw label.concepts_for_labeling_class(klass).map{ |c| link_to c.origin, concept_path(:lang => @active_language, :id => c), :alt => c.pref_label }.join(', ') %>
+      <%= raw label.concepts_for_labeling_class(klass).map{ |c| link_to c.origin, concept_path(:lang => I18n.locale, :id => c), :alt => c.pref_label }.join(', ') %>
     </div>
   <%- end -%>
 </div>

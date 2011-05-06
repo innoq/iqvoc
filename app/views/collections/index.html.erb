@@ -4,7 +4,7 @@
   <%= link_to t("txt.views.collections.new"), new_collection_path(:lang => I18n.locale) %>
 </p>
 
-<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
+<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => I18n.locale, :format => :json) %>">
   <%-
     # determine non-orphans (items with a parent)
     children = []
