@@ -18,7 +18,7 @@
 
   <% unless @concept.locked? %>
     <%= button_to t("txt.views.versioning.to_edit_mode"), concept_versions_lock_path(:origin => @concept.origin) %>
-    <%= button_to t("txt.views.versioning.delete"), concept_path(:published => 0 :id => @concept.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
+    <%= button_to t("txt.views.versioning.delete"), concept_path(:published => 0, :id => @concept.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
   <% else %>
     <%= button_to t("txt.views.versioning.unlock"), concept_versions_unlock_path(:origin => @concept.origin) if can?(:unlock, @concept) %>
     <%= link_to t("txt.views.versioning.edit_mode"), edit_concept_path(:published => 0, :id => @concept.origin) if can?(:update, @concept) %>
