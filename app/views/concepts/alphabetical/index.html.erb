@@ -2,13 +2,14 @@
 
 <p><%= t("txt.views.concepts.select", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></p>
 
-<div class="letter_selector">
+<ul class="letter_selector">
   <% for alpha in @alphas %>
+  <%= tag("li", { :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) }, true) %>
     <%= link_to alpha,
-      alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase),
-      :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) %>
+      alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase) %>
+  </li>
   <% end %>
-</div>
+</ul>
 
 <ul>
   <%= render :partial => "pref_labeling", :collection => @pref_labelings %>
