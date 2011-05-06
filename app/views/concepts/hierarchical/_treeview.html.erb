@@ -1,5 +1,5 @@
 <%-
-  hcpath = hierarchical_concepts_path(:lang => @active_language,
+  hcpath = hierarchical_concepts_path(:lang => I18n.locale,
       :format => :json,
       :published => params[:published])
 -%>
@@ -9,7 +9,7 @@
       has_children = concept.narrower_relations.any?
   -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(concept.pref_label,
+      <%= link_to(render_label(concept.pref_label),
               concept_url(:id => concept, :lang => I18n.locale)) %>
       <%- if concept.additional_info.present? -%>
         (<%= concept.additional_info %>)
