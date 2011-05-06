@@ -133,18 +133,16 @@ class ApplicationController < ActionController::Base
     
   def require_user
     unless current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.login_required")
-      redirect_to new_user_session_url(:lang => I18n.locale)
+      redirect_to new_user_session_url(:lang => I18n.locale, :back_to => request.fullpath)
       return false
     end
   end
  
   def require_no_user
     if current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to localized_root_path(:lang => I18n.locale)
+      redirect_to root_path(:lang => I18n.locale)
       return false
     end
   end
