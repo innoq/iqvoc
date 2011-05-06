@@ -9,6 +9,9 @@
       alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase) %>
   </li>
   <% end %>
+  <li class="special"> <!-- XXX: bad class name -->
+    <%= link_to t("txt.views.alphabetical_concepts.untranslated"), params.merge(:untranslated => 1) %>
+  </li>
 </ul>
 
 <ul>

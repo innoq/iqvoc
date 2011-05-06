@@ -74,6 +74,7 @@ de:
          login: "Anmelden"
          logout: "Abmelden"
      alphabetical_concepts:
+       untranslated: "Fehlende Übersetzungen"
      hierarchical_concepts:
      concepts:
        expired_at: "Abgelaufen am %{date}"

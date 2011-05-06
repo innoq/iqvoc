@@ -40,6 +40,7 @@ a.unpublished {
 ul.letter_selector { width: 100%; overflow: auto; margin: 0 0 10px; padding: 0; list-style-type: none; }
 .letter_selector li { float: left; margin: 0 0.25em 5px 0; border: 1px solid #318210; background-color: #C0FAB4; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 .letter_selector li.current { background-color: #FEFBDC; border-color: #F3AC40; }
+.letter_selector li.special { float: right; } /* XXX: this is less than ideal */
 .letter_selector a { padding: 2px 5px; }
 
 div.pagination a { border: 1px solid #318210; background-color: #C0FAB4; padding: 2px 5px 2px 5px; margin-right: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }

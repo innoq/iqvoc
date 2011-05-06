@@ -74,6 +74,7 @@ en:
          login: "Login"
          logout: "Logout"
      alphabetical_concepts:
+       untranslated: "Missing Translations"
      hierarchical_concepts:
      concepts:
        expired_at: "expired at %{date}"
