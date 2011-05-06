@@ -74,7 +74,7 @@ class ConceptsController < ApplicationController
     if @concept.generate_origin
       if @concept.save
         flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
-        redirect_to concept_path(:published => 0, :id => @concept.origin, :lang => I18n.locale)
+        redirect_to concept_path(:published => 0, :id => @concept.origin)
       else
         flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
         render :new
@@ -111,7 +111,7 @@ class ConceptsController < ApplicationController
 
     if @concept.update_attributes(params[:concept])
       flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
-      redirect_to concept_path(:published => 0, :id => @concept, :lang => I18n.locale)
+      redirect_to concept_path(:published => 0, :id => @concept)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
       render :action => :edit
@@ -125,10 +125,10 @@ class ConceptsController < ApplicationController
 
     if @new_concept.destroy
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
-      redirect_to dashboard_path(:lang => I18n.locale)
+      redirect_to dashboard_path
     else
       flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
-      redirect_to concept_path(:published => 0, :id => @new_concept, :lang => I18n.locale)
+      redirect_to concept_path(:published => 0, :id => @new_concept)
     end
   end
 

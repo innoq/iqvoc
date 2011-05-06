@@ -1,4 +1,4 @@
-<%= link_to(concept.pref_label, concept_path(:id => concept, :lang => I18n.locale, :published => ((!concept.published? && !concept.published_version_id) ? 0 : nil)), :class => concept.published? ? '' : 'unpublished') %>
+<%= link_to(concept.pref_label, concept_path(:id => concept :published => ((!concept.published? && !concept.published_version_id) ? 0 : nil)), :class => concept.published? ? '' : 'unpublished') %>
 <%- if concept.additional_info -%>
   (<%= concept.additional_info %>)
 <%- end -%>

@@ -10,7 +10,7 @@
   -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
       <%= link_to(render_label(concept.pref_label),
-              concept_url(:id => concept, :lang => I18n.locale)) %>
+              concept_url(:id => concept)) %>
       <%- if concept.additional_info.present? -%>
         (<%= concept.additional_info %>)
       <%- end -%>

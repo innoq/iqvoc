@@ -1,10 +1,10 @@
 <h2><%= Collection::Base.model_name.human(:count => 2) %></h2>
 
 <p>
-  <%= link_to t("txt.views.collections.new"), new_collection_path(:lang => I18n.locale) %>
+  <%= link_to t("txt.views.collections.new"), new_collection_path %>
 </p>
 
-<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => I18n.locale, :format => :json) %>">
+<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
   <%-
     # determine non-orphans (items with a parent)
     children = []

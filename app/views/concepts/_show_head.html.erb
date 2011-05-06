@@ -6,7 +6,7 @@
 
 <h2>
   <%= Iqvoc::Concept.base_class.model_name.human %>:
-  <%= link_to(@concept.origin, concept_path(:lang => I18n.locale, :id => @concept.origin)) %>
+  <%= link_to(@concept.origin, concept_path(:id => @concept.origin)) %>
   <%- if !@concept.published? %>
     (<%= t('txt.common.unpublished_version') %>)
   <%- end -%>

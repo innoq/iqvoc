@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def default_url_options(options = nil)
-    {:format => :html}.merge(options || {})
+    { :format => :html, :lang => I18n.locale }.merge(options || {})
   end
 
   # Force an extension to every url. (LOD)
@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
   def require_user
     unless current_user
       flash[:error] = I18n.t("txt.controllers.application.login_required")
-      redirect_to new_user_session_url(:lang => I18n.locale, :back_to => request.fullpath)
+      redirect_to new_user_session_url(:back_to => request.fullpath)
       return false
     end
   end
@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
   def require_no_user
     if current_user
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to root_path(:lang => I18n.locale)
+      redirect_to root_path
       return false
     end
   end

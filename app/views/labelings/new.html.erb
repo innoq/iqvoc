@@ -1,13 +1,13 @@
 <h2><%= t("txt.views.labelings.new.header") %></h2>
 
-<%= form_for @labeling, :url => labeling_path(:lang => I18n.locale), :html => {:class => "form"} do |f| %>
+<%= form_for @labeling, :url => labeling_path, :html => {:class => "form"} do |f| %>
   <%= render :partial => "form" %>
 <% end %>
 
 <%= content_for :sub_navigation do %>
   <ul>
     <li>
-      <%= back_link edit_label_path(:published => 0, :id => @labeling.target, :lang => I18n.locale), t('txt.views.navigation.back_to_edit_versioned_object') %>
+      <%= back_link edit_label_path(:published => 0, :id => @labeling.target), t('txt.views.navigation.back_to_edit_versioned_object') %>
     </li>
   </ul>
 <% end %>

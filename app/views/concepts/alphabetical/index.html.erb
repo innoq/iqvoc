@@ -5,7 +5,7 @@
 <div class="letter_selector">
   <% for alpha in @alphas %>
     <%= link_to alpha,
-      alphabetical_concepts_path(:lang => I18n.locale, :letter => alpha.to_s.downcase),
+      alphabetical_concepts_path(:letter => alpha.to_s.downcase),
       :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) %>
   <% end %>
 </div>

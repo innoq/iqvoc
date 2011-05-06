@@ -58,7 +58,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = I18n.t('txt.controllers.users.successfully_updated')
-        format.html { redirect_to edit_user_path(:id => @user, :lang => I18n.locale) }
+        format.html { redirect_to edit_user_path(:id => @user) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_path(:lang => I18n.locale) }
+      format.html { redirect_to users_path }
       format.xml  { head :ok }
     end
   end

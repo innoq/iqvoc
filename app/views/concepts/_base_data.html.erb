@@ -1,7 +1,7 @@
 <h3><%= Iqvoc::Concept.base_class.model_name.human %></h3>
 <%= form_for @concept, :as => 'concept',
-        :url => @concept.new_record? ? concepts_path(:lang => I18n.locale) :
-            concept_path(:published => 0, :id => @concept, :lang => I18n.locale),
+        :url => @concept.new_record? ? concepts_path :
+            concept_path(:published => 0, :id => @concept),
         :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
