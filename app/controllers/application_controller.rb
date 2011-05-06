@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
   end
   
   def render_label(label)
-    if label.language != I18n.locale.to_s
+    if label && label.language != I18n.locale.to_s
       label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
     else
       label.to_s
