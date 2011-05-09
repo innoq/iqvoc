@@ -8,7 +8,9 @@ module Iqvoc
       Iqvoc::Concept.match_classes
 
     def initialize(file, default_namespace_url)
-      raise "Iqvoc::SkosImporter#import: Parameter 'file' should be a File or an Array." unless file.methods.include?('each')
+      unless file.is_a?(File) || file.is_a?(Array)
+        raise "Iqvoc::SkosImporter#import: Parameter 'file' should be a File or an Array."
+      end
 
       @prefixes = {
         "http://www.w3.org/2004/02/skos/core#" => "skos:",
