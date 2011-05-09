@@ -48,6 +48,6 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     # ensure coll1 is not a subcollection of coll2
     visit collection_path(coll2, :lang => "de", :format => "html")
-    assert page.has_no_link?(coll1.pref_label.to_s)
+    assert page.has_no_css?(".relation ul.treeview li") # XXX: too unspecific
   end
 end
