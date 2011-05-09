@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
   
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data#, :render_label
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def default_url_options(options = nil)
-    {:format => :html}.merge(options || {})
+    { :format => :html, :lang => I18n.locale }.merge(options || {})
   end
 
   # Force an extension to every url. (LOD)
@@ -104,6 +104,14 @@ class ApplicationController < ActionController::Base
       :name => label.value
     }
   end
+  
+  # def render_label(label)
+  #   if label && label.language != I18n.locale.to_s
+  #     label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
+  #   else
+  #     label.to_s
+  #   end
+  # end
 
   private
 
@@ -124,18 +132,16 @@ class ApplicationController < ActionController::Base
     
   def require_user
     unless current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.login_required")
-      redirect_to new_user_session_url(:lang => I18n.locale)
+      redirect_to new_user_session_url(:back_to => request.fullpath)
       return false
     end
   end
  
   def require_no_user
     if current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to localized_root_path(:lang => @active_language)
+      redirect_to root_path
       return false
     end
   end

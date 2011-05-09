@@ -51,6 +51,7 @@ en:
        checked_out: "Checked out"
      of: of
      pending: "Loading…"
+     translation_missing_for: "translation missing for"
 
    part_of_speech:
      plural_form: "Plural form"

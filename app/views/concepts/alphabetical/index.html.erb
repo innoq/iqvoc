@@ -5,8 +5,7 @@
 <ul class="letter_selector">
   <% for alpha in @alphas %>
   <%= tag("li", { :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) }, true) %>
-    <%= link_to alpha,
-      alphabetical_concepts_path(:lang => @active_language, :letter => alpha.to_s.downcase) %>
+    <%= link_to alpha, alphabetical_concepts_path(:letter => alpha.to_s.downcase) %>
   </li>
   <% end %>
   <li class="special"> <!-- XXX: bad class name -->

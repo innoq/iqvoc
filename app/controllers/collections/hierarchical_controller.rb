@@ -32,7 +32,7 @@ class Collections::HierarchicalController < CollectionsController
         children.map! do |collection|
           {
             :id => collection.id,
-            :url => collection_path(:lang => @active_language, :id => collection),
+            :url => collection_path(:id => collection),
             :text => CGI.escapeHTML(collection.pref_label.to_s),
             :hasChildren => collection.subcollections.any?
           }

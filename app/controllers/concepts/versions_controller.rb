@@ -35,14 +35,14 @@ class Concepts::VersionsController < ApplicationController
             handle_virtuoso_exception(e.message)
           end
           flash[:notice] = t("txt.controllers.versioning.published")
-          redirect_to concept_path(:lang => @active_language, :id => new_version)
+          redirect_to concept_path(:id => new_version)
         else
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
-          redirect_to concept_path(:published => 0, :id => new_version, :lang => @active_language)
+          redirect_to concept_path(:published => 0, :id => new_version)
         end
       else
         flash[:error] = t("txt.controllers.versioning.merged_delete_error")
-        redirect_to concept_path(:published => 0, :id => new_version, :lang => @active_language)
+        redirect_to concept_path(:published => 0, :id => new_version)
       end
     end
   end
@@ -58,7 +58,7 @@ class Concepts::VersionsController < ApplicationController
       new_version.save!
     end
     flash[:notice] = t("txt.controllers.versioning.branched")
-    redirect_to edit_concept_path(:published => 0, :id => new_version, :lang => @active_language, :check_associations_in_editing_mode => true)
+    redirect_to edit_concept_path(:published => 0, :id => new_version, :check_associations_in_editing_mode => true)
   end
 
   def lock
@@ -71,7 +71,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.save!
 
     flash[:notice] = t("txt.controllers.versioning.locked")
-    redirect_to edit_concept_path(:published => 0, :id => new_version, :lang => @active_language)
+    redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
   def unlock
@@ -84,7 +84,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.save!
 
     flash[:notice] = t("txt.controllers.versioning.unlocked")
-    redirect_to concept_path(:published => 0, :id => new_version, :lang => @active_language)
+    redirect_to concept_path(:published => 0, :id => new_version)
   end
 
   def consistency_check
@@ -95,10 +95,10 @@ class Concepts::VersionsController < ApplicationController
 
     if concept.valid_with_full_validation?
       flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
-      redirect_to concept_path(:published => 0, :id => concept, :lang => @active_language)
+      redirect_to concept_path(:published => 0, :id => concept)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      redirect_to edit_concept_path(:published => 0, :id => concept, :lang => @active_language, :full_consistency_check => "1")
+      redirect_to edit_concept_path(:published => 0, :id => concept, :full_consistency_check => "1")
     end
   end
 
@@ -111,7 +111,7 @@ class Concepts::VersionsController < ApplicationController
     concept.to_review!
     concept.save!
     flash[:notice] = t("txt.controllers.versioning.to_review_success")
-    redirect_to concept_path(:published => 0, :lang => @active_language, :id => concept)
+    redirect_to concept_path(:published => 0, :id => concept)
   end
 
 end

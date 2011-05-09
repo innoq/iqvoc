@@ -1,9 +1,9 @@
 <ul id="controls" class="menu">
   <li id="auth_controls">
     <% if current_user %>
-      <%= link_to t("txt.views.layouts.application.logout"), user_session_path(:lang => I18n.locale), :method => :delete, :class => "button" %>
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete, :class => "button" %>
     <% else %>
-      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:lang => I18n.locale, :back_to => request.fullpath), :class => "button" %>
+      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => request.fullpath), :class => "button" %>
       <ul class="hidden"><li><%= t("txt.common.pending") %></li></ul>
     <% end %>
   </li>

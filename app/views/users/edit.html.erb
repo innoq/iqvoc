@@ -2,13 +2,13 @@
 
 <%= error_messages_for @user %>
 
-<%= form_for(@user, :url => user_path(:id => @user, :lang => @active_language), :html => {:class => "form"}) do |f| %>
+<%= form_for(@user, :url => user_path(:id => @user), :html => {:class => "form"}) do |f| %>
   <%= render :partial => "form", :locals => { :f => f } %>
 <% end %>
 
 <%= content_for :sub_navigation do %>
   <ul>
-    <li><%= back_link users_path(:lang => @active_language) %></li>
-    <li><%= link_to t('txt.views.users.new_link'), new_user_path(:lang => @active_language)%></li>
+    <li><%= back_link users_path %></li>
+    <li><%= link_to t('txt.views.users.new_link'), new_user_path%></li>
   </ul>
 <% end %>

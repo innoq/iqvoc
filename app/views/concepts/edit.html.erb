@@ -3,7 +3,7 @@
 
 <h2>
   <%= Iqvoc::Concept.base_class.model_name.human %>:
-  <%= link_to(@concept.origin, concept_path(:lang => @active_language, :id => @concept.origin)) %>
+  <%= link_to(@concept.origin, concept_path(:id => @concept.origin)) %>
 </h2>
 
 <% if @association_objects_in_editing_mode.present? %>
@@ -13,8 +13,7 @@
     <% @association_objects_in_editing_mode[:labelings].each do |labeling| %>
       <%= labeling.type.demodulize + ': ' +
               link_to(labeling.target.value,
-                  label_path(:published => 0, :lang => @active_language,
-                      :id => labeling.target)) +
+                  label_path(:published => 0, :id => labeling.target)) +
               user_and_phone_number(t("txt.common.editor"),
                   labeling.target.locking_user.name,
                   labeling.target.locking_user.telephone_number) %>
@@ -27,8 +26,7 @@
     <% @association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>
       <%= concept_relation.type.to_s + ': ' +
               link_to(concept_relation.target.pref_label.to_s,
-                  concept_path(:published => 0, :lang => @active_language,
-                      :id => concept_relation.target)) +
+                  concept_path(:published => 0, :id => concept_relation.target)) +
               user_and_phone_number(t("txt.common.editor"),
                   concept_relation.target.locking_user.name,
                    concept_relation.target.locking_user.telephone_number) %>
@@ -43,8 +41,7 @@
 <%= content_for :sub_navigation do %>
   <ul>
     <li>
-      <%= back_link concept_path(:published => 0, :lang => @active_language,
-              :id => @concept), t('txt.views.navigation.back_to_preview') %>
+      <%= back_link concept_path(:published => 0, :id => @concept), t('txt.views.navigation.back_to_preview') %>
     </li>
   </ul>
 <% end %>

@@ -39,14 +39,6 @@ module ApplicationHelper
     end
   end
 
-  def render_label(label)
-    if label.new_record?
-     "-"
-    else
-      label.to_s
-    end
-  end
-
   def user_and_phone_number(label, name, telephone_number)
     ' (' + label + ':' + name + ' (' + (telephone_number.present? ? telephone_number : '') + '))'    
   end

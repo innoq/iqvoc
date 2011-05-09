@@ -23,7 +23,7 @@
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
   <%= text_field_tag "concept[inline_member_concept_origins]", @collection.inline_member_concept_origins.join(','),
     :class => "token_input_widget",
-    :"data-query-url" => concepts_path(:lang => I18n.locale, :format => :json),
+    :"data-query-url" => concepts_path(:format => :json),
     :"data-options" => {:prePopulate => @collection.inline_member_concepts.map{|c| concept_widget_data(c)}}.to_json %>
 </fieldset>
 
@@ -31,7 +31,7 @@
   <legend><%= Collection::Base.model_name.human(:count => 2) %></legend>
   <%= text_field_tag "concept[inline_member_collection_origins]", @collection.inline_member_collection_origins.join(','),
     :class => "token_input_widget",
-    :"data-query-url" => collections_path(:lang => I18n.locale, :format => :json),
+    :"data-query-url" => collections_path(:format => :json),
     :"data-exclude" => @collection.origin,
     :"data-options" => {:prePopulate => @collection.inline_member_collections.map{|c| collection_widget_data(c)}}.to_json %>
 </fieldset>
