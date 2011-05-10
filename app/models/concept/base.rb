@@ -381,10 +381,12 @@ class Concept::Base < ActiveRecord::Base
   def pref_label_existence
      languages = pref_labels.map(&:language)
     if @full_validation
-      if languages.count == 0 # Taking the languages instead of the self.pref_labels is not what is ment here. But it works as expected
+      if languages.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
         errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
       else
-        errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")) unless languages.include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+        if not languages.include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+          errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
+        end
       end
     end
     errors.add(:base, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")) unless languages.uniq.size == languages.size
