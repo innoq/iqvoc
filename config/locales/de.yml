@@ -69,6 +69,12 @@ de:
 
    views:
      layouts:
+       sections:
+         main: Basisdaten
+         labels: Bezeichner
+         relations: Beziehungen
+         notes: Anmerkungen
+         matches: Beziehungen zu anderen Ontologien
        application:
          header: "innoQ Vocabulary Management"
          select_language: "Sprache auswählen"

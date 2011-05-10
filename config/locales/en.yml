@@ -74,6 +74,12 @@ en:
          select_language: "Choose language"
          login: "Login"
          logout: "Logout"
+       sections:
+         main: Main
+         labels: Labels
+         relations: Relations
+         notes: Notes
+         matches: Concept mappings
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
