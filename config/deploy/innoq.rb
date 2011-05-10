@@ -17,7 +17,7 @@
 @capistrano_history ||= {}
 
 # main details
-servername = "vs23iqvoc.h001.innoq.com"
+servername = "iqvoc.innoq.com"
 role :web, servername
 role :app, servername
 role :db,  servername, :primary => true
