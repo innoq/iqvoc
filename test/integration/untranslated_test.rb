@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'test_helper'
+require 'integration_test_helper'
+
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
@@ -27,7 +30,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
     ].each_with_index.map { |pref_labels, i|
       en_name, de_name = pref_labels
       labels = { :en => en_name }
-      if de_name:
+      if de_name
         labels[:de] = de_name
       end
 
