@@ -58,7 +58,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   test "Showing a concept page" do
     visit concept_url(@concepts[1], :lang => 'en')
-    assert page.has_content?("Preferred label: #{@concepts[1].pref_label}"),
+    assert page.has_content?("#{@concepts[1].pref_label}"),
         "'Preferred label: #{@concepts[1].pref_label}' missing in concepts#show"
     assert page.has_link?('Turtle'), "RDF link missing in concepts#show"
     click_link_or_button('Turtle')
