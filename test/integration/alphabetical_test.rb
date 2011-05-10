@@ -25,7 +25,7 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     ].each_with_index.map { |pref_labels, i|
       en_name, de_name = pref_labels
       labels = { :en => en_name }
-      if de_name:
+      if de_name
         labels[:de] = de_name
       end
 
