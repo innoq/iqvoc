@@ -315,7 +315,9 @@ de:
        value_error: "Die Vorlageform muss ausgefüllt sein!"
      concept:
        version_error: "Es existieren schon zwei Versionen dieses Konzepts"
-       pref_label_error: "Es muss ein bevorzugtes Label angegeben werden!"
+       no_pref_label_error: "Es muss mindestens ein bevorzugtes Label angegeben werden."
+       main_pref_label_language_missing_error: "Es muss mindestens ein bevorzugtes Label in der Hauptsprache des Thesaurus existieren."
+       pref_labels_with_same_languages_error: "Es darf nur jeweils ein bevorzugtes Label zu einer Sprache geben."
        association_pref_labels_unpublished: "Das bevorzugte Label muss veröffentlicht sein."
        association_alt_labels_unpublished: "Alternative Labels müssen veröffentlicht sein."
        association_hidden_labels_unpublished: "Versteckte Labels müssen veröffentlicht sein."

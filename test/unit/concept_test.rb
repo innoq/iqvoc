@@ -29,6 +29,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "should not save concept with empty preflabel" do
+    Factory.create(:concept).save_with_full_validation! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
       Factory.create(:concept, :labelings => []).save_with_full_validation!
     end
@@ -39,6 +40,56 @@ class ConceptTest < ActiveSupport::TestCase
     highest_concept = Concept::Base.select(:origin).order("origin DESC").first
     concept.generate_origin
     concept.save!
-    assert_equal sprintf("_%08d", highest_concept.origin.to_i + 1), concept.origin
+    assert concept.origin =~ /^_([0-9]+)$/
+    assert $1.to_i > highest_concept.origin.to_i
   end
+
+  test "concepts without pref_labels should be saveable but not publishable" do
+    concept =  Factory.create(:concept, :labelings => [])
+    assert_equal [], concept.pref_labels
+    assert concept.valid?
+    assert !concept.valid_with_full_validation?
+  end
+
+  test "pref_labels must have valid languages" do
+    concept = Factory.create(:concept)
+    assert_equal 1, concept.pref_labels.count
+    assert concept.valid_with_full_validation?
+
+    concept.pref_labels.first.language = "öö"
+    assert !concept.valid?
+  end
+
+  test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
+    concept = Factory.create(:concept)
+    assert_equal 1, concept.pref_labels.count
+    assert concept.valid_with_full_validation?
+
+    concept.pref_labels.first.language = Iqvoc::Concept.pref_labeling_languages.second
+    assert !concept.valid_with_full_validation?
+  end
+
+  test "concept shouldn't have more then one pref label of the same language" do
+    concept = Factory.build(:concept)
+    assert concept.valid?
+    concept.labelings << Factory.build(:pref_labeling)
+    concept.save!
+    concept.reload
+
+    assert_equal 2, concept.pref_labels.count
+    assert_equal concept.pref_labels.first.language, concept.pref_labels.second.language
+    assert !concept.valid?
+  end
+
+  test "concepts can have multiple preferred labels" do
+    concept = Factory.build(:concept)
+    concept.labelings << Factory.build(:pref_labeling, :target => Factory(:pref_label, :language => Iqvoc::Concept.pref_labeling_languages.second))
+    concept.save!
+    concept.reload
+
+    assert_equal 2, concept.pref_labels.count
+    assert_not_equal concept.pref_labels.first.language, concept.pref_labels.second.language
+    assert concept.valid_with_full_validation?
+  end
+
 end
