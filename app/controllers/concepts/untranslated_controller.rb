@@ -39,7 +39,8 @@ class Concepts::UntranslatedController < ConceptsController
           pref_labels.language = "%s"' % I18n.locale).
       where('labelings.type = "%s"' % Iqvoc::Concept.pref_labeling_class_name).
       where('pref_labels.id IS NULL').
-      where('labels.language = "%s"' % main_lang)
+      where('labels.language = "%s"' % main_lang).
+      includes(:pref_labeled_concepts)
 
     if I18n.locale == main_lang
       flash[:error] = I18n.t("txt.views.untranslated_concepts.unavailable")
