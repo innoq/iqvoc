@@ -11,7 +11,7 @@
     (<%= t('txt.common.unpublished_version') %>)
   <%- end -%>
 </h2>
-<div id="format_link_ttl">
+<div id="abstract_uri">
   <%= rdf_url(@concept.origin, :format => nil, :published => published_param, :lang => nil) %>
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
   <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)

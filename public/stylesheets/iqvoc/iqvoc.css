@@ -201,7 +201,7 @@ ul#navi_main li {
   list-style-type: none;
 }
 
-#format_link_ttl {
+#abstract_uri {
   display: block;
   background: url('http://www.w3.org/RDF/icons/rdf_flyer.24') no-repeat;
   padding: 4px 0 2px 25px;

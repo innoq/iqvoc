@@ -4,7 +4,7 @@
 
 <h2><%= t('txt.views.search_results.header') %></h2>
 <%- if @results -%>
-  <div id="format_link_ttl">
+  <div id="abstract_uri">
     <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
   </div>
 <%- end -%>

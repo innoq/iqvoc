@@ -4,7 +4,7 @@
 <% end -%>
 
 <h2><%= @collection.class.model_name.human %>: <%= link_to(@collection.origin, collection_url(:id => @collection)) %></h2>
-<div id="format_link_ttl">
+<div id="abstract_uri">
   <%= collection_url(@collection.origin, :format => nil, :lang => nil) %>
   (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
 </div>
