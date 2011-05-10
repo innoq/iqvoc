@@ -6,8 +6,8 @@
 
 <h2>
   <%= Iqvoc::Concept.base_class.model_name.human %>:
-  <%= link_to(@concept.origin, concept_path(:id => @concept.origin)) %>
-  <%- if !@concept.published? %>
+  <%= @concept.pref_label.to_s %>
+  <%- unless @concept.published? %>
     (<%= t('txt.common.unpublished_version') %>)
   <%- end -%>
 </h2>
@@ -16,7 +16,6 @@
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
   <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)
 </div>
-<h3><%= t("txt.common.pref_label") %>: <%= @concept.pref_label.to_s %></h3>
 <%- if @concept.expired_at -%>
   <h4><%= t('txt.views.concepts.expired_at', :date => l(@concept.expired_at, :format => :long)) %></h4>
 <%- end -%>
