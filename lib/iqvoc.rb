@@ -86,7 +86,7 @@ module Iqvoc
 
     self.base_class_name              = 'Concept::SKOS::Base'
 
-    self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Poly'
+    self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Mono'
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
