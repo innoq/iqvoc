@@ -23,7 +23,7 @@ class Collection::Member::Concept < Collection::Member::Base
   end
 
   def self.view_section_sort_key(obj)
-    100
+    250
   end
 
   def self.partial_name(obj)
