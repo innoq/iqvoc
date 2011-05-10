@@ -27,8 +27,10 @@ class Label::Base < ActiveRecord::Base
   # ********** Relations
 
   has_many :labelings, :foreign_key => 'target_id', :class_name => "Labeling::Base"
-
   has_many :concepts, :through => :labelings, :source => :owner
+
+  has_many :pref_labelings, :foreign_key => 'target_id', :class_name => Iqvoc::Concept.pref_labeling_class_name
+  has_many :pref_labeled_concepts, :through => :pref_labelings, :source => :owner
 
   # ********* Scopes
 

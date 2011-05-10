@@ -377,13 +377,21 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def pref_label_existence
-    if @full_validation == true
-      errors.add(:base, I18n.t("txt.models.concept.pref_label_error")) if pref_labels.count == 0
+     languages = pref_labels.map(&:language)
+    if @full_validation
+      if languages.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
+        errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
+      else
+        if not languages.include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+          errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
+        end
+      end
     end
+    errors.add(:base, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")) unless languages.uniq.size == languages.size
   end
 
   def associations_must_be_published
-    if @full_validation == true
+    if @full_validation
       [:labels, :related_concepts].each do |method|
         if self.send(method).unpublished.any?
           errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")

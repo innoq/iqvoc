@@ -23,6 +23,8 @@ end
 
 Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
   c.sequence(:origin) { |n| "_100000#{n}" }
+  c.published_at 3.days.ago
+  c.labelings { |labelings| [labelings.association(:pref_labeling)] }
 end
 
 Factory.define :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
