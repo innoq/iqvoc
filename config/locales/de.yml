@@ -75,7 +75,9 @@ de:
          login: "Anmelden"
          logout: "Abmelden"
      alphabetical_concepts:
-       untranslated: "Fehlende Übersetzungen"
+     untranslated_concepts:
+       caption: "Fehlende Übersetzungen"
+       unavailable: "Fehlende Übersetzungen für die Hauptsprache nicht verfügbar."
      hierarchical_concepts:
      concepts:
        expired_at: "Abgelaufen am %{date}"

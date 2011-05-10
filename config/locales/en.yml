@@ -75,7 +75,9 @@ en:
          login: "Login"
          logout: "Logout"
      alphabetical_concepts:
-       untranslated: "Missing Translations"
+     untranslated_concepts:
+       caption: "Missing Translations"
+       unavailable: "Missing translations not available for principal language."
      hierarchical_concepts:
      concepts:
        expired_at: "expired at %{date}"

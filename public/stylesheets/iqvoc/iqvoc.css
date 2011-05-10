@@ -208,6 +208,10 @@ ul#navi_main li {
   margin-bottom: 20px;
 }
 
+#untranslated {
+  float: right;
+}
+
 div.editing_versioning_toolbar {
   margin-bottom: 20px;
   border: 1px solid #F3AC40;

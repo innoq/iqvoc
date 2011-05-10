@@ -1,5 +1,11 @@
 <h2><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h2>
 
+<% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
+<%= link_to t("txt.views.untranslated_concepts.caption"),
+        untranslated_concepts_path(:letter => params[:letter]),
+        :id => "untranslated" %>
+<% end %>
+
 <p><%= t("txt.views.concepts.select", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></p>
 
 <ul class="letter_selector">
@@ -8,9 +14,6 @@
     <%= link_to alpha, alphabetical_concepts_path(:letter => alpha.to_s.downcase) %>
   </li>
   <% end %>
-  <li class="special"> <!-- XXX: bad class name -->
-    <%= link_to t("txt.views.alphabetical_concepts.untranslated"), params.merge(:untranslated => 1) %>
-  </li>
 </ul>
 
 <ul>

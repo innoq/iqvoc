@@ -141,18 +141,17 @@ jQuery(document).ready(function($) {
 	// primary language (converting links to radio buttons)
 	$("a", langWidget).map(function(i, node) {
 		var link = $(node);
-		var btn = $('<input type="radio" name="primary_language">')
-			.data("uri", link.attr("href"))[0];
+		var el = link.closest("li");
+		var btn = $('<input type="radio" name="primary_language">');
 		if(link.hasClass("current")) {
-			btn.checked = true;
+			btn[0].checked = true;
 		}
-		var label = $("<label />").text(link.text())
-			.prepend(btn);
-		link.closest("li").empty().append(label);
+		var label = $("<label />").append(btn).append(link);
+		el.append(label);
 		return label[0];
 	});
 	$("input:radio", langWidget).live("change", function(ev) {
-		window.location = $(this).data("uri");
+		window.location = $(this).closest("label").find("a").attr("href");
 	});
 	// secondary language
 	$("input:checkbox[value=" + locale + "]", langWidget).closest("li").remove();

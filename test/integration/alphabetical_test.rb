@@ -14,16 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
+class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
     # create concepts with pref labels (avoiding factories due to side-effects)
     @labels = []
     @concepts = [
       ["Xen1", "Xde1"],
-      ["Xen2"],
-      ["Yen1", "Yde1"],
-      ["Yen2"]
+      ["Xen2"]
     ].each_with_index.map { |pref_labels, i|
       en_name, de_name = pref_labels
       labels = { :en => en_name }
@@ -46,34 +44,25 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
       concept
     }
-
-    # reuse exiting label as alt label
-    Iqvoc::Concept.further_labeling_classes.first.first. # XXX: .first.first hacky!?
-        create(:owner => @concepts.first, :target => @labels.last)
   end
 
-  test "showing only concepts without pref label in respective language" do
-    visit untranslated_concepts_path(:lang => :de, :letter => "x", :format => :html)
+  test "showing only concepts with a pref label in respective language" do
+    visit alphabetical_concepts_path(:lang => :en, :letter => "x", :format => :html)
+    lists = page.all("#content ul")
+    assert_equal 2, lists.length
+    concepts = lists[1].all("li") # XXX: too unspecific
+
+    assert_equal :en, I18n.locale
+    assert_equal 2, concepts.length
+    assert_equal "Xen1", concepts[0].text.strip
+    assert_equal "Xen2", concepts[1].text.strip
+
+    visit alphabetical_concepts_path(:lang => :de, :letter => "x", :format => :html)
     concepts = page.all("#content ul")[1].all("li") # XXX: too unspecific
 
     assert_equal :de, I18n.locale
     assert_equal 1, concepts.length
-    assert_equal 1, concepts[0].all("a").length
-    assert_equal "Xen2", concepts[0].find("a").text.strip
-
-    visit untranslated_concepts_path(:lang => :de, :letter => "y", :format => :html)
-    concepts = page.all("#content ul")[1].all("li") # XXX: too unspecific
-
-    assert_equal 1, concepts.length
-    assert_equal "Yen2", concepts[0].find("a").text.strip
-  end
-
-  test "showing error message for thesaurus's main language" do
-    visit untranslated_concepts_path(:lang => :en, :letter => "x", :format => :html)
-
-    assert_equal :en, I18n.locale
-    assert_equal 1, page.all("#content p.flash_error").length
-    assert_equal 0, page.all("#content ul").length
+    assert_equal "Xde1", concepts[0].text.strip
   end
 
 end
