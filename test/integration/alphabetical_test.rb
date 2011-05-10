@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'test_helper'
+require 'integration_test_helper'
+
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
