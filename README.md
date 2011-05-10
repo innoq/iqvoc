@@ -44,7 +44,7 @@ If you want to help out there are several options:
 
 * Found a bug? Just create an issue on the [GitHub Issue tracker](https://github.com/innoq/iqvoc/issues) and/or submit a patch by initiating a pull request
 * You're welcome to fix bugs listed under [Issues](https://github.com/innoq/iqvoc/issues)
-* Proposal, discussion and implementation of new features on our mailing list [iqvoc@lists.innoq.com]((iqvoc@lists.innoq.com)) or on the issue tracker
+* Proposal, discussion and implementation of new features on our mailing list [iqvoc@lists.innoq.com](iqvoc@lists.innoq.com) or on the issue tracker
 
 If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
 
