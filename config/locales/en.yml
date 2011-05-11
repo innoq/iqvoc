@@ -36,8 +36,8 @@ en:
      delete: "Delete"
      attributes: "Properties"
      editor: "Editor"
-     referenced_labels: "Referenced Labels are on edit:"
-     referenced_concepts: "Referenced Concepts are on edit:"
+     referenced_labels: "Referenced Labels are currently being edited:"
+     referenced_concepts: "Referenced Concepts are currently beign edited:"
      association_not_found: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      default_ajax_error: "Error"
      to_review: "To review"
@@ -230,17 +230,17 @@ en:
 
    partials:
      note:
-       missing: Not availiable.
+       missing: Not available.
      collection:
        skos:
          member:
            missing: Not assigned
      label:
        relation:
-         missing: Not availiable.
+         missing: Not available.
      concept:
        relation:
-         missing:  Not availiable.
+         missing:  Not available.
      labeling:
        concept:
        label:
@@ -320,8 +320,10 @@ en:
        version_error: "New Label version already exists."
        value_error: "Literal form must be given."
      concept:
-       version_error: "New Concept version already exists!"
-       pref_label_error: "One German preferred Label must be selected!"
+       version_error: "New Concept version already exists."
+       no_pref_label_error: "At least one preferred label must be specified."
+       main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."
+       pref_labels_with_same_languages_error: "There must be only one preferred Label per language."
        association_pref_labels_unpublished: "The preferred Label has to be published."
        association_alt_labels_unpublished: "Alternative labels have to be published."
        association_hidden_labels_unpublished: "Hidden labels have to be published."

@@ -16,6 +16,18 @@
 
 require 'test_helper'
 
-class CollectionLabelTest < ActiveSupport::TestCase
+class LabelTest < ActiveSupport::TestCase
+  def setup
+    @concept1 = Factory.create(:concept)
+    @concept2 = Factory.create(:concept)
+    Iqvoc::Concept.further_labeling_classes.first.first.create!(:owner => @concept1, :target => @concept2.pref_label) # Assign the pref_label of @concept2 as AltLabel to @concept1
+  end
+
+  test "relations" do
+    label = @concept2.pref_label
+    assert_not_nil label
+    assert_equal [@concept1.id, @concept2.id].sort, label.concepts.map(&:id).sort
+    assert_equal [@concept2.id].sort, label.pref_labeled_concepts.map(&:id).sort
+  end
 
 end

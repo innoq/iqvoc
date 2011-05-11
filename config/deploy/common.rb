@@ -57,9 +57,5 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/db/"
     put config.to_yaml, "#{shared_path}/config/database.yml"
   end
-  
-  desc "Copy vendor specific Gemfile"
-  task :copy_gemfile, :roles => :app do
-    run "cp #{release_path}/Gemfile.#{vendor}_demo #{release_path}/Gemfile"
-  end
+
 end
