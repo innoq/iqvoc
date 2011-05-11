@@ -84,6 +84,7 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 #controls ul a {
   display: inline;
+  color: #318210;
 }
 
 #controls h3 {
