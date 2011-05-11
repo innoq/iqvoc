@@ -64,7 +64,7 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.view_section_sort_key(obj)
-    100
+    200
   end
 
   def self.partial_name(obj)
