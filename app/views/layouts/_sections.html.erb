@@ -1,8 +1,16 @@
-<%- sections.each do |section_key| -%>
-  <%- if data[section_key] -%>
-    <h3><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></h3>
-    <%- data[section_key].keys.sort.each do |sort_key| -%>
-      <%= raw data[section_key][sort_key] %>
+<div class="tabs">
+  <ul>
+    <%- sections.select{|s| data[s] }.each do |section_key| -%>
+      <li>
+        <%= link_to(t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize), "##{section_key}") %>
+      </li>
     <%- end -%>
+  </ul>
+  <%- sections.select{|s| data[s] }.each do |section_key| -%>
+    <div id="<%= section_key %>">
+      <%- data[section_key].keys.sort.each do |sort_key| -%>
+        <%= raw data[section_key][sort_key] %>
+      <%- end -%>
+    </div>
   <%- end -%>
-<%- end -%>
+</div>
