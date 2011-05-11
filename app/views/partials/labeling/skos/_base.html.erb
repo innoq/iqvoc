@@ -1,13 +1,13 @@
-<%= tag("div", { :class => "relation translation", :lang => defined?(concept) ? lang || nil : nil }, true) %>
+<%= content_tag("div", { :class => "relation translation", :lang => defined?(concept) ? lang || nil : nil }, true) do %>
   <%- if defined?(concept) -%>
     <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
     <div class="relation-body">
-      <%= concept.labels_for_labeling_class_and_language(klass, lang).map(&:value).join(', ') %>
+      <%= concept.labels_for_labeling_class_and_language(klass, lang).map(&:value).join(', ').presence || "-" %>
     </div>
   <%- elsif defined?(label) -%>
     <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
     <div class="relation">
-      <%= raw label.concepts_for_labeling_class(klass).map{ |c| link_to c.origin, concept_path(:id => c), :alt => c.pref_label }.join(', ') %>
+      <%= raw label.concepts_for_labeling_class(klass).map{ |c| link_to c.origin, concept_path(:id => c), :alt => c.pref_label }.join(', ').presence || "-" %>
     </div>
   <%- end -%>
-</div>
+<%- end -%>
