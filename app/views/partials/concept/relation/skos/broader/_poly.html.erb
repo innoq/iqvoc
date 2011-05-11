@@ -3,7 +3,7 @@
   <div class="relation-body">
     <% if concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class).length > 0 %>
       <div class="selector">
-        <%= treeview(@concept.broader_relations.map { |rel| rel.target }) %>
+        <%= treeview(@concept.broader_relations.map { |rel| rel.target }, "source", true) %>
       </div>
     <% else %>
       <p><%= t('txt.views.concepts.missing.broader') %></p>
