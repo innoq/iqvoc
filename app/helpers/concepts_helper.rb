@@ -17,7 +17,7 @@
 module ConceptsHelper
   def select_search_checkbox?(lang)
     (params[:languages] && params[:languages].include?(lang.to_s)) ||
-        (!params[:query] && I18n.locale.to_s == lang.to_s)
+      (!params[:query] && I18n.locale.to_s == lang.to_s)
   end
 
   def quote_turtle_value(str)
@@ -26,12 +26,14 @@ module ConceptsHelper
 
   def treeview(concepts, root = "source")
     render :partial => "concepts/hierarchical/treeview",
-        :locals => { :root => root, :concepts => concepts }
+      :locals => { :root => root, :concepts => concepts }
   end
 
   def render_concept_association(hash, concept, association_class, further_options = {})
-    ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") <<
-      render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+    html = render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+    if html.squish.present?
+      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html
+    end
   end
 
   def concept_view_data(concept)
