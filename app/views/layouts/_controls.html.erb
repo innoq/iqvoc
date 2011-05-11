@@ -1,15 +1,15 @@
 <ul id="controls" class="menu">
   <li id="auth_controls">
     <% if current_user %>
-      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete, :class => "button" %>
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
     <% else %>
-      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => request.fullpath), :class => "button" %>
+      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => request.fullpath) %>
       <ul class="hidden"><li><%= t("txt.common.pending") %></li></ul>
     <% end %>
   </li>
 
   <li>
-    <a href="javascript:;" class="button lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
+    <a href="javascript:;" class="lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
     <ul class="lang-widget">
       <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
 
