@@ -11,12 +11,12 @@
   <% if @association_objects_in_editing_mode[:labelings].present? %>
     <h4><%= t("txt.common.referenced_labels") %></h4>
     <% @association_objects_in_editing_mode[:labelings].each do |labeling| %>
-      <%= labeling.type.demodulize + ': ' +
-              link_to(labeling.target.value,
-                  label_path(:published => 0, :id => labeling.target)) +
-              user_and_phone_number(t("txt.common.editor"),
-                  labeling.target.locking_user.name,
-                  labeling.target.locking_user.telephone_number) %>
+      <%= labeling.type.demodulize %>:
+      <%= link_to(labeling.target.value,
+        label_path(:published => 0, :id => labeling.target)) %>
+      <%= user_and_phone_number(t("txt.common.editor"),
+        labeling.target.locking_user.name,
+        labeling.target.locking_user.telephone_number) %>
       <br />
     <% end %>
   <% end %>
@@ -24,12 +24,12 @@
   <% if @association_objects_in_editing_mode[:concept_relations].present? %>
     <h4><%= t("txt.common.referenced_concepts") %></h4>
     <% @association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>
-      <%= concept_relation.type.to_s + ': ' +
-              link_to(concept_relation.target.pref_label.to_s,
-                  concept_path(:published => 0, :id => concept_relation.target)) +
-              user_and_phone_number(t("txt.common.editor"),
-                  concept_relation.target.locking_user.name,
-                   concept_relation.target.locking_user.telephone_number) %>
+      <%= concept_relation.type.to_s %>:
+      <%= link_to(concept_relation.target.pref_label.to_s,
+        concept_path(:published => 0, :id => concept_relation.target)) %>
+      <%= user_and_phone_number(t("txt.common.editor"),
+        concept_relation.target.locking_user.name,
+        concept_relation.target.locking_user.telephone_number) %>
       <br />
     <% end %>
   <% end %>
