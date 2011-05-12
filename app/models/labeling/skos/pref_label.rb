@@ -16,8 +16,6 @@
 
 class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
 
-  include Labeling::PrefLabelCommons
-
   self.rdf_predicate = 'prefLabel'
 
   def self.only_one_allowed?

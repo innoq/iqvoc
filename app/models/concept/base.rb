@@ -36,11 +36,11 @@ class Concept::Base < ActiveRecord::Base
     errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
   end
 
-  # There must always be a prefLabel in the primary thesaurs language
-  validate :on => :update do
+  # There must always be a prefLabel in the primary thesaurus language
+  validate :on => :update do |concept|
     if @full_validation
-      labels = self.pref_labels.select{|l| l.published?}
-      if labels.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
+      labels = concept.pref_labels.select{|l| l.published?}
+      if labels.count == 0
         errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
       elsif not labels.map(&:language).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
         errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
@@ -48,13 +48,20 @@ class Concept::Base < ActiveRecord::Base
     end
   end
 
-  validates :associations_must_be_published do
-    if @full_validation
-      [:labels, :related_concepts].each do |method|
-        if self.send(method).unpublished.any?
-          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")
-        end
+  # There may never be two different prefLabels of the same language
+  validate do |concept|
+    # We have many sources a prefLabel can be defined in
+    pls = concept.pref_labelings.map(&:target) +
+      concept.send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
+      concept.labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
+    languages = {}
+    pls.each do |pref_label|
+      lang = pref_label.language.to_s
+      origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
+      if (languages.keys.include?(lang) && languages[lang] != origin)
+        errors.add(:pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error"))
       end
+      languages[lang] = origin
     end
   end
 
@@ -64,13 +71,14 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
-  after_save do |concept|
+  before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
     # for use with widgets etc.
 
     # Inline assigned SKOS::Labels
     # @labelings_by_text # => {'relation_name' => {'lang' => 'label1, label2, ...'}}
     (@labelings_by_text ||= {}).each do |relation_name, lang_values|
+      relation_name = relation_name.to_s
       reflection = self.class.reflections.stringify_keys[relation_name]
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base
@@ -79,7 +87,7 @@ class Concept::Base < ActiveRecord::Base
         lang_values.each do |lang, values|
           values.split(",").each do |value|
             value.squish!
-            self.send(relation_name) << labeling_class.new(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+            self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
           end
         end
       end
