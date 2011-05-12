@@ -55,7 +55,7 @@ Factory.define :pref_label, :class => Iqvoc::Concept.pref_labeling_class.label_c
   l.after_build do |lab|
     n = Factory.next :label_number
     lab.value = "Tree #{n}"
-    lab.origin = "tree_#{n}"
+   # lab.origin = "tree_#{n}"
   end
 end
 
