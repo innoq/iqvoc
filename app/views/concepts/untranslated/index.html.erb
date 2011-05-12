@@ -2,7 +2,7 @@
 
 <% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
 
-<%= letter_selector { |alpha| untranslated_concepts_path(:letter => alpha.to_s.downcase) } %>
+<%= letter_selector { |letter| untranslated_concepts_path(:letter => letter.to_s.downcase) } %>
 
   <ul>
     <% for label in @labels %>
