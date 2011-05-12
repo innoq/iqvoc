@@ -2,15 +2,19 @@
 /* # Customizable in your engine's CSS # */
 /* ##################################### */
 #header {
-  background: url('../../images/iqvoc/header_long.png') no-repeat;
+  position: relative;
   height: 85px;
   padding: 9px 1em 1em 135px;
-  position: relative;
+  background: url('../../images/iqvoc/header_long.png') no-repeat;
+}
+
+#header h1 {
+  text-shadow: 1px 1px 2px #6374AB; /* XXX: less than ideal */
 }
 
 ul#navi_main {
-  top: 85px;
   position: absolute;
+  top: 85px;
   margin: 0;
   padding: 0;
 }
