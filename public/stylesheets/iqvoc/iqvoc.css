@@ -254,6 +254,27 @@ div.relation {
   margin-bottom: 0.7em;
 }
 
+#content h3 {
+  clear: both;
+  margin-top: 0.5em;
+}
+
+#content .relation { /* contain floats */
+  width: 100%;
+  overflow: hidden;
+}
+
+#content .relation h4 {
+  width: 20%;
+  clear: both;
+  float: left;
+}
+
+#content .relation-body {
+  width: 75%;
+  float: right;
+}
+
 tr.hover {
   cursor: pointer;
   background-color: #C0FAB4;
