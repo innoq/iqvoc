@@ -31,7 +31,7 @@ class ConceptTest < ActiveSupport::TestCase
   test "should not save concept with empty preflabel" do
     Factory.create(:concept).save_with_full_validation! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
-      Factory.create(:concept, :labelings => []).save_with_full_validation!
+      Factory.create(:concept, :pref_labelings => []).save_with_full_validation!
     end
   end
 
@@ -45,19 +45,10 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "concepts without pref_labels should be saveable but not publishable" do
-    concept =  Factory.create(:concept, :labelings => [])
+    concept =  Factory.create(:concept, :pref_labelings => [])
     assert_equal [], concept.pref_labels
     assert concept.valid?
     assert !concept.valid_with_full_validation?
-  end
-
-  test "pref_labels must have valid languages" do
-    concept = Factory.create(:concept)
-    assert_equal 1, concept.pref_labels.count
-    assert concept.valid_with_full_validation?
-
-    concept.pref_labels.first.language = "öö"
-    assert !concept.valid?
   end
 
   test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
@@ -70,14 +61,11 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "concept shouldn't have more then one pref label of the same language" do
-    concept = Factory.build(:concept)
+    concept = Factory.create(:concept)
     assert concept.valid?
-    concept.labelings << Factory.build(:pref_labeling)
-    concept.save!
-    concept.reload
-
-    assert_equal 2, concept.pref_labels.count
-    assert_equal concept.pref_labels.first.language, concept.pref_labels.second.language
+    concept.pref_labelings << Factory.build(:pref_labeling)
+    assert 2, concept.pref_labelings.size
+    assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
     assert !concept.valid?
   end
 

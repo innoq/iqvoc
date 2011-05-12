@@ -30,10 +30,33 @@ class Concept::Base < ActiveRecord::Base
   # ********** Validations
 
   validates :origin, :presence => true
-  validate :two_versions_exist, :on => :create
-  validate :pref_label_existence, :on => :update
-  # FIXME
-  # validates :associations_must_be_published
+
+  # There may never be more than two versions of a concept
+  validate :on => :create do
+    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
+  end
+
+  # There must always be a prefLabel in the primary thesaurs language
+  validate :on => :update do
+    if @full_validation
+      labels = self.pref_labels.select{|l| l.published?}
+      if labels.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
+        errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
+      elsif not labels.map(&:language).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+        errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
+      end
+    end
+  end
+
+  validates :associations_must_be_published do
+    if @full_validation
+      [:labels, :related_concepts].each do |method|
+        if self.send(method).unpublished.any?
+          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")
+        end
+      end
+    end
+  end
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -370,33 +393,4 @@ class Concept::Base < ActiveRecord::Base
     }
   end
 
-  protected
-
-  def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
-  end
-
-  def pref_label_existence
-     languages = pref_labels.map(&:language)
-    if @full_validation
-      if languages.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
-        errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
-      else
-        if not languages.include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-          errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
-        end
-      end
-    end
-    errors.add(:base, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")) unless languages.uniq.size == languages.size
-  end
-
-  def associations_must_be_published
-    if @full_validation
-      [:labels, :related_concepts].each do |method|
-        if self.send(method).unpublished.any?
-          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")
-        end
-      end
-    end
-  end
 end

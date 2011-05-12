@@ -17,7 +17,7 @@
 Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
   c.sequence(:origin) { |n| "_000000#{n}" }
   c.published_at 3.days.ago
-  c.labelings { |labelings| [labelings.association(:pref_labeling)] }
+  c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
   c.narrower_relations{ |narrower_relations| [narrower_relations.association(:narrower_relation)]}
 end
 
@@ -32,7 +32,7 @@ end
 
 Factory.define :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
   rel.target {|target|
-    target.association(:concept, :broader_relations => [], :narrower_relations => [], :labelings => [
+    target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
         Factory.create(:pref_labeling, :target => Factory.create(:pref_label, :value => 'Some narrower relation'))
       ])
   }
