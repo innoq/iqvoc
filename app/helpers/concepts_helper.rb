@@ -63,5 +63,26 @@ module ConceptsHelper
 
     res
   end
+  
+  def letter_selector(&block)
+    @alphas =
+      ('A'..'Z').to_a +
+      (0..9).to_a +
+      ['[']
+    
+  # <ul class="letter_selector">
+  #   <% for alpha in @alphas %>
+  #   <%= tag("li", { :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) }, true) %>
+  #     <%= link_to alpha, untranslated_concepts_path(:letter => alpha.to_s.downcase) %>
+  #   </li>
+  #   <% end %>
+  # </ul>
+  
+    content_tag :ul, :class => 'letter_selector' do
+      @alphas.map do |alpha|
+        content_tag :li, :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) 
+      end
+    end
+  end
 
 end
