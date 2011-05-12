@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 				var $this = $(this);
 				if($this.hasClass("hasChildren")) {
 					var childList = $this.removeClass("hasChildren").find("ul");
-					$.fn.treeviewLoad({ "url": url }, this.id, childList, container);
+					$.fn.treeviewLoad({ url: url }, this.id, childList, container);
 				}
 			}
 		});
