@@ -2,15 +2,19 @@
 /* # Customizable in your engine's CSS # */
 /* ##################################### */
 #header {
-  background: url('../../images/iqvoc/header_long.png') no-repeat;
+  position: relative;
   height: 85px;
   padding: 9px 1em 1em 135px;
-  position: relative;
+  background: url('../../images/iqvoc/header_long.png') no-repeat;
+}
+
+#header h1 {
+  text-shadow: 1px 1px 2px #6374AB; /* XXX: less than ideal */
 }
 
 ul#navi_main {
-  top: 85px;
   position: absolute;
+  top: 85px;
   margin: 0;
   padding: 0;
 }
@@ -97,6 +101,11 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   display: block;
   width: 100%;
   font-weight: normal;
+}
+
+#auth_controls label {
+  display: inline;
+  font-weight: bold;
 }
 
 #auth_controls ul,
@@ -252,6 +261,33 @@ div.editing_versioning_toolbar form div, div.editing_versioning_toolbar form {
 
 div.relation {
   margin-bottom: 0.7em;
+}
+
+.concept #content h3 {
+  clear: both;
+  margin-top: 0.5em;
+}
+
+.concept .relation { /* contain floats */
+  width: 100%;
+  overflow: hidden;
+}
+
+.concept .relation h4 {
+  width: 20%;
+  clear: both;
+  float: left;
+}
+
+.concept .relation-body {
+  width: 75%;
+  float: right;
+}
+
+.concept .block { /* neutralize .relation-body floating */
+  width: auto;
+  float: none;
+  clear: both;
 }
 
 tr.hover {

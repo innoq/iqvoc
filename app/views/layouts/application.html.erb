@@ -37,7 +37,7 @@
     <%= yield :head %>
     <%= yield :widget_translations %>
   </head>
-  <body>
+  <body class="<%= "concept" unless @concept.nil? %>">
 
     <%= render :partial => 'layouts/controls' %>
 

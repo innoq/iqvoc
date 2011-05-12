@@ -1,6 +1,6 @@
 <div class="relation">
   <h4><%= Iqvoc::Concept.broader_relation_class.narrower_class.model_name.human(:count => 2) %></h4>
-  <div class="relation-body">
+  <div class="relation-body block">
     <% if concept.related_concepts_for_relation_class(Iqvoc::Concept.broader_relation_class.narrower_class).length > 0 %>
       <div class="selector">
         <%-
