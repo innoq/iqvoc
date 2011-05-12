@@ -99,6 +99,11 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
   font-weight: normal;
 }
 
+#auth_controls label {
+  display: inline;
+  font-weight: bold;
+}
+
 #auth_controls ul,
 #auth_controls li {
   width: auto;
