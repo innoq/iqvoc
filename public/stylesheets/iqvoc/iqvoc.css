@@ -275,6 +275,12 @@ div.relation {
   float: right;
 }
 
+.concept .block { /* neutralize .relation-body floating */
+  width: auto;
+  float: none;
+  clear: both;
+}
+
 tr.hover {
   cursor: pointer;
   background-color: #C0FAB4;
