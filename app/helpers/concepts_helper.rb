@@ -66,4 +66,21 @@ module ConceptsHelper
     res
   end
 
+  def letter_selector(&block)
+    letters =
+      ('A'..'Z').to_a +
+      (0..9).to_a +
+      ['[']
+
+    content_tag :ul, :class => 'letter_selector' do
+      html = ""
+      letters.each do |letter|
+        html += content_tag(:li, link_to(letter, yield(letter)),
+            :class => "ui-corner-all ui-widget-content" +
+                ((params[:letter] == letter.to_s.downcase) ? " ui-state-active" : ""))
+      end
+      html.html_safe
+    end
+  end
+
 end

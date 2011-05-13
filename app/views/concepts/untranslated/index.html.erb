@@ -1,13 +1,8 @@
 <h2><%= t("txt.views.untranslated_concepts.caption") %></h2>
 
 <% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
-  <ul class="letter_selector">
-    <% for alpha in @alphas %>
-    <%= tag("li", { :class => ((params[:letter] == alpha.to_s.downcase) ? "current" : nil) }, true) %>
-      <%= link_to alpha, untranslated_concepts_path(:letter => alpha.to_s.downcase) %>
-    </li>
-    <% end %>
-  </ul>
+
+<%= letter_selector { |letter| untranslated_concepts_path(:letter => letter.to_s.downcase) } %>
 
   <ul>
     <% for label in @labels %>

@@ -20,11 +20,6 @@ class Concepts::UntranslatedController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    @alphas =
-      ('A'..'Z').to_a +
-      (0..9).to_a +
-      ['[']
-
     main_lang = Iqvoc::Concept.pref_labeling_languages.first
 
     scope = Iqvoc::Concept.pref_labeling_class.label_class.

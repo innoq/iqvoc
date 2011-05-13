@@ -8,13 +8,7 @@
 
 <p><%= t("txt.views.concepts.select", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></p>
 
-<ul class="letter_selector ui-widget">
-  <% for alpha in @alphas %>
-    <%= content_tag("li", { :class => "ui-corner-all ui-widget-content" + ((params[:letter] == alpha.to_s.downcase) ? " ui-state-active" : "") }, true) do %>
-      <%= link_to alpha, alphabetical_concepts_path(:letter => alpha.to_s.downcase) %>
-    <% end %>
-  <% end %>
-</ul>
+<%= letter_selector { |letter| alphabetical_concepts_path(:letter => letter.to_s.downcase) } %>
 
 <ul>
   <%= render :partial => "pref_labeling", :collection => @pref_labelings %>
