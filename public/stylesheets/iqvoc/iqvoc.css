@@ -270,7 +270,7 @@ ol textarea { /* neutralize blueprint defaults */
 
 .concept #content h3 {
   clear: both;
-  margin-top: 0.5em;
+  margin: 1em 0;
 }
 
 .concept .relation { /* contain floats */
