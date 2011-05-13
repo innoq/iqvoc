@@ -13,6 +13,7 @@
   border-radius: 0 !important
   -moz-border-radius: 0 !important;
   -webkit-border-radius: 0 !important;
+  color: #000;
   background: none;
 }
 
@@ -38,6 +39,12 @@
 .ui-widget-content .ui-state-active {
   border-color: #308110;
   background: #CCC;
+}
+
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+  color: #FFF;
 }
 
 .ui-state-highlight,
