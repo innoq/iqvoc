@@ -3,26 +3,39 @@
 <p class="flash_notice">
   <%= t("txt.views.versioning.current_revision") %> <%= @concept.rev %>
   <% if @concept.locked? %>
-    <%= t("txt.views.versioning.in_ongoing_editing_by") %> <%= @concept.locking_user.name %>
+    <%= t("txt.views.versioning.in_ongoing_editing_by") %>
+    <%= @concept.locking_user.name %>
   <% end %>
 </p>
 
 <div class="editing_versioning_toolbar ui-corner-all ui-widget ui-widget-content">
 
-  <%= button_to t("txt.views.versioning.publishing"), concept_versions_merge_path(:origin => @concept.origin) %>
-  <%= button_to t("txt.views.versioning.consistency_check"), concept_versions_consistency_check_path(:origin => @concept.origin), :method => :get %>
+  <%= button_to t("txt.views.versioning.publishing"),
+          concept_versions_merge_path(:origin => @concept.origin) %>
+  <%= button_to t("txt.views.versioning.consistency_check"),
+          concept_versions_consistency_check_path(:origin => @concept.origin),
+          :method => :get %>
 
   <% unless @concept.in_review? %>
-    <%= button_to t("txt.common.to_review"), concept_versions_to_review_path(:origin => @concept.origin) %>
+    <%= button_to t("txt.common.to_review"),
+            concept_versions_to_review_path(:origin => @concept.origin) %>
   <% end %>
 
   <% unless @concept.locked? %>
-    <%= button_to t("txt.views.versioning.to_edit_mode"), concept_versions_lock_path(:origin => @concept.origin) %>
-    <%= button_to t("txt.views.versioning.delete"), concept_path(:published => 0, :id => @concept.origin), :method => :delete, :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
+    <%= button_to t("txt.views.versioning.to_edit_mode"),
+            concept_versions_lock_path(:origin => @concept.origin) %>
+    <%= button_to t("txt.views.versioning.delete"),
+            concept_path(:published => 0, :id => @concept.origin),
+            :method => :delete,
+            :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
   <% else %>
-    <%= button_to t("txt.views.versioning.unlock"), concept_versions_unlock_path(:origin => @concept.origin) if can?(:unlock, @concept) %>
-    <%= link_to t("txt.views.versioning.edit_mode"), edit_concept_path(:published => 0, :id => @concept.origin), :class => 'button' if can?(:update, @concept) %>
+    <%= button_to t("txt.views.versioning.unlock"),
+            concept_versions_unlock_path(:origin => @concept.origin) if can?(:unlock, @concept) %>
+    <%= link_to t("txt.views.versioning.edit_mode"),
+            edit_concept_path(:published => 0, :id => @concept.origin),
+            :class => 'button' if can?(:update, @concept) %>
   <% end %>
 </div>
 
-<%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
+<%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections,
+        :data => concept_view_data(@concept) %>
