@@ -1,7 +1,9 @@
-/*jslint browser: true, unparam: true */
+/*jslint strict: true, unparam: true, browser: true */
 /*global jQuery, IQVOC */
 
 IQVOC.LanguageSelector = (function($) {
+
+"use strict";
 
 var getSelection, setSelection;
 

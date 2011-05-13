@@ -1,7 +1,9 @@
-/*jslint browser: true, unparam: true */
+/*jslint strict: true, unparam: true, browser: true */
 /*global jQuery */
 
 var IQVOC = (function($) {
+
+"use strict";
 
 var dynamicAuth = function(container) {
 	container = container.nodeType ? container : $(container)[0];
@@ -131,6 +133,8 @@ return {
 }(jQuery)); // /module IQVOC
 
 jQuery(document).ready(function($) {
+	"use strict";
+
 	var locale = $("head meta[name=i18n-locale]").attr("content");
 
 	IQVOC.enhancedDropdown(".menu");
