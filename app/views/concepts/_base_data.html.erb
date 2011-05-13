@@ -68,7 +68,7 @@
   <%= f.submit t("txt.common.save") %>
 
   <% unless controller.action_name == "new" || controller.action_name == "create" %>
-    <%= link_to t("txt.common.reset") %>
+    <%= link_to t("txt.common.reset"), nil, :class => "button" %>
   <% end %>
 <% end %>
 
