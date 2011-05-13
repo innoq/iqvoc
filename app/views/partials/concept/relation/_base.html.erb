@@ -7,7 +7,7 @@
         link_to(c.pref_label, concept_path(:lang => c.pref_label.language, :id => c))
       }.join(", ")  %>
     <% else %>
-      <p class="term-unavailable"><%= t('txt.partials.concept.relation.missing') %></p>
+      <p class="term-unavailable">-</p>
     <% end %>
   </div>
 </div>
