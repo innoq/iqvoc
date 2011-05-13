@@ -2,9 +2,8 @@
 /* # Customizable in your app's CSS # */
 /* ##################################### */
 #header {
-  position: relative;
   height: 85px;
-  padding: 9px 1em 1em 135px;
+  padding: 9px 1em 1em 160px;
   background: url('../../images/iqvoc/header_long.png') no-repeat;
 }
 
@@ -15,7 +14,7 @@
 
 ul#navi_main {
   position: absolute;
-  top: 85px;
+  top: 75px;
   margin: 0;
   padding: 0;
 }
