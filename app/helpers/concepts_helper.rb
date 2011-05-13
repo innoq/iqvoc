@@ -24,9 +24,10 @@ module ConceptsHelper
     str.match(/^<.*>$/) ? str : "\"#{str}\""
   end
 
-  def treeview(concepts, root = "source")
+  # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
+  def treeview(concepts, broader = false)
     render :partial => "concepts/hierarchical/treeview",
-      :locals => { :root => root, :concepts => concepts }
+        :locals => { :concepts => concepts, :broader => broader }
   end
 
   def render_concept_association(hash, concept, association_class, further_options = {})

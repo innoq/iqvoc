@@ -8,7 +8,7 @@
             Concept::Base.find(relation.target_id) # XXX: use of Concept::Base correct?
           end
         -%>
-        <%= treeview(concepts, concept.id) %>
+        <%= treeview(concepts) %>
       </div>
     <% else %>
       <p><%= t('txt.views.concepts.missing.narrower') %></p>

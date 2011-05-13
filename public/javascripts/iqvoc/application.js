@@ -50,7 +50,7 @@ var enhancedDropdown = function(container) {
 };
 
 var addWidget = function(index, elem) {
-	if (!elem) {
+	if(!elem) {
 		return;
 	}
 
@@ -84,7 +84,7 @@ var createNote = function(ev) {
 	var isUsageNote = source.find("label:first").attr("for").
 			match(/^concept_note_umt_usage_notes/);
 
-	if (source.is(":hidden")) {
+	if(source.is(":hidden")) {
 		source.show();
 		return false;
 	}
@@ -104,7 +104,7 @@ var createNote = function(ev) {
 	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
 	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
 
-	if (!isUsageNote) {
+	if(!isUsageNote) {
 		clone.find("textarea")
 			.val("")
 			.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
@@ -202,6 +202,7 @@ jQuery(document).ready(function($) {
 		$("input[type=checkbox].lang_check").attr("checked", false);
 	});
 
+	// hierarchical tree view
 	$("ul.hybrid-treeview").each(function() {
 		var url = $(this).attr("data-url");
 		var container = this;
@@ -209,9 +210,9 @@ jQuery(document).ready(function($) {
 			collapsed: true,
 			toggle: function() {
 				var $this = $(this);
-				if ($this.hasClass("hasChildren")) {
+				if($this.hasClass("hasChildren")) {
 					var childList = $this.removeClass("hasChildren").find("ul");
-					$.fn.treeviewLoad({ "url": url }, this.id, childList, container);
+					$.fn.treeviewLoad({ url: url }, this.id, childList, container);
 				}
 			}
 		});
@@ -227,8 +228,8 @@ jQuery(document).ready(function($) {
 			data: {
 				query: $(this).val()
 			},
-			success: function (data) {
-				if (data) {
+			success: function(data) {
+				if(data) {
 					var msg = notification.attr("data-msg");
 					notification.html(msg + " " + data.label.value).show();
 				} else {

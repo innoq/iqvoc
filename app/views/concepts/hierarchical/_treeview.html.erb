@@ -1,16 +1,14 @@
 <%-
-  hcpath = hierarchical_concepts_path(:lang => I18n.locale,
-      :format => :json,
-      :published => params[:published])
+  hcpath = hierarchical_concepts_path(:lang => I18n.locale, :format => :json,
+      :published => params[:published], :broader => broader || nil)
 -%>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>">
   <%-
     concepts.each do |concept|
-      has_children = concept.narrower_relations.any?
+      has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any?
   -%>
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(concept.pref_label.to_s,
-              concept_url(:id => concept)) %>
+      <%= link_to(concept.pref_label.to_s, concept_url(:id => concept)) %>
       <%- if concept.additional_info.present? -%>
         (<%= concept.additional_info %>)
       <%- end -%>
