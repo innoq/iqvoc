@@ -1,6 +1,6 @@
 <li>
   <h4><%= assoc_klass.model_name.human(:count => 2) %></h4>
-  <div class="relation-body">
+  <div>
     <%= text_area_tag "concept[inline_#{assoc_klass.name.to_relation_name}]", owner_klass.send("inline_#{assoc_klass.name.to_relation_name}") %>
   </div>
 </li>
