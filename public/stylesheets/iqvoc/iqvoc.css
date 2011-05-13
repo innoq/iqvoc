@@ -14,7 +14,8 @@
 }
 
 ul#navi_main {
-  margin-top: 120px;
+  position: absolute;
+  top: 85px;
   margin: 0;
   padding: 0;
 }
