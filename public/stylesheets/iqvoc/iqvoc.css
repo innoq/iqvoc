@@ -263,6 +263,10 @@ div.relation {
   margin-bottom: 0.7em;
 }
 
+ol textarea { /* neutralize blueprint defaults */
+  margin-top: 0;
+}
+
 .concept #content h3 {
   clear: both;
   margin-top: 0.5em;
