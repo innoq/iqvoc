@@ -78,10 +78,6 @@ de:
        expired_at: "Abgelaufen am %{date}"
        select: "Bitte wählen Sie ein %{concept_class_name} aus der unten aufgeführten Liste."
        new: "Neues %{concept_class_name}"
-       missing:
-         broader: "Keine allgemeineren Begriffe verfügbar"
-         narrower: "Keine spezifischeren Begriffe verfügbar"
-         related: "Kein verwandter Begriff verfügbar"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
      labels:
@@ -222,17 +218,13 @@ de:
 
    partials:
      note:
-       missing: "Keine verfügbar."
      collection:
        skos:
          member:
-           missing: Keine zugewiesen
      label:
        relation:
-         missing: Keine Relationen vorhanden.
      concept:
        relation:
-         missing: Keine Relationen vorhanden.
      labeling:
        concept:
        label:

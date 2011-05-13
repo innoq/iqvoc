@@ -3,13 +3,13 @@
     <% notes = concept.notes_for_class(klass) %>
     <h4><%= klass.model_name.human(:count => notes.count) %></h4>
     <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : t("txt.partials.note.missing") %>
+      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
     </div>
   <%- elsif defined?(label) -%>
     <% notes = label.notes_for_class(klass) %>
     <h4><%= klass.model_name.human(:count => notes.count) %></h4>
     <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : t("txt.partials.note.missing") %>
+      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
     </div>
   <%- end -%>
 </div>

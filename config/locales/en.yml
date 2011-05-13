@@ -78,10 +78,6 @@ en:
        expired_at: "expired at %{date}"
        select: "Please select one of the %{concept_class_name} listed below."
        new: "New %{concept_class_name}"
-       missing:
-         broader: "No broader terms available"
-         narrower: "No narrower terms available"
-         related: "No related terms available"
        alt_label: "Alternative Label"
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
@@ -230,17 +226,13 @@ en:
 
    partials:
      note:
-       missing: Not available.
      collection:
        skos:
          member:
-           missing: Not assigned
      label:
        relation:
-         missing: Not available.
      concept:
        relation:
-         missing:  Not available.
      labeling:
        concept:
        label:
