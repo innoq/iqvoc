@@ -10,13 +10,15 @@
 
 <div class="editing_versioning_toolbar ui-corner-all ui-widget ui-widget-content">
 
+  <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
   <%= button_to t("txt.views.versioning.publishing"),
           concept_versions_merge_path(:origin => @concept.origin) %>
+  <% end %>
   <%= button_to t("txt.views.versioning.consistency_check"),
           concept_versions_consistency_check_path(:origin => @concept.origin),
           :method => :get %>
 
-  <% unless @concept.in_review? %>
+  <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.common.to_review"),
             concept_versions_to_review_path(:origin => @concept.origin) %>
   <% end %>
