@@ -1,6 +1,6 @@
 /* neutralize/augment jQuery UI defaults */
 
-.ui-widget {
+.ui-widget input, .ui-widget select, .ui-widget button, .ui-widget textarea {
 	font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
