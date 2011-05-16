@@ -56,8 +56,8 @@ var EntitySelection = function(node) { // TODO: rename?
 
 	this.el = $(node).hide();
 	this.container = $('<div class="entity_select" />').data("widget", this);
-	this.delimiter = ","; // XXX: whitespace?
-	this.entities = this.el.val().split(this.delimiter);
+	this.delimiter = ",";
+	this.entities = this.getSelection();
 
 	var selection = $.map(this.el.data("entities"), function(entity, i) {
 		return self.createEntity(entity);
@@ -71,8 +71,10 @@ var EntitySelection = function(node) { // TODO: rename?
 		source: function(req, callback) {
 			var uri = self.el.data("query-url");
 			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
+				var excludes = self.getSelection()
+					.concat(exclude ? [exclude] : []);
 				data = $.map(data, function(entity, i) {
-					return entity.id === exclude ? null :
+					return $.inArray(entity.id, excludes) !== -1 ? null :
 							{ label: entity.name, value: entity.id };
 				});
 				callback(data);
@@ -91,9 +93,9 @@ $.extend(EntitySelection.prototype, {
 		var el = $(this).val("");
 		var widget = el.closest(".entity_select").data("widget");
 		if(widget.add(ui.item.value)) {
-			var el = widget.
+			var entity = widget.
 					createEntity({ id: ui.item.value, name: ui.item.label });
-			widget.container.find("ul").append(el);
+			widget.container.find("ul").append(entity);
 		}
 		return false;
 	},
@@ -123,6 +125,11 @@ $.extend(EntitySelection.prototype, {
 		if(pos !== -1) {
 			this.entities.splice(pos, 1);
 		}
+	},
+	getSelection: function() {
+		return $.map(this.el.val().split(this.delimiter), function(entity, i) {
+			return $.trim(entity);
+		});
 	}
 });
 
