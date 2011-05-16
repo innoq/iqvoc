@@ -294,6 +294,31 @@ ol textarea { /* neutralize blueprint defaults */
   clear: both;
 }
 
+.entity_select ul { /* contain floats */
+  width: 100%;
+  overflow: hidden;
+}
+
+.entity_select li {
+    float: left;
+    margin: 3px;
+    padding: 1px 3px;
+    border: 1px solid #CCD5E4;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 11px;
+    color: #000;
+    background-color: #EFF2F7;
+}
+
+.entity_select a {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #A6B3CF;
+  cursor: pointer;
+}
+
 tr.hover {
   cursor: pointer;
   background-color: #C0FAB4;

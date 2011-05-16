@@ -51,6 +51,76 @@ var enhancedDropdown = function(container) {
 
 };
 
+var EntitySelection = function(node) { // TODO: rename?
+	var self = this;
+
+	this.el = $(node).hide();
+	this.container = $('<div class="entity_select" />').data("widget", this);
+	this.delimiter = ", "; // XXX: whitespace?
+	this.entities = this.el.val().split(this.delimiter);
+
+	var selection = $.map(this.el.data("entities"), function(entity, i) {
+		return self.createEntity(entity);
+	});
+	selection = $("<ul />").append(selection);
+
+	var input = $("<input />").autocomplete({
+		minLength: 3,
+		source: function(req, callback) {
+			var uri = self.el.data("query-url");
+			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
+				data = $.map(data, function(entity, i) {
+					return { label: entity.name, value: entity.id };
+				});
+				callback(data);
+			});
+		},
+		select: this.onSelect
+	});
+
+	this.container.append(input).append(selection)
+		.insertAfter(node).prepend(node);
+};
+$.extend(EntitySelection.prototype, {
+	onSelect: function(ev, ui) {
+		var el = $(this).val("");
+		var widget = el.closest(".entity_select").data("widget");
+		if(widget.add(ui.item.value)) {
+			var el = widget.
+					createEntity({ id: ui.item.value, name: ui.item.label });
+			widget.container.find("ul").append(el);
+		}
+		return false;
+	},
+	onDelete: function(ev) {
+		var el = $(this);
+		var entity = el.closest("li");
+		var widget = el.closest(".entity_select").data("widget");
+		widget.remove(entity.data("id"));
+		entity.remove();
+		ev.preventDefault();
+	},
+	createEntity: function(entity) {
+		var btn = $('<a href="javascript:;">x</a>').click(this.onDelete);
+		return $("<li />").data("id", entity.id).text(entity.name).append(btn)[0]; // TODO: link to entity
+	},
+	add: function(entity) {
+		if($.inArray(entity, this.entities) === -1) {
+			this.entities.push(entity);
+			this.el.val(this.entities.join(this.delimiter));
+			return true;
+		} else {
+			return false;
+		}
+	},
+	remove: function(entity) {
+		var pos = $.inArray(entity, this.entities);
+		if(pos !== -1) {
+			this.entities.splice(pos, 1);
+		}
+	}
+});
+
 var addWidget = function(index, elem) {
 	if(!elem) {
 		return;
@@ -126,6 +196,7 @@ var createNote = function(ev) {
 return {
 	dynamicAuth: dynamicAuth,
 	enhancedDropdown: enhancedDropdown,
+	EntitySelection: EntitySelection,
 	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
 	createNote: createNote
 };
@@ -176,6 +247,9 @@ jQuery(document).ready(function($) {
 	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
 	$("input.token_input_widget").each(IQVOC.addWidget);
+	$("input.entity_select").each(function(i, node) {
+		new IQVOC.EntitySelection(node);
+	});
 
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
