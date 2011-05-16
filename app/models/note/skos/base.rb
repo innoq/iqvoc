@@ -19,8 +19,12 @@ class Note::SKOS::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(subject, predicate, object)
-    raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.name} => #{self.name.to_relation_name})." unless subject.class.reflections.include?(self.name.to_relation_name)
-    raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
+    unless subject.class.reflections.include?(self.name.to_relation_name)
+      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.class.name} => #{self.class.name.to_relation_name})."
+    end
+    unless object =~ /^"(.+)"(@(.+))$/
+      raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+    end
     value = $1
     lang = $3
 
