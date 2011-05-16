@@ -136,7 +136,7 @@ $.extend(EntitySelector.prototype, {
 	},
 	getSelection: function() {
 		return $.map(this.el.val().split(this.delimiter), function(entity, i) {
-			return $.trim(entity);
+			return entity ? $.trim(entity) : null;
 		});
 	}
 });
