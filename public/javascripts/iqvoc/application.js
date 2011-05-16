@@ -51,7 +51,7 @@ var enhancedDropdown = function(container) {
 
 };
 
-var EntitySelection = function(node) { // TODO: rename?
+var EntitySelector = function(node) {
 	this.el = $(node).hide();
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
@@ -191,7 +191,7 @@ var createNote = function(ev) {
 return {
 	dynamicAuth: dynamicAuth,
 	enhancedDropdown: enhancedDropdown,
-	EntitySelection: EntitySelection,
+	EntitySelector: EntitySelector,
 	createNote: createNote
 };
 
@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
 	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
 	$("input.entity_select").each(function(i, node) {
-		new IQVOC.EntitySelection(node);
+		new IQVOC.EntitySelector(node);
 	});
 
 	// Label editing (inline notes)
