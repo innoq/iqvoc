@@ -89,7 +89,7 @@ var EntitySelector = function(node) {
 	this.container.append(input).append(img).append(selection)
 		.insertAfter(node).prepend(node);
 };
-$.extend(EntitySelection.prototype, {
+$.extend(EntitySelector.prototype, {
 	onSelect: function(ev, ui) {
 		var el = $(this).val("");
 		var widget = el.closest(".entity_select").data("widget");
