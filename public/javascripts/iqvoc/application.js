@@ -65,6 +65,7 @@ var EntitySelection = function(node) { // TODO: rename?
 	selection = $("<ul />").append(selection);
 
 	var exclude = this.el.data("exclude") || null;
+	var img = $('<img src="/images/iqvoc/spinner.gif" class="hidden" />');
 	var input = $("<input />").autocomplete({
 		minLength: 3,
 		source: function(req, callback) {
@@ -75,12 +76,14 @@ var EntitySelection = function(node) { // TODO: rename?
 							{ label: entity.name, value: entity.id };
 				});
 				callback(data);
+				img.addClass("hidden");
 			});
 		},
+		search: function(ev, ui) { img.removeClass("hidden"); },
 		select: this.onSelect
 	});
 
-	this.container.append(input).append(selection)
+	this.container.append(input).append(img).append(selection)
 		.insertAfter(node).prepend(node);
 };
 $.extend(EntitySelection.prototype, {

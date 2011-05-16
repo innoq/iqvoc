@@ -319,6 +319,10 @@ ol textarea { /* neutralize blueprint defaults */
   cursor: pointer;
 }
 
+.entity_select img {
+  margin-left: -20px; /* move into adjacent INPUT */
+}
+
 tr.hover {
   cursor: pointer;
   background-color: #C0FAB4;
