@@ -11,7 +11,7 @@
 
 <% if can?(:manage, @collection) %>
 <div class="editing_versioning_toolbar">
-  <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection) %>
+  <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => "button" %>
   <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
 </div>
 <% end %>
