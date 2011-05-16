@@ -1,5 +1,5 @@
 <%-
-  hcpath = hierarchical_concepts_path(:lang => I18n.locale, :format => :json,
+  hcpath = hierarchical_concepts_path(:format => :json,
       :published => params[:published], :broader => broader || nil)
 -%>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>">
