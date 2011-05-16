@@ -38,7 +38,7 @@ class Note::SKOS::Base < Note::Base
     elsif self.class == Note::SKOS::Base # This could be done by setting self.rdf_predicate to 'note'. But all subclasses would inherit this value.
       ns, id = "Skos", "note"
     else
-      raise "Note::SKOS::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate."
+      raise "Note::SKOS::Base#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
     end
 
     if (IqRdf::Namespace.find_namespace_class(ns))
