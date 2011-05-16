@@ -9,7 +9,7 @@
   </div>
 <%- end -%>
 
-<%= form_tag(search_path(:lang => I18n.locale || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
+<%= form_tag(search_path, :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">
     <ol>
       <li>

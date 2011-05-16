@@ -208,7 +208,7 @@ ul#navi_main li {
 
 input[type=submit], button, a.button {
   padding: 4px 6px;
-  font: 1em 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #fff !important;
   background: #C0FAB4;
   background: -moz-linear-gradient(0% 100% 90deg, #b0eAa4, #308110);
