@@ -312,7 +312,7 @@ ol textarea { /* neutralize blueprint defaults */
     background-color: #EFF2F7;
 }
 
-.entity_select a {
+.entity_select a.btn {
   margin-left: 5px;
   font-weight: bold;
   color: #A6B3CF;

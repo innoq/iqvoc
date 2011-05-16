@@ -52,12 +52,13 @@ var enhancedDropdown = function(container) {
 };
 
 var EntitySelection = function(node) { // TODO: rename?
-	var self = this;
-
 	this.el = $(node).hide();
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
 	this.entities = this.getSelection();
+	this.uriTemplate = this.el.data("entity-uri");
+
+	var self = this;
 
 	var selection = $.map(this.el.data("entities"), function(entity, i) {
 		return self.createEntity(entity);
@@ -75,7 +76,7 @@ var EntitySelection = function(node) { // TODO: rename?
 					.concat(exclude ? [exclude] : []);
 				data = $.map(data, function(entity, i) {
 					return $.inArray(entity.id, excludes) !== -1 ? null :
-							{ label: entity.name, value: entity.id };
+							{ value: entity.id, label: entity.name };
 				});
 				callback(data);
 				img.addClass("hidden");
@@ -108,8 +109,11 @@ $.extend(EntitySelection.prototype, {
 		ev.preventDefault();
 	},
 	createEntity: function(entity) {
-		var btn = $('<a href="javascript:;">x</a>').click(this.onDelete);
-		return $("<li />").data("id", entity.id).text(entity.name).append(btn)[0]; // TODO: link to entity
+		var uri = this.uriTemplate.replace("%7Bid%7D", entity.id); // XXX: not very generic
+		var link = $('<a target="_blank" />').attr("href", uri).text(entity.name);
+		var btn = $('<a href="javascript:;" class="btn">x</a>') // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
+			.click(this.onDelete);
+		return $("<li />").data("id", entity.id).append(link).append(btn)[0];
 	},
 	add: function(entity) {
 		if($.inArray(entity, this.entities) === -1) {
