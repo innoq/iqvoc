@@ -1,5 +1,9 @@
 /* neutralize/augment jQuery UI defaults */
 
+.ui-widget {
+	font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .ui-widget-content {
   border-color: #CCC;
   background-color: #FFF;
