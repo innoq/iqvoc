@@ -118,7 +118,7 @@ $.extend(EntitySelection.prototype, {
 	add: function(entity) {
 		if($.inArray(entity, this.entities) === -1) {
 			this.entities.push(entity);
-			this.el.val(this.entities.join(this.delimiter));
+			this.setSelection();
 			return true;
 		} else {
 			return false;
@@ -128,7 +128,11 @@ $.extend(EntitySelection.prototype, {
 		var pos = $.inArray(entity, this.entities);
 		if(pos !== -1) {
 			this.entities.splice(pos, 1);
+			this.setSelection();
 		}
+	},
+	setSelection: function() {
+		this.el.val(this.entities.join(this.delimiter));
 	},
 	getSelection: function() {
 		return $.map(this.el.val().split(this.delimiter), function(entity, i) {
