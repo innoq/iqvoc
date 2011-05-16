@@ -64,13 +64,15 @@ var EntitySelection = function(node) { // TODO: rename?
 	});
 	selection = $("<ul />").append(selection);
 
+	var exclude = this.el.data("exclude") || null;
 	var input = $("<input />").autocomplete({
 		minLength: 3,
 		source: function(req, callback) {
 			var uri = self.el.data("query-url");
 			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
-				data = $.map(data, function(entity, i) { // TODO: support for data-exclude
-					return { label: entity.name, value: entity.id };
+				data = $.map(data, function(entity, i) {
+					return entity.id === exclude ? null :
+							{ label: entity.name, value: entity.id };
 				});
 				callback(data);
 			});
