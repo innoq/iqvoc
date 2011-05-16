@@ -56,7 +56,7 @@ var EntitySelection = function(node) { // TODO: rename?
 
 	this.el = $(node).hide();
 	this.container = $('<div class="entity_select" />').data("widget", this);
-	this.delimiter = ", "; // XXX: whitespace?
+	this.delimiter = ","; // XXX: whitespace?
 	this.entities = this.el.val().split(this.delimiter);
 
 	var selection = $.map(this.el.data("entities"), function(entity, i) {
@@ -69,7 +69,7 @@ var EntitySelection = function(node) { // TODO: rename?
 		source: function(req, callback) {
 			var uri = self.el.data("query-url");
 			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
-				data = $.map(data, function(entity, i) {
+				data = $.map(data, function(entity, i) { // TODO: support for data-exclude
 					return { label: entity.name, value: entity.id };
 				});
 				callback(data);
@@ -120,31 +120,6 @@ $.extend(EntitySelection.prototype, {
 		}
 	}
 });
-
-var addWidget = function(index, elem) {
-	if(!elem) {
-		return;
-	}
-
-	elem = $(elem);
-	elem.val("");
-	var queryUrl = elem.attr("data-query-url");
-	var options = $.parseJSON(elem.attr("data-options"));
-	var excludes = elem.attr("data-exclude") || "";
-	excludes = excludes.split(";");
-	// Widget UI text translations get yielded into a meta tag in the head section of the page.
-	// Parse them and merge the JSON hash with the default options.
-	var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
-
-	options = $.extend(translations, options);
-	options.onResult = excludes.length === 0 ? null : function(results) {
-		return $.grep(results, function(item) {
-			return $.inArray(item.id, excludes) === -1;
-		});
-	};
-
-	elem.tokenInputNew(queryUrl, options);
-};
 
 var createNote = function(ev) {
 	var container = $(this).closest("fieldset");
@@ -197,7 +172,6 @@ return {
 	dynamicAuth: dynamicAuth,
 	enhancedDropdown: enhancedDropdown,
 	EntitySelection: EntitySelection,
-	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
 	createNote: createNote
 };
 
@@ -246,7 +220,6 @@ jQuery(document).ready(function($) {
 	});
 	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
-	$("input.token_input_widget").each(IQVOC.addWidget);
 	$("input.entity_select").each(function(i, node) {
 		new IQVOC.EntitySelection(node);
 	});
