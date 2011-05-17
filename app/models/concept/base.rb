@@ -252,12 +252,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Class methods
 
-  # this find_by_origin method returns only instances of the current class.
-  # The dynamic find_by... method would have considered ALL (sub)classes (STI)
-  def self.find_by_origin(origin)
-    find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
-  end
-
   def self.inline_partial_name
     "partials/concept/inline_base"
   end
