@@ -18,7 +18,8 @@ class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
 
   self.rdf_predicate = 'prefLabel'
 
-  def self.only_one_allowed?
+  # if `singular` is true, only a single occurrence is allowed per instance
+  def self.singular?
     true
   end
 
