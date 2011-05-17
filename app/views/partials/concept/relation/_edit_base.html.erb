@@ -1,5 +1,6 @@
 <li>
-  <%= label_tag klass.name.to_relation_name, klass.model_name.human %>
+  <%= label_tag klass.name.to_relation_name,
+          klass.model_name.human(:count => klass.singular? ? 1 : 2) %>
   <%= text_field_tag "concept[concept_relations_by_id][#{klass.name.to_relation_name}]",
           concept.concept_relations_by_id(klass.name.to_relation_name),
           :id => klass.name.to_relation_name,
