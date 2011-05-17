@@ -64,9 +64,9 @@ class ConceptTest < ActiveSupport::TestCase
     concept = Factory.create(:concept)
     assert concept.valid?
     concept.pref_labelings << Factory.build(:pref_labeling)
-    assert 2, concept.pref_labelings.size
+    assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
-    assert !concept.valid?
+    assert concept.invalid?
   end
 
   test "concepts can have multiple preferred labels" do
