@@ -18,7 +18,7 @@ Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
   c.sequence(:origin) { |n| "_000000#{n}" }
   c.published_at 3.days.ago
   c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
-  c.narrower_relations{ |narrower_relations| [narrower_relations.association(:narrower_relation)]}
+  c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
 end
 
 Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
