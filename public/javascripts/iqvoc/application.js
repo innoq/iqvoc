@@ -52,9 +52,10 @@ var enhancedDropdown = function(container) {
 };
 
 var EntitySelector = function(node) {
-	this.el = $(node).hide();
+	this.el = $(node).hide(); // XXX: rename
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
+	this.singular = this.el.data("singular") || false;
 	this.entities = this.getSelection();
 	this.uriTemplate = this.el.data("entity-uri");
 
@@ -67,7 +68,7 @@ var EntitySelector = function(node) {
 
 	var exclude = this.el.data("exclude") || null;
 	var img = $('<img src="/images/iqvoc/spinner.gif" class="hidden" />');
-	var input = $("<input />").autocomplete({
+	this.input = $("<input />").autocomplete({
 		minLength: 3,
 		source: function(req, callback) {
 			var uri = self.el.data("query-url");
@@ -86,8 +87,12 @@ var EntitySelector = function(node) {
 		select: this.onSelect
 	});
 
-	this.container.append(input).append(img).append(selection)
+	this.container.append(this.input).append(img).append(selection)
 		.insertAfter(node).prepend(node);
+
+	if(this.singular && this.entities.length) {
+		this.input.hide();
+	}
 };
 $.extend(EntitySelector.prototype, {
 	onSelect: function(ev, ui) {
@@ -97,6 +102,9 @@ $.extend(EntitySelector.prototype, {
 			var entity = widget.
 					createEntity({ id: ui.item.value, name: ui.item.label });
 			widget.container.find("ul").append(entity);
+			if(widget.singular) {
+				widget.input.hide();
+			}
 		}
 		return false;
 	},
@@ -106,6 +114,9 @@ $.extend(EntitySelector.prototype, {
 		var widget = el.closest(".entity_select").data("widget");
 		widget.remove(entity.data("id"));
 		entity.remove();
+		if(widget.singular) {
+			widget.input.show();
+		}
 		ev.preventDefault();
 	},
 	createEntity: function(entity) {
