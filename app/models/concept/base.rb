@@ -66,7 +66,9 @@ class Concept::Base < ActiveRecord::Base
         end
       end
     end
+  end
 
+  after_save do |concept|
     # Concept relations
     # @concept_relations_by_id # => {'relation_name' => 'origin1, origin2, ...'}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|

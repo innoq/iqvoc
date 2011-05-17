@@ -1,4 +1,4 @@
-<div class="relation">
+<div class="relation" id="<%= klass.model_name.to_relation_name %>">
   <h4><%= klass.model_name.human(:count => 2) %></h4>
   <% related_concepts = concept.related_concepts_for_relation_class(klass) %>
   <div class="relation-body">
