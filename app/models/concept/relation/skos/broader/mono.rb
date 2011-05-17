@@ -20,7 +20,8 @@ class Concept::Relation::SKOS::Broader::Mono < Concept::Relation::SKOS::Broader:
     "partials/concept/relation/skos/broader/mono"
   end
 
-  def self.only_one_allowed?
+  # if `singular` is true, only a single occurrence is allowed per instance
+  def self.singular?
     true
   end
 
