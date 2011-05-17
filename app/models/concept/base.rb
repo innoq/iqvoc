@@ -357,6 +357,11 @@ class Concept::Base < ActiveRecord::Base
     @full_validation = true
     valid?
   end
+  
+  def invalid_with_full_validation?
+    @full_validation = true
+    invalid?
+  end
 
   def generate_origin
     concept = Concept::Base.select(:origin).last
