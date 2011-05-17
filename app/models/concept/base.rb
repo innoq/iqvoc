@@ -250,13 +250,33 @@ class Concept::Base < ActiveRecord::Base
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
-  # ********** Methods
+  # ********** Class methods
 
+  # this find_by_origin method returns only instances of the current class.
+  # The dynamic find_by... method would have considered ALL (sub)classes (STI)
+  def self.find_by_origin(origin)
+    find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
+  end
+
+  def self.inline_partial_name
+    "partials/concept/inline_base"
+  end
+
+  def self.new_link_partial_name
+    "partials/concept/new_link_base"
+  end
+
+  def self.edit_link_partial_name
+    "partials/concept/edit_link_base"
+  end
+  
+  # ********** Methods
+  
   def initialize(params = {})
     super(params)
     @full_validation = false
   end
-
+  
   def labelings_by_text=(hash)
     @labelings_by_text = hash
   end
@@ -320,24 +340,6 @@ class Concept::Base < ActiveRecord::Base
     note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
     notes.select{ |note| note.class.name == note_class }
   end
-
-  # this find_by_origin method returns only instances of the current class.
-  # The dynamic find_by... method would have considered ALL (sub)classes (STI)
-  def self.find_by_origin(origin)
-    find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
-  end
-
-  def self.inline_partial_name
-    "partials/concept/inline_base"
-  end
-
-  def self.new_link_partial_name
-    "partials/concept/new_link_base"
-  end
-
-  def self.edit_link_partial_name
-    "partials/concept/edit_link_base"
-  end
   
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
@@ -375,7 +377,7 @@ class Concept::Base < ActiveRecord::Base
     }
   end
   
-  # Validations
+  # ********** Validation methods
   
   def ensure_maximum_two_versions_of_a_concept
     if Concept::Base.by_origin(origin).count >= 2
