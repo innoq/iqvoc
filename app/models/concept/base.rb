@@ -31,39 +31,13 @@ class Concept::Base < ActiveRecord::Base
 
   validates :origin, :presence => true
 
-  # There may never be more than two versions of a concept
-  validate :on => :create do
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
-  end
+  validate :ensure_maximum_two_versions_of_a_concept,
+    :on => :create
 
-  # There must always be a prefLabel in the primary thesaurus language
-  validate :on => :update do |concept|
-    if @full_validation
-      labels = concept.pref_labels.select{|l| l.published?}
-      if labels.count == 0
-        errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
-      elsif not labels.map(&:language).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-        errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
-      end
-    end
-  end
-
-  # There may never be two different prefLabels of the same language
-  validate do |concept|
-    # We have many sources a prefLabel can be defined in
-    pls = concept.pref_labelings.map(&:target) +
-      concept.send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
-      concept.labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
-    languages = {}
-    pls.each do |pref_label|
-      lang = pref_label.language.to_s
-      origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
-      if (languages.keys.include?(lang) && languages[lang] != origin)
-        errors.add(:pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error"))
-      end
-      languages[lang] = origin
-    end
-  end
+  validate :ensure_a_pref_label_in_the_primary_thesaurus_language, 
+    :on => :update
+    
+  validate :ensure_no_pref_labels_share_the_same_language
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -399,6 +373,41 @@ class Concept::Base < ActiveRecord::Base
       :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
       # TODO: move to mixin      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
+  end
+  
+  # Validations
+  
+  def ensure_maximum_two_versions_of_a_concept
+    if Concept::Base.by_origin(origin).count >= 2
+      errors.add :base, I18n.t("txt.models.concept.version_error")
+    end
+  end
+  
+  def ensure_a_pref_label_in_the_primary_thesaurus_language
+    if @full_validation
+      labels = pref_labels.select{|l| l.published?}
+      if labels.count == 0
+        errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
+      elsif !labels.map(&:language).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+        errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
+      end
+    end
+  end
+  
+  def ensure_no_pref_labels_share_the_same_language
+    # We have many sources a prefLabel can be defined in
+    pls = pref_labelings.map(&:target) +
+      send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
+      labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
+    languages = {}
+    pls.each do |pref_label|
+      lang = pref_label.language.to_s
+      origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
+      if (languages.keys.include?(lang) && languages[lang] != origin)
+        errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
+      end
+      languages[lang] = origin
+    end
   end
 
 end
