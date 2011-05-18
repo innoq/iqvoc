@@ -15,7 +15,7 @@
 # limitations under the License.
 
 module RdfHelper
-  
+
   def render_concept(document, concept)
     document << concept.build_rdf_subject(document, controller) do |c|
 
@@ -48,6 +48,6 @@ module RdfHelper
         end
       end
     end
-  
+
   end
 end

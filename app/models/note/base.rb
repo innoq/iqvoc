@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class Note::Base < ActiveRecord::Base
-  
+
   set_table_name 'notes'
 
   class_inheritable_accessor :rdf_namespace, :rdf_predicate
@@ -29,9 +29,9 @@ class Note::Base < ActiveRecord::Base
   # ********** Relations
 
   belongs_to :owner, :polymorphic => true
-             
+
   has_many :annotations, :class_name => "Note::Annotated::Base", :foreign_key => :note_id, :dependent => :destroy
-  
+
   accepts_nested_attributes_for :annotations
 
   # ********** Scopes
@@ -43,7 +43,7 @@ class Note::Base < ActiveRecord::Base
       where(:language => lang_code)
     end
   }
-  
+
   scope :by_query_value, lambda { |query|
     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
@@ -71,7 +71,7 @@ class Note::Base < ActiveRecord::Base
     h = Iqvoc::RdfHelper.split_literal(str)
     self.new(:value => h[:value], :language => h[:language])
   end
-  
+
   def self.from_rdf!(str)
     self.from_rdf(str).save!
   end
@@ -79,25 +79,25 @@ class Note::Base < ActiveRecord::Base
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
-  
+
   def from_annotation_list!(str)
     str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
       annotations << Note::Annotated::Base.new(:identifier => annotation.first, :value => annotation.second)
     end
     self
   end
-  
+
   def from_rdf(str)
     h = Iqvoc::RdfHelper.split_literal(str)
     self.value    = h[:value]
     self.language = h[:language]
     self
   end
-    
+
   def to_rdf
     "\"#{value}\"@#{language}"
   end
-  
+
   def to_s
     "#{self.value}"
   end
@@ -117,14 +117,14 @@ class Note::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     "partials/note/edit_base"
   end
-  
+
   def self.single_query(params = {})
     query_str = build_query_string(params)
-    
+
     by_query_value(query_str).
       by_language(params[:languages].to_a)
   end
-  
+
   def self.search_result_partial_name
     'partials/note/search_result'
   end

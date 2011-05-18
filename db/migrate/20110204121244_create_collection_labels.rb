@@ -22,7 +22,7 @@ class CreateCollectionLabels < ActiveRecord::Migration
       t.string :language
       t.timestamps
     end
-    
+
     add_index :collection_labels, :collection_id, :name => 'ix_collection_labels_fk'
   end
 

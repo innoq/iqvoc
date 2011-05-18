@@ -56,7 +56,7 @@ module Iqvoc
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
-    
+
     # The JDBC driver url for the coinnection to the virtuoso triple store.
     # Login crdentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
@@ -75,6 +75,6 @@ module Iqvoc
     # blocked by the update... => Deadlock. You can avoid this by using the threaded
     # mode.
     config.virtuoso_sync_threaded = false
-    
+
   end
 end

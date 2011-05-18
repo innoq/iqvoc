@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   before_filter :ensure_extension
   before_filter :set_locale
   before_filter :require_user
-  
+
   helper :all
   helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data#, :render_label
 
@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
   protect_from_forgery
-    
+
   def unlocalized_root
     redirect_to localized_root_path(:lang => I18n.default_locale)
   end
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
 
     render :template => 'errors/not_found', :status => :not_found
   end
-  
+
   def handle_virtuoso_exception(exception)
     logger.error "Virtuoso Exception: " + exception
     flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
       I18n.locale = nil
       return
     end
-      
+
     if params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
       I18n.locale = params[:lang]
     else
@@ -90,21 +90,21 @@ class ApplicationController < ActionController::Base
       :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
     }
   end
-  
+
   def collection_widget_data(collection)
     {
       :id => collection.origin,
       :name => collection.pref_label.to_s
     }
   end
-  
+
   def label_widget_data(label)
     {
       :id => label.origin,
       :name => label.value
     }
   end
-  
+
   # def render_label(label)
   #   if label && label.language != I18n.locale.to_s
   #     label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.user
   end
-    
+
   def require_user
     unless current_user
       flash[:error] = I18n.t("txt.controllers.application.login_required")
@@ -137,7 +137,7 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
- 
+
   def require_no_user
     if current_user
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
@@ -145,5 +145,5 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
-  
+
 end

@@ -15,7 +15,7 @@
 # limitations under the License.
 
 module ApplicationHelper
-  
+
   def back_link(url, text=nil)
     text ||= I18n.t('txt.common.pagination.previous')
     link_to image_tag('iqvoc/back.png', :style => 'vertical-align: middle; margin-right: .5em') + text, url
@@ -28,10 +28,10 @@ module ApplicationHelper
         :schema => controller.schema_url(:format => nil, :anchor => "", :lang => nil)
       })
   end
-  
+
   def options_for_language_select(selected = nil)
     locales_collection = Iqvoc.available_languages.map {|l| [l.to_s, l.to_s]}
-    
+
     if selected
       options_for_select(locales_collection, selected)
     else
@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   def user_and_phone_number(label, name, telephone_number)
-    ' (' + label + ':' + name + ' (' + (telephone_number.present? ? telephone_number : '') + '))'    
+    ' (' + label + ':' + name + ' (' + (telephone_number.present? ? telephone_number : '') + '))'
   end
 
   def match_url(value)
@@ -53,7 +53,7 @@ module ApplicationHelper
       value
     end
   end
-  
+
   def error_messages_for(object)
     if object.errors.any?
       content_tag :ul, :class => "flash_error error_list" do
@@ -63,5 +63,5 @@ module ApplicationHelper
       end
     end
   end
-  
+
 end

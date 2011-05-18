@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class Labeling::SKOS::HiddenLabel < Labeling::SKOS::Base
-  
+
   def build_rdf(document, subject)
     subject.Skos.hiddenLabel(target.to_s, :lang => target.language)
   end

@@ -40,7 +40,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_difference('Concept::Base.count', 4) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end
-    
+
     concepts = {}
     ["_animal", "_cow", "_donkey", "_monkey"].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last

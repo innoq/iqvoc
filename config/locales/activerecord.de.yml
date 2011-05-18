@@ -53,7 +53,7 @@ de:
           pref_label:
             one:   "Bevorzugtes Label"
             other: "Bevorzugte Labels"
-          alt_label: 
+          alt_label:
             one:   "Alternatives Label"
             other: "Alternative Labels"
         skos:
@@ -121,9 +121,9 @@ de:
         base:
           one:   "Kollektion"
           other: "Kollektionen"
-        member: 
+        member:
           base: "Zugewiesene Kollektionen"
-      
+
     attributes:
       concept:
         base:

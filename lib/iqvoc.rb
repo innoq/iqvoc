@@ -56,7 +56,7 @@ module Iqvoc
   self.additional_css_files = []
 
   self.first_level_class_configuration_modules = [] # Will be set in the modules
-    
+
   def self.change_note_class
     change_note_class_name.constantize
   end
@@ -195,7 +195,7 @@ module Iqvoc
   # ************** Label specific settings **************
 
   module Label
-    
+
     mattr_accessor :base_class_name
 
     self.base_class_name        = 'Label::SKOS::Base'

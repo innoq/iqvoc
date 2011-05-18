@@ -20,7 +20,7 @@ module Concept
 
       def create_with_reverse_relation(target_concept)
         relation_class = proxy_reflection.class_name.constantize
-        ActiveRecord::Base.transaction do 
+        ActiveRecord::Base.transaction do
           # The one direction
           scope = relation_class.where(:owner_id => proxy_owner.id, :target_id => target_concept.id)
           scope.any? || scope.create!
@@ -30,7 +30,7 @@ module Concept
           scope.any? || scope.create!
         end
       end
-      
+
       def destroy_with_reverse_relation(target_concept)
         relation_class = proxy_reflection.class_name.constantize
         ActiveRecord::Base.transaction do
@@ -43,7 +43,7 @@ module Concept
           end
         end
       end
-      
+
     end
   end
 end

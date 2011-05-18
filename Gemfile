@@ -18,7 +18,7 @@ source 'http://rubygems.org'
 
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
-# group (:development by default). This is not what we need. 
+# group (:development by default). This is not what we need.
 gem 'rails', '3.0.7'
 
 gem 'will_paginate', '3.0.pre2'
@@ -59,7 +59,7 @@ group :production, :production_internal do
   platforms :ruby do
     gem 'sqlite3-ruby', :require => 'sqlite3'
   end
-  
+
   platforms :jruby do
     gem 'activerecord-oracle_enhanced-adapter'
   end

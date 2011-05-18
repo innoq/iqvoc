@@ -24,7 +24,7 @@ class Concepts::AlphabeticalController < ConceptsController
       ('A'..'Z').to_a +
       (0..9).to_a +
       ['[']
-    
+
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
       concept_published.
       label_begins_with(params[:letter]).
