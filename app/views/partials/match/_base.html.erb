@@ -2,6 +2,7 @@
 <div class="relation">
   <h4><%= klass.model_name.human(:count => 2) %></h4>
   <div class="relation-body">
-    <%= raw matches.map {|match| match_url(match.value)}.join(', ').presence || "-" %>
+    <%= raw matches.map { |match| match_url(match.value) }.
+            join(', ').presence || "-" %> <!-- TODO: use UL!? -->
   </div>
 </div>

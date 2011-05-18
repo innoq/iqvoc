@@ -82,11 +82,12 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins=(origins)
-    @member_concept_origins = origins.to_s.split(',').map(&:strip)
+    @member_concept_origins = origins.to_s.
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_concept_origins
-    @member_concept_origins || concept_members.map{|m| m.concept.origin}.uniq
+    @member_concept_origins || concept_members.map { |m| m.concept.origin }.uniq
   end
 
   def inline_member_concepts
@@ -94,11 +95,13 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins=(origins)
-    @member_collection_origins = origins.to_s.split(',').map(&:strip)
+    @member_collection_origins = origins.to_s.
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collection_members.map{|m| m.subcollection.origin}.uniq
+    @member_collection_origins || collection_members.
+        map { |m| m.subcollection.origin }.uniq
   end
 
   def inline_member_collections

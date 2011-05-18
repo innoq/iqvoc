@@ -10,5 +10,6 @@
           :"data-singular" => klass.singular? || nil,
           :"data-entities" => Concept::Base.editor_selectable.
               by_origin(concept.concept_relations_by_id(klass.name.to_relation_name).
-                  split(/[,\n] */)).map{ |c| concept_widget_data(c) }.to_json %>
+                  split(Iqvoc::InlineDataHelper::Splitter)).
+                  map { |c| concept_widget_data(c) }.to_json %>
 </li>
