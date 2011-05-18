@@ -115,7 +115,7 @@ module Iqvoc
 
     self.include_module_names = []
 
-    # Do not use the following method in models. This will propably cause a
+    # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
@@ -200,7 +200,7 @@ module Iqvoc
 
     self.base_class_name        = 'Label::SKOS::Base'
 
-    # Do not use the following method in models. This will propably cause a
+    # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
