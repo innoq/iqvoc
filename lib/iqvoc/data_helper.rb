@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc'
-require 'iqvoc/data_helper'
-require 'iqvoc/version'
-require 'iqvoc/versioning'
-require 'iqvoc/deep_cloning'
-require 'iqvoc/rdf_helper'
+module Iqvoc
+  class InlineDataHelper # XXX: rename?
 
-ActiveRecord::Base.send :include, Iqvoc::DeepCloning
+    # delimiters for strings representing a list of values
+    Joiner = ", "
+    Splitter = /[,\n] */
+
+  end
+end

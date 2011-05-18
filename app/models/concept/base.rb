@@ -59,7 +59,7 @@ class Concept::Base < ActiveRecord::Base
         self.send(relation_name).all.map(&:destroy)
         lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
         lang_values.each do |lang, values|
-          values.split(",").each do |value|
+          values.split(Iqvoc::InlineDataHelper::Splitter).each do |value|
             value.squish!
             self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
           end
@@ -72,8 +72,8 @@ class Concept::Base < ActiveRecord::Base
     # Concept relations
     # @concept_relations_by_id # => {'relation_name' => 'origin1, origin2, ...'}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
-      new_origins = new_origins.split(/[,\n]/).map(&:squish)
-      existing_origins = concept.send(relation_name).map{|r| r.target.origin}.uniq
+      new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
+      existing_origins = concept.send(relation_name).map { |r| r.target.origin }.uniq
       Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
         concept.send(relation_name).create_with_reverse_relation(c)
       end
@@ -183,7 +183,7 @@ class Concept::Base < ActiveRecord::Base
       :class_name  => match_class_name,
       :foreign_key => 'concept_id'
 
-    # Serialized setters and getters (\r\n or , separated)
+    # Serialized setters and getters (\r\n or , separated) -- TODO: use Iqvoc::InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
       self.send(match_class_name.to_relation_name).map(&:value).join("\r\n")
     end
@@ -279,7 +279,8 @@ class Concept::Base < ActiveRecord::Base
 
   def labelings_by_text(relation_name, language)
     (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
-      self.send(relation_name).by_label_language(language).map{ |l| l.target.value }.join(", ")
+      self.send(relation_name).by_label_language(language).
+          map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
   end
 
   def concept_relations_by_id=(hash)
@@ -288,7 +289,8 @@ class Concept::Base < ActiveRecord::Base
 
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
-      self.send(relation_name).map{ |l| l.target.origin }.join(", ")
+      self.send(relation_name).map { |l| l.target.origin }.
+          join(Iqvoc::InlineDataHelper::Joiner)
   end
 
   # returns the (one!) preferred label of a concept for the requested language.

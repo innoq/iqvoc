@@ -5,8 +5,10 @@
     :class => "token_input_widget",
     :"data-query-url" => concepts_path(:format => :json),
     :"data-options" => {
-      :prePopulate => Concept::Base.editor_selectable.by_origin(
-          concept.concept_relations_by_id(klass.name.to_relation_name).
-              split(/[,\n] */)).
-              map{ |c| concept_widget_data(c)} }.to_json %>
+      :prePopulate => Concept::Base.
+          editor_selectable.by_origin(
+              concept.concept_relations_by_id(klass.name.to_relation_name).
+                  split(Iqvoc::InlineDataHelper::Splitter)
+          ).map { |c| concept_widget_data(c) }
+    }.to_json %>
 </li>
