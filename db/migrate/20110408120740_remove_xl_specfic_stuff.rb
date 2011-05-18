@@ -35,5 +35,5 @@ class RemoveXlSpecficStuff < ActiveRecord::Migration
     add_index "label_relations", ["type"], :name => "index_label_relations_on_type"
 
   end
-  
+
 end

@@ -63,7 +63,7 @@ class RdfStore # FIXME: This must be modularized and refactored (the thread shou
     RdfStore.new(graph_uri, nil, true)
     true
   end
-  
+
   def self.mass_import(graph_uri, turtle_content)
     return false unless Rails.application.config.virtuoso_jdbc_driver_url
     RdfStore.new(graph_uri, nil, true, turtle_content)

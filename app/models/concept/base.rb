@@ -34,9 +34,9 @@ class Concept::Base < ActiveRecord::Base
   validate :ensure_maximum_two_versions_of_a_concept,
     :on => :create
 
-  validate :ensure_a_pref_label_in_the_primary_thesaurus_language, 
+  validate :ensure_a_pref_label_in_the_primary_thesaurus_language,
     :on => :update
-    
+
   validate :ensure_no_pref_labels_share_the_same_language
 
   Iqvoc::Concept.include_modules.each do |mod|
@@ -265,14 +265,14 @@ class Concept::Base < ActiveRecord::Base
   def self.edit_link_partial_name
     "partials/concept/edit_link_base"
   end
-  
+
   # ********** Methods
-  
+
   def initialize(params = {})
     super(params)
     @full_validation = false
   end
-  
+
   def labelings_by_text=(hash)
     @labelings_by_text = hash
   end
@@ -281,7 +281,7 @@ class Concept::Base < ActiveRecord::Base
     (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
       self.send(relation_name).by_label_language(language).map{ |l| l.target.value }.join(", ")
   end
-  
+
   def concept_relations_by_id=(hash)
     @concept_relations_by_id = hash
   end
@@ -336,7 +336,7 @@ class Concept::Base < ActiveRecord::Base
     note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
     notes.select{ |note| note.class.name == note_class }
   end
-  
+
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
     nil
@@ -359,7 +359,7 @@ class Concept::Base < ActiveRecord::Base
     @full_validation = true
     valid?
   end
-  
+
   def invalid_with_full_validation?
     @full_validation = true
     invalid?
@@ -377,15 +377,15 @@ class Concept::Base < ActiveRecord::Base
       # TODO: move to mixin      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
-  
+
   # ********** Validation methods
-  
+
   def ensure_maximum_two_versions_of_a_concept
     if Concept::Base.by_origin(origin).count >= 2
       errors.add :base, I18n.t("txt.models.concept.version_error")
     end
   end
-  
+
   def ensure_a_pref_label_in_the_primary_thesaurus_language
     if @full_validation
       labels = pref_labels.select{|l| l.published?}
@@ -396,7 +396,7 @@ class Concept::Base < ActiveRecord::Base
       end
     end
   end
-  
+
   def ensure_no_pref_labels_share_the_same_language
     # We have many sources a prefLabel can be defined in
     pls = pref_labelings.map(&:target) +

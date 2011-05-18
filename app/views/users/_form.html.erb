@@ -29,12 +29,12 @@
       <%= f.label :password_confirmation, User.human_attribute_name(:password_confirmation) %>
       <%= f.password_field :password_confirmation %>
     </li>
-    
+
     <li>
       <%= f.label :role, User.human_attribute_name(:role) %>
       <%= f.select :role, User::ROLES.map {|r| [r.humanize, r]} %>
     </li>
-  
+
     <li>
       <%= f.check_box :active %>
       <%= f.label :active, User.human_attribute_name(:active) %>

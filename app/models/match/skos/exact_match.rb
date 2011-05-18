@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::ExactMatch < Match::SKOS::MappingRelation  
-  
+class Match::SKOS::ExactMatch < Match::SKOS::MappingRelation
+
   self.rdf_predicate = 'exactMatch'
-  
+
 end

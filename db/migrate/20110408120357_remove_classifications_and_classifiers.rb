@@ -1,5 +1,5 @@
 class RemoveClassificationsAndClassifiers < ActiveRecord::Migration
-  
+
   def self.up
     drop_table "classifications"
     drop_table "classifiers"

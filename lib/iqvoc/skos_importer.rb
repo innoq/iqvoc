@@ -2,7 +2,7 @@ module Iqvoc
   class SkosImporter
 
     FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class]
-    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys + 
+    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
       Iqvoc::Concept.note_classes +
       Iqvoc::Concept.relation_classes +
       Iqvoc::Concept.match_classes

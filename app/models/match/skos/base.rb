@@ -1,5 +1,5 @@
 class Match::SKOS::Base < Match::Base
-  
+
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(subject, predicate, object)
@@ -12,7 +12,7 @@ class Match::SKOS::Base < Match::Base
 
   def build_rdf(document, subject)
     raise "Match::SKOS::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate." unless self.rdf_namespace && self.rdf_predicate
- 
+
     if (IqRdf::Namespace.find_namespace_class(self.rdf_namespace.camelcase))
       subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, URI.parse(value))
     else

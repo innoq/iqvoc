@@ -16,9 +16,9 @@
 
 module Iqvoc
   class RdfHelper
-  
+
     LITERAL_REGEXP = /"(.*)"@([a-zA-Z]{2})/
-  
+
     NSMAP = {
       'rdf'  => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
       'skos' => "http://www.w3.org/2004/02/skos/core#",
@@ -29,7 +29,7 @@ module Iqvoc
       uri =~ /([^\/]+)\/{0,1}$/
       $1
     end
-  
+
     def self.is_literal_form?(str)
       str.match LITERAL_REGEXP
     end
@@ -41,11 +41,11 @@ module Iqvoc
         "\"#{val}\""
       end
     end
-  
+
     def self.split_literal(str)
       elements = str.scan(LITERAL_REGEXP).first
-      @split_literal = { 
-        :value    => elements[0].gsub(/\\"/, '"'), 
+      @split_literal = {
+        :value    => elements[0].gsub(/\\"/, '"'),
         :language => elements[1]
       }
       RAILS_DEFAULT_LOGGER.debug "@split_literal => #{@split_literal}"
@@ -59,6 +59,6 @@ module Iqvoc
       end
       res
     end
-  
+
   end
 end
