@@ -79,6 +79,7 @@ var EntitySelector = function(node) {
 					return $.inArray(entity.id, excludes) !== -1 ? null :
 							{ value: entity.id, label: entity.name };
 				});
+				self.input.autocomplete("option", "autoFocus", data.length === 1);
 				callback(data);
 				img.addClass("hidden");
 			});
