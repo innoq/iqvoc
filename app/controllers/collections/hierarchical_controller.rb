@@ -18,7 +18,7 @@ class Collections::HierarchicalController < CollectionsController
   skip_before_filter :require_user # XXX: why? (cf. concepts/hierarchical)
 
   def index
-    authorize! :read, Collection::Base
+    authorize! :read, Iqvoc::Collection.base_class
 
     root = Iqvoc::Collection.base_class.find(params[:root])
     children = root.subcollections

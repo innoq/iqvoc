@@ -1,8 +1,11 @@
-<h2><%= Collection::Base.model_name.human(:count => 2) %></h2>
+<h2><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h2>
 
+<% if can?(:create, Iqvoc::Collection.base_class) %>
 <p>
-  <%= link_to t("txt.views.collections.new"), new_collection_path %>
+  <%= link_to t("txt.views.collections.new"), new_collection_path,
+          :class => "button" %>
 </p>
+<% end %>
 
 <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
   <%-

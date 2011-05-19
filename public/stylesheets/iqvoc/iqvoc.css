@@ -166,8 +166,19 @@ ul#navi_main li {
 #navi_sub ul li {
   list-style-type: none;
   display: inline;
-  margin-right: 1.0em;
+  margin-right: 1em;
   padding: 0;
+}
+
+#dashboard_controls {
+  height: 2em;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+#dashboard_controls li {
+  float: left;
+  margin-right: 1.5em;
 }
 
 #footer {

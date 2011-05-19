@@ -39,7 +39,7 @@
         <% end %>
       </li>
       <li>
-        <label for"c"><%= Collection::Base.model_name.human %></label>
+        <label for"c"><%= Iqvoc::Collection.base_class.model_name.human %></label>
         <%= select_tag 'c', options_for_select(Iqvoc::Collection.base_class_name.constantize.all.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>
       </li>
       <li>
