@@ -209,7 +209,7 @@ en:
        preview_new_version: "Preview of the version in editing"
        consistency_check: "Consistency check"
        current_revision: "Current revision"
-       in_ongoing_editing_by: "in ongoing editing by"
+       in_ongoing_editing_by: "currently being edited by"
        to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
