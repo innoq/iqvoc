@@ -1,7 +1,8 @@
 <h2><%= Collection::Base.model_name.human(:count => 2) %></h2>
 
 <p>
-  <%= link_to t("txt.views.collections.new"), new_collection_path %>
+  <%= link_to t("txt.views.collections.new"), new_collection_path,
+          :class => "button" %>
 </p>
 
 <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">

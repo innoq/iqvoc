@@ -2,9 +2,11 @@
 <p>
   <%= Iqvoc.first_level_classes.map { |klass|
     render klass.new_link_partial_name
-   }.select{|s| s.squish.present? }.join(" | ").html_safe -%>
+   }.select { |s| s.squish.present? }.join(" | ").html_safe -%>
   <%- if can?(:full_export, Concept::Base) -%>
-    | <%= t('txt.views.dashboard.full_rdf_export') %> (<%= link_to("Turtle", concepts_url(:format => :ttl)) %>, <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %> )
+    <%= t('txt.views.dashboard.full_rdf_export') %>
+    (<%= link_to("Turtle", concepts_url(:format => :ttl)) %>,
+    <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %> )
   <%- end -%>
 <%#= link_to "Virtuoso Sync", new_virtuoso_sync_path %>
 </p>
