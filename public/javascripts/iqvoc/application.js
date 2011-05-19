@@ -85,6 +85,7 @@ var EntitySelector = function(node) {
 			});
 		},
 		search: function(ev, ui) { img.removeClass("hidden"); },
+		focus: function(ev, ui) { return false; },
 		select: this.onSelect
 	});
 
