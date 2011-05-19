@@ -1,4 +1,4 @@
-<h2><%= Collection::Base.model_name.human(:count => 2) %></h2>
+<h2><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h2>
 
 <% if can?(:create, Iqvoc::Collection.base_class) %>
 <p>

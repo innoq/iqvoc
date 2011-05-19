@@ -29,7 +29,7 @@
 </fieldset>
 
 <fieldset>
-  <legend><%= Collection::Base.model_name.human(:count => 2) %></legend>
+  <legend><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></legend>
   <%= text_field_tag "concept[inline_member_collection_origins]",
       @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::Joiner),
     :class => "token_input_widget",
