@@ -1,6 +1,7 @@
 <div class="relation" id="<%= klass.model_name.to_relation_name %>">
   <h4><%= klass.model_name.human(:count => 2) %></h4>
-  <% related_concepts = concept.related_concepts_for_relation_class(klass) %>
+  <% related_concepts = concept.related_concepts_for_relation_class(klass,
+        params[:published] != "0") %>
   <div class="relation-body">
     <% if related_concepts.count > 0 %>
       <%= raw related_concepts.map { |c|
