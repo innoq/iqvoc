@@ -64,7 +64,7 @@ var EntitySelector = function(node) {
 	var selection = $.map(this.el.data("entities"), function(entity, i) {
 		return self.createEntity(entity);
 	});
-	selection = $("<ul />").append(selection);
+	selection = $('<ul class="entity_list" />').append(selection);
 
 	var exclude = this.el.data("exclude") || null;
 	var img = $('<img src="/images/iqvoc/spinner.gif" class="hidden" />');

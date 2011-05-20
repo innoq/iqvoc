@@ -278,26 +278,14 @@ ol textarea { /* neutralize blueprint defaults */
   margin-top: 0;
 }
 
-.relation-body ul,
-.concept .relation { /* contain floats */
-  width: 100%;
-  overflow: hidden;
-}
-
-.relation-body ul {
-  margin: 0;
-  padding: 0;
-  list-style-position: inside;
-}
-
-.relation-body li {
-  float: left;
-  margin-right: 1em;
-}
-
 .concept #content h3 {
   clear: both;
   margin: 1em 0;
+}
+
+.concept .relation { /* contain floats */
+  width: 100%;
+  overflow: hidden;
 }
 
 .concept .relation h4 {
@@ -317,12 +305,13 @@ ol textarea { /* neutralize blueprint defaults */
   clear: both;
 }
 
-.entity_select ul { /* contain floats */
+.entity_list { /* contain floats */
   width: 100%;
   overflow: hidden;
+  list-style-type: none;
 }
 
-.entity_select li {
+.entity_list li {
     float: left;
     margin: 3px;
     padding: 1px 3px;
@@ -333,6 +322,10 @@ ol textarea { /* neutralize blueprint defaults */
     font-size: 11px;
     color: #000;
     background-color: #EFF2F7;
+}
+
+.relation-body .entity_list li {
+  font-size: inherit;
 }
 
 .entity_select a.btn {
