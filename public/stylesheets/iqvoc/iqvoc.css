@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* ##################################### */
 /* # Customizable in your app's CSS # */
 /* ##################################### */
@@ -334,6 +336,11 @@ ol textarea { /* neutralize blueprint defaults */
   margin-left: 0;
   margin-right: 1em;
   border-color: transparent;
+}
+
+.relation-body .entity_list li:after {
+  color: #AAA;
+  content: " ⬧";
 }
 
 .entity_select a.btn {
