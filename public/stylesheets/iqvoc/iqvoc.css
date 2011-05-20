@@ -333,6 +333,7 @@ ol textarea { /* neutralize blueprint defaults */
   font-size: inherit;
   margin-left: 0;
   margin-right: 1em;
+  border-color: transparent;
 }
 
 .entity_select a.btn {
