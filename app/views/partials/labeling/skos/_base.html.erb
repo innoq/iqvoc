@@ -2,15 +2,30 @@
   <%- if defined?(concept) -%>
     <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
     <div class="relation-body">
-      <%= concept.labels_for_labeling_class_and_language(klass, lang).
-              map(&:value).join(Iqvoc::InlineDataHelper::Joiner).presence || "-" %>
+      <%- items = concept.labels_for_labeling_class_and_language(klass, lang) -%>
+      <% if items.count > 0 %>
+        <ul>
+        <% items.map(&:value).each { |label| %>
+          <li><%= label %></li>
+        <% } %>
+        </ul>
+      <% else %>
+        <p class="term-unavailable">-</p>
+      <% end %>
     </div>
   <%- elsif defined?(label) -%>
     <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
     <div class="relation">
-      <%= raw label.concepts_for_labeling_class(klass).
-              map { |c| link_to c.origin, concept_path(:id => c), :alt => c.pref_label }.
-              join(', ').presence || "-" %> <!-- TODO: use UL!? -->
+      <%- items = label.concepts_for_labeling_class(klass) -%>
+      <% if items.count > 0 %>
+        <ul>
+        <% items.each { |c| %>
+          <li><%= link_to c.origin, concept_path(:id => c), :alt => c.pref_label %></li>
+        <% } %>
+        </ul>
+      <% else %>
+        <p class="term-unavailable">-</p>
+      <% end %>
     </div>
   <%- end -%>
 <%- end -%>

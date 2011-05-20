@@ -278,14 +278,26 @@ ol textarea { /* neutralize blueprint defaults */
   margin-top: 0;
 }
 
-.concept #content h3 {
-  clear: both;
-  margin: 1em 0;
-}
-
+.relation-body ul,
 .concept .relation { /* contain floats */
   width: 100%;
   overflow: hidden;
+}
+
+.relation-body ul {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+
+.relation-body li {
+  float: left;
+  margin-right: 1em;
+}
+
+.concept #content h3 {
+  clear: both;
+  margin: 1em 0;
 }
 
 .concept .relation h4 {
