@@ -43,6 +43,19 @@ module ApplicationHelper
     ' (' + label + ':' + name + ' (' + (telephone_number.present? ? telephone_number : '') + '))'
   end
 
+  def association_listing(items, &block)
+    return '<p class="term-unavailable">-</p>' if items.count == 0
+
+    content_tag :ul do
+      nodes = items.map do |item|
+        content_tag :li do
+          block.call(item)
+        end
+      end
+      nodes.join("\n").html_safe
+    end
+  end
+
   def match_url(value)
     case value
     when /^\d+$/
