@@ -340,7 +340,7 @@ ol textarea { /* neutralize blueprint defaults */
 
 .relation-body .entity_list li:after {
   color: #AAA;
-  content: " ⬧";
+  content: " ◦";
 }
 
 .entity_select a.btn {
