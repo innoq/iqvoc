@@ -324,8 +324,15 @@ ol textarea { /* neutralize blueprint defaults */
   background-color: #EFF2F7;
 }
 
+.relation-body .entity_list {
+  margin: 0;
+  padding: 0;
+}
+
 .relation-body .entity_list li {
   font-size: inherit;
+  margin-left: 0;
+  margin-right: 1em;
 }
 
 .entity_select a.btn {
