@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def options_for_language_select(selected = nil)
-    locales_collection = Iqvoc.available_languages.map {|l| [l.to_s, l.to_s]}
+    locales_collection = Iqvoc.available_languages.map { |l| [l.to_s, l.to_s] }
 
     if selected
       options_for_select(locales_collection, selected)
@@ -41,6 +41,19 @@ module ApplicationHelper
 
   def user_and_phone_number(label, name, telephone_number)
     ' (' + label + ':' + name + ' (' + (telephone_number.present? ? telephone_number : '') + '))'
+  end
+
+  def association_listing(items, &block)
+    return '<p class="term-unavailable">-</p>' if items.count == 0
+
+    content_tag :ul do
+      nodes = items.map do |item|
+        content_tag :li do
+          block.call(item)
+        end
+      end
+      nodes.join("\n").html_safe
+    end
   end
 
   def match_url(value)

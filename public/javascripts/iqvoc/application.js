@@ -272,7 +272,8 @@ jQuery(document).ready(function($) {
 	// Dashboard table row highlighting and click handling
 	$("tr.highlightable")
 		.hover(function(ev) {
-			$(this).toggleClass("hover");
+			var action = ev.type === "mouseenter" ? "addClass" : "removeClass";
+			$(this)[action]("hover");
 		})
 		.click(function(ev) {
 			window.location = $(this).attr("data-url");

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["robert.glaser@innoq.com", "till.schulte-coerne@innoq.com"]
   s.homepage    = "http://innoq.com"
   s.summary     = "iQvoc"
-  s.description = "iQvoc - a SKOS(XL) vocabulary management system built on the Semantic Web"
+  s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
 
   s.add_dependency "rails", '3.0.7'
   s.add_dependency "bundler"

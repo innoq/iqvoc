@@ -2,15 +2,20 @@
   <%- if defined?(concept) -%>
     <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
     <div class="relation-body">
-      <%= concept.labels_for_labeling_class_and_language(klass, lang).
-              map(&:value).join(Iqvoc::InlineDataHelper::Joiner).presence || "-" %>
+      <%= raw association_listing(
+              concept.labels_for_labeling_class_and_language(klass, lang)
+          ) { |label| label.value }
+      %>
     </div>
   <%- elsif defined?(label) -%>
     <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
     <div class="relation">
-      <%= raw label.concepts_for_labeling_class(klass).
-              map { |c| link_to c.origin, concept_path(:id => c), :alt => c.pref_label }.
-              join(', ').presence || "-" %> <!-- TODO: use UL!? -->
+      <%= raw association_listing(
+              label.concepts_for_labeling_class(klass)
+          ) { |c|
+            link_to c.origin, concept_path(:id => c), :alt => c.pref_label
+          }
+      %>
     </div>
   <%- end -%>
 <%- end -%>
