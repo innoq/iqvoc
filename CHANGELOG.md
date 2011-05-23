@@ -1,4 +1,10 @@
-## 3.1.0
+## 3.1.1 (2011-05-23)
+
+* Fixed regression preventing relations from being saved during concept creation
+* Minor UI tweaks (fonts, buttons, semantic markup etc.)
+* Various bugfixes and internal refactoring
+
+## 3.1.0 (2011-05-16)
 
 * Extended multilanguage support.
   You can now translate concept PrefLabels by switching the main language in the new control bar.
@@ -6,7 +12,7 @@
 * Several UI tweaks: styleable buttons, 2-column layout for concept templates and more.
 * Bugfixes
 
-## 3.0.0
+## 3.0.0 (2011-05-10)
 
 iQvoc has undergone major refactorings and architecture changes. It is now Open Source and publicly available.
 
