@@ -216,10 +216,6 @@ en:
        edit:
          header: "Edit labeling"
          submit: "Save"
-     widget:
-       hint: "edit term"
-       no_results: "Not found!"
-       searching: "searching ..."
      lang_widget:
        caption: "Language selection"
        primary: "Primary"
