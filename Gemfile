@@ -20,6 +20,7 @@ source 'http://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '3.0.7'
+gem 'rake', '~> 0.8.7'
 
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
