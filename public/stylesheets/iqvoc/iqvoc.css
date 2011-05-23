@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 /* ##################################### */
 /* # Customizable in your app's CSS # */
 /* ##################################### */
@@ -315,6 +313,25 @@ ol textarea { /* neutralize blueprint defaults */
 
 .entity_list li {
   float: left;
+}
+
+.relation-body .entity_list {
+  margin: 0;
+  padding: 0;
+}
+
+.relation-body .entity_list li {
+  margin-right: 1em;
+}
+
+.relation-body .entity_list li:after {
+  content: ",";
+}
+.relation-body .entity_list li:last-child:after {
+  content: "";
+}
+
+.entity_select li {
   margin: 3px;
   padding: 1px 3px;
   border: 1px solid #CCD5E4;
@@ -324,23 +341,6 @@ ol textarea { /* neutralize blueprint defaults */
   font-size: 11px;
   color: #000;
   background-color: #EFF2F7;
-}
-
-.relation-body .entity_list {
-  margin: 0;
-  padding: 0;
-}
-
-.relation-body .entity_list li {
-  font-size: inherit;
-  margin-left: 0;
-  margin-right: 1em;
-  border-color: transparent;
-}
-
-.relation-body .entity_list li:after {
-  color: #AAA;
-  content: " ◦";
 }
 
 .entity_select a.btn {
