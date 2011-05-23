@@ -1,14 +1,15 @@
 <li>
-  <%= label_tag klass.name.to_relation_name, klass.model_name.human %>
-  <%= text_field_tag "concept[concept_relations_by_id][#{klass.name.to_relation_name}]", concept.concept_relations_by_id(klass.name.to_relation_name),
-    :id => klass.name.to_relation_name,
-    :class => "token_input_widget",
-    :"data-query-url" => concepts_path(:format => :json),
-    :"data-options" => {
-      :prePopulate => Concept::Base.
-          editor_selectable.by_origin(
-              concept.concept_relations_by_id(klass.name.to_relation_name).
-                  split(Iqvoc::InlineDataHelper::Splitter)
-          ).map { |c| concept_widget_data(c) }
-    }.to_json %>
+  <%= label_tag klass.name.to_relation_name,
+          klass.model_name.human(:count => klass.singular? ? 1 : 2) %>
+  <%= text_field_tag "concept[concept_relations_by_id][#{klass.name.to_relation_name}]",
+          concept.concept_relations_by_id(klass.name.to_relation_name),
+          :id => klass.name.to_relation_name,
+          :class => "entity_select",
+          :"data-query-url" => concepts_path(:format => :json),
+          :"data-entity-uri" => concept_path("{id}"),
+          :"data-singular" => klass.singular? || nil,
+          :"data-entities" => Concept::Base.editor_selectable.
+              by_origin(concept.concept_relations_by_id(klass.name.to_relation_name).
+                  split(Iqvoc::InlineDataHelper::Splitter)).
+                  map { |c| concept_widget_data(c) }.to_json %>
 </li>

@@ -51,30 +51,108 @@ var enhancedDropdown = function(container) {
 
 };
 
-var addWidget = function(index, elem) {
-	if(!elem) {
-		return;
+var EntitySelector = function(node) {
+	this.el = $(node).hide(); // XXX: rename
+	this.container = $('<div class="entity_select" />').data("widget", this);
+	this.delimiter = ",";
+	this.singular = this.el.data("singular") || false;
+	this.entities = this.getSelection();
+	this.uriTemplate = this.el.data("entity-uri");
+
+	var self = this;
+
+	var selection = $.map(this.el.data("entities"), function(entity, i) {
+		return self.createEntity(entity);
+	});
+	selection = $('<ul class="entity_list" />').append(selection);
+
+	var exclude = this.el.data("exclude") || null;
+	var img = $('<img src="/images/iqvoc/spinner.gif" class="hidden" />');
+	this.input = $("<input />").autocomplete({
+		minLength: 3,
+		source: function(req, callback) {
+			var uri = self.el.data("query-url");
+			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
+				var excludes = self.getSelection()
+					.concat(exclude ? [exclude] : []);
+				data = $.map(data, function(entity, i) {
+					return $.inArray(entity.id, excludes) !== -1 ? null :
+							{ value: entity.id, label: entity.name };
+				});
+				self.input.autocomplete("option", "autoFocus", data.length === 1);
+				callback(data);
+				img.addClass("hidden");
+			});
+		},
+		search: function(ev, ui) { img.removeClass("hidden"); },
+		focus: function(ev, ui) { return false; },
+		select: this.onSelect
+	});
+
+	this.container.append(this.input).append(img).append(selection)
+		.insertAfter(node).prepend(node);
+
+	if(this.singular && this.entities.length) {
+		this.input.hide();
 	}
-
-	elem = $(elem);
-	elem.val("");
-	var queryUrl = elem.attr("data-query-url");
-	var options = $.parseJSON(elem.attr("data-options"));
-	var excludes = elem.attr("data-exclude") || "";
-	excludes = excludes.split(";");
-	// Widget UI text translations get yielded into a meta tag in the head section of the page.
-	// Parse them and merge the JSON hash with the default options.
-	var translations = $.parseJSON($("meta[name=widget-translations]").attr("content"));
-
-	options = $.extend(translations, options);
-	options.onResult = excludes.length === 0 ? null : function(results) {
-		return $.grep(results, function(item) {
-			return $.inArray(item.id, excludes) === -1;
-		});
-	};
-
-	elem.tokenInputNew(queryUrl, options);
 };
+$.extend(EntitySelector.prototype, {
+	onSelect: function(ev, ui) {
+		var el = $(this).val("");
+		var widget = el.closest(".entity_select").data("widget");
+		if(widget.add(ui.item.value)) {
+			var entity = widget.
+					createEntity({ id: ui.item.value, name: ui.item.label });
+			widget.container.find("ul").append(entity);
+			if(widget.singular) {
+				widget.input.hide();
+			}
+		}
+		return false;
+	},
+	onDelete: function(ev) {
+		var el = $(this);
+		var entity = el.closest("li");
+		var widget = el.closest(".entity_select").data("widget");
+		widget.remove(entity.data("id"));
+		entity.remove();
+		if(widget.singular) {
+			widget.input.show();
+		}
+		ev.preventDefault();
+	},
+	createEntity: function(entity) {
+		var uri = this.uriTemplate.replace("%7Bid%7D", entity.id); // XXX: not very generic
+		var link = $('<a target="_blank" />').attr("href", uri).text(entity.name);
+		var btn = $('<a href="javascript:;" class="btn">x</a>') // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
+			.click(this.onDelete);
+		return $("<li />").data("id", entity.id).append(link).append(btn)[0];
+	},
+	add: function(entity) {
+		if($.inArray(entity, this.entities) === -1) {
+			this.entities.push(entity);
+			this.setSelection();
+			return true;
+		} else {
+			return false;
+		}
+	},
+	remove: function(entity) {
+		var pos = $.inArray(entity, this.entities);
+		if(pos !== -1) {
+			this.entities.splice(pos, 1);
+			this.setSelection();
+		}
+	},
+	setSelection: function() {
+		this.el.val(this.entities.join(this.delimiter));
+	},
+	getSelection: function() {
+		return $.map(this.el.val().split(this.delimiter), function(entity, i) {
+			return entity ? $.trim(entity) : null;
+		});
+	}
+});
 
 var createNote = function(ev) {
 	var container = $(this).closest("fieldset");
@@ -126,7 +204,7 @@ var createNote = function(ev) {
 return {
 	dynamicAuth: dynamicAuth,
 	enhancedDropdown: enhancedDropdown,
-	addWidget: addWidget, // TODO: rename; too generic / insufficiently descriptive
+	EntitySelector: EntitySelector,
 	createNote: createNote
 };
 
@@ -175,7 +253,9 @@ jQuery(document).ready(function($) {
 	});
 	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
-	$("input.token_input_widget").each(IQVOC.addWidget);
+	$("input.entity_select").each(function(i, node) {
+		new IQVOC.EntitySelector(node);
+	});
 
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();

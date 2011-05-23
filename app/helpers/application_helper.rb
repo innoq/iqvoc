@@ -46,7 +46,7 @@ module ApplicationHelper
   def association_listing(items, &block)
     return '<p class="term-unavailable">-</p>' if items.count == 0
 
-    content_tag :ul do
+    content_tag :ul, :class => "entity_list" do
       nodes = items.map do |item|
         content_tag :li do
           block.call(item)

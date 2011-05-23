@@ -53,9 +53,10 @@ class Labeling::Base < ActiveRecord::Base
     includes(:target).merge(Label::Base.by_language(lang.to_s))
   }
 
+  # if `singular` is true, only a single occurrence is allowed per instance
   # FIXME: There should be a validation checking this
-  # Might there be more then one laeling of this type and language per concept?
-  def self.only_one_allowed?
+  # Might there be more than one labeling of this type and language per concept?
+  def self.singular?
     false
   end
 
