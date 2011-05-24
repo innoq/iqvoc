@@ -370,7 +370,7 @@ class Concept::Base < ActiveRecord::Base
 
   def generate_origin
     concept = Concept::Base.select(:origin).last
-    value = concept.blank? ? 1 : concept.origin.to_i + 1
+    value = concept.blank? ? 1 : concept.origin.gsub(/^_/, "").to_i + 1
     write_attribute(:origin, sprintf("_%08d", value))
   end
 
