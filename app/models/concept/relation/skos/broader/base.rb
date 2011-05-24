@@ -35,7 +35,7 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
   end
 
   def self.narrower_editable
-    !only_one_allowed?
+    !singular?
   end
 
 end

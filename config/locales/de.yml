@@ -208,10 +208,6 @@ de:
        edit:
          header: "Labeling bearbeiten"
          submit: "Speichern"
-     widget:
-       hint: "Begriff eingeben"
-       no_results: "Keine Ergebnisse"
-       searching: "Suchen..."
      lang_widget:
        caption: "Sprachauswahl"
        primary: "Primärsprache"
