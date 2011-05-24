@@ -18,11 +18,11 @@ jQuery UI upgrade procedure
 ---------------------------
 
 * create [custom build](http://jqueryui.com/download), selecting only the
-  required components
+  required components (plus theme)
 * unzip custom build to temporary directory (`/tmp/ui/`)
 * `$ git rm public/javascripts/iqvoc/jquery-ui-*.custom*.js`
 * `$ mv /tmp/ui/js/jquery-ui-*.custom.min.js public/javascripts/iqvoc/`
-* `$ mv /tmp/dev/development-bundle/ui/jquery-ui-*.custom.js public/javascripts/iqvoc/`
+* `$ mv /tmp/ui/development-bundle/ui/jquery-ui-*.custom.js public/javascripts/iqvoc/`
 * `$ git rm public/stylesheets/iqvoc/jquery-ui-*.custom.css`
 * `$ mv /tmp/ui/css/redmond/jquery-ui-*.custom.css public/stylesheets/iqvoc/`
 * `$ git rm public/stylesheets/iqvoc/images/ui-*`
