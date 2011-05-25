@@ -331,19 +331,22 @@ ol textarea { /* neutralize blueprint defaults */
   content: "";
 }
 
-fieldset.note_relation dl { /* contain floats */
+.note_annotations { /* contain floats */
   width: 100%;
   overflow: hidden;
+}
+
+fieldset .note_annotations {
   margin-left: 1.5em;
 }
 
-fieldset.note_relation dt,
-fieldset.note_relation dd {
+.note_annotations dt,
+.note_annotations dd {
   float: left;
   margin: 0 1em 0 0;
 }
 
-fieldset.note_relation dt {
+.note_annotations dt {
   clear: left;
   width: 8em;
 }
@@ -377,8 +380,9 @@ tr.hover {
 }
 
 .note_language {
-  color: grey;
   font-size: 75%;
+  line-height: 175%;
+  color: grey;
 }
 
 .valid { color: #318210; }

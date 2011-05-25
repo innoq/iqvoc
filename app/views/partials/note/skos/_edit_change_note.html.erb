@@ -12,7 +12,7 @@
             <br />
 
             <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
-            <dl>
+            <dl class="note_annotations">
               <% note.annotations.map { |na| %>
                 <dt><%= na.identifier %></dt>
                 <dd><%= na.value %></dd>
