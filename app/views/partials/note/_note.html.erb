@@ -1,11 +1,14 @@
 <% unless note.new_record? %>
   <%= tag("div", { :class => "translation", :lang => note.language || nil }, true) %>
-    <div class="note_language <%= note.language %>"><%= "(#{note.language ? note.language : '-'})" %></div>
+    <div class="note_language <%= note.language %>">
+      (<%= note.language || '-' %>)
+    </div>
     <span><%= linkify(note.value) %></span>
-    <ul>
+    <dl class="note_annotations">
       <% note.annotations.each do |annotation| %>
-        <li><%= linkify "#{annotation.identifier} #{annotation.value}" %></li>
+        <dt><%= annotation.identifier %></dt>
+        <dd><%= linkify annotation.value %></dd>
       <% end %>
-    </ul>
+    </dl>
   </div>
 <% end %>

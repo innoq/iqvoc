@@ -331,6 +331,26 @@ ol textarea { /* neutralize blueprint defaults */
   content: "";
 }
 
+.note_annotations { /* contain floats */
+  width: 100%;
+  overflow: hidden;
+}
+
+fieldset .note_annotations {
+  margin-left: 1.5em;
+}
+
+.note_annotations dt,
+.note_annotations dd {
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+.note_annotations dt {
+  clear: left;
+  width: 8em;
+}
+
 .entity_select li {
   margin: 3px;
   padding: 1px 3px;
@@ -360,8 +380,9 @@ tr.hover {
 }
 
 .note_language {
-  color: grey;
   font-size: 75%;
+  line-height: 175%;
+  color: grey;
 }
 
 .valid { color: #318210; }
