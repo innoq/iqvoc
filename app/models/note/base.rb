@@ -96,8 +96,19 @@ class Note::Base < ActiveRecord::Base
     self
   end
 
-  def to_rdf
-    "\"#{value}\"@#{language}"
+  def to_rdf # XXX: UMT remnants do not belong here!?
+    annotations = self.annotations.each_with_object({}) { |annotation, hsh|
+      hsh[annotation.identifier] = annotation.value
+    }
+
+    modified = annotations["dct:modified"]
+    editor = annotations["umt:editor"]
+
+    data = ["rdfs:comment \"#{value}\"@#{language}"]
+    data << "dct:modified \"#{modified}\"" if modified
+    data << "dct:creator \"#{editor}\"" if editor
+
+    "[ #{data.join("; ")} ]"
   end
 
   def to_s
@@ -135,6 +146,5 @@ class Note::Base < ActiveRecord::Base
     result.Sdc::link(IqRdf.build_uri(owner.origin))
     build_rdf(document, result)
   end
-
 
 end
