@@ -331,6 +331,23 @@ ol textarea { /* neutralize blueprint defaults */
   content: "";
 }
 
+fieldset.note_relation dl { /* contain floats */
+  width: 100%;
+  overflow: hidden;
+  margin-left: 1.5em;
+}
+
+fieldset.note_relation dt,
+fieldset.note_relation dd {
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+fieldset.note_relation dt {
+  clear: left;
+  width: 8em;
+}
+
 .entity_select li {
   margin: 3px;
   padding: 1px 3px;
