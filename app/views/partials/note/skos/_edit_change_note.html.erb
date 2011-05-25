@@ -13,7 +13,7 @@
 
             <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
             <dl class="note_annotations">
-              <% note.annotations.map { |na| %>
+              <% note.annotations.each { |na| %>
                 <dt><%= na.identifier %></dt>
                 <dd><%= na.value %></dd>
               <% } %>
@@ -27,13 +27,13 @@
 
             <label><%= t("txt.common.value") %></label>
             <span><%= note.value %></span>
-            <br/>
 
-            <% note.annotations.each do |na| %>
-              <label><%= na.identifier %></label>
-              <span><%= na.value %></span>
-              <br/>
-            <% end %>
+            <dl class="note_annotations">
+              <% note.annotations.each { |na| %>
+                <dt><%= na.identifier %></dt>
+                <dd><%= na.value %></dd>
+              <% } %>
+            </dl>
 
           <% end %>
 
