@@ -20,6 +20,12 @@ class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::A
 
   belongs_to :note, :class_name => Note::Base.name
 
+  def identifier
+    (self.namespace && self.predicate) ?
+        [self.namespace, self.predicate].join(":") :
+        (self.namespace || self.predicate)
+  end
+
   # def value=(val)
   #   write_attribute(:value, Iqvoc::RdfHelper.quote_turtle_literal(val))
   # end

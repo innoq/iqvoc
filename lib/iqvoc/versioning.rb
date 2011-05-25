@@ -73,8 +73,8 @@ module Iqvoc
         new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
           :language => I18n.locale.to_s,
           :annotations_attributes => [
-            { :identifier => "umt:editor", :value => user.name },
-            { :identifier => "dct:modified", :value => DateTime.now.to_s }
+            { :namespace => "umt", :predicate => "editor", :value => user.name },
+            { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
           ])
         new_version
       end
