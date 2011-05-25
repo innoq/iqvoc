@@ -103,8 +103,6 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  private
-
   # Configurable Ability class
   def current_ability
     @current_ability ||= Iqvoc::Ability.new(current_user)
