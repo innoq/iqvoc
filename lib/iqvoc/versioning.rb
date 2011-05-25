@@ -66,10 +66,10 @@ module Iqvoc
 
       def branch(user)
         new_version = self.clone(:include => self.class.includes_to_deep_cloning)
-        new_version.lock_by_user!(user.id)
+        new_version.lock_by_user(user.id)
         new_version.increment!(:rev)
         new_version.published_version_id = self.id
-        new_version.unpublish!
+        new_version.unpublish
         new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
           :language => I18n.locale.to_s,
           :annotations_attributes => [
@@ -79,13 +79,13 @@ module Iqvoc
         new_version
       end
 
-      def publish!
+      def publish
         write_attribute(:published_at, Time.now)
         write_attribute(:to_review, nil)
         write_attribute(:published_version_id, nil)
       end
 
-      def unpublish!
+      def unpublish
         write_attribute(:published_at, nil)
       end
 
@@ -93,7 +93,7 @@ module Iqvoc
         read_attribute(:published_at).present?
       end
 
-      def lock_by_user!(user_id)
+      def lock_by_user(user_id)
         write_attribute(:locked_by, user_id)
       end
 
@@ -111,7 +111,7 @@ module Iqvoc
         end
       end
 
-      def unlock!
+      def unlock
         write_attribute(:locked_by, nil)
       end
 
@@ -119,7 +119,7 @@ module Iqvoc
         read_attribute(:to_review).present?
       end
 
-      def to_review!
+      def to_review
         write_attribute(:to_review, true)
       end
 

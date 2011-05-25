@@ -54,7 +54,7 @@ module Iqvoc
 
       new_subjects.each do |id, subject|
         if subject.valid_with_full_validation?
-          subject.publish!
+          subject.publish
           subject.save!
         else
           Rails.logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
