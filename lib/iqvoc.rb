@@ -28,7 +28,8 @@ module Iqvoc
     :change_note_class_name,
     :additional_js_files,
     :additional_css_files,
-    :first_level_class_configuration_modules
+    :first_level_class_configuration_modules,
+    :ability_class_name
 
   self.title = "iQvoc"
 
@@ -56,6 +57,8 @@ module Iqvoc
   self.additional_css_files = []
 
   self.first_level_class_configuration_modules = [] # Will be set in the modules
+  
+  self.ability_class_name = 'Iqvoc::Ability'
 
   def self.change_note_class
     change_note_class_name.constantize
@@ -67,6 +70,10 @@ module Iqvoc
 
   def self.first_level_classes
     self.first_level_class_configuration_modules.map { |mod| mod.send(:base_class) }
+  end
+  
+  def self.ability_class
+    ability_class_name.constantize
   end
 
   # ************** Concept specific settings **************

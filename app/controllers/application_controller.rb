@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
 
   # Configurable Ability class
   def current_ability
-    @current_ability ||= Iqvoc::Ability.new(current_user)
+    @current_ability ||= Iqvoc.ability_class.new(current_user)
   end
 
   def current_user_session
