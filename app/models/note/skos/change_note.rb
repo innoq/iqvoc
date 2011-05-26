@@ -22,4 +22,20 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
     "partials/note/skos/edit_change_note"
   end
 
+  def build_rdf(document, subject)
+    annotations = self.annotations.each_with_object({}) { |annotation, hsh|
+      hsh[annotation.identifier] = annotation.value
+    }
+
+    editor = annotations["umt:editor"] # XXX: UMT remnants do not belong here!?
+    created = annotations["dct:created"]
+    modified = annotations["dct:modified"]
+
+    subject.send(self.rdf_namespace).build_predicate(self.rdf_predicate) { |blank_node|
+      blank_node.Rdfs::comment(self.value, :lang => self.language || nil) if self.value
+      blank_node.Dct::creator(editor) if editor
+      blank_node.Dct::created(created) if created
+      blank_node.Dct::modified(modified) if modified
+    }
+  end
 end

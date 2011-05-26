@@ -24,8 +24,9 @@ module ApplicationHelper
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
         :default => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/"), # gsub because of a Rails bug :-(
-        :coll       => collections_url(:trailing_slash => true, :lang => nil, :format => nil),
-        :schema => controller.schema_url(:format => nil, :anchor => "", :lang => nil)
+        :coll => collections_url(:trailing_slash => true, :lang => nil, :format => nil),
+        :schema => controller.schema_url(:format => nil, :anchor => "", :lang => nil),
+        :dct => "http://purl.org/dc/terms/"
       })
   end
 
