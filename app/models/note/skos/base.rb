@@ -19,8 +19,12 @@ class Note::SKOS::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(subject, predicate, object)
-    raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.name} => #{self.name.to_relation_name})." unless subject.class.reflections.include?(self.name.to_relation_name)
-    raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
+    unless subject.class.reflections.include?(self.name.to_relation_name)
+      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.class.name} => #{self.class.name.to_relation_name})."
+    end
+    unless object =~ /^"(.+)"(@(.+))$/
+      raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+    end
     value = $1
     lang = $3
 
@@ -34,7 +38,7 @@ class Note::SKOS::Base < Note::Base
     elsif self.class == Note::SKOS::Base # This could be done by setting self.rdf_predicate to 'note'. But all subclasses would inherit this value.
       ns, id = "Skos", "note"
     else
-      raise "Note::SKOS::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate."
+      raise "Note::SKOS::Base#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
     end
 
     if (IqRdf::Namespace.find_namespace_class(ns))

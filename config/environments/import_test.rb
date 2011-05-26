@@ -38,7 +38,7 @@ Iqvoc::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-  
+
   # The default URI prefix for RDF data. This will be followed by a document
   # specific shnippet like (specimenType) and the id.
 

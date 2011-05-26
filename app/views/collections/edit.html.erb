@@ -1,9 +1,9 @@
 <%= error_messages_for @collection %>
 
-<h3><%= Collection::Base.model_name.human %></h3>
+<h3><%= Iqvoc::Collection.base_class.model_name.human %></h3>
 
 <%= form_for @collection, :as => 'concept',
-        :url => collection_path(:lang => I18n.locale, :id => @collection),
+        :url => collection_path(:id => @collection),
         :html => { :class => 'form' } do |f| %>
 
   <%= render :partial => 'form', :locals => { :f => f } %>

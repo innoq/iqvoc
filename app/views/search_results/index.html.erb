@@ -4,12 +4,12 @@
 
 <h2><%= t('txt.views.search_results.header') %></h2>
 <%- if @results -%>
-  <div id="format_link_ttl">
+  <div id="abstract_uri">
     <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
   </div>
 <%- end -%>
 
-<%= form_tag(search_path(:lang => @active_language || I18n.locale), :method => :get, :class => :form, :id => 'search') do %>
+<%= form_tag(search_path, :method => :get, :class => :form, :id => 'search') do %>
   <fieldset id="typecheck">
     <ol>
       <li>
@@ -39,8 +39,8 @@
         <% end %>
       </li>
       <li>
-        <label for"c"><%= Collection::Base.model_name.human %></label>
-        <%= select_tag 'c', options_for_select(Iqvoc::Collection.base_class_name.constantize.all.sort { |a, b| a.label.to_s <=> b.label.to_s }.map { |c| [c.label.to_s, c.origin] }, params[:c]), :include_blank => true %>
+        <label for"c"><%= Iqvoc::Collection.base_class.model_name.human %></label>
+        <%= select_tag 'c', options_for_select(Iqvoc::Collection.base_class_name.constantize.all.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>
       </li>
       <li>
         <label><%= t('txt.views.search_results.search_languages') %>:</label>

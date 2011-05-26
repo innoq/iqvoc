@@ -17,21 +17,24 @@
 module ConceptsHelper
   def select_search_checkbox?(lang)
     (params[:languages] && params[:languages].include?(lang.to_s)) ||
-        (!params[:query] && I18n.locale.to_s == lang.to_s)
+      (!params[:query] && I18n.locale.to_s == lang.to_s)
   end
 
   def quote_turtle_value(str)
     str.match(/^<.*>$/) ? str : "\"#{str}\""
   end
 
-  def treeview(concepts, root = "source")
+  # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
+  def treeview(concepts, broader = false)
     render :partial => "concepts/hierarchical/treeview",
-        :locals => { :root => root, :concepts => concepts }
+        :locals => { :concepts => concepts, :broader => broader }
   end
 
   def render_concept_association(hash, concept, association_class, further_options = {})
-    ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") <<
-      render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+    html = render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+    if html.squish.present?
+      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html
+    end
   end
 
   def concept_view_data(concept)
@@ -39,7 +42,7 @@ module ConceptsHelper
 
     render_concept_association(res, concept, Collection::Member::Concept)
 
-    Iqvoc::Concept.further_labeling_classes.each do |labeling_class, languages|
+    Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
       (languages || Iqvoc::available_languages).each do |lang|
         render_concept_association(res, concept, labeling_class, :lang => lang)
       end
@@ -62,6 +65,23 @@ module ConceptsHelper
     end
 
     res
+  end
+
+  def letter_selector(&block)
+    letters =
+      ('A'..'Z').to_a +
+      (0..9).to_a +
+      ['[']
+
+    content_tag :ul, :class => 'letter_selector' do
+      html = ""
+      letters.each do |letter|
+        html += content_tag(:li, link_to(letter, yield(letter)),
+            :class => "ui-corner-all ui-widget-content" +
+                ((params[:letter] == letter.to_s.downcase) ? " ui-state-active" : ""))
+      end
+      html.html_safe
+    end
   end
 
 end

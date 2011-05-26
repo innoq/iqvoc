@@ -82,11 +82,12 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins=(origins)
-    @member_concept_origins = origins.to_s.split(',').map(&:strip)
+    @member_concept_origins = origins.to_s.
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_concept_origins
-    @member_concept_origins || concept_members.map{|m| m.concept.origin}.uniq
+    @member_concept_origins || concept_members.map { |m| m.concept.origin }.uniq
   end
 
   def inline_member_concepts
@@ -94,11 +95,13 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins=(origins)
-    @member_collection_origins = origins.to_s.split(',').map(&:strip)
+    @member_collection_origins = origins.to_s.
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collection_members.map{|m| m.subcollection.origin}.uniq
+    @member_collection_origins || collection_members.
+        map { |m| m.subcollection.origin }.uniq
   end
 
   def inline_member_collections
@@ -126,7 +129,7 @@ class Collection::Base < Concept::Base
   end
 
   def label
-    pref_label(I18n.locale) || labels.first || origin
+    pref_label
   end
 
   # def notes_for_class(note_class)
@@ -138,7 +141,7 @@ class Collection::Base < Concept::Base
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(self)
         errors.add(:base,
-            I18n.t("txt.controllers.collections.circular_error") % subcollection.label)
+            I18n.t("txt.controllers.collections.circular_error") % subcollection.pref_label)
       end
     end
   end

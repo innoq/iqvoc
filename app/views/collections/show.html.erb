@@ -3,20 +3,20 @@
   <link href="<%= collection_url(@collection.origin, :format => :rdf, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
 <% end -%>
 
-<h2><%= @collection.class.model_name.human %>: <%= link_to(@collection.origin, collection_url(:lang => I18n.locale, :id => @collection)) %></h2>
-<div id="format_link_ttl">
+<h2><%= @collection.class.model_name.human %>: <%= link_to(@collection.origin, collection_url(:id => @collection)) %></h2>
+<div id="abstract_uri">
   <%= collection_url(@collection.origin, :format => nil, :lang => nil) %>
   (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
 </div>
 
 <% if can?(:manage, @collection) %>
 <div class="editing_versioning_toolbar">
-  <%= link_to t('txt.common.edit'), edit_collection_path(:lang => I18n.locale, :id => @collection) %>
-  <%= button_to I18n.t('txt.common.delete'), collection_path(:lang => I18n.locale, :id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
+  <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => "button" %>
+  <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
 </div>
 <% end %>
 
-<h3><%= t("txt.common.pref_label") %>: <%= render_label(@collection.pref_label) %></h3>
+<h3><%= t("txt.common.pref_label") %>: <%= @collection.pref_label.to_s %></h3>
 
 <%-
 # alternative labels
@@ -47,8 +47,8 @@
 </div>
 
 <div class="relation">
-  <h3><%= Collection::Base.model_name.human(:count => 2) %></h3>
-  <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:lang => @active_language, :format => :json) %>">
-    <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.label <=> b.label } %>
+  <h3><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h3>
+  <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
+    <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.pref_label <=> b.pref_label } %>
   </ul>
 </div>

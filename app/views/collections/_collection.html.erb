@@ -1,7 +1,7 @@
 <%- has_children = collection.subcollections.any? -%>
 <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= collection.id %>">
-  <%= link_to collection.label.to_s,
-          collection_path(:id => collection, :lang => I18n.locale) %>
+  <%= link_to collection.pref_label.to_s,
+          collection_path(:id => collection) %>
   <%- if has_children -%>
     <ul>
       <li><span class="placeholder">&nbsp;</span></li>

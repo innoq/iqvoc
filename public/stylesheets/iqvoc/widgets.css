@@ -1,0 +1,81 @@
+/* neutralize/augment jQuery UI defaults */
+
+.ui-widget,
+.ui-widget input,
+.ui-widget select,
+.ui-widget button,
+.ui-widget textarea {
+  font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.ui-widget-content {
+  border-color: #CCC;
+  background-color: #FFF;
+  background-image: none;
+}
+
+.ui-widget-header {
+  border-width: 0 0 0 1px;
+  border-color: #CCC;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0 !important
+  -moz-border-radius: 0 !important;
+  -webkit-border-radius: 0 !important;
+  color: #000;
+  background: none;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+  border-color: #CCC;
+  color: #308110;
+  background: #EEE;
+  background-image: none;
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+  border-color: #CCC;
+  color: #308110;
+  background-color: #DDD;
+  background-image: none;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+  border-color: #308110;
+  background: #CCC;
+}
+
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+  color: #FFF;
+}
+
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight {
+  border-color: #CCC;
+  background-color: #DDD;
+  background-image: none;
+}
+
+.ui-corner-tl { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
+.ui-corner-tr { -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; }
+.ui-corner-bl { -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
+.ui-corner-br { -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
+.ui-corner-top { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; }
+.ui-corner-bottom { -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
+.ui-corner-right { -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
+.ui-corner-left { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
+.ui-corner-all { -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+
+.ui-datepicker th {
+  background: #FFF;
+}
+
+.ui-datepicker .ui-state-highlight {
+  background-color: #AAA;
+}

@@ -61,12 +61,15 @@ class SearchResultsController < ApplicationController
         end
       else
         @multi_query = true
+        logger.debug "Searching for all names"
         # all names (including collection labels)
         @results = Iqvoc.searchable_classes.
             select { |klass| (klass < Labeling::Base) }.
             map { |klass| klass.single_query(params) }.
             flatten.uniq
       end
+      
+      @multi_query ? logger.debug("Using multi query mode") : logger.debug("Using single query mode")
 
       respond_to do |format|
         format.html

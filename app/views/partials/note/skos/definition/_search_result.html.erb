@@ -1,8 +1,8 @@
 <dt>
   <% if result.owner.is_a?(Concept::Base) %>
-    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:lang => I18n.locale, :id => result.owner) %><br>
+    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner) %><br>
   <% elsif result.owner.is_a?(Label::Base) %>
-    <%= link_to result.owner.value, label_path(:id => result.owner, :lang => I18n.locale) %><br>
+    <%= link_to result.owner.value, label_path(:id => result.owner) %><br>
   <% end %>
 </dt>
 <dd><%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %></dd>

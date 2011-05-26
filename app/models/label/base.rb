@@ -45,7 +45,7 @@ class Label::Base < ActiveRecord::Base
   scope :begins_with, lambda { |letter|
     where("LOWER(SUBSTR(#{Label::Base.table_name}.value, 1, 1)) = :letter", :letter => letter.to_s.downcase)
   }
-  
+
   scope :by_query_value, lambda { |query|
     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   }
@@ -73,7 +73,11 @@ class Label::Base < ActiveRecord::Base
   end
 
   def to_s
-    "#{value}"
+    if language != I18n.locale.to_s
+      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
+    else
+      value.to_s
+    end
   end
 
 end

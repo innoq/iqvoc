@@ -53,7 +53,17 @@ en:
           pref_label:
             one:   "Preferred label"
             other: "Preferred labels"
-          alt_label: 
+          alt_label:
+            one:   "Alternative label"
+            other: "Alternative labels"
+        skos:
+          base:
+            one:   "Label"
+            other: "Labels"
+          pref_label:
+            one:   "Preferred label"
+            other: "Preferred labels"
+          alt_label:
             one:   "Alternative label"
             other: "Alternative labels"
       match:
@@ -113,7 +123,7 @@ en:
           other: "Collections"
         member:
           base: "Assigned collections"
-      
+
     attributes:
       concept:
         base:

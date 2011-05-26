@@ -22,13 +22,13 @@
 #
 # The reason for this lies in the fact that Concept::Base calls the
 # Concept::Relation::SKOS::Broader::Base.narrower_class method to create all
-# concept_relation relations. This means Concept::Base triggeres Rails to load
+# concept_relation relations. This means Concept::Base triggers Rails to load
 # the Concept::Relation::* classes. If this would trigger Rails to load
 # Concept::Base we would have a loop == a problem.
 class Concept::Relation::Base < ActiveRecord::Base
-  
+
   set_table_name 'concept_relations'
-  
+
   class_inheritable_accessor :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil
   self.rdf_predicate = nil
@@ -80,7 +80,8 @@ class Concept::Relation::Base < ActiveRecord::Base
     "partials/concept/relation/edit_base"
   end
 
-  def self.only_one_allowed?
+  # if `singular` is true, only a single occurrence is allowed per instance
+  def self.singular?
     false
   end
 

@@ -1,5 +1,5 @@
 <dt>
-  <%= link_to highlight_query(result.value, params[:query], @multi_query), collection_path(:lang => I18n.locale, :id => result.collection) %>
+  <%= link_to highlight_query(result.value, params[:query], @multi_query), collection_path(:id => result.collection) %>
 </dt>
 <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
 <dd><%= t('txt.views.search_results.language') %>: <%= result.language %></dd>

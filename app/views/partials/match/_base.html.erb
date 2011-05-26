@@ -1,7 +1,9 @@
 <div class="relation">
-  <% matches = concept.matches_for_class(klass) %>
   <h4><%= klass.model_name.human(:count => 2) %></h4>
   <div class="relation-body">
-    <%= raw matches.map {|match| match_url(match.value)}.join(', ') %>
+    <%= raw association_listing(concept.matches_for_class(klass)) { |match|
+          match_url match.value
+        }
+    %>
   </div>
 </div>

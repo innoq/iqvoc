@@ -12,9 +12,12 @@
             <br />
 
             <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
-            <textarea disabled="true" rows="3" cols="40"><%= note.annotations.map {|na| "#{na.identifier} #{na.value}"}.join("\n") %></textarea>
-
-            <br />
+            <dl class="note_annotations">
+              <% note.annotations.each { |na| %>
+                <dt><%= na.identifier %></dt>
+                <dd><%= na.value %></dd>
+              <% } %>
+            </dl>
 
             <%= note_form.label :language, t("txt.common.language") %>
             <%= note_form.select :language, options_for_language_select(note.language) %>
@@ -24,13 +27,13 @@
 
             <label><%= t("txt.common.value") %></label>
             <span><%= note.value %></span>
-            <br/>
 
-            <% note.annotations.each do |na| %>
-              <label><%= na.identifier %></label>
-              <span><%= na.value %></span>
-              <br/>
-            <% end %>
+            <dl class="note_annotations">
+              <% note.annotations.each { |na| %>
+                <dt><%= na.identifier %></dt>
+                <dd><%= na.value %></dd>
+              <% } %>
+            </dl>
 
           <% end %>
 

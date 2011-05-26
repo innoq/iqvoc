@@ -1,10 +1,7 @@
-<div class="relation-body">
-  <fieldset>
-    <legend>
-      <%= klass.model_name.human(:count => 2) %>
-      <%= "(#{t("languages.#{language}", :default => language.to_s)})" if language %>
-    </legend>
-    <%= text_area_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]",
-      concept.labelings_by_text(klass.name.to_relation_name, language) %>
-  </fieldset>
-</div>
+<li>
+  <% fieldname = "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]" %>
+  <%= label_tag fieldname, klass.model_name.human(:count => 2) +
+          (language ? " (#{t("languages.#{language}", :default => language.to_s)})" : "") %>
+  <%= text_area_tag fieldname,
+    concept.labelings_by_text(klass.name.to_relation_name, language) %>
+</li>

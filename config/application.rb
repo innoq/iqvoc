@@ -44,8 +44,9 @@ module Iqvoc
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :de
+    # config.i18n.default_locale = :en
     # config.i18n.available_locales = [:de, :en]
+    # See: config/initializers/iqvoc.rb
 
     # JavaScript files you want as :defaults (application.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
@@ -55,7 +56,7 @@ module Iqvoc
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
-    
+
     # The JDBC driver url for the coinnection to the virtuoso triple store.
     # Login crdentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
@@ -74,6 +75,6 @@ module Iqvoc
     # blocked by the update... => Deadlock. You can avoid this by using the threaded
     # mode.
     config.virtuoso_sync_threaded = false
-    
+
   end
 end

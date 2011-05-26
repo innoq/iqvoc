@@ -50,6 +50,8 @@ en:
        in_review: "In review"
        checked_out: "Checked out"
      of: of
+     pending: "Loading…"
+     translation_missing_for: "translation missing for"
 
    part_of_speech:
      plural_form: "Plural form"
@@ -72,16 +74,21 @@ en:
          select_language: "Choose language"
          login: "Login"
          logout: "Logout"
+       sections:
+         main: Main
+         labels: Labels
+         relations: Relations
+         notes: Notes
+         matches: Concept mappings
      alphabetical_concepts:
+     untranslated_concepts:
+       caption: "Missing Translations"
+       unavailable: "Missing translations not available for principal language."
      hierarchical_concepts:
      concepts:
        expired_at: "expired at %{date}"
        select: "Please select one of the %{concept_class_name} listed below."
        new: "New %{concept_class_name}"
-       missing:
-         broader: "No broader terms available"
-         narrower: "No narrower terms available"
-         related: "No related terms available"
        alt_label: "Alternative Label"
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
@@ -202,17 +209,17 @@ en:
        preview_new_version: "Preview of the version in editing"
        consistency_check: "Consistency check"
        current_revision: "Current revision"
-       in_ongoing_editing_by: "in ongoing editing by"
+       in_ongoing_editing_by: "currently being edited by"
        to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
        edit:
          header: "Edit labeling"
          submit: "Save"
-     widget:
-       hint: "edit term"
-       no_results: "Not found!"
-       searching: "searching ..."
+     lang_widget:
+       caption: "Language selection"
+       primary: "Primary"
+       secondary: "Secondary"
      dashboard:
        type: "Type"
        value: "Name"
@@ -230,17 +237,13 @@ en:
 
    partials:
      note:
-       missing: Not available.
      collection:
        skos:
          member:
-           missing: Not assigned
      label:
        relation:
-         missing: Not available.
      concept:
        relation:
-         missing:  Not available.
      labeling:
        concept:
        label:

@@ -27,7 +27,7 @@ require 'capistrano/ext/multistage'
 $:.unshift(File.expand_path("~/.rvm/lib"))
 require 'rvm/capistrano'
 set :rvm_ruby_string, '1.8.7'
-set :rvm_type, :user
+# set :rvm_type, :user
 
 # bundler bootstrap
 require 'bundler/capistrano'

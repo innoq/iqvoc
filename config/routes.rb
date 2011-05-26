@@ -15,20 +15,14 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
-  available_locales = /de|en/ # FIXME #{I18n.available_locales.map(&:to_s).join('|')}/
-
-  scope '(:lang)' do
-    resources :collections
-    match 'search(.:format)' => 'search_results#index', :as => 'search'
-  end
-
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
-  scope ':lang', :lang => available_locales do
+  scope '(:lang)', :lang => /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/ do
     resource  :user_session
     resources :users
 
     resources :concepts
+    resources :collections
 
     resources :virtuoso_syncs, :only => [:new, :create]
 
@@ -40,6 +34,7 @@ Rails.application.routes.draw do
     match "concepts/versions/:origin/consistency_check(.:format)" => "concepts/versions#consistency_check", :as => "concept_versions_consistency_check"
 
     match 'alphabetical_concepts/:letter(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
+    match 'untranslated_concepts/:letter(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
     match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
@@ -47,12 +42,10 @@ Rails.application.routes.draw do
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
-    # There must be on named route 'localized_root' in order for an unlocalized root call to work
-    # See ApplicationController#unlocalized_root
-    root :to => 'concepts/hierarchical#index', :as => 'localized_root'
-  end
+    match 'search(.:format)' => 'search_results#index', :as => 'search'
 
-  root :to => 'application#unlocalized_root'
+    root :to => 'concepts/hierarchical#index'
+  end
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end

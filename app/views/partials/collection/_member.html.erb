@@ -4,11 +4,11 @@
     <%- if concept.collections.any? -%>
       <ul>
         <%- concept.collections.each do |collection| -%>
-          <li><%= link_to collection.label.to_s, collection_url(collection, :lang => I18n.locale) %></li>
+          <li><%= link_to collection.label.to_s, collection_url(collection) %></li>
         <%- end -%>
       </ul>
     <%- else -%>
-      <%= t("txt.partials.collection.skos.member.missing") %>
+      -
     <%- end -%>
   </div>
 </div>

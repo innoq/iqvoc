@@ -28,7 +28,8 @@ module Iqvoc
     :change_note_class_name,
     :additional_js_files,
     :additional_css_files,
-    :first_level_class_configuration_modules
+    :first_level_class_configuration_modules,
+    :ability_class_name
 
   self.title = "iQvoc"
 
@@ -37,7 +38,7 @@ module Iqvoc
     'Labeling::SKOS::PrefLabel',
     'Note::Base' ]
 
-  self.available_languages = [:de, :en]
+  self.available_languages = [:en, :de]
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
@@ -56,7 +57,9 @@ module Iqvoc
   self.additional_css_files = []
 
   self.first_level_class_configuration_modules = [] # Will be set in the modules
-    
+  
+  self.ability_class_name = 'Iqvoc::Ability'
+
   def self.change_note_class
     change_note_class_name.constantize
   end
@@ -67,6 +70,10 @@ module Iqvoc
 
   def self.first_level_classes
     self.first_level_class_configuration_modules.map { |mod| mod.send(:base_class) }
+  end
+  
+  def self.ability_class
+    ability_class_name.constantize
   end
 
   # ************** Concept specific settings **************
@@ -86,12 +93,12 @@ module Iqvoc
 
     self.base_class_name              = 'Concept::SKOS::Base'
 
-    self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Poly'
+    self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Mono'
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.pref_labeling_languages      = [ :en ]
-    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
+    self.pref_labeling_languages      = [:en, :de]
+    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [:de, :en] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
@@ -115,7 +122,7 @@ module Iqvoc
 
     self.include_module_names = []
 
-    # Do not use the following method in models. This will propably cause a
+    # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
@@ -195,12 +202,12 @@ module Iqvoc
   # ************** Label specific settings **************
 
   module Label
-    
+
     mattr_accessor :base_class_name
 
     self.base_class_name        = 'Label::SKOS::Base'
 
-    # Do not use the following method in models. This will propably cause a
+    # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize

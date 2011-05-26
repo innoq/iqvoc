@@ -1,0 +1,23 @@
+<h2><%= t("txt.views.untranslated_concepts.caption") %></h2>
+
+<% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
+
+<%= letter_selector { |letter| untranslated_concepts_path(:letter => letter.to_s.downcase) } %>
+
+  <ul>
+    <% for label in @labels %>
+    <li>
+      <% if label.pref_labeled_concepts.length > 1 %>
+        <%= label.value %>:
+        <% for concept in label.pref_labeled_concepts %>
+        <%= link_to concept.origin, concept_path(concept) %>
+        <% end %>
+      <% else %>
+        <%= link_to label.value, concept_path(label.pref_labeled_concepts[0]) %>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+
+  <%= will_paginate @labels, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>
+<% end %>

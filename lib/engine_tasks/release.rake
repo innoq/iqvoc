@@ -74,9 +74,9 @@ namespace :iqvoc do
 
       Bundler.with_clean_env do
         FileUtils.cd(path) do
-          
+
           if (File.exist?('Gemfile.production'))
-            FileUtils.cp('Gemfile.production', 'Gemfile')      
+            FileUtils.cp('Gemfile.production', 'Gemfile')
 
             FileUtils.rm('Gemfile.lock') if File.exist?('Gemfile.lock')
 

@@ -14,30 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/ability'
-
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension, :except => [:unlocalized_root]
-  before_filter :set_locale, :except => [:unlocalized_root]
-  before_filter :require_user, :except => [:unlocalized_root]
-  
+  before_filter :ensure_extension
+  prepend_before_filter :set_locale
+  before_filter :require_user
+
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data#, :render_label
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
 
   protect_from_forgery
-    
+
   def unlocalized_root
-    redirect_to localized_root_path(:lang => I18n.default_locale)
+    redirect_to localized_root_path(:lang => I18n.locale)
   end
 
   protected
 
   def default_url_options(options = nil)
-    {:format => :html}.merge(options || {})
+    { :format => :html, :lang => I18n.locale }.merge(options || {})
   end
 
   # Force an extension to every url. (LOD)
@@ -64,18 +62,24 @@ class ApplicationController < ActionController::Base
 
     render :template => 'errors/not_found', :status => :not_found
   end
-  
+
   def handle_virtuoso_exception(exception)
     logger.error "Virtuoso Exception: " + exception
     flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
   end
 
   def set_locale
-    if request.headers['HTTP_ACCEPT_LANGUAGE'] =~ /#{I18n.available_locales.join('|')}/
-      req_lang = $1
+    if Iqvoc::Concept.pref_labeling_languages.include?(nil)
+      I18n.locale = ""
+      return
     end
-    @active_language = params[:lang] ? params[:lang] : req_lang
-    I18n.locale = @active_language
+
+    if params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
+      I18n.locale = params[:lang]
+    else
+      I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
+      redirect_to url_for(params.merge(:lang => I18n.locale))
+    end
   end
 
   def concept_widget_data(concept)
@@ -84,14 +88,14 @@ class ApplicationController < ActionController::Base
       :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
     }
   end
-  
+
   def collection_widget_data(collection)
     {
       :id => collection.origin,
-      :name => collection.label.to_s
+      :name => collection.pref_label.to_s
     }
   end
-  
+
   def label_widget_data(label)
     {
       :id => label.origin,
@@ -99,11 +103,9 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  private
-
   # Configurable Ability class
   def current_ability
-    @current_ability ||= Iqvoc::Ability.new(current_user)
+    @current_ability ||= Iqvoc.ability_class.new(current_user)
   end
 
   def current_user_session
@@ -115,31 +117,21 @@ class ApplicationController < ActionController::Base
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.user
   end
-    
+
   def require_user
     unless current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.login_required")
-      redirect_to new_user_session_url(:lang => I18n.locale)
+      redirect_to new_user_session_url(:back_to => request.fullpath)
       return false
     end
   end
- 
+
   def require_no_user
     if current_user
-      store_location
       flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to localized_root_path(:lang => @active_language)
+      redirect_to root_path
       return false
     end
   end
-    
-  def store_location
-    session[:return_to] = request.fullpath
-  end
-    
-  def redirect_back_or_default(default = nil)
-    redirect_to(session[:return_to] || default)
-    session[:return_to] = nil
-  end
+
 end

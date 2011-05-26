@@ -30,10 +30,14 @@ class Concept::Base < ActiveRecord::Base
   # ********** Validations
 
   validates :origin, :presence => true
-  validate :two_versions_exist, :on => :create
-  validate :pref_label_existence, :on => :update
-  # FIXME
-  # validates :associations_must_be_published
+
+  validate :ensure_maximum_two_versions_of_a_concept,
+    :on => :create
+
+  validate :ensure_a_pref_label_in_the_primary_thesaurus_language,
+    :on => :update
+
+  validate :ensure_no_pref_labels_share_the_same_language
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -41,32 +45,35 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
-  after_save do |concept|
+  before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
     # for use with widgets etc.
 
     # Inline assigned SKOS::Labels
     # @labelings_by_text # => {'relation_name' => {'lang' => 'label1, label2, ...'}}
     (@labelings_by_text ||= {}).each do |relation_name, lang_values|
+      relation_name = relation_name.to_s
       reflection = self.class.reflections.stringify_keys[relation_name]
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base
         self.send(relation_name).all.map(&:destroy)
         lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
         lang_values.each do |lang, values|
-          values.split(",").each do |value|
+          values.split(Iqvoc::InlineDataHelper::Splitter).each do |value|
             value.squish!
-            self.send(relation_name) << labeling_class.new(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+            self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
           end
         end
       end
     end
+  end
 
+  after_save do |concept|
     # Concept relations
     # @concept_relations_by_id # => {'relation_name' => 'origin1, origin2, ...'}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
-      new_origins = new_origins.split(/[,\n]/).map(&:squish)
-      existing_origins = concept.send(relation_name).map{|r| r.target.origin}.uniq
+      new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
+      existing_origins = concept.send(relation_name).map { |r| r.target.origin }.uniq
       Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
         concept.send(relation_name).create_with_reverse_relation(c)
       end
@@ -176,7 +183,7 @@ class Concept::Base < ActiveRecord::Base
       :class_name  => match_class_name,
       :foreign_key => 'concept_id'
 
-    # Serialized setters and getters (\r\n or , separated)
+    # Serialized setters and getters (\r\n or , separated) -- TODO: use Iqvoc::InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
       self.send(match_class_name.to_relation_name).map(&:value).join("\r\n")
     end
@@ -245,6 +252,20 @@ class Concept::Base < ActiveRecord::Base
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
+  # ********** Class methods
+
+  def self.inline_partial_name
+    "partials/concept/inline_base"
+  end
+
+  def self.new_link_partial_name
+    "partials/concept/new_link_base"
+  end
+
+  def self.edit_link_partial_name
+    "partials/concept/edit_link_base"
+  end
+
   # ********** Methods
 
   def initialize(params = {})
@@ -258,16 +279,18 @@ class Concept::Base < ActiveRecord::Base
 
   def labelings_by_text(relation_name, language)
     (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
-      self.send(relation_name).by_label_language(language).map{ |l| l.target.value }.join(", ")
+      self.send(relation_name).by_label_language(language).
+          map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
   end
-  
+
   def concept_relations_by_id=(hash)
     @concept_relations_by_id = hash
   end
 
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
-      self.send(relation_name).map{ |l| l.target.origin }.join(", ")
+      self.send(relation_name).map { |l| l.target.origin }.
+          join(Iqvoc::InlineDataHelper::Joiner)
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
@@ -275,19 +298,17 @@ class Concept::Base < ActiveRecord::Base
   # code of the language (e.g. :en for English, :fr for French, :de for German).
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
-  def pref_label(lang = nil)
-    # If the current thesaurus only supports one PrefLabel language, always choose this.
-    unless Iqvoc::Concept.supports_multi_language_pref_labelings? && lang.present?
-      lang = Iqvoc::Concept.pref_labeling_languages.first
-    end
-    lang = lang.to_s
+  def pref_label
+    lang = I18n.locale.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
-      Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.") if hash[label.language]
+      if hash[label.language]
+        Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
+      end
       hash[label.language.to_s] = label
     end
     if @cached_pref_labels[lang].nil?
-      @cached_pref_labels[lang] = Iqvoc::Concept.pref_labeling_class.label_class.new(:language => lang, :value => "(#{self.origin})")
-      @cached_pref_labels[lang].concepts << self
+      # Fallback to the main language
+      @cached_pref_labels[lang] = pref_labels.by_language(Iqvoc::Concept.pref_labeling_languages.first.to_s).first
     end
     @cached_pref_labels[lang]
   end
@@ -305,7 +326,8 @@ class Concept::Base < ActiveRecord::Base
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select{ |rel| rel.class.name == relation_class }.map(&:target).select{|c| c.published? || !only_published}
+    relations.select { |rel| rel.class.name == relation_class }.map(&:target).
+        select { |c| c.published? || !only_published }
   end
 
   def matches_for_class(match_class)
@@ -318,24 +340,6 @@ class Concept::Base < ActiveRecord::Base
     notes.select{ |note| note.class.name == note_class }
   end
 
-  # this find_by_origin method returns only instances of the current class.
-  # The dynamic find_by... method would have considered ALL (sub)classes (STI)
-  def self.find_by_origin(origin)
-    find(:first, :conditions => ["concepts.origin=? AND concepts.type=?", origin, self.to_s])
-  end
-
-  def self.inline_partial_name
-    "partials/concept/inline_base"
-  end
-
-  def self.new_link_partial_name
-    "partials/concept/new_link_base"
-  end
-
-  def self.edit_link_partial_name
-    "partials/concept/edit_link_base"
-  end
-  
   # This shows up to the left of a concept link if it doesn't return nil
   def additional_info
     nil
@@ -359,9 +363,14 @@ class Concept::Base < ActiveRecord::Base
     valid?
   end
 
+  def invalid_with_full_validation?
+    @full_validation = true
+    invalid?
+  end
+
   def generate_origin
-    concept = Concept::Base.select(:origin).last
-    value = concept.blank? ? 1 : concept.origin.to_i + 1
+    origin = Concept::Base.maximum(:origin)
+    value = origin.blank? ? 1 : origin.gsub(/^_/, "").to_i + 1
     write_attribute(:origin, sprintf("_%08d", value))
   end
 
@@ -372,33 +381,39 @@ class Concept::Base < ActiveRecord::Base
     }
   end
 
-  protected
+  # ********** Validation methods
 
-  def two_versions_exist
-    errors.add(:base, I18n.t("txt.models.concept.version_error")) if Concept::Base.by_origin(origin).count >= 2
-  end
-
-  def pref_label_existence
-     languages = pref_labels.map(&:language)
-    if @full_validation
-      if languages.count == 0 # Taking the languages instead of the self.pref_labels is not what is meant here. But it works as expected
-        errors.add(:base, I18n.t("txt.models.concept.no_pref_label_error"))
-      else
-        if not languages.include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-          errors.add(:base, I18n.t("txt.models.concept.main_pref_label_language_missing_error"))
-        end
-      end
+  def ensure_maximum_two_versions_of_a_concept
+    if Concept::Base.by_origin(origin).count >= 2
+      errors.add :base, I18n.t("txt.models.concept.version_error")
     end
-    errors.add(:base, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")) unless languages.uniq.size == languages.size
   end
 
-  def associations_must_be_published
+  def ensure_a_pref_label_in_the_primary_thesaurus_language
     if @full_validation
-      [:labels, :related_concepts].each do |method|
-        if self.send(method).unpublished.any?
-          errors[:base] << I18n.t("txt.models.concept.association_#{method}_unpublished")
-        end
+      labels = pref_labels.select{|l| l.published?}
+      if labels.count == 0
+        errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
+      elsif !labels.map(&:language).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+        errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
       end
     end
   end
+
+  def ensure_no_pref_labels_share_the_same_language
+    # We have many sources a prefLabel can be defined in
+    pls = pref_labelings.map(&:target) +
+      send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
+      labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
+    languages = {}
+    pls.each do |pref_label|
+      lang = pref_label.language.to_s
+      origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
+      if (languages.keys.include?(lang) && languages[lang] != origin)
+        errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
+      end
+      languages[lang] = origin
+    end
+  end
+
 end

@@ -40,7 +40,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_difference('Concept::Base.count', 4) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end
-    
+
     concepts = {}
     ["_animal", "_cow", "_donkey", "_monkey"].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last
@@ -48,7 +48,7 @@ class SkosImportTest < ActiveSupport::TestCase
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
-    assert_equal "Tier", concepts["_animal"].pref_label('de').to_s
+    assert_equal "Animal", concepts["_animal"].pref_label.to_s
 
     broader_relation = concepts["_cow"].broader_relations.first
     assert_not_nil broader_relation

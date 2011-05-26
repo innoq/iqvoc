@@ -17,8 +17,8 @@
 Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
   c.sequence(:origin) { |n| "_000000#{n}" }
   c.published_at 3.days.ago
-  c.labelings { |labelings| [labelings.association(:pref_labeling)] }
-  c.narrower_relations{ |narrower_relations| [narrower_relations.association(:narrower_relation)]}
+  c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
+  c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
 end
 
 Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
@@ -32,7 +32,7 @@ end
 
 Factory.define :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
   rel.target {|target|
-    target.association(:concept, :broader_relations => [], :narrower_relations => [], :labelings => [
+    target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
         Factory.create(:pref_labeling, :target => Factory.create(:pref_label, :value => 'Some narrower relation'))
       ])
   }
@@ -55,7 +55,7 @@ Factory.define :pref_label, :class => Iqvoc::Concept.pref_labeling_class.label_c
   l.after_build do |lab|
     n = Factory.next :label_number
     lab.value = "Tree #{n}"
-    lab.origin = "tree_#{n}"
+   # lab.origin = "tree_#{n}"
   end
 end
 

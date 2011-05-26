@@ -2,7 +2,7 @@ module Iqvoc
   class SkosImporter
 
     FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class]
-    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys + 
+    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
       Iqvoc::Concept.note_classes +
       Iqvoc::Concept.relation_classes +
       Iqvoc::Concept.match_classes
@@ -54,7 +54,7 @@ module Iqvoc
 
       new_subjects.each do |id, subject|
         if subject.valid_with_full_validation?
-          subject.publish!
+          subject.publish
           subject.save!
         else
           Rails.logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."

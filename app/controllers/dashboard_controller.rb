@@ -15,15 +15,15 @@
 # limitations under the License.
 
 class DashboardController < ApplicationController
-  
+
   before_filter :check_authorization
-  
+
   def index
     @items = []
     Iqvoc.first_level_classes.each do |klass|
       @items += klass.for_dashboard.all # TODO (:include => [:locking_user, :pref_labels])
     end
-    
+
     factor = params[:order] == "desc" ? -1 : 1
 
     if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
@@ -38,10 +38,10 @@ class DashboardController < ApplicationController
     end
 
   end
-  
+
   private
   def check_authorization
     authorize! :use, :dashboard
   end
-  
+
 end

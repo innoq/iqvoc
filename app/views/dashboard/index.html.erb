@@ -1,13 +1,18 @@
 <h2>Dashboard</h2>
-<p>
+<ul id="dashboard_controls">
   <%= Iqvoc.first_level_classes.map { |klass|
-    render klass.new_link_partial_name
-   }.select{|s| s.squish.present? }.join(" | ").html_safe -%>
+        content_tag :li, render(klass.new_link_partial_name)
+      }.select { |s| s.squish.present? }.join(" | ").html_safe -%>
+
   <%- if can?(:full_export, Concept::Base) -%>
-    | <%= t('txt.views.dashboard.full_rdf_export') %> (<%= link_to("Turtle", concepts_url(:format => :ttl)) %>, <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %> )
+    <li>
+      <%= t('txt.views.dashboard.full_rdf_export') %>:
+      <%= link_to("Turtle", concepts_url(:format => :ttl)) %>,
+      <%= link_to("RDF/XML", concepts_url(:format => :rdf)) %>
+    </li>
   <%- end -%>
-<%#= link_to "Virtuoso Sync", new_virtuoso_sync_path(:lang => @active_language) %>
-</p>
+<%#= link_to "Virtuoso Sync", new_virtuoso_sync_path %>
+</ul>
 <table>
   <tr>
     <th><%= t("txt.views.dashboard.type") %><%= sorting_arrows_for(:class) %></th>
@@ -23,7 +28,7 @@
     <%- end -%>
   </tr>
   <% @items.each do |item| -%>
-    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :lang => @active_language, :id => item.origin) : concept_path(:published => 0, :lang => @active_language, :id => item.origin) %>">
+    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :id => item.origin) : concept_path(:published => 0, :id => item.origin) %>">
       <td><%= item.class.model_name.human %></td>
       <td>
         <%= render item.class.edit_link_partial_name, :item => item %>

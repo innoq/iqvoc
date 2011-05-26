@@ -48,6 +48,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
+      logger.debug "**** with collection #{params[:collection_origin]}"
       scope = scope.includes(:owner => { :collection_members => :collection })
       scope = scope.merge(Collection::Base.where(:origin => params[:collection_origin]))
     end
