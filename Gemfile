@@ -25,7 +25,7 @@ gem 'rake', '~> 0.8.7'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~> 0.0.14'
+gem 'iq_rdf', '~> 0.0.15'
 gem 'json'
 
 # Hotfix for the problem of engine/plugin helpers not being mixed in.
