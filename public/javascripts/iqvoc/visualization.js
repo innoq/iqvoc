@@ -53,7 +53,7 @@ var spawn = function(container, data) {
 	$.each(["label", "relation"], function(i, item) {
 		var cb = $('<input type="checkbox" name="entities" checked="checked">')
 			.val(item);
-		$('<div class="label" />').text(item).prepend(cb).appendTo(container);
+		$('<label />').text(item + "s").prepend(cb).appendTo(container);
 	});
 	$("input[type=checkbox]", container).live("change", onFilter);
 
