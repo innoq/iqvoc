@@ -217,6 +217,7 @@ jQuery(document).ready(function($) {
 
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
+	IQVOC.visualization.init("infovis");
 
 	// language selection -- TODO: move to separate module
 	var langWidget = $("ul.lang-widget")[0];

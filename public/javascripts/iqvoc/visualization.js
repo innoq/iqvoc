@@ -1,11 +1,6 @@
 /*jslint strict: true, unparam: true, nomen: false, browser: true */
 /*global jQuery, $jit, IQVOC, HTMLCanvasElement */
 
-jQuery(document).ready(function() {
-	"use strict";
-	IQVOC.visualization.init("infovis");
-});
-
 // basic settings -- XXX: cargo-culted from JIT examples
 var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals!?
 (function() {
