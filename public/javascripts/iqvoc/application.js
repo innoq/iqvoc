@@ -222,6 +222,12 @@ jQuery(document).ready(function($) {
 		var height = container.height();
 		var enlarged = false;
 
+		var addButton = function() {
+			$('<input type="button" class="button" />').
+				val(enlarged ? "_" : "▢").
+				prependTo(container).click(toggleSize);
+		};
+
 		var toggleSize = function(ev) {
 			container.css({
 				width: (enlarged ? width : width * 2) + "px",
@@ -230,8 +236,9 @@ jQuery(document).ready(function($) {
 			var viz = container.data("widget");
 			IQVOC.visualization.spawn(container.empty()[0], viz.data);
 			enlarged = !enlarged;
+			addButton();
 		};
-		container.click(toggleSize); // XXX: should use a dedicated button
+		addButton();
 	});
 
 	// language selection -- TODO: move to separate module
