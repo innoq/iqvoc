@@ -33,18 +33,21 @@ var spawn, onFilter, generateGraph, transformData, generateConceptNode,
 	generateLabelNode, generateDummyConcepts, groupChildNodes,
 	determineTransparency;
 
-var init = function(container) {
-	CONCEPT_URI = $("head link[type='application/json']").attr("href");
+var init = function(container, callback) { // TODO: should be a class so multiple instances can be created (should also avoid module-level globals)
+	CONCEPT_URI = $("head link[type='application/json']").attr("href"); // XXX: should be passed in via argument? (encapsulation)
 	$.getJSON(CONCEPT_URI, function(data, status, xhr) {
 		data = transformData(data);
-		VIZ = spawn(container, data);
+		container = spawn(container, data);
+		VIZ = container.data("widget");
+		if(callback) {
+			callback(container);
+		}
 	});
 };
 
 // container can be an ID or a DOM element
 spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
-	$(container).addClass("infvovis");
 
 	// controls
 	$.each(["+", "-"], function(i, item) {
@@ -67,7 +70,7 @@ spawn = function(container, data) {
 	viz.loadJSON(data);
 	viz.refresh();
 
-	return viz;
+	return $(container).addClass("infvovis").data("widget", viz);
 };
 
 onFilter = function(ev, viz) {
@@ -107,7 +110,7 @@ generateGraph = function(container, options) {
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
-		levelDistance: options.leveldistance,
+		levelDistance: options.leveldistance || LEVELDISTANCE,
 
 		// concentric circle as background (cargo-culted from RGraph example)
 		background: {
@@ -264,7 +267,8 @@ $jit.Graph.Node.prototype.setPos = function(value, type) {
 };
 
 return {
-	init: init
+	init: init,
+	spawn: spawn
 };
 
 }(jQuery));

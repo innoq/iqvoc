@@ -217,7 +217,18 @@ jQuery(document).ready(function($) {
 
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
-	IQVOC.visualization.init("infovis");
+	IQVOC.visualization.init("infovis", function(container) {
+		var enlarge = function(ev) {
+			container.css({
+				width: container.width() * 2 + "px",
+				height: container.height() * 2 + "px"
+			});
+			var viz = container.data("widget");
+			IQVOC.visualization.spawn(container.empty()[0], viz.data);
+			container.unbind("click", enlarge);
+		};
+		container.click(enlarge)
+	});
 
 	// language selection -- TODO: move to separate module
 	var langWidget = $("ul.lang-widget")[0];
