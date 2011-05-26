@@ -16,8 +16,8 @@
 
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension
   prepend_before_filter :set_locale
+  before_filter :ensure_extension
   before_filter :require_user
 
   helper :all
@@ -69,10 +69,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     if Iqvoc::Concept.pref_labeling_languages.include?(nil)
       I18n.locale = ""
-      return
-    end
-
-    if params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
+    elsif params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
       I18n.locale = params[:lang]
     else
       I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
