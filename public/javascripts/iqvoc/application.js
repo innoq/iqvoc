@@ -218,16 +218,20 @@ jQuery(document).ready(function($) {
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
 	IQVOC.visualization.init("infovis", function(container) {
-		var enlarge = function(ev) {
+		var width = container.width();
+		var height = container.height();
+		var enlarged = false;
+
+		var toggleSize = function(ev) {
 			container.css({
-				width: container.width() * 2 + "px",
-				height: container.height() * 2 + "px"
+				width: (enlarged ? width : width * 2) + "px",
+				height: (enlarged ? height : height * 2) + "px"
 			});
 			var viz = container.data("widget");
 			IQVOC.visualization.spawn(container.empty()[0], viz.data);
-			container.unbind("click", enlarge);
+			enlarged = !enlarged;
 		};
-		container.click(enlarge)
+		container.click(toggleSize); // XXX: should use a dedicated button
 	});
 
 	// language selection -- TODO: move to separate module
