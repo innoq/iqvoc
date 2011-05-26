@@ -53,8 +53,14 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 
 /* visualizations */
 
+#infovis_wrapper {
+	position: relative;
+}
+
 #infovis {
-	float: right;
+	position: absolute;
+	top: 0;
+	right: 0;
 	width: 300px;
 	height: 300px;
 	overflow: hidden;
