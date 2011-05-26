@@ -23,8 +23,8 @@ class Concepts::VersionsController < ApplicationController
     authorize! :merge, new_version
     ActiveRecord::Base.transaction do
       if current_concept.blank? || current_concept.destroy
-        new_version.publish!
-        new_version.unlock!
+        new_version.publish
+        new_version.unlock
         if new_version.valid_with_full_validation?
           new_version.save
           begin
@@ -67,7 +67,7 @@ class Concepts::VersionsController < ApplicationController
     raise "Concept with origin '#{params[:origin]}' has already been locked." if new_version.locked?
     authorize! :lock, new_version
 
-    new_version.lock_by_user!(current_user.id)
+    new_version.lock_by_user(current_user.id)
     new_version.save!
 
     flash[:notice] = t("txt.controllers.versioning.locked")
@@ -80,7 +80,7 @@ class Concepts::VersionsController < ApplicationController
     raise "Concept with origin '#{params[:origin]}' wasn't locked." unless new_version.locked?
     authorize! :unlock, new_version
 
-    new_version.unlock!
+    new_version.unlock
     new_version.save!
 
     flash[:notice] = t("txt.controllers.versioning.unlocked")
@@ -108,7 +108,7 @@ class Concepts::VersionsController < ApplicationController
 
     authorize! :send_to_review, concept
 
-    concept.to_review!
+    concept.to_review
     concept.save!
     flash[:notice] = t("txt.controllers.versioning.to_review_success")
     redirect_to concept_path(:published => 0, :id => concept)

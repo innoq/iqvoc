@@ -14,12 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/ability'
-
 class ApplicationController < ActionController::Base
 
   before_filter :ensure_extension
-  before_filter :set_locale
+  prepend_before_filter :set_locale
   before_filter :require_user
 
   helper :all
@@ -31,7 +29,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   def unlocalized_root
-    redirect_to localized_root_path(:lang => I18n.default_locale)
+    redirect_to localized_root_path(:lang => I18n.locale)
   end
 
   protected
@@ -72,7 +70,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if Iqvoc::Concept.pref_labeling_languages.include?(nil)
-      I18n.locale = nil
+      I18n.locale = ""
       return
     end
 
@@ -105,19 +103,9 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  # def render_label(label)
-  #   if label && label.language != I18n.locale.to_s
-  #     label.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
-  #   else
-  #     label.to_s
-  #   end
-  # end
-
-  private
-
   # Configurable Ability class
   def current_ability
-    @current_ability ||= Iqvoc::Ability.new(current_user)
+    @current_ability ||= Iqvoc.ability_class.new(current_user)
   end
 
   def current_user_session
