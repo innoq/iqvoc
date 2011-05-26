@@ -28,14 +28,12 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  def unlocalized_root
-    redirect_to localized_root_path(:lang => I18n.locale)
-  end
-
   protected
 
   def default_url_options(options = nil)
-    { :format => :html, :lang => I18n.locale }.merge(options || {})
+    { :format => :html, :lang => I18n.locale }.
+      reject { |key, value| key == :lang and value.blank? }. # Strip out the lang parameter if it's empty.
+      merge(options || {})
   end
 
   # Force an extension to every url. (LOD)
@@ -78,7 +76,6 @@ class ApplicationController < ActionController::Base
       I18n.locale = params[:lang]
     else
       I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
-      redirect_to url_for(params.merge(:lang => I18n.locale))
     end
   end
 
