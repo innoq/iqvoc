@@ -28,10 +28,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  def unlocalized_root
-    redirect_to localized_root_path(:lang => I18n.locale)
-  end
-
   protected
 
   def default_url_options(options = nil)
