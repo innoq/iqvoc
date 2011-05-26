@@ -1,13 +1,16 @@
-/*jslint browser: true, nomen: false */
+/*jslint strict: true, unparam: true, nomen: false, browser: true */
 /*global jQuery, $jit, IQVOC, HTMLCanvasElement */
 
 jQuery(document).ready(function() {
+	"use strict";
 	IQVOC.visualization.init("infovis");
 });
 
 // basic settings -- XXX: cargo-culted from JIT examples
 var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals!?
 (function() {
+	"use strict";
+
 	var ua = navigator.userAgent,
 		iOS = ua.match(/iPhone/i) || ua.match(/iPad/i),
 		typeOfCanvas = typeof HTMLCanvasElement,
@@ -24,10 +27,16 @@ var labelType, nativeTextSupport, useGradients, animate; // XXX: useless globals
 
 IQVOC.visualization = (function($) {
 
+"use strict";
+
 var LEVELDISTANCE = 100;
 var CONCEPT_URI;
 var MAX_CHILDREN = 10; // TODO: rename
 var VIZ; // XXX: singleton; hacky - there should be a more elegant way!?
+
+var spawn, onFilter, generateGraph, transformData, generateConceptNode,
+	generateLabelNode, generateDummyConcepts, groupChildNodes,
+	determineTransparency;
 
 var init = function(container) {
 	CONCEPT_URI = $("head link[type='application/json']").attr("href");
@@ -38,7 +47,7 @@ var init = function(container) {
 };
 
 // container can be an ID or a DOM element
-var spawn = function(container, data) {
+spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
 	$(container).addClass("infvovis");
 
@@ -46,7 +55,7 @@ var spawn = function(container, data) {
 	$.each(["+", "-"], function(i, item) {
 		$('<input type="button" class="button" />').val(item).click(function(ev) {
 			var d = VIZ.config.Navigation.zooming / 1000;
-			d = item == "-" ? 1 - d : 1 + d;
+			d = item === "-" ? 1 - d : 1 + d;
 			VIZ.canvas.scale(d, d);
 		}).appendTo(container);
 	});
@@ -66,7 +75,7 @@ var spawn = function(container, data) {
 	return viz;
 };
 
-var onFilter = function(ev, viz) {
+onFilter = function(ev, viz) {
 	var el = $(this),
 		checked = el.attr("checked"),
 		value = el.val();
@@ -90,7 +99,7 @@ var visitConcept = function(conceptID) {
 	window.location = host + cue + conceptID;
 };
 
-var generateGraph = function(container, options) {
+generateGraph = function(container, options) {
 	options = $.extend(options, {
 		injectInto: container,
 
@@ -185,12 +194,12 @@ var generateGraph = function(container, options) {
 };
 
 // create a JIT-compatible JSON tree structure from a concept representation
-var transformData = function(concept) {
+transformData = function(concept) {
 	return generateConceptNode(concept);
 };
 
 // generate node from iQvoc concept representation
-var generateConceptNode = function(concept) {
+generateConceptNode = function(concept) {
 	if(typeof concept.relations === "number") {
 		concept.relations = generateDummyConcepts(concept.relations);
 	}
@@ -210,7 +219,7 @@ var generateConceptNode = function(concept) {
 };
 
 // generate node from iQvoc label representation
-var generateLabelNode = function(label) {
+generateLabelNode = function(label) {
 	return {
 		id: label.origin,
 		name: label.value,
@@ -220,14 +229,14 @@ var generateLabelNode = function(label) {
 };
 
 // generate dummy iQvoc label representations
-var generateDummyConcepts = function(count) {
+generateDummyConcepts = function(count) {
 	return $.map(new Array(count), function(item, i) {
 		return { origin: Math.random() };
 	});
 };
 
 // combine excessive child nodes in a single placeholder node
-var groupChildNodes = function(nodes, etype) { // TODO: rename
+groupChildNodes = function(nodes, etype) { // TODO: rename
 	if(nodes.length > MAX_CHILDREN) {
 		var excess = nodes.splice(MAX_CHILDREN - 1);
 		var placeholder = {
@@ -242,7 +251,7 @@ var groupChildNodes = function(nodes, etype) { // TODO: rename
 	}
 };
 
-var determineTransparency = function(depth) {
+determineTransparency = function(depth) {
 	if(depth === 2) {
 		return 0.6;
 	} else if(depth > 2) {
