@@ -217,29 +217,33 @@ jQuery(document).ready(function($) {
 
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
-	IQVOC.visualization.init("infovis", function(container) {
-		var width = container.width();
-		var height = container.height();
-		var enlarged = false;
+	if(IQVOC.visualization) {
+		IQVOC.visualization.init("infovis", function(container) {
+			var width = container.width();
+			var height = container.height();
+			var enlarged = false;
 
-		var addButton = function() {
-			$('<input type="button" class="button" />').
-				val(enlarged ? "_" : "▢").
-				prependTo(container).click(toggleSize);
-		};
+			var toggleSize;
 
-		var toggleSize = function(ev) {
-			container.css({
-				width: (enlarged ? width : width * 2) + "px",
-				height: (enlarged ? height : height * 2) + "px"
-			});
-			var viz = container.data("widget");
-			IQVOC.visualization.spawn(container.empty()[0], viz.data);
-			enlarged = !enlarged;
+			var addButton = function() {
+				$('<input type="button" class="button" />').
+					val(enlarged ? "_" : "▢").
+					prependTo(container).click(toggleSize);
+			};
+
+			toggleSize = function(ev) {
+				container.css({
+					width: (enlarged ? width : width * 2) + "px",
+					height: (enlarged ? height : height * 2) + "px"
+				});
+				var viz = container.data("widget");
+				IQVOC.visualization.spawn(container.empty()[0], viz.data);
+				enlarged = !enlarged;
+				addButton();
+			};
 			addButton();
-		};
-		addButton();
-	});
+		});
+	}
 
 	// language selection -- TODO: move to separate module
 	var langWidget = $("ul.lang-widget")[0];
