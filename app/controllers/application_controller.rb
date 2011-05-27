@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if Iqvoc::Concept.pref_labeling_languages.include?(nil)
-      I18n.locale = ""
+      I18n.locale = " "
     elsif params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
       I18n.locale = params[:lang]
     else
