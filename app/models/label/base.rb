@@ -76,7 +76,7 @@ class Label::Base < ActiveRecord::Base
 
   def to_s
     if language.to_s != I18n.locale.to_s.strip
-      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale.strip}']"
+      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale.to_s.strip}']"
     else
       value.to_s
     end
