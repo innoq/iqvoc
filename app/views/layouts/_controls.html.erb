@@ -11,13 +11,15 @@
   <li>
     <a href="javascript:;" class="lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
     <ul class="lang-widget">
-      <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
+      <%- unless Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).length == 0 -%>
+        <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
 
-      <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
-      <li>
-        <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
-                :class => lang == I18n.locale ? "current" : nil %>
-      </li>
+        <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
+        <li>
+          <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
+                  :class => lang == I18n.locale ? "current" : nil %>
+        </li>
+        <% end %>
       <% end %>
 
       <% if Iqvoc::available_languages.length > 1 %>
