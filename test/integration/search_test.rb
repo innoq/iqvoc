@@ -95,8 +95,8 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_content?('skos:prefLabel "Forest"@en')
 
     visit xml_uri
-    assert page.has_content?(@concepts[1].origin)
-    assert page.has_content?("<skos:prefLabel xml:lang=\"en\">#{@concepts[1].to_s}</skos:prefLabel>")
+    assert page.source.include?(@concepts[1].origin)
+    assert page.source.include?("<skos:prefLabel xml:lang=\"en\">#{@concepts[1].to_s}</skos:prefLabel>")
   end
 
   test "searching specific classes within collections" do
