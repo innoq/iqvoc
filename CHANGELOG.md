@@ -1,3 +1,10 @@
+## 3.1.2 (2001-05-27)
+
+* Fixed search not respecting a set collection filter
+* Added support for a none-language (nil) PrefLabel main language setting
+* Replaced existing auto-completion widget with a more sane approach
+* Several bugfixes
+
 ## 3.1.1 (2011-05-23)
 
 * Fixed regression preventing relations from being saved during concept creation
