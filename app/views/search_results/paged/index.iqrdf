@@ -26,8 +26,9 @@ document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_paramet
 end
 
 i = 0
-@results.each do |concept|
+@results.each do |labeling|
   document << IqRdf::Search::build_uri("result#{i+=1}", IqRdf::Sdc::build_uri('Result')) do |result|
-    concept.build_search_result_rdf(document, result)
+    labeling.build_search_result_rdf(document, result)
+    augment_search_result(document, labeling, result)
   end
 end
