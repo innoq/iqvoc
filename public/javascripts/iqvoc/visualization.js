@@ -145,10 +145,14 @@ generateGraph = function(container, options) {
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
 			var css = {},
-				classes = ["level" + node._depth, node.data.etype || "concept"];
+				classes = ["level" + node._depth, node.data.etype || "concept"],
+				el = $(domEl);
+			if(!node.data.etype) { // add abbreviated label to concept nodes
+				el.html(el.text().substr(0, 5) + "&hellip;");
+			}
 			// ensure label covers the underlying node
 			css.height = css.lineHeight = node.Node.height + "px";
-			$(domEl).addClass(classes.join(" ")).css(css);
+			el.addClass(classes.join(" ")).css(css);
 
 			// ensure label is centered on the symbol
 			var style = domEl.style;

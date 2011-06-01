@@ -71,9 +71,6 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 }
 
 #infovis .concept {
-	width: 1em;
-	overflow: hidden;
-	color: transparent;
 	cursor: pointer;
 }
 
