@@ -91,12 +91,6 @@ onFilter = function(ev, viz) {
 	VIZ.refresh();
 };
 
-var visitConcept = function(conceptID) {
-	var cue = "/concepts/";
-	var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
-	window.location = host + cue + conceptID;
-};
-
 generateGraph = function(container, options) {
 	options = $.extend(options, {
 		injectInto: container,
@@ -134,11 +128,14 @@ generateGraph = function(container, options) {
 
 		// add text and attach event handlers to labels
 		onCreateLabel: function(domEl, node) {
-			$(domEl).html(node.name);
-			if(node.data.etype !== "label") {
-				$jit.util.addEvent(domEl, "click", function(ev) {
-					visitConcept(node.id);
-				});
+			if(node.data.etype === "label") {
+				$(domEl).html(node.name);
+			} else { // concept node (link with abbreviated name)
+				var cue = "/concepts/";
+				var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
+				var caption = node.name.substr(0, 5) + "&hellip;";
+				$("<a />").attr("href", host + cue + node.id).html(caption).
+					appendTo(domEl);
 			}
 		},
 
@@ -147,9 +144,6 @@ generateGraph = function(container, options) {
 			var css = {},
 				classes = ["level" + node._depth, node.data.etype || "concept"],
 				el = $(domEl);
-			if(!node.data.etype) { // add abbreviated label to concept nodes
-				el.html(el.text().substr(0, 5) + "&hellip;");
-			}
 			// ensure label covers the underlying node
 			css.height = css.lineHeight = node.Node.height + "px";
 			el.addClass(classes.join(" ")).css(css);

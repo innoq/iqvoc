@@ -70,8 +70,8 @@ div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; 
 	float: right;
 }
 
-#infovis .concept {
-	cursor: pointer;
+#infovis .concept a {
+	color: #000;
 }
 
 #infovis.filtered .concept {
