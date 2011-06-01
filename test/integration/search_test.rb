@@ -34,14 +34,17 @@ class SearchTest < ActionDispatch::IntegrationTest
       Iqvoc::Concept.pref_labeling_class.create(:owner => concept, :target => label)
       concept
     }
+    # create collection
+    @collection = Factory.create(:collection, { :concepts => @concepts })
   end
 
   test "Searching" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    [
-      {:type => 'Labels', :query => 'Forest', :query_type => 'contains', :amount => 1, :result => 'Forest'}
-    ].each do |q|
+    [{
+      :type => 'Labels', :query => 'Forest', :query_type => 'contains',
+      :amount => 1, :result => 'Forest'
+    }].each { |q|
       select q[:type], :from => "t"
       fill_in "q", :with => q[:query]
       select q[:query_type], :from => "qt"
@@ -59,9 +62,84 @@ class SearchTest < ActionDispatch::IntegrationTest
       within("#search_results dt") do
         assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '#search_results dt'."
       end
+    }
+  end
 
+  test "searching within collections" do
+    visit search_path(:lang => 'en', :format => 'html')
+
+    select "All names", :from => "t"
+    select "contains", :from => "qt"
+    fill_in "q", :with => "res"
+    select @collection.to_s, :from => "c"
+
+    # select all languages
+    page.all(:css, ".lang_check").each do |cb|
+      check cb[:id]
     end
 
+    click_button("Search")
+
+    assert page.has_css?("#search_results dt", :count => 1)
+    assert page.find("#search_results").has_content?("Forest")
+
+    # TTL & RDF/XML -- XXX: should be a separate test
+
+    ttl_uri = page.all("#abstract_uri a").first[:href]
+    xml_uri = page.all("#abstract_uri a").last[:href]
+
+    visit ttl_uri
+    assert page.has_content?("search:result1 a sdc:Result")
+    assert page.has_no_content?("search:result2 a sdc:Result")
+    assert page.has_content?("sdc:link :#{@concepts[1].origin}")
+    assert page.has_content?('skos:prefLabel "Forest"@en')
+
+    visit xml_uri
+    assert page.source.include?(@concepts[1].origin)
+    assert page.source.include?("<skos:prefLabel xml:lang=\"en\">#{@concepts[1].to_s}</skos:prefLabel>")
+  end
+
+  test "searching specific classes within collections" do
+    concept = Factory.create(:concept, { :notes => [
+        Iqvoc::Concept.note_classes[1].new(:language => "en", :value => "lorem ipsum")
+    ] })
+
+    visit search_path(:lang => 'en', :format => 'html')
+
+    select "Notes", :from => "t"
+    select "contains", :from => "qt"
+    fill_in "q", :with => "ipsum"
+    select @collection.to_s, :from => "c"
+
+    # select all languages
+    page.all(:css, ".lang_check").each do |cb|
+      check cb[:id]
+    end
+
+    click_button("Search")
+
+    assert page.has_css?("#search_results dt", :count => 1)
+    assert page.find("#search_results").has_content?(concept.origin)
+  end
+
+  test "empty query with selected collection should return all collection members" do
+    visit search_path(:lang => 'en', :format => 'html')
+
+    select "All names", :from => "t"
+    select "exact match", :from => "qt"
+    fill_in "q", :with => ""
+    select @collection.to_s, :from => "c"
+
+    # select all languages
+    page.all(:css, ".lang_check").each do |cb|
+      check cb[:id]
+    end
+
+    click_button("Search")
+
+    assert page.has_css?("#search_results dt", :count => 2)
+    assert page.find("#search_results").has_content?("Tree")
+    assert page.find("#search_results").has_content?("Forest")
   end
 
 end

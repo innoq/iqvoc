@@ -48,6 +48,10 @@ module RdfHelper
         end
       end
     end
-
   end
+
+  def augment_search_result(document, labeling, iquri) # XXX: signature not very clear
+    # to be implemented by application
+  end
+
 end

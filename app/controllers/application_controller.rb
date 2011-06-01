@@ -16,8 +16,8 @@
 
 class ApplicationController < ActionController::Base
 
-  before_filter :ensure_extension
   prepend_before_filter :set_locale
+  before_filter :ensure_extension
   before_filter :require_user
 
   helper :all
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   def default_url_options(options = nil)
     { :format => :html, :lang => I18n.locale }.
-      reject { |key, value| key == :lang and value.blank? }. # Strip out the lang parameter if it's empty.
+      reject { |key, value| key == :lang and value.to_s.strip.blank? }. # Strip out the lang parameter if it's empty.
       merge(options || {})
   end
 
@@ -68,11 +68,8 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if Iqvoc::Concept.pref_labeling_languages.include?(nil)
-      I18n.locale = ""
-      return
-    end
-
-    if params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
+      I18n.locale = " "
+    elsif params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang].to_sym)
       I18n.locale = params[:lang]
     else
       I18n.locale = Iqvoc::Concept.pref_labeling_languages.first

@@ -37,6 +37,8 @@ class Label::Base < ActiveRecord::Base
   scope :by_language, lambda { |lang_code|
     if (lang_code.is_a?(Array) && lang_code.include?(nil))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
+    elsif lang_code.blank?
+      where(arel_table[:language].eq(nil))
     else
       where(:language => lang_code)
     end
@@ -73,8 +75,8 @@ class Label::Base < ActiveRecord::Base
   end
 
   def to_s
-    if language != I18n.locale.to_s
-      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
+    if language.to_s != I18n.locale.to_s.strip
+      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale.to_s.strip}']"
     else
       value.to_s
     end

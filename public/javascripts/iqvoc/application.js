@@ -122,11 +122,16 @@ $.extend(EntitySelector.prototype, {
 		ev.preventDefault();
 	},
 	createEntity: function(entity) {
-		var uri = this.uriTemplate.replace("%7Bid%7D", entity.id); // XXX: not very generic
-		var link = $('<a target="_blank" />').attr("href", uri).text(entity.name);
+		var el;
+		if(this.uriTemplate) {
+			var uri = this.uriTemplate.replace("%7Bid%7D", entity.id); // XXX: not very generic
+			el = $('<a target="_blank" />').attr("href", uri).text(entity.name);
+		} else {
+			el = $('<span />').text(entity.name);
+		}
 		var btn = $('<a href="javascript:;" class="btn">x</a>') // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
 			.click(this.onDelete);
-		return $("<li />").data("id", entity.id).append(link).append(btn)[0];
+		return $("<li />").data("id", entity.id).append(el).append(btn)[0];
 	},
 	add: function(entity) {
 		if($.inArray(entity, this.entities) === -1) {
