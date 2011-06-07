@@ -38,7 +38,9 @@ class OriginMapping
     gsub("(", "--").
     gsub(")", "").
     gsub(',', '-').
-    gsub('/', '-')
+    gsub('/', '-').
+    gsub('"', '').
+    gsub("'", '')
   end
 
   def self.sanitize_for_base_form(str)
