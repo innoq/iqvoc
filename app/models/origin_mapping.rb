@@ -17,7 +17,8 @@
 class OriginMapping
 
   def self.replace_umlauts(str)
-    str.gsub(/Ö/, 'Oe').
+    str.to_s.
+    gsub(/Ö/, 'Oe').
     gsub(/Ä/, 'Ae').
     gsub(/Ü/, 'Ue').
     gsub(/ö/, 'oe').
@@ -27,16 +28,16 @@ class OriginMapping
   end
 
   def self.replace_whitespace(str)
-    str.gsub(/\s/,'_').camelize
+    str.to_s.gsub(/\s/,'_').camelize
   end
 
   def self.replace_special_chars(str)
-    str.gsub("[", "--").gsub("]", "").gsub("(", "--").gsub(")", "").gsub(',', '-').gsub('/', '-')
+    str.to_s.gsub("[", "--").gsub("]", "").gsub("(", "--").gsub(")", "").gsub(',', '-').gsub('/', '-')
   end
 
   def self.sanitize_for_base_form(str)
     # str.gsub(/[,\/\.\[\]]/, '')
-    str.gsub(",", "").gsub("/", "").gsub(".", "").gsub("[", "").gsub("]", "")
+    str.to_s.gsub(",", "").gsub("/", "").gsub(".", "").gsub("[", "").gsub("]", "")
   end
 
   def self.merge(str)
