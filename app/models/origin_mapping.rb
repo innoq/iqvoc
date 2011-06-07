@@ -32,12 +32,23 @@ class OriginMapping
   end
 
   def self.replace_special_chars(str)
-    str.to_s.gsub("[", "--").gsub("]", "").gsub("(", "--").gsub(")", "").gsub(',', '-').gsub('/', '-')
+    str.to_s.
+    gsub("[", "--").
+    gsub("]", "").
+    gsub("(", "--").
+    gsub(")", "").
+    gsub(',', '-').
+    gsub('/', '-')
   end
 
   def self.sanitize_for_base_form(str)
     # str.gsub(/[,\/\.\[\]]/, '')
-    str.to_s.gsub(",", "").gsub("/", "").gsub(".", "").gsub("[", "").gsub("]", "")
+    str.to_s.
+    gsub(",", "").
+    gsub("/", "").
+    gsub(".", "").
+    gsub("[", "").
+    gsub("]", "")
   end
 
   def self.merge(str)
