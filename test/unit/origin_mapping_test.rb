@@ -23,11 +23,19 @@ class OriginMappingTest < ActiveSupport::TestCase
   end
 
   def test_should_camalize_string
-    assert_equal "'A'Weighting", OriginMapping.merge("'A' Weighting")
+    assert_equal "AWeighting", OriginMapping.merge("'A' Weighting")
+  end
+
+  def test_should_handle_numbers_at_the_beginning
+    assert_equal "_123", OriginMapping.merge("123")
+  end
+
+  def test_should_handle_dashes_at_the_beginning
+    assert_equal "_-bla", OriginMapping.merge("-bla")
   end
 
   def test_should_replace_brackets
-    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie/Ressource]")
+    assert_equal "_--Energie-Ressource", OriginMapping.merge("[Energie/Ressource]")
   end
 
   def test_should_replace_comma
@@ -35,7 +43,7 @@ class OriginMappingTest < ActiveSupport::TestCase
   end
 
   def test_should_merge_all_together
-    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie - Ressource]")
-    assert_equal "--Hydrosphaere-WasserUndGewaesser", OriginMapping.merge("[Hydrosphäre - Wasser und Gewässer]")
+    assert_equal "_--Energie-Ressource", OriginMapping.merge("[Energie - Ressource]")
+    assert_equal "_--Hydrosphaere-WasserUndGewaesser", OriginMapping.merge("[Hydrosphäre - Wasser und Gewässer]")
   end
 end

@@ -31,7 +31,13 @@ class OriginMapping
   end
 
   def self.replace_special_chars(str)
-    str.gsub("[", "--").gsub("]", "").gsub("(", "--").gsub(")", "").gsub(',', '-').gsub('/', '-')
+    str.gsub(/[(\[:]/, "--").gsub(/[)\]']/, "").gsub(/[,\.\/&;]/, '-')
+  end
+
+  def self.handle_numbers_at_beginning(str)
+    str.gsub(/^[0-9\-].*$/) do |match|
+      "_#{match}"
+    end
   end
 
   def self.sanitize_for_base_form(str)
@@ -40,7 +46,7 @@ class OriginMapping
   end
 
   def self.merge(str)
-    replace_umlauts(replace_whitespace(replace_special_chars(str)))
+    handle_numbers_at_beginning(replace_umlauts(replace_whitespace(replace_special_chars(str))))
   end
 
 end
