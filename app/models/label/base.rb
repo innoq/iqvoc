@@ -50,13 +50,13 @@ class Label::Base < ActiveRecord::Base
 
   scope :missing_translation, lambda { |lang, main_lang|
     joins(:concepts).
-      joins(sanitize_sql("LEFT OUTER JOIN labelings pref_labelings ON
+      joins(sanitize_sql(["LEFT OUTER JOIN labelings pref_labelings ON
           pref_labelings.id <> labelings.id AND
           pref_labelings.owner_id = concepts.id AND
-          pref_labelings.type = '%s'", Iqvoc::Concept.pref_labeling_class_name)).
-      joins(sanitize_sql("LEFT OUTER JOIN labels pref_labels ON
+          pref_labelings.type = '%s'", Iqvoc::Concept.pref_labeling_class_name])).
+      joins(sanitize_sql(["LEFT OUTER JOIN labels pref_labels ON
           pref_labels.id = pref_labelings.target_id AND
-          pref_labels.language = '%s'", lang)).
+          pref_labels.language = '%s'", lang])).
       where('labelings.type = :class_name', :class_name => Iqvoc::Concept.pref_labeling_class_name).
       where('pref_labels.id IS NULL').
       where('labels.language = :lang', :lang => main_lang).
