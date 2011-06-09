@@ -29,16 +29,16 @@ class ConceptsController < ApplicationController
       end
       format.all do
         authorize! :full_export, Concept::Base
-        @concepts = Iqvoc::Concept.base_class.published
-        # When in single query mode, AR handles ALL includes to be loaded by that
-        # one query. We don't want that! So let's do it manually :-)
-        Concept::Base.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:notes, {:relations => :target}, {:labelings => :target}])
+        
+
       end
     end
   end
 
   def show
-    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations.includes(:collection_members => {:collection => :labels}).includes(Iqvoc::Concept.base_class.default_includes)
+    scope = Iqvoc::Concept.base_class.
+      by_origin(params[:id]).
+      with_associations
     if params[:published] == '1' || !params[:published]
       published = true
       scope = scope.published
@@ -57,6 +57,13 @@ class ConceptsController < ApplicationController
 
     raise ActiveRecord::RecordNotFound unless @concept
     authorize! :read, @concept
+
+    # When in single query mode, AR handles ALL includes to be loaded by that
+    # one query. We don't want that! So let's do it manually :-)
+    Concept::Base.send(:preload_associations, @concept, Iqvoc::Concept.base_class.default_includes + 
+        [:collection_members => {:collection => :labels},
+        :broader_relations => {:target => [:pref_labels, :broader_relations]},
+        :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
 
     respond_to do |format|
       format.html do

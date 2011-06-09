@@ -17,10 +17,15 @@
 module RdfHelper
 
   def render_concept(document, concept)
+
+    @collections ||= Iqvoc::Collection.base_class.select("id, origin").all.each_with_object({}) do |c, hash|
+      hash[c.id] = c.origin
+    end
+
     document << concept.build_rdf_subject(document, controller) do |c|
 
-      concept.collections.each do |collection|
-        c.Schema::memberOf(IqRdf::Coll::build_uri(collection.origin))
+      concept.collection_members.each do |collection_member|
+        c.Schema::memberOf(IqRdf::Coll::build_uri(@collections[collection_member.collection_id])) if @collections[collection_member.collection_id]
       end
 
       c.Schema::expires(concept.expired_at) if concept.expired_at
