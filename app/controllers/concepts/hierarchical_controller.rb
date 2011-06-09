@@ -56,7 +56,7 @@ class Concepts::HierarchicalController < ConceptsController
 
     respond_to do |format|
       format.html
-      format.json do
+      format.json do # Treeview data
         @concepts.map! do |c|
           hsh = {
             :text => CGI.escapeHTML(c.pref_label.to_s),

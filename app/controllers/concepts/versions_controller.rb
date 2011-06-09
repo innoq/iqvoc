@@ -20,19 +20,17 @@ class Concepts::VersionsController < ApplicationController
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
+
     authorize! :merge, new_version
+
     ActiveRecord::Base.transaction do
       if current_concept.blank? || current_concept.destroy
         new_version.publish
         new_version.unlock
         if new_version.valid_with_full_validation?
           new_version.save
-          begin
-            if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
-              new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
-            end
-          rescue Exception => e
-            handle_virtuoso_exception(e.message)
+          if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
+            new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
           end
           flash[:notice] = t("txt.controllers.versioning.published")
           redirect_to concept_path(:id => new_version)
@@ -51,7 +49,9 @@ class Concepts::VersionsController < ApplicationController
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
     raise "There is already an unpublished version for Concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+
     authorize! :branch, current_concept
+
     new_version = nil
     ActiveRecord::Base.transaction do
       new_version = current_concept.branch(current_user)
@@ -65,6 +65,7 @@ class Concepts::VersionsController < ApplicationController
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
     raise "Concept with origin '#{params[:origin]}' has already been locked." if new_version.locked?
+
     authorize! :lock, new_version
 
     new_version.lock_by_user(current_user.id)
@@ -78,6 +79,7 @@ class Concepts::VersionsController < ApplicationController
     new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
     raise "Concept with origin '#{params[:origin]}' wasn't locked." unless new_version.locked?
+
     authorize! :unlock, new_version
 
     new_version.unlock

@@ -19,18 +19,17 @@ class ConceptsController < ApplicationController
 
   def index
     authorize! :read, Concept::Base
+    
     respond_to do |format|
-      format.json do
+      format.json do # Search for widget
         @concepts = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%")).all
         response = []
         @concepts.each { |concept| response << concept_widget_data(concept)}
 
         render :json => response
       end
-      format.all do
+      format.all do # RDF full export
         authorize! :full_export, Concept::Base
-        
-
       end
     end
   end
@@ -39,38 +38,36 @@ class ConceptsController < ApplicationController
     scope = Iqvoc::Concept.base_class.
       by_origin(params[:id]).
       with_associations
-    if params[:published] == '1' || !params[:published]
-      published = true
+    published = params[:published] == '1' || !params[:published]
+    if published
       scope = scope.published
       @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    elsif params[:published] == '0'
-      published = false
+    else
       scope = scope.unpublished
     end
 
-    if params[:format] == "json"
-      scope = scope.includes([:labels,
-          { :relations => { :target => [:labelings, :relations] } }]) # XXX: expensive!?
-    end
-
     @concept = scope.last
-
     raise ActiveRecord::RecordNotFound unless @concept
-    authorize! :read, @concept
 
-    # When in single query mode, AR handles ALL includes to be loaded by that
-    # one query. We don't want that! So let's do it manually :-)
-    Concept::Base.send(:preload_associations, @concept, Iqvoc::Concept.base_class.default_includes + 
-        [:collection_members => {:collection => :labels},
-        :broader_relations => {:target => [:pref_labels, :broader_relations]},
-        :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
+    authorize! :read, @concept
 
     respond_to do |format|
       format.html do
+        # When in single query mode, AR handles ALL includes to be loaded by that
+        # one query. We don't want that! So let's do it manually :-)
+        Concept::Base.send(:preload_associations, @concept, Iqvoc::Concept.base_class.default_includes +
+            [:collection_members => {:collection => :labels},
+            :broader_relations => {:target => [:pref_labels, :broader_relations]},
+            :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
+
         published ? render('show_published') : render('show_unpublished')
       end
       format.json do
-        # XXX: rather than being generic, this is currently tailored for visualizations
+        # When in single query mode, AR handles ALL includes to be loaded by that
+        # one query. We don't want that! So let's do it manually :-)
+        Concept::Base.send(:preload_associations, @concept, [:labels,
+            { :relations => { :target => [:labelings, :relations] } }])
+
         concept_data = {
           :origin => @concept.origin,
           :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
@@ -79,7 +76,7 @@ class ConceptsController < ApplicationController
             {
               :origin => concept.origin,
               :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
-              :relations => concept.relations.length # XXX: using number is hacky?
+              :relations => concept.relations.length
             }
           }
         }
@@ -91,6 +88,7 @@ class ConceptsController < ApplicationController
 
   def new
     authorize! :create, Iqvoc::Concept.base_class
+
     @concept = Iqvoc::Concept.base_class.new
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
@@ -100,6 +98,7 @@ class ConceptsController < ApplicationController
 
   def create
     authorize! :create, Iqvoc::Concept.base_class
+
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.generate_origin
       if @concept.save
@@ -137,6 +136,7 @@ class ConceptsController < ApplicationController
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @concept
+    
     authorize! :update, @concept
 
     if @concept.update_attributes(params[:concept])
@@ -151,6 +151,7 @@ class ConceptsController < ApplicationController
   def destroy
     @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @new_concept
+
     authorize! :destroy, @new_concept
 
     if @new_concept.destroy
@@ -162,15 +163,19 @@ class ConceptsController < ApplicationController
     end
   end
 
+  protected
+
+  # TODO: Find a method name matching the behaviour of the method
+  def labeling_as_json(labeling)
+    label = labeling.target
+    return {
+      :origin => label.origin,
+      :reltype => labeling.type.to_relation_name,
+      :value => label.value,
+      :lang => label.language
+      # TODO: relations (XL only)
+    }
+  end
+
 end
 
-def labeling_as_json(labeling)
-  label = labeling.target
-  return {
-    :origin => label.origin,
-    :reltype => labeling.type.to_relation_name,
-    :value => label.value,
-    :lang => label.language
-    # TODO: relations (XL only)
-  }
-end

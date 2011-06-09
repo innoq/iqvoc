@@ -20,6 +20,8 @@ require 'integration_test_helper'
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
+    # TODO: Use factories!!!!!!111elf
+
     # create concepts with pref labels (avoiding factories due to side-effects)
     @labels = []
     @concepts = [

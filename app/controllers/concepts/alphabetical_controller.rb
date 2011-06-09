@@ -20,11 +20,6 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    @alphas =
-      ('A'..'Z').to_a +
-      (0..9).to_a +
-      ['[']
-
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
       concept_published.
       label_begins_with(params[:letter]).
@@ -34,6 +29,7 @@ class Concepts::AlphabeticalController < ConceptsController
       joins(:owner).
       where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
       paginate(:page => params[:page], :per_page => 40)
+
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     Iqvoc::Concept.pref_labeling_class.send(:preload_associations, @pref_labelings, :owner => Iqvoc::Concept.base_class.default_includes)

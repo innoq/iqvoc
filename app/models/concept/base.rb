@@ -353,16 +353,19 @@ class Concept::Base < ActiveRecord::Base
     pref_label.to_s
   end
 
+  # TODO: rename to "publish!"
   def save_with_full_validation!
     @full_validation = true
     save!
   end
 
+  # TODO: rename to "publishable?"
   def valid_with_full_validation?
     @full_validation = true
     valid?
   end
 
+  # TODO: remove
   def invalid_with_full_validation?
     @full_validation = true
     invalid?

@@ -15,20 +15,19 @@
 # limitations under the License.
 
 class Collections::HierarchicalController < CollectionsController
-  skip_before_filter :require_user # XXX: why? (cf. concepts/hierarchical)
+  skip_before_filter :require_user # This is public for everyone
 
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
-    root = Iqvoc::Collection.base_class.find(params[:root])
-    children = root.subcollections
+    children = Iqvoc::Collection.base_class.find(params[:root]).subcollections
 
     children.sort! do |a, b|
       a.pref_label.to_s <=> b.pref_label.to_s
     end
 
     respond_to do |format|
-      format.json do
+      format.json do # Treeview data
         children.map! do |collection|
           {
             :id => collection.id,
