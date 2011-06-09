@@ -14,6 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+class ActionController::Base
+
+  # Add a line to the log to mark the beginning of the view
+  def render_with_hook_for_logging(options = nil, extra_options = {})
+    logger.debug ' Started view rendering '.center(80, '-')
+    render_without_hook_for_logging(options, extra_options)
+  end
+  alias_method_chain :render, :hook_for_logging
+
+end
+
 Iqvoc::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
 
