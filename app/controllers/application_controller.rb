@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
 
   helper :all
-  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data#, :render_label
+  helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
 
   rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
   rescue_from CanCan::AccessDenied, :with => :handle_access_denied
@@ -53,17 +53,9 @@ class ApplicationController < ActionController::Base
 
   def handle_not_found(exception)
     @exception = exception
-    @available_languages = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
-      lang_sym ||= "none"
-      hsh[lang_sym.to_s] = t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
-    end
+    SearchResultsController.prepare_basic_variables(self)
 
     render :template => 'errors/not_found', :status => :not_found
-  end
-
-  def handle_virtuoso_exception(exception)
-    logger.error "Virtuoso Exception: " + exception
-    flash[:error] = t("txt.controllers.versioning.virtuoso_exception") + " " + exception
   end
 
   def set_locale
@@ -112,18 +104,16 @@ class ApplicationController < ActionController::Base
     @current_user = current_user_session && current_user_session.user
   end
 
+  # TODO: Don't require an user (this is skipped in nearly every controller).
+  # Use Abilitys instead and handle the AccessDeniedException: (#handle_access_denied)
+  # * User logged in: Exception!
+  # * User not logged in: Redirect to login path!
+  # Don't forget to delete this method and all the /.*before_filter :require_user/
+  # statements in the controllers.
   def require_user
     unless current_user
       flash[:error] = I18n.t("txt.controllers.application.login_required")
       redirect_to new_user_session_url(:back_to => request.fullpath)
-      return false
-    end
-  end
-
-  def require_no_user
-    if current_user
-      flash[:error] = I18n.t("txt.controllers.application.logout_required")
-      redirect_to root_path
       return false
     end
   end

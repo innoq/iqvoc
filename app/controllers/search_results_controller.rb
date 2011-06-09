@@ -20,10 +20,7 @@ class SearchResultsController < ApplicationController
   def index
     authorize! :read, Concept::Base
 
-    @available_languages = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
-      lang_sym ||= "none"
-      hsh[lang_sym.to_s] = t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
-    end
+    self.class.prepare_basic_variables(self)
 
     # Query param tricks
     params[:type] ||= params[:t]
@@ -64,9 +61,9 @@ class SearchResultsController < ApplicationController
         logger.debug "Searching for all names"
         # all names (including collection labels)
         @results = Iqvoc.searchable_classes.
-            select { |klass| (klass < Labeling::Base) }.
-            map { |klass| klass.single_query(params) }.
-            flatten.uniq
+          select { |klass| (klass < Labeling::Base) }.
+          map { |klass| klass.single_query(params) }.
+          flatten.uniq
       end
       
       @multi_query ? logger.debug("Using multi query mode") : logger.debug("Using single query mode")
@@ -78,6 +75,15 @@ class SearchResultsController < ApplicationController
       end
 
     end
+  end
+
+  def self.prepare_basic_variables(controller)
+    langs = (Iqvoc.available_languages + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang_sym, hsh|
+      lang_sym ||= "none"
+      hsh[lang_sym.to_s] = I18n.t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
+    end
+    
+    controller.instance_variable_set(:@available_languages, langs)
   end
 
   protected
