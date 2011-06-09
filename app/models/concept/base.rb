@@ -252,6 +252,11 @@ class Concept::Base < ActiveRecord::Base
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
+  scope :for_dashboard, lambda {
+    unpublished_or_follow_up.
+      includes(:pref_labels, :locking_user)
+  }
+
   # ********** Class methods
 
   def self.inline_partial_name
@@ -280,7 +285,7 @@ class Concept::Base < ActiveRecord::Base
   def labelings_by_text(relation_name, language)
     (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
       self.send(relation_name).by_label_language(language).
-          map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
+      map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
   end
 
   def concept_relations_by_id=(hash)
@@ -290,7 +295,7 @@ class Concept::Base < ActiveRecord::Base
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
       self.send(relation_name).map { |l| l.target.origin }.
-          join(Iqvoc::InlineDataHelper::Joiner)
+      join(Iqvoc::InlineDataHelper::Joiner)
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
@@ -327,7 +332,7 @@ class Concept::Base < ActiveRecord::Base
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
     relations.select { |rel| rel.class.name == relation_class }.map(&:target).
-        select { |c| c.published? || !only_published }
+      select { |c| c.published? || !only_published }
   end
 
   def matches_for_class(match_class)

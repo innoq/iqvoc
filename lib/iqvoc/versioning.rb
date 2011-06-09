@@ -52,7 +52,7 @@ module Iqvoc
         where(arel_table[:locked_by].not_eq(nil))
       }
 
-      scope :for_dashboard, lambda {
+      scope :unpublished_or_follow_up, lambda {
         where(
           arel_table[:published_at].eq(nil).or(
             arel_table[:follow_up].not_eq(nil)
