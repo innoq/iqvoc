@@ -16,12 +16,12 @@
 
 class DashboardController < ApplicationController
 
-  before_filter :check_authorization
-
   def index
+    authorize! :use, :dashboard
+    
     @items = []
     Iqvoc.first_level_classes.each do |klass|
-      @items += klass.for_dashboard.all # TODO (:include => [:locking_user, :pref_labels])
+      @items += klass.for_dashboard.all
     end
 
     factor = params[:order] == "desc" ? -1 : 1
@@ -37,11 +37,6 @@ class DashboardController < ApplicationController
       @items.sort! { |x,y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
-  end
-
-  private
-  def check_authorization
-    authorize! :use, :dashboard
   end
 
 end
