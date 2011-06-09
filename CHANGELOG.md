@@ -1,15 +1,27 @@
-## 3.1.2 (2001-05-27)
+## 3.1.3 (2011-06-09)
+
+* New feature: now showing a visualization of concept relations on a concept page
+* Improved performance of full rdf export
+* Bugfixes
+
+For a complete list of changes see https://github.com/innoq/iqvoc/compare/v3.1.2...v3.1.3
+
+## 3.1.2 (2011-05-27)
 
 * Fixed search not respecting a set collection filter
 * Added support for a none-language (nil) PrefLabel main language setting
 * Replaced existing auto-completion widget with a more sane approach
 * Several bugfixes
 
+For a complete list of changes see https://github.com/innoq/iqvoc/compare/v3.1.1...v3.1.2
+
 ## 3.1.1 (2011-05-23)
 
 * Fixed regression preventing relations from being saved during concept creation
 * Minor UI tweaks (fonts, buttons, semantic markup etc.)
 * Various bugfixes and internal refactoring
+
+For a complete list of changes see https://github.com/innoq/iqvoc/compare/v3.1.0...v3.1.1
 
 ## 3.1.0 (2011-05-16)
 
@@ -18,6 +30,8 @@
   It's also possible to translate secondary concept relations by switching the secondary language.
 * Several UI tweaks: styleable buttons, 2-column layout for concept templates and more.
 * Bugfixes
+
+For a complete list of changes see https://github.com/innoq/iqvoc/compare/v3.0.0...v3.1.0
 
 ## 3.0.0 (2011-05-10)
 
