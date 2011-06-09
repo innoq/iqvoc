@@ -14,30 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: This class (including the view) should not exist! Please move this back
+# into the alphabetical_controller. The only difference between those two
+# controllers is the scope used. Use if statements or published methods instead.
+# "DRYness"
 class Concepts::UntranslatedController < ConceptsController
   skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base
 
-    main_lang = Iqvoc::Concept.pref_labeling_languages.first
-
     scope = Iqvoc::Concept.pref_labeling_class.label_class.
       begins_with(params[:letter]).
-      joins(:concepts).
-      joins('LEFT OUTER JOIN labelings pref_labelings ON
-          pref_labelings.id <> labelings.id AND
-          pref_labelings.owner_id = concepts.id AND
-          pref_labelings.type = "%s"' % Iqvoc::Concept.pref_labeling_class_name).
-      joins('LEFT OUTER JOIN labels pref_labels ON
-          pref_labels.id = pref_labelings.target_id AND
-          pref_labels.language = "%s"' % I18n.locale).
-      where('labelings.type = "%s"' % Iqvoc::Concept.pref_labeling_class_name).
-      where('pref_labels.id IS NULL').
-      where('labels.language = "%s"' % main_lang).
-      includes(:pref_labeled_concepts)
+      missing_translation(I18n.locale, Iqvoc::Concept.pref_labeling_languages.first)
 
-    if I18n.locale == main_lang
+    if I18n.locale == Iqvoc::Concept.pref_labeling_languages.first # TODO: Should be 404!
       flash[:error] = I18n.t("txt.views.untranslated_concepts.unavailable")
     else
       @labels = scope.order("LOWER(labels.value)").
