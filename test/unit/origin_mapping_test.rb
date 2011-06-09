@@ -39,7 +39,7 @@ class OriginMappingTest < ActiveSupport::TestCase
   end
 
   def test_should_replace_comma
-    assert_equal "-", OriginMapping.merge(",")
+    assert_equal "_-", OriginMapping.merge(",")
   end
 
   def test_should_merge_all_together
