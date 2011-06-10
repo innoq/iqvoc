@@ -29,7 +29,7 @@ var CONCEPT_URI;
 var MAX_CHILDREN = 10; // TODO: rename
 var VIZ; // XXX: singleton; hacky - there should be a more elegant way!?
 
-var spawn, onFilter, generateGraph, transformData, generateConceptNode,
+var spawn, redraw, onFilter, generateGraph, transformData, generateConceptNode,
 	generateLabelNode, generateDummyConcepts, groupChildNodes,
 	determineTransparency;
 
@@ -66,14 +66,20 @@ spawn = function(container, data) {
 
 	var viz = generateGraph(container, { levelDistance: LEVELDISTANCE });
 	viz.filters = []; // TODO: rename? (ambiguous)
-	viz.data = data; // XXX: hacky (cf. onFilter below)
-	viz.loadJSON(data);
-	viz.refresh();
+	viz.data = data;
+	redraw(viz);
 
 	return $(container).addClass("infvovis").data("widget", viz);
 };
 
-onFilter = function(ev, viz) {
+redraw = function(viz) {
+	viz.graph.empty();
+	viz.labels.clearLabels();
+	viz.loadJSON(viz.data);
+	viz.refresh();
+};
+
+onFilter = function(ev) {
 	var el = $(this),
 		checked = el.attr("checked"),
 		value = el.val();
@@ -87,7 +93,7 @@ onFilter = function(ev, viz) {
 
 	el.closest(".infvovis").toggleClass("filtered", VIZ.filters.length > 0);
 
-	VIZ.loadJSON(VIZ.data); // XXX: this seems like overkill
+	VIZ.loadJSON(VIZ.data);
 	VIZ.refresh();
 };
 
@@ -266,7 +272,7 @@ $jit.Graph.Node.prototype.setPos = function(value, type) {
 
 return {
 	init: init,
-	spawn: spawn
+	redraw: redraw
 };
 
 }(jQuery));
