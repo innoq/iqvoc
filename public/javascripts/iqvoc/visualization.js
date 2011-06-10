@@ -79,7 +79,7 @@ onFilter = function(ev, viz) {
 		value = el.val();
 
 	if(checked) {
-		var pos = VIZ.filters.indexOf(value);
+		var pos = $.inArray(value, VIZ.filters);
 		VIZ.filters.splice(pos, 1);
 	} else {
 		VIZ.filters.push(value);
@@ -175,10 +175,10 @@ generateGraph = function(container, options) {
 			$.each([adj.nodeFrom, adj.nodeTo], function(i, node) { // XXX: inefficient and fugly
 				var etype = node.data ? node.data.etype : null;
 				if(VIZ) {
-					var hideRelations = VIZ.filters.indexOf("relation") !== -1;
+					var hideRelations = $.inArray("relation", VIZ.filters) !== -1;
 					var rootLabel = node._depth === 1 && etype === "label";
 					if((hideRelations && node._depth > 0 && !rootLabel) ||
-							(etype && VIZ.filters.indexOf(etype) !== -1)) {
+							(etype && $.inArray(etype, VIZ.filters) !== -1)) {
 						adj.data.$alpha = 0;
 						node.data.$alpha = 0;
 					}
