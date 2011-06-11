@@ -228,11 +228,14 @@ jQuery(document).ready(function($) {
 			var height = container.height();
 
 			var toggleSize = function(enlarge) {
+				var viz = container.data("widget"),
+					_width = enlarge ? width * 2 : width,
+					_height = enlarge ? height * 2 : height;
+				viz.canvas.resize(_width, _height);
 				container.css({
-					width: (enlarge ? width * 2 : width) + "px",
-					height: (enlarge ? height * 2 : height) + "px"
+					width: _width + "px",
+					height: _height + "px"
 				});
-				var viz = container.data("widget");
 				IQVOC.visualization.redraw(viz);
 			};
 
