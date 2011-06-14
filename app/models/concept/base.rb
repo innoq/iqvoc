@@ -31,6 +31,7 @@ class Concept::Base < ActiveRecord::Base
 
   validates :origin, :presence => true
 
+  validate :ensure_origin_format, :on => :create
   validate :ensure_maximum_two_versions_of_a_concept,
     :on => :create
 
@@ -390,6 +391,14 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Validation methods
+
+  def ensure_origin_format
+    if @full_validation
+      if not /^_\d{8}$/.match(origin)
+        errors.add :base, I18n.t("txt.models.concept.origin_error")
+      end
+    end
+  end
 
   def ensure_maximum_two_versions_of_a_concept
     if Concept::Base.by_origin(origin).count >= 2

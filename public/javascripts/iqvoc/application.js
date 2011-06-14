@@ -226,27 +226,29 @@ jQuery(document).ready(function($) {
 		IQVOC.visualization.init("infovis", function(container) {
 			var width = container.width();
 			var height = container.height();
-			var enlarged = false;
 
-			var toggleSize;
-
-			var addButton = function() {
-				$('<input type="button" class="button" />').
-					val(enlarged ? "_" : "▢").
-					prependTo(container).click(toggleSize);
-			};
-
-			toggleSize = function(ev) {
+			var toggleSize = function(enlarge) {
+				var viz = container.data("widget"),
+					_width = enlarge ? width * 2 : width,
+					_height = enlarge ? height * 2 : height;
+				viz.canvas.resize(_width, _height);
 				container.css({
-					width: (enlarged ? width : width * 2) + "px",
-					height: (enlarged ? height : height * 2) + "px"
+					width: _width + "px",
+					height: _height + "px"
 				});
-				var viz = container.data("widget");
-				IQVOC.visualization.spawn(container.empty()[0], viz.data);
-				enlarged = !enlarged;
-				addButton();
+				IQVOC.visualization.redraw(viz);
 			};
-			addButton();
+
+			var btns = $.map(["▢", "_"], function(item, i) {
+				return $('<input type="button" class="button" />').val(item).
+					click(function(ev) {
+						toggleSize(i === 0);
+						btns.toggle();
+					}).
+					prependTo(container)[0];
+			});
+			btns = $(btns);
+			btns.eq(1).hide();
 		});
 	}
 

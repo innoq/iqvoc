@@ -75,7 +75,13 @@ module Iqvoc
             Rails.logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
-          @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
+          entity = types[object].new(:origin => origin)
+          if entity.invalid_with_full_validation?
+            faux_origin = "_00000000_#{origin}" # XXX: hack to ensure `generate_origin` works correctly (due to `Concept::Base.maximum(:origin)`)
+            entity = types[object].new(:origin => faux_origin)
+          end
+          entity.save!
+          @seen_first_level_objects[origin] = entity
         end
       end
     end

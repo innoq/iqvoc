@@ -323,6 +323,7 @@ en:
        version_error: "New Label version already exists."
        value_error: "Literal form must be given."
      concept:
+       origin_error: "Invalid origin."
        version_error: "New Concept version already exists."
        no_pref_label_error: "At least one preferred label must be specified."
        main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."

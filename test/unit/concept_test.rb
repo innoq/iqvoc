@@ -21,6 +21,13 @@ class ConceptTest < ActiveSupport::TestCase
     @current_concept = Factory.create(:concept)
   end
 
+  test "should validate origin with full validation" do
+    concept = Iqvoc::Concept.base_class.new(:origin => "foo")
+    assert_raise ActiveRecord::RecordInvalid do
+      concept.save_with_full_validation!
+    end
+  end
+
   test "should not create more than two versions of a concept" do
     first_new_concept  = Concept::Base.new(@current_concept.attributes)
     second_new_concept = Concept::Base.new(@current_concept.attributes)
