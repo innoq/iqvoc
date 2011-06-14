@@ -20,7 +20,7 @@ class Collections::HierarchicalController < CollectionsController
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
-    children = Iqvoc::Collection.base_class.find(params[:root]).subcollections
+    children = Iqvoc::Collection.base_class.find(params[:root]).subcollections.includes(:pref_labels, :subcollections)
 
     children.sort! do |a, b|
       a.pref_label.to_s <=> b.pref_label.to_s

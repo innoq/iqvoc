@@ -23,8 +23,12 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html do
         @collections = Iqvoc::Collection.base_class.with_pref_labels.all.sort{ |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
+
+        # When in single query mode, AR handles ALL includes to be loaded by that
+        # one query. We don't want that! So let's do it manually :-)
+        Iqvoc::Collection.base_class.send(:preload_associations, @collections, [:subcollections])
       end
-      format.json do
+      format.json do # For the widget
         @collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))
         response = []
         @collections.each { |c| response << collection_widget_data(c) }
