@@ -18,22 +18,29 @@ class SearchResultsController < ApplicationController
   skip_before_filter :require_user
 
   def index
-    authorize! :read, Concept::Base
+    authorize! :read, Concept::Base # TODO: I think a :search right would be
+    # better here because you're able to serach more than only concepts.
 
     self.class.prepare_basic_variables(self)
 
-    # Query param tricks
-    params[:type] ||= params[:t]
-    params[:query] ||= params[:q]
-    params[:languages] ||= params[:l]
-    params[:query_type] ||= params[:qt]
-    params[:collection_origin] ||= params[:c]
+    # Map short params to their log representation
+    {:t => :type, :q => :query, :l => :languages, :qt => :query_type, :c => :collection_origin}.each do |short, long|
+      params[long] ||= params[short]
+    end
+
+    # Delete parameters which should not be included into generated urls (e.g.
+    # in rdf views)
     request.query_parameters.delete("commit")
     request.query_parameters.delete("utf8")
 
     if params[:query]
-      return invalid_search(I18n.t('txt.controllers.search_results.insufficient_data')) if params[:query].blank? && params[:collection_origin].blank?
+      if params[:query].blank? && params[:collection_origin].blank?
+        flash.now[:error] = I18n.t('txt.controllers.search_results.insufficient_data')
+        render :action => 'index', :status => 422
+        return
+      end
 
+      # Special treatment for the "nil language"
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
 
       # Decide whether to search a specific class or ALL classes
@@ -44,6 +51,10 @@ class SearchResultsController < ApplicationController
         @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       end
 
+      # TODO Use Karminari instead of will_paginate and remove the wohle
+      # pagiantion / no pagination stuff (karminari supports pagination for
+      # arrays).
+
       query_size = params[:query].split(/\r\n/).size
 
       # @klass is only available if we're going to search using a specific class
@@ -52,6 +63,8 @@ class SearchResultsController < ApplicationController
         if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
           @multi_query = true
           @results = @klass.multi_query(params)
+          # TODO Add a worst case limit here. E.g. when beeing on page 2 (per_page == 50)
+          # every sub query has to return 100 object at most.
         else
           @multi_query = false
           @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
@@ -61,9 +74,15 @@ class SearchResultsController < ApplicationController
         logger.debug "Searching for all names"
         # all names (including collection labels)
         @results = Iqvoc.searchable_classes.
-          select { |klass| (klass < Labeling::Base) }.
-          map { |klass| klass.single_query(params) }.
+          select { |klass| (klass < Labeling::Base) }. # Search for Labelings only
+        map { |klass| klass.single_query(params) }.
           flatten.uniq
+        # TODO (Important!!): Remove this mess. This is totally equivalent to a
+        # search in Labeling::Base except that this is a multi query (which
+        # isn't a good idea at all).
+        # We'll have to check all sub projects redefining the srearchable classes
+        # to include "Labeling::Base" because :all won't be contained in the
+        # selectbox per default.
       end
       
       @multi_query ? logger.debug("Using multi query mode") : logger.debug("Using single query mode")
@@ -85,12 +104,5 @@ class SearchResultsController < ApplicationController
     
     controller.instance_variable_set(:@available_languages, langs)
   end
-
-  protected
-
-  def invalid_search(msg=nil)
-    flash.now[:error] = msg || I18n.t('txt.controllers.search_results.query_invalid')
-    render :action => 'index', :status => 422
-  end
-
+  
 end

@@ -15,7 +15,8 @@
 # limitations under the License.
 
 class UsersController < ApplicationController
-  load_and_authorize_resource
+
+  load_and_authorize_resource # cancan magic
 
   def index
     @users = User.find(:all)

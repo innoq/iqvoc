@@ -20,7 +20,11 @@ class RdfController < ApplicationController
   skip_before_filter :set_locale
 
   def show
-    scope = params[:published] == "0" ? Iqvoc::Concept.base_class.scoped.unpublished : Iqvoc::Concept.base_class.scoped.published
+    scope = if (params[:published] == "0")
+      Iqvoc::Concept.base_class.scoped.unpublished
+    else
+      Iqvoc::Concept.base_class.scoped.published
+    end
     if @concept = scope.by_origin(params[:id]).with_associations.last
       respond_to do |format|
         format.html {
