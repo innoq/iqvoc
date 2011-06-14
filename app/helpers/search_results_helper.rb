@@ -15,6 +15,12 @@
 # limitations under the License.
 
 module SearchResultsHelper
+
+  def select_search_checkbox?(lang)
+    (params[:languages] && params[:languages].include?(lang.to_s)) ||
+      (!params[:query] && I18n.locale.to_s == lang.to_s)
+  end
+
   def highlight_query(text, query, multi_query)
     if multi_query
       raw text.to_s
@@ -23,4 +29,5 @@ module SearchResultsHelper
       raw highlight(text.to_s, query)
     end
   end
+  
 end

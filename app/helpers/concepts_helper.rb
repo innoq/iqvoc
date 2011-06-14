@@ -15,28 +15,31 @@
 # limitations under the License.
 
 module ConceptsHelper
-  def select_search_checkbox?(lang)
-    (params[:languages] && params[:languages].include?(lang.to_s)) ||
-      (!params[:query] && I18n.locale.to_s == lang.to_s)
-  end
-
-  def quote_turtle_value(str)
-    str.match(/^<.*>$/) ? str : "\"#{str}\""
-  end
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
     render :partial => "concepts/hierarchical/treeview",
-        :locals => { :concepts => concepts, :broader => broader }
+      :locals => { :concepts => concepts, :broader => broader }
   end
 
-  def render_concept_association(hash, concept, association_class, further_options = {})
-    html = render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
-    if html.squish.present?
-      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html
+  def letter_selector(&block)
+    letters = ('A'..'Z').to_a +
+      (0..9).to_a +
+      ['[']
+
+    content_tag :ul, :class => 'letter_selector' do
+      html = ""
+      letters.each do |letter|
+        html += content_tag(:li, link_to(letter, yield(letter)),
+          :class => "ui-corner-all ui-widget-content" +
+            ((params[:letter] == letter.to_s.downcase) ? " ui-state-active" : ""))
+      end
+      html.html_safe
     end
   end
 
+  # Renders associated objects of a given concept to a hash structure.
+  # This hash is taken by view/layouts/_sections to be rendered.
   def concept_view_data(concept)
     res = {}
 
@@ -67,20 +70,14 @@ module ConceptsHelper
     res
   end
 
-  def letter_selector(&block)
-    letters =
-      ('A'..'Z').to_a +
-      (0..9).to_a +
-      ['[']
+  private
 
-    content_tag :ul, :class => 'letter_selector' do
-      html = ""
-      letters.each do |letter|
-        html += content_tag(:li, link_to(letter, yield(letter)),
-            :class => "ui-corner-all ui-widget-content" +
-                ((params[:letter] == letter.to_s.downcase) ? " ui-state-active" : ""))
-      end
-      html.html_safe
+  # Renders a partial taken from the .partial_name method of the objects
+  # associated to the concept.
+  def render_concept_association(hash, concept, association_class, further_options = {})
+    html = render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+    if html.squish.present?
+      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html
     end
   end
 
