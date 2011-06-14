@@ -51,7 +51,7 @@ module ApplicationHelper
     if object.errors.any?
       content_tag :ul, :class => "flash_error error_list" do
         object.errors.full_messages.each do |msg|
-          concat content_tag :li, msg
+          concat(content_tag(:li, msg))
         end
       end
     end
