@@ -1,5 +1,5 @@
 <% unless note.new_record? %>
-  <%= tag("div", { :class => "translation", :lang => note.language || nil }, true) %>
+  <%= content_tag("div", { :class => "translation", :lang => note.language || nil }, true) do %>
     <div class="note_language <%= note.language %>">
       (<%= note.language || '-' %>)
     </div>
@@ -10,5 +10,5 @@
         <dd><%= linkify annotation.value %></dd>
       <% end %>
     </dl>
-  </div>
+  <% end %>
 <% end %>
