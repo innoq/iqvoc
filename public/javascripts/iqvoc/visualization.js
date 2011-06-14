@@ -136,7 +136,8 @@ generateGraph = function(container, options) {
 		onCreateLabel: function(domEl, node) {
 			var name = htmlEncode(node.name);
 			if(node.data.nodes) { // special-casing placeholder
-				$(domEl).html(node.name);
+				$(domEl).html(node.name).
+					attr("title", node.data.nodes.length + " nodes hidden"); // TODO: i18n
 			} else if(node.data.etype === "label") {
 				$(domEl).html(name);
 			} else { // concept node (link with abbreviated name)
