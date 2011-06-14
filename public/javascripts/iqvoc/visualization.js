@@ -124,7 +124,7 @@ generateGraph = function(container, options) {
 		Node: {
 			overridable: true,
 			dim: 5,
-			color: "#F00"
+			color: "#B0EAA4"
 		},
 		Edge: {
 			overridable: true,
