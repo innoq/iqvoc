@@ -25,6 +25,7 @@ de:
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
+     back: Zurück
      welcome: "Hallo %{user_name}"
      pagination:
        previous: "Zurück"
@@ -247,7 +248,6 @@ de:
        logout_required: "Sie müssen abgemeldet sein, um diese Seite aufzurufen."
      search_results:
        insufficient_data: "Bitte geben Sie mehr Suchkriterien an."
-       query_invalid: "Ihre Suchanfrage ist ungültig."
      users:
        successfully_created: "Benutzer wurde erfolgreich erstellt."
        successfully_updated: "Der Benutzer wurde erfolgreich geändert."
@@ -301,7 +301,7 @@ de:
        label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
-     virtuoso_syncs:
+     triple_store_syncs:
        success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
      collections:
        save:

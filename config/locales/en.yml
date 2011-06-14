@@ -25,6 +25,7 @@ en:
      pref_label: "Preferred label"
      edit: "Edit"
      value: "Value"
+     back: Back
      welcome: "Hello %{user_name}"
      pagination:
        previous: "Back"
@@ -255,7 +256,6 @@ en:
        logout_required: "You must be logged out to access this page."
      search_results:
        insufficient_data: "You entered insufficient search data"
-       query_invalid: "Your search query is invalid"
      users:
        successfully_created: "User has been successfully created."
        successfully_updated: "User has been successfully updated."
@@ -307,7 +307,7 @@ en:
        label_error: "Invalid label assignments:\n%s"
      narrowers:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     virtuoso_syncs:
+     triple_store_syncs:
        success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
      collections:
        save:

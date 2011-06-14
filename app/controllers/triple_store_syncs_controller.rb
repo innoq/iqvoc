@@ -14,34 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class VirtuosoSyncsController < ApplicationController
+class TripleStoreSyncsController < ApplicationController
 
-  before_filter :check_authorization
+  # TODO: This must definitely be rebuild!
 
   def new
+    authorize! :use, :dashboard # TODO
   end
 
   def create
+    authorize! :use, :dashboard # TODO
+
     time = Time.now
 
     rdf_helper = Object.new.extend(RdfHelper)
 
-    Concept::Base.published.unsynced.all.each do |concept|
+    Concept::Base.published.unsynced.find_each do |concept|
       concept.update_attribute(:rdf_updated_at, time) if RdfStore.mass_import(concept.rdf_uri, rdf_helper.render_ttl_for_concept(concept))
     end
 
-    Label::Base.published.unsynced.all.each do |label|
+    Label::Base.published.unsynced.find_each do |label|
       label.update_attribute(:rdf_updated_at, time) if RdfStore.mass_import(label.rdf_uri, rdf_helper.render_ttl_for_label(label))
     end
 
-    flash.now[:notice] = I18n.t("txt.controllers.virtuoso_syncs.success")
+    flash.now[:notice] = I18n.t("txt.controllers.triple_store_syncs.success")
 
     render :action => "new"
-  end
-
-  private
-  def check_authorization
-    authorize! :use, :dashboard
   end
 
 end

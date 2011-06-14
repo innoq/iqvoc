@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :concepts
     resources :collections
 
-    resources :virtuoso_syncs, :only => [:new, :create]
+    resources :triple_store_syncs, :only => [:new, :create]
 
     match "concepts/versions/:origin/branch(.:format)"      => "concepts/versions#branch",    :as => "concept_versions_branch"
     match "concepts/versions/:origin/merge(.:format)"       => "concepts/versions#merge",     :as => "concept_versions_merge"
