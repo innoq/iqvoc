@@ -31,7 +31,7 @@ var VIZ; // XXX: singleton; hacky - there should be a more elegant way!?
 
 var spawn, redraw, onFilter, generateGraph, transformData, generateConceptNode,
 	generateLabelNode, generateDummyConcepts, groupChildNodes,
-	determineTransparency;
+	determineTransparency, htmlEncode;
 
 var init = function(container, callback) { // TODO: should be a class so multiple instances can be created (should also avoid module-level globals)
 	CONCEPT_URI = $("head link[type='application/json']").attr("href"); // XXX: should be passed in via argument? (encapsulation)
@@ -134,15 +134,16 @@ generateGraph = function(container, options) {
 
 		// add text and attach event handlers to labels
 		onCreateLabel: function(domEl, node) {
+			var name = htmlEncode(node.name);
 			if(node.data.etype === "label") {
-				$(domEl).html(node.name);
+				$(domEl).html(name);
 			} else { // concept node (link with abbreviated name)
 				var cue = "/concepts/";
 				var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
-				var caption = node.name.length <= 5 ? node.name :
-						node.name.substr(0, 5) + "&hellip;";
+				var caption = node.name.length <= 5 ? name :
+						htmlEncode(node.name.substr(0, 5)) + "&hellip;";
 				$("<a />").attr("href", host + cue + node.id).
-					attr("title", node.name).html(caption).
+					attr("title", name).html(caption).
 					appendTo(domEl);
 			}
 		},
@@ -270,6 +271,12 @@ $jit.Graph.Node.prototype.setPos = function(value, type) {
 		value.rho = value.rho - (LEVELDISTANCE * 0.5);
 	}
 	return _setPos.apply(this, arguments);
+};
+
+// convert &, <, > and " to HTML entities (adapted from TiddlyWiki)
+htmlEncode = function(str) {
+	return str.replace(/&/mg, "&amp;").replace(/</mg, "&lt;").
+			replace(/>/mg, "&gt;").replace(/\"/mg, "&quot;");
 };
 
 return {
