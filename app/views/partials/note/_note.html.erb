@@ -3,11 +3,11 @@
     <div class="note_language <%= note.language %>">
       (<%= note.language || '-' %>)
     </div>
-    <span><%= linkify(note.value) %></span>
+    <span><%= auto_link(note.value, :html => { :target => '_blank' }) %></span>
     <dl class="note_annotations">
       <% note.annotations.each do |annotation| %>
         <dt><%= annotation.identifier %></dt>
-        <dd><%= linkify annotation.value %></dd>
+        <dd><%= auto_link(annotation.value, :html => { :target => '_blank' }) %></dd>
       <% end %>
     </dl>
   <% end %>

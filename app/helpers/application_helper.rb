@@ -47,17 +47,6 @@ module ApplicationHelper
     end
   end
 
-  def match_url(value)
-    case value
-    when /^\d+$/
-      link_to("gemet:#{value}", "http://www.eionet.europa.eu/gemet/concept/#{value}")
-    when /(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?)/ix
-      link_to(value, value)
-    else
-      value
-    end
-  end
-
   def error_messages_for(object)
     if object.errors.any?
       content_tag :ul, :class => "flash_error error_list" do
