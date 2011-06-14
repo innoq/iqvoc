@@ -386,7 +386,6 @@ class Concept::Base < ActiveRecord::Base
   def associated_objects_in_editing_mode
     {
       :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
-      # TODO: move to mixin      :labelings         => Labeling::SKOSXL::Base.by_concept(self).target_in_edit_mode
     }
   end
 

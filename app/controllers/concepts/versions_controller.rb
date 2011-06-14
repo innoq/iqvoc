@@ -58,7 +58,7 @@ class Concepts::VersionsController < ApplicationController
       new_version.save!
     end
     flash[:notice] = t("txt.controllers.versioning.branched")
-    redirect_to edit_concept_path(:published => 0, :id => new_version, :check_associations_in_editing_mode => true)
+    redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
   def lock

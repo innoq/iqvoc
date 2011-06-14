@@ -120,9 +120,7 @@ class ConceptsController < ApplicationController
 
     authorize! :update, @concept
 
-    if params[:check_associations_in_editing_mode]
-      @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
-    end
+    @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
 
     if params[:full_consistency_check]
       @concept.valid_with_full_validation?
