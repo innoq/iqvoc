@@ -317,6 +317,7 @@ de:
        version_error: "Es existieren schon zwei Versionen dieses Labels"
        value_error: "Die Vorlageform muss ausgefüllt sein!"
      concept:
+       origin_error: "Origin ungültig!"
        version_error: "Es existieren schon zwei Versionen dieses Konzepts"
        no_pref_label_error: "Es muss mindestens ein bevorzugtes Label angegeben werden."
        main_pref_label_language_missing_error: "Es muss mindestens ein bevorzugtes Label in der Hauptsprache des Thesaurus existieren."

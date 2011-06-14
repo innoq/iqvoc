@@ -387,7 +387,7 @@ class Concept::Base < ActiveRecord::Base
   def ensure_origin_format
     if @full_validation
       if not /^_\d{8}$/.match(origin)
-        errors.add :base, I18n.t("txt.models.concept.version_error") # TODO: proper message
+        errors.add :base, I18n.t("txt.models.concept.origin_error")
       end
     end
   end
