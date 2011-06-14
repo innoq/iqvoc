@@ -212,7 +212,7 @@ generateConceptNode = function(concept) {
 	// combine labels and relations in alternating order
 	var children = $.map(labels, function(label, i) {
 		return relations.length ? [label, relations.pop()] : label;
-	});
+	}).concat(relations);
 	return {
 		id: concept.origin,
 		name: labels.length ? labels[0].name : "", // XXX: should use actual pref label
