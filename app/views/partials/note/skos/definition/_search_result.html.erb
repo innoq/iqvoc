@@ -5,4 +5,4 @@
     <%= link_to result.owner.value, label_path(:id => result.owner) %><br>
   <% end %>
 </dt>
-<dd><%= highlight_query(excerpt(result.value, params[:query]), params[:query], @multi_query) %></dd>
+<dd><%= highlight_query(excerpt(result.value, params[:query]), params[:query]) %></dd>

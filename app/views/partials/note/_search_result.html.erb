@@ -1,6 +1,6 @@
 <dt>
   <% if result.owner.is_a?(Concept::Base) %>
-    <%= link_to highlight_query("#{result.owner.pref_label.to_s} (#{result.owner.origin})", params[:query], @multi_query), concept_path(:id => result.owner) %><br>
+    <%= link_to highlight_query("#{result.owner.pref_label.to_s} (#{result.owner.origin})", params[:query]), concept_path(:id => result.owner) %><br>
   <% elsif result.owner.is_a?(Label::Base) %>
     <%= link_to highlight_query(result.owner.value, params[:query]), label_path(:id => result.owner) %><br>
   <% end %>

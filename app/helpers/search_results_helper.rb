@@ -21,13 +21,12 @@ module SearchResultsHelper
       (!params[:query] && I18n.locale.to_s == lang.to_s)
   end
 
-  def highlight_query(text, query, multi_query)
-    if multi_query
-      raw text.to_s
-    else
+  def highlight_query(text, query)
+    query.split(/\n/).each do |q|
       # call to ActiveSupport's highlight
-      raw highlight(text.to_s, query)
+      text = highlight(text.to_s, q.strip)
     end
+    text
   end
   
 end

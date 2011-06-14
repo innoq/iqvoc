@@ -1,6 +1,6 @@
 <%- if concept = result.owner -%>
   <dt>
-    <%= link_to highlight_query(result.target.value, params[:query], @multi_query), concept_path(:id => concept) %>
+    <%= link_to highlight_query(result.target.value, params[:query]), concept_path(:id => concept) %>
     <%- if concept.additional_info.present? -%>
       (<%= concept.additional_info %>)
     <%- end -%>
