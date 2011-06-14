@@ -139,8 +139,10 @@ generateGraph = function(container, options) {
 			} else { // concept node (link with abbreviated name)
 				var cue = "/concepts/";
 				var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
-				var caption = node.name.substr(0, 5) + "&hellip;";
-				$("<a />").attr("href", host + cue + node.id).html(caption).
+				var caption = node.name.length <= 5 ? node.name :
+						node.name.substr(0, 5) + "&hellip;";
+				$("<a />").attr("href", host + cue + node.id).
+					attr("title", node.name).html(caption).
 					appendTo(domEl);
 			}
 		},
