@@ -8,7 +8,7 @@
 
 <%= content_for :sub_navigation do %>
   <ul>
-    <li><%= back_link users_path %></li>
+    <li><%= link_to t('txt.common.back'), users_path, :class => 'back' %> | </li>
     <li><%= link_to t('txt.views.users.new_link'), new_user_path%></li>
   </ul>
 <% end %>

@@ -41,6 +41,11 @@ a.unpublished {
   color: #808110;
 }
 
+a.back {
+  background: url('images/back.png') 0 50% no-repeat;
+  padding-left: 20px;
+}
+
 ul.letter_selector { width: 100%; overflow: auto; margin: 0 0 10px; padding: 0; list-style-type: none; }
 .letter_selector li { float: left; margin: 0 0.25em 5px 0;  }
 .letter_selector li.special { float: right; } /* XXX: this is less than ideal */
@@ -204,7 +209,6 @@ ul#navi_main li {
 #navi_sub ul li {
   list-style-type: none;
   display: inline;
-  margin-right: 1em;
   padding: 0;
 }
 

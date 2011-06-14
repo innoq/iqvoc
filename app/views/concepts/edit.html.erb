@@ -41,7 +41,7 @@
 <%= content_for :sub_navigation do %>
   <ul>
     <li>
-      <%= back_link concept_path(:published => 0, :id => @concept), t('txt.views.navigation.back_to_preview') %>
+      <%= link_to t('txt.views.navigation.back_to_preview'), concept_path(:published => 0, :id => @concept), :class => 'back' %>
     </li>
   </ul>
 <% end %>

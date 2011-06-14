@@ -45,10 +45,11 @@ module Iqvoc
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
   self.rdf_namespaces = {
-    :rdf        => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    :rdfs       => "http://www.w3.org/2000/01/rdf-schema#",
-    :owl        => "http://www.w3.org/2002/07/owl#",
-    :skos       => "http://www.w3.org/2004/02/skos/core#",
+    :rdf  => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    :rdfs => "http://www.w3.org/2000/01/rdf-schema#",
+    :owl  => "http://www.w3.org/2002/07/owl#",
+    :skos => "http://www.w3.org/2004/02/skos/core#",
+    :dct  => "http://purl.org/dc/terms/"
   }
 
   # The class to use for automatic generation of change notes on every save
