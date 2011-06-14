@@ -135,7 +135,9 @@ generateGraph = function(container, options) {
 		// add text and attach event handlers to labels
 		onCreateLabel: function(domEl, node) {
 			var name = htmlEncode(node.name);
-			if(node.data.etype === "label") {
+			if(node.data.nodes) { // special-casing placeholder
+				$(domEl).html(node.name);
+			} else if(node.data.etype === "label") {
 				$(domEl).html(name);
 			} else { // concept node (link with abbreviated name)
 				var cue = "/concepts/";
@@ -247,7 +249,7 @@ groupChildNodes = function(nodes, etype) { // TODO: rename
 		var placeholder = {
 			id: Math.random(),
 			name: "&hellip;",
-			data: { nodes: excess } // XXX: currently unused
+			data: { nodes: excess } // XXX: property name ambiguous?
 		};
 		if(etype) {
 			placeholder.data.etype = etype;
