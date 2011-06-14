@@ -314,7 +314,9 @@ class Concept::Base < ActiveRecord::Base
     end
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
-      @cached_pref_labels[lang] = pref_labels.by_language(Iqvoc::Concept.pref_labeling_languages.first.to_s).first
+      @cached_pref_labels[lang] = pref_labels.select{ |l|
+          l.language.to_s == Iqvoc::Concept.pref_labeling_languages.first.to_s
+      }.first
     end
     @cached_pref_labels[lang]
   end
