@@ -223,7 +223,7 @@ generateConceptNode = function(concept) {
 // generate node from iQvoc label representation
 generateLabelNode = function(label) {
 	return {
-		id: label.origin,
+		id: label.origin || Math.random(),
 		name: label.value,
 		data: { etype: "label" }
 		// TODO: relations to other concepts (XL only)
