@@ -18,14 +18,19 @@ module RdfHelper
 
   def render_concept(document, concept)
 
-    @collections ||= Iqvoc::Collection.base_class.select("id, origin").all.each_with_object({}) do |c, hash|
+    # You can not eager load polymorpihc associations. That's why we're loading
+    # the collections _one_ time and remember them for further _render_concept_
+    # calls in the future.
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").all.each_with_object({}) do |c, hash|
       hash[c.id] = c.origin
     end
 
     document << concept.build_rdf_subject(document, controller) do |c|
 
       concept.collection_members.each do |collection_member|
-        c.Schema::memberOf(IqRdf::Coll::build_uri(@collections[collection_member.collection_id])) if @collections[collection_member.collection_id]
+        if @rdf_helper_cached_collections[collection_member.collection_id]
+          c.Schema::memberOf(IqRdf::Coll::build_uri(@rdf_helper_cached_collections[collection_member.collection_id]))
+        end
       end
 
       c.Schema::expires(concept.expired_at) if concept.expired_at
