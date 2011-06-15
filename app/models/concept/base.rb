@@ -85,7 +85,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   after_save do |concept|
-    # Generate a origin if none was given jet
+    # Generate a origin if none was given yet
     if concept.origin.blank?
       raise "Concept::Base#after_save (generate origin): Unable to set the origin by id!" unless concept.id
       concept.reload
