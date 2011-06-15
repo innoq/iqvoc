@@ -22,7 +22,7 @@ class Labeling::Base < ActiveRecord::Base
   self.rdf_namespace = nil
   self.rdf_predicate = nil
 
-  # ********** Relations
+  # ********** Associations
 
   belongs_to :owner,  :class_name => "Concept::Base"
   belongs_to :target, :class_name => "Label::Base"
@@ -53,8 +53,10 @@ class Labeling::Base < ActiveRecord::Base
     includes(:target).merge(Label::Base.by_language(lang.to_s))
   }
 
+  # ********** Methods
+
   # if `singular` is true, only a single occurrence is allowed per instance
-  # FIXME: There should be a validation checking this
+  # FIXME: There must be a validation checking this
   # Might there be more than one labeling of this type and language per concept?
   def self.singular?
     false

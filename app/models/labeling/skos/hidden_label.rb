@@ -16,9 +16,7 @@
 
 class Labeling::SKOS::HiddenLabel < Labeling::SKOS::Base
 
-  def build_rdf(document, subject)
-    subject.Skos.hiddenLabel(target.to_s, :lang => target.language)
-  end
+  self.rdf_predicate = 'hiddenLabel'
 
   def self.view_section(obj)
     "hidden"
