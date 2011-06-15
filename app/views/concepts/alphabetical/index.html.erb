@@ -14,4 +14,4 @@
   <%= render :partial => "pref_labeling", :collection => @pref_labelings %>
 </ul>
 
-<%= will_paginate @pref_labelings, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>
+<%= paginate @pref_labelings %>

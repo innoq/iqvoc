@@ -19,6 +19,13 @@ en:
     de: German
     en: English
     none: Sci.
+  views:
+    pagination:
+      first: "&laquo; First"
+      previous: "&lt; Back"
+      next: "Next &gt;"
+      last: "Last &raquo;"
+      truncate: "&hellip;"
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
@@ -27,9 +34,6 @@ en:
      value: "Value"
      back: Back
      welcome: "Hello %{user_name}"
-     pagination:
-       previous: "Back"
-       next: "Next"
      save: "Save"
      reset: "Reset"
      language: "Language"
