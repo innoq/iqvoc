@@ -22,9 +22,4 @@ require 'iqvoc/deep_cloning'
 require 'iqvoc/rdf_helper'
 require 'iqvoc/ability'
 
-# instance-specific settings
-if Rails.env != "test"
-  require File.expand_path('config/instance_settings')
-end
-
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
