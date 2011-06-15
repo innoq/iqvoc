@@ -281,6 +281,13 @@ class Concept::Base < ActiveRecord::Base
 
   def labelings_by_text=(hash)
     @labelings_by_text = hash
+
+     # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
+    @labelings_by_text.each do |relation_name, array_or_hash|
+      @labelings_by_text[relation_name] = {nil => array_or_hash.first} if array_or_hash.is_a?(Array)
+    end
+
+    @labelings_by_text
   end
 
   def labelings_by_text(relation_name, language)
