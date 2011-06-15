@@ -16,6 +16,8 @@
 
 class Collection::Base < Concept::Base
 
+  #*********** Associations
+
   has_many Note::SKOS::Definition.name.to_relation_name,
     :class_name => 'Note::SKOS::Definition',
     :as => :owner,
@@ -42,16 +44,15 @@ class Collection::Base < Concept::Base
   has_many :subcollections,
     :through => :collection_members
 
-  # XXX: fails after removing collection_labels!?
-  #accepts_nested_attributes_for :note_skos_definitions,
-  #  :allow_destroy => true,
-  #  :reject_if => Proc.new { |attrs| attrs[:value].blank? }
+  #********** Hooks
 
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   before_validation(:on => :create) do
     self.origin ||= "_#{(self.class.maximum(:id) || 0) + 1}"
   end
+
+  #********** Scopes
 
   scope :by_origin, lambda { |origin|
     where(:origin => origin)
@@ -61,20 +62,20 @@ class Collection::Base < Concept::Base
     includes(:labels).merge(Label::Base.by_query_value(val))
   }
 
+  #********** Validations
+
   validates_uniqueness_of :origin
   validates :origin, :presence => true, :length => { :minimum => 2 }
   validate :circular_subcollections
 
-  def self.note_class_names
-    ['Note::SKOS::Definition']
-  end
-
-  def self.note_classes
-    note_class_names.map(&:constantize)
-  end
+  #********** Methods
 
   def to_param
-    self.origin
+    origin
+  end
+
+  def label
+    pref_label
   end
 
   def build_rdf_subject(document, controller, &block)
@@ -83,7 +84,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_concept_origins=(origins)
     @member_concept_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_concept_origins
@@ -91,22 +92,32 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concepts
-    Concept::Base.editor_selectable.where(:origin => inline_member_concept_origins)
+    if @member_concept_origins
+      Concept::Base.editor_selectable.where(:origin => @member_concept_origins)
+    else
+      concepts.select{|c| c.editor_selectable?}
+    end
   end
 
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_collection_origins
     @member_collection_origins || collection_members.
-        map { |m| m.subcollection.origin }.uniq
+      map { |m| m.subcollection.origin }.uniq
   end
 
   def inline_member_collections
-    Collection::Base.where(:origin => inline_member_collection_origins)
+    if @member_collection_origins
+      Collection::Base.where(:origin => @member_collection_origins)
+    else
+      subcollections
+    end
   end
+
+  #********** Hook methods
 
   def regenerate_concept_members
     return if @member_concept_origins.nil? # There is nothing to do
@@ -128,20 +139,16 @@ class Collection::Base < Concept::Base
     end
   end
 
-  def label
-    pref_label
-  end
+  #******** Validation methods
 
-  # def notes_for_class(note_class)
-  #   note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
-  #   notes.select{ |note| note.class.name == note_class }
-  # end
-
+  # This only prevent circles of length 2.
+  #   # TODO: This shuold be a real circle detector (but still performant) or be
+  # removed (seems to me like the better idea).
   def circular_subcollections
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(self)
         errors.add(:base,
-            I18n.t("txt.controllers.collections.circular_error") % subcollection.pref_label)
+          I18n.t("txt.controllers.collections.circular_error") % subcollection.pref_label)
       end
     end
   end

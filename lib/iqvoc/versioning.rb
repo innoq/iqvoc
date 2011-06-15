@@ -93,6 +93,12 @@ module Iqvoc
         read_attribute(:published_at).present?
       end
 
+      # Editor selectable if published or no published version exists (before
+      # first publication)
+      def editor_selectable?
+        published? || read_attribute(:published_version_id).blank?
+      end
+
       def lock_by_user(user_id)
         write_attribute(:locked_by, user_id)
       end
