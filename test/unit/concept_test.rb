@@ -42,15 +42,6 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test "should generate origin" do
-    concept = Factory.build(:concept)
-    highest_concept = Concept::Base.select(:origin).order("origin DESC").first
-    concept.generate_origin
-    concept.save!
-    assert concept.origin =~ /^_([0-9]+)$/
-    assert $1.to_i > highest_concept.origin.to_i
-  end
-
   test "concepts without pref_labels should be saveable but not publishable" do
     concept =  Factory.create(:concept, :pref_labelings => [])
     assert_equal [], concept.pref_labels

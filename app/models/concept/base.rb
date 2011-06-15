@@ -29,7 +29,7 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Validations
 
-  validates :origin, :presence => true
+  validates :origin, :presence => true, :on => :update
 
   validate :ensure_origin_format, :on => :create
   validate :ensure_maximum_two_versions_of_a_concept,
@@ -84,6 +84,16 @@ class Concept::Base < ActiveRecord::Base
     end
   end
 
+  after_save do |concept|
+    # Generate a origin if none was given jet
+    if concept.origin.blank?
+      raise "Concept::Base#after_save (generate origin): Unable to set the origin by id!" unless concept.id
+      concept.reload
+      concept.origin = sprintf("_%08d", concept.id)
+      concept.save! # On exception the complete save transaction will be rolled back
+    end
+  end
+
   # ********** "Static"/unconfigureable relations
 
   @nested_relations = [] # Will be marked as nested attributes later
@@ -112,7 +122,7 @@ class Concept::Base < ActiveRecord::Base
   # *** Concept2Concept relations
 
   # Broader
-  # FIXME: this is not needed anymore.
+  # Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :broader_relations,
@@ -121,7 +131,7 @@ class Concept::Base < ActiveRecord::Base
     :extend => Concept::Relation::ReverseRelationExtension
 
   # Narrower
-  # FIXME: this is not needed anymore.
+  # Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :narrower_relations,
@@ -145,26 +155,11 @@ class Concept::Base < ActiveRecord::Base
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
     :class_name => Iqvoc::Concept.pref_labeling_class_name
-  # BEWARE: bla.pref_labels wont work, because a Rails bug will kill the
-  # nessacary type="..." condition! FIXME
+
   has_many :pref_labels,
     :through => :pref_labelings,
     :source => :target
 
-
-  # {
-  #   "Labeling::SKOSXL::PrefLabel" => {
-  #     :de => [
-  #       [0] "Aal"
-  #     ]
-  #     },
-  #     "Labeling::SKOSXL::AltLabel" => {
-  #       :de => [
-  #         [0] "EuropaeischerFlussaal",
-  #         [1] "Flussaal"
-  #       ]
-  #     }
-  #   }
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
@@ -179,6 +174,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # *** Matches (pointing to an other thesaurus)
+
   Iqvoc::Concept.match_class_names.each do |match_class_name|
     has_many match_class_name.to_relation_name,
       :class_name  => match_class_name,
@@ -213,6 +209,8 @@ class Concept::Base < ActiveRecord::Base
     @nested_relations << relation_name
   end
 
+  # *** Further association classes (could be ranks or stuff like that)
+
   Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
     has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
     include_to_deep_cloning(association_class.deep_cloning_relations)
@@ -227,19 +225,9 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  #scope :tops,
-  #  :conditions => "NOT EXISTS (SELECT DISTINCT sr.owner_id FROM  concept_relations sr WHERE sr.type = 'Broader' AND sr.owner_id = concepts.id) AND labelings.type = 'PrefLabeling'",
-  #  :include => :pref_labels,
-  #  :order => 'LOWER(labels.value)',
-  #  :group => 'concepts.id, concepts.type, concepts.created_at, concepts.updated_at, concepts.origin, concepts.status, concepts.classified, concepts.country_code, concepts.rev, concepts.published_at, concepts.locked_by, concepts.expired_at, concepts.follow_up, labels.id, labels.created_at, labels.updated_at, labels.language, labels.value, labels.base_form, labels.inflectional_code, labels.part_of_speech, labels.status, labels.origin, labels.rev, labels.published_at, labels.locked_by, labels.expired_at, labels.follow_up, labels.endings'
   scope :tops, includes(:broader_relations).
     where(:concept_relations => {:id => nil})
 
-  # scope :broader_tops,
-  #   :conditions => "NOT EXISTS (SELECT DISTINCT sr.target_id FROM concept_relations sr WHERE sr.type = 'Narrower' AND sr.owner_id = concepts.id GROUP BY sr.target_id) AND labelings.type = 'PrefLabeling'",
-  #   :include => :pref_labels,
-  #   :order => 'LOWER(labels.value)',
-  #   :group => 'concepts.id'
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
     order("LOWER(#{Label::Base.table_name}.value)")
@@ -355,7 +343,8 @@ class Concept::Base < ActiveRecord::Base
     notes.select{ |note| note.class.name == note_class }
   end
 
-  # This shows up to the left of a concept link if it doesn't return nil
+  # This shows up (in brackets) to the right of a concept link if it doesn't
+  # return nil
   def additional_info
     nil
   end
@@ -384,12 +373,6 @@ class Concept::Base < ActiveRecord::Base
   def invalid_with_full_validation?
     @full_validation = true
     invalid?
-  end
-
-  def generate_origin
-    origin = Concept::Base.maximum(:origin)
-    value = origin.blank? ? 1 : origin.gsub(/^_/, "").to_i + 1
-    write_attribute(:origin, sprintf("_%08d", value))
   end
 
   def associated_objects_in_editing_mode

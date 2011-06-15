@@ -100,14 +100,9 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
-    if @concept.generate_origin
-      if @concept.save
-        flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
-        redirect_to concept_path(:published => 0, :id => @concept.origin)
-      else
-        flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
-        render :new
-      end
+    if @concept.save
+      flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
+      redirect_to concept_path(:published => 0, :id => @concept.origin)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
       render :new
