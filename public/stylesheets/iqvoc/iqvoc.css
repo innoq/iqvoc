@@ -27,14 +27,18 @@ ul#navi_main li a {
   font-weight: bold;
 }
 
+a,
+a:hover,
+ul.treeview .hover {
+  color: #308110;
+}
+
 a {
   text-decoration: none;
-  color: #308110;
 }
 
 a:hover {
   text-decoration: underline;
-  color: #308110;
 }
 
 a.unpublished {
