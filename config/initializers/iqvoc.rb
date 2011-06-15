@@ -38,6 +38,9 @@ if Rails.env != "test"
   #Iqvoc.additional_js_files  += ["vendor/myScripts.js"]
   #Iqvoc.additional_css_files += ["vendor/myStyles.css"]
 
+  # interface languages (cf. config/locales)
+  # available_languages = [ :en, :de ]
+
   # label languages (and classes)
   #Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
   #Iqvoc::Concept.further_labeling_class_names = {
