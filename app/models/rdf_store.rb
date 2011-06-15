@@ -14,7 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class RdfStore # FIXME: This must be modularized and refactored (the thread should be replaced by a direct rack call)
+class RdfStore
+  # TODO This must be modularized and refactored and the thread should be
+  # replaced by a direct rack call or usage of helpers
+  #
+  # * Modulization: The RdfStore should be more abstract. A special adapter
+  #   (e.g. for virtuoso or sesame) should be implemented in a extending
+  #   class.
+  # * No threads: throw out the JRuby stuff and replace it with:
+  #     * Rack calls to the particluar action or
+  #     * With the help of the RdfHelper#render_concept method
 
   include Java rescue nil
   include java.lang.Runnable rescue nil
