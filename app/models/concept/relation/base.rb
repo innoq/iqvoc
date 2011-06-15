@@ -14,18 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# ATTENTION:
-# This class (and the inheriting subclasses) should not reference the
-# Concept::Base class directly at load time!
-# This means that Concept::Base may not be loaded when this class is loaded!
-# So use Concept::Base ONLY in methods or procs.
-#
-# The reason for this lies in the fact that Concept::Base calls the
-# Concept::Relation::SKOS::Broader::Base.narrower_class method to create all
-# concept_relation relations. This means Concept::Base triggers Rails to load
-# the Concept::Relation::* classes. If this would trigger Rails to load
-# Concept::Base we would have a loop == a problem.
 class Concept::Relation::Base < ActiveRecord::Base
+
+  # ATTENTION:
+  # This class (and the inheriting subclasses) should not reference the
+  # Concept::Base class directly at load time!
+  # This means that Concept::Base may not be loaded when this class is loaded!
+  # So use Concept::Base ONLY in methods or procs.
+  #
+  # The reason for this lies in the fact that Concept::Base calls the
+  # Concept::Relation::SKOS::Broader::Base.narrower_class method to create all
+  # concept_relation relations. This means Concept::Base triggers Rails to load
+  # the Concept::Relation::* classes. If this would trigger Rails to load
+  # Concept::Base we would have a loop == a problem.
 
   set_table_name 'concept_relations'
 
@@ -33,8 +34,12 @@ class Concept::Relation::Base < ActiveRecord::Base
   self.rdf_namespace = nil
   self.rdf_predicate = nil
 
+  # ********* Associations
+
   belongs_to :owner,  :class_name => "Concept::Base"
   belongs_to :target, :class_name => "Concept::Base"
+
+  # ********* Scopes
 
   scope :by_owner, lambda { |owner_id|
     where(:owner_id => owner_id)
@@ -59,6 +64,8 @@ class Concept::Relation::Base < ActiveRecord::Base
   scope :target_in_edit_mode, lambda { # Lambda because Concept::Base.in_edit_mode is currently not known + we don't want to call it at load time!
     joins(:target).merge(Concept::Base.in_edit_mode)
   }
+
+  # ********* Methods
 
   def self.reverse_relation_class
     self
