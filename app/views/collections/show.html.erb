@@ -3,20 +3,18 @@
   <link href="<%= collection_url(@collection.origin, :format => :rdf, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
 <% end -%>
 
-<h2><%= @collection.class.model_name.human %>: <%= link_to(@collection.origin, collection_url(:id => @collection)) %></h2>
+<h2><%= @collection.class.model_name.human %>: <%= @collection.pref_label.to_s %></h2>
 <div id="abstract_uri">
   <%= collection_url(@collection.origin, :format => nil, :lang => nil) %>
   (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
 </div>
 
 <% if can?(:manage, @collection) %>
-<div class="editing_versioning_toolbar">
-  <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => "button" %>
-  <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
-</div>
+  <div class="editing_versioning_toolbar ui-corner-all ui-widget ui-widget-content">
+    <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => "button" %>
+    <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
+  </div>
 <% end %>
-
-<h3><%= t("txt.common.pref_label") %>: <%= @collection.pref_label.to_s %></h3>
 
 <%-
 # alternative labels
