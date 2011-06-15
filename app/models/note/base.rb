@@ -26,7 +26,7 @@ class Note::Base < ActiveRecord::Base
 
   # FIXME: None?? What about language and value?
 
-  # ********** Relations
+  # ********** Associations
 
   belongs_to :owner, :polymorphic => true
 
@@ -53,6 +53,7 @@ class Note::Base < ActiveRecord::Base
   }
 
   scope :for_concepts, where(:owner_type => 'Concept::Base')
+
   scope :for_labels,   where(:owner_type => 'Label::Base')
 
   scope :by_owner, lambda { |owner|
@@ -72,27 +73,17 @@ class Note::Base < ActiveRecord::Base
     self.new(:value => h[:value], :language => h[:language])
   end
 
-  def self.from_rdf!(str)
-    self.from_rdf(str).save!
-  end
-
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
 
+  # TODO: This should move to umt because the "list" is more or less proprietary
   def from_annotation_list!(str)
     str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
       namespace, predicate = annotation.first.split(":", 2)
       annotations << Note::Annotated::Base.new(:value => annotation.second,
           :namespace => namespace, :predicate => predicate)
     end
-    self
-  end
-
-  def from_rdf(str)
-    h = Iqvoc::RdfHelper.split_literal(str)
-    self.value    = h[:value]
-    self.language = h[:language]
     self
   end
 
