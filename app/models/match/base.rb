@@ -22,7 +22,7 @@ class Match::Base < ActiveRecord::Base
   self.rdf_namespace = nil
   self.rdf_predicate = nil
 
-  # ********** Relations
+  # ********** Associations
 
   belongs_to :concept, :class_name => "Concept::Base", :foreign_key => 'concept_id'
 
