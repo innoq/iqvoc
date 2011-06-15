@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# OriginMapping provides the _merge_ method to replace special chars etc in
+# texts to generate a valid turtle compatible id (an url postfix).
 class OriginMapping
 
   def self.replace_umlauts(str)
@@ -42,13 +44,7 @@ class OriginMapping
   end
 
   def self.sanitize_for_base_form(str)
-    # str.gsub(/[,\/\.\[\]]/, '')
-    str.to_s.
-    gsub(",", "").
-    gsub("/", "").
-    gsub(".", "").
-    gsub("[", "").
-    gsub("]", "")
+    str.to_s.gsub(/[,\/\.\[\]]/, '')
   end
 
   def self.merge(str)
