@@ -22,9 +22,7 @@ class Label::Base < ActiveRecord::Base
 
   validates :value, :presence => {:message => I18n.t("txt.models.label.value_error")}
 
-  # FIXME: why is there no validation for the language? (existence and format)
-
-  # ********** Relations
+  # ********** Associations
 
   has_many :labelings, :foreign_key => 'target_id', :class_name => "Labeling::Base"
   has_many :concepts, :through => :labelings, :source => :owner
