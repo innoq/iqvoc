@@ -55,22 +55,13 @@ $.extend(LanguageSelector.prototype, {
 	}
 });
 
-// work around apparent capybara-webkit issue:
-// https://github.com/thoughtbot/capybara-webkit/issues/43
-var Storage = localStorage;
-if(Storage === null) {
-	Storage = {};
-	Storage.getItem = function() { return null; };
-	Storage.setItem = $.noop;
-}
-
 getSelection = function(namespace) {
-	var langs = Storage.getItem(namespace);
+	var langs = IQVOC.Storage.getItem(namespace);
 	return langs === null ? null : (langs ? langs.split(",") : []);
 };
 
 setSelection = function(langs, namespace) {
-	Storage.setItem(namespace, langs.join(","));
+	IQVOC.Storage.setItem(namespace, langs.join(","));
 	$(document).trigger(namespace, { langs: langs });
 };
 

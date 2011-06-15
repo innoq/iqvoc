@@ -37,6 +37,13 @@ class DashboardController < ApplicationController
       @items.sort! { |x,y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
+    current_page = params[:page] ? params[:page].to_i : 1
+    per_page = 40
+    @items = WillPaginate::Collection.create(current_page, per_page, @items.count) do |pager|
+      start = (current_page - 1) * per_page
+      pager.replace(@items[start, per_page])
+    end
+
   end
 
 end

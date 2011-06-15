@@ -1,4 +1,4 @@
-/*jslint strict: true, unparam: true, browser: true */
+/*jslint strict: true, unparam: true, nomen: false, browser: true */
 /*global jQuery */
 
 var IQVOC = (function($) {
@@ -206,7 +206,17 @@ var createNote = function(ev) {
 	return false;
 };
 
+// work around apparent capybara-webkit issue:
+// https://github.com/thoughtbot/capybara-webkit/issues/43
+var Storage = localStorage;
+if(Storage === null) {
+	Storage = {};
+	Storage.getItem = function() { return null; };
+	Storage.setItem = $.noop;
+}
+
 return {
+	Storage: Storage,
 	dynamicAuth: dynamicAuth,
 	enhancedDropdown: enhancedDropdown,
 	EntitySelector: EntitySelector,
@@ -223,7 +233,7 @@ jQuery(document).ready(function($) {
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
 	if(IQVOC.visualization) {
-		IQVOC.visualization.init("infovis", function(container) {
+		IQVOC.visualization.init("infovis", function(container) { // XXX: belongs into visualization.js!?
 			var width = container.width();
 			var height = container.height();
 
@@ -243,12 +253,18 @@ jQuery(document).ready(function($) {
 				return $('<input type="button" class="button" />').val(item).
 					click(function(ev) {
 						toggleSize(i === 0);
+						IQVOC.Storage.setItem("visualization",
+								i === 0 ? "enlarged" : "");
 						btns.toggle();
 					}).
 					prependTo(container)[0];
 			});
 			btns = $(btns);
 			btns.eq(1).hide();
+
+			if(IQVOC.Storage.getItem("visualization") === "enlarged") {
+				btns.eq(0).click(); // XXX: hacky!?
+			}
 		});
 	}
 
