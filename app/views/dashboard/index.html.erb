@@ -43,3 +43,5 @@
     </tr>
   <% end -%>
 </table>
+
+<%= will_paginate @items, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>
