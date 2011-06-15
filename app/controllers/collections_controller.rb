@@ -42,6 +42,10 @@ class CollectionsController < ApplicationController
     raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
 
     authorize! :read, @collection
+
+    # When in single query mode, AR handles ALL includes to be loaded by that
+    # one query. We don't want that! So let's do it manually :-)
+    Iqvoc::Collection.base_class.send(:preload_associations, @collection, [:pref_labels, :subcollections, {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}])
   end
 
   def new
@@ -58,7 +62,7 @@ class CollectionsController < ApplicationController
 
     if @collection.save
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
-      redirect_to collection_path(@collection)
+      redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :new

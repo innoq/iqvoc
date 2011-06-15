@@ -25,7 +25,7 @@
           @collection.inline_member_concept_origins.join(Iqvoc::InlineDataHelper::Joiner),
           :class => "entity_select",
           :"data-query-url" => concepts_path(:format => :json),
-          :"data-entity-uri" => concept_path("{id}"),
+          :"data-entity-uri" => concept_path(:id => "{id}"),
           :"data-entities" => @collection.inline_member_concepts.
               map { |c| concept_widget_data(c) }.to_json %>
 </fieldset>
@@ -36,7 +36,7 @@
           @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::Joiner),
           :class => "entity_select",
           :"data-query-url" => collections_path(:format => :json),
-          :"data-entity-uri" => collection_path("{id}"),
+          :"data-entity-uri" => collection_path(:id => "{id}"),
           :"data-exclude" => @collection.origin,
           :"data-entities" => @collection.inline_member_collections.
               map { |c| collection_widget_data(c) }.to_json %>
