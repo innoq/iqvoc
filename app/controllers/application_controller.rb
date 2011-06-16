@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def default_url_options(options = nil)
-    { :format => :html, :lang => I18n.locale }.
+    { :format => params[:format], :lang => I18n.locale }.
       reject { |key, value| key == :lang and value.to_s.strip.blank? }. # Strip out the lang parameter if it's empty.
       merge(options || {})
   end
