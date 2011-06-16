@@ -19,9 +19,6 @@ require 'integration_test_helper'
 
 class AuthenticationTest < ActionDispatch::IntegrationTest
 
-  setup do
-  end
-
   test "sign in" do
     user
     visit dashboard_path(:lang => :de)
