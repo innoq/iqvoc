@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "iqvoc"
   s.version     = Iqvoc::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Robert Glaser", "Till Schulte-Coerne"]
+  s.authors     = ["Robert Glaser", "Till Schulte-Coerne", "Frederik Dohr"]
   s.email       = ["robert.glaser@innoq.com", "till.schulte-coerne@innoq.com"]
   s.homepage    = "http://innoq.com"
   s.summary     = "iQvoc"

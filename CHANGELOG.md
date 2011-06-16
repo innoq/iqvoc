@@ -1,3 +1,11 @@
+
+## CLEANUP_VERSION_NUMBER
+
+ * Optimized eager loading in tons of actions
+ * Switched from will_paginate to kaminari
+ * Automatic changeNotes now produce dct:creator statements (instead of umt:editor)
+ * Complete review of all controllers, models, helpers, tests and views
+
 ## 3.1.3 (2011-06-09)
 
 * New feature: now showing a visualization of concept relations on a concept page
