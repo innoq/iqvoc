@@ -151,12 +151,11 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   test "Pagination" do
     # create a large number of concepts
-    12.times { |i| # TODO: use factories
-      c = Iqvoc::Concept.base_class.create! :published_at => Time.now
-      l = Iqvoc::Concept.pref_labeling_class.label_class.
-          create!(:value => "sample_#{sprintf("_%04d", i + 1)}",
-              :language => :en, :published_at => Time.now)
-      Iqvoc::Concept.pref_labeling_class.create! :owner => c, :target => l
+    12.times { |i|
+      Factory.create(:concept,
+          :pref_labelings => [Factory(:pref_labeling,
+              :target => Factory(:pref_label, :language => :en,
+                  :value => "sample_#{sprintf("_%04d", i + 1)}"))])
     }
 
     visit search_path(:lang => 'en', :format => 'html')
