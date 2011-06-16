@@ -14,12 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'test_helper'
+require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class NoteTest < ActiveSupport::TestCase
-
-  def setup
-  end
 
   test "should parse turtle note annotations" do
     str = '[umt:source <aDisBMS>; umt:thsisn "00000001"; dct:date "2010-04-29"]'

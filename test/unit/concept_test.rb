@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'test_helper'
+require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
+
   def setup
     @current_concept = Factory.create(:concept)
   end
