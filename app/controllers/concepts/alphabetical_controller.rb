@@ -28,7 +28,7 @@ class Concepts::AlphabeticalController < ConceptsController
       order("LOWER(#{Label::Base.table_name}.value)").
       joins(:owner).
       where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
-      page(params[:page]).per(Iqvoc.pagination[:items_per_page])
+      page(params[:page])
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)

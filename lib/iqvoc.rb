@@ -36,11 +36,6 @@ module Iqvoc
 
   self.title = "iQvoc"
 
-  self.pagination = {
-    :items_per_page => 40,
-    :search_results_per_page => 50
-  }
-
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
     'Labeling::SKOS::PrefLabel',

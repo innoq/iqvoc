@@ -20,8 +20,8 @@ require 'integration_test_helper'
 class SearchTest < ActionDispatch::IntegrationTest
 
   setup do
-    @pagination_setting = Iqvoc.pagination[:search_results_per_page]
-    Iqvoc.pagination[:search_results_per_page] = 5
+    @pagination_setting = Kaminari.config.default_per_page
+    Kaminari.config.default_per_page = 5
 
     # create concepts with labels (avoiding factories due to side-effects)
     @concepts = [
@@ -42,7 +42,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   teardown do
-    Iqvoc.pagination[:search_results_per_page] = @pagination_setting
+    Kaminari.config.default_per_page = @pagination_setting
   end
 
   test "Searching" do

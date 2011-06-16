@@ -37,7 +37,7 @@ class DashboardController < ApplicationController
       @items.sort! { |x,y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
-    @items = Kaminari.paginate_array(@items).page(params[:page]).per(40)
+    @items = Kaminari.paginate_array(@items).page(params[:page])
   end
 
 end

@@ -31,8 +31,7 @@ class Concepts::UntranslatedController < ConceptsController
     if I18n.locale == Iqvoc::Concept.pref_labeling_languages.first # TODO: Should be 404!
       flash[:error] = I18n.t("txt.views.untranslated_concepts.unavailable")
     else
-      @labels = scope.order("LOWER(labels.value)").page(params[:page]).
-          per(Iqvoc.pagination[:items_per_page])
+      @labels = scope.order("LOWER(labels.value)").page(params[:page])
     end
   end
 
