@@ -57,20 +57,6 @@ de:
      pending: "Lade…"
      translation_missing_for: "keine Übersetzung für"
 
-   part_of_speech:
-     plural_form: "Pluralform"
-     adjective: "Adjektiv"
-     proper_name: "Eigenname"
-     numeral: "Zahlwort"
-     pronoun: "Pronomen, Artikel"
-     abbreviation: "Abkürzung"
-     verb: "Verb"
-     noun:
-       male: "Substantiv (der)"
-       female: "Substantiv (die)"
-       neuter: "Substantiv (das)"
-     name_authority: "Namensform"
-
    views:
      layouts:
        sections:
@@ -99,7 +85,6 @@ de:
        new: "Neues Label"
        template_form: "Vorlageform"
        language: "Sprache"
-       part_of_speech: "Wortart"
        base_form: "Ansetzungsform"
        inflectional_code: "Endungscode"
        inflectionals: "Schreibweisen"

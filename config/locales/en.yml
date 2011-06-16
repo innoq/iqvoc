@@ -57,20 +57,6 @@ en:
      pending: "Loading…"
      translation_missing_for: "translation missing for"
 
-   part_of_speech:
-     plural_form: "Plural form"
-     adjective: "Adjective"
-     proper_name: "Proper name"
-     numeral: "Numeral"
-     pronoun: "Pronouns, articles"
-     abbreviation: "Abbreviation"
-     verb: "Verb"
-     noun:
-       male: "Noun (male)"
-       female: "Noun (female)"
-       neuter: "Noun (neuter)"
-     name_authority: "Name authority"
-
    views:
      layouts:
        application:
@@ -102,7 +88,6 @@ en:
        template_form: "Literal form"
        language: "Language"
        definitions: "Definitions"
-       part_of_speech: "Part of speech"
        base_form: "Base form"
        inflectional_code: "Inflectional code"
        inflectionals: "Inflectionals"
