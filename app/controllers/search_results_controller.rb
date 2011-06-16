@@ -101,8 +101,10 @@ class SearchResultsController < ApplicationController
       lang_sym ||= "none"
       hsh[lang_sym.to_s] = I18n.t("languages.#{lang_sym.to_s}", :default => lang_sym.to_s)
     end
-    
     controller.instance_variable_set(:@available_languages, langs)
+
+    collections = Iqvoc::Collection.base_class.includes(:pref_labels).all
+    controller.instance_variable_set(:@collections, collections)
   end
   
 end

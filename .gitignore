@@ -16,3 +16,5 @@ public/fonts/vendor
 .capistrano_history.yml
 *.war
 vendor/gems/*.gem
+
+config/initializers/secret_token.rb

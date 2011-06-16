@@ -46,4 +46,9 @@ class OriginMappingTest < ActiveSupport::TestCase
     assert_equal "_--Energie-Ressource", OriginMapping.merge("[Energie - Ressource]")
     assert_equal "_--Hydrosphaere-WasserUndGewaesser", OriginMapping.merge("[Hydrosphäre - Wasser und Gewässer]")
   end
+
+    def test_sanitize_for_base_form
+      assert_equal "commaslashdotbracketbracket", OriginMapping.sanitize_for_base_form("comma,slash/dot.bracket[bracket]")
+    end
+
 end

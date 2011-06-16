@@ -15,6 +15,8 @@
 # limitations under the License.
 
 module Iqvoc
+  # TODO: The whole class move to umt because it highly proprietary (and also
+  # has the wrong name because it only deals with "turtle")
   class RdfHelper
 
     LITERAL_REGEXP = /"(.*)"@([a-zA-Z]{2})/

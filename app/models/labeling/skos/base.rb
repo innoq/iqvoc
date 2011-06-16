@@ -18,11 +18,17 @@ class Labeling::SKOS::Base < Labeling::Base
 
   self.rdf_namespace = "skos"
 
+  # ********** Associations
+
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
+
+  # ********** Scopes
 
   scope :by_label_with_language, lambda { |label, language|
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
   }
+
+  # ********** Methods
 
   def self.label_class
     Iqvoc::Label.base_class

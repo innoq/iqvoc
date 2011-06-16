@@ -26,8 +26,4 @@ class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::A
         (self.namespace || self.predicate)
   end
 
-  # def value=(val)
-  #   write_attribute(:value, Iqvoc::RdfHelper.quote_turtle_literal(val))
-  # end
-
 end

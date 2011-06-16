@@ -23,19 +23,16 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
   end
 
   def build_rdf(document, subject)
-    annotations = self.annotations.each_with_object({}) { |annotation, hsh|
-      hsh[annotation.identifier] = annotation.value
-    }
-
-    editor = annotations["umt:editor"] # XXX: UMT remnants do not belong here!?
-    created = annotations["dct:created"]
-    modified = annotations["dct:modified"]
-
-    subject.send(self.rdf_namespace).build_predicate(self.rdf_predicate) { |blank_node|
+    subject.send(self.rdf_namespace).build_predicate(self.rdf_predicate) do |blank_node|
       blank_node.Rdfs::comment(self.value, :lang => self.language || nil) if self.value
-      blank_node.Dct::creator(editor) if editor
-      blank_node.Dct::created(created) if created
-      blank_node.Dct::modified(modified) if modified
-    }
+      self.annotations.each do |annotation|
+        if (IqRdf::Namespace.find_namespace_class(annotation.namespace))
+          blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, annotation.value)
+        else
+          raise "Note::SKOS::ChangeNote#build_rdf: couldn't find Namespace '#{annotation.namespace}'."
+        end
+      end
+    end
   end
+
 end
