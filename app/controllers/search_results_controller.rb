@@ -92,9 +92,8 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html
-        # TODO: paged/unpaged distinction below obsolete
-        format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
-        format.rdf { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+        format.ttl { render('search_results/index.iqrdf') }
+        format.rdf { render('search_results/index.iqrdf') }
       end
 
     end
