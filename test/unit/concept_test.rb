@@ -17,6 +17,7 @@
 require 'test_helper'
 
 class ConceptTest < ActiveSupport::TestCase
+
   def setup
     @current_concept = Factory.create(:concept)
   end
