@@ -20,26 +20,18 @@ require 'integration_test_helper'
 class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   setup do
-    # create concepts with labels (avoiding factories due to side-effects)
     @concepts = [
       [:en, "Tree"],
       [:en, "Forest"],
       [:de, "Baum"],
       [:de, "Forst"]
-    ].each_with_index.map { |pref_label, i|
-      lang, name = pref_label
-      concept = Iqvoc::Concept.base_class.create(:origin => "_c00#{i}",
-          :published_at => 3.days.ago)
-      label = Iqvoc::Concept.pref_labeling_class.label_class.create(
-          :origin => "_l00#{i}", :value => name, :language => lang,
-          :published_at => 2.days.ago)
-      Iqvoc::Concept.pref_labeling_class.create(:owner => concept, :target => label)
-      concept
+    ].map { |lang, text|
+      Factory.create(:concept, :pref_labelings => [Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => text))])
     }
   end
 
   test "Selecting a concept in alphabetical view" do
-    letter = "T"
+    letter = "T" # => Only the "Tree" should show up in the english version
     visit alphabetical_concepts_path(:lang => 'en', :letter => letter, :format => :html)
     assert page.has_link?(@concepts[0].pref_label.to_s),
         "Concept '#{@concepts[0].pref_label}' not found on alphabetical concepts list (letter: #{letter})"
@@ -48,7 +40,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     click_link_or_button(@concepts[0].pref_label.to_s)
     assert_equal concept_path(@concepts[0], :lang => 'en', :format => :html), URI.parse(current_url).path
 
-    letter = "F"
+    letter = "F" # => Only the "Forest" should show up in the english version
     visit alphabetical_concepts_path(:lang => 'en', :letter => letter, :format => :html)
     assert page.has_link?("Forest")
     assert !page.has_link?("Forst")
@@ -67,16 +59,3 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
   end
 
 end
-
-=begin
-  Scenario: Showing a label page
-    Given I am a logged in user with the role reader
-    And I have concepts _0000001 labeled Forest
-    And I am on the concept page for "_0000001"
-    When I follow "Forest"
-    Then I should be on the label page for "Forest"
-    And I should see "Label: Forest"
-    When I follow the link to the format representation for ttl
-    Then I should see a Turtle representation for the concept "_0000001"
-
-=end
