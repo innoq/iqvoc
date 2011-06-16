@@ -43,22 +43,24 @@ Factory.define :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |
   lab.target { |target| target.association(:pref_label) }
 end
 
-Factory.define :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab| # XXX: .first.first hacky!?
-  # TODO: should define target (YAGNI?)
+Factory.define :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab|
+  lab.target { |target| target.association(:alt_label) }
 end
 
 Factory.sequence(:label_number) { |n| n + 1 }
 
-Factory.define :pref_label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
+Factory.define :label, :class => Label::Base do |l|
   l.language Iqvoc::Concept.pref_labeling_languages.first
   l.published_at 2.days.ago
-  l.after_build do |lab|
-    unless lab.value
-      n = Factory.next :label_number
-      lab.value = "Tree #{n}"
-      # lab.origin = "tree_#{n}"
-    end
-  end
+  l.value "Tree #{Factory.next(:label_number)}"
+end
+
+Factory.define :pref_label, :parent => :label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
+
+end
+
+Factory.define :alt_label, :parent => :label, :class => Labeling::SKOS::AltLabel.label_class do |l|
+
 end
 
 Factory.define :user do |u|
