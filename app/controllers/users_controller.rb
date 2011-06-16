@@ -36,10 +36,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    @user = User.find(params[:id])
-  end
-
   def create
     @user = User.new(params[:user])
 
@@ -51,6 +47,10 @@ class UsersController < ApplicationController
         format.html { render :action => "new" }
       end
     end
+  end
+
+  def edit
+    @user = User.find(params[:id])
   end
 
   def update
