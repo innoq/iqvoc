@@ -15,6 +15,7 @@
 # limitations under the License.
 
 class User < ActiveRecord::Base
+  
   ROLES = [
     "reader", "editor", "publisher", "administrator"
   ]
