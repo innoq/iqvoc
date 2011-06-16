@@ -30,8 +30,24 @@ class OriginMappingTest < ActiveSupport::TestCase
     assert_equal "_123", OriginMapping.merge("123")
   end
 
+  def test_should_handle_whitespaces_at_strange_positions
+    assert_equal "test12", OriginMapping.merge("test 12 ")
+  end
+
   def test_should_handle_dashes_at_the_beginning
     assert_equal "_-bla", OriginMapping.merge("-bla")
+  end
+
+  def test_should_preserve_underlines
+    assert_equal "_test", OriginMapping.merge("_test")
+    assert_equal "a_Test", OriginMapping.merge("a_Test")
+  end
+
+  def test_should_preserve_case
+    assert_equal "test", OriginMapping.merge("test")
+    assert_equal "Test", OriginMapping.merge("Test")
+    assert_equal "_5test", OriginMapping.merge("5test")
+    assert_equal "_5Test", OriginMapping.merge("5Test")
   end
 
   def test_should_replace_brackets

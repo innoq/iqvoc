@@ -20,17 +20,19 @@ class OriginMapping
 
   def self.replace_umlauts(str)
     str.to_s.
-    gsub(/Ö/, 'Oe').
-    gsub(/Ä/, 'Ae').
-    gsub(/Ü/, 'Ue').
-    gsub(/ö/, 'oe').
-    gsub(/ä/, 'ae').
-    gsub(/ü/, 'ue').
-    gsub(/ß/, 'ss')
+      gsub(/Ö/, 'Oe').
+      gsub(/Ä/, 'Ae').
+      gsub(/Ü/, 'Ue').
+      gsub(/ö/, 'oe').
+      gsub(/ä/, 'ae').
+      gsub(/ü/, 'ue').
+      gsub(/ß/, 'ss')
   end
 
   def self.replace_whitespace(str)
-    str.to_s.gsub(/\s/,'_').camelize
+    str.to_s.gsub(/\s([a-zA-Z])?/) do
+      $1.to_s.upcase
+    end
   end
 
   def self.replace_special_chars(str)
@@ -43,12 +45,14 @@ class OriginMapping
     end
   end
 
-  def self.sanitize_for_base_form(str)
-    str.to_s.gsub(/[,\/\.\[\]]/, '')
-  end
-
   def self.merge(str)
     handle_numbers_at_beginning(replace_umlauts(replace_whitespace(replace_special_chars(str))))
+  end
+
+  # TODO This should move to umt because it absolutely makes no sense here
+
+  def self.sanitize_for_base_form(str)
+    str.to_s.gsub(/[,\/\.\[\]]/, '')
   end
 
 end
