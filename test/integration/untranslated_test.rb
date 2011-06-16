@@ -20,41 +20,17 @@ require 'integration_test_helper'
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    # TODO: Use factories!!!!!!111elf
-
-    # create concepts with pref labels (avoiding factories due to side-effects)
-    @labels = []
-    @concepts = [
-      ["Xen1", "Xde1"],
-      ["Xen2"],
-      ["Yen1", "Yde1"],
-      ["Yen2"]
-    ].each_with_index.map { |pref_labels, i|
-      en_name, de_name = pref_labels
-      labels = { :en => en_name }
-      if de_name
-        labels[:de] = de_name
+    [ {:en => "Xen1", :de => "Xde1"},
+      {:en => "Xen2"},
+      {:en => "Yen1", :de => "Yde1"},
+      {:en => "Yen2"}
+    ].map do |hsh|
+      labelings = []
+      hsh.each do |lang, val|
+        labelings << Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => val))
       end
-
-      concept = Iqvoc::Concept.base_class.create(:origin => "_c00#{i}",
-          :published_at => 3.days.ago)
-
-      j = 0
-      labels.each { |lang, name|
-        label = Iqvoc::Concept.pref_labeling_class.label_class.create(
-            :origin => "_l00#{i}#{j}", :value => name, :language => lang,
-            :published_at => 2.days.ago)
-        @labels.push(label)
-        j += 1
-        Iqvoc::Concept.pref_labeling_class.create(:owner => concept, :target => label)
-      }
-
-      concept
-    }
-
-    # reuse exiting label as alt label
-    Iqvoc::Concept.further_labeling_classes.first.first. # XXX: .first.first hacky!?
-        create(:owner => @concepts.first, :target => @labels.last)
+      Factory.create(:concept, :pref_labelings => labelings)
+    end 
   end
 
   test "showing only concepts without pref label in respective language" do

@@ -23,22 +23,15 @@ class SearchTest < ActionDispatch::IntegrationTest
     @pagination_setting = Kaminari.config.default_per_page
     Kaminari.config.default_per_page = 5
 
-    # create concepts with labels (avoiding factories due to side-effects)
-    @concepts = [
-      [:en, "Tree"],
-      [:en, "Forest"]
-    ].each_with_index.map { |pref_label, i|
-      lang, name = pref_label
-      concept = Iqvoc::Concept.base_class.create(:origin => "_c00#{i}",
-          :published_at => 3.days.ago)
-      label = Iqvoc::Concept.pref_labeling_class.label_class.create(
-          :origin => "_l00#{i}", :value => name, :language => lang,
-          :published_at => 2.days.ago)
-      Iqvoc::Concept.pref_labeling_class.create(:owner => concept, :target => label)
-      concept
-    }
+
+    @concepts =  ["Tree", "Forest"].map do |english_label_value|
+      Factory.create(:concept, :pref_labelings => [
+          Factory(:pref_labeling, :target => Factory(:pref_label, :language => :en, :value => english_label_value))
+        ])
+    end
+
     # create collection
-    @collection = Factory.create(:collection, { :concepts => @concepts })
+    @collection = Factory.create(:collection, :concepts => @concepts)
   end
 
   teardown do
@@ -49,9 +42,9 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(:lang => 'en', :format => 'html')
 
     [{
-      :type => 'Labels', :query => 'Forest', :query_type => 'contains',
-      :amount => 1, :result => 'Forest'
-    }].each { |q|
+        :type => 'Labels', :query => 'Forest', :query_type => 'contains',
+        :amount => 1, :result => 'Forest'
+      }].each { |q|
       select q[:type], :from => "t"
       fill_in "q", :with => q[:query]
       select q[:query_type], :from => "qt"
@@ -64,7 +57,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       click_button("Search")
 
       assert page.has_css?("#search_results dt", :count => q[:amount]),
-          "Page has #{page.all(:css, "#search_results dt").count} '#search_results dt' nodes. Should be #{q[:amount]}."
+      "Page has #{page.all(:css, "#search_results dt").count} '#search_results dt' nodes. Should be #{q[:amount]}."
 
       within("#search_results dt") do
         assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '#search_results dt'."
@@ -90,7 +83,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?("#search_results dt", :count => 1)
     assert page.find("#search_results").has_content?("Forest")
 
-    # TTL & RDF/XML -- XXX: should be a separate test
+    # TTL & RDF/XML 
 
     ttl_uri = page.all("#abstract_uri a").first[:href]
     xml_uri = page.all("#abstract_uri a").last[:href]
@@ -108,8 +101,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   test "searching specific classes within collections" do
     concept = Factory.create(:concept, { :notes => [
-        Iqvoc::Concept.note_classes[1].new(:language => "en", :value => "lorem ipsum")
-    ] })
+          Iqvoc::Concept.note_classes[1].new(:language => "en", :value => "lorem ipsum")
+        ] })
 
     visit search_path(:lang => 'en', :format => 'html')
 
@@ -153,9 +146,9 @@ class SearchTest < ActionDispatch::IntegrationTest
     # create a large number of concepts
     12.times { |i|
       Factory.create(:concept,
-          :pref_labelings => [Factory(:pref_labeling,
-              :target => Factory(:pref_label, :language => :en,
-                  :value => "sample_#{sprintf("_%04d", i + 1)}"))])
+        :pref_labelings => [Factory(:pref_labeling,
+            :target => Factory(:pref_label, :language => :en,
+              :value => "sample_#{sprintf("_%04d", i + 1)}"))])
     }
 
     visit search_path(:lang => 'en', :format => 'html')
@@ -173,7 +166,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     assert page.has_css?("#search_results dt", :count => 2)
 
-    # TTL & RDF/XML -- XXX: should be a separate test
+    # TTL & RDF/XML 
 
     ttl_uri = page.all("#abstract_uri a").first[:href]
     xml_uri = page.all("#abstract_uri a").last[:href]
@@ -194,24 +187,3 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
 end
-
-=begin
-
-      | concept  | label           | labeling      |
-      | _0000001 | Forest          | PrefLabeling  |
-      | _0000002 | Tree            | PrefLabeling  |
-      | _0000002 | ThingWithLeaves | AltLabeling   |
-
-
-    When I indicate to search for "<type>" with "<query>" in "<languages>"
-    And I choose "<query_type>" as query type
-    And I execute the search
-    Then there should be <amount> result
-    And the results should contain "<result>"
-
-    Examples:
-      | type                      | query             | languages         | query_type | amount | result               |
-      | bevorzugte Namen (Labels) | Forest            | Deutsch, English  | enthält    | 1      | Forest               |
-      | alle Namen (Labels)       | thing with leaves | Deutsch, English  | enthält    | 1      | Thing With Leaves    |
-
-=end

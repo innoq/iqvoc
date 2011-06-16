@@ -32,12 +32,6 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
 
     concept_row = table.all("tr")[1]
 
-    # hover to highlight -- XXX: disabled; unable to trigger hover event
-    #concept_row.trigger("mouseover")
-    #concept_row.trigger("mouseenter")
-    #concept_row.trigger("hover")
-    #assert table.has_css?("tr.hover", :count => 1)
-
     # click row to visit concept page
     concept_row.click
     uri = URI.parse(current_url)

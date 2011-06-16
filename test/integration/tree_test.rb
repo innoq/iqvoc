@@ -19,9 +19,6 @@ require 'integration_test_helper'
 
 class TreeTest < ActionDispatch::IntegrationTest
 
-  setup do
-  end
-
   test "Browse hierarchical concepts tree" do
     concept = Factory(:concept, :broader_relations => [])
     narrower_concept = concept.narrower_relations.first.target
