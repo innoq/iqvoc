@@ -18,9 +18,6 @@ require 'test_helper'
 
 class NoteTest < ActiveSupport::TestCase
 
-  def setup
-  end
-
   test "should parse turtle note annotations" do
     str = '[umt:source <aDisBMS>; umt:thsisn "00000001"; dct:date "2010-04-29"]'
     concept = Concept::SKOS::Base.create(:origin => "_00000001", :published_at => Time.now)
