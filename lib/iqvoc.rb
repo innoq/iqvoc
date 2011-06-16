@@ -23,7 +23,6 @@ module Iqvoc
   end
 
   mattr_accessor :title,
-    :pagination,
     :searchable_class_names,
     :available_languages,
     :default_rdf_namespace_helper_methods,
