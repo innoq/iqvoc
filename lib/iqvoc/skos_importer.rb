@@ -132,6 +132,7 @@ module Iqvoc
           end
         end
         e.squish!
+        e.gsub!(/^:(.*)$/, ":#{OriginMapping.merge($1)}") # Force correct origins in the default namespace
       end
 
       triple
