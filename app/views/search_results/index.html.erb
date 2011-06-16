@@ -62,22 +62,18 @@
   </fieldset>
 <% end %>
 <% if @results %>
-    <% if @results.any? %>
+  <% if @results.any? %>
     <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
-    <% else %>
+  <% else %>
     <h3><%= t('txt.views.search_results.search_results') %></h3>
     <p><%= t('txt.views.search_results.no_results_found') %></p>
-    <% end %>
+  <% end %>
 
-    <dl id="search_results">
+  <dl id="search_results">
     <% @results.each do |result| %>
-      <% if @klass %>
-        <%= render :partial => @klass.search_result_partial_name, :locals => {:result => result} %>
-      <% else %>
-        <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
-      <% end %>
+      <%= render :partial => result.class.search_result_partial_name, :locals => {:result => result} %>
     <% end %>
-    </dl>
+  </dl>
 
   <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
 <% end %>
