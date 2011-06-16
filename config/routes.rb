@@ -15,11 +15,13 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
+
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
   scope '(:lang)', :lang => /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/ do
-    resource  :user_session
-    resources :users
+
+    resource  :user_session, :only => [:new, :create, :destroy]
+    resources :users, :except => [:show]
 
     resources :concepts
     resources :collections
