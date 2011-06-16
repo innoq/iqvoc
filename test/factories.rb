@@ -53,9 +53,11 @@ Factory.define :pref_label, :class => Iqvoc::Concept.pref_labeling_class.label_c
   l.language Iqvoc::Concept.pref_labeling_languages.first
   l.published_at 2.days.ago
   l.after_build do |lab|
-    n = Factory.next :label_number
-    lab.value = "Tree #{n}"
-   # lab.origin = "tree_#{n}"
+    unless lab.value
+      n = Factory.next :label_number
+      lab.value = "Tree #{n}"
+      # lab.origin = "tree_#{n}"
+    end
   end
 end
 
