@@ -63,7 +63,9 @@
 <% end %>
 <% if @results %>
     <% if @results.any? %>
-    <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
+    <h3>
+      <%= t('txt.views.search_results.search_results') %> (<%= @results.total_count %>)
+    </h3>
     <% else %>
     <h3><%= t('txt.views.search_results.search_results') %></h3>
     <p><%= t('txt.views.search_results.no_results_found') %></p>
@@ -79,7 +81,7 @@
     <% end %>
     </dl>
 
-  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
+  <%= paginate @results %>
 <% end %>
 
 <%= content_for :sub_navigation do %>
