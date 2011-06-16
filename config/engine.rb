@@ -4,7 +4,7 @@ require 'rails'
 # want the applications to have to do that.
 require 'cancan'
 require 'authlogic'
-require 'will_paginate'
+require 'kaminari'
 require 'iq_rdf'
 require 'json'
 

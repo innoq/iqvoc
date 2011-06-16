@@ -1,11 +1,11 @@
 <%- if @results -%>
-  <%= (@multi_query ? render(:partial => 'search_results/unpaged/head_contents') : render(:partial => 'search_results/paged/head_contents')) %>
+  <%= render(:partial => 'search_results/head_contents') %>
 <%- end -%>
 
 <h2><%= t('txt.views.search_results.header') %></h2>
 <%- if @results -%>
   <div id="abstract_uri">
-    <%= (@multi_query ? render(:partial => 'search_results/unpaged/rdf_links') : render(:partial => 'search_results/paged/rdf_links')) %>
+    <%= render(:partial => 'search_results/rdf_links') %>
   </div>
 <%- end -%>
 
@@ -63,7 +63,9 @@
 <% end %>
 <% if @results %>
   <% if @results.any? %>
-    <h3><%= t('txt.views.search_results.search_results') %><% unless @multi_query %> (<%= @results.total_entries %>)<% end %></h3>
+    <h3>
+      <%= t('txt.views.search_results.search_results') %> (<%= @results.total_count %>)
+    </h3>
   <% else %>
     <h3><%= t('txt.views.search_results.search_results') %></h3>
     <p><%= t('txt.views.search_results.no_results_found') %></p>
@@ -75,7 +77,7 @@
     <% end %>
   </dl>
 
-  <%= will_paginate @results, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") unless @multi_query %>
+  <%= paginate @results %>
 <% end %>
 
 <%= content_for :sub_navigation do %>

@@ -28,11 +28,12 @@ class Concepts::AlphabeticalController < ConceptsController
       order("LOWER(#{Label::Base.table_name}.value)").
       joins(:owner).
       where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
-      paginate(:page => params[:page], :per_page => 40)
+      page(params[:page])
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Iqvoc::Concept.pref_labeling_class.send(:preload_associations, @pref_labelings, :owner => Iqvoc::Concept.base_class.default_includes)
+    Iqvoc::Concept.pref_labeling_class.send(:preload_associations,
+        @pref_labelings, :owner => Iqvoc::Concept.base_class.default_includes)
   end
 
 end

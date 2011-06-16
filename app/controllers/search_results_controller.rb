@@ -51,10 +51,6 @@ class SearchResultsController < ApplicationController
         @klass = Iqvoc.searchable_class_names[type_class_index].constantize
       end
 
-      # TODO Use Karminari instead of will_paginate and remove the wohle
-      # pagiantion / no pagination stuff (karminari supports pagination for
-      # arrays).
-
       query_size = params[:query].split(/\r\n/).size
 
       # @klass is only available if we're going to search using a specific class
@@ -67,7 +63,7 @@ class SearchResultsController < ApplicationController
           # every sub query has to return 100 object at most.
         else
           @multi_query = false
-          @results = @klass.single_query(params).paginate(:page => params[:page], :per_page => 50)
+          @results = @klass.single_query(params)
         end
       else
         @multi_query = true
@@ -80,17 +76,24 @@ class SearchResultsController < ApplicationController
         # TODO (Important!!): Remove this mess. This is totally equivalent to a
         # search in Labeling::Base except that this is a multi query (which
         # isn't a good idea at all).
-        # We'll have to check all sub projects redefining the srearchable classes
+        # We'll have to check all sub projects redefining the searchable classes
         # to include "Labeling::Base" because :all won't be contained in the
         # selectbox per default.
       end
-      
-      @multi_query ? logger.debug("Using multi query mode") : logger.debug("Using single query mode")
+
+      if @multi_query
+        @results = Kaminari.paginate_array(@results)
+        logger.debug("Using multi query mode")
+      else
+        logger.debug("Using single query mode")
+      end
+
+      @results = @results.page(params[:page])
 
       respond_to do |format|
         format.html
-        format.ttl { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
-        format.rdf { @multi_query ? render('search_results/unpaged/index.iqrdf') : render('search_results/paged/index.iqrdf') }
+        format.ttl { render('search_results/index.iqrdf') }
+        format.rdf { render('search_results/index.iqrdf') }
       end
 
     end

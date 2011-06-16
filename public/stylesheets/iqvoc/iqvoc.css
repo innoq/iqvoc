@@ -55,10 +55,29 @@ ul.letter_selector { width: 100%; overflow: auto; margin: 0 0 10px; padding: 0; 
 .letter_selector li.special { float: right; } /* XXX: this is less than ideal */
 .letter_selector a { padding: 2px 5px; }
 
-div.pagination a { border: 1px solid #318210; background-color: #C0FAB4; padding: 2px 5px 2px 5px; margin-right: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
-div.pagination span { border: 1px solid #318210; background-color: #C0FAB4; padding: 2px 5px 2px 5px; margin-right: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
-div.pagination span.disabled { background-color: transparent; border-color: silver; color: silver; }
-div.pagination span.current { background-color: #FEFBDC; border-color: #F3AC40; }
+.pagination {
+  display: block;
+}
+.pagination a,
+.pagination .current,
+.pagination .gap {
+  margin-right: 5px;
+  border: 1px solid #318210;
+  padding: 2px 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background-color: #C0FAB4;
+}
+.pagination .disabled,
+.pagination .gap {
+  border-color: silver;
+  color: silver;
+  background-color: transparent;
+}
+.pagination .current {
+  border-color: #F3AC40;
+  background-color: #FEFBDC;
+}
 
 /* visualizations */
 

@@ -19,5 +19,5 @@
     <% end %>
   </ul>
 
-  <%= will_paginate @labels, :previous_label => t("txt.common.pagination.previous"), :next_label => t("txt.common.pagination.next") %>
+  <%= paginate @labels %>
 <% end %>

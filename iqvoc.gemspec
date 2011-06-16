@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", '3.0.7'
   s.add_dependency "bundler"
-  s.add_dependency 'will_paginate', '3.0.pre2'
+  s.add_dependency 'kaminari'
   s.add_dependency 'authlogic'
   s.add_dependency 'cancan'
   s.add_dependency 'iq_rdf', '~> 0.0.14'

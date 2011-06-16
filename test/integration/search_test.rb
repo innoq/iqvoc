@@ -20,6 +20,9 @@ require 'integration_test_helper'
 class SearchTest < ActionDispatch::IntegrationTest
 
   setup do
+    @pagination_setting = Kaminari.config.default_per_page
+    Kaminari.config.default_per_page = 5
+
     # create concepts with labels (avoiding factories due to side-effects)
     @concepts = [
       [:en, "Tree"],
@@ -36,6 +39,10 @@ class SearchTest < ActionDispatch::IntegrationTest
     }
     # create collection
     @collection = Factory.create(:collection, { :concepts => @concepts })
+  end
+
+  teardown do
+    Kaminari.config.default_per_page = @pagination_setting
   end
 
   test "Searching" do
@@ -140,6 +147,50 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?("#search_results dt", :count => 2)
     assert page.find("#search_results").has_content?("Tree")
     assert page.find("#search_results").has_content?("Forest")
+  end
+
+  test "Pagination" do
+    # create a large number of concepts
+    12.times { |i|
+      Factory.create(:concept,
+          :pref_labelings => [Factory(:pref_labeling,
+              :target => Factory(:pref_label, :language => :en,
+                  :value => "sample_#{sprintf("_%04d", i + 1)}"))])
+    }
+
+    visit search_path(:lang => 'en', :format => 'html')
+
+    select "All names", :from => "t"
+    select "contains", :from => "qt"
+    fill_in "q", :with => "sample_"
+
+    click_button("Search")
+
+    assert page.has_css?("#search_results dt", :count => 5)
+    assert page.has_css?(".pagination .page", :count => 3)
+
+    click_link("3")
+
+    assert page.has_css?("#search_results dt", :count => 2)
+
+    # TTL & RDF/XML -- XXX: should be a separate test
+
+    ttl_uri = page.all("#abstract_uri a").first[:href]
+    xml_uri = page.all("#abstract_uri a").last[:href]
+
+    visit ttl_uri
+    assert page.has_content?("sdc:totalResults 12;")
+    assert page.has_content?("sdc:itemsPerPage 5;")
+    assert page.has_content?("search:result1 a sdc:Result;")
+    assert page.has_content?("search:result2 a sdc:Result;")
+    assert page.has_no_content?("search:result3 a sdc:Result;") # we're on page 3/3
+
+    visit xml_uri
+    assert page.source.include?('<sdc:totalResults rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</sdc:totalResults>')
+    assert page.source.include?('<sdc:itemsPerPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</sdc:itemsPerPage>')
+    assert page.source.include?('#result1">')
+    assert page.source.include?('#result2">')
+    assert !page.source.include?('#result3">') # we're on page 3/3
   end
 
 end
