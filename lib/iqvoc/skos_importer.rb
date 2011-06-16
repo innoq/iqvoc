@@ -12,12 +12,17 @@ module Iqvoc
         raise "Iqvoc::SkosImporter#import: Parameter 'file' should be a File or an Array."
       end
 
+      # Some general Namespaces to support in any case
       @prefixes = {
         "http://www.w3.org/2004/02/skos/core#" => "skos:",
         "http://www.w3.org/2008/05/skos#" => "skos:",
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#" => "rdf:",
         default_namespace_url => ":"
       }
+      # Add the namespaces specified in the Iqvoc config
+      Iqvoc.rdf_namespaces.each do |pref, uri|
+        @prefixes[uri] = "#{pref.to_s}:"
+      end
 
       @seen_first_level_objects = {}
 
