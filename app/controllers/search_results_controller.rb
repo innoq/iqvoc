@@ -88,7 +88,7 @@ class SearchResultsController < ApplicationController
         logger.debug("Using single query mode")
       end
 
-      @results = @results.page(params[:page]).per(50)
+      @results = @results.page(params[:page]).per(Iqvoc.pagination[:search_results_per_page])
 
       respond_to do |format|
         format.html

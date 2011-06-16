@@ -23,6 +23,7 @@ module Iqvoc
   end
 
   mattr_accessor :title,
+    :pagination,
     :searchable_class_names,
     :available_languages,
     :default_rdf_namespace_helper_methods,
@@ -34,6 +35,11 @@ module Iqvoc
     :ability_class_name
 
   self.title = "iQvoc"
+
+  self.pagination = {
+    :items_per_page => 40,
+    :search_results_per_page => 50
+  }
 
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
