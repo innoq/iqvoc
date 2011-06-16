@@ -57,6 +57,8 @@ module Iqvoc
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
 
+    # TODO This must be refactored!
+
     # The JDBC driver url for the coinnection to the virtuoso triple store.
     # Login crdentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for

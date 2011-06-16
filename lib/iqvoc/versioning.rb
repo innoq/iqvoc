@@ -62,73 +62,73 @@ module Iqvoc
 
       scope :unsynced, where(:rdf_updated_at => nil)
 
-      # ********* Methods
+    end
 
-      def branch(user)
-        new_version = self.clone(:include => self.class.includes_to_deep_cloning)
-        new_version.lock_by_user(user.id)
-        new_version.increment!(:rev)
-        new_version.published_version_id = self.id
-        new_version.unpublish
-        new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
-          :language => I18n.locale.to_s,
-          :annotations_attributes => [
-            { :namespace => "dct", :predicate => "creator", :value => user.name },
-            { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
-          ])
-        new_version
+    # ********* Methods
+
+    def branch(user)
+      new_version = self.clone(:include => self.class.includes_to_deep_cloning)
+      new_version.lock_by_user(user.id)
+      new_version.increment!(:rev)
+      new_version.published_version_id = self.id
+      new_version.unpublish
+      new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
+        :language => I18n.locale.to_s,
+        :annotations_attributes => [
+          { :namespace => "dct", :predicate => "creator", :value => user.name },
+          { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
+        ])
+      new_version
+    end
+
+    def publish
+      write_attribute(:published_at, Time.now)
+      write_attribute(:to_review, nil)
+      write_attribute(:published_version_id, nil)
+    end
+
+    def unpublish
+      write_attribute(:published_at, nil)
+    end
+
+    def published?
+      read_attribute(:published_at).present?
+    end
+
+    # Editor selectable if published or no published version exists (before
+    # first publication)
+    def editor_selectable?
+      published? || read_attribute(:published_version_id).blank?
+    end
+
+    def lock_by_user(user_id)
+      write_attribute(:locked_by, user_id)
+    end
+
+    def locked?
+      locked_by?
+    end
+
+    def state
+      if published?
+        I18n.t("txt.common.state.published")
+      elsif !published? && in_review?
+        I18n.t("txt.common.state.in_review")
+      elsif !published? && !in_review?
+        I18n.t("txt.common.state.checked_out")
       end
+    end
 
-      def publish
-        write_attribute(:published_at, Time.now)
-        write_attribute(:to_review, nil)
-        write_attribute(:published_version_id, nil)
-      end
+    def unlock
+      write_attribute(:locked_by, nil)
+    end
 
-      def unpublish
-        write_attribute(:published_at, nil)
-      end
+    def in_review?
+      read_attribute(:to_review).present?
+    end
 
-      def published?
-        read_attribute(:published_at).present?
-      end
-
-      # Editor selectable if published or no published version exists (before
-      # first publication)
-      def editor_selectable?
-        published? || read_attribute(:published_version_id).blank?
-      end
-
-      def lock_by_user(user_id)
-        write_attribute(:locked_by, user_id)
-      end
-
-      def locked?
-        locked_by?
-      end
-
-      def state
-        if published?
-          I18n.t("txt.common.state.published")
-        elsif !published? && in_review?
-          I18n.t("txt.common.state.in_review")
-        elsif !published? && !in_review?
-          I18n.t("txt.common.state.checked_out")
-        end
-      end
-
-      def unlock
-        write_attribute(:locked_by, nil)
-      end
-
-      def in_review?
-        read_attribute(:to_review).present?
-      end
-
-      def to_review
-        write_attribute(:to_review, true)
-      end
-
+    def to_review
+      write_attribute(:to_review, true)
     end
 
     module ClassMethods

@@ -1,7 +1,10 @@
-<% socket = ["/tmp/mysql.sock",
-           "/opt/local/var/run/mysql5/mysqld.sock",
-           "/tmp/mysqld.sock",
-           "/var/run/mysqld.sock"].detect { |socket| File.exist?(socket) } %>
+<% detect_socket = lambda {
+  ["/tmp/mysql.sock",
+    "/opt/local/var/run/mysql5/mysqld.sock",
+    "/tmp/mysqld.sock",
+    "/var/run/mysqld.sock"
+  ].detect{ |socket| File.exist?(socket) }
+} %>
 
 development: &DEVELOPMENT
   encoding: utf8
@@ -13,7 +16,7 @@ development: &DEVELOPMENT
   hostname: localhost
 <% else %>
   adapter: mysql2
-  socket: <%= socket %>
+  socket: <%= detect_socket.call %>
 <% end %>
 
 # Warning: The database defined as 'test' will be erased and
@@ -25,7 +28,7 @@ test: &TEST
   username: root
   password:
   database: iqvoc_test
-  socket: <%= socket %>
+  socket: <%= detect_socket.call %>
 
 production_internal:
   encoding: utf8
