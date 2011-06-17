@@ -130,7 +130,6 @@ en:
        collections: "Collections"
      search_results:
        header: "Search"
-       all_names: "All names"
        inflectionals: "inflectionals"
        pref_labels: "preferred names (labels)"
        all_labels: "all names (labels)"
