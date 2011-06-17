@@ -1,24 +1,12 @@
 <h2><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h2>
 
 <% if can?(:create, Iqvoc::Collection.base_class) %>
-<p>
-  <%= link_to t("txt.views.collections.new"), new_collection_path,
-          :class => "button" %>
-</p>
+  <p>
+    <%= link_to t("txt.views.collections.new"), new_collection_path,
+      :class => "button" %>
+  </p>
 <% end %>
 
 <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
-  <%-
-    # determine non-orphans (items with a parent)
-    children = []
-    @collections.each do |collection| # TODO: use #map along with #flatten?
-      if collection.subcollections.any?
-        children += collection.subcollections
-      end
-    end
-    children.uniq! # TODO: use Set?
-    # determine orphans (root-level items)
-    orphans = @collections.select {|collection| !children.include?(collection) }
-  -%>
-  <%= render :partial => 'collection', :collection => orphans %>
+  <%= render :partial => 'collection', :collection => @top_collections %>
 </ul>

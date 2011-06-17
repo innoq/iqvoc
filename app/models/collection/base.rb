@@ -32,7 +32,6 @@ class Collection::Base < Concept::Base
     :class_name  => 'Collection::Member::Concept',
     :foreign_key => 'collection_id',
     :dependent   => :destroy
-
   has_many :concepts,
     :through => :concept_members
 
@@ -40,9 +39,16 @@ class Collection::Base < Concept::Base
     :class_name  => 'Collection::Member::Collection',
     :foreign_key => 'collection_id',
     :dependent   => :destroy
-
   has_many :subcollections,
     :through => :collection_members
+
+  has_many :parent_collection_members,
+    :class_name  => 'Collection::Member::Collection',
+    :foreign_key => 'target_id',
+    :dependent   => :destroy
+  has_many :parent_collections,
+    :through => :parent_collection_members
+
 
   #********** Hooks
 
@@ -60,6 +66,11 @@ class Collection::Base < Concept::Base
 
   scope :by_label_value, lambda { |val|
     includes(:labels).merge(Label::Base.by_query_value(val))
+  }
+
+  scope :tops, lambda {
+    includes(:parent_collection_members).
+      where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
   }
 
   #********** Validations
