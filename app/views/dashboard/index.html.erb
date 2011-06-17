@@ -1,8 +1,8 @@
 <h2>Dashboard</h2>
 <ul id="dashboard_controls">
   <%= Iqvoc.first_level_classes.map { |klass|
-        content_tag :li, render(klass.new_link_partial_name)
-      }.select { |s| s.squish.present? }.join(" | ").html_safe -%>
+    content_tag :li, render(klass.new_link_partial_name)
+  }.select { |s| s.squish.present? }.join(" | ").html_safe -%>
 
   <%- if can?(:full_export, Concept::Base) -%>
     <li>

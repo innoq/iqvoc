@@ -3,9 +3,9 @@
   <div class="relation-body block">
 
     <%-
-      only_published = params[:published] != "0"
-      related_concepts = concept.related_concepts_for_relation_class(
-          Iqvoc::Concept.broader_relation_class, only_published)
+    only_published = params[:published] != "0"
+    related_concepts = concept.related_concepts_for_relation_class(
+      Iqvoc::Concept.broader_relation_class, only_published)
     -%>
 
     <% if related_concepts.length > 0 %>
@@ -15,7 +15,7 @@
         while (parent && !parents.include?(parent))
           parents << parent
           parent = parent.related_concepts_for_relation_class(
-              Iqvoc::Concept.broader_relation_class, only_published).first
+            Iqvoc::Concept.broader_relation_class, only_published).first
         end %>
         <%= parents.map { |concept|
           render concept.class.inline_partial_name, :concept => concept

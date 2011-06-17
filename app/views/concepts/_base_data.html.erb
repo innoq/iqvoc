@@ -1,8 +1,7 @@
 <h3><%= Iqvoc::Concept.base_class.model_name.human %></h3>
 <%= form_for @concept, :as => 'concept',
-        :url => @concept.new_record? ? concepts_path :
-            concept_path(:published => 0, :id => @concept),
-        :html => {:class => "form"} do |f| %>
+  :url => @concept.new_record? ? concepts_path : concept_path(:published => 0, :id => @concept),
+  :html => {:class => "form"} do |f| %>
   <fieldset id="label_base_data">
     <legend><%= t("txt.common.attributes") %></legend>
     <ol>
@@ -15,8 +14,8 @@
         <%= f.text_field :expired_at, :class => "datepicker" %>
       </li>
       <%- Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class| -%>
-          <%= render assoc_class.edit_partial_name(@concept),
-                :concept => @concept, :klass => assoc_class, :f => f %>
+        <%= render assoc_class.edit_partial_name(@concept),
+          :concept => @concept, :klass => assoc_class, :f => f %>
       <%- end -%>
     </ol>
   </fieldset>
@@ -24,18 +23,18 @@
   <fieldset>
     <legend>Labelings</legend>
     <ol>
-    <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
-      <%- languages.each do |language| -%>
-         <%= render labeling_class.edit_partial_name(@concept), :f => f,
-                  :concept => @concept, :klass => labeling_class, :language => language %>
+      <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
+        <%- languages.each do |language| -%>
+          <%= render labeling_class.edit_partial_name(@concept), :f => f,
+            :concept => @concept, :klass => labeling_class, :language => language %>
+        <%- end -%>
       <%- end -%>
-    <%- end -%>
     </ol>
   </fieldset>
 
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
     <%= render :partial => note_class.edit_partial_name(@concept),
-            :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
+      :locals => { :owner_klass => @concept, :assoc_klass => note_class, :f => f } %>
   <% end %>
 
   <fieldset>
@@ -43,11 +42,11 @@
     <ol>
       <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
         <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept),
-                :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
+          :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
       <%- end -%>
 
       <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept),
-              :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
+        :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
 
       <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
         <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>
@@ -60,7 +59,7 @@
     <ol>
       <% Iqvoc::Concept.match_classes.each do |match_class| %>
         <%= render :partial => match_class.edit_partial_name(@concept),
-                :locals => { :owner_klass => @concept, :assoc_klass => match_class, :f => f } %>
+          :locals => { :owner_klass => @concept, :assoc_klass => match_class, :f => f } %>
       <% end %>
     </ol>
   </fieldset>

@@ -15,8 +15,8 @@
       <li>
         <select name="t" class="search_type">
           <%= options_for_select(Iqvoc.searchable_classes.map { |c|
-                [c.model_name.human(:count => 2), c.name.parameterize]
-              }, params[:t]) %>
+              [c.model_name.human(:count => 2), c.name.parameterize]
+            }, params[:t]) %>
         </select>
       </li>
       <li>

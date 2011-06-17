@@ -9,17 +9,17 @@
     <th><%= t('txt.views.users.active') %></th>
   </tr>
 
-<% @users.each do |user| %>
-  <tr>
-    <td><%=h user.name %></td>
-    <td><%=h user.email %></td>
-    <td><%=h user.telephone_number %></td>
-    <td><%=h user.role.humanize %></td>
-    <td><%=h user.active? ? 1 : 0 %></td>
-    <td><%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user) %></td>
-    <td><%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete %></td>
-  </tr>
-<% end %>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%=h user.name %></td>
+      <td><%=h user.email %></td>
+      <td><%=h user.telephone_number %></td>
+      <td><%=h user.role.humanize %></td>
+      <td><%=h user.active? ? 1 : 0 %></td>
+      <td><%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user) %></td>
+      <td><%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete %></td>
+    </tr>
+  <% end %>
 </table>
 
 <%= content_for :sub_navigation do %>

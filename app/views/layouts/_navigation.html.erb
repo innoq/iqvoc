@@ -1,8 +1,8 @@
 <ul id="navi_main">
   <% if can?(:use, :dashboard) %>
-  <li class="<%= params[:controller] == 'dashboard' ? 'active' : '' %>">
-    <%= link_to "Dashboard", dashboard_path %>
-  </li>
+    <li class="<%= params[:controller] == 'dashboard' ? 'active' : '' %>">
+      <%= link_to "Dashboard", dashboard_path %>
+    </li>
   <% end %>
   <li class="<%= params[:controller] == 'concepts/hierarchical' ? 'active' : '' %>">
     <%= link_to t("txt.views.navigation.hierarchical"), hierarchical_concepts_path %>
@@ -17,9 +17,9 @@
     <%= link_to t("txt.views.navigation.search"), search_path %>
   </li>
   <% if can?(:manage, User) %>
-  <li class="<%= params[:controller] == 'users' ? 'active' : '' %>">
-    <%= link_to t("txt.views.navigation.users"), users_path %>
-  </li>
+    <li class="<%= params[:controller] == 'users' ? 'active' : '' %>">
+      <%= link_to t("txt.views.navigation.users"), users_path %>
+    </li>
   <% end %>
   <li class="<%= params[:controller] == 'pages' && params[:action] == 'about' ? 'active' : '' %>">
     <%= link_to t("txt.views.navigation.about"), about_path %>
