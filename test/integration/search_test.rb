@@ -68,7 +68,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "searching within collections" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "All names", :from => "t"
+    select "Labels", :from => "t"
     select "contains", :from => "qt"
     fill_in "q", :with => "res"
     select @collection.to_s, :from => "c"
@@ -125,7 +125,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "empty query with selected collection should return all collection members" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "All names", :from => "t"
+    select "Labels", :from => "t"
     select "exact match", :from => "qt"
     fill_in "q", :with => ""
     select @collection.to_s, :from => "c"
@@ -153,7 +153,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "All names", :from => "t"
+    select "Labels", :from => "t"
     select "contains", :from => "qt"
     fill_in "q", :with => "sample_"
 
