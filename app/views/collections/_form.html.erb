@@ -1,6 +1,7 @@
 <%-
-# XXX: largely duplicates app/views/concepts/_base_data.html.erb
-# XXX: should probably use separate config (i.e. Iqvoc:Collection)
+# TODO: Change Concept.labeling_classes to Collection.labeling_classes (in model
+# too). If those two settings differ (e.g. in spez) don't forget to add
+# migrations to update existing data.
 -%>
 <fieldset>
   <legend>Labelings</legend>
@@ -14,6 +15,7 @@
   </ol>
 </fieldset>
 
+<%- # TODO: Add a Collection config for Note classes. %>
 <% [ Note::SKOS::Definition ].each do |klass| %>
   <%= render :partial => klass.edit_partial_name(@collection),
     :locals => { :owner_klass => @collection, :assoc_klass => klass, :f => f } %>
