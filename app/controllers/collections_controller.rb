@@ -25,7 +25,7 @@ class CollectionsController < ApplicationController
         @top_collections = Iqvoc::Collection.base_class.
           with_pref_labels.
           tops.
-          sort{ |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
+          sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
