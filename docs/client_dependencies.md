@@ -10,6 +10,9 @@ iQvoc relies on the following third-party components on the client-side:
 * jQuery Treeview (extensively customized)
   (MIT, http://bassistance.de/jquery-plugins/jquery-plugin-treeview/)
 
+* JavaScript InfoVis Toolkit (BSD, http://thejit.org)
+  * RGraph
+
 * Remy Sharp's `localStorage` polyfill
   (MIT, https://github.com/remy/polyfills/blob/master/Storage.js)
 
