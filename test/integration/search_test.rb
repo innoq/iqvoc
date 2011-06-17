@@ -31,7 +31,11 @@ class SearchTest < ActionDispatch::IntegrationTest
     end
 
     # create collection
-    @collection = Factory.create(:collection, :concepts => @concepts)
+    @collection = Factory.create(:collection, :concepts => @concepts,
+        :labelings => [], :pref_labelings => [
+            Factory(:pref_labeling,
+                :target => Factory(:pref_label, :language => :en, :value => "Alpha"))
+        ])
   end
 
   teardown do
@@ -63,6 +67,18 @@ class SearchTest < ActionDispatch::IntegrationTest
         assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '#search_results dt'."
       end
     }
+  end
+
+  test "exclude collections from results" do
+    visit search_path(:lang => 'en', :format => 'html')
+
+    select "Labels", :from => "t"
+    select "contains", :from => "qt"
+    fill_in "q", :with => "Alpha"
+
+    click_button("Search")
+
+    assert page.has_no_css?("#search_results dt")
   end
 
   test "searching within collections" do

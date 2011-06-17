@@ -89,5 +89,5 @@ class SearchResultsController < ApplicationController
     collections = Iqvoc::Collection.base_class.includes(:pref_labels).all
     controller.instance_variable_set(:@collections, collections)
   end
-  
+
 end

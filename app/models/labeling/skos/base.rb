@@ -64,10 +64,10 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     scope = scope.includes(:owner).
+        # Ensure only concepts are taken into account (i.e. exclude collections)
+        where("concepts.type" => Iqvoc::Concept.base_class_name).
         # Ensure that the included concept is published
-        merge(Iqvoc::Concept.base_class.published).
-        # Exclude collections
-        scope.where("concepts.type != ?", Iqvoc::Collection.base_class_name)
+        merge(Iqvoc::Concept.base_class.published)
 
     scope
   end
