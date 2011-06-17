@@ -28,6 +28,9 @@ class SearchResultsController < ApplicationController
       params[long] ||= params[short]
     end
 
+    # Select first type by default
+    params[:type] = Iqvoc.searchable_class_names.first.parameterize unless params[:type]
+
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
     request.query_parameters.delete("commit")
