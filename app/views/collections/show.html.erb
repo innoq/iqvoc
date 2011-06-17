@@ -17,8 +17,8 @@
 <% end %>
 
 <%-
-# alternative labels
-# XXX: use of sections partial inconsistent with the rest of the template structure
+# TODO: We'll need a 'collection_view_data' helper (containing the following
+# "Note" stuff too).
 -%>
 <%= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
 
