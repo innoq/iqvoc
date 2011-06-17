@@ -123,9 +123,6 @@ de:
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"
-       pref_labels: "bevorzugte Namen (Labels)"
-       all_labels: "alle Namen (Labels)"
-       all_notes: "alle Anmerkungen und Definitionen"
        contains: "enthält"
        ends_with: "endet mit"
        begins_with: "beginnt mit"
