@@ -54,10 +54,6 @@ class Collection::Base < Concept::Base
 
   after_save :regenerate_concept_members, :regenerate_collection_members
 
-  before_validation(:on => :create) do
-    self.origin ||= "_#{(self.class.maximum(:id) || 0) + 1}"
-  end
-
   #********** Scopes
 
   scope :by_origin, lambda { |origin|
@@ -75,8 +71,6 @@ class Collection::Base < Concept::Base
 
   #********** Validations
 
-  validates_uniqueness_of :origin
-  validates :origin, :presence => true, :length => { :minimum => 2 }
   validate :circular_subcollections
 
   #********** Methods
