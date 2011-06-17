@@ -43,42 +43,22 @@ class SearchResultsController < ApplicationController
       # Special treatment for the "nil language"
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
 
-      # Decide whether to search a specific class or ALL classes
-      unless params[:type] == 'all'
-        unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
-          raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
-        end
-        @klass = Iqvoc.searchable_class_names[type_class_index].constantize
+      # Ensure a valid class was selected
+      unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
+        raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
       end
+      klass = Iqvoc.searchable_class_names[type_class_index].constantize
 
       query_size = params[:query].split(/\r\n/).size
 
-      # @klass is only available if we're going to search using a specific class
-      # it's not available if we're searching within all classes
-      if @klass
-        if @klass.forces_multi_query? || (@klass.supports_multi_query? && query_size > 1)
-          @multi_query = true
-          @results = @klass.multi_query(params)
-          # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
-          # each sub-query has to return 100 objects at most.
-        else
-          @multi_query = false
-          @results = @klass.single_query(params)
-        end
-      else
+      if klass.forces_multi_query? || (klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        logger.debug "Searching for all names"
-        # all names (including collection labels)
-        @results = Iqvoc.searchable_classes.
-          select { |klass| (klass < Labeling::Base) }. # Search for Labelings only
-        map { |klass| klass.single_query(params) }.
-          flatten.uniq
-        # TODO (Important!!): Remove this mess. This is totally equivalent to a
-        # search in Labeling::Base except that this is a multi query (which
-        # isn't a good idea at all).
-        # We'll have to check all sub projects redefining the searchable classes
-        # to include "Labeling::Base" because :all won't be contained in the
-        # selectbox per default.
+        @results = klass.multi_query(params)
+        # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
+        # each sub-query has to return 100 objects at most.
+      else
+        @multi_query = false
+        @results = klass.single_query(params)
       end
 
       if @multi_query

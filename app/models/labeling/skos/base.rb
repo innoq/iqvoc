@@ -63,7 +63,7 @@ class Labeling::SKOS::Base < Labeling::Base
       end
     end
 
-    # Check that the included concept is in published state:
+    # Ensure that the included concept is published
     scope = scope.includes(:owner).merge(Iqvoc::Concept.base_class.published)
 
     scope

@@ -130,11 +130,7 @@ en:
        collections: "Collections"
      search_results:
        header: "Search"
-       all_names: "All names"
        inflectionals: "inflectionals"
-       pref_labels: "preferred names (labels)"
-       all_labels: "all names (labels)"
-       all_notes: "all notes and definitions"
        contains: "contains"
        ends_with: "ends with"
        begins_with: "begins with"

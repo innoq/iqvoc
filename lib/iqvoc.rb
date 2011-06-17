@@ -38,7 +38,8 @@ module Iqvoc
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
     'Labeling::SKOS::PrefLabel',
-    'Note::Base' ]
+    'Note::Base'
+  ]
 
   self.available_languages = [:en, :de]
 
@@ -109,7 +110,8 @@ module Iqvoc
       'Note::SKOS::EditorialNote',
       'Note::SKOS::Example',
       'Note::SKOS::HistoryNote',
-      'Note::SKOS::ScopeNote' ]
+      'Note::SKOS::ScopeNote'
+    ]
 
     self.match_class_names            = [
       'Match::SKOS::CloseMatch',
