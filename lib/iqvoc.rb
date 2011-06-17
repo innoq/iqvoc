@@ -24,6 +24,7 @@ module Iqvoc
 
   mattr_accessor :title,
     :searchable_class_names,
+    :unlimited_search_results,
     :available_languages,
     :default_rdf_namespace_helper_methods,
     :rdf_namespaces,
@@ -40,6 +41,7 @@ module Iqvoc
     'Labeling::SKOS::PrefLabel',
     'Note::Base'
   ]
+  self.unlimited_search_results = false
 
   self.available_languages = [:en, :de]
 
@@ -61,7 +63,7 @@ module Iqvoc
   self.additional_css_files = []
 
   self.first_level_class_configuration_modules = [] # Will be set in the modules
-  
+
   self.ability_class_name = 'Iqvoc::Ability'
 
   def self.change_note_class
@@ -75,7 +77,7 @@ module Iqvoc
   def self.first_level_classes
     self.first_level_class_configuration_modules.map { |mod| mod.send(:base_class) }
   end
-  
+
   def self.ability_class
     ability_class_name.constantize
   end

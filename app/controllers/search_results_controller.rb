@@ -70,6 +70,10 @@ class SearchResultsController < ApplicationController
 
       @results = @results.page(params[:page])
 
+      if params[:limit] and Iqvoc.unlimited_search_results
+        @results = @results.per(params[:limit].to_i)
+      end
+
       respond_to do |format|
         format.html
         format.ttl { render('search_results/index.iqrdf') }
