@@ -43,7 +43,6 @@ en:
      editor: "Editor"
      referenced_concepts: "Referenced Concepts are currently being edited:"
      association_not_found: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     default_ajax_error: "Error"
      to_review: "To review"
      is_in_review: "Document is in review"
      unpublished_version: Unpublished version

@@ -43,7 +43,6 @@ de:
      editor: "Redakteur"
      referenced_concepts: "Referenzierte Konzepte befinden sich in Bearbeitung:"
      association_not_found: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden"
-     default_ajax_error: "Fehler"
      to_review: "Vorlage zur Freigabe"
      is_in_review: "Dokument befindet sich im Reviewprozess"
      unpublished_version: Unveröffentlichte Version
