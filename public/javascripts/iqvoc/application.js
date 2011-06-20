@@ -17,10 +17,10 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	// language selection -- TODO: move to separate module
+	// language selection
 	var langWidget = $("ul.lang-widget")[0];
 	// primary language (converting links to radio buttons)
-	$("a", langWidget).map(function(i, node) {
+	$("a", langWidget).each(function(i, node) {
 		var link = $(node);
 		var el = link.closest("li");
 		var btn = $('<input type="radio" name="primary_language">');
@@ -52,6 +52,7 @@ jQuery(document).ready(function($) {
 	});
 	new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
+	// entity selection (edit mode)
 	$("input.entity_select").each(function(i, node) {
 		new IQVOC.EntitySelector(node);
 	});
