@@ -352,25 +352,4 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-
-	// New Label (Inflectional search)
-	$("form#new_label input#label_value").keyup(function() {
-		var notification = $("p.label_warning");
-		$.ajax({
-			type: "GET",
-			url: $(this).attr("data-remote"),
-			dataType: "json",
-			data: {
-				query: $(this).val()
-			},
-			success: function(data) {
-				if(data) {
-					var msg = notification.attr("data-msg");
-					notification.html(msg + " " + data.label.value).show();
-				} else {
-					notification.hide();
-				}
-			}
-		});
-	});
 });
