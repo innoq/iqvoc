@@ -49,7 +49,7 @@ var init = function(container, callback) { // TODO: should be a class so multipl
 spawn = function(container, data) {
 	container = container.nodeType ? container : document.getElementById(container);
 
-	// controls
+	// zoom controls
 	$.each(["+", "-"], function(i, item) {
 		$('<input type="button" class="button" />').val(item).click(function(ev) {
 			var d = VIZ.config.Navigation.zooming / 1000;
@@ -57,6 +57,7 @@ spawn = function(container, data) {
 			VIZ.canvas.scale(d, d);
 		}).appendTo(container);
 	});
+	// filter controls
 	$.each(["label", "relation"], function(i, item) {
 		var cb = $('<input type="checkbox" name="entities" checked="checked">')
 			.val(item);

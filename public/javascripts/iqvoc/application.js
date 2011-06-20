@@ -48,10 +48,9 @@ var enhancedDropdown = function(container) {
 			ddtimer = setTimeout(jQuery.proxy(collapseDropdown, this), 600);
 		}
 	});
-
 };
 
-var EntitySelector = function(node) {
+var EntitySelector = function(node) { // TODO: move into separate module
 	this.el = $(node).hide(); // XXX: rename
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
