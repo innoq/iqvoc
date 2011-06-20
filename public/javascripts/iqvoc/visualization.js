@@ -67,9 +67,9 @@ spawn = function(container, data) {
 	// resize controls
 	var toggleSize;
 	var btns = $.map(["▢", "_"], function(item, i) {
-		return $('<input type="button" class="button" />').val(item).
-			click(function(ev) { toggleSize(i === 0); }).
-			prependTo(container)[0];
+		return $('<input type="button" class="button" />').val(item)
+			.click(function(ev) { toggleSize(i === 0); })
+			.prependTo(container)[0];
 	});
 	btns = $(btns);
 	btns.eq(1).hide();
@@ -166,8 +166,8 @@ generateGraph = function(container, options) {
 		onCreateLabel: function(domEl, node) {
 			var name = htmlEncode(node.name);
 			if(node.data.nodes) { // special-casing placeholder
-				$(domEl).html(node.name).
-					attr("title", node.data.nodes.length + " nodes hidden"); // TODO: i18n
+				$(domEl).html(node.name)
+					.attr("title", node.data.nodes.length + " nodes hidden"); // TODO: i18n
 			} else if(node.data.etype === "label") {
 				$(domEl).html(name);
 			} else { // concept node (link with abbreviated name)
@@ -175,9 +175,9 @@ generateGraph = function(container, options) {
 				var host = CONCEPT_URI.split(cue)[0]; // XXX: hacky and brittle
 				var caption = node.name.length <= 5 ? name :
 						htmlEncode(node.name.substr(0, 5)) + "&hellip;";
-				$("<a />").attr("href", host + cue + node.id).
-					attr("title", name).html(caption).
-					appendTo(domEl);
+				$("<a />").attr("href", host + cue + node.id)
+					.attr("title", name).html(caption)
+					.appendTo(domEl);
 			}
 		},
 
@@ -308,8 +308,8 @@ $jit.Graph.Node.prototype.setPos = function(value, type) {
 
 // convert &, <, > and " to HTML entities (adapted from TiddlyWiki)
 htmlEncode = function(str) {
-	return str.replace(/&/mg, "&amp;").replace(/</mg, "&lt;").
-			replace(/>/mg, "&gt;").replace(/\"/mg, "&quot;");
+	return str.replace(/&/mg, "&amp;").replace(/</mg, "&lt;")
+			.replace(/>/mg, "&gt;").replace(/\"/mg, "&quot;");
 };
 
 return {

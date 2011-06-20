@@ -93,9 +93,9 @@ jQuery(document).ready(function($) {
 		$(this).treeview({
 			collapsed: true,
 			toggle: function() {
-				var $this = $(this);
-				if($this.hasClass("hasChildren")) {
-					var childList = $this.removeClass("hasChildren").find("ul");
+				var el = $(this);
+				if(el.hasClass("hasChildren")) {
+					var childList = el.removeClass("hasChildren").find("ul");
 					$.fn.treeviewLoad({ url: url }, this.id, childList, container);
 				}
 			}

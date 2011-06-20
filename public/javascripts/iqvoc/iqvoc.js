@@ -73,7 +73,7 @@ var EntitySelector = function(node) { // TODO: move into separate module
 			var uri = self.el.data("query-url");
 			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
 				var excludes = self.getSelection()
-					.concat(exclude ? [exclude] : []);
+						.concat(exclude ? [exclude] : []);
 				data = $.map(data, function(entity, i) {
 					return $.inArray(entity.id, excludes) !== -1 ? null :
 							{ value: entity.id, label: entity.name };
@@ -100,8 +100,8 @@ $.extend(EntitySelector.prototype, {
 		var el = $(this).val("");
 		var widget = el.closest(".entity_select").data("widget");
 		if(widget.add(ui.item.value)) {
-			var entity = widget.
-					createEntity({ id: ui.item.value, name: ui.item.label });
+			var entity = widget
+					.createEntity({ id: ui.item.value, name: ui.item.label });
 			widget.container.find("ul").append(entity);
 			if(widget.singular) {
 				widget.input.hide();
@@ -165,8 +165,8 @@ var createNote = function(ev) {
 	// special case for usage notes
 	// a usage note contains a select box instead of a textarea
 	// FIXME: Hardcoded UMT stuff
-	var isUsageNote = source.find("label:first").attr("for").
-			match(/^concept_note_umt_usage_notes/);
+	var isUsageNote = source.find("label:first").attr("for")
+			.match(/^concept_note_umt_usage_notes/);
 
 	if(source.is(":hidden")) {
 		source.show();
@@ -175,8 +175,8 @@ var createNote = function(ev) {
 
 	var clone = source.clone();
 
-	var count = source.find(isUsageNote ? "select" : "textarea").attr("id").
-			match(/_(\d)_/)[1];
+	var count = source.find(isUsageNote ? "select" : "textarea").attr("id")
+			.match(/_(\d)_/)[1];
 	count = parseInt(count, 10) + 1;
 	var newIdCount = "_" + count + "_";
 	var newNameCount = "[" + count + "]";
