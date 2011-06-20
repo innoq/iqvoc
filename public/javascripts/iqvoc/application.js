@@ -233,36 +233,8 @@ jQuery(document).ready(function($) {
 	IQVOC.dynamicAuth("#auth_controls");
 	if(IQVOC.visualization) {
 		IQVOC.visualization.init("infovis", function(container) { // XXX: belongs into visualization.js!?
-			var width = container.width();
-			var height = container.height();
-
-			var toggleSize = function(enlarge) {
-				var viz = container.data("widget"),
-					_width = enlarge ? width * 2 : width,
-					_height = enlarge ? height * 2 : height;
-				viz.canvas.resize(_width, _height);
-				container.css({
-					width: _width + "px",
-					height: _height + "px"
-				});
-				IQVOC.visualization.redraw(viz);
-			};
-
-			var btns = $.map(["▢", "_"], function(item, i) {
-				return $('<input type="button" class="button" />').val(item).
-					click(function(ev) {
-						toggleSize(i === 0);
-						IQVOC.Storage.setItem("visualization",
-								i === 0 ? "enlarged" : "");
-						btns.toggle();
-					}).
-					prependTo(container)[0];
-			});
-			btns = $(btns);
-			btns.eq(1).hide();
-
 			if(IQVOC.Storage.getItem("visualization") === "enlarged") {
-				btns.eq(0).click(); // XXX: hacky!?
+				container.data("widget").toggleSize(true);
 			}
 		});
 	}

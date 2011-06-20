@@ -64,10 +64,39 @@ spawn = function(container, data) {
 		$('<label />').text(item + "s").prepend(cb).appendTo(container);
 	});
 	$("input[type=checkbox]", container).live("change", onFilter);
+	// resize controls
+	var toggleSize;
+	var btns = $.map(["▢", "_"], function(item, i) {
+		return $('<input type="button" class="button" />').val(item).
+			click(function(ev) { toggleSize(i === 0); }).
+			prependTo(container)[0];
+	});
+	btns = $(btns);
+	btns.eq(1).hide();
+	toggleSize = (function(container) {
+		container = $(container);
+		var width = container.width();
+		var height = container.height();
+		return function(enlarge) {
+			var viz = container.data("widget"),
+				_width = enlarge ? width * 2 : width,
+				_height = enlarge ? height * 2 : height;
+			viz.canvas.resize(_width, _height);
+			container.css({
+				width: _width + "px",
+				height: _height + "px"
+			});
+			IQVOC.visualization.redraw(viz);
+
+			btns.toggle();
+			IQVOC.Storage.setItem("visualization", enlarge ? "enlarged" : "");
+		};
+	}(container));
 
 	var viz = generateGraph(container, { levelDistance: LEVELDISTANCE });
 	viz.filters = []; // TODO: rename? (ambiguous)
 	viz.data = data;
+	viz.toggleSize = toggleSize;
 	redraw(viz);
 
 	return $(container).addClass("infvovis").data("widget", viz);
