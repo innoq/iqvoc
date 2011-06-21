@@ -1,4 +1,11 @@
-IQVOC.EntitySelector = function(node) { // TODO: move into separate module
+/*jslint strict: true, unparam: true */
+/*global jQuery, IQVOC */
+
+IQVOC.EntitySelector = (function($) {
+
+"use strict";
+
+var EntitySelector = function(node) {
 	this.el = $(node).hide(); // XXX: rename
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
@@ -43,7 +50,7 @@ IQVOC.EntitySelector = function(node) { // TODO: move into separate module
 		this.input.hide();
 	}
 };
-$.extend(IQVOC.EntitySelector.prototype, {
+$.extend(EntitySelector.prototype, {
 	onSelect: function(ev, ui) {
 		var el = $(this).val("");
 		var widget = el.closest(".entity_select").data("widget");
@@ -105,3 +112,7 @@ $.extend(IQVOC.EntitySelector.prototype, {
 		});
 	}
 });
+
+return EntitySelector;
+
+}(jQuery));
