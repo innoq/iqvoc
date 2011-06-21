@@ -140,7 +140,7 @@ generateGraph = function(container, options) {
 		width: container.offsetWidth,
 		height: container.offsetHeight,
 
-		levelDistance: options.leveldistance || LEVELDISTANCE,
+		levelDistance: options.levelDistance || LEVELDISTANCE,
 
 		// concentric circle as background (cargo-culted from RGraph example)
 		background: {
