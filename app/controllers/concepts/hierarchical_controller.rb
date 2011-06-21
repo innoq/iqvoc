@@ -58,14 +58,13 @@ class Concepts::HierarchicalController < ConceptsController
       format.html
       format.json do # Treeview data
         @concepts.map! do |c|
-          hsh = {
-            :text => CGI.escapeHTML(c.pref_label.to_s),
+          {
+            :id   => c.id,
             :url  => concept_path(:id => c, :format => :html),
-            :id   => c.id
+            :text => CGI.escapeHTML(c.pref_label.to_s),
+            :hasChildren => (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
+            :additionalText => (" (#{c.additional_info})" if c.additional_info.present?)
           }
-          hsh[:additionalText] = " (#{c.additional_info})" if c.additional_info.present?
-          hsh[:hasChildren] = params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?
-          hsh
         end
         render :json => @concepts.to_json
       end
