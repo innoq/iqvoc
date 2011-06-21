@@ -35,7 +35,25 @@ end
 
 namespace :deploy do
 
-  desc "Copy you current config/database.yml to the server"
+  desc "Generate a secret for the server"
+  task :generate_secret, :roles => :app do
+    require 'securerandom'
+
+    template = File.expand_path("config/initializers/secret_token.rb.template")
+    raise "File not found: #{template}" unless File.exist?(template)
+
+    path = "#{shared_path}/config/initializers"
+    file_name = "#{path}/secret_token.rb"
+
+    token = SecureRandom.hex(64)
+    txt = File.read(template)
+    txt.gsub!(/#(Iqvoc::Application.config.secret_token) = '.*?'$/, "\\1 = '#{token}'")
+
+    run "mkdir -p #{path}"
+    put txt, file_name
+  end
+
+  desc "Copy your current config/database.yml to the server"
   task :database_config_copy, :roles => :app do
     file_name = File.expand_path("config/database.yml")
     raise "File not found: #{file_name}" unless File.exist?(file_name)
@@ -43,7 +61,7 @@ namespace :deploy do
     put File.open(file_name).read, "#{shared_path}/config/database.yml"
   end
 
-  desc "Create default sqlite3 config/database.yml"
+  desc "Create default SQLite3 config/database.yml"
   task :database_config_sqlite3, :roles => :app do
     config = {
       'production' => {
