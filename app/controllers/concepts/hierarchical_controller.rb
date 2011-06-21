@@ -60,7 +60,7 @@ class Concepts::HierarchicalController < ConceptsController
         @concepts.map! do |c|
           hsh = {
             :text => CGI.escapeHTML(c.pref_label.to_s),
-            :url  => concept_path(:id => c),
+            :url  => concept_path(:id => c, :format => :html),
             :id   => c.id
           }
           hsh[:additionalText] = " (#{c.additional_info})" if c.additional_info.present?
