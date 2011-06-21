@@ -83,8 +83,8 @@ spawn = function(container, data) {
 				_height = enlarge ? height * 2 : height;
 			viz.canvas.resize(_width, _height);
 			container.css({
-				width: _width + "px",
-				height: _height + "px"
+				width: String(_width) + "px",
+				height: String(_height) + "px"
 			});
 			IQVOC.visualization.redraw(viz);
 
@@ -167,7 +167,7 @@ generateGraph = function(container, options) {
 			var name = htmlEncode(node.name);
 			if(node.data.nodes) { // special-casing placeholder
 				$(domEl).html(node.name)
-					.attr("title", node.data.nodes.length + " nodes hidden"); // TODO: i18n
+					.attr("title", String(node.data.nodes.length) + " nodes hidden"); // TODO: i18n
 			} else if(node.data.etype === "label") {
 				$(domEl).html(name);
 			} else { // concept node (link with abbreviated name)
@@ -184,18 +184,19 @@ generateGraph = function(container, options) {
 		// change node styles when labels are placed/moved
 		onPlaceLabel: function(domEl, node) {
 			var css = {},
-				classes = ["level" + node._depth, node.data.etype || "concept"],
-				el = $(domEl);
+				el = $(domEl),
+				classes = ["level" + String(node._depth),
+						node.data.etype || "concept"];
 			// ensure label covers the underlying node
-			css.height = css.lineHeight = node.Node.height + "px";
+			css.height = css.lineHeight = String(node.Node.height) + "px";
 			el.addClass(classes.join(" ")).css(css);
 
 			// ensure label is centered on the symbol
 			var style = domEl.style;
 			var x = parseInt(style.left, 10);
 			var y = parseInt(style.top, 10);
-			style.top = (y - domEl.offsetHeight / 2) + "px";
-			style.left = (x - domEl.offsetWidth / 2) + "px";
+			style.top = String(y - domEl.offsetHeight / 2) + "px";
+			style.left = String(x - domEl.offsetWidth / 2) + "px";
 		},
 
 		onBeforePlotLine: function(adj) {

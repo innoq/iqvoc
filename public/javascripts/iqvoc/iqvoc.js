@@ -69,7 +69,7 @@ var createNote = function(ev) {
 
 	var count = source.find(isUsageNote ? "select" : "textarea").attr("id")
 			.match(/_(\d)_/)[1];
-	count = parseInt(count, 10) + 1;
+	count = String(parseInt(count, 10) + 1);
 	var newIdCount = "_" + count + "_";
 	var newNameCount = "[" + count + "]";
 
