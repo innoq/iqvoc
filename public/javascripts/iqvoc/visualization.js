@@ -1,4 +1,4 @@
-/*jslint strict: true, unparam: true, nomen: false, browser: true */
+/*jslint vars: true, unparam: true, nomen: true, browser: true */
 /*global jQuery, $jit, IQVOC, HTMLCanvasElement */
 
 // basic settings -- XXX: cargo-culted from JIT examples

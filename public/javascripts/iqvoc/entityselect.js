@@ -1,4 +1,4 @@
-/*jslint strict: true, unparam: true */
+/*jslint vars: true, unparam: true */
 /*global jQuery, IQVOC */
 
 IQVOC.EntitySelector = (function($) {

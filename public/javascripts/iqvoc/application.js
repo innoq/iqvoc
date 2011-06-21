@@ -1,4 +1,4 @@
-/*jslint strict: true, unparam: true, browser: true */
+/*jslint vars: true, unparam: true, browser: true */
 /*global jQuery, IQVOC */
 
 jQuery(document).ready(function($) {
