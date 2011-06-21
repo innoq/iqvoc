@@ -20,21 +20,6 @@
       <%= stylesheet_link_tag file %>
     <% end %>
 
-    <%= javascript_include_tag "iqvoc/jquery-1.6.1.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui-1.8.13.custom.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.async.js" %>
-    <%= javascript_include_tag "iqvoc/iqvoc.js" %>
-    <%= javascript_include_tag "iqvoc/application.js" %>
-    <%= javascript_include_tag "iqvoc/rails.js" %>
-    <%= javascript_include_tag "iqvoc/storage.js" %>
-    <%= javascript_include_tag "iqvoc/langselect.js" %>
-    <%= javascript_include_tag "iqvoc/entityselect.js" %>
-    <% Iqvoc.additional_js_files.each do |file| %>
-      <%= javascript_include_tag file %>
-    <% end %>
-
     <%= yield :head %>
   </head>
   <body class="<%= "concept" unless @concept.nil? %>">
@@ -73,5 +58,20 @@
       </div>
     </div>
 
+    <%= javascript_include_tag "iqvoc/jquery-1.6.1.min.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-ui-1.8.13.custom.min.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.js" %>
+    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.async.js" %>
+    <%= javascript_include_tag "iqvoc/iqvoc.js" %>
+    <%= javascript_include_tag "iqvoc/rails.js" %>
+    <%= javascript_include_tag "iqvoc/storage.js" %>
+    <%= javascript_include_tag "iqvoc/langselect.js" %>
+    <%= javascript_include_tag "iqvoc/entityselect.js" %>
+    <%= javascript_include_tag "iqvoc/application.js" %>
+    <%= yield :scripts %>
+    <% Iqvoc.additional_js_files.each do |file| %>
+      <%= javascript_include_tag file %>
+    <% end %>
   </body>
 </html>
