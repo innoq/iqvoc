@@ -50,11 +50,11 @@ jQuery(document).ready(function($) {
 	$(document).bind("lang_selected", function(ev, data) {
 		toggleSections(data.langs);
 	});
-	new IQVOC.LanguageSelector(langWidget, "lang_selected");
+	IQVOC.LanguageSelector(langWidget, "lang_selected");
 
 	// entity selection (edit mode)
 	$("input.entity_select").each(function(i, node) {
-		new IQVOC.EntitySelector(node);
+		IQVOC.EntitySelector(node);
 	});
 
 	// Label editing (inline notes)

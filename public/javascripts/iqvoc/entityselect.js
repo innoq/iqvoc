@@ -6,6 +6,9 @@ IQVOC.EntitySelector = (function($) {
 "use strict";
 
 var EntitySelector = function(node) {
+	if(!(this instanceof EntitySelector)) { // makes "new" keyword optional
+		return new EntitySelector(node);
+	}
 	this.el = $(node).hide(); // XXX: rename
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
