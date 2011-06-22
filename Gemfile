@@ -57,7 +57,7 @@ end
 
 group :production, :production_internal do
   platforms :ruby do
-    gem 'sqlite3-ruby', :require => 'sqlite3'
+    gem 'sqlite3'
   end
 
   platforms :jruby do
