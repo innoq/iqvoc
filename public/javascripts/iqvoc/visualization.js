@@ -99,7 +99,7 @@ spawn = function(container, data) {
 	viz.toggleSize = toggleSize;
 	redraw(viz);
 
-	return $(container).addClass("infvovis").data("widget", viz);
+	return $(container).addClass("infovis").data("widget", viz);
 };
 
 redraw = function(viz) {
@@ -121,7 +121,7 @@ onFilter = function(ev) {
 		VIZ.filters.push(value);
 	}
 
-	el.closest(".infvovis").toggleClass("filtered", VIZ.filters.length > 0);
+	el.closest(".infovis").toggleClass("filtered", VIZ.filters.length > 0);
 
 	VIZ.loadJSON(VIZ.data);
 	VIZ.refresh();
