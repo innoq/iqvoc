@@ -35,7 +35,6 @@ jQuery(document).ready(function($) {
 		window.location = $(this).closest("label").find("a").attr("href");
 	});
 	// secondary language
-	$("input:checkbox[value=" + locale + "]", langWidget).closest("li").remove();
 	var toggleSections = function(langSelected) {
 		$(".translation[lang]").each(function(i, node) {
 			var el = $(node);
