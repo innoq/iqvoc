@@ -286,7 +286,7 @@ input[type=submit], button, a.button {
   padding: 4px 6px;
   font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #fff !important;
-  background: #308110;
+  background: #409120;
   background: -moz-linear-gradient(0% 100% 90deg, #B0EAA4, #308110);
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#B0EAA4), to(#308110));
   border: 1px solid #308110;
