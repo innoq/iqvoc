@@ -317,9 +317,14 @@ input[type=submit]:active, button:active, a.button:active {
 
 #abstract_uri {
   display: block;
-  background: url('http://www.w3.org/RDF/icons/rdf_flyer.24') no-repeat;
-  padding: 4px 0 2px 25px;
+  line-height: 24px;
   margin-bottom: 20px;
+  padding: 4px 0 2px;
+}
+
+#abstract_uri img {
+	vertical-align: middle;
+	border: none;
 }
 
 #untranslated {
