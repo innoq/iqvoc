@@ -49,7 +49,7 @@ GEM
     celerity (0.8.9)
     childprocess (0.1.9)
       ffi (~> 1.0.6)
-    configuration (1.2.0)
+    configuration (1.3.1)
     culerity (0.2.15)
     database_cleaner (0.6.0.rc.3)
     erubis (2.6.6)
@@ -63,8 +63,8 @@ GEM
     iq_rdf (0.0.15)
       builder
       bundler
-    json (1.5.2)
-    json_pure (1.5.2)
+    json (1.5.3)
+    json_pure (1.5.3)
     kaminari (0.12.4)
       rails (>= 3.0.0)
     launchy (0.4.0)
