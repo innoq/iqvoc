@@ -34,5 +34,13 @@ module DashboardHelper
 
     content_tag :span, raw(msg), :class => css
   end
+  
+  def link_to_dashboard_item(item)
+    if item.is_a?(Label::Base) 
+      item.published? ? label_path(:id => item.origin) : label_path(:published => 0, :id => item.origin)
+    else
+      item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)
+    end
+  end
 
 end

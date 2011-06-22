@@ -28,7 +28,7 @@
     <%- end -%>
   </tr>
   <% @items.each do |item| -%>
-    <tr class="highlightable" data-url="<%= item.is_a?(Label::Base) ? label_path(:published => 0, :id => item.origin) : concept_path(:published => 0, :id => item.origin) %>">
+    <tr class="highlightable" data-url="<%= link_to_dashboard_item(item) %>">
       <td><%= item.class.model_name.human %></td>
       <td>
         <%= render item.class.edit_link_partial_name, :item => item %>
