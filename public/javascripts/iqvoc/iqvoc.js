@@ -99,7 +99,7 @@ var createNote = function(ev) {
 
 // work around apparent capybara-webkit issue:
 // https://github.com/thoughtbot/capybara-webkit/issues/43
-var Storage = localStorage;
+var Storage = localStorage || null;
 if(Storage === null) {
 	Storage = {};
 	Storage.getItem = function() { return null; };
