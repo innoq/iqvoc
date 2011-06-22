@@ -13,6 +13,7 @@
   <%- end -%>
 </h2>
 <div id="abstract_uri">
+  <%= render :partial => "partials/rdf_logo" %>
   <%= rdf_url(@concept.origin, :format => nil, :published => published_param, :lang => nil) %>
   (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
   <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)
