@@ -1,10 +1,14 @@
+## 3.2.0 (2011-06-22)
 
-## CLEANUP_VERSION_NUMBER
-
- * Optimized eager loading in tons of actions
- * Switched from will_paginate to kaminari
+ * Optimized eager loading throughout the system
+ * Added dashboard pagination
+ * Removed default secret token (see README for details)
+ * Improved visualization
+ * Replaced will_paginate with kaminari
  * Automatic changeNotes now produce dct:creator statements (instead of umt:editor)
  * Complete review of all controllers, models, helpers, tests and views
+ * Extensive refactoring
+ * Numerous bugfixes
 
 ## 3.1.3 (2011-06-09)
 
