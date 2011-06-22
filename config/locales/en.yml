@@ -19,6 +19,18 @@ en:
     de: German
     en: English
     none: Sci.
+    fr: French
+    sl: Slovenian
+    pl: Polish
+    pt: Portuguese
+    es: Spanish
+    gr: Greek
+    bg: Bulgarian
+    nl: Dutch
+    hu: Hungarian
+    it: Italian
+    cs: Czech
+    sk: Slovak
   views:
     pagination:
       first: "&laquo; First"

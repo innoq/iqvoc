@@ -19,6 +19,18 @@ de:
     de: Deutsch
     en: Englisch
     none: Wiss.
+    fr: Französisch
+    sl: Slovenisch
+    pl: Polnisch
+    pt: Portugiesisch
+    es: Spanisch
+    gr: Griechisch
+    bg: Bulgarisch
+    nl: Niederländisch
+    hu: Ungarisch
+    it: Italienisch
+    cs: Tschechisch
+    sk: Slowakisch
   views:
     pagination:
       first: "&laquo; Erste"
