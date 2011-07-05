@@ -4,7 +4,7 @@
     <%- if concept.collections.any? -%>
       <ul>
         <%- concept.collections.each do |collection| -%>
-          <li><%= link_to collection.label.to_s, collection_url(collection) %></li>
+          <li><%= link_to collection.label.to_s, collection_path(:id => collection) %></li>
         <%- end -%>
       </ul>
     <%- else -%>

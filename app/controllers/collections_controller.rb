@@ -93,7 +93,7 @@ class CollectionsController < ApplicationController
 
     if @collection.update_attributes(params[:concept])
       flash[:notice] = I18n.t("txt.controllers.collections.save.success")
-      redirect_to collection_path(@collection)
+      redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :edit
