@@ -23,10 +23,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 if (typeof window.localStorage == 'undefined' || typeof window.sessionStorage == 'undefined') (function () {
 
 var Storage = function (type) {
-  if(typeof JSON === "undefined") { // XXX: hack by FND
-    return null;
-  }
-
   function createCookie(name, value, days) {
     var date, expires;
 
