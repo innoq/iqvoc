@@ -1,7 +1,7 @@
-<li>
+<%= content_tag("li", { :class => "translation", :lang => language || nil }, true) do %>
   <% fieldname = "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]" %>
   <%= label_tag fieldname, klass.model_name.human(:count => 2) +
     (language ? " (#{t("languages.#{language}", :default => language.to_s)})" : "") %>
   <%= text_area_tag fieldname,
     concept.labelings_by_text(klass.name.to_relation_name, language) %>
-</li>
+<%- end -%>
