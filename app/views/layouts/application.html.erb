@@ -58,7 +58,12 @@
       </div>
     </div>
 
-    <%= javascript_include_tag "iqvoc/json2.js" %>
+    <script>
+      // load JSON polyfill only if necessary
+      if(typeof JSON === "undefined") {
+        document.write("<script src=\"<%= javascript_path "iqvoc/json2.js" %>\"><\/script>");
+      }
+    </script>
     <%= javascript_include_tag "iqvoc/jquery-1.6.2.min.js" %>
     <%= javascript_include_tag "iqvoc/jquery-ui-1.8.13.custom.min.js" %>
     <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
