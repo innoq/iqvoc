@@ -73,7 +73,11 @@ var Storage = function (type) {
 
   function getData() {
     var data = type == 'session' ? window.name : readCookie('localStorage');
-    return data ? JSON.parse(data) : {};
+    try {
+        return data ? JSON.parse(data) : {};
+    } catch(exc) { // bad cookie data -- XXX: hack by FND
+        return {}
+    }
   }
 
 
