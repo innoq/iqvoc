@@ -68,27 +68,27 @@ var createNote = function(ev) {
 	var clone = $("<li />").html(source.html()); // NB: not using .clone due to IE7 bug
 
 	var count = source.find(isUsageNote ? "select" : "textarea").attr("id")
-			.match(/_(\d)_/)[1];
+			.match(/_(\d+)_/)[1];
 	count = String(parseInt(count, 10) + 1);
 	var newIdCount = "_" + count + "_";
 	var newNameCount = "[" + count + "]";
 
 	clone.find("label")
-		.attr("for", source.find("label").attr("for").replace(/_\d_/, newIdCount));
+		.attr("for", source.find("label").attr("for").replace(/_\d+_/, newIdCount));
 
 	// clone.find("input")
-	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d_/, newIdCount))
-	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d\]/, newNameCount));
+	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d+_/, newIdCount))
+	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d+\]/, newNameCount));
 
 	if(!isUsageNote) {
 		clone.find("textarea")
 			.val("")
-			.attr("id", source.find("textarea").attr("id").replace(/_\d_/, newIdCount))
-			.attr("name", source.find("textarea").attr("name").replace(/\[\d\]/, newNameCount));
+			.attr("id", source.find("textarea").attr("id").replace(/_\d+_/, newIdCount))
+			.attr("name", source.find("textarea").attr("name").replace(/\[\d+\]/, newNameCount));
 	}
 	clone.find("select")
-		.attr("id", source.find("select").attr("id").replace(/_\d_/, newIdCount))
-		.attr("name", source.find("select").attr("name").replace(/\[\d\]/, newNameCount));
+		.attr("id", source.find("select").attr("id").replace(/_\d+_/, newIdCount))
+		.attr("name", source.find("select").attr("name").replace(/\[\d+\]/, newNameCount));
 
 	clone.addClass("new");
 
