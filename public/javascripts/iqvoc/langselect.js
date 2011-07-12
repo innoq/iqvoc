@@ -9,9 +9,6 @@ var getSelection, setSelection;
 
 // namespace is used for both localStorage and the event being triggered
 var LanguageSelector = function(container, namespace) {
-	if(!(this instanceof LanguageSelector)) { // "new" keyword optional
-		return new LanguageSelector(container, namespace);
-	}
 	this.container = container;
 	this.namespace = namespace;
 	this.langs = getSelection(namespace);

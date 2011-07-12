@@ -46,10 +46,31 @@ jQuery(document).ready(function($) {
 			}
 		});
 	};
+	var updateNoteLangs = function(langSelected) {
+		$(".inline_note.new select").each(function(i, sel) { // NB: new notes only!
+			sel = $(sel);
+			if(sel.data("unfiltered")) { // restore original state
+				var active = $(":selected", sel);
+				sel.html(sel.data("unfiltered"));
+				$("option", sel).prop("selected", false);
+				active.prop("selected", true);
+			} else {
+				sel.data("unfiltered", sel.html());
+			}
+			sel.find("option").each(function(i, opt) {
+				var el = $(opt),
+					lang = el.val();
+				if(lang !== locale && $.inArray(lang, langSelected) === -1) {
+					el.remove();
+				}
+			});
+		});
+	};
 	$(document).bind("lang_selected", function(ev, data) {
 		toggleSections(data.langs);
+		updateNoteLangs(data.langs);
 	});
-	IQVOC.LanguageSelector(langWidget, "lang_selected");
+	var langSelector = new IQVOC.LanguageSelector(langWidget, "lang_selected");
 
 	// entity selection (edit mode)
 	$("input.entity_select").each(function(i, node) {
@@ -58,7 +79,10 @@ jQuery(document).ready(function($) {
 
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
-	$("fieldset.note_relation input[type=button]").click(IQVOC.createNote);
+	$("fieldset.note_relation input[type=button]").click(function(ev) {
+		IQVOC.createNote.apply(this, arguments);
+		langSelector.notify(); // trigger updateOptions -- XXX: hacky!?
+	});
 	$("li.inline_note input:checkbox").change(function(ev) {
 		var action = this.checked ? "addClass" : "removeClass";
 		$(this).closest("li")[action]("deleted");
