@@ -41,19 +41,22 @@ $.extend(LanguageSelector.prototype, {
 		this.checkboxes.each(function(i, node) {
 			node.checked = $.inArray($(node).val(), self.langs) !== -1;
 		});
+		this.notify();
+	},
+	notify: function() {
 		$(document).trigger(this.namespace, { langs: this.langs });
 	},
 	add: function(value) {
 		if($.inArray(value, this.langs) === -1) {
 			this.langs.push(value);
-			setSelection(this.langs, this.namespace);
+			setSelection(this.langs, this.namespace, this);
 		}
 	},
 	remove: function(value) {
 		var pos = $.inArray(value, this.langs);
 		if(pos !== -1) {
 			this.langs.splice(pos, 1);
-			setSelection(this.langs, this.namespace);
+			setSelection(this.langs, this.namespace, this);
 		}
 	}
 });
@@ -63,9 +66,9 @@ getSelection = function(namespace) {
 	return langs === null ? null : (langs ? langs.split(",") : []);
 };
 
-setSelection = function(langs, namespace) {
+setSelection = function(langs, namespace, context) {
 	IQVOC.Storage.setItem(namespace, langs.join(","));
-	$(document).trigger(namespace, { langs: langs });
+	context.notify();
 };
 
 return LanguageSelector;
