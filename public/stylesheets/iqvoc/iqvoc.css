@@ -282,7 +282,7 @@ ul#navi_main li {
   list-style-type: none;
 }
 
-input[type=submit], button, a.button {
+.button, input[type=submit], button {
   padding: 4px 6px;
   font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #fff !important;
