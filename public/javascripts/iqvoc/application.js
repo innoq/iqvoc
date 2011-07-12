@@ -81,7 +81,7 @@ jQuery(document).ready(function($) {
 	$("fieldset.note_relation ol li.inline_note.new").hide();
 	$("fieldset.note_relation input[type=button]").click(function(ev) {
 		IQVOC.createNote.apply(this, arguments);
-		langSelector.notify(); // trigger updateOptions -- XXX: hacky!?
+		langSelector.notify(); // trigger updateNoteLangs -- XXX: hacky!?
 	});
 	$("li.inline_note input:checkbox").change(function(ev) {
 		var action = this.checked ? "addClass" : "removeClass";
