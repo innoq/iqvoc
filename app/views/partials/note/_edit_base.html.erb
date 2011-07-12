@@ -2,7 +2,10 @@
   <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
     <% owner_klass.send(assoc_klass.name.to_relation_name).select{|n| n.class == assoc_klass}.each do |note| %>
-      <li class="inline_note<%= " new" if note.new_record? %>">
+      <%= content_tag("li", {
+              :class => "inline_note translation #{" new" if note.new_record?}",
+              :lang => note.language || nil
+          }, true) do %>
         <%= f.fields_for :"#{assoc_klass.name.to_relation_name}", note do |note_form| %>
           <%= note_form.label :value, assoc_klass.model_name.human %>
           <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
@@ -18,7 +21,7 @@
             <%= note_form.label :"_destroy", t("txt.common.delete") %>
           <% end %>
         <% end %>
-      </li>
+      <% end %>
     <% end %>
   </ol>
   <input type="button" value="<%= t("txt.common.add_note") %>" />
