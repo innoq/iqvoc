@@ -65,7 +65,7 @@ var createNote = function(ev) {
 		return false;
 	}
 
-	var clone = $("<li />").html(source.html()); // NB: not using .clone due to IE7 bug
+	var clone = source.clone();
 
 	var count = source.find(isUsageNote ? "select" : "textarea").attr("id")
 			.match(/_(\d+)_/)[1];
