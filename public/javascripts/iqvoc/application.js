@@ -21,9 +21,9 @@ jQuery(document).ready(function($) {
 	var langWidget = $("ul.lang-widget")[0];
 	// primary language (converting links to radio buttons)
 	$("a", langWidget).each(function(i, node) {
-		var link = $(node);
-		var el = link.closest("li");
-		var btn = $('<input type="radio" name="primary_language">');
+		var link = $(node),
+			el = link.closest("li"),
+			btn = $('<input type="radio" name="primary_language">');
 		if(link.hasClass("current")) {
 			btn[0].checked = true;
 		}
@@ -37,8 +37,8 @@ jQuery(document).ready(function($) {
 	// secondary language
 	var toggleSections = function(langSelected) {
 		$(".translation[lang]").each(function(i, node) {
-			var el = $(node);
-			var lang = el.attr("lang");
+			var el = $(node),
+				lang = el.attr("lang");
 			if(lang !== locale && $.inArray(lang, langSelected) === -1) {
 				el.addClass("hidden");
 			} else {
@@ -88,8 +88,8 @@ jQuery(document).ready(function($) {
 
 	// hierarchical tree view
 	$("ul.hybrid-treeview").each(function() {
-		var url = $(this).attr("data-url");
-		var container = this;
+		var url = $(this).attr("data-url"),
+			container = this;
 		$(this).treeview({
 			collapsed: true,
 			toggle: function() {

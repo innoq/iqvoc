@@ -7,11 +7,11 @@ var IQVOC = (function($) {
 
 var dynamicAuth = function(container) {
 	container = container.nodeType ? container : $(container)[0];
-	var authLink = $("a", container);
-	var uri = authLink.attr("href");
+	var authLink = $("a", container),
+		uri = authLink.attr("href");
 	if(uri.indexOf("/new.html") !== -1) {
-		var menu = $("ul", container);
-		var label = authLink.text() + " &#9660;";
+		var menu = $("ul", container),
+			label = authLink.text() + " &#9660;";
 		authLink.click(function(ev) {
 			authLink.html(label);
 			menu.removeClass("hidden").slideDown()
@@ -51,8 +51,8 @@ var enhancedDropdown = function(container) {
 };
 
 var createNote = function(ev) {
-	var container = $(this).closest("fieldset");
-	var source = $("ol li:last-child", container);
+	var container = $(this).closest("fieldset"),
+		source = $("ol li:last-child", container);
 
 	// special case for usage notes
 	// a usage note contains a select box instead of a textarea
@@ -70,8 +70,8 @@ var createNote = function(ev) {
 	var count = source.find(isUsageNote ? "select" : "textarea")[0].id
 			.match(/_(\d+)_/)[1];
 	count = String(parseInt(count, 10) + 1);
-	var newIdCount = "_" + count + "_";
-	var newNameCount = "[" + count + "]";
+	var newIdCount = "_" + count + "_",
+		newNameCount = "[" + count + "]";
 
 	clone.find("label")[0]
 		.setAttribute("for", (source.find("label")[0].getAttribute("for") || "")
