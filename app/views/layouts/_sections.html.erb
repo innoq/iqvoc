@@ -1,6 +1,8 @@
+<div class="sections">
 <%- sections.select { |s| data[s] }.each do |section_key| -%>
   <h3><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></h3>
   <%- data[section_key].keys.sort.each do |sort_key| -%>
     <%= raw data[section_key][sort_key] %>
   <%- end -%>
 <%- end -%>
+</div>

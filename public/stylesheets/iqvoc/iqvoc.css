@@ -81,14 +81,13 @@ ul.letter_selector { width: 100%; overflow: auto; margin: 0 0 10px; padding: 0; 
 
 /* visualizations */
 
-#infovis_wrapper {
-	position: relative;
+.sections {
+	overflow: hidden; /* block formatting context */
+	zoom: 1; /* hasLayout */
 }
 
 #infovis {
-	position: absolute;
-	top: 0;
-	right: 0;
+	float: right;
 	width: 300px;
 	height: 300px;
 	overflow: hidden;
