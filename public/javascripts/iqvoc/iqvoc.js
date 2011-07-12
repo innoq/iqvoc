@@ -57,8 +57,8 @@ var createNote = function(ev) {
 	// special case for usage notes
 	// a usage note contains a select box instead of a textarea
 	// FIXME: Hardcoded UMT stuff
-	var isUsageNote = source.find("label:first").attr("for")
-			.match(/^concept_note_umt_usage_notes/);
+	var isUsageNote = source.find("label:first")[0].getAttribute("for");
+	isUsageNote = isUsageNote ? isUsageNote.match(/^concept_note_umt_usage_notes/) : false;
 
 	if(source.is(":hidden")) {
 		source.show();
@@ -67,31 +67,33 @@ var createNote = function(ev) {
 
 	var clone = source.clone();
 
-	var count = source.find(isUsageNote ? "select" : "textarea").attr("id")
+	var count = source.find(isUsageNote ? "select" : "textarea")[0].id
 			.match(/_(\d+)_/)[1];
 	count = String(parseInt(count, 10) + 1);
 	var newIdCount = "_" + count + "_";
 	var newNameCount = "[" + count + "]";
 
-	clone.find("label")
-		.attr("for", source.find("label").attr("for").replace(/_\d+_/, newIdCount));
+	clone.find("label")[0]
+		.setAttribute("for", (source.find("label")[0].getAttribute("for") || "")
+				.replace(/_\d+_/, newIdCount));
 
 	// clone.find("input")
 	// .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d+_/, newIdCount))
 	// .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d+\]/, newNameCount));
 
+	var src, el;
 	if(!isUsageNote) {
-		clone.find("textarea")
-			.val("")
-			.attr("id", source.find("textarea").attr("id").replace(/_\d+_/, newIdCount))
-			.attr("name", source.find("textarea").attr("name").replace(/\[\d+\]/, newNameCount));
+		src = source.find("textarea")[0];
+		el = clone.find("textarea").val("")[0];
+		el.id = src.id.replace(/_\d+_/, newIdCount);
+		el.name = src.name.replace(/\[\d+\]/, newNameCount);
 	}
-	clone.find("select")
-		.attr("id", source.find("select").attr("id").replace(/_\d+_/, newIdCount))
-		.attr("name", source.find("select").attr("name").replace(/\[\d+\]/, newNameCount));
+	src = source.find("select")[0];
+	el = clone.find("select")[0];
+	el.id = src.id.replace(/_\d+_/, newIdCount);
+	el.name = src.name.replace(/\[\d+\]/, newNameCount);
 
 	clone.addClass("new");
-
 	$("ol", container).append(clone);
 
 	return false;
