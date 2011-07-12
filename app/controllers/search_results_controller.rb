@@ -59,6 +59,7 @@ class SearchResultsController < ApplicationController
         @results = klass.multi_query(params)
         # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
         # each sub-query has to return 100 objects at most.
+        @klass = klass
       else
         @multi_query = false
         @results = klass.single_query(params)
