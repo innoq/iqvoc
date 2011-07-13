@@ -48,16 +48,7 @@ jQuery(document).ready(function($) {
 	};
 	var updateNoteLangs = function(langSelected) {
 		$(".inline_note.new select").each(function(i, sel) { // NB: new notes only!
-			sel = $(sel);
-			if(sel.data("unfiltered")) { // restore original state
-				var active = $(":selected", sel);
-				sel.html(sel.data("unfiltered"));
-				$("option", sel).prop("selected", false);
-				active.prop("selected", true);
-			} else {
-				sel.data("unfiltered", sel.html());
-			}
-			sel.find("option").each(function(i, opt) {
+			$(sel).find("option").each(function(i, opt) {
 				var el = $(opt),
 					lang = el.val();
 				if(lang !== locale && $.inArray(lang, langSelected) === -1) {
@@ -71,6 +62,10 @@ jQuery(document).ready(function($) {
 		updateNoteLangs(data.langs);
 	});
 	var langSelector = new IQVOC.LanguageSelector(langWidget, "lang_selected");
+	if($("#concept_new, #concept_edit").length) { // edit mode
+		// disable secondary language selection to avoid excessive state complexity
+		$(":checkbox", langSelector.container).prop("disabled", true);
+	}
 
 	// entity selection (edit mode)
 	$("input.entity_select").each(function(i, node) {
