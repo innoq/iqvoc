@@ -1,3 +1,8 @@
+## 3.2.1 (2011-07-14)
+
+ * Various bugfixes
+ * Improved IE7 compatibility
+
 ## 3.2.0 (2011-06-22)
 
  * Optimized eager loading throughout the system
