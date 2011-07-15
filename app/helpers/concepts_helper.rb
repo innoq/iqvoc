@@ -76,8 +76,10 @@ module ConceptsHelper
   # associated to the concept.
   def render_concept_association(hash, concept, association_class, further_options = {})
     html = render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
-    if html.squish.present?
-      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html
+    # Convert the already safely buffered string back to a regular one
+    # in order to be able to modify it with squish
+    if String.new(html).squish.present?
+      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html.html_safe
     end
   end
 
