@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "iqvoc/version"
+require 'iqvoc/version'
 
 Gem::Specification.new do |s|
   s.name        = "iqvoc"
@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
   s.summary     = "iQvoc"
   s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
 
-  s.add_dependency "rails", '3.0.7'
-  s.add_dependency "bundler"
+  s.add_dependency 'rails', '3.0.9'
+  s.add_dependency 'bundler'
   s.add_dependency 'kaminari'
   s.add_dependency 'authlogic'
   s.add_dependency 'cancan'
