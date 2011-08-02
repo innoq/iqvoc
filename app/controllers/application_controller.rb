@@ -55,7 +55,9 @@ class ApplicationController < ActionController::Base
     @exception = exception
     SearchResultsController.prepare_basic_variables(self)
 
-    render :template => 'errors/not_found', :status => :not_found
+    respond_to do |format|
+      format.html { render :template => 'errors/not_found', :status => :not_found }
+    end
   end
 
   def set_locale
