@@ -47,11 +47,10 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '1.4.3.1'
+  gem 'nokogiri', '1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'database_cleaner', '0.6.0.rc.3'
-  gem 'launchy'    # So you can do Then show me the page
+  gem 'database_cleaner'#, '0.6.0.rc.3'
   gem 'factory_girl_rails'
 end
 
