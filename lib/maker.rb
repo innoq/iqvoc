@@ -126,7 +126,6 @@ module Iqvoc
 
       label = Iqvoc::XLLabel.base_class.create!(attributes)
 
-      inflectionals.unshift(value) # the label itself is also an inflectional
       inflectionals.each { |inf|
         label.inflectionals.create!(:value => inf)
       }
