@@ -54,6 +54,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'factory_girl', '2.0.2'
+  gem 'memory_test_fix'
 end
 
 group :production, :production_internal do
