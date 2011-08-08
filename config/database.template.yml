@@ -26,7 +26,6 @@ test: &TEST
   adapter: sqlite3
   database: ":memory:"
   timeout: 500
-  database: db/iqvoc_test.sqlite3
 
 production_internal:
   encoding: utf8
