@@ -23,12 +23,10 @@ development: &DEVELOPMENT
 # re-generated from your development database when you run 'rake'.
 # Do not set this db to the same as development or production.
 test: &TEST
-  adapter: mysql2
-  encoding: utf8
-  username: root
-  password:
-  database: iqvoc_test
-  socket: <%= detect_socket.call %>
+  adapter: sqlite3
+  database: ":memory:"
+  timeout: 500
+  database: db/iqvoc_test.sqlite3
 
 production_internal:
   encoding: utf8
