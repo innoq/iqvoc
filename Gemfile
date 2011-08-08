@@ -20,7 +20,6 @@ source 'http://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '3.0.9'
-# gem 'rake', '0.8.7'
 
 gem 'kaminari'
 gem 'authlogic'
@@ -40,7 +39,9 @@ end
 group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.2.7'
+    gem 'sqlite3'
   end
+  
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
   end
@@ -50,7 +51,7 @@ group :test do
   gem 'nokogiri', '1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'database_cleaner'#, '0.6.0.rc.3'
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
 end
 
