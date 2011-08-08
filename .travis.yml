@@ -4,6 +4,7 @@ script: "bundle exec rake db:drop db:create db:migrate test RAILS_ENV=test"
 before_script: "sh travis-build.sh"
 
 notifications:
+  disabled: true
   recipients:
     - iqvoc@innoq.com
     
