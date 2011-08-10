@@ -79,7 +79,7 @@ class Labeling::SKOS::Base < Labeling::Base
   def self.build_from_rdf(subject, predicate, object)
     raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
     raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
-    value = JSON.parse("{\"x\": \"#{$1}\"}")['x'].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+    value = $1
     lang = $3
 
     subject.send(self.name.to_relation_name) << self.new(:target => self.label_class.new(:value => value, :language => lang))
