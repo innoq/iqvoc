@@ -54,7 +54,7 @@ class SkosImportTest < ActiveSupport::TestCase
   
   test "unicode json decoding trick" do
     encoded_val = "\\u00C4ffle"
-    decoded_val = JSON.parse("{\"x\": \"#{encoded_val}\"}")['x'].gsub("\\n", "\n")
+    decoded_val = JSON.parse(%Q{["#{encoded_val}"]})[0]
     assert_equal decoded_val, "Äffle"
   end
 
