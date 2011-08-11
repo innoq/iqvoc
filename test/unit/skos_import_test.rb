@@ -89,7 +89,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_equal "http://dbpedia.org/page/Monkey", match.value
   end
 
-  def test_incorrect_origin
+  test "incorrect origin" do
     assert_difference('Concept::Base.count', 1) do
       Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/")
     end
