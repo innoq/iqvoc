@@ -51,6 +51,12 @@ class SkosImportTest < ActiveSupport::TestCase
 <http://not-my-problem.com/me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.
     DATA
   ).split("\n")
+  
+  test "unicode json decoding trick" do
+    encoded_val = "\\u00C4ffle"
+    decoded_val = JSON.parse("{\"x\": \"#{encoded_val}\"}")['x'].gsub("\\n", "\n")
+    assert_equal decoded_val, "Äffle"
+  end
 
   test "basic_importer_functionality" do
     assert_difference('Concept::Base.count', 4) do
