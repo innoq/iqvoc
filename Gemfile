@@ -44,6 +44,7 @@ group :development, :test do
   
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
+    gem 'activerecord-jdbcsqlite3-adapter'
   end
 end
 
