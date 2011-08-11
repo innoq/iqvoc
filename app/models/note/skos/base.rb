@@ -25,8 +25,9 @@ class Note::SKOS::Base < Note::Base
     unless object =~ /^"(.+)"(@(.+))$/
       raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
     end
-    value = JSON.parse(%Q{["#{$1}"]})[0] # Trick to decode \uHHHHH chars
+    
     lang = $3
+    value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
     subject.send(self.name.to_relation_name) << self.new(:value => value, :language => lang)
   end
