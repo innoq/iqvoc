@@ -6,6 +6,10 @@ rvm:
 script: "bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test"
 before_script: "sh travis-build.sh"
 
+branches:
+  only:
+    - master
+
 notifications:
   recipients:
     - iqvoc@innoq.com
