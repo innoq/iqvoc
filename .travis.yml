@@ -1,6 +1,6 @@
 rvm:
-  - 1.8.7-p352
-  - 1.9.2-p290
+  - 1.8.7
+  - 1.9.2
   - jruby-1.6.3
 
 script: "bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test --trace"
