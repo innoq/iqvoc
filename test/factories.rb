@@ -53,7 +53,7 @@ FactoryGirl.define do
   factory :label, :class => Label::Base do |l|
     l.language Iqvoc::Concept.pref_labeling_languages.first
     l.published_at 2.days.ago
-    l.value "Tree #{Factory.next(:label_number)}"
+    l.value "Tree #{FactoryGirl.generate(:label_number)}"
   end
 
   factory :pref_label, :parent => :label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
