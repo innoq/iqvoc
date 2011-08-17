@@ -25,13 +25,13 @@ class SearchTest < ActionDispatch::IntegrationTest
 
 
     @concepts =  ["Tree", "Forest"].map do |english_label_value|
-      Factory.create(:concept, :pref_labelings => [
+      FactoryGirl.create(:concept, :pref_labelings => [
           Factory(:pref_labeling, :target => Factory(:pref_label, :language => :en, :value => english_label_value))
         ])
     end
 
     # create collection
-    @collection = Factory.create(:collection, :concepts => @concepts,
+    @collection = FactoryGirl.create(:collection, :concepts => @concepts,
         :labelings => [], :pref_labelings => [
             Factory(:pref_labeling,
                 :target => Factory(:pref_label, :language => :en, :value => "Alpha"))
@@ -116,7 +116,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "searching specific classes within collections" do
-    concept = Factory.create(:concept, { :notes => [
+    concept = FactoryGirl.create(:concept, { :notes => [
           Iqvoc::Concept.note_classes[1].new(:language => "en", :value => "lorem ipsum")
         ] })
 
@@ -161,7 +161,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "Pagination" do
     # create a large number of concepts
     12.times { |i|
-      Factory.create(:concept,
+      FactoryGirl.create(:concept,
         :pref_labelings => [Factory(:pref_labeling,
             :target => Factory(:pref_label, :language => :en,
               :value => "sample_#{sprintf("_%04d", i + 1)}"))])

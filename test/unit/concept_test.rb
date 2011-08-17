@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 class ConceptTest < ActiveSupport::TestCase
 
   def setup
-    @current_concept = Factory.create(:concept)
+    @current_concept = FactoryGirl.create(:concept)
   end
 
   test "should not create more than two versions of a concept" do
@@ -30,21 +30,21 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "should not save concept with empty preflabel" do
-    Factory.create(:concept).save_with_full_validation! # Is the factory working as expected?
+    FactoryGirl.create(:concept).save_with_full_validation! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
-      Factory.create(:concept, :pref_labelings => []).save_with_full_validation!
+      FactoryGirl.create(:concept, :pref_labelings => []).save_with_full_validation!
     end
   end
 
   test "concepts without pref_labels should be saveable but not publishable" do
-    concept =  Factory.create(:concept, :pref_labelings => [])
+    concept =  FactoryGirl.create(:concept, :pref_labelings => [])
     assert_equal [], concept.pref_labels
     assert concept.valid?
     assert !concept.valid_with_full_validation?
   end
 
   test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
-    concept = Factory.create(:concept)
+    concept = FactoryGirl.create(:concept)
     assert_equal 1, concept.pref_labels.count
     assert concept.valid_with_full_validation?
 
@@ -53,17 +53,17 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "concept shouldn't have more then one pref label of the same language" do
-    concept = Factory.create(:concept)
+    concept = FactoryGirl.create(:concept)
     assert concept.valid?
-    concept.pref_labelings << Factory.build(:pref_labeling)
+    concept.pref_labelings << FactoryGirl.build(:pref_labeling)
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
     assert concept.invalid?
   end
 
   test "concepts can have multiple preferred labels" do
-    concept = Factory.build(:concept)
-    concept.labelings << Factory.build(:pref_labeling, :target => Factory(:pref_label, :language => Iqvoc::Concept.pref_labeling_languages.second))
+    concept = FactoryGirl.build(:concept)
+    concept.labelings << FactoryGirl.build(:pref_labeling, :target => Factory(:pref_label, :language => Iqvoc::Concept.pref_labeling_languages.second))
     concept.save!
     concept.reload
 
@@ -73,7 +73,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "labelings_by_text setter" do
-    concept = Factory.build(:concept, :pref_labelings => [])
+    concept = FactoryGirl.build(:concept, :pref_labelings => [])
 
     concept.labelings_by_text = {
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}

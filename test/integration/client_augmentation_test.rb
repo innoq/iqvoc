@@ -8,8 +8,8 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
-    @concept = Factory.create(:concept, :published_at => nil)
-    Factory.create(:concept, :published_at => nil)
+    @concept = FactoryGirl.create(:concept, :published_at => nil)
+    FactoryGirl.create(:concept, :published_at => nil)
 
     Capybara.current_driver = Capybara.javascript_driver
     DatabaseCleaner.start

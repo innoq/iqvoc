@@ -19,12 +19,12 @@ require 'integration_test_helper'
 class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
   setup do
-    @coll1 = Factory.create(:collection)
-    @coll2 = Factory.create(:collection)
-    @coll3 = Factory.create(:collection)
-    @concept1 = Factory.create(:concept)
-    @concept2 = Factory.create(:concept)
-    @concept3 = Factory.create(:concept)
+    @coll1 = FactoryGirl.create(:collection)
+    @coll2 = FactoryGirl.create(:collection)
+    @coll3 = FactoryGirl.create(:collection)
+    @concept1 = FactoryGirl.create(:concept)
+    @concept2 = FactoryGirl.create(:concept)
+    @concept3 = FactoryGirl.create(:concept)
   end
 
   test "inline assignments are persisted" do

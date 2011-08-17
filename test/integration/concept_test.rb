@@ -20,9 +20,9 @@ require 'integration_test_helper'
 class ConceptTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept1 = Factory.create(:concept, :narrower_relations => [])
-    @concept2 = Factory.create(:concept, :narrower_relations => [])
-    @concept3 = Factory.create(:concept, :narrower_relations => [])
+    @concept1 = FactoryGirl.create(:concept, :narrower_relations => [])
+    @concept2 = FactoryGirl.create(:concept, :narrower_relations => [])
+    @concept3 = FactoryGirl.create(:concept, :narrower_relations => [])
   end
 
   test "showing published concept" do

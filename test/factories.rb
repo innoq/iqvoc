@@ -34,7 +34,7 @@ FactoryGirl.define do
   factory :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
     rel.target {|target|
       target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
-          Factory.create(:pref_labeling, :target => Factory.create(:pref_label, :value => 'Some narrower relation'))
+          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label, :value => 'Some narrower relation'))
         ])
     }
     rel.after_create { |new_relation| Factory(:stupid_broader_relation, :owner => new_relation.target, :target => new_relation.owner) }

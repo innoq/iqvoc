@@ -29,7 +29,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
       hsh.each do |lang, val|
         labelings << Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => val))
       end
-      Factory.create(:concept, :pref_labelings => labelings)
+      FactoryGirl.create(:concept, :pref_labelings => labelings)
     end 
   end
 
