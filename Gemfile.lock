@@ -61,7 +61,7 @@ GEM
     database_cleaner (0.6.7)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    factory_girl (2.0.2)
+    factory_girl (2.0.4)
     factory_girl_rails (1.1.0)
       factory_girl (~> 2.0.0)
       railties (>= 3.0.0)
@@ -140,7 +140,6 @@ DEPENDENCIES
   capybara
   capybara-webkit
   database_cleaner
-  factory_girl (= 2.0.2)
   factory_girl_rails
   iq_rdf (~> 0.0.15)
   json

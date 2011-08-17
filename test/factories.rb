@@ -14,61 +14,61 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-Factory.define :concept, :class => Iqvoc::Concept.base_class do |c|
-  c.sequence(:origin) { |n| "_000000#{n}" }
-  c.published_at 3.days.ago
-  c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
-  c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
-end
+FactoryGirl.define do
+  factory :concept, :class => Iqvoc::Concept.base_class do |c|
+    c.sequence(:origin) { |n| "_000000#{n}" }
+    c.published_at 3.days.ago
+    c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
+    c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
+  end
 
-Factory.define :collection, :class => Iqvoc::Collection.base_class do |c|
-  c.sequence(:origin) { |n| "_100000#{n}" }
-  c.published_at 3.days.ago
-  c.labelings { |labelings| [labelings.association(:pref_labeling)] }
-end
+  factory :collection, :class => Iqvoc::Collection.base_class do |c|
+    c.sequence(:origin) { |n| "_100000#{n}" }
+    c.published_at 3.days.ago
+    c.labelings { |labelings| [labelings.association(:pref_labeling)] }
+  end
 
-Factory.define :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
-end
+  factory :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
+  end
 
-Factory.define :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
-  rel.target {|target|
-    target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
-        Factory.create(:pref_labeling, :target => Factory.create(:pref_label, :value => 'Some narrower relation'))
-      ])
-  }
-  rel.after_create { |new_relation| Factory(:stupid_broader_relation, :owner => new_relation.target, :target => new_relation.owner) }
-end
+  factory :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
+    rel.target {|target|
+      target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
+          Factory.create(:pref_labeling, :target => Factory.create(:pref_label, :value => 'Some narrower relation'))
+        ])
+    }
+    rel.after_create { |new_relation| Factory(:stupid_broader_relation, :owner => new_relation.target, :target => new_relation.owner) }
+  end
 
-Factory.define :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |lab|
-  lab.target { |target| target.association(:pref_label) }
-end
+  factory :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |lab|
+    lab.target { |target| target.association(:pref_label) }
+  end
 
-Factory.define :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab|
-  lab.target { |target| target.association(:alt_label) }
-end
+  factory :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab|
+    lab.target { |target| target.association(:alt_label) }
+  end
 
-Factory.sequence(:label_number) { |n| n + 1 }
+  sequence(:label_number) { |n| n + 1 }
 
-Factory.define :label, :class => Label::Base do |l|
-  l.language Iqvoc::Concept.pref_labeling_languages.first
-  l.published_at 2.days.ago
-  l.value "Tree #{Factory.next(:label_number)}"
-end
+  factory :label, :class => Label::Base do |l|
+    l.language Iqvoc::Concept.pref_labeling_languages.first
+    l.published_at 2.days.ago
+    l.value "Tree #{Factory.next(:label_number)}"
+  end
 
-Factory.define :pref_label, :parent => :label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
+  factory :pref_label, :parent => :label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
+  end
 
-end
+  factory :alt_label, :parent => :label, :class => Labeling::SKOS::AltLabel.label_class do |l|
+  end
 
-Factory.define :alt_label, :parent => :label, :class => Labeling::SKOS::AltLabel.label_class do |l|
-
-end
-
-Factory.define :user do |u|
-  u.forename 'Test'
-  u.surname 'User'
-  u.email 'testuser@iqvoc.local'
-  u.password 'omgomgomg'
-  u.password_confirmation 'omgomgomg'
-  u.role 'reader'
-  u.active true
+  factory :user do |u|
+    u.forename 'Test'
+    u.surname 'User'
+    u.email 'testuser@iqvoc.local'
+    u.password 'omgomgomg'
+    u.password_confirmation 'omgomgomg'
+    u.role 'reader'
+    u.active true
+  end
 end
