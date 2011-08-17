@@ -1,3 +1,10 @@
+## 3.2.2 (2011-08-17)
+
+ * Various bugfixes
+ * Improved unicode character handling in SKOS importer
+ * iQvoc is now built on Travis CI (http://www.travis-ci.org)
+ * Rails 3.0.9
+
 ## 3.2.1 (2011-07-14)
 
  * Various bugfixes
