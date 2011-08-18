@@ -78,7 +78,7 @@ module Iqvoc
     end
 
     # optional arguments:
-    # concept_attributes for custom concept attributes to be passed to the blueprint
+    # concept_attributes for custom concept attributes
     # pref_labels is an array of strings or label instances to be used as prefLabels
     # alt_labels is an array of strings or label instances to be used as altLabels
     def self.concept(options={})
@@ -86,7 +86,7 @@ module Iqvoc
       pref_labels = options[:pref_labels] || []
       alt_labels = options[:alt_labels] || []
 
-      defaults = { # NB: must use strings, not symbols as keys
+      defaults = { # NB: must use strings, not symbols as keys due to YAML
         "published_at" => 3.days.ago
       }
       attributes = defaults.merge(attributes)
@@ -108,7 +108,7 @@ module Iqvoc
     end
 
     # optional arguments:
-    # label_attributes for custom label attributes to be passed to the blueprint
+    # label_attributes for custom label attributes
     # inflectionals is an array of strings to be used as inflectionals
     # components is an array of labels to be used as compound form contents
     def self.label(value, options={}) # FIXME: move into SKOS-XL extension
@@ -116,7 +116,7 @@ module Iqvoc
       inflectionals = options[:inflectionals] || []
       components = options[:components] || []
 
-      defaults = { # NB: must use strings, not symbols as keys
+      defaults = { # NB: must use strings, not symbols as keys due to YAML
         :value => value, # intentionally not a string; symbol takes precedence
         "origin" => OriginMapping.merge(value),
         "language" => Iqvoc::Concept.pref_labeling_languages.first,
@@ -131,8 +131,8 @@ module Iqvoc
       }
 
       if components.length > 0
-        compound_form_contents = components.map { |label|
-          CompoundForm::Content::Base.new(:label => label)
+        compound_form_contents = components.each_with_index.map { |label, i|
+          CompoundForm::Content::Base.new(:label => label, :order => i)
         }
         label.compound_forms.create!(:compound_form_contents => compound_form_contents)
       end
