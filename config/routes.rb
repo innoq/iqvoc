@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
     match 'search(.:format)' => 'search_results#index', :as => 'search'
 
-    root :to => 'concepts/hierarchical#index'
+    root :to => 'concepts/hierarchical#index', :format => nil
   end
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
