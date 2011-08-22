@@ -19,7 +19,7 @@ class ConceptsController < ApplicationController
 
   def index
     authorize! :read, Concept::Base
-    
+
     respond_to do |format|
       format.json do # Search for widget
         @concepts = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%")).all
@@ -129,7 +129,7 @@ class ConceptsController < ApplicationController
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
     raise ActiveRecord::RecordNotFound unless @concept
-    
+
     authorize! :update, @concept
 
     if @concept.update_attributes(params[:concept])
@@ -158,7 +158,7 @@ class ConceptsController < ApplicationController
 
   protected
 
-  # TODO: Find a method name matching the behaviour of the method
+  # TODO: rename to match the behavior of the method
   def labeling_as_json(labeling)
     label = labeling.target
     return {
@@ -171,4 +171,3 @@ class ConceptsController < ApplicationController
   end
 
 end
-

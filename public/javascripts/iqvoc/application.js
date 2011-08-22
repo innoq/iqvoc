@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
 
 	// Datepicker
 	$.datepicker.setDefaults($.datepicker.regional[locale]);
-	$("input.datepicker").datepicker();
+	$("input.datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 
 	// Dashboard table row highlighting and click handling
 	$("tr.highlightable")
