@@ -1,3 +1,8 @@
+## 3.2.3 (2011-08-22)
+
+ * Minor bugfixes
+ * Rails 3.0.10
+
 ## 3.2.2 (2011-08-17)
 
  * Various bugfixes
