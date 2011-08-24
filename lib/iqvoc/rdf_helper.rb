@@ -51,7 +51,7 @@ module Iqvoc
         :value    => elements[0].gsub(/\\"/, '"'),
         :language => elements[1]
       }
-      RAILS_DEFAULT_LOGGER.debug "@split_literal => #{@split_literal}"
+      ::Rails.logger.debug "@split_literal => #{@split_literal}"
       @split_literal
     end
 
