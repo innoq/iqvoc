@@ -20,8 +20,8 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 
 ## Getting Started
 
-1. Configure your database via `config/database.template.yml`
-2. `bundle install`
+1. Configure your database via `config/database.template.yml`. Don't forget to rename it to `database.yml`
+2. Run `bundle install`
 3. Run `rake db:create` to create the database
 4. Create the necessary tables by running `rake db:migrate`
 5. Load some base data by running `rake db:seed`
