@@ -1,4 +1,10 @@
 /*
 *= require_self
-*= require_directory .
+
+*= require iqvoc
+*= require forms
+*= require widgets
+
+*= jquery.treeview
+*= jquery-ui-1.8.16.custom
 */

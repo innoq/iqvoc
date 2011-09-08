@@ -12,9 +12,6 @@
     <%= stylesheet_link_tag "blueprint/ie.css", :media => "screen, projection" %>
     <![endif]-->
 	<%= stylesheet_link_tag "application.css" %>
-    <%= stylesheet_link_tag "/javascripts/iqvoc/jquery-treeview/jquery.treeview.css" %>
-    <%= stylesheet_link_tag "iqvoc/jquery-ui-1.8.16.custom.css" %>
-    <%= stylesheet_link_tag "iqvoc/widgets.css" %>
     <% Iqvoc.additional_css_files.each do |file| %>
       <%= stylesheet_link_tag file %>
     <% end %>
