@@ -48,6 +48,12 @@ Iqvoc::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  # Do not compress assets
+  config.assets.compress = false
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
 
   # The default URI prefix for RDF data. This will be followed by a document
   # specific shnippet like (specimenType) and the id.
