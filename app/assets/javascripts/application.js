@@ -1,3 +1,14 @@
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui-1.8.16.custom
+//= require jquery-ui.datepicker-de
+//= require jquery.treeview
+//= require jquery.treeview.async
+//= require storage
+//= require iqvoc
+//= require langselect
+//= require entityselect
+
 /*jslint vars: true, unparam: true, browser: true */
 /*global jQuery, IQVOC */
 

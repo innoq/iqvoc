@@ -60,16 +60,6 @@
         document.write("<script src=\"<%= javascript_path "iqvoc/json2.js" %>\"><\/script>");
       }
     </script>
-    <%= javascript_include_tag "iqvoc/jquery-1.6.2.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui-1.8.16.custom.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.async.js" %>
-    <%= javascript_include_tag "iqvoc/rails.js" %>
-    <%= javascript_include_tag "iqvoc/storage.js" %>
-    <%= javascript_include_tag "iqvoc/iqvoc.js" %>
-    <%= javascript_include_tag "iqvoc/langselect.js" %>
-    <%= javascript_include_tag "iqvoc/entityselect.js" %>
     <%= javascript_include_tag "iqvoc/application.js" %>
     <%= yield :scripts %>
     <% Iqvoc.additional_js_files.each do |file| %>
