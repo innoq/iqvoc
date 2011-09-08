@@ -4,7 +4,7 @@
 #header {
   height: 85px;
   padding: 9px 1em 1em 160px;
-  background: url('../../images/iqvoc/header_long.png') no-repeat;
+  background: url(<%= asset_data_uri 'header_long.png' %>) no-repeat;
 }
 
 #header h1 {
@@ -46,7 +46,7 @@ a.unpublished {
 }
 
 a.back {
-  background: url('images/back.png') 0 50% no-repeat;
+  background: url(<%= asset_data_uri 'back.png' %>) 0 50% no-repeat;
   padding-left: 20px;
 }
 
@@ -248,7 +248,7 @@ ul#navi_main li {
 }
 
 #footer {
-  background: url('../../images/iqvoc/footer.png') no-repeat top right;
+  background: url(<%= asset_data_uri 'footer.png' %>) no-repeat top right;
   height: 43px;
   margin-top: 15px;
   padding-top: 10px;
