@@ -60,7 +60,7 @@
         document.write("<script src=\"<%= javascript_path "iqvoc/json2.js" %>\"><\/script>");
       }
     </script>
-    <%= javascript_include_tag "iqvoc/application.js" %>
+    <%= javascript_include_tag "application.js" %>
     <%= yield :scripts %>
     <% Iqvoc.additional_js_files.each do |file| %>
       <%= javascript_include_tag file %>
