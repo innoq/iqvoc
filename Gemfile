@@ -54,7 +54,6 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  # gem 'factory_girl'
   gem 'memory_test_fix'
   gem 'turn'
 end
