@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |config|
     config.validate_email_field = false
+    config.maintain_sessions = false
   end
 
   def self.default_role
