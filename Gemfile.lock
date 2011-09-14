@@ -1,5 +1,5 @@
 PATH
-  remote: ../iq_rdf
+  remote: ~/github/iq_rdf
   specs:
     iq_rdf (0.0.15)
       builder

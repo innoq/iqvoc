@@ -30,7 +30,7 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', :path => "../iq_rdf" #, '~> 0.0.15'
+gem 'iq_rdf', :path => "~/github/iq_rdf" #, '~> 0.0.15'
 gem 'json'
 
 group :development do
