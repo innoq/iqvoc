@@ -1,8 +1,8 @@
 # Start virtual X frame buffer
-`sh -e /etc/init.d/xvfb start`
+system "sh -e /etc/init.d/xvfb start"
 
 # Copy database config
-`cp config/database.template.yml config/database.yml`
+system "cp config/database.template.yml config/database.yml"
 
 # Generate and copy secret token initializer
 secret = `bundle exec rake secret`.strip
