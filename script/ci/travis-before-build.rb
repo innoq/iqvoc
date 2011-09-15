@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby -wKU
-
 # Start virtual X frame buffer
 system "sh -e /etc/init.d/xvfb start"
 

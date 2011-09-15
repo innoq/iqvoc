@@ -2,8 +2,8 @@ rvm:
   - 1.8.7
   - 1.9.2
 
-script: "./script/ci/travis-build.rb"
-before_script: "./script/ci/travis-before-build.rb"
+script: "ruby ./script/ci/travis-build.rb"
+before_script: "ruby ./script/ci/travis-before-build.rb"
 
 branches:
   only:
