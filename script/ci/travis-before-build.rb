@@ -2,13 +2,8 @@
 system "sh -e /etc/init.d/xvfb start"
 
 # Create a database.yml for the current database env
-<<<<<<< HEAD
 puts "Setting up database.yml for #{ENV["DB"]}"
 system "cp config/database.yml.#{ENV["DB"]} config/database.yml"
-=======
-echo "Setting up database.yml for $DB"
-cp config/database.yml.$DB config/database.yml
->>>>>>> df95966... Added support for multiple CI runs in mysql and sqlite.
 
 # Generate and copy secret token initializer
 secret = `bundle exec rake secret`.strip
