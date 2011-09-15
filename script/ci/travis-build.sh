@@ -1,2 +1,1 @@
-sh -e /etc/init.d/xvfb start
-cp config/database.template.yml config/database.yml
+bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test
