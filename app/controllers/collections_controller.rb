@@ -29,7 +29,7 @@ class CollectionsController < ApplicationController
 
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        Iqvoc::Collection.base_class.send(:preload_associations, @collections, [:subcollections])
+        ActiveRecord::Associations::Preloader.new(@collections, [:subcollections]).run
       end
       format.json do # For the widget
         @collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))
@@ -48,7 +48,10 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Iqvoc::Collection.base_class.send(:preload_associations, @collection, [:pref_labels, {:subcollections => [:pref_labels, :subcollections]}, {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}])
+    ActiveRecord::Associations::Preloader.new(@collection, 
+      [:pref_labels, 
+      {:subcollections => [:pref_labels, :subcollections]},
+      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
   end
 
   def new
@@ -80,8 +83,11 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Iqvoc::Collection.base_class.send(:preload_associations, @collection, [:pref_labels, {:subcollections => :pref_labels}, {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}])
-
+    ActiveRecord::Associations::Preloader.new(@collection, [
+      :pref_labels, 
+      {:subcollections => :pref_labels}, 
+      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+      
     build_note_relations
   end
 

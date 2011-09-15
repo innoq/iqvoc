@@ -48,7 +48,7 @@ class Concepts::HierarchicalController < ConceptsController
     end
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    Iqvoc::Concept.base_class.send(:preload_associations, @concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels])
+    ActiveRecord::Associations::Preloader.new(@concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels]).run
 
     @concepts.sort! do |a, b|
       a.pref_label.to_s <=> b.pref_label.to_s
