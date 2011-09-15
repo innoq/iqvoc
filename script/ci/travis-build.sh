@@ -1,1 +1,1 @@
-bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test
+bundle exec rake db:drop db:create db:migrate test RAILS_ENV=test
