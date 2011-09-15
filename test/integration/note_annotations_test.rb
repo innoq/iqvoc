@@ -60,7 +60,6 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"lorem ipsum\"@en\n" +
         "]")
-    puts ttl
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"dolor sit amet\"@en;\n" +
         "dct:creator \"Test User\";\n" +
