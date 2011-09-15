@@ -3,7 +3,7 @@ rvm:
   - 1.9.2
 
 script: "bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test"
-before_script: "sh travis-build.sh"
+before_script: "sh ./script/ci/travis-build.sh"
 
 branches:
   only:
