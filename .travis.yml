@@ -1,9 +1,13 @@
 rvm:
   - 1.8.7
   - 1.9.2
+  
+env:
+  - DB=sqlite
+  - DB=mysql
 
-script: "bundle exec rake db:drop db:create db:migrate test:units RAILS_ENV=test"
-before_script: "sh travis-build.sh"
+script: "ruby ./script/ci/travis-build.rb"
+before_script: "ruby ./script/ci/travis-before-build.rb"
 
 branches:
   only:
@@ -12,4 +16,5 @@ branches:
 notifications:
   recipients:
     - iqvoc@innoq.com
+    
     
