@@ -1,43 +1,42 @@
-<% detect_socket = lambda {
-  ["/tmp/mysql.sock",
-    "/opt/local/var/run/mysql5/mysqld.sock",
-    "/tmp/mysqld.sock",
-    "/var/run/mysqld.sock"
-  ].detect{ |socket| File.exist?(socket) }
-} %>
-
-development: &DEVELOPMENT
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+# 
+# Install the MYSQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem 'mysql2'
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+  adapter: mysql2
   encoding: utf8
+  reconnect: false
+  database: iqvoc_development
+  pool: 5
   username: root
   password:
-  database: iqvoc_development
-<% if defined?(JRuby) %>
-  adapter: jdbcmysql
-  hostname: localhost
-<% else %>
-  adapter: mysql2
-  socket: <%= detect_socket.call %>
-<% end %>
+  socket: /tmp/mysql.sock
 
-# Warning: The database defined as 'test' will be erased and
-# re-generated from your development database when you run 'rake'.
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test: &TEST
-  adapter: sqlite3
-  database: db/iqvoc_test.sqlite3
-  pool: 5
-  timeout: 5000
-
-production_internal:
+test:
+  adapter: mysql2
   encoding: utf8
-  username: iqvoc
-  password: iqvoc
-  database: iqvocspez
-  adapter: oracle_enhanced
+  reconnect: false
+  database: iqvoc_test
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
 
 production:
+  adapter: mysql2
   encoding: utf8
-  username: iqvoc
-  password: iqvoc
-  database: iqvoc
-  adapter: oracle_enhanced
+  reconnect: false
+  database: iqvoc_production
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
