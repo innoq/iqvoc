@@ -55,14 +55,16 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     visit ttl_uri
     ttl = page.source.
         gsub(/^ *| *$/, ""). # ignore indentation
-        gsub(/\d/, "#") # neutralize timestamps
+        gsub(/\d/, "#").     # neutralize timestamps
+        gsub(/#\+#/, "#-#")  # neutralize eventually positive timezone shifts (server time)
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"lorem ipsum\"@en\n" +
         "]")
+    puts ttl
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"dolor sit amet\"@en;\n" +
         "dct:creator \"Test User\";\n" +
-        "dct:modified \"####-##-##T##:##:##+##:##\"\n" +
+        "dct:modified \"####-##-##T##:##:##-##:##\"\n" +
         "]")
 
     visit xml_uri
