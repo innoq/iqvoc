@@ -20,10 +20,10 @@ class Concept::Base < ActiveRecord::Base
 
   include Iqvoc::Versioning
 
-  class_inheritable_accessor :default_includes
+  class_attribute :default_includes
   self.default_includes = []
 
-  class_inheritable_accessor :rdf_namespace, :rdf_class
+  class_attribute :rdf_namespace, :rdf_class
   self.rdf_namespace = nil
   self.rdf_class = nil
 
