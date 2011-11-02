@@ -73,7 +73,7 @@ $.extend(EntitySelector.prototype, {
 		var widget = el.closest(".entity_select").data("widget");
 		widget.remove(entity.data("id"));
 		entity.remove();
-		if(widget.singular) {
+		if(widget.singular && !widget.entities.length) {
 			widget.input.show();
 		}
 		ev.preventDefault();
