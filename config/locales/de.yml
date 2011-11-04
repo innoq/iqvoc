@@ -154,6 +154,7 @@ de:
        language: "Sprache"
        all: "alle"
        none: "keine"
+       for: "Nach"
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"

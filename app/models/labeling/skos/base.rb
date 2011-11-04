@@ -62,12 +62,18 @@ class Labeling::SKOS::Base < Labeling::Base
         raise "Collection with Origin #{params[:collection_origin]} not found!"
       end
     end
-    scope = scope.includes(:owner).
-        # Ensure only concepts are taken into account (i.e. exclude collections)
-        # where("concepts.type" => Iqvoc::Concept.base_class_name).
-        # Ensure that the included concept is published
-        merge(Concept::Base.published)
-
+    scope = scope.includes(:owner)
+    
+    scope = case params[:for]
+    when "concept"
+      scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
+    when "collection"
+      scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
+    else
+      # no additional conditions
+      scope
+    end
+    
     scope
   end
 

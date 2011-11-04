@@ -162,6 +162,7 @@ en:
        language: "language"
        all: "all"
        none: "none"
+       for: "For"
      user_sessions:
        header: "Login"
        login: "Login"
