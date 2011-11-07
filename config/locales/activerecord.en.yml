@@ -22,6 +22,9 @@ en:
           one:   "Concept"
           other: "Concepts"
         relation:
+          base:
+            one: "Relation"
+            other: "Relations"
           skos:
             broader:
               mono:
@@ -57,6 +60,9 @@ en:
             one:   "Alternative label"
             other: "Alternative labels"
       match:
+        base:
+          one: "Match"
+          other: "Matches"
         skos:
           broad_match:
             one:   "Broader Match"
