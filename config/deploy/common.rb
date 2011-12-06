@@ -47,7 +47,7 @@ namespace :deploy do
 
     token = SecureRandom.hex(64)
     txt = File.read(template)
-    txt.gsub!(/#(Iqvoc::Application.config.secret_token) = '.*?'$/, "\\1 = '#{token}'")
+    txt.gsub!("S-E-C-R-E-T", token)
 
     run "mkdir -p #{path}"
     put txt, file_name
