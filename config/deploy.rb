@@ -20,7 +20,7 @@ load_history
 load "#{File.dirname(__FILE__)}/deploy/common.rb"
 
 set :default_stage, "innoq"
-set :stages, %w(ec2 innoq)
+set :stages, %w(ec2 innoq bian)
 require 'capistrano/ext/multistage'
 
 # RVM bootstrap
