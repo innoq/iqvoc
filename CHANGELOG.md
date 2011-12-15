@@ -1,3 +1,7 @@
+## 3.2.5 (2011-12-07)
+
+ * Various bugfixes
+
 ## 3.2.4 (2011-11-07)
 
  * Added search functionality for collections
