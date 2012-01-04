@@ -1,6 +1,6 @@
 # iQvoc
 
-[![Build Status](https://secure.travis-ci.org/jnicklas/carrierwave.png)](http://travis-ci.org/innoq/iqvoc)
+[![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
 
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
