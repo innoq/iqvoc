@@ -1,5 +1,7 @@
 # iQvoc
 
+[![Build Status](https://secure.travis-ci.org/jnicklas/carrierwave.png)](http://travis-ci.org/innoq/iqvoc)
+
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
 iQvoc supports vocabularies that are common to many knowledge organization systems, such as:
@@ -52,7 +54,7 @@ If you want to help out there are several options:
 
 If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
 
-Tests can be run via `rake test`. We're using capybara-webkit for integration tests with JavaScript support.
+Tests can be run via `bundle exec rake test`. We're using capybara-webkit for integration tests with JavaScript support.
 
 ## Maintainer & Contributors
 
