@@ -44,6 +44,10 @@ There are many hooks providing support for your own classes and configuration. T
 also works as a Rails Engine. The config residing in `lib/iqvoc.rb` provides a basic
 overview of the possibilities.
 
+## Documentation
+
+Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki/_pages).
+
 ## Contributing
 
 If you want to help out there are several options:
