@@ -18,7 +18,7 @@ module Iqvoc
   module DeepCloning
 
     def self.included(base) #:nodoc:
-      base.alias_method_chain :clone, :deep_cloning
+      base.alias_method_chain :dup, :deep_cloning
     end
 
     # clones an ActiveRecord model.
@@ -47,8 +47,8 @@ module Iqvoc
     # ==== Cloning multiple associations - but only the join table entries without cloning the associated objects themselves
     # pirate.clone :include_association => [:matey_ids, :treasure_ids]
     #
-    def clone_with_deep_cloning options = {}
-      kopy = clone_without_deep_cloning
+    def dup_with_deep_cloning(options = {})
+      kopy = dup_without_deep_cloning
 
       if options[:except]
         Array(options[:except]).each do |attribute|
@@ -72,11 +72,11 @@ module Iqvoc
           association_reflection = self.class.reflect_on_association(association)
           cloned_object = case association_reflection.macro
           when :belongs_to, :has_one
-            self.send(association) && self.send(association).clone(opts)
+            self.send(association) && self.send(association).dup(opts)
           when :has_many, :has_and_belongs_to_many
             fk = association_reflection.options[:foreign_key]# || self.class.to_s.underscore
             self.send(association).collect do |obj|
-              cloned_obj = obj.clone(opts)
+              cloned_obj = obj.dup(opts)
               cloned_obj.send("#{fk}=", kopy) unless fk.blank?
               cloned_obj
             end
