@@ -18,5 +18,6 @@ public/fonts/vendor
 *.war
 vendor/gems/*.gem
 *.gem
-
+config/deploy.rb
+config/deploy
 config/initializers/secret_token.rb
