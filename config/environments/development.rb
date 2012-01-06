@@ -53,7 +53,7 @@ Iqvoc::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
 
   # The default URI prefix for RDF data. This will be followed by a document
   # specific shnippet like (specimenType) and the id.
