@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = "iQvoc"
   s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
 
-  s.add_dependency 'rails', '~> 3.0.9'
+  s.add_dependency 'rails', '~> 3.1.3'
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari'
   s.add_dependency 'authlogic'
