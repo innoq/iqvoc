@@ -1,5 +1,7 @@
 # iQvoc
 
+[![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
+
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
 iQvoc supports vocabularies that are common to many knowledge organization systems, such as:
@@ -42,6 +44,10 @@ There are many hooks providing support for your own classes and configuration. T
 also works as a Rails Engine. The config residing in `lib/iqvoc.rb` provides a basic
 overview of the possibilities.
 
+## Documentation
+
+Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki/_pages).
+
 ## Contributing
 
 If you want to help out there are several options:
@@ -52,7 +58,7 @@ If you want to help out there are several options:
 
 If you make changes to existing code please make sure that the test suite stays green. Please include tests to your additional contributions.
 
-Tests can be run via `rake test`. We're using capybara-webkit for integration tests with JavaScript support.
+Tests can be run via `bundle exec rake test`. We're using capybara-webkit for integration tests with JavaScript support.
 
 ## Maintainer & Contributors
 

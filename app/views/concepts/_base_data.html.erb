@@ -21,7 +21,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>Labelings</legend>
+    <legend><%= Labeling::Base.model_name.human(:count => 2) %></legend>
     <ol>
       <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
         <%- languages.each do |language| -%>
@@ -38,7 +38,7 @@
   <% end %>
 
   <fieldset>
-    <legend>Relations</legend>
+    <legend><%= Concept::Relation::Base.model_name.human(:count => 2) %></legend>
     <ol>
       <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
         <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(@concept),
@@ -55,7 +55,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>Matches</legend>
+    <legend><%= Match::Base.model_name.human(:count => 2) %></legend>
     <ol>
       <% Iqvoc::Concept.match_classes.each do |match_class| %>
         <%= render :partial => match_class.edit_partial_name(@concept),

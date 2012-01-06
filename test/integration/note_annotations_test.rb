@@ -55,20 +55,22 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     visit ttl_uri
     ttl = page.source.
         gsub(/^ *| *$/, ""). # ignore indentation
-        gsub(/\d/, "#") # neutralize timestamps
+        gsub(/\d/, "#").     # neutralize timestamps
+        gsub(/#\+#/, "#-#")  # neutralize eventually positive timezone shifts (server time)
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"lorem ipsum\"@en\n" +
         "]")
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"dolor sit amet\"@en;\n" +
         "dct:creator \"Test User\";\n" +
-        "dct:modified \"####-##-##T##:##:##+##:##\"\n" +
+        "dct:modified \"####-##-##T##:##:##-##:##\"\n" +
         "]")
 
     visit xml_uri
     xml = page.source.
         gsub(/^ *| *$/, ""). # ignore indentation
-        gsub(/\d/, "#") # neutralize timestamps
+        gsub(/\d/, "#").     # neutralize timestamps
+        gsub(/#\+#/, "#-#")  # neutralize eventually positive timezone shifts (server time)
     assert xml.include?("<skos:changeNote>\n" +
         "<rdf:Description>\n" +
         "<rdfs:comment xml:lang=\"en\">lorem ipsum</rdfs:comment>\n" +
@@ -78,7 +80,7 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         "<rdf:Description>\n" +
         "<rdfs:comment xml:lang=\"en\">dolor sit amet</rdfs:comment>\n" +
         "<dct:creator>Test User</dct:creator>\n" +
-        "<dct:modified>####-##-##T##:##:##+##:##</dct:modified>\n" +
+        "<dct:modified>####-##-##T##:##:##-##:##</dct:modified>\n" +
         "</rdf:Description>\n" +
         "</skos:changeNote>\n")
   end

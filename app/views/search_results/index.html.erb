@@ -40,6 +40,12 @@
           <%= text_field_tag :q, params[:query] %>
         <% end %>
       </li>
+			<li class="result_type_filter">
+				<label><%= t('txt.views.search_results.for') %></label>
+				<%= radio_button_tag 'for', 'concept', params[:for] == "concept" %> <label for="for_concept"><%= Iqvoc::Concept.base_class.model_name.human %></label>
+				<%= radio_button_tag 'for', 'collection', params[:for] == "collection" %> <label for="for_collection"><%= Iqvoc::Collection.base_class.model_name.human %></label>
+				<%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]) %> <label for="for_all"><%= t("txt.views.search_results.all") %></label>
+			</li>
       <li>
         <label for"c"><%= Iqvoc::Collection.base_class.model_name.human %></label>
         <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>

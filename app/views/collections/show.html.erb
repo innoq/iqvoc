@@ -36,7 +36,7 @@
   <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
   <div class="relation-body">
     <ul>
-      <%- @collection.concepts.sort {|a, b| a.pref_label <=> b.pref_label }.each do |concept| -%>
+      <%- @collection.concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.each do |concept| -%>
         <%- if concept.published? || (!concept.published_version_id && can?(:update, concept)) -%>
           <li><%= render concept.class.inline_partial_name, :concept => concept %></li>
         <%- end -%>

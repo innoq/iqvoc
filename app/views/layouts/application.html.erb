@@ -15,6 +15,9 @@
     <% Iqvoc.additional_css_files.each do |file| %>
       <%= stylesheet_link_tag file %>
     <% end %>
+		<!--[if (gte IE 6)&(lte IE 8)]>
+		<%= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
+		<![endif]-->
 
     <%= yield :head %>
   </head>

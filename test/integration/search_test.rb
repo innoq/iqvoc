@@ -69,16 +69,22 @@ class SearchTest < ActionDispatch::IntegrationTest
     }
   end
 
-  test "exclude collections from results" do
+  test "collection/concept filter" do
     visit search_path(:lang => 'en', :format => 'html')
 
     select "Labels", :from => "t"
     select "contains", :from => "qt"
     fill_in "q", :with => "Alpha"
-
     click_button("Search")
-
-    assert page.has_no_css?("#search_results dt")
+    assert page.has_css?("#search_results dt", :count => 1)
+    
+    choose "Concept"
+    click_button "Search"
+    assert !page.has_css?("#search_results dt")
+    
+    choose "Collection"
+    click_button "Search"
+    assert page.has_css?("#search_results dt")
   end
 
   test "searching within collections" do

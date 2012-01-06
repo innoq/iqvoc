@@ -1,4 +1,5 @@
 .bundle
+.rbenv-version
 db/*.sqlite3
 db/schema.rb
 log/*.log
@@ -16,5 +17,7 @@ public/fonts/vendor
 .capistrano_history.yml
 *.war
 vendor/gems/*.gem
-
+*.gem
+config/deploy.rb
+config/deploy
 config/initializers/secret_token.rb

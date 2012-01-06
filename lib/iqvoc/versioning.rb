@@ -69,7 +69,7 @@ module Iqvoc
     def branch(user)
       new_version = self.clone(:include => self.class.includes_to_deep_cloning)
       new_version.lock_by_user(user.id)
-      new_version.increment!(:rev)
+      new_version.increment(:rev)
       new_version.published_version_id = self.id
       new_version.unpublish
       new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(

@@ -167,12 +167,15 @@ class Concept::Base < ActiveRecord::Base
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
-    # When a Label has only one labeling (the "no skosxl" case) we'll have to
-    # clone the label too.
-    if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
-      include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
-    else
-      include_to_deep_cloning(labeling_class_name.to_relation_name)
+    # Only clone superclass relations
+    unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
+      # When a Label has only one labeling (the "no skosxl" case) we'll have to
+      # clone the label too.
+      if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
+        include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
+      else
+        include_to_deep_cloning(labeling_class_name.to_relation_name)
+      end
     end
   end
 

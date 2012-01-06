@@ -19,7 +19,7 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.1.0'
+gem 'rails', '3.1.3'
 
 group :assets do
   gem 'uglifier'
@@ -36,6 +36,9 @@ gem 'rinku', :require => 'rails_rinku'
 
 group :development do
   gem 'awesome_print'
+  gem 'capistrano'
+  gem 'capistrano-ext'
+  gem 'rvm' # RVM API (for capistrano deployments)
 end
 
 group :development, :test do
@@ -51,7 +54,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '1.5.0'
+  gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'database_cleaner'

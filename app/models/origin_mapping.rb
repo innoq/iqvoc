@@ -40,7 +40,7 @@ class OriginMapping
   end
 
   def self.handle_numbers_at_beginning(str)
-    str.to_s.gsub(/^[0-9\-].*$/) do |match|
+    str.to_s.gsub(/^[0-9].*$/) do |match|
       "_#{match}"
     end
   end

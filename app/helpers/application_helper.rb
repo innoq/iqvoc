@@ -40,7 +40,7 @@ module ApplicationHelper
 
     content_tag :ul, :class => "entity_list" do
       items.map do |item|
-        content_tag :li do
+        content_tag :li, :class => (items.last == item ? "last-child" : "") do
           block.call(item)
         end
       end.join("\n").html_safe

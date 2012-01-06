@@ -1,3 +1,17 @@
+## 3.2.5 (2011-12-07)
+
+ * Various bugfixes
+
+## 3.2.4 (2011-11-07)
+
+ * Added search functionality for collections
+ * Filter search results for concepts and/or collections
+ * IE fixes
+ * Various bugfixes
+ * Ruby 1.9.3
+
+Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.2.3...v3.2.4
+
 ## 3.2.3 (2011-08-22)
 
  * Minor bugfixes

@@ -34,10 +34,6 @@ class OriginMappingTest < ActiveSupport::TestCase
     assert_equal "test12", OriginMapping.merge("test 12 ")
   end
 
-  def test_should_handle_dashes_at_the_beginning
-    assert_equal "_-bla", OriginMapping.merge("-bla")
-  end
-
   def test_should_preserve_underlines
     assert_equal "_test", OriginMapping.merge("_test")
     assert_equal "a_Test", OriginMapping.merge("a_Test")
@@ -51,16 +47,16 @@ class OriginMappingTest < ActiveSupport::TestCase
   end
 
   def test_should_replace_brackets
-    assert_equal "_--Energie-Ressource", OriginMapping.merge("[Energie/Ressource]")
+    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie/Ressource]")
   end
 
   def test_should_replace_comma
-    assert_equal "_-", OriginMapping.merge(",")
+    assert_equal "-", OriginMapping.merge(",")
   end
 
   def test_should_merge_all_together
-    assert_equal "_--Energie-Ressource", OriginMapping.merge("[Energie - Ressource]")
-    assert_equal "_--Hydrosphaere-WasserUndGewaesser", OriginMapping.merge("[Hydrosphäre - Wasser und Gewässer]")
+    assert_equal "--Energie-Ressource", OriginMapping.merge("[Energie - Ressource]")
+    assert_equal "--Hydrosphaere-WasserUndGewaesser", OriginMapping.merge("[Hydrosphäre - Wasser und Gewässer]")
   end
 
     def test_sanitize_for_base_form

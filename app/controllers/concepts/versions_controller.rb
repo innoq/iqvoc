@@ -69,7 +69,7 @@ class Concepts::VersionsController < ApplicationController
     authorize! :lock, new_version
 
     new_version.lock_by_user(current_user.id)
-    new_version.save!
+    new_version.save :validate => false
 
     flash[:notice] = t("txt.controllers.versioning.locked")
     redirect_to edit_concept_path(:published => 0, :id => new_version)
@@ -83,8 +83,8 @@ class Concepts::VersionsController < ApplicationController
     authorize! :unlock, new_version
 
     new_version.unlock
-    new_version.save!
-
+    new_version.save :validate => false
+    
     flash[:notice] = t("txt.controllers.versioning.unlocked")
     redirect_to concept_path(:published => 0, :id => new_version)
   end

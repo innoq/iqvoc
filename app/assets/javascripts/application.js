@@ -115,6 +115,16 @@ jQuery(document).ready(function($) {
 	$("button#language_select_none").click(function() {
 		$("input[type=checkbox].lang_check").attr("checked", false);
 	});
+	$("select.search_type").change(function() {
+		var result_type_filter = $("li.result_type_filter");
+		if($(this).val().match(/labeling/)) {
+			result_type_filter.show();
+		}
+		else {
+			result_type_filter.hide();
+		}
+	});
+	$("select.search_type").change();
 
 	// hierarchical tree view
 	$("ul.hybrid-treeview").each(function() {
