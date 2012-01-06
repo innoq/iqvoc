@@ -25,14 +25,12 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
-
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf', :path => "~/github/iq_rdf" #, '~> 0.0.15'
 gem 'json'
-gem 'rinku', :require => 'rails_rinku'
+gem 'rails_autolink'
 
 group :development do
   gem 'awesome_print'

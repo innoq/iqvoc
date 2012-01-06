@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'cancan'
   s.add_dependency 'iq_rdf', '~> 0.0.14'
   s.add_dependency 'json'
+  s.add_dependency 'rails_autolink'
+  
 
   s.files = %w(LICENSE README.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) + Dir.glob("{app,config,db,public,lib,test}/**/*")
   s.test_files = Dir.glob("{test}/**/*")

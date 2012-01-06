@@ -11,12 +11,12 @@
     <!--[if lt IE 8]>
     <%= stylesheet_link_tag "blueprint/ie.css", :media => "screen, projection" %>
     <![endif]-->
-	<%= stylesheet_link_tag "application.css" %>
+	<%= stylesheet_link_tag "iqvoc/application.css" %>
     <% Iqvoc.additional_css_files.each do |file| %>
       <%= stylesheet_link_tag file %>
     <% end %>
 		<!--[if (gte IE 6)&(lte IE 8)]>
-		<%= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
+		<%#= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
 		<![endif]-->
 
     <%= yield :head %>
@@ -60,10 +60,10 @@
     <script>
       // load JSON polyfill only if necessary
       if(typeof JSON === "undefined") {
-        document.write("<script src=\"<%= javascript_path "iqvoc/json2.js" %>\"><\/script>");
+        document.write("<script src=\"<%= javascript_path "json2.js" %>\"><\/script>");
       }
     </script>
-    <%= javascript_include_tag "application.js" %>
+    <%= javascript_include_tag "iqvoc/application.js" %>
     <%= yield :scripts %>
     <% Iqvoc.additional_js_files.each do |file| %>
       <%= javascript_include_tag file %>
