@@ -12,9 +12,6 @@
     <%= stylesheet_link_tag "blueprint/ie.css", :media => "screen, projection" %>
     <![endif]-->
 	<%= stylesheet_link_tag "iqvoc/application.css" %>
-    <% Iqvoc.additional_css_files.each do |file| %>
-      <%= stylesheet_link_tag file %>
-    <% end %>
 		<!--[if (gte IE 6)&(lte IE 8)]>
 		<%#= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
 		<![endif]-->
@@ -65,8 +62,5 @@
     </script>
     <%= javascript_include_tag "iqvoc/application.js" %>
     <%= yield :scripts %>
-    <% Iqvoc.additional_js_files.each do |file| %>
-      <%= javascript_include_tag file %>
-    <% end %>
   </body>
 </html>
