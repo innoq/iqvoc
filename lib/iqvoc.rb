@@ -29,8 +29,6 @@ module Iqvoc
     :default_rdf_namespace_helper_methods,
     :rdf_namespaces,
     :change_note_class_name,
-    :additional_js_files,
-    :additional_css_files,
     :first_level_class_configuration_modules,
     :ability_class_name
 
@@ -57,10 +55,6 @@ module Iqvoc
 
   # The class to use for automatic generation of change notes on every save
   self.change_note_class_name = 'Note::SKOS::ChangeNote'
-
-  # Use these config hooks in your engine to inject your custom js and css includes.
-  self.additional_js_files  = []
-  self.additional_css_files = []
 
   self.first_level_class_configuration_modules = [] # Will be set in the modules
 

@@ -18,7 +18,7 @@ class Labeling::Base < ActiveRecord::Base
 
   set_table_name 'labelings'
 
-  class_inheritable_accessor :rdf_namespace, :rdf_predicate
+  class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil
   self.rdf_predicate = nil
 

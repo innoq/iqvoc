@@ -6,21 +6,14 @@
     <%= csrf_meta_tag %>
 
     <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
-    <%= stylesheet_link_tag "iqvoc/blueprint/screen.css", :media => "screen, projection" %>
-    <%= stylesheet_link_tag "iqvoc/blueprint/print.css", :media => "print" %>
+    <%= stylesheet_link_tag "blueprint/screen", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
     <!--[if lt IE 8]>
-    <%= stylesheet_link_tag "iqvoc/blueprint/ie.css", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>
     <![endif]-->
-    <%= stylesheet_link_tag "iqvoc/iqvoc.css", :media => "all" %>
-    <%= stylesheet_link_tag "iqvoc/forms.css" %>
-    <%= stylesheet_link_tag "/javascripts/iqvoc/jquery-treeview/jquery.treeview.css" %>
-    <%= stylesheet_link_tag "iqvoc/jquery-ui-1.8.16.custom.css" %>
-    <%= stylesheet_link_tag "iqvoc/widgets.css" %>
-    <% Iqvoc.additional_css_files.each do |file| %>
-      <%= stylesheet_link_tag file %>
-    <% end %>
+	  <%= stylesheet_link_tag "manifest" %>
 		<!--[if (gte IE 6)&(lte IE 8)]>
-		<%= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
+		<%= stylesheet_link_tag "iqvoc/ie_fixes" %>
 		<![endif]-->
 
     <%= yield :head %>
@@ -64,23 +57,10 @@
     <script>
       // load JSON polyfill only if necessary
       if(typeof JSON === "undefined") {
-        document.write("<script src=\"<%= javascript_path "iqvoc/json2.js" %>\"><\/script>");
+        document.write("<script src=\"<%= javascript_path "json2.js" %>\"><\/script>");
       }
     </script>
-    <%= javascript_include_tag "iqvoc/jquery-1.6.2.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui-1.8.16.custom.min.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-ui.datepicker-de.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.js" %>
-    <%= javascript_include_tag "iqvoc/jquery-treeview/jquery.treeview.async.js" %>
-    <%= javascript_include_tag "iqvoc/rails.js" %>
-    <%= javascript_include_tag "iqvoc/storage.js" %>
-    <%= javascript_include_tag "iqvoc/iqvoc.js" %>
-    <%= javascript_include_tag "iqvoc/langselect.js" %>
-    <%= javascript_include_tag "iqvoc/entityselect.js" %>
-    <%= javascript_include_tag "iqvoc/application.js" %>
+    <%= javascript_include_tag "manifest" %>
     <%= yield :scripts %>
-    <% Iqvoc.additional_js_files.each do |file| %>
-      <%= javascript_include_tag file %>
-    <% end %>
   </body>
 </html>

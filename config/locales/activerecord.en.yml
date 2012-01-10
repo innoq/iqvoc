@@ -17,119 +17,93 @@
 en:
   activerecord:
     models:
-      concept:
-        base:
-          one:   "Concept"
-          other: "Concepts"
-        relation:
-          base:
-            one: "Relation"
-            other: "Relations"
-          skos:
-            broader:
-              mono:
-                one:   "Broader term"
-                other: "Broader terms"
-              poly:
-                one:   "Broader term"
-                other: "Broader terms"
-            narrower:
-              base:
-                one:   "Narrower term"
-                other: "Narrower terms"
-            related:
-              one:   "Related term"
-              other: "Related terms"
-      label:
-        skos:
-          base:
-            one: "Label"
-            other: "Labels"
-      labeling:
-        base:
-          one:   "Label"
-          other: "Labels"
-        skos:
-          base:
-            one:   "Label"
-            other: "Labels"
-          pref_label:
-            one:   "Preferred label"
-            other: "Preferred labels"
-          alt_label:
-            one:   "Alternative label"
-            other: "Alternative labels"
-      match:
-        base:
-          one: "Match"
-          other: "Matches"
-        skos:
-          broad_match:
-            one:   "Broader Match"
-            other: "Broader Matches"
-          close_match:
-            one:   "Close Match"
-            other: "Close Matches"
-          exact_match:
-            one:   "Exact Match"
-            other: "Exact Matches"
-          narrow_match:
-            one:   "Narrower Match"
-            other: "Narrower Matches"
-          related_match:
-            one:   "Related Match"
-            other: "Related Matches"
-      note:
-        annotated:
-          base:
-            one:   "Annotation"
-            other: "Annotations"
-        base:
-          one:   "Note"
-          other: "Notes"
-        skos:
-          base:
-            one:   "Note"
-            other: "Notes"
-          change_note:
-            one:   "Change note"
-            other: "Change notes"
-          definition:
-            one:   "Definition"
-            other: "Definitions"
-          editorial_note:
-            one:   "Editorial note"
-            other: "Editorial notes"
-          example:
-            one:   "Example"
-            other: "Examples"
-          history_note:
-            one:   "History note"
-            other: "History notes"
-          scope_note:
-            one:   "Scope note"
-            other: "Scope notes"
-        iqvoc:
-          language_note:
-            one:   "Label (Collection)"
-            other: "Labels (Collection)"
-      collection:
-        base:
-          one:   "Collection"
-          other: "Collections"
-        member:
-          base: "Assigned collections"
+      concept/base:
+        one:   "Concept"
+        other: "Concepts"
+      concept/relation/skos/broader/mono:
+        one:   "Broader term"
+        other: "Broader terms"
+      concept/relation/skos/broader/poly:
+        one:   "Broader term"
+        other: "Broader terms"
+      concept/relation/skos/narrower/base:
+        one:   "Narrower term"
+        other: "Narrower terms"
+      concept/relation/related:
+        one:   "Related term"
+        other: "Related terms"
+      label/skos/base:
+        one:   "Label"
+        other: "Labels"
+      labeling/base:
+        one:   "Label"
+        other: "Labels"
+      labeling/skos/base:
+        one:   "Label"
+        other: "Labels"
+      labeling/skos/pref_label:
+        one:   "Preferred label"
+        other: "Preferred labels"
+      labeling/skos/alt_label:
+        one:   "Alternative label"
+        other: "Alternative labels"
+      match/skos/broad_match:
+        one:   "Broader Match"
+        other: "Broader Matches"
+      match/skos/close_match:
+        one:   "Close Match"
+        other: "Close Matches"
+      match/skos/exact_match:
+        one:   "Exact Match"
+        other: "Exact Matches"
+      match/skos/narrow_match:
+        one:   "Narrower Match"
+        other: "Narrower Matches"
+      match/skos/related_match:
+        one:   "Related Match"
+        other: "Related Matches"
+      note/annotated/base:
+        one:   "Annotation"
+        other: "Annotations"
+      note/base:
+        one:   "Note"
+        other: "Notes"
+      note/skos/base:
+        one:   "Note"
+        other: "Notes"
+      note/skos/change_note:
+        one:   "Change note"
+        other: "Change notes"
+      note/skos/definition:
+        one:   "Definition"
+        other: "Definitions"
+      note/skos/editorial_note:
+        one:   "Editorial note"
+        other: "Editorial notes"
+      note/skos/example:
+        one:   "Example"
+        other: "Examples"
+      note/skos/history_note:
+        one:   "History note"
+        other: "History notes"
+      note/skos/scope_note:
+        one:   "Scope note"
+        other: "Scope notes"
+      collection/base:
+        one:   "Collection"
+        other: "Collections"
+      collection/member/base:
+        one:   "Assigned collection"
+        other: "Assigned collections"
 
     attributes:
-      concept:
-        base:
-          follow_up: "Reminder"
-          expired_at: "Expired at"
-      label:
-        base:
-          follow_up: "Reminder"
-          expired_at: "Expired at"
-          language: "Language"
+      concept/base:
+        follow_up: "Reminder"
+        expired_at: "Expired at"
+      label/base:
+        follow_up: "Reminder"
+        expired_at: "Expired at"
+        language: "Language"
       user:
         forename: "Forename"
         surname: "Surname"

@@ -19,18 +19,18 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.0.10'
+gem 'rails', '3.1.3'
+
+group :assets do
+  gem 'uglifier'
+end
 
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~> 0.0.15'
+gem 'iq_rdf'# , :path => "~/github/iq_rdf" #, '~> 0.0.15'
 gem 'json'
-
-# Hotfix for the problem of engine/plugin helpers not being mixed in.
-# https://rails.lighthouseapp.com/projects/8994/tickets/1905-apphelpers-within-plugin-not-being-mixed-in
-# http://github.com/drogus/rails_helpers_fix
-gem 'rails_helpers_fix'
+gem 'rails_autolink'
 
 group :development do
   gem 'awesome_print'
@@ -41,7 +41,7 @@ end
 
 group :development, :test do
   platforms :ruby do
-    gem 'mysql2', '0.2.7'
+    gem 'mysql2'
     gem 'sqlite3'
   end
   
@@ -52,7 +52,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '1.5.0'
+  gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'database_cleaner'

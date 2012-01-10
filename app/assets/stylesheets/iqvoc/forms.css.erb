@@ -1,0 +1,71 @@
+form.form {
+	margin-bottom: 20px;
+}
+
+form.form fieldset {
+  margin-bottom: 20px;
+}
+
+form.form legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+form.form label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+
+form.form fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+
+form.form fieldset li {
+  list-style: none;
+  padding: 5px;
+  /*margin: 0;*/
+}
+
+form.form fieldset fieldset {
+  border: none;
+  margin: 3px 0 0;
+}
+
+form.form fieldset fieldset legend {
+  padding: 0 0 5px;
+  font-weight: normal;
+}
+
+form.form fieldset fieldset label {
+  display: block;
+  width: auto;
+}
+
+form.form em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
+
+form.form label {
+  width: 120px; /* Width of labels */
+}
+
+form.form fieldset fieldset label {
+  margin-left: 123px; /* Width plus 3 (html space) */
+}
+
+form.form textarea {
+	width: 300px;
+	height: 80px;
+}
+
+form.form span.fieldWithErrors {
+  background: url(<%= asset_data_uri 'red_arrow.png' %>);
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: 1em;
+}

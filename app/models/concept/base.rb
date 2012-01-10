@@ -20,10 +20,10 @@ class Concept::Base < ActiveRecord::Base
 
   include Iqvoc::Versioning
 
-  class_inheritable_accessor :default_includes
+  class_attribute :default_includes
   self.default_includes = []
 
-  class_inheritable_accessor :rdf_namespace, :rdf_class
+  class_attribute :rdf_namespace, :rdf_class
   self.rdf_namespace = nil
   self.rdf_class = nil
 
@@ -44,6 +44,10 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Hooks
+  
+  after_initialize do
+    @full_validation = false
+  end
 
   before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
@@ -263,11 +267,6 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Methods
-
-  def initialize(params = {})
-    super(params)
-    @full_validation = false
-  end
 
   def labelings_by_text=(hash)
     @labelings_by_text = hash
