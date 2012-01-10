@@ -28,7 +28,7 @@ end
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', :path => "~/github/iq_rdf" #, '~> 0.0.15'
+gem 'iq_rdf'# , :path => "~/github/iq_rdf" #, '~> 0.0.15'
 gem 'json'
 gem 'rails_autolink'
 
