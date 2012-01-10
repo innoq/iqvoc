@@ -1,3 +1,17 @@
+## 3.3.0 (2012-01-10)
+
+ * Rails 3.1
+ * Asset pipeline
+   [Detailed instructions](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine)
+   on how to use iQvoc as a Rails Engine (including the asset pipeline).
+   
+This is a big update. Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.2.6...v3.3.0
+
+## 3.2.6 (2012-01-10)
+
+ * Small fixes
+ * Last tiny version before upgrading iQvoc to from Rails 3.0 to 3.1
+
 ## 3.2.5 (2011-12-07)
 
  * Various bugfixes
