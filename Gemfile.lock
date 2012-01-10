@@ -69,7 +69,7 @@ GEM
     highline (1.6.9)
     hike (1.2.1)
     i18n (0.6.0)
-    iq_rdf (0.0.15)
+    iq_rdf (0.1.0)
       builder
       bundler
     json (1.6.4)
@@ -165,7 +165,7 @@ DEPENDENCIES
   capybara-webkit
   database_cleaner
   factory_girl_rails
-  iq_rdf
+  iq_rdf (~> 0.1.0)
   json
   kaminari
   memory_test_fix
