@@ -6,14 +6,14 @@
     <%= csrf_meta_tag %>
 
     <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
-    <%= stylesheet_link_tag "blueprint/screen.css", :media => "screen, projection" %>
-    <%= stylesheet_link_tag "blueprint/print.css", :media => "print" %>
+    <%= stylesheet_link_tag "blueprint/screen", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
     <!--[if lt IE 8]>
-    <%= stylesheet_link_tag "blueprint/ie.css", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>
     <![endif]-->
-	<%= stylesheet_link_tag "iqvoc/application.css" %>
+	  <%= stylesheet_link_tag "manifest" %>
 		<!--[if (gte IE 6)&(lte IE 8)]>
-		<%#= stylesheet_link_tag "iqvoc/ie_fixes.css" %>
+		<%= stylesheet_link_tag "iqvoc/ie_fixes" %>
 		<![endif]-->
 
     <%= yield :head %>
@@ -60,7 +60,7 @@
         document.write("<script src=\"<%= javascript_path "json2.js" %>\"><\/script>");
       }
     </script>
-    <%= javascript_include_tag "manifest.js" %>
+    <%= javascript_include_tag "manifest" %>
     <%= yield :scripts %>
   </body>
 </html>
