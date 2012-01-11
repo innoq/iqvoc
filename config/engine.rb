@@ -15,12 +15,6 @@ module Iqvoc
 
     # paths.lib.tasks  << "lib/engine_tasks"
 
-    # This will be defined in Rails 3.1 (as well as all the tasks in lib/engine_tasks)
-    # def self.load_seed
-    #   seed_file = Iqvoc::Engine.find_root_with_flag("db").join('db/seeds.rb')
-    #   load(seed_file) if File.exist?(seed_file)
-    # end
-
   end
 
 end

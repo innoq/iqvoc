@@ -15,4 +15,3 @@ namespace :iqvoc do
 
   end
 end
-
