@@ -8,11 +8,6 @@ namespace :iqvoc do
       Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
     end
 
-    desc "Load seeds (task is idempotent)"
-    task :seed => :environment do
-      Iqvoc::Engine.load_seed
-    end
-
     # invokes the given task for all the namespaces provided as well as for the
     # current application
     # e.g. `invoke_engine_tasks("db:migrate", ["foo", "bar"])` is equivalent to
