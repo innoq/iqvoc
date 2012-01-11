@@ -13,5 +13,17 @@ namespace :iqvoc do
       Iqvoc::Engine.load_seed
     end
 
+    # invokes the given task for all the namespaces provided as well as for the
+    # current application
+    # e.g. `invoke_engine_tasks("db:migrate", ["foo", "bar"])` is equivalent to
+    # `rake foo:db:migrate bar:db:migrate db:migrate`
+    def Iqvoc.invoke_engine_tasks(task_name, engines)
+      tasks = engines.map { |engine| "#{engine}:#{task_name}" }
+      tasks << task_name
+      tasks.each do |task|
+        Rake::Task[task].invoke
+      end
+    end
+
   end
 end
