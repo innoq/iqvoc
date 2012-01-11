@@ -13,7 +13,7 @@ module Iqvoc
 
   class Engine < Rails::Engine
 
-    paths.lib.tasks  << "lib/engine_tasks"
+    paths.lib.tasks << "lib/engine_tasks"
 
   end
 
