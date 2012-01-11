@@ -8,11 +8,5 @@ namespace :iqvoc do
       Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
     end
 
-    desc "Load seeds (task is idempotent)"
-    task :seed => :environment do
-      Iqvoc::Engine.load_seed
-    end
-
   end
 end
-
