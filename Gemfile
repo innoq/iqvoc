@@ -70,3 +70,7 @@ group :production do
     gem 'activerecord-oracle_enhanced-adapter'
   end
 end
+
+group :heroku do
+  gem 'pg'
+end
