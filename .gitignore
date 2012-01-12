@@ -21,3 +21,4 @@ vendor/gems/*.gem
 config/deploy.rb
 config/deploy
 config/initializers/secret_token.rb
+public/assets

@@ -56,6 +56,16 @@ if Iqvoc.const_defined?(:Application)
 
     # Generate digests for assets URLs
     config.assets.digest = true
+    
+    config.assets.precompile += %w(
+      manifest.css
+      manifest.js
+      blueprint/screen.css
+      blueprint/print.css
+      blueprint/ie.css
+      iqvoc/ie_fixes.css
+      json2.js
+    )
 
     # Enable serving of images, stylesheets, and javascripts from an asset server
     # config.action_controller.asset_host = "http://assets.example.com"
