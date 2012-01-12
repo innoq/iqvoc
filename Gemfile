@@ -61,7 +61,7 @@ group :test do
   gem 'turn'
 end
 
-group :production, :production_internal do
+group :production do
   platforms :ruby do
     gem 'sqlite3'
   end
