@@ -64,7 +64,7 @@ end
 
 group :production do
   platforms :ruby do
-    gem 'sqlite3'
+    gem 'sqlite3' unless ENV['HEROKU']
   end
 
   platforms :jruby do
