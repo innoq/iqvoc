@@ -37,6 +37,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'rvm' # RVM API (for capistrano deployments)
+  gem 'heroku'
 end
 
 group :development, :test do
