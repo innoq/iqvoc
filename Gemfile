@@ -63,9 +63,9 @@ group :test do
 end
 
 group :production do
-  platforms :ruby do
-    gem 'sqlite3' unless ENV['HEROKU']
-  end
+  # platforms :ruby do
+  #   gem 'sqlite3'
+  # end
 
   platforms :jruby do
     gem 'activerecord-oracle_enhanced-adapter'
