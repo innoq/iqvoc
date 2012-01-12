@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Makes Iqvoc available within the .configure block
+require "iqvoc"
+
 if Iqvoc.const_defined?(:Application)
   Iqvoc::Application.configure do
     # Settings specified here will take precedence over those in config/environment.rb
@@ -57,15 +60,8 @@ if Iqvoc.const_defined?(:Application)
     # Generate digests for assets URLs
     config.assets.digest = true
     
-    config.assets.precompile += %w(
-      manifest.css
-      manifest.js
-      blueprint/screen.css
-      blueprint/print.css
-      blueprint/ie.css
-      iqvoc/ie_fixes.css
-      json2.js
-    )
+
+    config.assets.precompile += Iqvoc.core_assets
 
     # Enable serving of images, stylesheets, and javascripts from an asset server
     # config.action_controller.asset_host = "http://assets.example.com"
