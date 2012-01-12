@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails_autolink'
   
 
-  s.files = %w(LICENSE README.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) + Dir.glob("{app,config,db,public,lib,test}/**/*")
+  s.files = %w(LICENSE README.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) + Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")
   s.test_files = Dir.glob("{test}/**/*")
   s.executables = Dir.glob("{bin}/**/*")
   s.require_paths = ["lib"]
