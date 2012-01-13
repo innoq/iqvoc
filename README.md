@@ -20,7 +20,30 @@ iQvoc provides comprehensive functionality for all aspects of managing such voca
 
 iQvoc is built with state-of-the-art technology and can be easily customized according to user's needs.
 
-## Getting Started
+## Setup
+
+### Heroku
+
+You can easily setup your iQvoc instance in under 5 minutes, we wanted to make this process really easy.
+
+To run iQvoc on heroku do the following:
+
+1. `bundle install`
+2. `heroku create`
+3. `bundle exec rake heroku:config`
+4. `git push heroku master`
+5. `heroku rake db:migrate`
+6. `heroku rake db:seed`
+
+`heroku open` opens your app in the browser.
+
+Remember to visit the Users section and change the default passwords!
+
+**Remarks:** 
+For now iQvoc only supports the standard Bamboo stack. Cedar is not supported as we have `sqlite3` as a dependency
+in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like Bamboo at the moment.
+
+### Custom
 
 1. Configure your database via `config/database.template.yml`. Don't forget to rename it to `database.yml`
 2. Run `bundle install`
