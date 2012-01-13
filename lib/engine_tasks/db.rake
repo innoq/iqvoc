@@ -4,7 +4,7 @@ namespace :iqvoc do
     desc "Migrate the database through scripts in db/migrate and update db/schema.rb by invoking db:schema:dump. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :migrate => :environment do
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-      ActiveRecord::Migrator.migrate(Iqvoc::Engine.find_root_with_flag("db").join('db/migrate'), ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+      ActiveRecord::Migrator.migrate(Iqvoc::Engine.find_root_with_flag("db").join("db/migrate"), ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
       Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
     end
 
@@ -13,9 +13,9 @@ namespace :iqvoc do
     task :migrate_all => :environment do
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       paths = Rails.application.config.paths["db/migrate"].existent +
-        Rails.application.railties.engines.
-        map { |e| e.config.paths["db/migrate"] && e.config.paths["db/migrate"].existent }.
-        flatten.compact
+          Rails.application.railties.engines.
+              map { |e| e.config.paths["db/migrate"] && e.config.paths["db/migrate"].existent }.
+              flatten.compact
 
       puts "Migrating from: " + paths.join(", ")
       ActiveRecord::Migrator.migrate(paths, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
@@ -35,7 +35,7 @@ namespace :iqvoc do
       }
 
       engines.select{|e| e.engine_name !~ /^iqvoc_/}.each do |engine|
-        puts "There is a non iqvoc engine (#{engine.engine_name}) having seeds. This seeds areare not necessary idemprotent."
+        puts "There is a non-iQvoc engine (#{engine.engine_name}) having seeds. These seeds are not necessarily idemprotent."
         puts "Do you with to (c)ontinue, (i)gnore it or (a)bort?"
         input = nil
         while input !~ /^[cia]$/
