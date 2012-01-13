@@ -159,6 +159,9 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
+// load JSON polyfill only if necessary
+if (typeof JSON === "undefined") {
+
 var JSON;
 if (!JSON) {
     JSON = {};
@@ -478,3 +481,5 @@ if (!JSON) {
         };
     }
 }());
+
+} // if (typeof JSON === "undefined")

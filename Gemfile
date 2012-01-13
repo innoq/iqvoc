@@ -37,6 +37,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'rvm' # RVM API (for capistrano deployments)
+  gem 'heroku'
 end
 
 group :development, :test do
@@ -61,7 +62,7 @@ group :test do
   gem 'turn'
 end
 
-group :production, :production_internal do
+group :production do
   platforms :ruby do
     gem 'sqlite3'
   end
@@ -69,4 +70,8 @@ group :production, :production_internal do
   platforms :jruby do
     gem 'activerecord-oracle_enhanced-adapter'
   end
+end
+
+group :heroku do
+  gem 'pg'
 end

@@ -30,9 +30,17 @@ module Iqvoc
     :rdf_namespaces,
     :change_note_class_name,
     :first_level_class_configuration_modules,
-    :ability_class_name
+    :ability_class_name,
+    :core_assets
 
   self.title = "iQvoc"
+  
+  self.core_assets = %w(
+    manifest.css
+    manifest.js
+    blueprint/ie.css
+    iqvoc/ie_fixes.css
+  )
 
   self.searchable_class_names = [
     'Labeling::SKOS::Base',
