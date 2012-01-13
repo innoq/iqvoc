@@ -28,12 +28,14 @@ You can easily setup your iQvoc instance in under 5 minutes, we wanted to make t
 
 To run iQvoc on heroku do the following:
 
-1. `bundle install`
-2. `heroku create`
-3. `bundle exec rake heroku:config`
-4. `git push heroku master`
-5. `heroku rake db:migrate`
-6. `heroku rake db:seed`
+```
+bundle install
+heroku create
+bundle exec rake heroku:config
+git push heroku master
+heroku rake db:migrate
+heroku rake db:seed
+```
 
 `heroku open` opens your app in the browser.
 
