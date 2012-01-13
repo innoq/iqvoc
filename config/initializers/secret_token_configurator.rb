@@ -23,7 +23,7 @@ if Iqvoc.const_defined?(:Application)
     Rails.application.config.secret_token = ENV['SECRET_TOKEN']
   elsif !File.exists?(Rails.root.join('config', 'initializers', 'secret_token.rb'))
     system "bundle exec rake setup:generate_secret_token"
-    require File.join(Rails.root, 'config', 'initializers', 'secret_token.rb')
+    require Rails.root.join('config', 'initializers', 'secret_token.rb')
   end
   
 end
