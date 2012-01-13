@@ -4,6 +4,7 @@ namespace :heroku do
     
     HEROKU_CONFIG = %W(
       HEROKU=true
+      RACK_ENV=heroku
       RAILS_ENV=heroku
       SECRET_TOKEN=#{SecureRandom.hex(64)}
     )
