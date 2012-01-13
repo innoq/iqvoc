@@ -229,6 +229,7 @@ en:
        inconsistent: "inconsistent"
        state: "State"
        full_rdf_export: Complete RDF export
+       import: Import
      collections:
        new: "New collection"
 
