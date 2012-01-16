@@ -1,3 +1,8 @@
+## 3.3.4 (2012-01-16)
+
+ * Import SKOS files via the web frontend
+ * Bugfixes
+
 ## 3.3.3 (2012-01-13)
 
  * Several asset pipeline related fixes
