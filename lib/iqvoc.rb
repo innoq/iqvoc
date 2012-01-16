@@ -40,6 +40,8 @@ module Iqvoc
     manifest.js
     blueprint/ie.css
     iqvoc/ie_fixes.css
+    excanvas.js
+    iqvoc/visualization.js
   )
 
   self.searchable_class_names = [
