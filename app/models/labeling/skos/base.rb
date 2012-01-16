@@ -88,7 +88,6 @@ class Labeling::SKOS::Base < Labeling::Base
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
-
     subject.send(self.name.to_relation_name) << self.new(:target => self.label_class.new(:value => value, :language => lang))
   end
 

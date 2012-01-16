@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
+    get "import" => "import#index", :as => 'import'
+    post "import" => "import#import"
+
     match 'search(.:format)' => 'search_results#index', :as => 'search'
 
     root :to => 'concepts/hierarchical#index', :format => nil

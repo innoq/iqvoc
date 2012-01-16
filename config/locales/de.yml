@@ -221,6 +221,7 @@ de:
        inconsistent: "inkonsistent"
        state: "Status"
        full_rdf_export: Vollständiger RDF Export
+       import: Import
      collections:
        new: "Neue Kollektion"
 

@@ -1,0 +1,23 @@
+<h2>Import</h2>
+
+<%= form_tag import_url, :method => :post, :multipart => true , :class => "form" do %>
+  <fieldset>
+    <ol>
+
+      <li>
+        <%= label_tag "ntriples_file", "NTriples File: " %>
+        <%= file_field_tag 'ntriples_file'  %>
+      </li>
+
+      <li>
+        <%= label_tag "default_namespace", "Default namespace: " %>
+        <%= text_field_tag 'default_namespace', root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/")  %>
+      </li>
+
+      <li>
+        <%= submit_tag "Start" %>
+      </li>
+
+    </ol>
+  </fieldset>
+<% end %>
