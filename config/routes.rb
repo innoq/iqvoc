@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
+    match 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'
 
     get "import" => "import#index", :as => 'import'
     post "import" => "import#import"
