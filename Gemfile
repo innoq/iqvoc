@@ -23,6 +23,7 @@ gem 'rails', '3.1.3'
 
 group :assets do
   gem 'uglifier'
+  gem 'therubyracer'
 end
 
 gem 'kaminari'
