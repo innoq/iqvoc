@@ -60,7 +60,9 @@ module Iqvoc
         )
       }
 
-      scope :unsynced, where(:rdf_updated_at => nil)
+      scope :unsynced, lambda {
+        where(:rdf_updated_at => nil)
+      }
 
     end
 
