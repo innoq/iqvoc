@@ -7,7 +7,10 @@ module Iqvoc
       Iqvoc::Concept.relation_classes +
       Iqvoc::Concept.match_classes
 
-    def initialize(file, default_namespace_url)
+    def initialize(file, default_namespace_url, logger = Rails.logger)
+
+      @logger = logger
+
       unless file.is_a?(File) || file.is_a?(Array)
         raise "Iqvoc::SkosImporter#import: Parameter 'file' should be a File or an Array."
       end
@@ -62,7 +65,7 @@ module Iqvoc
           subject.publish
           subject.save!
         else
-          Rails.logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
+          @logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
         end
       end
 
@@ -75,9 +78,9 @@ module Iqvoc
 
         if (@existing_origins[origin])
           if (types[object] == @existing_origins[origin])
-            Rails.logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be no problem)."
+            @logger.info "Iqvoc::SkosImporter: Subject with origin '#{origin}' already exists. Skipping duplicate creation (should be no problem)."
           else
-            Rails.logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
+            @logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
           @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
@@ -92,7 +95,7 @@ module Iqvoc
       subject_origin = $1
       subject = load_first_level_object(subject_origin)
       unless subject
-        Rails.logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
+        @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
         return
       end
 
@@ -101,7 +104,7 @@ module Iqvoc
         object_origin = $1
         object = load_first_level_object(object_origin)
         unless object
-          Rails.logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+          @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
           return
         end
       end

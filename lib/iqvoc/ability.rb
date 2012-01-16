@@ -34,6 +34,7 @@ module Iqvoc
           can :manage, User
 
           can :full_export, ::Concept::Base
+          can :import, ::Concept::Base
         end
       
       end
