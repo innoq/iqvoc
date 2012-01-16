@@ -41,6 +41,7 @@ module Iqvoc
     blueprint/ie.css
     iqvoc/ie_fixes.css
     excanvas.js
+    jit_rgraph.js
     iqvoc/visualization.js
   )
 
