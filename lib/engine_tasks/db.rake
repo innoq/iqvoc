@@ -35,7 +35,7 @@ namespace :iqvoc do
       }
 
       engines.select{|e| e.engine_name !~ /^iqvoc_/}.each do |engine|
-        puts "There is a non-iQvoc engine (#{engine.engine_name}) having seeds. These seeds are not necessarily idemprotent."
+        puts "There is a non-iQvoc engine (#{engine.engine_name}) having seeds. These seeds are not necessarily idempotent."
         puts "Do you with to (c)ontinue, (i)gnore it or (a)bort?"
         input = nil
         while input !~ /^[cia]$/
