@@ -22,9 +22,9 @@
         <% end %>
       <% end %>
 
-      <% if Iqvoc::available_languages.length > 1 %>
+      <% if InstanceConfiguration["available_languages"].length > 1 %>
         <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
-        <% Iqvoc::available_languages.reject { |lang| lang == I18n.locale }.each do |lang| %>
+        <% InstanceConfiguration["available_languages"].reject { |lang| lang == I18n.locale.to_s }.each do |lang| %>
           <li>
             <label>
               <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>

@@ -22,18 +22,14 @@ module Iqvoc
     require File.join(File.dirname(__FILE__), '../config/engine')
   end
 
-  mattr_accessor :title,
-    :searchable_class_names,
+  mattr_accessor :searchable_class_names,
     :unlimited_search_results,
-    :available_languages,
     :default_rdf_namespace_helper_methods,
     :rdf_namespaces,
     :change_note_class_name,
     :first_level_class_configuration_modules,
     :ability_class_name,
     :core_assets
-
-  self.title = "iQvoc"
 
   self.core_assets = %w(
     manifest.css
@@ -51,8 +47,6 @@ module Iqvoc
     'Note::Base'
   ]
   self.unlimited_search_results = false
-
-  self.available_languages = [:en, :de]
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
@@ -104,6 +98,37 @@ module Iqvoc
     end
 
     puts "Secret token configuration has been created in #{file_name}."
+  end
+
+  # ************** default instance configuration **************
+
+  InstanceConfiguration::Defaults.merge!({
+    "title" => "iQvoc",
+    "available_languages" => ["en", "de"]
+  })
+
+  # ************** DEPRECATED **************
+
+  # @deprecated
+  def self.title
+    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller # TODO
+    return InstanceConfiguration["title"]
+  end
+  # @deprecated
+  def self.title=(value)
+    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller # TODO
+    return InstanceConfiguration["title"] = value
+  end
+
+  # @deprecated
+  def self.available_languages
+    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller # TODO
+    return InstanceConfiguration["available_languages"]
+  end
+  # @deprecated
+  def self.available_languages=(value)
+    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller # TODO
+    return InstanceConfiguration["available_languages"] = value
   end
 
   # ************** Concept specific settings **************

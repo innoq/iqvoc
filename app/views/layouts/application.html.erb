@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <%= csrf_meta_tag %>
 
-    <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
+    <title><%= InstanceConfiguration["title"] || t("txt.common.iqvoc_title") %></title>
 	  <%= stylesheet_link_tag "manifest" %>
 	  <!--[if lt IE 8]>
     <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>

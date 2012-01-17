@@ -32,11 +32,6 @@ ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
 if Rails.env != "test"
 
-  # Iqvoc.title = "My Thesaurus"
-
-  # interface languages (cf. config/locales)
-  # Iqvoc.available_languages = [ :en, :de ]
-
   # label languages (and classes)
   # Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
   # Iqvoc::Concept.further_labeling_class_names = {
