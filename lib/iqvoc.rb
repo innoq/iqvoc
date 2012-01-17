@@ -102,10 +102,12 @@ module Iqvoc
 
   # ************** default instance configuration **************
 
-  InstanceConfiguration::Defaults.merge!({
-    "title" => "iQvoc",
-    "available_languages" => ["en", "de"]
-  })
+  Rails.application.config.to_prepare do
+    InstanceConfiguration::Defaults.merge!({
+      "title" => "iQvoc",
+      "available_languages" => ["en", "de"]
+    })
+  end
 
   # ************** DEPRECATED **************
 
