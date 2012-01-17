@@ -35,7 +35,7 @@ if Rails.env != "test"
   # Iqvoc.title = "My Thesaurus"
 
   # interface languages (cf. config/locales)
-  # available_languages = [ :en, :de ]
+  # Iqvoc.available_languages = [ :en, :de ]
 
   # label languages (and classes)
   # Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
