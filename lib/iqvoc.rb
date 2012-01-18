@@ -109,30 +109,6 @@ module Iqvoc
     })
   end
 
-  # ************** DEPRECATED **************
-
-  # @deprecated
-  def self.title
-    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller # TODO
-    return InstanceConfiguration["title"]
-  end
-  # @deprecated
-  def self.title=(value)
-    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller # TODO
-    return InstanceConfiguration["title"] = value
-  end
-
-  # @deprecated
-  def self.available_languages
-    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller # TODO
-    return InstanceConfiguration["available_languages"]
-  end
-  # @deprecated
-  def self.available_languages=(value)
-    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller # TODO
-    return InstanceConfiguration["available_languages"] = value
-  end
-
   # ************** Concept specific settings **************
 
   module Concept
@@ -273,7 +249,31 @@ module Iqvoc
 
   end
 
+  # ************** DEPRECATED **************
+
+  # @deprecated
+  def self.title
+    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller
+    return InstanceConfiguration["title"]
+  end
+  # @deprecated
+  def self.title=(value)
+    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller
+    return InstanceConfiguration["title"] = value
+  end
+
+  # @deprecated
+  def self.available_languages
+    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller
+    return InstanceConfiguration["available_languages"]
+  end
+  # @deprecated
+  def self.available_languages=(value)
+    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller
+    return InstanceConfiguration["available_languages"] = value
+  end
+
 end
 
-# FIXME: For yet unknown reasons, the load hook gets to run 2 times
+# FIXME: For reasons yet unknown, the load hook is executed twice
 ActiveSupport.run_load_hooks(:after_iqvoc_config, Iqvoc)
