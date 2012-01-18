@@ -33,7 +33,6 @@ ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 if Rails.env != "test"
 
   # label languages (and classes)
-  # Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
   # Iqvoc::Concept.further_labeling_class_names = {
   #  "Labeling::SKOS::AltLabel" => [ :de, :en ]
   # }

@@ -26,7 +26,11 @@ class InstanceConfiguration < ActiveRecord::Base
   private_class_method :new, :create
 
   def self.[](key)
-    setting = find_by_key(key)
+    begin
+      setting = find_by_key(key)
+    rescue ActiveRecord::StatementInvalid # pre-migration; table does not exist yet
+      setting = nil # use defaults
+    end
     return setting ? JSON.load(setting.value) : Defaults[key]
   end
 
@@ -39,6 +43,7 @@ class InstanceConfiguration < ActiveRecord::Base
     else
       create(:key => key, :value => value)
     end
+
     return value
   end
 

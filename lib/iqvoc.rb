@@ -105,7 +105,8 @@ module Iqvoc
   Rails.application.config.to_prepare do
     InstanceConfiguration::Defaults.merge!({
       "title" => "iQvoc",
-      "available_languages" => ["en", "de"]
+      "available_languages" => ["en", "de"],
+      "languages.pref_labeling" => ["en", "de"]
     })
   end
 
@@ -125,7 +126,7 @@ module Iqvoc
 
     mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
-      :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
+      :pref_labeling_class_name, :further_labeling_class_names,
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
@@ -138,7 +139,6 @@ module Iqvoc
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.pref_labeling_languages      = [:en, :de]
     self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [:de, :en] }
 
     self.note_class_names             = [
@@ -163,6 +163,10 @@ module Iqvoc
     self.view_sections = ["main", "labels", "relations", "notes", "matches"]
 
     self.include_module_names = []
+
+    def self.pref_labeling_languages
+      return InstanceConfiguration["languages.pref_labeling"]
+    end
 
     # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
