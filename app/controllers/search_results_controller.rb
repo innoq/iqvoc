@@ -88,7 +88,8 @@ class SearchResultsController < ApplicationController
   end
 
   def self.prepare_basic_variables(controller)
-    langs = (InstanceConfiguration["available_languages"] + Iqvoc::Concept.labeling_class_names.values.flatten).uniq.each_with_object({}) do |lang, hsh|
+    label_langs = Iqvoc::Concept.labeling_class_names.values.flatten.map(&:to_s)
+    langs = (InstanceConfiguration["available_languages"] + label_langs).uniq.each_with_object({}) do |lang, hsh|
       lang ||= "none"
       hsh[lang] = I18n.t("languages.#{lang}", :default => lang)
     end
