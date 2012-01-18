@@ -109,6 +109,14 @@ module Iqvoc
     })
   end
 
+  def self.title
+    return InstanceConfiguration["title"]
+  end
+
+  def self.available_languages
+    return InstanceConfiguration["available_languages"]
+  end
+
   # ************** Concept specific settings **************
 
   module Concept
@@ -247,30 +255,6 @@ module Iqvoc
       base_class_name.constantize
     end
 
-  end
-
-  # ************** DEPRECATED **************
-
-  # @deprecated
-  def self.title
-    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller
-    return InstanceConfiguration["title"]
-  end
-  # @deprecated
-  def self.title=(value)
-    ActiveSupport::Deprecation.warn "title has been moved into InstanceConfiguration", caller
-    return InstanceConfiguration["title"] = value
-  end
-
-  # @deprecated
-  def self.available_languages
-    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller
-    return InstanceConfiguration["available_languages"]
-  end
-  # @deprecated
-  def self.available_languages=(value)
-    ActiveSupport::Deprecation.warn "available_languages has been moved into InstanceConfiguration", caller
-    return InstanceConfiguration["available_languages"] = value
   end
 
 end
