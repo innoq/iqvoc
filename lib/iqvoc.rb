@@ -34,6 +34,8 @@ module Iqvoc
   self.core_assets = %w(
     manifest.css
     manifest.js
+    blueprint/screen.css
+    blueprint/print.css
     blueprint/ie.css
     iqvoc/ie_fixes.css
     excanvas.js

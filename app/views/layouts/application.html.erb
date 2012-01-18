@@ -6,10 +6,12 @@
     <%= csrf_meta_tag %>
 
     <title><%= InstanceConfiguration["title"] || t("txt.common.iqvoc_title") %></title>
-    <%= stylesheet_link_tag "manifest" %>
+    <%= stylesheet_link_tag "blueprint/screen", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
     <!--[if lt IE 8]>
     <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>
     <![endif]-->
+    <%= stylesheet_link_tag "manifest" %>
     <!--[if (gte IE 6)&(lte IE 8)]>
     <%= stylesheet_link_tag "iqvoc/ie_fixes" %>
     <![endif]-->
