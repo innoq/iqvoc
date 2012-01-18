@@ -1,11 +1,11 @@
 <%- if owner = result.owner -%>
   <dt>
-		<% case owner.class.name %>
-		<% when Iqvoc::Concept.base_class_name %>
-    	<%= link_to highlight_query(result.target.value, params[:query]), concept_path(:id => owner) %>
-		<% when Iqvoc::Collection.base_class_name %>
-			<%= link_to highlight_query(result.target.value, params[:query]), collection_path(:id => owner) %>
-		<% end %>
+    <% case owner.class.name %>
+    <% when Iqvoc::Concept.base_class_name %>
+      <%= link_to highlight_query(result.target.value, params[:query]), concept_path(:id => owner) %>
+    <% when Iqvoc::Collection.base_class_name %>
+      <%= link_to highlight_query(result.target.value, params[:query]), collection_path(:id => owner) %>
+    <% end %>
     <%- if owner.additional_info.present? -%>
       (<%= owner.additional_info %>)
     <%- end -%>
