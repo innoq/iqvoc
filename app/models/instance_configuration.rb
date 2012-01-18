@@ -31,6 +31,8 @@ class InstanceConfiguration < ActiveRecord::Base
   end
 
   def self.[]=(key, value)
+    validate_value(value) # XXX: doesn't cover defaults
+
     value = JSON.dump(value)
     if setting = find_by_key(key) # XXX: inefficient?
       setting.update_attributes(:value => value)
@@ -38,6 +40,16 @@ class InstanceConfiguration < ActiveRecord::Base
       create(:key => key, :value => value)
     end
     return value
+  end
+
+  # checks whether value type is supported
+  def self.validate_value(value)
+    if value == nil
+      raise TypeError, "nil values not supported"
+    end
+    unless [String, Fixnum, Float, Array].include?(value.class)
+      raise TypeError, "complex values not supported"
+    end
   end
 
 end

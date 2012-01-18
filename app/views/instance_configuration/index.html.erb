@@ -1,1 +1,15 @@
-<h2><%= t("txt.views.instance_configuration") %></h2>
+<h2><%= t("txt.views.instance_configuration.caption").capitalize %></h2>
+
+<%= form_tag(instance_configuration_path, :method => :post, :class => :form) do %>
+  <fieldset>
+    <ul>
+      <% @settings.each do |key, value| %>
+      <li>
+        <label><%= t("txt.views.instance_configuration.keys.#{key}") %></label>
+        <%= text_field_tag "config[#{key}]", value %>
+      </li>
+      <% end %>
+    </ul>
+  </fieldset>
+  <%= submit_tag t("txt.common.save") %>
+<% end %>

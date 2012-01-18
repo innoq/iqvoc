@@ -81,6 +81,11 @@ de:
          select_language: "Sprache auswählen"
          login: "Anmelden"
          logout: "Abmelden"
+     instance_configuration:
+       caption: "Instanzkonfiguration"
+       keys:
+         title: "Titel"
+         available_languages: "Sprachen Benutzeroberfläche (locales)"
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"
@@ -243,6 +248,11 @@ de:
      application:
        login_required: "Sie müssen angemeldet sein, um diese Seite aufzurufen."
        logout_required: "Sie müssen abgemeldet sein, um diese Seite aufzurufen."
+     instance_configuration:
+       update_success: "Konfigurationänderungen übernommen."
+       update_error: "Fehler in Konfigurationwerten: %{error_messages}."
+       invalid_key: "unbekanntes Feld: %{key}"
+       invalid_value: "fehlerhafter Wert: %{key} (%{error_message})"
      search_results:
        insufficient_data: "Bitte geben Sie mehr Suchkriterien an."
      users:

@@ -14,10 +14,89 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'csv'
+
 class InstanceConfigurationController < ApplicationController
 
   def index
     authorize! :manage, :instance_configuration
+
+    @settings = {} # TODO: use `.inject` / `.each_with_object`?
+    InstanceConfiguration.all # prefetch -- XXX: ineffective?
+    InstanceConfiguration::Defaults.each do |key, default_value|
+      @settings[key] = serialize(InstanceConfiguration[key], default_value)
+    end
+  end
+
+  def update
+    authorize! :manage, :instance_configuration
+
+    # deserialize and save configuration settings
+    errors = []
+    params[:config].each { |key, value|
+      unless InstanceConfiguration::Defaults.include?(key)
+        errors << t("txt.controllers.instance_configuration.invalid_key", :key => key)
+      else
+        default_value = InstanceConfiguration::Defaults[key]
+        begin
+          InstanceConfiguration[key] = deserialize(value, default_value)
+        rescue TypeError => exc
+          errors << t("txt.controllers.instance_configuration.invalid_value",
+              :key => key, :error_message => exc.message)
+        end
+      end
+    }
+
+    if errors.blank?
+      flash[:notice] = t("txt.controllers.instance_configuration.update_success")
+    else
+      flash[:error] = t("txt.controllers.instance_configuration.update_error",
+          :error_messages => errors.join("; "))
+    end
+    redirect_to instance_configuration_url
+  end
+
+  # default value determines value type
+  def serialize(value, default_value)
+    InstanceConfiguration.validate_value(value)
+    if default_value.is_a? Array
+      return value.to_csv
+    else # String, Fixnum / Float
+      return value.to_s
+    end
+  end
+
+  # default value determines expected type
+  # raises TypeError if deserialization fails
+  def deserialize(str, default_value)
+    str = str.strip
+    unless default_value.is_a? Array
+      return convert_value(str, default_value.class)
+    else
+      return str.blank? ? [] : str.parse_csv.map { |item|
+        item.strip!
+        convert_value(item, default_value[0].class)
+      }
+    end
+  end
+
+  # converts string to given (non-complex) type
+  # raises TypeError on failure
+  def convert_value(str, type)
+    if type == String
+      return str
+    elsif type == Fixnum
+      raise TypeError, "expected integer" unless str =~ /^[-+]?[0-9]+$/
+      return str.to_i
+    elsif type == Float
+      begin
+        return Float(str)
+      rescue ArgumentError
+        raise TypeError, "expected float"
+      end
+    else
+      raise TypeError, "unsupported type: #{type}"
+    end
   end
 
 end
