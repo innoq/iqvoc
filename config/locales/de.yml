@@ -130,6 +130,7 @@ de:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
        back_to_preview: "Zurück zur Versionsvorschau"
+       instance_configuration: "Instanzkonfiguration"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
        search: "Suche"
