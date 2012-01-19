@@ -108,7 +108,8 @@ module Iqvoc
     InstanceConfiguration::Defaults.merge!({
       "title" => "iQvoc",
       "available_languages" => ["en", "de"],
-      "languages.pref_labeling" => ["en", "de"]
+      "languages.pref_labeling" => ["en", "de"],
+      "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
     })
   end
 
@@ -128,7 +129,7 @@ module Iqvoc
 
     mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
-      :pref_labeling_class_name, :further_labeling_class_names,
+      :pref_labeling_class_name,
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
@@ -141,7 +142,6 @@ module Iqvoc
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [:de, :en] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
@@ -190,6 +190,19 @@ module Iqvoc
 
     def self.broader_relation_class
       broader_relation_class_name.constantize
+    end
+
+    # returns hash of class name / languages pairs
+    # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
+    def self.further_labeling_class_names
+      # TODO: custom hash setters to guard against modification of languages arrays?
+      return InstanceConfiguration::Defaults.each_with_object({}) do |(key, default_value), hsh|
+        prefix = "languages.further_labelings."
+        if key.start_with? prefix
+          class_name = key[prefix.length..-1]
+          hsh[class_name] = InstanceConfiguration[key]
+        end
+      end
     end
 
     def self.further_labeling_classes
