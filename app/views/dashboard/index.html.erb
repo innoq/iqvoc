@@ -12,7 +12,7 @@
     </li>
   <%- end -%>
   <%- if can?(:import, Concept::Base) -%>
-    <li><%= link_to(t('txt.views.dashboard.import') , import_url) %></li>
+    <li><%= link_to(t('txt.views.dashboard.import') , import_url, :class => "button") %></li>
   <%- end -%>
 <%#= link_to "Triple Store Sync", new_triple_store_sync_path %>
 </ul>
