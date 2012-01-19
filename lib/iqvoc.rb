@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'string'
+require 'iqvoc/instance_configuration'
 
 module Iqvoc
 

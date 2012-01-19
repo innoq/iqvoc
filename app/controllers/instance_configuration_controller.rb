@@ -21,11 +21,9 @@ class InstanceConfigurationController < ApplicationController
   def index
     authorize! :manage, :instance_configuration
 
-    @settings = {} # TODO: use `.inject` / `.each_with_object`?
-    InstanceConfiguration.all # prefetch -- XXX: ineffective?
-    InstanceConfiguration::Defaults.each do |key, default_value|
-      @settings[key] = serialize(InstanceConfiguration[key], default_value)
-    end
+    @settings = Iqvoc::InstanceConfiguration::Defaults.each_with_object({}) { |(key, default_value), hsh|
+      hsh[key] = serialize(Iqvoc::InstanceConfiguration[key], default_value)
+    }
   end
 
   def update
@@ -34,12 +32,12 @@ class InstanceConfigurationController < ApplicationController
     # deserialize and save configuration settings
     errors = []
     params[:config].each { |key, value|
-      unless InstanceConfiguration::Defaults.include?(key)
+      unless Iqvoc::InstanceConfiguration::Defaults.include?(key)
         errors << t("txt.controllers.instance_configuration.invalid_key", :key => key)
       else
-        default_value = InstanceConfiguration::Defaults[key]
+        default_value = Iqvoc::InstanceConfiguration::Defaults[key]
         begin
-          InstanceConfiguration[key] = deserialize(value, default_value)
+          Iqvoc::InstanceConfiguration[key] = deserialize(value, default_value)
         rescue TypeError => exc
           errors << t("txt.controllers.instance_configuration.invalid_value",
               :key => key, :error_message => exc.message)
@@ -67,7 +65,7 @@ class InstanceConfigurationController < ApplicationController
 
   # default value determines value type
   def serialize(value, default_value)
-    InstanceConfiguration.validate_value(value)
+    Iqvoc::InstanceConfiguration.validate_value(value)
     if default_value.is_a? Array
       return value.to_csv
     else # String, Fixnum / Float
