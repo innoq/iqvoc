@@ -112,14 +112,15 @@ module Iqvoc
       "languages.pref_labeling" => ["en", "de"],
       "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
     })
+    InstanceConfiguration.instance.cache_settings # FIXME: does not take into account engines (=> re-cache when Defaults are modified?)
   end
 
   def self.title
-    return InstanceConfiguration["title"]
+    return InstanceConfiguration.instance["title"]
   end
 
   def self.available_languages
-    return InstanceConfiguration["available_languages"]
+    return InstanceConfiguration.instance["available_languages"]
   end
 
   # ************** Concept specific settings **************
@@ -168,7 +169,7 @@ module Iqvoc
     self.include_module_names = []
 
     def self.pref_labeling_languages
-      return InstanceConfiguration["languages.pref_labeling"]
+      return InstanceConfiguration.instance["languages.pref_labeling"]
     end
 
     # Do not use the following method in models. This will probably cause a
@@ -201,7 +202,7 @@ module Iqvoc
         prefix = "languages.further_labelings."
         if key.start_with? prefix
           class_name = key[prefix.length..-1]
-          hsh[class_name] = InstanceConfiguration[key]
+          hsh[class_name] = InstanceConfiguration.instance[key]
         end
       end
     end

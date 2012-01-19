@@ -14,37 +14,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'singleton'
+
 module Iqvoc
 
   # provides the interface to configuration settings
   class InstanceConfiguration
+    include Singleton
 
     Defaults = {} # XXX: use HashWithIndifferentAccess?
 
-    def self.[](key)
-      begin
-        setting = ConfigurationSetting.find_by_key(key)
-      rescue ActiveRecord::StatementInvalid # pre-migration; table does not exist yet
-        setting = nil # use defaults
-      end
-      return setting ? JSON.load(setting.value) : Defaults[key]
+    def [](key)
+      cache_settings unless @settings
+      return @settings[key]
     end
 
-    def self.[]=(key, value)
-      validate_value(value) # XXX: doesn't cover defaults
+    def []=(key, value)
+      raise ArgumentError unless Defaults.include?(key)
+      self.class.validate_value(value) # XXX: doesn't cover defaults
 
-      value = JSON.dump(value)
-      if setting = ConfigurationSetting.find_by_key(key) # XXX: inefficient?
-        setting.update_attributes(:value => value)
+      json = JSON.dump(value)
+      if setting = ConfigurationSetting.find_by_key(key)
+        setting.update_attributes(:value => json)
       else
-        ConfigurationSetting.create(:key => key, :value => value)
+        ConfigurationSetting.create(:key => key, :value => json)
       end
+
+      # update cache
+      @settings[key] = value
 
       return value
     end
 
+    # generate hash of all settings, assuming default values where no records exist
+    def cache_settings
+      return @settings if @settings
+
+      # load customized settings, indexed by key
+      db_settings = ConfigurationSetting.all rescue {} # database table might not exist yet (pre-migration)
+      db_settings = db_settings.each_with_object({}) { |setting, hsh|
+        hsh[setting.key] = JSON.load(setting.value)
+      }
+
+      # use default as fallback if no customized setting exists
+      @settings = Defaults.each_with_object({}) { |(key, default_value), hsh|
+        hsh[key] = db_settings[key] || default_value
+      }
+    end
+
     # checks whether value type is supported
-    def self.validate_value(value)
+    def self.validate_value(value) # TODO: compare type to default's? (cf. controller)
       if value == nil
         raise TypeError, "nil values not supported"
       end
