@@ -22,16 +22,43 @@ module Iqvoc
   class InstanceConfiguration
     include Singleton
 
-    Defaults = {} # XXX: use HashWithIndifferentAccess?
+    attr_reader :defaults # XXX: dangerous (mutable object)
 
+    def initialize
+      @defaults = {} # default settings
+      @records = {} # customized (non-default) settings
+      @settings = {} # current settings, using defaults as fallback
+      # NB: cannot cache immediately because defaults need to be registered first
+    end
+
+    # convenience wrapper for `register_setting` batch operations
+    # accepts a hash of key / default value pairs
+    def register_settings(settings)
+      settings.each do |key, default_value|
+        register_setting(key, default_value)
+      end
+    end
+
+    # create or update a default setting
+    def register_setting(key, default_value) # XXX: bad API; should be regular setter!?
+      self.class.validate_value(default_value)
+
+      @defaults[key] = default_value
+
+      # update cache
+      @settings[key] = @records[key] || default_value
+    end
+
+    # retrieve individual setting, using default value as fallback
     def [](key)
-      cache_settings unless @settings
+      cache_settings unless @settings.present? # XXX: bad encapsulation?
       return @settings[key]
     end
 
+    # store individual customized setting
     def []=(key, value)
-      raise ArgumentError unless Defaults.include?(key)
-      self.class.validate_value(value) # XXX: doesn't cover defaults
+      raise ArgumentError unless @defaults.include?(key)
+      self.class.validate_value(value)
 
       json = JSON.dump(value)
       if setting = ConfigurationSetting.find_by_key(key)
@@ -41,24 +68,26 @@ module Iqvoc
       end
 
       # update cache
+      @records[key] = value
       @settings[key] = value
 
       return value
     end
 
-    # generate hash of all settings, assuming default values where no records exist
-    def cache_settings
-      return @settings if @settings
+    # populate settings caches
+    # (subsequent updates will happen automatically via the respective setters)
+    def initialize_cache
+      return @settings if @settings.present?
 
-      # load customized settings, indexed by key
-      db_settings = ConfigurationSetting.all rescue {} # database table might not exist yet (pre-migration)
-      db_settings = db_settings.each_with_object({}) { |setting, hsh|
-        hsh[setting.key] = JSON.load(setting.value)
-      }
+      # cache customized settings
+      db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
+      db_settings.each do |setting|
+        @records[setting.key] = JSON.load(setting.value)
+      end
 
-      # use default as fallback if no customized setting exists
-      @settings = Defaults.each_with_object({}) { |(key, default_value), hsh|
-        hsh[key] = db_settings[key] || default_value
+      # cache current settings
+      @defaults.each_with_object({}) { |(key, default_value), hsh|
+        @settings[key] = @records[key] || default_value
       }
     end
 

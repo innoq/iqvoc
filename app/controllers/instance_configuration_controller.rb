@@ -21,7 +21,7 @@ class InstanceConfigurationController < ApplicationController
   def index
     authorize! :manage, :instance_configuration
 
-    @settings = Iqvoc::InstanceConfiguration::Defaults.each_with_object({}) { |(key, default_value), hsh|
+    @settings = Iqvoc::InstanceConfiguration.instance.defaults.each_with_object({}) { |(key, default_value), hsh|
       hsh[key] = serialize(Iqvoc::InstanceConfiguration.instance[key], default_value)
     }
   end
@@ -32,10 +32,10 @@ class InstanceConfigurationController < ApplicationController
     # deserialize and save configuration settings
     errors = []
     params[:config].each { |key, value|
-      unless Iqvoc::InstanceConfiguration::Defaults.include?(key)
+      unless Iqvoc::InstanceConfiguration.instance.defaults.include?(key)
         errors << t("txt.controllers.instance_configuration.invalid_key", :key => key)
       else
-        default_value = Iqvoc::InstanceConfiguration::Defaults[key]
+        default_value = Iqvoc::InstanceConfiguration.instance.defaults[key]
         begin
           Iqvoc::InstanceConfiguration.instance[key] = deserialize(value, default_value)
         rescue TypeError => exc

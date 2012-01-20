@@ -22,9 +22,8 @@ class SkosImportTest < ActiveSupport::TestCase
   def setup
     Iqvoc::Concept.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
 
-    # FIXME: it's currently unclear whether directly accessing InstanceConfiguration::Defaults is desirable
-    Iqvoc::InstanceConfiguration::Defaults["languages.further_labelings.Labeling::SKOS::AltLabel"] = ["de", "en"]
-    Iqvoc::InstanceConfiguration::Defaults["languages.pref_labeling"] = ["de", "en"]
+    Iqvoc::InstanceConfiguration.instance.register_setting("languages.pref_labeling", ["de", "en"])
+    Iqvoc::InstanceConfiguration.instance.register_setting("languages.further_labelings.Labeling::SKOS::AltLabel", ["de", "en"])
   end
 
   TEST_DATA = (<<-DATA

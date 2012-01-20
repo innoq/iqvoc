@@ -103,16 +103,16 @@ module Iqvoc
     puts "Secret token configuration has been created in #{file_name}."
   end
 
-  # ************** default instance configuration **************
+  # ************** instance configuration **************
 
   Rails.application.config.to_prepare do
-    InstanceConfiguration::Defaults.merge!({
+    InstanceConfiguration.instance.register_settings({
       "title" => "iQvoc",
       "available_languages" => ["en", "de"],
       "languages.pref_labeling" => ["en", "de"],
       "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
     })
-    InstanceConfiguration.instance.cache_settings # FIXME: does not take into account engines (=> re-cache when Defaults are modified?)
+    InstanceConfiguration.instance.initialize_cache
   end
 
   def self.title
@@ -198,7 +198,7 @@ module Iqvoc
     # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
     def self.further_labeling_class_names
       # TODO: custom hash setters to guard against modification of languages arrays?
-      return InstanceConfiguration::Defaults.each_with_object({}) do |(key, default_value), hsh|
+      return InstanceConfiguration.instance.defaults.each_with_object({}) do |(key, default_value), hsh|
         prefix = "languages.further_labelings."
         if key.start_with? prefix
           class_name = key[prefix.length..-1]
