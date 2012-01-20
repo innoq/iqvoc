@@ -28,7 +28,7 @@ class Concepts::UntranslatedController < ConceptsController
       begins_with(params[:letter]).
       missing_translation(I18n.locale, Iqvoc::Concept.pref_labeling_languages.first)
 
-    if I18n.locale == Iqvoc::Concept.pref_labeling_languages.first # TODO: Should be 404!
+    if I18n.locale.to_s == Iqvoc::Concept.pref_labeling_languages.first # TODO: Should be 404!
       @labels = []
       flash[:error] = I18n.t("txt.views.untranslated_concepts.unavailable")
     else
