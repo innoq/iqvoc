@@ -109,16 +109,6 @@ module Iqvoc
     return InstanceConfiguration.instance
   end
 
-  Rails.application.config.to_prepare do
-    Iqvoc.config.register_settings({
-      "title" => "iQvoc",
-      "available_languages" => ["en", "de"],
-      "languages.pref_labeling" => ["en", "de"],
-      "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
-    })
-    Iqvoc.config.initialize_cache
-  end
-
   def self.title
     return config["title"]
   end
@@ -126,6 +116,15 @@ module Iqvoc
   def self.available_languages
     return config["available_languages"]
   end
+
+  # initialize
+  self.config.register_settings({
+    "title" => "iQvoc",
+    "available_languages" => ["en", "de"],
+    "languages.pref_labeling" => ["en", "de"],
+    "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
+  })
+  self.config.initialize_cache
 
   # ************** Concept specific settings **************
 
