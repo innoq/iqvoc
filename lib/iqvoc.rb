@@ -105,22 +105,26 @@ module Iqvoc
 
   # ************** instance configuration **************
 
+  def self.config
+    return InstanceConfiguration.instance
+  end
+
   Rails.application.config.to_prepare do
-    InstanceConfiguration.instance.register_settings({
+    Iqvoc.config.register_settings({
       "title" => "iQvoc",
       "available_languages" => ["en", "de"],
       "languages.pref_labeling" => ["en", "de"],
       "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
     })
-    InstanceConfiguration.instance.initialize_cache
+    Iqvoc.config.initialize_cache
   end
 
   def self.title
-    return InstanceConfiguration.instance["title"]
+    return config["title"]
   end
 
   def self.available_languages
-    return InstanceConfiguration.instance["available_languages"]
+    return config["available_languages"]
   end
 
   # ************** Concept specific settings **************
@@ -169,7 +173,7 @@ module Iqvoc
     self.include_module_names = []
 
     def self.pref_labeling_languages
-      return InstanceConfiguration.instance["languages.pref_labeling"]
+      return Iqvoc.config["languages.pref_labeling"]
     end
 
     # Do not use the following method in models. This will probably cause a
@@ -198,11 +202,11 @@ module Iqvoc
     # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
     def self.further_labeling_class_names
       # TODO: custom hash setters to guard against modification of languages arrays?
-      return InstanceConfiguration.instance.defaults.each_with_object({}) do |(key, default_value), hsh|
+      return Iqvoc.config.defaults.each_with_object({}) do |(key, default_value), hsh|
         prefix = "languages.further_labelings."
         if key.start_with? prefix
           class_name = key[prefix.length..-1]
-          hsh[class_name] = InstanceConfiguration.instance[key]
+          hsh[class_name] = Iqvoc.config[key]
         end
       end
     end
