@@ -30,8 +30,11 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
         labelings << Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => val))
       end
       FactoryGirl.create(:concept, :pref_labelings => labelings)
-    end 
+    end
   end
+
+  # FIXME: apparently these tests are bogus, as they passed even when they
+  # should fail (see the commit that introduced this very comment for details)
 
   test "showing only concepts without pref label in respective language" do
     visit untranslated_concepts_path(:lang => :de, :letter => "x", :format => :html)
