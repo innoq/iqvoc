@@ -68,6 +68,8 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
       logout
       check_page.call "/search"
     end
+
+    # TODO: test routes-by-language availability, post-modification
   end
 
 end

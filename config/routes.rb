@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
   scope '(:lang)', :constraints => lambda { |params, req|
-    Iqvoc.config.initialize_cache(true) # FIXME: fugly hack to ensure per-request execution
     lang = params[:lang].to_s
     return lang =~ /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/
   } do
