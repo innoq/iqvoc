@@ -105,8 +105,13 @@ module Iqvoc
 
   # ************** instance configuration **************
 
-  def self.config
-    return InstanceConfiguration.instance
+  def self.config(&block)
+    cfg = InstanceConfiguration.instance
+    if block
+      block.call(cfg)
+    else
+      return cfg
+    end
   end
 
   def self.title
