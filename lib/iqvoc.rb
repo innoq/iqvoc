@@ -172,6 +172,8 @@ module Iqvoc
     self.include_module_names = []
 
     def self.pref_labeling_languages
+      # FIXME: mutable object; needs custom array setters to guard against
+      # modification (to highlight deprecated usage)
       return Iqvoc.config["languages.pref_labeling"]
     end
 
@@ -200,7 +202,8 @@ module Iqvoc
     # returns hash of class name / languages pairs
     # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
     def self.further_labeling_class_names
-      # TODO: custom hash setters to guard against modification of languages arrays?
+      # FIXME: mutable object; needs custom hash setters to guard against
+      # modification of languages arrays (to highlight deprecated usage)
       return Iqvoc.config.defaults.each_with_object({}) do |(key, default_value), hsh|
         prefix = "languages.further_labelings."
         if key.start_with? prefix
@@ -277,6 +280,43 @@ module Iqvoc
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
       base_class_name.constantize
+    end
+
+  end
+
+end
+
+# ************** deprecated **************
+#require 'iqvoc/deprecated' # FIXME: this appears to lead to "Don't know how to build task 'db:migrate_all'" errors when used as an engine
+module Iqvoc
+
+  # @deprecated
+  def self.title=(value)
+    ActiveSupport::Deprecation.warn "title has been moved into instance configuration", caller
+    self.config.register_setting("available_languages", value)
+  end
+
+  # @deprecated
+  def self.available_languages=(value)
+    ActiveSupport::Deprecation.warn "available_languages has been moved into instance configuration", caller
+    self.config.register_setting("available_languages", value)
+  end
+
+  module Concept
+
+    # @deprecated
+    def self.pref_labeling_languages=(value)
+      ActiveSupport::Deprecation.warn "pref_labeling_languages has been moved into instance configuration", caller
+      Iqvoc.config.register_setting("languages.pref_labeling", arr)
+    end
+
+    # @deprecated
+    def self.further_labeling_class_names=(hsh)
+      ActiveSupport::Deprecation.warn "further_labeling_class_names has been moved into instance configuration", caller
+      prefix = "languages.further_labelings."
+      hsh.each do |class_name, value|
+        Iqvoc.config.register_setting(prefix + class_name, value.map(&:to_s))
+      end
     end
 
   end
