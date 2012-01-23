@@ -40,13 +40,25 @@ module Iqvoc
     end
 
     # create or update a default setting
-    def register_setting(key, default_value) # XXX: bad API; should be regular setter!?
+    def register_setting(key, default_value)
       self.class.validate_value(default_value)
 
       @defaults[key] = default_value
 
       # update cache
       @settings[key] = @records[key] || default_value
+    end
+
+    # remove a default setting
+    # returns nil if setting does not exist
+    # NB: does *not* delete configuration settings from the database
+    def deregister_setting(key)
+      res = @defaults.delete(key)
+
+      # update cache
+      @settings.delete(key)
+
+      return res
     end
 
     # retrieve individual setting, using default value as fallback
