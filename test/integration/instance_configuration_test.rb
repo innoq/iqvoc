@@ -46,4 +46,28 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     # TODO: also test POST
   end
 
+  test "modify and persist configuration" do
+    assert page.find("h1.header").has_content? "iQvoc"
+
+    login "administrator"
+    visit "/config"
+
+    fill_in "config_title", :with => "lorem ipsum"
+    click_button "Save"
+
+    assert page.find("h1.header").has_content? "lorem ipsum"
+
+    # ensure that settings persist across sessions -- XXX: ineffective!?
+    check_page = lambda { |uri|
+      visit uri
+      assert page.find("h1.header").has_content? "lorem ipsum"
+    }
+    for role in ["reader", "editor", "publisher", "administrator"]
+      login role
+      check_page.call "/config"
+      logout
+      check_page.call "/search"
+    end
+  end
+
 end
