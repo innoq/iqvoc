@@ -63,7 +63,7 @@ module Iqvoc
 
     # retrieve individual setting, using default value as fallback
     def [](key)
-      cache_settings unless @settings.present? # XXX: bad encapsulation?
+      initialize_cache unless @settings.present? # XXX: bad encapsulation?
       return @settings[key]
     end
 
@@ -88,8 +88,10 @@ module Iqvoc
 
     # populate settings caches
     # (subsequent updates will happen automatically via the respective setters)
-    def initialize_cache
-      return @settings if @settings.present?
+    def initialize_cache(force=false)
+      unless force
+        return @settings if @settings.present?
+      end
 
       # cache customized settings
       db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)

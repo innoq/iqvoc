@@ -52,14 +52,6 @@ class InstanceConfigurationController < ApplicationController
           :error_messages => errors.join("; "))
     end
 
-    # ensure routes are updated in case pref-labeling languages changed
-    # XXX: only required if pref-labeling languages were actually modified
-    Rails.application.reload_routes!
-    # FIXME:
-    # `reload_routes!` isn't actually sufficient (since the routes.rb file
-    # never changes) - but the documentation is unclear on how to force reloading:
-    # http://api.rubyonrails.org/classes/ActionDispatch/Routing.html
-
     redirect_to instance_configuration_url
   end
 
