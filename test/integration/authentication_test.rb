@@ -14,8 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'test_helper'
-require 'integration_test_helper'
+require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class AuthenticationTest < ActionDispatch::IntegrationTest
 
