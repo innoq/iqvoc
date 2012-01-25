@@ -5,7 +5,7 @@
   <%= letter_selector { |letter| untranslated_concepts_path(:letter => letter.to_s.downcase) } %>
 
   <ul>
-    <% for label in @labels %>
+    <% @labels.each do |label| %>
       <li>
         <% if label.pref_labeled_concepts.length > 1 %>
           <%= label.value %>:
@@ -19,5 +19,5 @@
     <% end %>
   </ul>
 
-  <%= paginate @labels %>
+  <%= paginate @labels if @labels.present? %>
 <% end %>

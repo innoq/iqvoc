@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'debug'
+
 class ActionController::Base
 
   # Add a line to the log to mark the beginning of the view

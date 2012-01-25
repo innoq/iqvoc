@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'debug'
+
 if Iqvoc.const_defined?(:Application)
   Iqvoc::Application.configure do
     # Settings specified here will take precedence over those in config/environment.rb

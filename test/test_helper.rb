@@ -14,16 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ENV["RAILS_ENV"] = "test"
-require File.expand_path('../../config/environment', __FILE__)
-require 'rails/test_help'
+require 'rubygems'
+require 'spork'
 
-class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
-  # fixtures :all
+Spork.prefork do
+  ENV["RAILS_ENV"] = "test"
+  require File.expand_path('../../config/environment', __FILE__)
+  require 'rails/test_help'
+end
 
-  # Add more helper methods to be used by all tests here...
+Spork.each_run do
 end
