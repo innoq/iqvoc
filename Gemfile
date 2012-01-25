@@ -29,7 +29,7 @@ end
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~> 0.1.0'
+gem 'iq_rdf', '~> 0.1.2'
 gem 'json'
 gem 'rails_autolink'
 
