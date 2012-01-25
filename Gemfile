@@ -23,7 +23,7 @@ gem 'rails', '3.1.3'
 
 group :assets do
   gem 'uglifier'
-  gem 'therubyracer'
+  gem 'therubyracer', :platforms => :ruby
 end
 
 gem 'kaminari'
@@ -45,8 +45,10 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
-    gem 'spork', '~> 0.9.0.rc' # v0.9 required for spork-testunit
-    gem 'spork-testunit', :git => 'git://github.com/sporkrb/spork-testunit.git' # head required for Ruby 1.9.3 compatibility; cf. https://github.com/sporkrb/spork-testunit/pull/17
+    # v0.9 required for spork-testunit
+    gem 'spork', '~> 0.9.0.rc'
+    # head required for Ruby 1.9.3 compatibility; cf. https://github.com/sporkrb/spork-testunit/pull/17
+    gem 'spork-testunit', :git => 'git://github.com/sporkrb/spork-testunit.git'
   end
 
   platforms :jruby do
@@ -66,15 +68,10 @@ group :test do
 end
 
 group :production do
-  platforms :ruby do
-    gem 'sqlite3'
-  end
-
-  platforms :jruby do
-    gem 'activerecord-oracle_enhanced-adapter'
-  end
+  gem 'sqlite3', :platforms => :ruby
+  gem 'activerecord-oracle_enhanced-adapter', :platforms => :ruby
 end
 
 group :heroku do
-  gem 'pg'
+  gem 'pg', :platforms => :ruby
 end
