@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
     get 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'
-    post 'config(.:format)' => 'instance_configuration#update'
+    put 'config(.:format)' => 'instance_configuration#update'
 
     get "import" => "import#index", :as => 'import'
     post "import" => "import#import"
