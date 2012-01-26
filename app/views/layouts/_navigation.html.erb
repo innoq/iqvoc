@@ -21,7 +21,7 @@
       <%= link_to t("txt.views.navigation.users"), users_path %>
     </li>
   <% end %>
-  <% if can?(:manage, :instance_configuration) %>
+  <% if can?(:manage, Iqvoc.config) %>
     <li class="<%= params[:controller] == 'instance_configuration' ? 'active' : '' %>">
       <%= link_to t("txt.views.navigation.instance_configuration"), instance_configuration_path %>
     </li>

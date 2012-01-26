@@ -19,7 +19,7 @@ require 'csv'
 class InstanceConfigurationController < ApplicationController
 
   def index
-    authorize! :manage, :instance_configuration
+    authorize! :show, Iqvoc.config
 
     @settings = Iqvoc.config.defaults.each_with_object({}) { |(key, default_value), hsh|
       hsh[key] = serialize(Iqvoc.config[key], default_value)
@@ -27,7 +27,7 @@ class InstanceConfigurationController < ApplicationController
   end
 
   def update
-    authorize! :manage, :instance_configuration
+    authorize! :update, Iqvoc.config
 
     # deserialize and save configuration settings
     errors = []
