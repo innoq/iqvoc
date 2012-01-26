@@ -24,6 +24,12 @@ module Iqvoc
 
     attr_reader :defaults # XXX: dangerous (mutable object)
 
+    class UnregisteredSetting < ArgumentError
+      def to_s
+        "A setting needs to be registered with register_setting before it can be used."
+      end
+    end
+
     def initialize
       @defaults = {} # default settings
       @records = {} # customized (non-default) settings
@@ -69,7 +75,7 @@ module Iqvoc
 
     # store individual customized setting
     def []=(key, value)
-      raise ArgumentError unless @defaults.include?(key)
+      raise UnregisteredSetting unless @defaults.include?(key)
       self.class.validate_value(value)
 
       json = JSON.dump(value)
