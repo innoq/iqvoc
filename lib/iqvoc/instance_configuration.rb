@@ -102,9 +102,9 @@ module Iqvoc
       end
 
       # cache current settings
-      @defaults.each_with_object({}) { |(key, default_value), hsh|
+      @defaults.each_with_object({}) do |(key, default_value), hsh|
         @settings[key] = @records[key] || default_value
-      }
+      end
     end
 
     # checks whether value type is supported
