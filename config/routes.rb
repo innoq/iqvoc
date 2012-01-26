@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
   scope '(:lang)', :constraints => lambda { |params, req|
-    lang = params[:lang].to_s
-    return lang =~ /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/
+    lang = params[:lang]
+    return lang.nil? || lang.to_s =~ /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/
   } do
 
     resource  :user_session, :only => [:new, :create, :destroy]
