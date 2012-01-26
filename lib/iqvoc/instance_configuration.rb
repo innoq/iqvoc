@@ -39,7 +39,7 @@ module Iqvoc
 
     # convenience wrapper for `register_setting` batch operations
     # accepts a hash of key / default value pairs
-    def register_settings(settings)
+    def register_settings(settings = {})
       settings.each do |key, default_value|
         register_setting(key, default_value)
       end
