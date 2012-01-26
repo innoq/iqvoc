@@ -26,7 +26,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     visit uri
     assert_equal "/en/user_session/new.html", page.current_path
 
-    for role in ["reader", "editor", "publisher"]
+    ["reader", "editor", "publisher"].each do |role|
       login role
       visit uri
       assert_equal "/en/user_session/new.html", page.current_path,
