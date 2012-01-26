@@ -59,6 +59,4 @@ Rails.application.routes.draw do
   end
 
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
-  
-  root :to => 'concepts/hierarchical#index', :lang => I18n.default_locale
 end
