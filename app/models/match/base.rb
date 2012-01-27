@@ -16,7 +16,7 @@
 
 class Match::Base < ActiveRecord::Base
 
-  set_table_name 'matches'
+  self.table_name ='matches'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil

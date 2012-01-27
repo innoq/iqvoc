@@ -16,7 +16,7 @@
 
 class Concept::Base < ActiveRecord::Base
 
-  set_table_name 'concepts'
+  self.table_name ='concepts'
 
   include Iqvoc::Versioning
 
