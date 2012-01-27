@@ -222,4 +222,4 @@ DEPENDENCIES
   sqlite3
   therubyracer
   turn
-  uglifier
+  uglifier (>= 1.0.3)
