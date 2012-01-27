@@ -60,7 +60,7 @@ if Iqvoc.const_defined?(:Application)
     config.assets.allow_debugging = true
     
     # Raise exception on mass assignment protection for Active Record models
-    config.active_record.mass_assignment_sanitizer = :strict
+    config.active_record.mass_assignment_sanitizer = :logger
 
     # Print deprecation notices to the stderr
     config.active_support.deprecation = :stderr
