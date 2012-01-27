@@ -24,17 +24,19 @@ require 'iqvoc/ability'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
-
 ##### INSTANCE SETTINGS #####
 
 # uncomment the settings below and adjust as desired
 # see lib/iqvoc.rb for the full list of available setting
 
-if Rails.env != "test"
+unless Rails.env.test?
+  # Iqvoc.title = "My Thesaurus"
+
+  # interface languages (cf. config/locales)
+  # Iqvoc.available_languages = [ :en, :de ]
 
   # label languages (and classes)
   # Iqvoc::Concept.further_labeling_class_names = {
   #  "Labeling::SKOS::AltLabel" => [ :de, :en ]
   # }
-
 end

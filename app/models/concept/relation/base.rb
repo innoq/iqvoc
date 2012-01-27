@@ -28,7 +28,7 @@ class Concept::Relation::Base < ActiveRecord::Base
   # the Concept::Relation::* classes. If this would trigger Rails to load
   # Concept::Base we would have a loop == a problem.
 
-  set_table_name 'concept_relations'
+  self.table_name = 'concept_relations'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil

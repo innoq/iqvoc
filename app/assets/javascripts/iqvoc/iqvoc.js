@@ -178,7 +178,7 @@ jQuery(document).ready(function($) {
 		updateNoteLangs(data.langs);
 	});
 	var langSelector = new IQVOC.LanguageSelector(langWidget, "lang_selected");
-	if($("#concept_new, #concept_edit").length) { // edit mode
+	if($("#new_concept, #edit_concept").length) { // edit mode
 		// disable secondary language selection to avoid excessive state complexity
 		$(":checkbox", langSelector.container).prop("disabled", true);
 	}

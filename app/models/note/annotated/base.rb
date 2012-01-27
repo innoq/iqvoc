@@ -16,7 +16,7 @@
 
 class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::Annotation::Base? This looks like an annotated note - but it is an annotation *for* a note!?
 
-  set_table_name('note_annotations')
+  self.table_name = 'note_annotations'
 
   belongs_to :note, :class_name => Note::Base.name
 
