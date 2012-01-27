@@ -39,6 +39,7 @@ group :development do
   gem 'capistrano-ext'
   gem 'rvm' # RVM API (for Capistrano deployments)
   gem 'heroku'
+  gem 'view_marker'
 end
 
 group :development, :test do
