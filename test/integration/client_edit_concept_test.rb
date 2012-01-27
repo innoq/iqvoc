@@ -41,7 +41,8 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     # concept edit view
     visit concept_path(@concept, :lang => "de", :format => "html")
     click_link_or_button("Neue Version erstellen")
-    assert page.has_css?("#concept_edit")
+    create_snapshot
+    assert page.has_css?("#edit_concept")
 
     section = page.find("#label_note_skos_definitions_data")
     assert page.has_css?(".note_relation", :count => Iqvoc::Concept.note_class_names.length)
@@ -70,7 +71,7 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Konzept wurde erfolgreich aktualisiert.")
     # return to edit mode
     page.click_link_or_button("Bearbeitung fortsetzen")
-    assert page.has_css?("#concept_edit")
+    assert page.has_css?("#edit_concept")
 
     section = page.find("#label_note_skos_definitions_data")
 

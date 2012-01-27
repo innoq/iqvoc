@@ -16,7 +16,7 @@
 
 class Labeling::Base < ActiveRecord::Base
 
-  set_table_name 'labelings'
+  self.table_name = 'labelings'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil

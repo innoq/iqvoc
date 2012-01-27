@@ -16,7 +16,7 @@
 
 class Note::Base < ActiveRecord::Base
 
-  set_table_name 'notes'
+  self.table_name = 'notes'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil
