@@ -29,8 +29,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     ["reader", "editor", "publisher"].each do |role|
       login role
       visit uri
-      assert_equal "/en/user_session/new.html", page.current_path,
-          "#{role} must not access instance configuration"
+      assert page.has_content?("No permission"), "#{role} must not access instance configuration"
       logout
     end
 
