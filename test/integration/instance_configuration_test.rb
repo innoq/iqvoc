@@ -36,7 +36,6 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     login "administrator"
     visit uri
     assert_equal "/en/config.html", page.current_path
-    create_snapshot
     assert page.has_css?("fieldset input", :count => 4)
     assert page.has_css?("input#config_title")
     assert page.has_css?("input#config_available_languages")
