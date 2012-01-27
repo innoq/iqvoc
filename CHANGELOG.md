@@ -1,3 +1,8 @@
+## 3.4.0 (2012-01-27)
+
+ * Rails 3.2
+ * Bugfixes
+
 ## 3.3.4 (2012-01-16)
 
  * Import SKOS files via the web frontend
