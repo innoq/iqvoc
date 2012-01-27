@@ -16,7 +16,7 @@
 
 class Label::Base < ActiveRecord::Base
 
-  set_table_name 'labels'
+  self.table_name = 'labels'
 
   # ********** Validations
 
