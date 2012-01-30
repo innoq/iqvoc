@@ -4,11 +4,11 @@ def dbg(*args)
   prefix = "#{args.shift} " if [String, Symbol].include?(args.first.class)
 
   msg = args.map(&:inspect).join(" | ")
-  msg = "[DEBUG] #{prefix}#{msg}"
+  msg = "#{prefix}#{msg}"
 
-  if defined?(Rails::Console) || Rails.env == "test" # STDOUT is usually available here
+  if defined?(Rails::Console) || Rails.env.test? # STDOUT is usually available here
     puts msg
   else
-    Rails.logger.debug msg
+    Rails.logger.tagged("DEBUG") { Rails.logger.debug msg }
   end
 end
