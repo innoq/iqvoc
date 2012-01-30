@@ -21,8 +21,9 @@ class SkosImportTest < ActiveSupport::TestCase
 
   def setup
     Iqvoc::Concept.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    Iqvoc::Concept.pref_labeling_languages      = [ :de, :en ]
-    Iqvoc::Concept.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [ :de, :en ] }
+
+    Iqvoc.config.register_setting("languages.pref_labeling", ["de", "en"])
+    Iqvoc.config.register_setting("languages.further_labelings.Labeling::SKOS::AltLabel", ["de", "en"])
   end
 
   TEST_DATA = (<<-DATA
@@ -51,7 +52,7 @@ class SkosImportTest < ActiveSupport::TestCase
 <http://not-my-problem.com/me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.
     DATA
   ).split("\n")
-  
+
   test "unicode json decoding trick" do
     encoded_val = "\\u00C4ffle"
     decoded_val = JSON.parse(%Q{["#{encoded_val}"]})[0].gsub("\\n", "\n")

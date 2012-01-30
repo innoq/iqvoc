@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def options_for_language_select(selected = nil)
-    locales_collection = Iqvoc.available_languages.map { |l| [l.to_s, l.to_s] }
+    locales_collection = Iqvoc.available_languages.map { |l| [l, l] }
 
     options_for_select(locales_collection, selected)
   end

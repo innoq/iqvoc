@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'string'
+require 'iqvoc/instance_configuration'
 
 module Iqvoc
 
@@ -22,18 +23,14 @@ module Iqvoc
     require File.join(File.dirname(__FILE__), '../config/engine')
   end
 
-  mattr_accessor :title,
-    :searchable_class_names,
+  mattr_accessor :searchable_class_names,
     :unlimited_search_results,
-    :available_languages,
     :default_rdf_namespace_helper_methods,
     :rdf_namespaces,
     :change_note_class_name,
     :first_level_class_configuration_modules,
     :ability_class_name,
     :core_assets
-
-  self.title = "iQvoc"
 
   self.core_assets = %w(
     manifest.css
@@ -53,8 +50,6 @@ module Iqvoc
     'Note::Base'
   ]
   self.unlimited_search_results = false
-
-  self.available_languages = [:en, :de]
 
   self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
@@ -108,6 +103,34 @@ module Iqvoc
     puts "Secret token configuration has been created in #{file_name}."
   end
 
+  # ************** instance configuration **************
+
+  def self.config(&block)
+    cfg = InstanceConfiguration.instance
+    if block
+      block.call(cfg)
+    else
+      return cfg
+    end
+  end
+
+  def self.title
+    return config["title"]
+  end
+
+  def self.available_languages
+    return config["available_languages"]
+  end
+
+  # initialize
+  self.config.register_settings({
+    "title" => "iQvoc",
+    "available_languages" => ["en", "de"],
+    "languages.pref_labeling" => ["en", "de"],
+    "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
+  })
+  self.config.initialize_cache
+
   # ************** Concept specific settings **************
 
   module Concept
@@ -116,7 +139,7 @@ module Iqvoc
 
     mattr_accessor :base_class_name,
       :broader_relation_class_name, :further_relation_class_names,
-      :pref_labeling_class_name, :pref_labeling_languages, :further_labeling_class_names,
+      :pref_labeling_class_name,
       :match_class_names,
       :note_class_names,
       :additional_association_class_names,
@@ -129,8 +152,6 @@ module Iqvoc
     self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
     self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-    self.pref_labeling_languages      = [:en, :de]
-    self.further_labeling_class_names = { 'Labeling::SKOS::AltLabel' => [:de, :en] }
 
     self.note_class_names             = [
       Iqvoc.change_note_class_name,
@@ -155,6 +176,12 @@ module Iqvoc
 
     self.include_module_names = []
 
+    def self.pref_labeling_languages
+      # FIXME: mutable object; needs custom array setters to guard against
+      # modification (to highlight deprecated usage)
+      return Iqvoc.config["languages.pref_labeling"]
+    end
+
     # Do not use the following method in models. This will probably cause a
     # loading loop (something like "expected file xyz to load ...")
     def self.base_class
@@ -175,6 +202,20 @@ module Iqvoc
 
     def self.broader_relation_class
       broader_relation_class_name.constantize
+    end
+
+    # returns hash of class name / languages pairs
+    # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
+    def self.further_labeling_class_names
+      # FIXME: mutable object; needs custom hash setters to guard against
+      # modification of languages arrays (to highlight deprecated usage)
+      return Iqvoc.config.defaults.each_with_object({}) do |(key, default_value), hsh|
+        prefix = "languages.further_labelings."
+        if key.start_with? prefix
+          class_name = key[prefix.length..-1]
+          hsh[class_name] = Iqvoc.config[key]
+        end
+      end
     end
 
     def self.further_labeling_classes
@@ -250,5 +291,42 @@ module Iqvoc
 
 end
 
-# FIXME: For yet unknown reasons, the load hook gets to run 2 times
+# ************** deprecated **************
+#require 'iqvoc/deprecated' # FIXME: this appears to lead to "Don't know how to build task 'db:migrate_all'" errors when used as an engine
+module Iqvoc
+
+  # @deprecated
+  def self.title=(value)
+    ActiveSupport::Deprecation.warn "title has been moved into instance configuration", caller
+    self.config.register_setting("available_languages", value)
+  end
+
+  # @deprecated
+  def self.available_languages=(value)
+    ActiveSupport::Deprecation.warn "available_languages has been moved into instance configuration", caller
+    self.config.register_setting("available_languages", value)
+  end
+
+  module Concept
+
+    # @deprecated
+    def self.pref_labeling_languages=(value)
+      ActiveSupport::Deprecation.warn "pref_labeling_languages has been moved into instance configuration", caller
+      Iqvoc.config.register_setting("languages.pref_labeling", arr)
+    end
+
+    # @deprecated
+    def self.further_labeling_class_names=(hsh)
+      ActiveSupport::Deprecation.warn "further_labeling_class_names has been moved into instance configuration", caller
+      prefix = "languages.further_labelings."
+      hsh.each do |class_name, value|
+        Iqvoc.config.register_setting(prefix + class_name, value.map(&:to_s))
+      end
+    end
+
+  end
+
+end
+
+# FIXME: For reasons yet unknown, the load hook is executed twice
 ActiveSupport.run_load_hooks(:after_iqvoc_config, Iqvoc)

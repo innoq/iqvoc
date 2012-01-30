@@ -32,11 +32,12 @@ module Iqvoc
           can [:update, :destroy, :unlock], [::Concept::Base, ::Label::Base], :published_at => nil # Mustn't be locked by myself
 
           can :manage, User
+          can :manage, Iqvoc.config
 
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
         end
-      
+
       end
 
     end

@@ -40,6 +40,8 @@ module ActionController
     def logout
       visit dashboard_path(:lang => :de)
       click_link_or_button "Abmelden" if page.has_link?("Abmelden")
+      @user.try(:destroy)
+      @user = nil
     end
 
     def user(role = nil)
