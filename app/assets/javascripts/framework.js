@@ -5,4 +5,3 @@
 //= require jquery.treeview
 //= require jquery.treeview.async
 //= require storage
-//= require json2

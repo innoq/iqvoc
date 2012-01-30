@@ -53,6 +53,13 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // load JSON polyfill only if necessary
+      if(typeof JSON === "undefined") {
+        document.write('<%= javascript_include_tag("json2").sub("</", "<\\/").html_safe %>');
+      }
+    </script>
     <%= javascript_include_tag "manifest" %>
     <%= yield :scripts %>
   </body>
