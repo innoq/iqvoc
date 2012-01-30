@@ -1,0 +1,31 @@
+body {
+  background-color: #fff;
+}
+
+.container {
+  background-image: url("../images/5b.png");
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+header.main {
+  margin-top: 50px;
+  padding-bottom: 40px;
+  border-bottom: 0;
+/*  position: relative;*/
+}
+
+header.main h1 {
+  font-size: 54px;
+  margin-bottom: 9px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+header.main h1, p {
+  margin-right: 0;
+}
+
+section {
+  padding-bottom: 20px;
+}

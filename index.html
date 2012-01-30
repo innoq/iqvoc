@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>iQvoc – A Vocabulary Management System built on The Semantic Web</title>
+  <link rel="stylesheet" href="stylesheets/bootstrap.css" type="text/css" charset="utf-8">
+  <link rel="stylesheet" href="stylesheets/bootstrap.responsive.css" type="text/css" charset="utf-8">
+  <link rel="stylesheet" href="stylesheets/iqvoc.css" type="text/css" charset="utf-8">
+</head>
+<body>
+  <div class="container">
+    
+    <header class="main">
+      <h1>iQvoc</h1>
+      <p class="lead">A Vocabulary Management System built on The Semantic Web.</p>
+      <div class="subnav">
+        <ul class="nav pills">
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#customization">Customization</a></li>
+          <li><a href="#technology">Technology</a></li>
+          <li><a href="https://github.com/innoq/iqvoc">Source Code</a></li>
+          <li>
+            <a href="https://twitter.com/iqvoc" class="twitter-follow-button" data-show-count="false">Follow @iqvoc</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          </li>
+        </ul>
+      </div>
+    </header>
+    
+    <section>
+      <div class="page-header">
+        <a name="about"></a>
+        <h1>About <small>What is it?</small></h1>
+      </div>
+        <p>iQvoc supports vocabularies that are common to many knowledge organisation systems, such as:</p>
+
+        <ul>
+          <li>Thesauri</li>
+          <li>Taxonomies</li>
+          <li>Classification schemes</li>
+          <li>Subject heading systems</li>
+        </ul>
+        
+        <p>iQvoc was originally created and is being maintained by <a href="http://www.innoq.com">innoQ Deutschland GmbH</a>.</p>
+    </section>
+    
+    <section>
+      <div class="page-header">
+        <a name="features"></a>
+        <h1>Features <small>What iQvoc can do for you.</small></h1>
+      </div>
+      
+      <div class="row">
+        <div class="span4">
+          <h2>Importing</h2>
+          <p>Existing vocabularies can be imported if they are available in the SKOS format. If there is no such representation, the iQvoc support team can provide help or even do this conversion for you from any kind of available source. If the vocabulary contains extensions by class inheritance, iQvoc can be configured to support this with little effort.</p>
+        </div>
+        <div class="span4">
+          <h2>Display</h2>
+          <p>Once imported, any vocabulary is ready to be displayed and navigated in an intuitive Web interface. iQvoc supports various customisable skins to align with any kind of user-specific style guide. The iQvoc Web interface provides unrestricted multilingualism and conforms to the guidelines of the Web Accessibility Initiative (WAI).</p>
+        </div>
+        <div class="span4">
+          <h2>Editorial Workflow</h2>
+          <p>The general vocabulary administrator may authorize registered users as vocabulary editors. Editing is performed in an extension of the original Web interface, so the editorial staff can be globally distributed and there is no need for any kind of additional tooling. More sophisticated editorial features are planned for version 2, including a fine grained work flow and life cycle management.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+           <h2>Publishing</h2>
+            <p>iQvoc provides unique and stable identifiers for each concept according to
+              W3C guide lines "<a href="http://www.w3.org/TR/cooluris/">Cool URIs for the
+                Semantic Web</a>" and "<a href="http://sites.wiwiss.fu-berlin.de/suhl/bizer/pub/LinkedDataTutorial/">How
+                to publish Linked Data on the Web</a>&quot;. There is one URL that represents
+              the abstract concept plus redirections to HTML and RDF &quot;information resources&quot;,
+              corresponding to the &quot;accept&quot; settings of the request. This allows,
+              for example, integrating the vocabulary with the <a href="http://esw.w3.org/topic/SweoIG/TaskForces/CommunityProjects/LinkingOpenData">Linking
+                Open Data</a> community project or any other conforming knowledge base. Likewise
+              the vocabulary can be referenced in <a href="http://www.w3.org/2002/ws/sawsdl/">Semantic
+                Annotations for WSDL</a> in order to facilitate a semantically enabled service
+              oriented architecture (SOA). There is a strong emphasis on developing automated
+              semantic matching and annotation methods in the next versions of iQvoc.
+              iQvoc offers a free configuration of URI design in order to provide persistent
+              and sustainable URI references whenever any productive vocabulary is migrated
+              to the iQvoc engine.
+        </div>
+        <div class="span4">
+           <h2>SKOS</h2>
+           <p>The <a href="http://www.w3.org/2004/02/skos/">Simple Knowledge Organisation
+               System</a> (SKOS) effort is &quot;developing specifications and standards to
+             support the use of knowledge Organization systems (KOS) such as thesauri, classification
+             schemes, subject heading systems and taxonomies within the framework of the
+             Semantic Web&quot; since 2004. iQvoc 1.0 implements the <a href="http://www.w3.org/2004/02/skos/core#">http://www.w3.org/2004/02/skos/core#</a>
+             namespace, which still is referenced by most SKOS applications. iQvoc developers
+             are contributing to the discussion of the upcoming <a href="http://www.w3.org/2008/05/skos#">http://www.w3.org/2008/05/skos#</a>
+             namespace, which currently is in W3C Working Draft status. Future versions of
+             iQvoc will support both namespaces.</p>
+         </div>
+      </div>
+      <div class="row">
+      </div>
+    </section>
+    <section>
+      <div class="page-header">
+        <a name="customization"></a>
+        <h1>Customization <small>Need a customized instance with extra features?</small></h1>
+      </div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </section>
+    <section>
+      <div class="page-header">
+        <a name="technology"></a>
+        <h1>Technology <small>How we built iQvoc.</small></h1>
+      </div>
+      <p>iQvoc is implemented based on the <a href="http://www.rubyonrails.org/">Ruby
+        on Rails</a> open-source Web framework which allows increased productivity combined
+        with unlimited interoperability of the product. iQvoc can be run with almost
+        any Web server and database management system. If there is a preference for
+        a Java environment, Java byte code is available as well.</p>
+    </section>
+    
+  </div>
+</body>
+</html>
