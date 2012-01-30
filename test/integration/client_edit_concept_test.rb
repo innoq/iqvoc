@@ -41,7 +41,6 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     # concept edit view
     visit concept_path(@concept, :lang => "de", :format => "html")
     click_link_or_button("Neue Version erstellen")
-    create_snapshot
     assert page.has_css?("#edit_concept")
 
     section = page.find("#label_note_skos_definitions_data")

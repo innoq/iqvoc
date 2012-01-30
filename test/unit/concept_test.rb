@@ -82,7 +82,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.save
     concept.reload
     assert_equal 'A new label', concept.pref_label.value
-    assert_equal Iqvoc::Concept.pref_labeling_languages.first.to_s, concept.pref_label.language.to_s
+    assert_equal Iqvoc::Concept.pref_labeling_languages.first, concept.pref_label.language.to_s
 
     concept.labelings_by_text = {
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}

@@ -81,6 +81,11 @@ en:
          relations: Relations
          notes: Notes
          matches: Concept mappings
+     instance_configuration:
+       caption: "instance configuration"
+       keys:
+         title: "title"
+         available_languages: "user interface languages (locales)"
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
@@ -133,6 +138,7 @@ en:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
+       instance_configuration: "Instance configuration"
        hierarchical: "Hierachical listings"
        alphabetical: "Alphabetical listings"
        search: "Search"
@@ -251,6 +257,11 @@ en:
      application:
        login_required: "You must be logged in to access this page."
        logout_required: "You must be logged out to access this page."
+     instance_configuration:
+       update_success: "Configuration updated."
+       update_error: "Errors occurred while updating configuration: %{error_messages}."
+       invalid_key: "unknown key: #{key}"
+       invalid_value: "unsupported value: %{key} (%{error_message})"
      search_results:
        insufficient_data: "You entered insufficient search data"
      users:

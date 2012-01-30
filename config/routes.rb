@@ -18,7 +18,10 @@ Rails.application.routes.draw do
 
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
-  scope '(:lang)', :lang => /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/ do
+  scope '(:lang)', :constraints => lambda { |params, req|
+    lang = params[:lang]
+    return lang.nil? || lang.to_s =~ /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/
+  } do
 
     resource  :user_session, :only => [:new, :create, :destroy]
     resources :users, :except => [:show]
@@ -43,6 +46,9 @@ Rails.application.routes.draw do
 
     match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
+
+    get 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'
+    put 'config(.:format)' => 'instance_configuration#update'
 
     get "import" => "import#index", :as => 'import'
     post "import" => "import#import"
