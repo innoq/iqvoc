@@ -26,17 +26,8 @@ ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
 ##### INSTANCE SETTINGS #####
 
-# uncomment the settings below and adjust as desired
-# see lib/iqvoc.rb for the full list of available setting
+# initialize non-dynamic settings below
+# see lib/iqvoc.rb for the list of available setting
 
 unless Rails.env.test?
-  # Iqvoc.title = "My Thesaurus"
-
-  # interface languages (cf. config/locales)
-  # Iqvoc.available_languages = [ :en, :de ]
-
-  # label languages (and classes)
-  # Iqvoc::Concept.further_labeling_class_names = {
-  #  "Labeling::SKOS::AltLabel" => [ :de, :en ]
-  # }
 end
