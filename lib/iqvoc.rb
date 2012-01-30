@@ -42,6 +42,7 @@ module Iqvoc
     excanvas.js
     jit_rgraph.js
     iqvoc/visualization.js
+    json2.js
   )
 
   self.searchable_class_names = [
