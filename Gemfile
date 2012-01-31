@@ -39,6 +39,8 @@ group :development do
   gem 'heroku'
   gem 'view_marker'
   gem 'blazing'
+  gem 'blazing-passenger'
+  gem 'blazing-rails'
 end
 
 group :development, :test do
