@@ -27,28 +27,31 @@ class Concepts::HierarchicalController < ConceptsController
     end
 
     # if params[:broader] is given, the action is handling the reversed tree
-    @concepts = case params[:root]
-    when /\d+/
-      root_concept = Iqvoc::Concept.base_class.find(params[:root])
+    root_id = params[:root]
+    if root_id && root_id =~ /\d+/
+      root_concept = Iqvoc::Concept.base_class.find(root_id)
+
+      # NB: order matters; see the following `where`
       if params[:broader]
-        scope.
-          includes(:narrower_relations, :broader_relations). # D A N G E R: the order matters!!! See the following where
-        where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
+        scope = scope.includes(:narrower_relations, :broader_relations)
       else
-        scope.
-          includes(:broader_relations, :narrower_relations). # D A N G E R: the order matters!!! See the following where
-        where(Concept::Relation::Base.arel_table[:target_id].eq(root_concept.id))
+        scope = scope.includes(:broader_relations, :narrower_relations)
       end
+
+      @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].
+          eq(root_concept.id))
     else
       if params[:broader]
-        scope.broader_tops.includes(:broader_relations)
+        @concepts = scope.broader_tops.includes(:broader_relations)
       else
-        scope.tops.includes(:narrower_relations)
+        @concepts = scope.tops.includes(:narrower_relations)
       end
     end
+
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new(@concepts, Iqvoc::Concept.base_class.default_includes + [:pref_labels]).run
+    ActiveRecord::Associations::Preloader.new(@concepts,
+        Iqvoc::Concept.base_class.default_includes + [:pref_labels]).run
 
     @concepts.sort! do |a, b|
       a.pref_label.to_s <=> b.pref_label.to_s
