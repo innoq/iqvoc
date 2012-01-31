@@ -36,11 +36,9 @@ gem 'jruby-openssl', :platforms => :jruby
 
 group :development do
   gem 'awesome_print'
-  gem 'capistrano'
-  gem 'capistrano-ext'
-  gem 'rvm' # RVM API (for Capistrano deployments)
   gem 'heroku'
   gem 'view_marker'
+  gem 'blazing'
 end
 
 group :development, :test do
