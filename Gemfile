@@ -33,14 +33,14 @@ gem 'iq_rdf', '~> 0.1.2'
 gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
+gem 'blazing'
+gem 'blazing-passenger'
+gem 'blazing-rails'
 
 group :development do
   gem 'awesome_print'
   gem 'heroku'
   gem 'view_marker'
-  gem 'blazing'
-  gem 'blazing-passenger'
-  gem 'blazing-rails'
 end
 
 group :development, :test do
