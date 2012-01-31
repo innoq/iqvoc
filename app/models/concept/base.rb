@@ -125,7 +125,7 @@ class Concept::Base < ActiveRecord::Base
   # *** Concept2Concept relations
 
   # Broader
-  # Actually this is not needed anymore.
+  # FIXME: Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :broader_relations,
@@ -134,7 +134,7 @@ class Concept::Base < ActiveRecord::Base
     :extend => Concept::Relation::ReverseRelationExtension
 
   # Narrower
-  # Actually this is not needed anymore.
+  # FIXME: Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :narrower_relations,
@@ -226,7 +226,7 @@ class Concept::Base < ActiveRecord::Base
   # ********** Relation Stuff
 
   @nested_relations.each do |relation|
-    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
+    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new { |attrs| attrs[:value].blank? }
   end
 
   # ********** Scopes
@@ -240,13 +240,13 @@ class Concept::Base < ActiveRecord::Base
     order("LOWER(#{Label::Base.table_name}.value)")
 
   scope :with_associations, includes([
-      {:labelings => :target}, :relations, :matches, :notes
+      { :labelings => :target }, :relations, :matches, :notes
     ])
 
   scope :with_pref_labels,
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").
-    where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
+    where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   scope :for_dashboard, lambda {
     unpublished_or_follow_up.
