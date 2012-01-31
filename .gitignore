@@ -1,3 +1,4 @@
+bin/
 .bundle
 .rbenv-version
 db/*.sqlite3
