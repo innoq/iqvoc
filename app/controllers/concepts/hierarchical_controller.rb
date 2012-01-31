@@ -29,17 +29,13 @@ class Concepts::HierarchicalController < ConceptsController
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]
     if root_id && root_id =~ /\d+/
-      root_concept = Iqvoc::Concept.base_class.find(root_id)
-
       # NB: order matters; see the following `where`
       if params[:broader]
         scope = scope.includes(:narrower_relations, :broader_relations)
       else
         scope = scope.includes(:broader_relations, :narrower_relations)
       end
-
-      @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].
-          eq(root_concept.id))
+      @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
     else
       if params[:broader]
         @concepts = scope.broader_tops.includes(:broader_relations)
