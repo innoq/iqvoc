@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'concept/relation/reverse_relation_extension'
+
 class Concept::Base < ActiveRecord::Base
 
   self.table_name = 'concepts'
