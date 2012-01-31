@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concept/skos/base'
-
 # root node (singleton)
 class Concept::SKOS::Scheme < Concept::SKOS::Base
 

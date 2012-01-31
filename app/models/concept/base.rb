@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concept/relation/reverse_relation_extension'
-
 class Concept::Base < ActiveRecord::Base
 
   self.table_name = 'concepts'
@@ -233,8 +231,10 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :tops, includes(:broader_relations).
-    where(:concept_relations => { :target_id => Iqvoc::Concept.root_class.instance.id })
+  scope :tops, lambda {
+    includes(:broader_relations).
+        where(:concept_relations => { :target_id => Iqvoc::Concept.root_class.instance.id })
+  }
 
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => { :id => nil },
