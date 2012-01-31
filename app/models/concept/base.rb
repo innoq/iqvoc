@@ -232,10 +232,11 @@ class Concept::Base < ActiveRecord::Base
   # ********** Scopes
 
   scope :tops, includes(:broader_relations).
-    where(:concept_relations => {:id => nil})
+    where(:concept_relations => { :target_id => Iqvoc::Concept.root_class.instance.id })
 
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
-    where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
+    where(:concept_relations => { :id => nil },
+        :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
     order("LOWER(#{Label::Base.table_name}.value)")
 
   scope :with_associations, includes([
@@ -267,6 +268,16 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Methods
+
+  def top_term! # XXX: rename?
+    self.send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
+        create_with_reverse_relation(Iqvoc::Concept.root_class.instance)
+  end
+
+  def top_term?
+    root_id = Iqvoc::Concept.root_class.instance.id
+    broader_relations.where(:target_id => root_id).any?
+  end
 
   def labelings_by_text=(hash)
     @labelings_by_text = hash

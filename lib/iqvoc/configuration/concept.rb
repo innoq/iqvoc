@@ -4,11 +4,11 @@ module Iqvoc
   module Configuration
     module Concept
       extend ActiveSupport::Concern
-      
+
       included do
         Iqvoc.first_level_class_configuration_modules << self
 
-        mattr_accessor :base_class_name,
+        mattr_accessor :base_class_name, :root_class_name,
         :broader_relation_class_name, :further_relation_class_names,
         :pref_labeling_class_name,
         :match_class_names,
@@ -18,6 +18,7 @@ module Iqvoc
         :include_module_names
 
         self.base_class_name              = 'Concept::SKOS::Base'
+        self.root_class_name              = 'Concept::SKOS::Scheme'
 
         self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Mono'
         self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
@@ -47,7 +48,7 @@ module Iqvoc
 
         self.include_module_names = []
       end
-      
+
       module ClassMethods
         def pref_labeling_languages
           # FIXME: mutable object; needs custom array setters to guard against
@@ -59,6 +60,10 @@ module Iqvoc
         # loading loop (something like "expected file xyz to load ...")
         def base_class
           base_class_name.constantize
+        end
+
+        def root_class
+          root_class_name.constantize
         end
 
         def pref_labeling_class
@@ -130,7 +135,7 @@ module Iqvoc
         def include_modules
           include_module_names.map(&:constantize)
         end
-      
+
         # @deprecated
         def pref_labeling_languages=(value)
           ActiveSupport::Deprecation.warn "pref_labeling_languages has been moved into instance configuration", caller
