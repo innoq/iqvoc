@@ -7,7 +7,7 @@ def dbg(*args)
   msg = "#{prefix}#{msg}"
 
   if defined?(Rails::Console) || Rails.env.test? # STDOUT is usually available here
-    puts msg
+    puts "[DEBUG] #{msg}"
   else
     Rails.logger.tagged("DEBUG") { Rails.logger.debug msg }
   end
