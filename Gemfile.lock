@@ -36,7 +36,7 @@ GEM
     activerecord-jdbcsqlite3-adapter (1.2.2)
       activerecord-jdbc-adapter (~> 1.2.2)
       jdbc-sqlite3 (~> 3.7.2)
-    activerecord-oracle_enhanced-adapter (1.4.0)
+    activerecord-oracle_enhanced-adapter (1.4.1)
     activeresource (3.2.1)
       activemodel (= 3.2.1)
       activesupport (= 3.2.1)
