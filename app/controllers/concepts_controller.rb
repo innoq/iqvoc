@@ -100,10 +100,8 @@ class ConceptsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Concept.base_class
 
-    is_top_term = params[:concept].delete(:top_term) == "1"
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.save
-      @concept.top_term! if is_top_term
       flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
       redirect_to concept_path(:published => 0, :id => @concept.origin)
     else
@@ -135,9 +133,7 @@ class ConceptsController < ApplicationController
 
     authorize! :update, @concept
 
-    is_top_term = params[:concept].delete(:top_term) == "1"
     if @concept.update_attributes(params[:concept])
-      @concept.top_term! if is_top_term
       flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
       redirect_to concept_path(:published => 0, :id => @concept)
     else

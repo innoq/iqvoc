@@ -232,10 +232,7 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :tops, lambda {
-    includes(:broader_relations).
-        where(:concept_relations => { :target_id => Iqvoc::Concept.root_class.instance.id })
-  }
+  scope :tops, where(arel_table[:top_term].not_eq(nil))
 
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => { :id => nil },
@@ -271,17 +268,6 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Methods
-
-  def top_term! # XXX: rename?
-    self.send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
-        create_with_reverse_relation(Iqvoc::Concept.root_class.instance)
-  end
-
-  def top_term?
-    return false if new_record?
-    root_id = Iqvoc::Concept.root_class.instance.id
-    broader_relations.where(:target_id => root_id).any?
-  end
 
   def labelings_by_text=(hash)
     @labelings_by_text = hash
@@ -345,10 +331,8 @@ class Concept::Base < ActiveRecord::Base
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select { |rel|
-      rel.class.name == relation_class &&
-          rel.target_id != Iqvoc::Concept.root_class.instance.id # FIXME: hacky? (lack of encapsulation)
-    }.map(&:target).select { |c| c.published? || !only_published }
+    relations.select { |rel| rel.class.name == relation_class }.map(&:target).
+        select { |c| c.published? || !only_published }
   end
 
   def matches_for_class(match_class)
@@ -410,7 +394,7 @@ class Concept::Base < ActiveRecord::Base
   # concepts should either be a top term or have a regular parent
   def ensure_not_orphaned
     if @full_validation
-      unless broader_relations.count > 1
+      if !top_term && broader_relations.none?
         errors.add :base, I18n.t("txt.models.concept.orphan_error")
       end
     end

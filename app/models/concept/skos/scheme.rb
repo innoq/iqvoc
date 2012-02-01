@@ -14,19 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# root node (singleton)
-# NB: does not inherit from Concept::SKOS::Base to avoid being included in all
-#     queries based on that class
-class Concept::SKOS::Scheme < Concept::Base
+require 'singleton'
 
-  # singleton
-  private_class_method :new, :create
-  def self.instance
-    @@instance ||= first || create(:published_at => Time.now)
-  end
-
-  # orphan validation does not apply
-  def ensure_not_orphaned
-  end
-
+# virtual root node
+# NB:
+# * does not inherit from Concept::Base to avoid being included in all
+#   queries based on that class, including indirect ones (e.g. relations)
+# * persistence (i.e. a database record) is not required since this is a
+#   singleton and merely a static, virtual node
+class Concept::SKOS::Scheme
+  include Singleton
 end

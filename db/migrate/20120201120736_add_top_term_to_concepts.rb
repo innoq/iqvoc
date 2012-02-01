@@ -1,0 +1,7 @@
+class AddTopTermToConcepts < ActiveRecord::Migration
+
+  def change
+    add_column :concepts, :top_term, :boolean
+  end
+
+end
