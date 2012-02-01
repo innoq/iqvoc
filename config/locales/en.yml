@@ -82,10 +82,7 @@ en:
          notes: Notes
          matches: Concept mappings
      instance_configuration:
-       caption: "instance configuration"
-       keys:
-         title: "title"
-         available_languages: "user interface languages (locales)"
+       caption: "Instance Configuration"
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
