@@ -22,7 +22,7 @@ class Concept::SKOS::Scheme < Concept::Base
   # singleton
   private_class_method :new, :create
   def self.instance
-    return first || create(:published_at => Time.now)
+    @@instance ||= first || create(:published_at => Time.now)
   end
 
   # orphan validation does not apply
