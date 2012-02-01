@@ -8,7 +8,7 @@
     :"data-query-url" => concepts_path(:format => :json),
     :"data-entity-uri" => concept_path("{id}"),
     :"data-singular" => klass.singular? || nil,
-    :"data-entities" => Concept::Base.editor_selectable.
+    :"data-entities" => Iqvoc::Concept.base_class.editor_selectable.
     by_origin(concept.concept_relations_by_id(klass.name.to_relation_name).
       split(Iqvoc::InlineDataHelper::Splitter)).
     map { |c| concept_widget_data(c) }.to_json %>

@@ -15,9 +15,9 @@
 # limitations under the License.
 
 # root node (singleton)
-class Concept::SKOS::Scheme < Concept::SKOS::Base
-
-  self.rdf_class = "ConceptScheme"
+# NB: does not inherit from Concept::SKOS::Base to avoid being included in all
+#     queries based on that class
+class Concept::SKOS::Scheme < Concept::Base
 
   # singleton
   private_class_method :new, :create
