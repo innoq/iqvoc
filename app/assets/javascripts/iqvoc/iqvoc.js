@@ -1,4 +1,4 @@
-/*jslint vars: true, unparam: true, browser: true */
+/*jslint vars: true, unparam: true, browser: true, white: true */
 /*global jQuery */
 
 var IQVOC = (function($) {
@@ -188,6 +188,15 @@ jQuery(document).ready(function($) {
 		IQVOC.EntitySelector(node);
 	});
 
+	// hide broader relations for top terms (mutually exclusive in mono hierarchies)
+	var topTerm = $("#concept_top_term.exclusive");
+	var onTopTermToggle = function(ev) {
+		var broader = topTerm.closest("li").next(); // XXX: brittle
+		broader[topTerm.prop("checked") ? "slideUp" : "slideDown"]();
+	};
+	topTerm.on("change", onTopTermToggle);
+	onTopTermToggle();
+
 	// Label editing (inline notes)
 	$("fieldset.note_relation ol li.inline_note.new").hide();
 	$("fieldset.note_relation input[type=button]").click(function(ev) {
@@ -247,4 +256,3 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-

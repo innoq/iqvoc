@@ -47,7 +47,8 @@
 
       <li>
         <label>
-          <%= f.check_box "top_term" %>
+          <%= f.check_box "top_term",
+                  :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) %>
           <%= f.object.class.human_attribute_name("top_term") %>
         </label>
       </li>
