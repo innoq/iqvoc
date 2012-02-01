@@ -25,4 +25,8 @@ class Concept::SKOS::Scheme < Concept::Base
     return first || create(:published_at => Time.now)
   end
 
+  # orphan validation does not apply
+  def ensure_not_orphaned
+  end
+
 end

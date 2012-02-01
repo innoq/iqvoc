@@ -38,6 +38,7 @@ class Concept::Base < ActiveRecord::Base
     :on => :update
 
   validate :ensure_no_pref_labels_share_the_same_language
+  validate :ensure_not_orphaned
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -401,6 +402,15 @@ class Concept::Base < ActiveRecord::Base
   def ensure_maximum_two_versions_of_a_concept
     if Concept::Base.by_origin(origin).count >= 2
       errors.add :base, I18n.t("txt.models.concept.version_error")
+    end
+  end
+
+  # concepts should either be a top term or have a regular parent
+  def ensure_not_orphaned
+    if @full_validation
+      unless broader_relations.count > 1
+        errors.add :base, I18n.t("txt.models.concept.orphan_error")
+      end
     end
   end
 
