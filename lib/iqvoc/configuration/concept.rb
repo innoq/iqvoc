@@ -134,7 +134,7 @@ module Iqvoc
         # @deprecated
         def pref_labeling_languages=(value)
           ActiveSupport::Deprecation.warn "pref_labeling_languages has been moved into instance configuration", caller
-          Iqvoc.config.register_setting("languages.pref_labeling", arr)
+          Iqvoc.config.register_setting("languages.pref_labeling", value)
         end
 
         # @deprecated
