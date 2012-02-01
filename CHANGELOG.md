@@ -1,3 +1,7 @@
+## 3.5.1 (2012-02-01)
+
+ * Bugfixes
+
 ## 3.5.0 (2012-02-01)
 
  * Instance configuration<br>
