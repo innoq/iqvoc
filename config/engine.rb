@@ -17,7 +17,7 @@ module Iqvoc
     paths["lib/tasks"] << "lib/engine_tasks"
     
     initializer "iqvoc.mixin_controller_extensions" do |app|
-      if const_defined?(:ApplicationController)
+      if Kernel.const_defined?(:ApplicationController)
         ApplicationController.send(:include, Iqvoc::ControllerExtensions)
       end
     end
