@@ -11,6 +11,7 @@ tmp/*
 nbproject
 rerun.txt
 config/database.yml
+config/blazing.rb
 .capistrano_history.yml
 *.war
 vendor/gems/*.gem
