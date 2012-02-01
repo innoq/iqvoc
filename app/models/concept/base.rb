@@ -345,8 +345,10 @@ class Concept::Base < ActiveRecord::Base
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select { |rel| rel.class.name == relation_class }.map(&:target).
-      select { |c| c.published? || !only_published }
+    relations.select { |rel|
+      rel.class.name == relation_class &&
+          rel.target_id != Iqvoc::Concept.root_class.instance.id # FIXME: hacky? (lack of encapsulation)
+    }.map(&:target).select { |c| c.published? || !only_published }
   end
 
   def matches_for_class(match_class)
