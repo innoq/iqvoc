@@ -1,3 +1,8 @@
+## 3.5.0 (2012-02-01)
+
+ * Instance configuration<br>
+   You are now able to provide configuration for certain settings in the browser.
+
 ## 3.4.0 (2012-01-27)
 
  * Rails 3.2
