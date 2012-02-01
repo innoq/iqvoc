@@ -45,6 +45,13 @@
           :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
       <%- end -%>
 
+      <li>
+        <label>
+          <%= f.check_box "top_term?" %>
+          <%= f.object.class.human_attribute_name("top_term") %>
+        </label>
+      </li>
+
       <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept),
         :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
 

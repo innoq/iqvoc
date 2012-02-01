@@ -277,6 +277,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def top_term?
+    return false if new_record?
     root_id = Iqvoc::Concept.root_class.instance.id
     broader_relations.where(:target_id => root_id).any?
   end

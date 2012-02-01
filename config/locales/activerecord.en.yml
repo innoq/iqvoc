@@ -100,6 +100,7 @@ en:
       concept/base:
         follow_up: "Reminder"
         expired_at: "Expired at"
+        top_term: "Top Term"
       label/base:
         follow_up: "Reminder"
         expired_at: "Expired at"
