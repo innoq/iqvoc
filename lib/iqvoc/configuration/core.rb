@@ -120,7 +120,7 @@ module Iqvoc
         # @deprecated
         def title=(value)
           ActiveSupport::Deprecation.warn "title has been moved into instance configuration", caller
-          self.config.register_setting("available_languages", value)
+          self.config.register_setting("title", value)
         end
 
         # @deprecated
