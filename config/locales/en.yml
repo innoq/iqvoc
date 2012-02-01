@@ -332,6 +332,7 @@ en:
        version_error: "New Concept version already exists."
        no_pref_label_error: "At least one preferred label must be specified."
        orphan_error: "Missing broader term or Top Term assignment."
+       top_term_exclusive_error: "A Top Term must not have any broader terms."
        main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."
        pref_labels_with_same_languages_error: "There must be only one preferred Label per language."
        association_pref_labels_unpublished: "The preferred Label has to be published."

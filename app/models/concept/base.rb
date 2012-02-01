@@ -39,6 +39,7 @@ class Concept::Base < ActiveRecord::Base
 
   validate :ensure_no_pref_labels_share_the_same_language
   validate :ensure_not_orphaned
+  validate :ensure_exclusive_top_term
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -396,6 +397,15 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation
       if !top_term && broader_relations.none?
         errors.add :base, I18n.t("txt.models.concept.orphan_error")
+      end
+    end
+  end
+
+  # top term and broader relations are mutually exclusive in mono hierarchies
+  def ensure_exclusive_top_term
+    if @full_validation and Iqvoc::Concept.broader_relation_class.singular?
+      if top_term && broader_relations.any?
+        errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
       end
     end
   end
