@@ -232,7 +232,7 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :tops, where(arel_table[:top_term].not_eq(nil))
+  scope :tops, where(:top_term => true)
 
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
     where(:concept_relations => { :id => nil },
