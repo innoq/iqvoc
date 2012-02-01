@@ -42,7 +42,7 @@ module Iqvoc
       # The following scope returns all objects which should be selectable by the editor
       scope :editor_selectable, lambda {
         where(
-          arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR comibne two scopes? [published OROPERATOR where(...)])
+          arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
             arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
           )
         )
