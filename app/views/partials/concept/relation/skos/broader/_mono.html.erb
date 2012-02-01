@@ -1,7 +1,7 @@
 <div class="relation">
   <h4><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h4>
   <div class="relation-body block">
-    <% if concept.top_term? %>
+    <% if concept.top_term %>
       <strong><%= concept.class.human_attribute_name("top_term") %></strong>
     <% end %>
 
@@ -24,7 +24,7 @@
           render concept.class.inline_partial_name, :concept => concept
         }.join(" &laquo; ").html_safe %>
       </div>
-    <% elsif not concept.top_term? %>
+    <% elsif not concept.top_term %>
       <p>-</p>
     <% end %>
   </div>
