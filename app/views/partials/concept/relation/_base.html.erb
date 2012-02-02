@@ -1,5 +1,5 @@
 <div class="relation" id="<%= klass.model_name.to_relation_name %>">
-  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <h2><%= klass.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
     <%= item_listing(concept.related_concepts_for_relation_class(klass, params[:published] != "0")) do |c|
       link_to(c.pref_label, concept_path(:lang => c.pref_label.language, :id => c))

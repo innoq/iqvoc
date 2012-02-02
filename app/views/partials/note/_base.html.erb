@@ -1,13 +1,13 @@
 <div class="relation">
   <%- if defined?(concept) -%>
     <% notes = concept.notes_for_class(klass) %>
-    <h4><%= klass.model_name.human(:count => notes.count) %></h4>
+    <h2><%= klass.model_name.human(:count => notes.count) %></h2>
     <div class="relation-body">
       <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
     </div>
   <%- elsif defined?(label) -%>
     <% notes = label.notes_for_class(klass) %>
-    <h4><%= klass.model_name.human(:count => notes.count) %></h4>
+    <h2><%= klass.model_name.human(:count => notes.count) %></h2>
     <div class="relation-body">
       <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
     </div>

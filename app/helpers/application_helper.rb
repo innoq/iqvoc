@@ -64,5 +64,13 @@ module ApplicationHelper
       end
     end
   end
+  
+  def login_logout
+    if current_user
+      link_to t("txt.views.navigation.logout"), user_session_path, :method => :delete
+    else
+      link_to t("txt.views.navigation.login"), new_user_session_path
+    end
+  end
 
 end

@@ -6,7 +6,7 @@
         <ul class="nav">
           <% if can?(:use, :dashboard) %>
            <li class="<%= params[:controller] == 'dashboard' ? 'active' : '' %>">
-             <%= link_to "Dashboard", dashboard_path %>
+             <%= link_to 'Dashboard', dashboard_path %>
            </li>
            <% end %>
            <li class="dropdown">
@@ -48,7 +48,7 @@
         <% end %>
         <ul class="nav pull-right">
           <li class="<%= params[:controller] == 'user_session' ? 'active' : '' %>">
-            <%= link_to t("txt.views.navigation.login"), new_user_session_path %>
+            <%= login_logout %>
           </li>
           <li class="divider-vertical"></li>
           <li class="dropdown">

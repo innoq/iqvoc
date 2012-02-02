@@ -1,11 +1,11 @@
-<h2><%= t("txt.views.user_sessions.header") %></h2>
+<%= page_header :title => t("txt.views.user_sessions.header") %>
 
-<%= form_for @user_session, :url => user_session_path(:back_to => params[:back_to]) do |f| %>
-  <%= f.label :email, t("txt.views.user_sessions.email") %><br />
-  <%= f.text_field :email %><br />
-  <br />
-  <%= f.label :password, t("txt.views.user_sessions.password") %><br />
-  <%= f.password_field :password %><br />
-  <br />
-  <%= f.submit t("txt.views.user_sessions.login") %>
+<%= form_for @user_session, :url => user_session_path(:back_to => params[:back_to]), :class => "well" do |f| %>
+  <%= f.label :email, t("txt.views.user_sessions.email") %>
+  <%= f.text_field :email %>
+
+  <%= f.label :password, t("txt.views.user_sessions.password") %>
+  <%= f.password_field :password %>
+
+  <button type="submit" class="btn"><%= t("txt.views.user_sessions.login") %></button>
 <% end %>

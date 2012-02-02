@@ -135,7 +135,7 @@ en:
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
-       instance_configuration: "Instance configuration"
+       instance_configuration: "Configuration"
        hierarchical: "Hierachical listings"
        alphabetical: "Alphabetical listings"
        search: "Search"

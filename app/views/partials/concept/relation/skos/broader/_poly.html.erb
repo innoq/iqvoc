@@ -1,5 +1,5 @@
 <div class="relation">
-  <h4><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h4>
+  <h2><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h2>
   <div class="relation-body block">
     <% if concept.related_concepts_for_relation_class(
         Iqvoc::Concept.broader_relation_class, params[:published] != "0").

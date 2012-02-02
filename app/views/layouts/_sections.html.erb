@@ -1,8 +1,16 @@
-<div class="sections">
-<%- sections.select { |s| data[s] }.each do |section_key| -%>
-  <h3><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></h3>
-  <%- data[section_key].keys.sort.each do |sort_key| -%>
-    <%= raw data[section_key][sort_key] %>
+<div class"tabbable">  
+  <ul class="nav nav-tabs sections">
+  <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
+    <li class="<%= "active" if index == 0 %>"><a href="#<%= section_key %>" data-toggle="tab"><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></a></li>
   <%- end -%>
-<%- end -%>
+  </ul>
+  <div class="tab-content">
+  <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
+    <div class="tab-pane <%= "active" if index == 0 %>" id="<%= section_key %>">
+      <%- data[section_key].keys.sort.each do |sort_key| -%>
+        <%= raw data[section_key][sort_key] %>
+      <%- end -%>
+    </div>
+  <%- end -%>
+  </div>
 </div>

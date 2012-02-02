@@ -1,23 +1,8 @@
-<%- published_param = @concept.published? ? nil : 0 %>
+<%- published_param = @concept.published? ? nil : 1 -%>
 <%= content_for :head do -%>
   <link href="<%= rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
   <link href="<%= rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
   <link href="<%= concept_path(@concept, :format => :json, :published => published_param, :lang => @active_language) %>" type="application/json" rel="alternate"/>
 <% end -%>
 
-<h2>
-  <%= Iqvoc::Concept.base_class.model_name.human %>:
-  <%= @concept.pref_label.to_s %>
-  <%- unless @concept.published? %>
-    (<%= t('txt.common.unpublished_version') %>)
-  <%- end -%>
-</h2>
-<div id="abstract_uri">
-  <%= render :partial => "partials/rdf_logo" %>
-  <%= rdf_url(@concept.origin, :format => nil, :published => published_param, :lang => nil) %>
-  (<%= link_to "Turtle", rdf_url(@concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>,
-  <%= link_to "RDF/XML", rdf_url(@concept.origin, :format => :rdf, :published => published_param, :lang => nil) %>)
-</div>
-<%- if @concept.expired_at -%>
-  <h4><%= t('txt.views.concepts.expired_at', :date => l(@concept.expired_at, :format => :long)) %></h4>
-<%- end -%>
+<%= concept_header(@concept) %>
