@@ -391,9 +391,9 @@ class Concept::Base < ActiveRecord::Base
     end
   end
 
-  # top term and broader relations are mutually exclusive in mono hierarchies
+  # top term and broader relations are mutually exclusive
   def ensure_exclusive_top_term
-    if @full_validation and Iqvoc::Concept.broader_relation_class.singular?
+    if @full_validation
       if top_term && broader_relations.any?
         errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
       end
