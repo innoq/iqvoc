@@ -39,6 +39,7 @@ class Concept::Base < ActiveRecord::Base
 
   validate :ensure_no_pref_labels_share_the_same_language
   validate :ensure_exclusive_top_term
+  validate :ensure_rooted_top_terms
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -396,6 +397,17 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation
       if top_term && broader_relations.any?
         errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
+      end
+    end
+  end
+
+  # top terms must never be used as descendants (narrower relation targets)
+  # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
+  def ensure_rooted_top_terms
+    if @full_validation
+      if narrower_relations.includes(:target). # XXX: inefficient?
+          select { |rel| rel.target.top_term? }.any?
+        errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
       end
     end
   end

@@ -22,11 +22,11 @@ class ConceptsController < ApplicationController
 
     respond_to do |format|
       format.json do # Search for widget
-        @concepts = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%")).all
-        response = []
-        @concepts.each { |concept| response << concept_widget_data(concept)}
-
-        render :json => response
+        scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
+            merge(Label::Base.by_query_value("#{params[:query]}%"))
+        scope = scope.where(:top_term => false) if params[:exclude_top_terms]
+        @concepts = scope.all.map { |concept| concept_widget_data(concept) }
+        render :json => @concepts
       end
       format.all do # RDF full export
         authorize! :full_export, Concept::Base
