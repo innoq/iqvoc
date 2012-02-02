@@ -3,15 +3,13 @@
   <div class="relation-body block">
     <% if concept.top_term %>
       <strong><%= concept.class.human_attribute_name("top_term") %></strong>
-    <% end %>
-
-    <% if concept.related_concepts_for_relation_class(
+    <% elsif concept.related_concepts_for_relation_class(
         Iqvoc::Concept.broader_relation_class, params[:published] != "0").
         length > 0 %>
       <div class="selector">
         <%= treeview(@concept.broader_relations.map { |rel| rel.target }, true) %>
       </div>
-    <% elsif not concept.top_term %>
+    <% else %>
       <p>-</p>
     <% end %>
   </div>
