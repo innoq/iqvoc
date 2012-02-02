@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
 	// language selection
 	var langWidget = $("ul.lang-widget")[0];
 	// primary language (converting links to radio buttons)
-	$("a", langWidget).each(function(i, node) {
+	$(langWidget).find("a").each(function(i, node) {
 		var link = $(node),
 			el = link.closest("li"),
 			btn = $('<input type="radio" name="primary_language">');

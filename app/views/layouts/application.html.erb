@@ -1,66 +1,43 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="i18n-locale" content="<%= I18n.locale %>">
-    <meta charset="utf-8">
-    <%= csrf_meta_tag %>
+<html lang="<%= I18n.locale %>">
+<head>
+<meta name="i18n-locale" content="<%= I18n.locale %>">
+<meta charset="utf-8">
+<%= csrf_meta_tag %>
 
-    <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
-    <%= stylesheet_link_tag "blueprint/screen", :media => "screen, projection" %>
-    <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
-    <!--[if lt IE 8]>
-    <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>
-    <![endif]-->
-    <%= stylesheet_link_tag "manifest" %>
-    <!--[if (gte IE 6)&(lte IE 8)]>
-    <%= stylesheet_link_tag "iqvoc/ie_fixes" %>
-    <![endif]-->
+<title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
+<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+<!--[if lt IE 9]>
+  <%= javascript_include_tag "html5" %>
+<![endif]-->
+<%= stylesheet_link_tag "manifest" %>
+<!--[if lte IE 8]>
+<%= stylesheet_link_tag "iqvoc/ie_fixes" %>
+<![endif]-->
 
-    <%= yield :head %>
-  </head>
-  <body class="<%= "concept" unless @concept.nil? %>">
+<%= yield :head %>
+</head>
+<body class="<%= "concept" unless @concept.nil? %>">
+<%= render :partial => "layouts/navigation" %>
 
-    <%= render :partial => 'layouts/controls' %>
+<%#= render :partial => 'layouts/controls' %>
 
-    <div class="container">
-      <div id="header" class="span-24 last">
-        <%= render :partial => 'layouts/header' %>
-        <%= render :partial => 'layouts/navigation' %>
-      </div>
-
-      <div id="navi_sub" class="span-24 last">
-        <%= yield :sub_navigation %>
-      </div>
-
-      <div id="content" class="span-24 last">
-        <% if flash[:notice] %>
-          <p class="flash_notice"><%= flash[:notice] %></p>
-        <% end %>
-        <% if flash[:error] %>
-          <p class="flash_error"><%= flash[:error] %></p>
-        <% end %>
-        <%= yield %>
-      </div>
-
-      <div id="footer" class="span-24 last">
-        <div id="footer_box">
-          <% if current_user %>
-            <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
-          <% else %>
-            <%= link_to t("txt.views.layouts.application.login"), new_user_session_path() %>
-          <% end %>
-          <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      // load JSON polyfill only if necessary
-      if(typeof JSON === "undefined") {
-        document.write('<%= javascript_include_tag("json2").sub("</", "<\\/").html_safe %>');
-      }
-    </script>
-    <%= javascript_include_tag "manifest" %>
-    <%= yield :scripts %>
-  </body>
+<div class="container">
+  <% if flash[:notice] %>
+    <p class="flash_notice"><%= flash[:notice] %></p>
+  <% end %>
+  <% if flash[:error] %>
+    <p class="flash_error"><%= flash[:error] %></p>
+  <% end %>
+  <%= yield %>
+</div>
+<script>
+  // load JSON polyfill only if necessary
+  if(typeof JSON === "undefined") {
+    document.write('<%= javascript_include_tag("json2").sub("</", "<\\/").html_safe %>');
+  }
+</script>
+<%= javascript_include_tag "manifest" %>
+<%= yield :scripts %>
+</body>
 </html>

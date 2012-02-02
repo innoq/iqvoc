@@ -142,6 +142,7 @@ en:
        about: "About"
        users: "Users"
        collections: "Collections"
+       login: "Login"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"

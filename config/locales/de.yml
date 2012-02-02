@@ -134,6 +134,7 @@ de:
        about: "Über"
        users: "Benutzer"
        collections: "Kollektionen"
+       login: "Login"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"

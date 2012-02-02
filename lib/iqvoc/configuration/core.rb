@@ -18,14 +18,14 @@ module Iqvoc
         self.core_assets = %w(
           manifest.css
           manifest.js
-          blueprint/screen.css
-          blueprint/print.css
-          blueprint/ie.css
+          bootstrap/bootstrap.css
+          bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
           excanvas.js
           jit_rgraph.js
           iqvoc/visualization.js
           json2.js
+          bootstrap/bootstrap.js
         )
 
         self.searchable_class_names = [
