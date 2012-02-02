@@ -22,7 +22,6 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     login "administrator"
 
     visit new_concept_path(:lang => "en", :format => "html", :published => 0)
-    check Iqvoc::Concept.base_class.human_attribute_name("top_term")
     fill_in "concept_labelings_by_text_labeling_skos_pref_labels_en",
         :with => "Foo"
     fill_in "concept_note_skos_change_notes_attributes_0_value",
