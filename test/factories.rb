@@ -18,6 +18,7 @@ FactoryGirl.define do
   factory :concept, :class => Iqvoc::Concept.base_class do |c|
     c.sequence(:origin) { |n| "_000000#{n}" }
     c.published_at 3.days.ago
+    c.top_term true
     c.pref_labelings { |pref_labelings| [pref_labelings.association(:pref_labeling)] }
     c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
   end
@@ -33,7 +34,7 @@ FactoryGirl.define do
 
   factory :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
     rel.target {|target|
-      target.association(:concept, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
+      target.association(:concept, :top_term => false, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
           FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label, :value => 'Some narrower relation'))
         ])
     }

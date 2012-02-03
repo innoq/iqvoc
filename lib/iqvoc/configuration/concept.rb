@@ -8,7 +8,7 @@ module Iqvoc
       included do
         Iqvoc.first_level_class_configuration_modules << self
 
-        mattr_accessor :base_class_name,
+        mattr_accessor :base_class_name, :root_class_name,
         :broader_relation_class_name, :further_relation_class_names,
         :pref_labeling_class_name,
         :match_class_names,
@@ -18,6 +18,7 @@ module Iqvoc
         :include_module_names
 
         self.base_class_name              = 'Concept::SKOS::Base'
+        self.root_class_name              = 'Concept::SKOS::Scheme'
 
         self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Mono'
         self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
@@ -59,6 +60,10 @@ module Iqvoc
         # loading loop (something like "expected file xyz to load ...")
         def base_class
           base_class_name.constantize
+        end
+
+        def root_class
+          root_class_name.constantize
         end
 
         def pref_labeling_class
