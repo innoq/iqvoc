@@ -38,6 +38,8 @@ class Concept::Base < ActiveRecord::Base
     :on => :update
 
   validate :ensure_no_pref_labels_share_the_same_language
+  validate :ensure_exclusive_top_term
+  validate :ensure_rooted_top_terms
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -125,7 +127,7 @@ class Concept::Base < ActiveRecord::Base
   # *** Concept2Concept relations
 
   # Broader
-  # Actually this is not needed anymore.
+  # FIXME: Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :broader_relations,
@@ -134,7 +136,7 @@ class Concept::Base < ActiveRecord::Base
     :extend => Concept::Relation::ReverseRelationExtension
 
   # Narrower
-  # Actually this is not needed anymore.
+  # FIXME: Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :narrower_relations,
@@ -226,26 +228,26 @@ class Concept::Base < ActiveRecord::Base
   # ********** Relation Stuff
 
   @nested_relations.each do |relation|
-    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new {|attrs| attrs[:value].blank? }
+    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new { |attrs| attrs[:value].blank? }
   end
 
   # ********** Scopes
 
-  scope :tops, includes(:broader_relations).
-    where(:concept_relations => {:id => nil})
+  scope :tops, where(:top_term => true)
 
   scope :broader_tops, includes(:narrower_relations, :pref_labels).
-    where(:concept_relations => {:id => nil}, :labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}).
+    where(:concept_relations => { :id => nil },
+        :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
     order("LOWER(#{Label::Base.table_name}.value)")
 
   scope :with_associations, includes([
-      {:labelings => :target}, :relations, :matches, :notes
+      { :labelings => :target }, :relations, :matches, :notes
     ])
 
   scope :with_pref_labels,
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").
-    where(:labelings => {:type => Iqvoc::Concept.pref_labeling_class_name}) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
+    where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
 
   scope :for_dashboard, lambda {
     unpublished_or_follow_up.
@@ -331,7 +333,7 @@ class Concept::Base < ActiveRecord::Base
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
     relations.select { |rel| rel.class.name == relation_class }.map(&:target).
-      select { |c| c.published? || !only_published }
+        select { |c| c.published? || !only_published }
   end
 
   def matches_for_class(match_class)
@@ -387,6 +389,26 @@ class Concept::Base < ActiveRecord::Base
   def ensure_maximum_two_versions_of_a_concept
     if Concept::Base.by_origin(origin).count >= 2
       errors.add :base, I18n.t("txt.models.concept.version_error")
+    end
+  end
+
+  # top term and broader relations are mutually exclusive
+  def ensure_exclusive_top_term
+    if @full_validation
+      if top_term && broader_relations.any?
+        errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
+      end
+    end
+  end
+
+  # top terms must never be used as descendants (narrower relation targets)
+  # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
+  def ensure_rooted_top_terms
+    if @full_validation
+      if narrower_relations.includes(:target). # XXX: inefficient?
+          select { |rel| rel.target.top_term? }.any?
+        errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
+      end
     end
   end
 
