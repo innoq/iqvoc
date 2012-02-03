@@ -96,7 +96,7 @@ class Concepts::VersionsController < ApplicationController
     authorize! :check_consistency, concept
 
     if concept.valid_with_full_validation?
-      flash[:success] = t("txt.controllers.versioning.consistency_check_success")
+      flash[:info] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to concept_path(:published => 0, :id => concept)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
