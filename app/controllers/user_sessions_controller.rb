@@ -29,7 +29,7 @@ class UserSessionsController < ApplicationController
 
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
-      flash[:info] = I18n.t("txt.controllers.user_sessions.login_success")
+      flash[:notice] = I18n.t("txt.controllers.user_sessions.login_success")
       redirect_to params[:back_to] || (can?(:use, :dashboard) ? dashboard_url : root_path)
     else
       flash[:error] = I18n.t("txt.views.user_sessions.error")
@@ -41,7 +41,7 @@ class UserSessionsController < ApplicationController
     # TODO Check abilities
 
     current_user_session.destroy
-    flash[:info] = I18n.t("txt.controllers.user_sessions.logout_success")
+    flash[:notice] = I18n.t("txt.controllers.user_sessions.logout_success")
     redirect_to root_path
   end
 

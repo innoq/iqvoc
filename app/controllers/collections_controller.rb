@@ -67,7 +67,7 @@ class CollectionsController < ApplicationController
     @collection = Iqvoc::Collection.base_class.new(params[:concept])
 
     if @collection.save
-      flash[:info] = I18n.t("txt.controllers.collections.save.success")
+      flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
@@ -98,7 +98,7 @@ class CollectionsController < ApplicationController
     authorize! :update, @collection
 
     if @collection.update_attributes(params[:concept])
-      flash[:info] = I18n.t("txt.controllers.collections.save.success")
+      flash[:notice] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
@@ -113,7 +113,7 @@ class CollectionsController < ApplicationController
     authorize! :destroy, @collection
 
     if @collection.destroy
-      flash[:info] = I18n.t("txt.controllers.collections.destroy.success")
+      flash[:notice] = I18n.t("txt.controllers.collections.destroy.success")
       redirect_to collections_path
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.destroy.error")

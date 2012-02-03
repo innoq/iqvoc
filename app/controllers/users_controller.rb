@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:info] = I18n.t('txt.controllers.users.successfully_created')
+        flash[:notice] = I18n.t('txt.controllers.users.successfully_created')
         format.html { redirect_to users_path }
       else
         format.html { render :action => "new" }
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:info] = I18n.t('txt.controllers.users.successfully_updated')
+        flash[:notice] = I18n.t('txt.controllers.users.successfully_updated')
         format.html { redirect_to edit_user_path(:id => @user) }
         format.xml  { head :ok }
       else
