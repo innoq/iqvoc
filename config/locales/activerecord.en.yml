@@ -20,6 +20,12 @@ en:
       concept/base:
         one:   "Concept"
         other: "Concepts"
+      concept/relation/base:
+        one:   "Relation"
+        other: "Relations"
+      concept/relation/skos/base:
+        one:   "Relation"
+        other: "Relations"
       concept/relation/skos/broader/mono:
         one:   "Broader term"
         other: "Broader terms"
@@ -47,6 +53,12 @@ en:
       labeling/skos/alt_label:
         one:   "Alternative label"
         other: "Alternative labels"
+      match/base:
+        one:   "Match"
+        other: "Matches"
+      match/skos/base:
+        one:   "Match"
+        other: "Matches"
       match/skos/broad_match:
         one:   "Broader Match"
         other: "Broader Matches"
