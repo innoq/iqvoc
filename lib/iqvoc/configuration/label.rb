@@ -4,7 +4,7 @@ module Iqvoc
   module Configuration
     module Label
       extend ActiveSupport::Concern
-      
+
       included do
         mattr_accessor :base_class_name
         self.base_class_name        = 'Label::SKOS::Base'

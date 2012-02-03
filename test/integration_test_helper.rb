@@ -23,7 +23,7 @@ module ActionController
     include Capybara::DSL
 
     Capybara.javascript_driver = :webkit
-    
+
     CAPYBARA_SNAPSHOTS_DIR = Rails.root.join("tmp", "capybara_snapshots")
     FileUtils.rm_rf CAPYBARA_SNAPSHOTS_DIR
     FileUtils.mkdir CAPYBARA_SNAPSHOTS_DIR
@@ -47,7 +47,7 @@ module ActionController
     def user(role = nil)
       @user ||= FactoryGirl.create(:user, :role => (role || User.default_role))
     end
-    
+
     def create_snapshot
       filename = "#{self.class.name.underscore}_#{method_name}.html"
       filepath = File.join(CAPYBARA_SNAPSHOTS_DIR, filename)

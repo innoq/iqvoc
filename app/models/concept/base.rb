@@ -44,7 +44,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Hooks
-  
+
   after_initialize do
     @full_validation = false
   end

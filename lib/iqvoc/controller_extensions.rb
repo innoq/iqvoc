@@ -3,7 +3,7 @@ require "active_support/concern"
 module Iqvoc
   module ControllerExtensions
     extend ActiveSupport::Concern
-    
+
     included do
       prepend_before_filter :set_locale
       before_filter :ensure_extension
@@ -110,6 +110,6 @@ module Iqvoc
         return false
       end
     end
-    
+
   end
 end

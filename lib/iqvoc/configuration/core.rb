@@ -4,7 +4,7 @@ module Iqvoc
   module Configuration
     module Core
       extend ActiveSupport::Concern
-      
+
       included do
         mattr_accessor :searchable_class_names,
           :unlimited_search_results,
@@ -51,7 +51,7 @@ module Iqvoc
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
         self.ability_class_name = 'Iqvoc::Ability'
-        
+
         # initialize
         self.config.register_settings({
           "title" => "iQvoc",
@@ -61,7 +61,7 @@ module Iqvoc
         })
         self.config.initialize_cache
       end
-      
+
       module ClassMethods
         def generate_secret_token
           require 'securerandom'
@@ -92,7 +92,7 @@ module Iqvoc
             return cfg
           end
         end
-      
+
         def change_note_class
           change_note_class_name.constantize
         end
@@ -108,7 +108,7 @@ module Iqvoc
         def ability_class
           ability_class_name.constantize
         end
-      
+
         def title
           return config["title"]
         end
@@ -116,7 +116,7 @@ module Iqvoc
         def available_languages
           return config["available_languages"]
         end
-      
+
         # @deprecated
         def title=(value)
           ActiveSupport::Deprecation.warn "title has been moved into instance configuration", caller
@@ -129,7 +129,7 @@ module Iqvoc
           self.config.register_setting("available_languages", value)
         end
       end
-      
+
     end
   end
 end

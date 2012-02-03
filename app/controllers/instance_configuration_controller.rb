@@ -54,7 +54,7 @@ class InstanceConfigurationController < ApplicationController
 
     redirect_to instance_configuration_url
   end
-  
+
   private
 
   # default value determines value type

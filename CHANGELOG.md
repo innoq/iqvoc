@@ -22,7 +22,7 @@
  * Several asset pipeline related fixes
  * Largely simplified heroku setup
  * Improvements to engine mode
- 
+
 Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.3.0...v3.3.3
 
 ## 3.3.0 (2012-01-10)
@@ -31,7 +31,7 @@ Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.3.0...v3.3.3
  * Asset pipeline<br>
    [Detailed instructions](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine)
    on how to use iQvoc as a Rails Engine (including the asset pipeline).
-   
+
 This is a big update. Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.2.6...v3.3.0
 
 ## 3.2.6 (2012-01-10)

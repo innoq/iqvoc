@@ -42,7 +42,7 @@ heroku restart
 
 Remember to visit the Users section and change the default passwords!
 
-**Remarks:** 
+**Remarks:**
 For now iQvoc only supports the standard Bamboo stack. Cedar is not supported as we have `sqlite3` as a dependency
 in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like Bamboo at the moment.
 

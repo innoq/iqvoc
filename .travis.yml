@@ -2,7 +2,7 @@ rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
-  
+
 env:
   - DB=sqlite
   - DB=mysql
@@ -17,4 +17,3 @@ branches:
 notifications:
   recipients:
     - iqvoc@innoq.com
-    

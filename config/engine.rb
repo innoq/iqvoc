@@ -12,19 +12,19 @@ require 'rails_autolink'
 require 'iqvoc/controller_extensions'
 
 module Iqvoc
-  
+
   class Engine < Rails::Engine
     paths["lib/tasks"] << "lib/engine_tasks"
-    
+
     initializer "iqvoc.mixin_controller_extensions" do |app|
       if Kernel.const_defined?(:ApplicationController)
         ApplicationController.send(:include, Iqvoc::ControllerExtensions)
       end
     end
-    
+
     initializer "iqvoc.add_assets_to_precompilation" do |app|
       app.config.assets.precompile += Iqvoc.core_assets
     end
   end
-  
+
 end

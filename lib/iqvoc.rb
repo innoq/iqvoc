@@ -25,7 +25,7 @@ module Iqvoc
   unless Iqvoc.const_defined?(:Application)
     require File.join(File.dirname(__FILE__), '../config/engine')
   end
-  
+
   include Iqvoc::Configuration::Core
 
   module Concept
