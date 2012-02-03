@@ -72,5 +72,17 @@ module ApplicationHelper
       link_to t("txt.views.navigation.login"), new_user_session_path
     end
   end
+  
+  def alert(type, opts = {}, &block)
+    header = opts.delete(:header)
+    
+    html = ActiveSupport::SafeBuffer.new
+    html << content_tag(:strong, header) if header
+    html << capture(&block)
+    
+    content_tag(:div, :class => "alert alert-#{type}") do
+      html
+    end
+  end
 
 end

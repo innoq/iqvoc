@@ -80,7 +80,6 @@ module ConceptsHelper
       link_to value, rdf_url(concept.origin, :format => key, :published => published_param, :lang => nil)
     end.join(" ")
     
-    desc += " #{t('txt.common.unpublished_version')} " unless concept.published?
     desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} " if concept.expired_at
     
     page_header :title => concept.pref_label.to_s, :desc => desc.html_safe

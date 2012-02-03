@@ -209,8 +209,8 @@ en:
        unlock: "Unlock"
        preview_new_version: "Preview of the version in editing"
        consistency_check: "Consistency check"
-       current_revision: "Current revision"
-       in_ongoing_editing_by: "currently being edited by"
+       current_revision: "Current revision %{rev}"
+       in_ongoing_editing_by: "is being edited by %{user}"
        to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
