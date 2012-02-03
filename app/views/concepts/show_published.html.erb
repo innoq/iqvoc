@@ -1,8 +1,10 @@
+<%= content_for :page_header do %>
 <div class="row">
   <div class="span12">
     <%= render 'show_head' %>
   </div>
 </div>
+<% end %>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
 <div class="row">

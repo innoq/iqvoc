@@ -23,6 +23,7 @@
 <%#= render :partial => 'layouts/controls' %>
 
 <div class="container">
+  <%= yield :page_header %>
   <% flash.each do |type, msg| %>
     <%= alert(type) { msg } %>
   <% end %>
