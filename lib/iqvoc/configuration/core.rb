@@ -19,31 +19,31 @@ module Iqvoc
         self.navigation_items = [
           {
             :content => lambda { link_to "Dashboard", dashboard_path },
-            :active? => lambda { params[:controller] == "dashboard" },
+            :controller => "dashboard",
             :authorized? => lambda { can? :use, :dashboard }
           }, {
             :content => lambda { link_to t("txt.views.navigation.hierarchical"),
                 hierarchical_concepts_path },
-            :active? => lambda { params[:controller] == "concepts/hierarchical" }
+            :controller => "concepts/hierarchical"
           }, {
             :content => lambda { link_to t("txt.views.navigation.alphabetical"),
                 alphabetical_concepts_path(:letter => "a") },
-            :active? => lambda { params[:controller] == "concepts/alphabetical" }
+            :controller => "concepts/alphabetical"
           }, {
             :content => lambda { link_to t("txt.views.navigation.collections"),
                 collections_path },
-            :active? => lambda { params[:controller] == "collections" },
+            :controller => "collections"
           }, {
             :content => lambda { link_to t("txt.views.navigation.search"), search_path },
-            :active? => lambda { params[:controller] == "search_results" }
+            :controller => "search_results"
           }, {
             :content => lambda { link_to t("txt.views.navigation.users"), users_path },
-            :active? => lambda { params[:controller] == "users" },
+            :controller => "users",
             :authorized? => lambda { can? :manage, User }
           }, {
             :content => lambda { link_to t("txt.views.navigation.instance_configuration"),
                 instance_configuration_path },
-            :active? => lambda { params[:controller] == "instance_configuration" },
+            :controller => "instance_configuration",
             :authorized? => lambda { can? :manage, Iqvoc.config }
           }, {
             :content => lambda { link_to t("txt.views.navigation.about"), about_path },

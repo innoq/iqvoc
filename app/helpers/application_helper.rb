@@ -18,12 +18,17 @@ module ApplicationHelper
 
   # expects an array of hashes with the following members:
   # :content - usually a navigation link
-  # :active - a function determining if the respective item is currently active
+  # :active? - an optional function determining whether the respective item is
+  #     currently active
+  # :controller - an optional string, used instead of `active?` to check for a
+  #     specific controller
   # :authorized? - an optional function determining whether the respective item
   #     is available to the current user (defaults to true)
   def nav_items(items)
     items.map { |item|
       if (not item[:authorized?]) || item[:authorized?].call
+        active = item[:controller] ? params[:controller] == item[:controller] :
+            (item[:active?] ? item[:active?].call : false)
         content_tag "li", item[:content].call,
             :class => ("active" if item[:active?].call)
       end
