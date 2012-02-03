@@ -18,36 +18,36 @@ module Iqvoc
 
         self.navigation_items = [
           {
-            :content => lambda { link_to "Dashboard", dashboard_path },
+            :content => lambda { |env| link_to "Dashboard", dashboard_path },
             :controller => "dashboard",
-            :authorized? => lambda { can? :use, :dashboard }
+            :authorized? => lambda { |env| can? :use, :dashboard }
           }, {
-            :content => lambda { link_to t("txt.views.navigation.hierarchical"),
+            :content => lambda { |env| link_to t("txt.views.navigation.hierarchical"),
                 hierarchical_concepts_path },
             :controller => "concepts/hierarchical"
           }, {
-            :content => lambda { link_to t("txt.views.navigation.alphabetical"),
+            :content => lambda { |env| link_to t("txt.views.navigation.alphabetical"),
                 alphabetical_concepts_path(:letter => "a") },
             :controller => "concepts/alphabetical"
           }, {
-            :content => lambda { link_to t("txt.views.navigation.collections"),
+            :content => lambda { |env| link_to t("txt.views.navigation.collections"),
                 collections_path },
             :controller => "collections"
           }, {
-            :content => lambda { link_to t("txt.views.navigation.search"), search_path },
+            :content => lambda { |env| link_to t("txt.views.navigation.search"), search_path },
             :controller => "search_results"
           }, {
-            :content => lambda { link_to t("txt.views.navigation.users"), users_path },
+            :content => lambda { |env| link_to t("txt.views.navigation.users"), users_path },
             :controller => "users",
-            :authorized? => lambda { can? :manage, User }
+            :authorized? => lambda { |env| can? :manage, User }
           }, {
-            :content => lambda { link_to t("txt.views.navigation.instance_configuration"),
+            :content => lambda { |env| link_to t("txt.views.navigation.instance_configuration"),
                 instance_configuration_path },
             :controller => "instance_configuration",
-            :authorized? => lambda { can? :manage, Iqvoc.config }
+            :authorized? => lambda { |env| can? :manage, Iqvoc.config }
           }, {
-            :content => lambda { link_to t("txt.views.navigation.about"), about_path },
-            :active? => lambda { params[:controller] == "pages" &&
+            :content => lambda { |env| link_to t("txt.views.navigation.about"), about_path },
+            :active? => lambda { |env| params[:controller] == "pages" &&
                 params[:action] == "about" }
           }
         ]

@@ -26,11 +26,11 @@ module ApplicationHelper
   #     is available to the current user (defaults to true)
   def nav_items(items)
     items.map { |item|
-      if (not item[:authorized?]) || item[:authorized?].call
+      if (not item[:authorized?]) || instance_eval(&item[:authorized?])
         active = item[:controller] ? params[:controller] == item[:controller] :
-            (item[:active?] ? item[:active?].call : false)
-        content_tag "li", item[:content].call,
-            :class => ("active" if item[:active?].call)
+            (item[:active?] ? instance_eval(&item[:active?]) : false)
+        content_tag "li", instance_eval(&item[:content]),
+            :class => ("active" if active)
       end
     }.join.html_safe
   end
