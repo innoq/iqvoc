@@ -16,6 +16,20 @@
 
 module ApplicationHelper
 
+  # expects an array of hashes with the following members:
+  # :content - usually a navigation link
+  # :active - a function determining if the respective item is currently active
+  # :authorized? - an optional function determining whether the respective item
+  #     is available to the current user (defaults to true)
+  def nav_items(items)
+    items.map { |item|
+      if (not item[:authorized?]) || item[:authorized?].call
+        content_tag "li", item[:content].call,
+            :class => ("active" if item[:active?].call)
+      end
+    }.join.html_safe
+  end
+
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
         :default => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/"), # gsub because of a Rails bug :-(

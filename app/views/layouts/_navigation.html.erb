@@ -1,4 +1,8 @@
 <ul id="navi_main">
+  <%= nav_items(Iqvoc.navigation_items) %>
+</ul>
+
+<ul id="navi_main">
   <% if can?(:use, :dashboard) %>
     <li class="<%= params[:controller] == 'dashboard' ? 'active' : '' %>">
       <%= link_to "Dashboard", dashboard_path %>
