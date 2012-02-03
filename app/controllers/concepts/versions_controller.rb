@@ -32,7 +32,7 @@ class Concepts::VersionsController < ApplicationController
           if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
             new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
           end
-          flash[:notice] = t("txt.controllers.versioning.published")
+          flash[:info] = t("txt.controllers.versioning.published")
           redirect_to concept_path(:id => new_version)
         else
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
@@ -57,7 +57,7 @@ class Concepts::VersionsController < ApplicationController
       new_version = current_concept.branch(current_user)
       new_version.save!
     end
-    flash[:notice] = t("txt.controllers.versioning.branched")
+    flash[:info] = t("txt.controllers.versioning.branched")
     redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
@@ -71,7 +71,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.lock_by_user(current_user.id)
     new_version.save :validate => false
 
-    flash[:notice] = t("txt.controllers.versioning.locked")
+    flash[:info] = t("txt.controllers.versioning.locked")
     redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
@@ -85,7 +85,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.unlock
     new_version.save :validate => false
     
-    flash[:notice] = t("txt.controllers.versioning.unlocked")
+    flash[:info] = t("txt.controllers.versioning.unlocked")
     redirect_to concept_path(:published => 0, :id => new_version)
   end
 
@@ -96,7 +96,7 @@ class Concepts::VersionsController < ApplicationController
     authorize! :check_consistency, concept
 
     if concept.valid_with_full_validation?
-      flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
+      flash[:info] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to concept_path(:published => 0, :id => concept)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
@@ -112,7 +112,7 @@ class Concepts::VersionsController < ApplicationController
 
     concept.to_review
     concept.save!
-    flash[:notice] = t("txt.controllers.versioning.to_review_success")
+    flash[:info] = t("txt.controllers.versioning.to_review_success")
     redirect_to concept_path(:published => 0, :id => concept)
   end
 
