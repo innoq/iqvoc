@@ -13,7 +13,44 @@ module Iqvoc
           :change_note_class_name,
           :first_level_class_configuration_modules,
           :ability_class_name,
+          :navigation_items,
           :core_assets
+
+        self.navigation_items = [
+          {
+            :content => proc { link_to "Dashboard", dashboard_path },
+            :controller => "dashboard",
+            :authorized? => proc { can? :use, :dashboard }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.hierarchical"),
+                hierarchical_concepts_path },
+            :controller => "concepts/hierarchical"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.alphabetical"),
+                alphabetical_concepts_path(:letter => "a") },
+            :controller => "concepts/alphabetical"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.collections"),
+                collections_path },
+            :controller => "collections"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.search"), search_path },
+            :controller => "search_results"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.users"), users_path },
+            :controller => "users",
+            :authorized? => proc { can? :manage, User }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.instance_configuration"),
+                instance_configuration_path },
+            :controller => "instance_configuration",
+            :authorized? => proc { can? :manage, Iqvoc.config }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.about"), about_path },
+            :active? => proc { params[:controller] == "pages" &&
+                params[:action] == "about" }
+          }
+        ]
 
         self.core_assets = %w(
           manifest.css
