@@ -102,7 +102,7 @@ class ConceptsController < ApplicationController
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.save
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
+      flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
       redirect_to concept_path(:published => 0, :id => @concept.origin)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
@@ -134,7 +134,7 @@ class ConceptsController < ApplicationController
     authorize! :update, @concept
 
     if @concept.update_attributes(params[:concept])
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
+      flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
       redirect_to concept_path(:published => 0, :id => @concept)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
@@ -149,10 +149,10 @@ class ConceptsController < ApplicationController
     authorize! :destroy, @new_concept
 
     if @new_concept.destroy
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete")
+      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
       redirect_to dashboard_path
     else
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete_error")
+      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
       redirect_to concept_path(:published => 0, :id => @new_concept)
     end
   end
