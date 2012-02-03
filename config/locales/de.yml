@@ -203,7 +203,6 @@ de:
        consistency_check: "Konsistenzprüfung"
        current_revision: "Aktuelle Revision %{rev}"
        in_ongoing_editing_by: "in Bearbeitung von %{user}"
-       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
        edit:

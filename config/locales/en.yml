@@ -211,8 +211,6 @@ en:
        consistency_check: "Consistency check"
        current_revision: "Current revision %{rev}"
        in_ongoing_editing_by: "is being edited by %{user}"
-       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
-       to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
        edit:
          header: "Edit labeling"
@@ -279,6 +277,8 @@ en:
        lock_error: "Instance has been locked already!"
        unlocked: "Instance has been unlocked."
        unlock_error: "Instance has been unlocked alraedy!"
+       to_review_success: "Successfully sent to review."
+       to_review_error: "Could not be sent to review."
        new_version_blank_error: "A new version does not exist yet!"
        delete: "Delete inctance."
        consistency_check_success: "Instance is consistent."
