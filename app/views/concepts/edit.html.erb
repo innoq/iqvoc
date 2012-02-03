@@ -1,9 +1,9 @@
-<%= error_messages_for @concept %>
+<%= content_for :page_header do %>
+<%= page_header :title => link_to(@concept.origin, concept_path(:id => @concept.origin)),
+  :desc => Iqvoc::Concept.base_class.model_name.human %>
+<% end %>
 
-<h2>
-  <%= Iqvoc::Concept.base_class.model_name.human %>:
-  <%= link_to(@concept.origin, concept_path(:id => @concept.origin)) %>
-</h2>
+<%= error_messages_for @concept %>
 
 <% if @association_objects_in_editing_mode.present? %>
   <% if @association_objects_in_editing_mode[:concept_relations].present? %>
@@ -22,11 +22,3 @@
 <% end %>
 
 <%= render :partial => "concepts/base_data" %>
-
-<%= content_for :sub_navigation do %>
-  <ul>
-    <li>
-      <%= link_to t('txt.views.navigation.back_to_preview'), concept_path(:published => 0, :id => @concept), :class => 'back' %>
-    </li>
-  </ul>
-<% end %>

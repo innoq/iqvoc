@@ -1,5 +1,4 @@
-<fieldset id="<%= assoc_klass.name.to_relation_name %>" class="note_relation">
-  <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
+<%= form_section_for_concept(assoc_klass.model_name.human(:count => 2), :class => "row note_relation") do %>
   <ol>
     <% change_notes = owner_klass.send(assoc_klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>
     <% change_notes.each do |note| %>
@@ -9,30 +8,25 @@
             <%= note_form.label :value, assoc_klass.model_name.human(:count => 1) %>
             <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
 
-            <br />
-
             <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
             <dl class="note_annotations">
-              <% note.annotations.each { |na| %>
+              <% note.annotations.each do |na| %>
                 <dt><%= na.identifier %></dt>
                 <dd><%= na.value %></dd>
-              <% } %>
+              <% end %>
             </dl>
 
             <%= note_form.label :language, t("txt.common.language") %>
             <%= note_form.select :language, options_for_language_select(note.language) %>
-
-            <br />
           <% else %>
-
             <label><%= t("txt.common.value") %></label>
             <span><%= note.value %></span>
 
             <dl class="note_annotations">
-              <% note.annotations.each { |na| %>
+              <% note.annotations.each do |na| %>
                 <dt><%= na.identifier %></dt>
                 <dd><%= na.value %></dd>
-              <% } %>
+              <% end %>
             </dl>
 
           <% end %>
@@ -41,7 +35,8 @@
     <%#= note_form.label :"_destroy", t("txt.views.labels.edit.delete") %>
         <% end %>
       </li>
+      <hr>
     <% end %>
   </ol>
-  <input type="button" value="<%= t("txt.common.add_note") %>" />
-</fieldset>
+  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn">
+<% end %>

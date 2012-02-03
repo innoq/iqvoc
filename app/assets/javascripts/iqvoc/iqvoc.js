@@ -51,7 +51,7 @@ var enhancedDropdown = function(container) {
 };
 
 var createNote = function(ev) {
-	var container = $(this).closest("fieldset"),
+	var container = $(this).closest("div"),
 		source = $("ol li:last-child", container);
 
 	// special case for usage notes
@@ -189,8 +189,8 @@ jQuery(document).ready(function($) {
 	});
 
 	// Label editing (inline notes)
-	$("fieldset.note_relation ol li.inline_note.new").hide();
-	$("fieldset.note_relation input[type=button]").click(function(ev) {
+	$(".note_relation ol li.inline_note.new").hide();
+	$(".note_relation input[type=button]").click(function(ev) {
 		IQVOC.createNote.apply(this, arguments);
 		langSelector.notify(); // trigger updateNoteLangs -- XXX: hacky!?
 	});
