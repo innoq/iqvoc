@@ -18,7 +18,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
 
-  def setup
+  setup do
     @current_concept = FactoryGirl.create(:concept)
   end
 
