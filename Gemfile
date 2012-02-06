@@ -35,12 +35,13 @@ gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 
 group :development do
-  gem 'awesome_print'
   gem 'heroku'
   gem 'view_marker'
 end
 
 group :development, :test do
+  gem 'awesome_print'
+  
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
