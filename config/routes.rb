@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   scope '(:lang)', :constraints => lambda { |params, req|
     lang = params[:lang]
-    return lang.nil? || lang.to_s =~ /#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}/
+    return lang.nil? || lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}$/
   } do
 
     resource  :user_session, :only => [:new, :create, :destroy]
