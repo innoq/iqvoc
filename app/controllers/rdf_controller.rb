@@ -27,13 +27,12 @@ class RdfController < ApplicationController
     end
     if @concept = scope.by_origin(params[:id]).with_associations.last
       respond_to do |format|
-        format.html {
+        format.html do
           redirect_to concept_url(:id => @concept.origin, :published => params[:published])
-        }
-        format.any {
+        end
+        format.any do
           authorize! :read, @concept
-          render "show_concept"
-        }
+        end
       end
     else
       raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept matching '#{params[:id]}'.")
