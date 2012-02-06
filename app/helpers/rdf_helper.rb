@@ -18,7 +18,7 @@ module RdfHelper
 
   def render_concept(document, concept)
 
-    # You can not eager load polymorpihc associations. That's why we're loading
+    # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
     @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").all.each_with_object({}) do |c, hash|
