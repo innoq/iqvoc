@@ -18,9 +18,19 @@ class RdfController < ApplicationController
 
   skip_before_filter :require_user
   skip_before_filter :set_locale
+  
+  def scheme
+    respond_to do |format|
+      format.html { redirect_to about_path }
+      format.any do
+        authorize! :read, Iqvoc::Concept.root_class.instance
+        @top_concepts = Iqvoc::Concept.base_class.tops.published.all
+      end
+    end
+  end
 
   def show
-    scope = if (params[:published] == "0")
+    scope = if params[:published] == "0"
       Iqvoc::Concept.base_class.scoped.unpublished
     else
       Iqvoc::Concept.base_class.scoped.published
@@ -32,6 +42,7 @@ class RdfController < ApplicationController
         end
         format.any do
           authorize! :read, @concept
+          render :show_concept
         end
       end
     else
