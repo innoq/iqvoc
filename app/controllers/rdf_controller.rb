@@ -31,9 +31,9 @@ class RdfController < ApplicationController
 
   def show
     scope = if params[:published] == "0"
-      Iqvoc::Concept.base_class.scoped.unpublished
+      Iqvoc::Concept.base_class.unpublished
     else
-      Iqvoc::Concept.base_class.scoped.published
+      Iqvoc::Concept.base_class.published
     end
     if @concept = scope.by_origin(params[:id]).with_associations.last
       respond_to do |format|
@@ -46,7 +46,7 @@ class RdfController < ApplicationController
         end
       end
     else
-      raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept matching '#{params[:id]}'.")
+      raise ActiveRecord::RecordNotFound.new("Concept '#{params[:id]}' not found.")
     end
   end
 
