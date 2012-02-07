@@ -73,6 +73,7 @@ GEM
     factory_girl_rails (1.6.0)
       factory_girl (~> 2.5.0)
       railties (>= 3.0.0)
+    fastercsv (1.5.4)
     ffi (1.0.11)
     ffi (1.0.11-java)
     heroku (2.19.1)
@@ -189,6 +190,7 @@ DEPENDENCIES
   capybara-webkit
   database_cleaner
   factory_girl_rails
+  fastercsv
   heroku
   iq_rdf (~> 0.1.2)
   jruby-openssl
