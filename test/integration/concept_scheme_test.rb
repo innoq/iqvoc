@@ -18,13 +18,21 @@ require 'integration_test_helper'
 
 class ConceptSchemeTest < ActionDispatch::IntegrationTest
 
+  setup do
+    @concept = Factory(:concept, :broader_relations => [])
+  end
+
   test "list top concepts in rdf scheme" do
-    concept = Factory(:concept, :broader_relations => [])
-    
     visit "/scheme.ttl"
     
     assert page.has_content? ":scheme a skos:ConceptScheme"
-    assert page.has_content? "skos:hasTopConcept :#{concept.origin}"
+    assert page.has_content? "skos:hasTopConcept :#{@concept.origin}"
+  end
+  
+  test "top terms rdf" do
+    visit "/#{@concept.origin}.ttl"
+    
+    assert page.has_content? "skos:topConceptOf :scheme"
   end
 
 end
