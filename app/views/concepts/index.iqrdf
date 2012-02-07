@@ -8,7 +8,7 @@ while true
   # fact you can't render a view from a controller multiple times we had to
   # move the logic to the view.
   
-  concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset).all
+  concepts = Iqvoc::Concept.base_class.published.order("id").limit(50).offset(offset).all
   break if concepts.size == 0
 
   # When in single query mode, AR handles ALL includes to be loaded by that
