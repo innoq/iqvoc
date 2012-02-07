@@ -26,7 +26,7 @@ module ActionController
 
     CAPYBARA_SNAPSHOTS_DIR = Rails.root.join("tmp", "capybara_snapshots")
     FileUtils.rm_rf CAPYBARA_SNAPSHOTS_DIR
-    FileUtils.mkdir CAPYBARA_SNAPSHOTS_DIR
+    FileUtils.mkdir_p CAPYBARA_SNAPSHOTS_DIR
 
     def login(role = nil)
       logout
