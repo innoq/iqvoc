@@ -7,8 +7,8 @@ env:
   - DB=sqlite
   - DB=mysql
 
-script: "ruby ./script/ci/travis-build.rb"
-before_script: "./script/ci/travis-before-build"
+script: "./script/ci/travis-build"
+before_script: "ruby ./script/ci/travis-before-build.rb"
 
 branches:
   only:
