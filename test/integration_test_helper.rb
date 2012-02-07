@@ -51,8 +51,10 @@ module ActionController
     def create_snapshot
       filename = "#{self.class.name.underscore}_#{method_name}.html"
       filepath = File.join(CAPYBARA_SNAPSHOTS_DIR, filename)
-      File.open(filepath, "w") do |f|
-        f.write page.body
+      if File.writable?(filepath)
+        File.open(filepath, "w") do |f|
+          f.write page.body
+        end
       end
     end
 
