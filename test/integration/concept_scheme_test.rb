@@ -25,7 +25,6 @@ class ConceptSchemeTest < ActionDispatch::IntegrationTest
     
     assert page.has_content? ":scheme a skos:ConceptScheme"
     assert page.has_content? "skos:hasTopConcept :#{concept.origin}"
-    create_snapshot
   end
 
 end
