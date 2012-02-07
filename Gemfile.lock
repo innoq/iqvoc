@@ -44,7 +44,6 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.6)
-    ansi (1.4.2)
     arel (3.0.0)
     authlogic (3.1.0)
       activerecord (>= 3.0.7)
@@ -108,8 +107,8 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    memory_test_fix (0.2.0)
     mime-types (1.17.2)
+    minitest (2.11.1)
     multi_json (1.0.4)
     mysql2 (0.3.11)
     nokogiri (1.5.0)
@@ -166,8 +165,6 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.8.3)
-      ansi
     tzinfo (0.3.31)
     uglifier (1.2.3)
       execjs (>= 0.3.0)
@@ -197,7 +194,7 @@ DEPENDENCIES
   jruby-openssl
   json
   kaminari
-  memory_test_fix
+  minitest
   mysql2
   nokogiri (~> 1.5.0)
   pg
@@ -207,6 +204,5 @@ DEPENDENCIES
   spork-testunit!
   sqlite3
   therubyracer
-  turn
   uglifier (>= 1.0.3)
   view_marker
