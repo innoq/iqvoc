@@ -1,3 +1,12 @@
+## 3.5.4 (2012-02-08)
+
+  * Top concepts<br>
+    From now on the hierarchical concept view only lists concepts marked as "top term".
+    This also includes a default concept scheme and support for top concepts in RDF views.
+  * Configurable navigation<br>
+    Use `Iqvoc.navigation_items` to inject additional navigation items.
+  * Bugfixes
+
 ## 3.5.1 (2012-02-01)
 
  * Bugfixes
