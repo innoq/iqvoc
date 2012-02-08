@@ -8,6 +8,7 @@ require 'kaminari'
 require 'iq_rdf'
 require 'json'
 require 'rails_autolink'
+require 'fastercsv' if RUBY_VERSION < '1.9'
 
 require 'iqvoc/controller_extensions'
 
