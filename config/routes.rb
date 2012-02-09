@@ -57,7 +57,7 @@ Rails.application.routes.draw do
 
     root :to => 'concepts/hierarchical#index', :format => nil
   end
-  
+
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end

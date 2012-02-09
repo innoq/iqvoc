@@ -24,14 +24,14 @@ class ConceptSchemeTest < ActionDispatch::IntegrationTest
 
   test "list top concepts in rdf scheme" do
     visit "/scheme.ttl"
-    
+
     assert page.has_content? ":scheme a skos:ConceptScheme"
     assert page.has_content? "skos:hasTopConcept :#{@concept.origin}"
   end
-  
+
   test "top terms rdf" do
     visit "/#{@concept.origin}.ttl"
-    
+
     assert page.has_content? "skos:topConceptOf :scheme"
   end
 

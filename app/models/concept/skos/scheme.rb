@@ -24,15 +24,15 @@ require 'singleton'
 #   singleton and merely a static, virtual node
 class Concept::SKOS::Scheme
   include Singleton
-  
+
   def self.rdf_class
     :ConceptScheme
   end
-  
+
   def self.rdf_namespace
     :skos
   end
-  
+
   def origin
     :scheme
   end
@@ -42,5 +42,5 @@ class Concept::SKOS::Scheme
     raise "Namespace '#{rdf_namespace}' is not defined in IqRdf document." unless ns
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)
   end
-  
+
 end

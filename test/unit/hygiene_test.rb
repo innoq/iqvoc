@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-class PostalCodeTest < ActiveSupport::TestCase
+class HygieneTest < ActiveSupport::TestCase
 
   test "trailing whitespace" do
     assert_no_occurrence '[[:blank:]]$', "trailing whitespace"

@@ -18,7 +18,7 @@ class RdfController < ApplicationController
 
   skip_before_filter :require_user
   skip_before_filter :set_locale
-  
+
   def scheme
     respond_to do |format|
       format.html { redirect_to about_path }

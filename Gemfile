@@ -42,7 +42,7 @@ end
 
 group :development, :test do
   gem 'awesome_print'
-  
+
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
