@@ -59,6 +59,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'test-unit'
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'

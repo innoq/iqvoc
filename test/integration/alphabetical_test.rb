@@ -30,6 +30,17 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "INTENTIONAL FAILURE" do
+    visit alphabetical_concepts_path(:lang => :en, :letter => "x", :format => :html)
+    lists = page.all("#content ul")
+    assert_equal 3, lists.length
+  end
+
+  test "INTENTIONAL ERROR" do
+    visit alphabetical_concepts_path(:lang => :en, :letter => "x", :format => :html)
+    click("#foo")
+  end
+
   test "showing only concepts with a pref label in respective language" do
     visit alphabetical_concepts_path(:lang => :en, :letter => "x", :format => :html)
     lists = page.all("#content ul")
