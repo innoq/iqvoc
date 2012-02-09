@@ -1,5 +1,3 @@
-require 'iqvoc'
-
 module Iqvoc
   module Maker
 
