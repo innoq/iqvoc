@@ -233,26 +233,32 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :tops, where(:top_term => true)
+  def self.tops
+    where(:top_term => true)
+  end
 
-  scope :broader_tops, includes(:narrower_relations, :pref_labels).
+  def self.broader_tops
+    includes(:narrower_relations, :pref_labels).
     where(:concept_relations => { :id => nil },
-        :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
+      :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
     order("LOWER(#{Label::Base.table_name}.value)")
+  end
 
-  scope :with_associations, includes([
+  def self.with_associations
+    includes([
       { :labelings => :target }, :relations, :matches, :notes
     ])
-
-  scope :with_pref_labels,
+  end
+  
+  def self.with_pref_labels
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
+  end
 
-  scope :for_dashboard, lambda {
-    unpublished_or_follow_up.
-      includes(:pref_labels, :locking_user)
-  }
+  def self.for_dashboard
+    unpublished_or_follow_up.includes(:pref_labels, :locking_user)
+  end
 
   # ********** Class methods
 

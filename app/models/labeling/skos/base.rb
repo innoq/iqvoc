@@ -23,10 +23,10 @@ class Labeling::SKOS::Base < Labeling::Base
   belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
 
   # ********** Scopes
-
-  scope :by_label_with_language, lambda { |label, language|
+  
+  def self.by_label_with_language(label, language)
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
-  }
+  end
 
   # ********** Methods
 

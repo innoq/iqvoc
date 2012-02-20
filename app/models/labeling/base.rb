@@ -29,29 +29,29 @@ class Labeling::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :by_concept, lambda { |concept|
+  def self.by_concept(concept)
     where(:owner_id => concept.id)
-  }
-
-  scope :by_label, lambda { |label|
+  end
+  
+  def self.by_label(label)
     where(:target_id => label.id)
-  }
-
-  scope :concept_published, lambda {
+  end
+  
+  def self.concept_published
     includes(:owner).merge(Concept::Base.published)
-  }
-
-  scope :label_published, lambda {
+  end
+  
+  def self.label_published
     includes(:target).merge(Label::Base.published)
-  }
-
-  scope :label_begins_with, lambda { |letter|
+  end
+  
+  def self.label_begins_with(letter)
     includes(:target).merge(Label::Base.begins_with(letter))
-  }
-
-  scope :by_label_language, lambda { |lang|
+  end
+  
+  def self.by_label_language(lang)
     includes(:target).merge(Label::Base.by_language(lang.to_s))
-  }
+  end
 
   # ********** Methods
 
