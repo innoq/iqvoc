@@ -41,11 +41,11 @@ class Label::Base < ActiveRecord::Base
       where(:language => lang_code)
     end
   end
-  
+
   def self.begins_with(letter)
     where("LOWER(SUBSTR(#{Label::Base.table_name}.value, 1, 1)) = :letter", :letter => letter.to_s.downcase)
   end
-  
+
   def self.missing_translation(lang, main_lang)
     joins(:concepts).
     joins(sanitize_sql(["LEFT OUTER JOIN labelings pref_labelings ON
@@ -60,7 +60,7 @@ class Label::Base < ActiveRecord::Base
     where('labels.language = :lang', :lang => main_lang).
     includes(:pref_labeled_concepts)
   end
-  
+
   def self.by_query_value(query)
     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   end
@@ -70,7 +70,7 @@ class Label::Base < ActiveRecord::Base
   def self.published
     where(arel_table[:published_at].not_eq(nil))
   end
-  
+
   def self.unpublished
     where(arel_table[:published_at].eq(nil))
   end

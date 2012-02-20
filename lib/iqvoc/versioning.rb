@@ -26,10 +26,10 @@ module Iqvoc
 
       belongs_to :locking_user, :foreign_key => 'locked_by', :class_name => 'User'
     end
-    
+
     module ClassMethods
       # ********* Scopes
-      
+
       def by_origin(origin)
          where(:origin => origin)
        end
@@ -66,7 +66,7 @@ module Iqvoc
        def unsynced
          where(:rdf_updated_at => nil)
        end
-       
+
        def include_to_deep_cloning(*association_names)
          (@@include_to_deep_cloning ||= {})[self] ||= []
          association_names.each do |association_name|

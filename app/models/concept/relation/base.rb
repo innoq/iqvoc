@@ -40,27 +40,27 @@ class Concept::Relation::Base < ActiveRecord::Base
   belongs_to :target, :class_name => "Concept::Base"
 
   # ********* Scopes
-  
+
   def self.by_owner(owner_id)
     where(:owner_id => owner_id)
   end
-  
+
   def self.by_owner_origin(owner_origin)
     includes(:owner).merge(Concept::Base.by_origin(owner_origin))
   end
-  
+
   def self.by_target_origin(target_origin)
     includes(:target).merge(Concept::Base.by_origin(target_origin))
   end
-  
+
   def self.target_editor_selectable
     includes(:target).merge(Concept::Base.editor_selectable)
   end
-  
+
   def self.published
     includes(:target).merge(Concept::Base.published)
   end
-  
+
   def self.target_in_edit_mode
     joins(:target).merge(Concept::Base.in_edit_mode)
   end

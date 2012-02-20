@@ -249,7 +249,7 @@ class Concept::Base < ActiveRecord::Base
       { :labelings => :target }, :relations, :matches, :notes
     ])
   end
-  
+
   def self.with_pref_labels
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").

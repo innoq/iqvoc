@@ -59,11 +59,11 @@ class Collection::Base < Concept::Base
   def self.by_origin(origin)
     where(:origin => origin)
   end
-  
+
   def self.by_label_value(val)
     includes(:labels).merge(Label::Base.by_query_value(val))
   end
-  
+
   def self.tops
     includes(:parent_collection_members).
       where("#{Collection::Member::Collection.table_name}.target_id IS NULL")

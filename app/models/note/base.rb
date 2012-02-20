@@ -43,7 +43,7 @@ class Note::Base < ActiveRecord::Base
       where(:language => lang_code)
     end
   end
-  
+
   def self.by_query_value(query)
      where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   end
@@ -51,7 +51,7 @@ class Note::Base < ActiveRecord::Base
   def self.by_owner_type(klass)
     where(:owner_type => klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
   end
-  
+
   def self.for_concepts
     where(:owner_type => 'Concept::Base')
   end
