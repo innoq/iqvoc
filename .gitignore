@@ -1,0 +1,4 @@
+config/
+db/
+tmp/
+log/
