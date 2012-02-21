@@ -51,17 +51,10 @@ module ActionController
     end
 
     def create_snapshot
-      dbg "[SNAPSHOT]", method_name, self.class.name.underscore
       filename = "#{self.class.name.underscore}_#{method_name}.html"
       filepath = File.join(CAPYBARA_SNAPSHOTS_DIR, filename)
-      dbg "[SNAPSHOT]", filename, filepath
-      if File.writable?(filepath)
-        dbg "[SNAPSHOT] writeable", true
-        File.open(filepath, "w") do |f|
-          f.write page.body
-        end
-      else File.writable?(filepath)
-        dbg "[SNAPSHOT] writeable", false
+      File.open(filepath, "w") do |f|
+        f.write page.body
       end
     end
 
@@ -74,7 +67,6 @@ module Test
     module FailureHandler
 
       def add_failure_with_snapshot(*args)
-        dbg "[FAILURE]", method_name, method(:create_snapshot)
         create_snapshot
         add_failure_without_snapshot(*args)
       end
@@ -85,7 +77,6 @@ module Test
     module ErrorHandler
 
       def add_error_with_snapshot(*args)
-        dbg "[ERROR]", method_name, method(:create_snapshot)
         create_snapshot
         add_error_without_snapshot(*args)
       end
