@@ -2,9 +2,9 @@
 
 class HygieneTest < ActiveSupport::TestCase
 
-  test "trailing whitespace" do
-    assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
-  end
+  # test "trailing whitespace" do
+  #   assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
+  # end
 
   test "mixed whitespace" do
     tab = "	"
