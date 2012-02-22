@@ -203,6 +203,7 @@ DEPENDENCIES
   pg
   rails (= 3.2.1)
   rails_autolink
+  rest-client
   spork (~> 0.9.0.rc)
   spork-testunit!
   sqlite3
