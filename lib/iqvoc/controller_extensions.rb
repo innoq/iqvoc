@@ -34,7 +34,10 @@ module Iqvoc
 
     def handle_access_denied(exception)
       @exception = exception
-      render :template => 'errors/access_denied', :status => :access_denied
+      respond_to do |format|
+        format.html { render :template => 'errors/access_denied', :status => 403 }
+        format.any  { head 404 }
+      end
     end
 
     def handle_multiple_choices(exception)
@@ -47,8 +50,8 @@ module Iqvoc
       SearchResultsController.prepare_basic_variables(self)
 
       respond_to do |format|
-        format.html { render :template => 'errors/not_found', :status => :not_found }
-        format.any { head :not_found }
+        format.html { render :template => 'errors/not_found', :status => 404 }
+        format.any  { head 404 }
       end
     end
 
