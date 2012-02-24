@@ -14,25 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Provides the utilities to replace special chars etc in
+# Provides utilities to replace special chars etc in
 # texts to generate a valid turtle compatible id (an url slug).
 module Iqvoc
   class Origin
     attr_accessor :value
     
-    def initialize(value, run_chain = true)
-      @value = value.to_s
-      
-      if run_chain
-        handle_numbers_at_beginning!.
-          replace_umlauts!.
-          replace_whitespace!.
-          replace_special_chars!
-      end
+    def initialize(value)
+      @initial_value = value.to_s
+      @value = @initial_value
+    end
+    
+    def touched?
+      @value != @initial_value
     end
     
     def to_s
-      @value
+      return value if touched?
+      handle_numbers_at_beginning!.replace_umlauts!.replace_whitespace!.replace_special_chars!
+      value
     end
     
     def replace_umlauts!

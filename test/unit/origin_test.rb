@@ -60,7 +60,7 @@ class OriginTest < ActiveSupport::TestCase
   end
 
   def test_sanitize_for_base_form
-    assert_equal "commaslashdotbracketbracket", Iqvoc::Origin.new("comma,slash/dot.bracket[bracket]", false).sanitize_for_base_form!.to_s
+    assert_equal "commaslashdotbracketbracket", Iqvoc::Origin.new("comma,slash/dot.bracket[bracket]").sanitize_for_base_form!.to_s
   end
 
 end
