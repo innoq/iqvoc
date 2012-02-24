@@ -93,20 +93,11 @@ module Iqvoc
         end
       end
       
-      class BaseFormSanitizer < GenericFilter
-        def call(obj, str)
-          str = str.gsub(/[,\/\.\[\]]/, '')
-          
-          run(obj, str)
-        end
-      end
-      
       @filters = { 
         :replace_umlauts => UmlautReplacer, 
         :replace_whitespace => WhitespaceReplacer,
         :replace_special_chars => SpecialCharReplacer,
-        :handle_leading_numbers => LeadingNumberHandler,
-        :sanitize_base_form => BaseFormSanitizer
+        :handle_leading_numbers => LeadingNumberHandler
       }
       
       def self.register(name, klass)

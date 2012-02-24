@@ -71,8 +71,4 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").strip_foobars.to_s
   end
 
-  def test_sanitize_for_base_form
-    assert_equal "commaslashdotbracketbracket", Iqvoc::Origin.new("comma,slash/dot.bracket[bracket]").sanitize_base_form.to_s
-  end
-
 end
