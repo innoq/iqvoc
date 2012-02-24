@@ -16,6 +16,13 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
+class FoobarStripper < Iqvoc::Origin::Filters::GenericFilter
+  def call(obj, str)
+    str = str.gsub("foobar", "")
+    run(obj, str)
+  end
+end
+
 class OriginTest < ActiveSupport::TestCase
 
   def test_should_replace_umlauts
@@ -58,9 +65,14 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "--Energie-Ressource", Iqvoc::Origin.new("[Energie - Ressource]").to_s
     assert_equal "--Hydrosphaere-WasserUndGewaesser", Iqvoc::Origin.new("[Hydrosphäre - Wasser und Gewässer]").to_s
   end
+  
+  def test_register_custom_filter
+    Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
+    assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").strip_foobars.to_s
+  end
 
   def test_sanitize_for_base_form
-    assert_equal "commaslashdotbracketbracket", Iqvoc::Origin.new("comma,slash/dot.bracket[bracket]").sanitize_for_base_form!.to_s
+    assert_equal "commaslashdotbracketbracket", Iqvoc::Origin.new("comma,slash/dot.bracket[bracket]").sanitize_base_form.to_s
   end
 
 end
