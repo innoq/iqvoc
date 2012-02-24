@@ -15,69 +15,142 @@
 # limitations under the License.
 
 # Provides utilities to replace special chars etc in
-# texts to generate a valid turtle compatible id (an url slug).
+# texts to generate a valid turtle compatible id (an url slug):
+# Iqvoc::Origin.new("fübar").to_s # => "fuebar"
+#
+# Note that .to_s respects eventually previously executed method chains
+# Just calling "to_s" runs all registered filters.
+# Prepending "to_s" with a specific filter method only runs the given filter:
+# Iqvoc::Origin.new("fübar").replace_umlauts.to_s # => "fuebar"
+# 
+# Adding your own filter classes is easy:
+# class FoobarStripper < Iqvoc::Origin::Filters::GenericFilter
+#   def call(obj, str)
+#     str = str.gsub("foobar", "")
+#     run(obj, str)
+#   end
+# end
+# Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
+# 
 module Iqvoc
   class Origin
-    attr_accessor :value
+    module Filters
+      class GenericFilter
+        def call(obj, str)
+          # do what has to be done with str
+          # afterwards: make sure to pass "obj" and your modified "str" to "run()"
+          run(obj, str)
+        end
+        
+        def run(obj, str)
+          obj.tap do |obj|
+            obj.value = str
+          end
+        end
+      end
+
+      class UmlautReplacer < GenericFilter
+        def call(obj, str)
+          str = str.gsub(/Ö/, 'Oe').
+            gsub(/Ä/, 'Ae').
+            gsub(/Ü/, 'Ue').
+            gsub(/ö/, 'oe').
+            gsub(/ä/, 'ae').
+            gsub(/ü/, 'ue').
+            gsub(/ß/, 'ss')
+            
+          run(obj, str)
+        end
+      end
+
+      class WhitespaceReplacer < GenericFilter
+        def call(obj, str)
+          str = str.gsub(/\s([a-zA-Z])?/) do
+            $1.to_s.upcase
+          end
+
+          run(obj, str)
+        end
+      end
+      
+      class SpecialCharReplacer < GenericFilter
+        def call(obj, str)
+          str = str.gsub(/[(\[:]/, "--").
+            gsub(/[)\]'""]/, "").
+            gsub(/[,\.\/&;]/, '-')
+          
+          run(obj, str)
+        end
+      end
+      
+      class LeadingNumberHandler < GenericFilter
+        def call(obj, str)
+          str = str.gsub(/^[0-9].*$/) do |match|
+            "_#{match}"
+          end
+          
+          run(obj, str)
+        end
+      end
+      
+      class BaseFormSanitizer < GenericFilter
+        def call(obj, str)
+          str = str.gsub(/[,\/\.\[\]]/, '')
+          
+          run(obj, str)
+        end
+      end
+      
+      @filters = { 
+        :replace_umlauts => UmlautReplacer, 
+        :replace_whitespace => WhitespaceReplacer,
+        :replace_special_chars => SpecialCharReplacer,
+        :handle_leading_numbers => LeadingNumberHandler,
+        :sanitize_base_form => BaseFormSanitizer
+      }
+      
+      def self.register(name, klass)
+        @filters[name.to_sym] = klass
+      end
+      
+      def self.registered
+        @filters
+      end
+    end
+    
+    attr_accessor :initial_value, :value, :filters
     
     def initialize(value)
-      @initial_value = value.to_s
-      @value = @initial_value
+      self.initial_value = value.to_s
+      self.value = initial_value
     end
     
     def touched?
-      @value != @initial_value
+      value != initial_value
+    end
+    
+    def run_filters!
+      Filters.registered.each do |key, filter_class|
+        filter_class.new.call(self, value)
+      end
+    end
+    
+    def method_missing(meth, *args)
+      if Filters.registered.keys.include?(meth.to_sym)
+        Filters.registered[meth.to_sym].new.call(self, value)
+      else
+        super
+      end
     end
     
     def to_s
       return value if touched?
-      handle_numbers_at_beginning!.replace_umlauts!.replace_whitespace!.replace_special_chars!
+      run_filters!
       value
     end
-    
-    def replace_umlauts!
-      self.tap do |obj|
-        obj.value = obj.value.
-          gsub(/Ö/, 'Oe').
-          gsub(/Ä/, 'Ae').
-          gsub(/Ü/, 'Ue').
-          gsub(/ö/, 'oe').
-          gsub(/ä/, 'ae').
-          gsub(/ü/, 'ue').
-          gsub(/ß/, 'ss')
-      end
-    end
-
-    def replace_whitespace!
-      self.tap do |obj|
-        obj.value = obj.value.gsub(/\s([a-zA-Z])?/) do
-          $1.to_s.upcase
-        end
-      end
-    end
-
-    def replace_special_chars!
-      self.tap do |obj|
-        obj.value = obj.value.
-          gsub(/[(\[:]/, "--").
-          gsub(/[)\]'""]/, "").
-          gsub(/[,\.\/&;]/, '-')
-      end
-    end
-
-    def handle_numbers_at_beginning!
-      self.tap do |obj|
-        obj.value = obj.value.gsub(/^[0-9].*$/) do |match|
-          "_#{match}"
-        end
-      end
-    end
-
-    # TODO This should move to umt because it absolutely makes no sense here
-    def sanitize_for_base_form!
-      self.tap do |obj|
-        obj.value = obj.value.gsub(/[,\/\.\[\]]/, '')
-      end
+  
+    def inspect
+      "#<Iqvoc::Origin:0x%08x>" % object_id
     end
 
   end
