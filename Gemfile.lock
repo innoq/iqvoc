@@ -73,6 +73,10 @@ GEM
     factory_girl_rails (1.6.0)
       factory_girl (~> 2.5.0)
       railties (>= 3.0.0)
+    faraday (0.7.6)
+      addressable (~> 2.2)
+      multipart-post (~> 1.1)
+      rack (~> 1.1)
     fastercsv (1.5.4)
     ffi (1.0.11)
     ffi (1.0.11-java)
@@ -93,6 +97,8 @@ GEM
       bouncy-castle-java (>= 1.5.0146.1)
     json (1.6.5)
     json (1.6.5-java)
+    json_builder (3.0.7)
+      activesupport (>= 2.0.0)
     kaminari (0.13.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -111,6 +117,7 @@ GEM
     mime-types (1.17.2)
     minitest (2.11.1)
     multi_json (1.0.4)
+    multipart-post (1.1.5)
     mysql2 (0.3.11)
     nokogiri (1.5.0)
     nokogiri (1.5.0-java)
@@ -191,11 +198,13 @@ DEPENDENCIES
   capybara-webkit
   database_cleaner
   factory_girl_rails
+  faraday
   fastercsv
   heroku
   iq_rdf (~> 0.1.2)
   jruby-openssl
   json
+  json_builder
   kaminari
   minitest
   mysql2
@@ -203,7 +212,6 @@ DEPENDENCIES
   pg
   rails (= 3.2.1)
   rails_autolink
-  rest-client
   spork (~> 0.9.0.rc)
   spork-testunit!
   sqlite3

@@ -57,7 +57,9 @@ Rails.application.routes.draw do
 
     root :to => 'concepts/hierarchical#index', :format => nil
   end
-
+  
+  match 'remote_search(.:format)' => 'adaptors/iqvoc#index', :as => 'remote_search'
+  
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
   match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end

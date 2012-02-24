@@ -42,9 +42,15 @@ class SearchResultsController < ApplicationController
         render :action => 'index', :status => 422
         return
       end
-
-      # Special treatment for the "nil language"
-      params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
+      
+      # Deal with language parameter patterns
+      # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
+      if params[:languages].is_a?(Array)
+        # Special treatment for the "nil language"
+        params[:languages] << nil if params[:languages].include?("none")
+      else
+        params[:languages] = params[:languages].split(",")
+      end
 
       # Ensure a valid class was selected
       unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
@@ -80,8 +86,9 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html
-        format.ttl { render('search_results/index.iqrdf') }
-        format.rdf { render('search_results/index.iqrdf') }
+        format.ttl  { render('search_results/index.iqrdf') }
+        format.rdf  { render('search_results/index.iqrdf') }
+        format.json
       end
 
     end
