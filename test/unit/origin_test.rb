@@ -69,6 +69,7 @@ class OriginTest < ActiveSupport::TestCase
   def test_register_custom_filter
     Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
     assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").strip_foobars.to_s
+    assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").to_s
   end
 
 end
