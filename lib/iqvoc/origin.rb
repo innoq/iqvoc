@@ -14,45 +14,71 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# OriginMapping provides the _merge_ method to replace special chars etc in
-# texts to generate a valid turtle compatible id (an url postfix).
-class OriginMapping
-
-  def self.replace_umlauts(str)
-    str.to_s.
-      gsub(/Ö/, 'Oe').
-      gsub(/Ä/, 'Ae').
-      gsub(/Ü/, 'Ue').
-      gsub(/ö/, 'oe').
-      gsub(/ä/, 'ae').
-      gsub(/ü/, 'ue').
-      gsub(/ß/, 'ss')
-  end
-
-  def self.replace_whitespace(str)
-    str.to_s.gsub(/\s([a-zA-Z])?/) do
-      $1.to_s.upcase
+# Provides the utilities to replace special chars etc in
+# texts to generate a valid turtle compatible id (an url slug).
+module Iqvoc
+  class Origin
+    attr_accessor :value
+    
+    def initialize(value, run_chain = true)
+      @value = value.to_s
+      
+      if run_chain
+        handle_numbers_at_beginning!.
+          replace_umlauts!.
+          replace_whitespace!.
+          replace_special_chars!
+      end
     end
-  end
-
-  def self.replace_special_chars(str)
-    str.to_s.gsub(/[(\[:]/, "--").gsub(/[)\]'""]/, "").gsub(/[,\.\/&;]/, '-')
-  end
-
-  def self.handle_numbers_at_beginning(str)
-    str.to_s.gsub(/^[0-9].*$/) do |match|
-      "_#{match}"
+    
+    def to_s
+      @value
     end
+    
+    def replace_umlauts!
+      self.tap do |obj|
+        obj.value = obj.value.
+          gsub(/Ö/, 'Oe').
+          gsub(/Ä/, 'Ae').
+          gsub(/Ü/, 'Ue').
+          gsub(/ö/, 'oe').
+          gsub(/ä/, 'ae').
+          gsub(/ü/, 'ue').
+          gsub(/ß/, 'ss')
+      end
+    end
+
+    def replace_whitespace!
+      self.tap do |obj|
+        obj.value = obj.value.gsub(/\s([a-zA-Z])?/) do
+          $1.to_s.upcase
+        end
+      end
+    end
+
+    def replace_special_chars!
+      self.tap do |obj|
+        obj.value = obj.value.
+          gsub(/[(\[:]/, "--").
+          gsub(/[)\]'""]/, "").
+          gsub(/[,\.\/&;]/, '-')
+      end
+    end
+
+    def handle_numbers_at_beginning!
+      self.tap do |obj|
+        obj.value = obj.value.gsub(/^[0-9].*$/) do |match|
+          "_#{match}"
+        end
+      end
+    end
+
+    # TODO This should move to umt because it absolutely makes no sense here
+    def sanitize_for_base_form!
+      self.tap do |obj|
+        obj.value = obj.value.gsub(/[,\/\.\[\]]/, '')
+      end
+    end
+
   end
-
-  def self.merge(str)
-    handle_numbers_at_beginning(replace_umlauts(replace_whitespace(replace_special_chars(str))))
-  end
-
-  # TODO This should move to umt because it absolutely makes no sense here
-
-  def self.sanitize_for_base_form(str)
-    str.to_s.gsub(/[,\/\.\[\]]/, '')
-  end
-
 end
