@@ -2,13 +2,13 @@
 
 class HygieneTest < ActiveSupport::TestCase
 
-  test "trailing whitespace" do
-    begin
-      assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
-    rescue Test::Unit::AssertionFailedError => exc
-      warn "[WARNING] #{exc}"
-    end
-  end
+  # test "trailing whitespace" do
+  #   begin
+  #     assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
+  #   rescue Test::Unit::AssertionFailedError => exc
+  #     warn "[WARNING] #{exc}"
+  #   end
+  # end
 
   test "mixed whitespace" do
     tab = "	"
