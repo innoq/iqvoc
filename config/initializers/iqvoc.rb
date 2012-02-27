@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc'
-require 'iqvoc/origin'
-require 'iqvoc/data_helper'
-require 'iqvoc/version'
-require 'iqvoc/versioning'
-require 'iqvoc/deep_cloning'
-require 'iqvoc/rdf_utility'
-require 'iqvoc/ability'
+require_dependency 'iqvoc'
+require_dependency 'iqvoc/origin'
+require_dependency 'iqvoc/data_helper'
+require_dependency 'iqvoc/version'
+require_dependency 'iqvoc/versioning'
+require_dependency 'iqvoc/deep_cloning'
+require_dependency 'iqvoc/rdf_utility'
+require_dependency 'iqvoc/ability'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 

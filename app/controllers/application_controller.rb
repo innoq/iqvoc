@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "iqvoc/controller_extensions"
+require_dependency "iqvoc/controller_extensions"
 
 class ApplicationController < ActionController::Base
   include Iqvoc::ControllerExtensions
