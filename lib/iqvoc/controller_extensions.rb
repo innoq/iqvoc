@@ -110,7 +110,10 @@ module Iqvoc
     def require_user
       unless current_user
         flash[:error] = I18n.t("txt.controllers.application.login_required")
-        redirect_to new_user_session_url(:back_to => request.fullpath)
+        respond_to do |format|
+          format.html { redirect_to new_user_session_url(:back_to => request.fullpath) }
+          format.any  { head 401 }
+        end
         return false
       end
     end
