@@ -115,7 +115,6 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.17.2)
-    minitest (2.11.1)
     multi_json (1.0.4)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
@@ -206,7 +205,6 @@ DEPENDENCIES
   json
   json_builder
   kaminari
-  minitest
   mysql2
   nokogiri (~> 1.5.0)
   pg

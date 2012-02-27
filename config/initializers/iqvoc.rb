@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'iqvoc'
+require 'iqvoc/origin'
 require 'iqvoc/data_helper'
 require 'iqvoc/version'
 require 'iqvoc/versioning'
