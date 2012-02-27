@@ -9,7 +9,7 @@ class Adaptors::IqvocController < ApplicationController
     
     adaptor = Iqvoc::Adaptors::Iqvoc.new(:iqvoc, "http://localhost:3001")
     response = adaptor.search(params[:query])
-    render :json => response.body
+    render :json => response
   end
   
 end

@@ -34,6 +34,8 @@ module Iqvoc
           req.params["for"] = "concept"
           req.params["t"]   = "labeling-skos-base"
         end
+        
+        response.body
       end
       
       private
