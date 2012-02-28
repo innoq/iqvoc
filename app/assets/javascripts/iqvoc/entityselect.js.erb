@@ -24,7 +24,8 @@ var EntitySelector = function(node) {
 	selection = $('<ul class="entity_list" />').append(selection);
 
 	var exclude = this.el.data("exclude") || null;
-	var img = $('<img src="<%= asset_path('spinner.gif') %>" class="hidden" />');
+	var img = "<%= asset_path('spinner.gif') %>";
+	img = $('<img src="' + img + '" class="hidden" />');
 	this.input = $("<input />").autocomplete({
 		minLength: 3,
 		source: function(req, callback) {
