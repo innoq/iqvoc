@@ -1,5 +1,3 @@
-require "iqvoc/adaptors/iqvoc"
-
 class Adaptors::IqvocController < ApplicationController
   
   respond_to :json
