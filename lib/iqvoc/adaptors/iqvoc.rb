@@ -28,7 +28,7 @@ module Iqvoc
         
         response = conn.get do |req|
           req.url "/search.json"
-          req.params["q"]   = query
+          req.params["q"]   = CGI.unescape(query)
           req.params["qt"]  = query_type
           req.params["l"]   = languages
           req.params["for"] = "concept"
