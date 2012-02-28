@@ -7,6 +7,7 @@
     :id => assoc_klass.name.to_relation_name,
     :"data-query-url" => remote_search_path,
     :"data-query-params" => {},
+    :"data-preprocessor" => "matches",
     :"data-entity-uri" => concept_path("{id}"),
     :"data-singular" => nil,
     :"data-entities" => [].to_json %>

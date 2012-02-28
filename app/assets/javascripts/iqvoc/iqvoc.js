@@ -123,6 +123,15 @@ return {
 jQuery(document).ready(function($) {
 	"use strict";
 
+	// add EntitySelector preprocessor for remote matches
+	// converts an object of URL-label pairs
+	// NB: does not support `excludes`
+	IQVOC.EntitySelector.preprocessors.matches = function(data) {
+		return $.map(data, function(label, url) {
+			return { value: url, label: label };
+		});
+	};
+
 	var locale = $("head meta[name=i18n-locale]").attr("content");
 
 	IQVOC.enhancedDropdown(".menu");
