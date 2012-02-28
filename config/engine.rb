@@ -10,7 +10,7 @@ require 'json'
 require 'rails_autolink'
 require 'fastercsv' if RUBY_VERSION < '1.9'
 
-require_dependency 'iqvoc/controller_extensions'
+require 'iqvoc/controller_extensions'
 
 module Iqvoc
 

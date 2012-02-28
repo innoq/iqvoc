@@ -1,4 +1,4 @@
-require_dependency "iqvoc/adaptors/iqvoc"
+require "iqvoc/adaptors/iqvoc"
 
 class Adaptors::IqvocController < ApplicationController
   

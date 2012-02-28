@@ -2,7 +2,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-require 'iqvoc/adaptors/sparql'
+require "iqvoc/adaptors/sparql"
 
 class SparqlAdaptorTest < ActiveSupport::TestCase
   

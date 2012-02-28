@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require_dependency 'iqvoc/skos_importer'
+require 'iqvoc/skos_importer'
 
 class ImportController < ApplicationController
 
