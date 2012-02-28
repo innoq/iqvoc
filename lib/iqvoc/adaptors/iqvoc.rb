@@ -1,5 +1,5 @@
-require "faraday"
-require "json"
+require 'faraday'
+require 'json'
 
 module Iqvoc
   module Adaptors
