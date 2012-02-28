@@ -46,10 +46,6 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
-    # v0.9 required for spork-testunit
-    gem 'spork', '~> 0.9.0.rc'
-    # head required for Ruby 1.9.3 compatibility; cf. https://github.com/sporkrb/spork-testunit/pull/17
-    gem 'spork-testunit', :git => 'git://github.com/sporkrb/spork-testunit.git'
   end
 
   platforms :jruby do
@@ -65,6 +61,8 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'spork'
+  gem 'spork-testunit'
 end
 
 group :production do
