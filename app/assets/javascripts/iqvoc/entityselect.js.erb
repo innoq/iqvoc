@@ -1,4 +1,4 @@
-/*jslint vars: true, unparam: true */
+/*jslint vars: true, unparam: true, white: true */
 /*global jQuery, IQVOC */
 
 IQVOC.EntitySelector = (function($) {
@@ -28,14 +28,12 @@ var EntitySelector = function(node) {
 	this.input = $("<input />").autocomplete({
 		minLength: 3,
 		source: function(req, callback) {
-			var uri = self.el.data("query-url");
+			var uri = self.el.data("query-url"),
+				preprocessor =  self.el.data("preprocessor") || "default";
 			$.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
 				var excludes = self.getSelection()
 						.concat(exclude ? [exclude] : []);
-				data = $.map(data, function(entity, i) {
-					return $.inArray(entity.id, excludes) !== -1 ? null :
-							{ value: entity.id, label: entity.name };
-				});
+				data = self.preprocessors[preprocessor](data, excludes);
 				self.input.autocomplete("option", "autoFocus", data.length === 1);
 				callback(data);
 				img.addClass("hidden");
@@ -54,6 +52,17 @@ var EntitySelector = function(node) {
 	}
 };
 $.extend(EntitySelector.prototype, {
+	preprocessors: {
+		// converts an array of objects with members `id` and `name` to an
+		// array of objects with members `value` and `label`
+		// `excludes` is an array of item IDs to exclude
+		"default": function(data, excludes) {
+			return $.map(data, function(entity, i) {
+				return $.inArray(entity.id, excludes) !== -1 ? null :
+						{ value: entity.id, label: entity.name };
+			});
+		}
+	},
 	onSelect: function(ev, ui) {
 		var el = $(this).val("");
 		var widget = el.closest(".entity_select").data("widget");
