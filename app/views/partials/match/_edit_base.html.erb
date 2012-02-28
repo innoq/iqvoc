@@ -1,6 +1,13 @@
 <li>
   <% fieldname = "concept[inline_#{assoc_klass.name.to_relation_name}]" %>
   <%= label_tag fieldname, assoc_klass.model_name.human(:count => 2) %>
-  <%= text_area_tag fieldname,
-    owner_klass.send("inline_#{assoc_klass.name.to_relation_name}") %>
+  <%= text_field_tag fieldname,
+    owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"),
+    :class => "entity_select",
+    :id => assoc_klass.name.to_relation_name,
+    :"data-query-url" => remote_search_path(:format => :json),
+    :"data-query-params" => {},
+    :"data-entity-uri" => concept_path("{id}"),
+    :"data-singular" => nil,
+    :"data-entities" => [].to_json %>
 </li>
