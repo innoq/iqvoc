@@ -11,7 +11,7 @@ module Iqvoc
       
       def initialize(name, host = nil)
         @name = name
-        @host = host || ::Iqvoc.config["adaptors.iqvoc.#{name.to_s.underscore}"]
+        @host = host || config(:host)
         
         @conn = Faraday.new(:url => @host) do |builder|
           builder.use Faraday::Response::Logger if Rails.env.development?
@@ -40,6 +40,10 @@ module Iqvoc
       
       private
       def conn; @conn; end
+      
+      def config(key)
+        ::Iqvoc.config["adaptors.iqvoc.#{name.to_s.underscore}.#{key}"]
+      end
     end
 
   end
