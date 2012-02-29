@@ -2,7 +2,7 @@ class Adaptors::IqvocController < ApplicationController
   
   respond_to :json
   
-  def index
+  def search
     authorize! :use, Iqvoc::Adaptors::Iqvoc
     
     adaptor = Iqvoc::Adaptors::Iqvoc.new(:iqvoc, "http://localhost:3001")
