@@ -1,10 +1,9 @@
 # encoding: UTF-8
 
-require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-
+require File.join(File.expand_path(File.dirname(__FILE__)), '../../test_helper')
 require "iqvoc/adaptors/sparql"
 
-class SparqlAdaptorTest < ActiveSupport::TestCase
+class Adaptors::SparqlTest < ActiveSupport::TestCase
   
   setup do
     @adaptor = Iqvoc::Adaptors::Sparql.new("http://cr.eionet.europa.eu/sparql")
