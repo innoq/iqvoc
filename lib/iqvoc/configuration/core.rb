@@ -70,6 +70,7 @@ module Iqvoc
           'Labeling::SKOS::PrefLabel',
           'Note::Base'
         ]
+        
         self.unlimited_search_results = false
 
         self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
@@ -94,7 +95,8 @@ module Iqvoc
           "title" => "iQvoc",
           "available_languages" => ["en", "de"],
           "languages.pref_labeling" => ["en", "de"],
-          "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
+          "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
+          "adaptors.iqvoc" => {}
         })
         self.config.initialize_cache
       end
