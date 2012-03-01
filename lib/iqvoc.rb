@@ -39,7 +39,6 @@ module Iqvoc
   module Label
     include Iqvoc::Configuration::Label
   end
-
 end
 
 # FIXME: For reasons yet unknown, the load hook is executed twice
