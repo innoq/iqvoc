@@ -42,7 +42,13 @@ module Iqvoc
       def conn; @conn; end
       
       def config(key)
-        ::Iqvoc.config["adaptors.iqvoc.#{name.to_s.underscore}.#{key}"]
+        config = ::Iqvoc.config["adaptors.iqvoc"]
+        config.symbolize_keys!
+        if config.has_key?(name) && config[name]
+          return config[name][key]
+        else
+          raise "Adaptor configuration is missing '#{name}'."
+        end
       end
     end
 
