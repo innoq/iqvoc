@@ -1,3 +1,9 @@
+## 3.5.6 (2012-03-07)
+
+  * Refactored origin (URI slug) generation<br>
+    Now supports custom filters to extend generation logic. See more: https://github.com/innoq/iqvoc/blob/master/lib/iqvoc/origin.rb
+  * Bugfixes
+
 ## 3.5.4 (2012-02-08)
 
   * Top concepts<br>
