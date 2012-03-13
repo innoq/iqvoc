@@ -17,7 +17,6 @@
 require 'iqvoc/skos_importer'
 
 class ImportController < ApplicationController
-  respond_to :html
 
   before_filter do
     authorize! :import, Concept::Base

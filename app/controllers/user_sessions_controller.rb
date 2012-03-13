@@ -15,15 +15,13 @@
 # limitations under the License.
 
 class UserSessionsController < ApplicationController
-  
+
   skip_before_filter :require_user, :only => [:new, :create]
 
   def new
     # TODO Check abilities
-    
-    respond_to do |format|
-      format.html {      @user_session = UserSession.new}
-    end
+
+    @user_session = UserSession.new
   end
 
   def create
