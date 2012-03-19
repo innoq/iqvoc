@@ -19,8 +19,8 @@ class AddTypeToCollectionContents < ActiveRecord::Migration
     rename_column :collection_members, :concept_id, :target_id
     add_column :collection_members, :type, :string
     
-    Collection::Member::Base.reset_column_informtion
-    Collection::Base.reset_column_informtion
+    Collection::Member::Base.reset_column_information
+    Collection::Base.reset_column_information
     
     Collection::Member::Base.update_all(:type => 'Collection::Member::Concept')
     Collection::Base.update_all(:type => 'Collection::Base')
