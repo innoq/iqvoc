@@ -14,12 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class AddTypeToCollectionContents < ActiveRecord::Migration
+class MigrateCollectionData < ActiveRecord::Migration
   def self.up
-    rename_column :collection_members, :concept_id, :target_id
-    add_column :collection_members, :type, :string
-  end
-
-  def self.down
+    Collection::Member::Base.update_all(:type => 'Collection::Member::Concept')
+    Collection::Base.update_all(:type => 'Collection::Base')
   end
 end
