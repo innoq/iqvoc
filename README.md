@@ -30,7 +30,7 @@ To run iQvoc on heroku do the following:
 
 ```
 bundle install
-bundle exec heroku create
+bundle exec heroku create --stack bamboo
 bundle exec rake heroku:config
 git push heroku master
 bundle exec heroku rake db:migrate
