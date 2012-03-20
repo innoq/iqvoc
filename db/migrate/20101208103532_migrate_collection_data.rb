@@ -17,6 +17,5 @@
 class MigrateCollectionData < ActiveRecord::Migration
   def self.up
     Collection::Member::Base.update_all(:type => 'Collection::Member::Concept')
-    Collection::Base.update_all(:type => 'Collection::Base')
   end
 end
