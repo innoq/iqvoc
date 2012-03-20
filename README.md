@@ -95,4 +95,5 @@ iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH]
 ## License
 
 Copyright 2011 innoQ Deutschland GmbH
+
 Licensed under the Apache License, Version 2.0
