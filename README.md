@@ -30,12 +30,12 @@ To run iQvoc on heroku do the following:
 
 ```
 bundle install
-heroku create
+bundle exec heroku create
 bundle exec rake heroku:config
 git push heroku master
-heroku rake db:migrate
-heroku rake db:seed
-heroku restart
+bundle exec heroku rake db:migrate
+bundle exec heroku rake db:seed
+bundle exec heroku restart
 ```
 
 `heroku open` opens your app in the browser.
