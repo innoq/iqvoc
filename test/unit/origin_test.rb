@@ -65,7 +65,7 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "--Energie-Ressource", Iqvoc::Origin.new("[Energie - Ressource]").to_s
     assert_equal "--Hydrosphaere-WasserUndGewaesser", Iqvoc::Origin.new("[Hydrosphäre - Wasser und Gewässer]").to_s
   end
-  
+
   def test_register_custom_filter
     Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
     assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").strip_foobars.to_s

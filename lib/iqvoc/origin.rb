@@ -22,7 +22,7 @@
 # Just calling "to_s" runs all registered filters.
 # Prepending "to_s" with a specific filter method only runs the given filter:
 # Iqvoc::Origin.new("fübar").replace_umlauts.to_s # => "fuebar"
-# 
+#
 # Adding your own filter classes is easy:
 # class FoobarStripper < Iqvoc::Origin::Filters::GenericFilter
 #   def call(obj, str)
@@ -31,7 +31,7 @@
 #   end
 # end
 # Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
-# 
+#
 module Iqvoc
   class Origin
     module Filters
@@ -41,7 +41,7 @@ module Iqvoc
           # afterwards: make sure to pass "obj" and your modified "str" to "run()"
           run(obj, str)
         end
-        
+
         def run(obj, str)
           obj.tap do |obj|
             obj.value = str
@@ -58,7 +58,7 @@ module Iqvoc
             gsub(/ä/, 'ae').
             gsub(/ü/, 'ue').
             gsub(/ß/, 'ss')
-            
+
           run(obj, str)
         end
       end
@@ -72,60 +72,59 @@ module Iqvoc
           run(obj, str)
         end
       end
-      
+
       class SpecialCharReplacer < GenericFilter
         def call(obj, str)
           str = str.gsub(/[(\[:]/, "--").
             gsub(/[)\]'""]/, "").
             gsub(/[,\.\/&;]/, '-')
-          
+
           run(obj, str)
         end
       end
-      
+
       class LeadingNumberHandler < GenericFilter
         def call(obj, str)
           str = str.gsub(/^[0-9].*$/) do |match|
             "_#{match}"
           end
-          
+
           run(obj, str)
         end
       end
-      
-      @filters = { 
-        :replace_umlauts => UmlautReplacer, 
-        :replace_whitespace => WhitespaceReplacer,
-        :replace_special_chars => SpecialCharReplacer,
-        :handle_leading_numbers => LeadingNumberHandler
-      }
-      
+
+      @filters = ActiveSupport::OrderedHash.new
+      @filters[:replace_umlauts]        = UmlautReplacer
+      @filters[:replace_whitespace]     = WhitespaceReplacer
+      @filters[:replace_special_chars]  = SpecialCharReplacer
+      @filters[:handle_leading_numbers] = LeadingNumberHandler
+
       def self.register(name, klass)
         @filters[name.to_sym] = klass
       end
-      
+
       def self.registered
         @filters
       end
     end
-    
+
     attr_accessor :initial_value, :value, :filters
-    
+
     def initialize(value)
       self.initial_value = value.to_s
       self.value = initial_value
     end
-    
+
     def touched?
       value != initial_value
     end
-    
+
     def run_filters!
       Filters.registered.each do |key, filter_class|
         filter_class.new.call(self, value)
       end
     end
-    
+
     def method_missing(meth, *args)
       if Filters.registered.keys.include?(meth.to_sym)
         Filters.registered[meth.to_sym].new.call(self, value)
@@ -133,13 +132,13 @@ module Iqvoc
         super
       end
     end
-    
+
     def to_s
       return value if touched?
       run_filters!
       value
     end
-  
+
     def inspect
       "#<Iqvoc::Origin:0x%08x>" % object_id
     end
