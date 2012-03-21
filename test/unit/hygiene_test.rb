@@ -3,11 +3,7 @@
 class HygieneTest < ActiveSupport::TestCase
 
   test "trailing whitespace" do
-    begin
-      assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
-    rescue Test::Unit::AssertionFailedError => exc
-      warn "[WARNING] #{exc}"
-    end
+    assert_no_occurrence '[[:blank:]]$', "trailing whitespace"
   end
 
   test "mixed whitespace" do
