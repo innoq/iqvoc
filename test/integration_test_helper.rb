@@ -16,9 +16,6 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), 'test_helper')
 require 'capybara/rails'
-require 'test/unit/failure'
-require 'test/unit/error'
-require 'fileutils'
 
 module ActionController
   class IntegrationTest
@@ -56,32 +53,6 @@ module ActionController
       File.open(filepath, "w") do |f|
         f.write page.body
       end
-    end
-
-  end
-end
-
-module Test
-  module Unit
-
-    module FailureHandler
-
-      def add_failure_with_snapshot(*args)
-        create_snapshot
-        add_failure_without_snapshot(*args)
-      end
-      alias_method_chain :add_failure, :snapshot
-
-    end
-
-    module ErrorHandler
-
-      def add_error_with_snapshot(*args)
-        create_snapshot
-        add_error_without_snapshot(*args)
-      end
-      alias_method_chain :add_error, :snapshot
-
     end
 
   end

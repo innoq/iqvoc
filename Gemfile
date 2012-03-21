@@ -55,7 +55,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'test-unit'
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-webkit'
@@ -63,6 +62,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'spork'
   gem 'spork-testunit'
+  gem 'turn'
 end
 
 group :production do
