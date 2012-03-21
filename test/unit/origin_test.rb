@@ -54,7 +54,7 @@ class OriginTest < ActiveSupport::TestCase
   end
 
   def test_should_replace_brackets
-    assert_equal "--Energie-Ressource", 
+    assert_equal "--Energie-Ressource",
       Iqvoc::Origin.new("[Energie/Ressource]").to_s
   end
 
@@ -63,9 +63,9 @@ class OriginTest < ActiveSupport::TestCase
   end
 
   def test_should_merge_all_together
-    assert_equal "--Energie-Ressource", 
+    assert_equal "--Energie-Ressource",
       Iqvoc::Origin.new("[Energie - Ressource]").to_s
-    assert_equal "--Hydrosphaere-WasserUndGewaesser", 
+    assert_equal "--Hydrosphaere-WasserUndGewaesser",
       Iqvoc::Origin.new("[Hydrosphäre - Wasser und Gewässer]").to_s
   end
 
