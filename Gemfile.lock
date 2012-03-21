@@ -104,6 +104,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.17.2)
+    minitest (2.11.4)
     multi_json (1.1.0)
     mysql2 (0.3.11)
     netrc (0.7.1)
@@ -194,6 +195,7 @@ DEPENDENCIES
   jruby-openssl
   json
   kaminari
+  minitest
   mysql2
   nokogiri (~> 1.5.0)
   pg

@@ -63,6 +63,7 @@ group :test do
   gem 'spork'
   gem 'spork-testunit'
   gem 'turn'
+  gem 'minitest'
 end
 
 group :production do
