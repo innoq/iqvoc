@@ -26,7 +26,7 @@ class Concept::SKOS::Base < Concept::Base
 
     # ensure skos:Concept type is present
     unless self.rdf_namespace == "skos" && self.rdf_class == "Concept"
-      subject.Rdf::type(IqRdf::Skos.build_uri("Concept"))
+      subject.Rdf.build_predicate("type", IqRdf::Skos.build_uri("Concept"))
     end
 
     return subject
