@@ -10,16 +10,18 @@ body {
 
 header.main {
   margin-top: 50px;
-  padding-bottom: 40px;
+  margin-bottom: 30px;
   border-bottom: 0;
-/*  position: relative;*/
 }
 
 header.main h1 {
-  font-size: 54px;
-  margin-bottom: 9px;
-  letter-spacing: -1px;
-  line-height: 1;
+  text-indent: -9999px;
+  white-space: nowrap;
+  background: url("../images/iqvoc_logo.png");
+  background-repeat: no-repeat;
+  background-size: 80%;
+  width: 305px;
+  height: 120px;
 }
 
 header.main h1, p {
@@ -28,4 +30,12 @@ header.main h1, p {
 
 section {
   padding-bottom: 20px;
+}
+
+footer {
+  text-indent: -5px;
+}
+
+footer img {
+  height: 40px;
 }
