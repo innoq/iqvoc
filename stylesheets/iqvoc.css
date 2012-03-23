@@ -37,6 +37,7 @@ footer {
   text-indent: -5px;
 }
 
-footer img {
-  height: 40px;
+img.footer-logo {
+  width: 161px;
+  height: 60px;
 }
