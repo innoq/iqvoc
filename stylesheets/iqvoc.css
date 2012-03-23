@@ -19,9 +19,10 @@ header.main h1 {
   white-space: nowrap;
   background: url("../images/iqvoc_logo.png");
   background-repeat: no-repeat;
-  background-size: 80%;
-  width: 305px;
-  height: 120px;
+  background-size: 254px 100px; /* scale down 2x image to 1x */
+  width: 254px;
+  height: 100px;
+  margin-bottom: 10px;
 }
 
 header.main h1, p {
