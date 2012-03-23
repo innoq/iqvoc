@@ -2,3 +2,5 @@ config/
 db/
 tmp/
 log/
+.bundle
+*.gem
