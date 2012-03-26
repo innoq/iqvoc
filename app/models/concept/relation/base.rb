@@ -92,4 +92,24 @@ class Concept::Relation::Base < ActiveRecord::Base
     false
   end
 
+  def rank
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def rank=(val)
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def self.rankable?
+    self.class.included_modules.include?(Iqvoc::Rankable)
+  end
+
 end
