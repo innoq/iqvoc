@@ -15,9 +15,7 @@
 # limitations under the License.
 
 module Iqvoc
-  class InlineDataHelper # TODO: Module should have the same name as the file! "Helper" has an other meaning in Rails. I would suggest "InlineData".
-
-    # TODO: Non class constants should be written UPPER_CASE
+  module InlineDataHelper
 
     # delimiters for strings representing a list of values
     Joiner = ", "

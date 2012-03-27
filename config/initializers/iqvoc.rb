@@ -16,7 +16,7 @@
 
 require 'iqvoc'
 require 'iqvoc/origin'
-require 'iqvoc/data_helper'
+require 'iqvoc/inline_data_helper'
 require 'iqvoc/version'
 require 'iqvoc/versioning'
 require 'iqvoc/deep_cloning'
