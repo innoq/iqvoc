@@ -67,6 +67,7 @@ module ApplicationHelper
   end
 
   def error_messages_for(object)
+    Rails.logger.ap object.errors
     if object.errors.any?
       content_tag :ul, :class => "flash_error error_list" do
         object.errors.full_messages.each do |msg|

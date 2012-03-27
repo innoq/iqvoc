@@ -15,6 +15,8 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Related < Concept::Relation::SKOS::Base
+  include Iqvoc::Rankable
+
   self.rdf_predicate = 'related'
 
   def build_rdf(document, subject)

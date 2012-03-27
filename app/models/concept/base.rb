@@ -40,6 +40,7 @@ class Concept::Base < ActiveRecord::Base
   validate :ensure_no_pref_labels_share_the_same_language
   validate :ensure_exclusive_top_term
   validate :ensure_rooted_top_terms
+  validate :ensure_valid_rank_for_ranked_relations
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -75,16 +76,39 @@ class Concept::Base < ActiveRecord::Base
   end
 
   after_save do |concept|
-    # Concept relations
-    # @concept_relations_by_id # => {'relation_name' => 'origin1, origin2, ...'}
+    # Concept relations can be passed in two different formats,
+    # either with an interpolated rank or without one (for non-rankable relations).
+    #
+    # Examples:
+    # {'relation_name' => ['origin1', 'origin2']}
+    # {'relation_name' => ['origin1:100', 'origin2:90']}
+    #
+    # We have to deal with both cases.
+    # Interpolated ranks are only allowed for relations that are `rankable?`
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
+      # Split comma-separated origins and clean up parameter strings
       new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
-      existing_origins = concept.send(relation_name).map { |r| r.target.origin }.uniq
-      Concept::Base.by_origin(new_origins - existing_origins).each do |c| # Iterate over all concepts to be added
-        concept.send(relation_name).create_with_reverse_relation(c)
+
+      # Extract (eventually) interpolated ranks out of origin strings e.g. "origin1:100"
+      new_origins = new_origins.each_with_object({}) do |e, hsh|
+        # If there are no interpolated ranks, nil is set as the new hashes' values
+        hsh[e.split(':')[0]] = e.split(':')[1]
       end
-      concept.send(relation_name).by_target_origin(existing_origins - new_origins).each do |relation| # Iterate over all concepts to be removed
+      # => { 'origin1' => 100, 'origin2' => 90 }
+      # => { 'origin1' => nil, 'origin2' => nil }
+
+      existing_origins = concept.send(relation_name).map { |r| r.target.origin }.uniq
+
+      # Destroy elements of the given concept relation
+      concept.send(relation_name).by_target_origin(existing_origins).each do |relation|
         concept.send(relation_name).destroy_with_reverse_relation(relation.target)
+      end
+
+      # Rebuild concept relations
+      # This is necessary because changing the rank of an already assigned relation
+      # would otherwise be ignored.
+      Concept::Base.by_origin(new_origins.keys).each do |c|
+        concept.send(relation_name).create_with_reverse_relation(c, :rank => new_origins[c.origin])
       end
     end
   end
@@ -303,6 +327,11 @@ class Concept::Base < ActiveRecord::Base
       join(Iqvoc::InlineDataHelper::Joiner)
   end
 
+  def concept_relations_by_id_and_rank(relation_name)
+    self.send(relation_name).each_with_object({}) { |rel, hsh| hsh[rel.target] = rel.rank }
+    # self.send(relation_name).map { |l| "#{l.target.origin}:#{l.rank}" }
+  end
+
   # returns the (one!) preferred label of a concept for the requested language.
   # lang can either be a (lowercase) string or symbol with the (ISO ....) two letter
   # code of the language (e.g. :en for English, :fr for French, :de for German).
@@ -442,6 +471,18 @@ class Concept::Base < ActiveRecord::Base
         errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
       end
       languages[lang] = origin
+    end
+  end
+
+  def ensure_valid_rank_for_ranked_relations
+    if @full_validation
+      relations.each do |relation|
+        if relation.class.rankable? && !(0..100).include?(relation.rank)
+          errors.add :base, I18n.t("txt.models.concept.invalid_rank_for_ranked_relations",
+            :relation => relation.class.model_name.human.downcase,
+            :relation_target_label => relation.target.pref_label.to_s)
+        end
+      end
     end
   end
 

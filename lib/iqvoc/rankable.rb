@@ -8,6 +8,10 @@ module Iqvoc
       def rankable?
         true
       end
+
+      def edit_partial_name(obj)
+        'partials/concept/relation/edit_ranked'
+      end
     end
 
   end
