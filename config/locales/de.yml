@@ -243,9 +243,6 @@ de:
      match:
 
    controllers:
-     application:
-       login_required: "Sie müssen angemeldet sein, um diese Seite aufzurufen."
-       logout_required: "Sie müssen abgemeldet sein, um diese Seite aufzurufen."
      instance_configuration:
        update_success: "Konfigurationänderungen übernommen."
        update_error: "Fehler in Konfigurationwerten: %{error_messages}."
