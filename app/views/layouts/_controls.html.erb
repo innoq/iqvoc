@@ -3,7 +3,7 @@
     <% if current_user %>
       <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
     <% else %>
-      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path() %>
+      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
       <ul class="hidden"><li><%= t("txt.common.pending") %></li></ul>
     <% end %>
   </li>

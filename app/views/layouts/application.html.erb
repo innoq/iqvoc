@@ -49,7 +49,7 @@
           <% if current_user %>
             <%= t('txt.common.welcome', :user_name => current_user.name) %> (<%= current_user.role.humanize %>) | <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
           <% else %>
-            <%= link_to t("txt.views.layouts.application.login"), new_user_session_path() %>
+            <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
           <% end %>
           <a href="http://www.w3.org/2001/sw/" id="w3c_link"></a>
         </div>
