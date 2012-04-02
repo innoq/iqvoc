@@ -60,8 +60,8 @@ $.extend(EntitySelector.prototype, {
 			widget = el.closest(".entity_select").data("widget");
 
 		if(widget.add(ui.item.value)) {
-			var entity = widget
-					.createEntity({ id: ui.item.value, name: ui.item.label });
+			var entity = widget.
+					createEntity({ id: ui.item.value, name: ui.item.label });
 			widget.container.find("ul").append(entity);
 			if(widget.singular) {
 				widget.input.hide();
