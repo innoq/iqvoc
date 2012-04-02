@@ -25,7 +25,7 @@ module Iqvoc
 
     # Force an extension to every url. (LOD)
     def ensure_extension
-      unless params[:format] || request.method != "GET"
+      unless params[:format] || !request.get?
         flash.keep
         redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html))
       end
