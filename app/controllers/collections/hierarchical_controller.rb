@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collections::HierarchicalController < CollectionsController
-  skip_before_filter :require_user # This is public for everyone
 
   def index
     authorize! :read, Iqvoc::Collection.base_class

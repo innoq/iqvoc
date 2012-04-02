@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class CollectionsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Iqvoc::Collection.base_class

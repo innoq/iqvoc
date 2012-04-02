@@ -7,7 +7,6 @@ module Iqvoc
     included do
       prepend_before_filter :set_locale
       before_filter :ensure_extension
-      before_filter :require_user
 
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -94,20 +93,6 @@ module Iqvoc
     def current_user
       return @current_user if defined?(@current_user)
       @current_user = current_user_session && current_user_session.user
-    end
-
-    # TODO: Don't require an user (this is skipped in nearly every controller).
-    # Use Abilitys instead and handle the AccessDeniedException: (#handle_access_denied)
-    # * User logged in: Exception!
-    # * User not logged in: Redirect to login path!
-    # Don't forget to delete this method and all the /.*before_filter :require_user/
-    # statements in the controllers.
-    def require_user
-      unless current_user
-        flash[:error] = I18n.t("txt.controllers.application.login_required")
-        redirect_to new_user_session_url(:back_to => request.fullpath)
-        return false
-      end
     end
 
   end

@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class ConceptsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base
