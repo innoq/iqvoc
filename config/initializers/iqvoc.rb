@@ -21,7 +21,6 @@ require 'iqvoc/version'
 require 'iqvoc/versioning'
 require 'iqvoc/deep_cloning'
 require 'iqvoc/rankable'
-require 'iqvoc/rdf_helper'
 require 'iqvoc/ability'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
