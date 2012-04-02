@@ -33,9 +33,10 @@ module Iqvoc
 
     def handle_access_denied(exception)
       @exception = exception
+      @status = current_user ? 403 : 401
       respond_to do |format|
-        format.html { render :template => 'errors/access_denied', :status => 403 }
-        format.any  { head 404 }
+        format.html { render :template => 'errors/access_denied', :status => @status }
+        format.any  { head @status }
       end
     end
 
