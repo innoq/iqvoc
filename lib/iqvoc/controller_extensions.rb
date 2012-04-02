@@ -40,11 +40,6 @@ module Iqvoc
       end
     end
 
-    def handle_multiple_choices(exception)
-      @exception = exception
-      render :template => 'errors/multiple_choices', :status => :multiple_choices
-    end
-
     def handle_not_found(exception)
       @exception = exception
       SearchResultsController.prepare_basic_variables(self)
