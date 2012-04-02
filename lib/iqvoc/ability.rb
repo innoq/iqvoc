@@ -11,6 +11,7 @@ module Iqvoc
 
       if user # Every logged in user ...
         can :use, :dashboard
+        can :destroy, UserSession
 
         if user.owns_role?(:editor) || user.owns_role?(:publisher) || user.owns_role?(:administrator) # Editors and above ...
           can :manage, ::Collection::Base
@@ -36,7 +37,8 @@ module Iqvoc
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
         end
-
+      else # no user
+        can :create, UserSession
       end
 
     end
