@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concepts::HierarchicalController < ConceptsController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Iqvoc::Concept.base_class

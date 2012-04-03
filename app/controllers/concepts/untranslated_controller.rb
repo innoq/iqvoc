@@ -19,7 +19,6 @@
 # controllers is the scope used. Use if statements or published methods instead.
 # "DRYness"
 class Concepts::UntranslatedController < ConceptsController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base

@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class SearchResultsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base # TODO: I think a :search right would be

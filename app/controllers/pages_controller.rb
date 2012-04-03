@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class PagesController < ApplicationController
-  skip_before_filter :require_user
 
   # TODO: Some kind of authorization is missing here!
   # (even everybody has the right in the Ability)

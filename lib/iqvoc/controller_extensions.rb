@@ -7,7 +7,6 @@ module Iqvoc
     included do
       prepend_before_filter :set_locale
       before_filter :ensure_extension
-      before_filter :require_user
 
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -26,7 +25,7 @@ module Iqvoc
 
     # Force an extension to every url. (LOD)
     def ensure_extension
-      unless params[:format] || request.method != "GET"
+      unless params[:format] || !request.get?
         flash.keep
         redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html))
       end
@@ -34,15 +33,12 @@ module Iqvoc
 
     def handle_access_denied(exception)
       @exception = exception
+      @status = current_user ? 403 : 401
+      @return_url = request.fullpath
       respond_to do |format|
-        format.html { render :template => 'errors/access_denied', :status => 403 }
-        format.any  { head 404 }
+        format.html { render :template => 'errors/access_denied', :status => @status }
+        format.any  { head @status }
       end
-    end
-
-    def handle_multiple_choices(exception)
-      @exception = exception
-      render :template => 'errors/multiple_choices', :status => :multiple_choices
     end
 
     def handle_not_found(exception)
@@ -101,20 +97,6 @@ module Iqvoc
     def current_user
       return @current_user if defined?(@current_user)
       @current_user = current_user_session && current_user_session.user
-    end
-
-    # TODO: Don't require an user (this is skipped in nearly every controller).
-    # Use Abilitys instead and handle the AccessDeniedException: (#handle_access_denied)
-    # * User logged in: Exception!
-    # * User not logged in: Redirect to login path!
-    # Don't forget to delete this method and all the /.*before_filter :require_user/
-    # statements in the controllers.
-    def require_user
-      unless current_user
-        flash[:error] = I18n.t("txt.controllers.application.login_required")
-        redirect_to new_user_session_url(:back_to => request.fullpath)
-        return false
-      end
     end
 
   end

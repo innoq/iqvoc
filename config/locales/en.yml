@@ -251,9 +251,6 @@ en:
      match:
 
    controllers:
-     application:
-       login_required: "You must be logged in to access this page."
-       logout_required: "You must be logged out to access this page."
      instance_configuration:
        update_success: "Configuration updated."
        update_error: "Errors occurred while updating configuration: %{error_messages}."
