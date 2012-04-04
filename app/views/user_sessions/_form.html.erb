@@ -1,5 +1,5 @@
-<%= form_for @user_session, :url => user_session_path(:back_to => params[:back_to]) do |f| %>
-  <%= hidden_field_tag :back_to, params[:back_to] %>
+<%= form_for user_session, :url => user_session_path do |f| %>
+  <%= hidden_field_tag :back_to, params[:back_to].presence || @return_url %>
   <%= f.label :email, t("txt.views.user_sessions.email") %><br />
   <%= f.text_field :email %><br />
   <br />
