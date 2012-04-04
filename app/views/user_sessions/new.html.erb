@@ -1,12 +1,3 @@
 <h2><%= t("txt.views.user_sessions.header") %></h2>
 
-<%= form_for @user_session, :url => user_session_path(:back_to => params[:back_to]) do |f| %>
-  <%= hidden_field_tag :back_to, params[:back_to] %>
-  <%= f.label :email, t("txt.views.user_sessions.email") %><br />
-  <%= f.text_field :email %><br />
-  <br />
-  <%= f.label :password, t("txt.views.user_sessions.password") %><br />
-  <%= f.password_field :password %><br />
-  <br />
-  <%= f.submit t("txt.views.user_sessions.login") %>
-<% end %>
+<%= render "form" %>
