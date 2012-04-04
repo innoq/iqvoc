@@ -1,3 +1,7 @@
 <h2><%= t("txt.views.errors.access_denied.header") %></h2>
 
 <p><%= t("txt.views.errors.access_denied.message") %></p>
+
+<% if @status == 401 %>
+  <%= render "user_sessions/form" %>
+<% end %>

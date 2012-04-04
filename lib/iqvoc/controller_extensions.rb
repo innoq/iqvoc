@@ -34,6 +34,7 @@ module Iqvoc
     def handle_access_denied(exception)
       @exception = exception
       @status = current_user ? 403 : 401
+      @user_session = UserSession.new if @status == 401
       @return_url = request.fullpath
       respond_to do |format|
         format.html { render :template => 'errors/access_denied', :status => @status }
