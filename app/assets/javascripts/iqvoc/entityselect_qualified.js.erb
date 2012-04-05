@@ -3,20 +3,21 @@
 /*jslint vars: true, unparam: true, white: true */
 /*global jQuery, IQVOC */
 
-(function($) {
+IQVOC.QualifiedEntitySelector = (function($) {
 
-// extend original constructor -- XXX: use subclass instead?
-var EntitySelector = IQVOC.EntitySelector;
-IQVOC.EntitySelector = function(args) {
-	var res = EntitySelector.apply(this, arguments);
+"use strict";
+
+var QualifiedEntitySelector = function(args) {
+	var res = IQVOC.EntitySelector.apply(this, arguments);
 	this.qualified = this.el.data("qualified") || false; // TODO: document (NB: doubles as i18n)
 	if(this.qualified) {
 		this.container.on("change", "input.qualified", this.onQualify);
 	}
 	return res;
 };
+QualifiedEntitySelector.prototype = new IQVOC.EntitySelector();
 
-EntitySelector.prototype.onQualify = function(ev) {
+QualifiedEntitySelector.prototype.onQualify = function(ev) {
 	var el = $(this),
 		entity = el.closest("li"),
 		widget = el.closest(".entity_select").data("widget"),
@@ -26,16 +27,16 @@ EntitySelector.prototype.onQualify = function(ev) {
 	widget.add(value);
 };
 
-// extend original method
-var createEntity = EntitySelector.prototype.createEntity;
-EntitySelector.prototype.createEntity = function(entity) {
-	var item = createEntity.apply(this, arguments);
+QualifiedEntitySelector.prototype.createEntity = function(entity) {
+	var node = IQVOC.EntitySelector.prototype.createEntity.apply(this, arguments);
 	if(this.qualified) {
-		var el = item.children(":first"); // XXX: breaks encapsulation
+		var el = $(node).children(":first"); // XXX: breaks encapsulation
 		$('<input class="rank" />').attr("placeholder", this.qualified).
 				insertAfter(el);
 	}
-	return item;
+	return node;
 };
+
+return QualifiedEntitySelector;
 
 }(jQuery));
