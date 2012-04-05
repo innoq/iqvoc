@@ -7,7 +7,7 @@ IQVOC.QualifiedEntitySelector = (function($) {
 
 "use strict";
 
-var QualifiedEntitySelector = function(args) {
+var QES = function(args) {
 	var res = IQVOC.EntitySelector.apply(this, arguments);
 	this.qualified = this.el.data("qualified") || false; // TODO: document (NB: doubles as i18n)
 	if(this.qualified) {
@@ -15,9 +15,9 @@ var QualifiedEntitySelector = function(args) {
 	}
 	return res;
 };
-QualifiedEntitySelector.prototype = new IQVOC.EntitySelector();
+QES.prototype = new IQVOC.EntitySelector();
 
-QualifiedEntitySelector.prototype.onQualify = function(ev) {
+QES.prototype.onQualify = function(ev) {
 	var el = $(this),
 		entity = el.closest("li"),
 		widget = el.closest(".entity_select").data("widget"),
@@ -27,7 +27,7 @@ QualifiedEntitySelector.prototype.onQualify = function(ev) {
 	widget.add(value);
 };
 
-QualifiedEntitySelector.prototype.createEntity = function(entity) {
+QES.prototype.createEntity = function(entity) {
 	var node = IQVOC.EntitySelector.prototype.createEntity.apply(this, arguments);
 	if(this.qualified) {
 		var el = $(node).children(":first"); // XXX: breaks encapsulation
@@ -37,6 +37,6 @@ QualifiedEntitySelector.prototype.createEntity = function(entity) {
 	return node;
 };
 
-return QualifiedEntitySelector;
+return QES;
 
 }(jQuery));
