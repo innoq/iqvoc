@@ -13,7 +13,6 @@ var EntitySelector = function(node) {
 	this.container = $('<div class="entity_select" />').data("widget", this);
 	this.delimiter = ",";
 	this.singular = this.el.data("singular") || false;
-	this.ranked = this.el.data("ranked") || false;
 	this.entities = this.getSelection();
 	this.uriTemplate = this.el.data("entity-uri");
 
@@ -54,9 +53,6 @@ var EntitySelector = function(node) {
 	if(this.singular && this.entities.length) {
 		this.input.hide();
 	}
-	if(this.ranked) {
-		this.container.on("change", "input.rank", this.onRank);
-	}
 };
 $.extend(EntitySelector.prototype, {
 	onSelect: function(ev, ui) {
@@ -83,15 +79,6 @@ $.extend(EntitySelector.prototype, {
 		}
 		ev.preventDefault();
 	},
-	onRank: function(ev) {
-		var el = $(this),
-			entity = el.closest("li"),
-			widget = el.closest(".entity_select").data("widget"),
-			id = entity.data("id"),
-			value = id + ":" + el.val();
-		widget.remove(id);
-		widget.add(value);
-	},
 	createEntity: function(entity) {
 		var el;
 		if(this.uriTemplate) {
@@ -102,12 +89,7 @@ $.extend(EntitySelector.prototype, {
 		}
 		var delBtn = $('<a href="javascript:;" class="btn">x</a>'). // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
 			click(this.onDelete);
-		var item = $("<li />").data("id", entity.id).append(el).append(delBtn)[0];
-		if(this.ranked) {
-			$('<input class="rank" />').attr("placeholder", "rank"). // TOOD: i18n
-				insertAfter(el);
-		}
-		return item;
+		return $("<li />").data("id", entity.id).append(el).append(delBtn)[0];
 	},
 	add: function(entity) {
 		if($.inArray(entity, this.entities) === -1) {
