@@ -9,14 +9,16 @@ IQVOC.QualifiedEntitySelector = (function($) {
 
 var QES = function(args) {
 	var res = IQVOC.EntitySelector.apply(this, arguments);
-	this.qualified = this.el.data("qualified") || false; // TODO: document (NB: doubles as i18n)
-	if(this.qualified) {
+	if(this.qualified()) {
 		this.container.on("change", "input.qualified", this.onQualify);
 	}
 	return res;
 };
 QES.prototype = new IQVOC.EntitySelector();
 
+QES.prototype.qualified = function() { // TODO: document (NB: doubles as i18n)
+	return this.el.data("qualified") || false;
+};
 QES.prototype.onQualify = function(ev) {
 	var el = $(this),
 		entity = el.closest("li"),
@@ -28,10 +30,11 @@ QES.prototype.onQualify = function(ev) {
 };
 
 QES.prototype.createEntity = function(entity) {
-	var node = IQVOC.EntitySelector.prototype.createEntity.apply(this, arguments);
-	if(this.qualified) {
+	var node = IQVOC.EntitySelector.prototype.createEntity.apply(this, arguments),
+		qualified = this.qualified();
+	if(qualified) {
 		var el = $(node).children(":first"); // XXX: breaks encapsulation
-		$('<input class="rank" />').attr("placeholder", this.qualified).
+		$('<input class="rank" />').attr("placeholder", qualified).
 				insertAfter(el);
 	}
 	return node;
