@@ -3,5 +3,5 @@
 <p><%= t("txt.views.errors.access_denied.message") %></p>
 
 <% if @status == 401 %>
-  <%= render "user_sessions/form" %>
+  <%= render "user_sessions/form", :user_session => @user_session %>
 <% end %>
