@@ -9,6 +9,10 @@ module Iqvoc
         true
       end
 
+      def partial_name(obj)
+        'partials/concept/relation/ranked'
+      end
+
       def edit_partial_name(obj)
         'partials/concept/relation/edit_ranked'
       end
