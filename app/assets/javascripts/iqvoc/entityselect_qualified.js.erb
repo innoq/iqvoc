@@ -34,7 +34,7 @@ QES.prototype.createEntity = function(entity) {
 		qualified = this.qualified();
 	if(qualified) {
 		var el = $(node).children(":first"); // XXX: breaks encapsulation
-		$('<input class="rank" />').attr("placeholder", qualified).
+		$('<input class="qualified" />').attr("placeholder", qualified).
 				insertAfter(el);
 	}
 	return node;
