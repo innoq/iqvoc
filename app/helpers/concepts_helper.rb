@@ -69,22 +69,22 @@ module ConceptsHelper
 
     res
   end
-  
+
   def concept_header(concept)
     published_param = concept.published? ? nil : "0"
-    
+
     desc = Iqvoc::Concept.base_class.model_name.human
     desc += tag(:br)
-    
+
     desc += { :html => "HTML", :ttl => "RDF/Turtle", :rdf => "RDF/XML" }.map do |key, value|
       link_to value, rdf_url(concept.origin, :format => key, :published => published_param, :lang => nil)
     end.join(" ")
-    
+
     desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} " if concept.expired_at
-    
+
     page_header :title => concept.pref_label.to_s, :desc => desc.html_safe
   end
-  
+
   def form_section_for_concept(section_title, opts = {}, &block)
     content_tag(:div, { :class => "row" }.merge(opts)) do
       content_tag(:div, content_tag(:h2, section_title), :class => "span2") +
