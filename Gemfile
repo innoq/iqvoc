@@ -33,6 +33,7 @@ gem 'iq_rdf', '~> 0.1.2'
 gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
+gem 'simple_form'
 
 group :development do
   gem 'awesome_print'

@@ -151,6 +151,9 @@ GEM
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
+    simple_form (2.0.1)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     spoon (0.0.1)
     spork (0.9.0)
     sprockets (2.1.2)
@@ -203,6 +206,7 @@ DEPENDENCIES
   pg
   rails (= 3.2.1)
   rails_autolink
+  simple_form
   spork (~> 0.9.0.rc)
   spork-testunit!
   sqlite3
