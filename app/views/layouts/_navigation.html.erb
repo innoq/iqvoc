@@ -1,4 +1,4 @@
-<div class="navbar">
+<div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="#"><%= Iqvoc.title %></a>
@@ -46,7 +46,7 @@
           <input type="hidden" name="for" value="all">
           <input type="text" name="q" class="search-query span2" placeholder="Quick label search">
         <% end %>
-        <ul class="nav pull-right">
+        <!-- <ul class="nav pull-right">
           <li class="<%= params[:controller] == 'user_session' ? 'active' : '' %>">
             <%= login_logout %>
           </li>
@@ -54,7 +54,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Language selection <b class="caret"></b></a>
           </li>
-        </ul>
+        </ul> -->
       </div>
     </div>
   </div>
