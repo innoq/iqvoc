@@ -22,13 +22,9 @@ module Iqvoc
             :controller => "dashboard",
             :authorized? => proc { can? :use, :dashboard }
           }, {
-            :content => proc { link_to t("txt.views.navigation.hierarchical"),
+            :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
                 hierarchical_concepts_path },
             :controller => "concepts/hierarchical"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.alphabetical"),
-                alphabetical_concepts_path(:letter => "a") },
-            :controller => "concepts/alphabetical"
           }, {
             :content => proc { link_to t("txt.views.navigation.collections"),
                 collections_path },

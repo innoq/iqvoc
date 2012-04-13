@@ -1,28 +1,18 @@
-<ul id="controls" class="menu">
-  <li id="auth_controls">
-    <% if current_user %>
-      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
-    <% else %>
-      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
-      <ul class="hidden"><li><%= t("txt.common.pending") %></li></ul>
-    <% end %>
-  </li>
-
+<ul id="controls" class="nav pull-right menu">
   <li id="language_selection">
     <a href="javascript:;" class="lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
-    <ul class="lang-widget">
-      <%- unless Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).length == 0 -%>
+    <ul class="lang-widget unstyled">
+      <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
         <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
-
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
           <li>
             <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
-              :class => lang == I18n.locale.to_s ? "current" : nil %>
+              :class => ("current" if lang == I18n.locale.to_s) %>
           </li>
         <% end %>
       <% end %>
 
-      <% if Iqvoc.available_languages.length > 1 %>
+      <% if Iqvoc.available_languages.any? %>
         <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
         <% Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s }.each do |lang| %>
           <li>
@@ -33,5 +23,13 @@
         <% end %>
       <% end %>
     </ul>
+  </li>
+  <li class="divider-vertical"></li>
+  <li id="auth_controls">
+    <% if current_user %>
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
+    <% else %>
+      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
+    <% end %>
   </li>
 </ul>
