@@ -16,12 +16,11 @@
 
 module ApplicationHelper
 
-<<<<<<< HEAD
   GLYPHS = {
     :yes => "&#x2713;",
     :no  => "&#x2717;"
   }
-=======
+
   # expects an array of hashes with the following members:
   # :content - usually a navigation link
   # :active? - an optional function determining whether the respective item is
@@ -40,7 +39,6 @@ module ApplicationHelper
       end
     end.join.html_safe
   end
->>>>>>> master
 
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
