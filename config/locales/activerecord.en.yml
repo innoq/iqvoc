@@ -17,6 +17,9 @@
 en:
   activerecord:
     models:
+      user:
+        one:   "User"
+        other: "Users"
       concept/base:
         one:   "Concept"
         other: "Concepts"

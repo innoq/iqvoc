@@ -1,14 +1,15 @@
-<h2><%= t('txt.views.users.edit.header') %></h2>
-
-<%= error_messages_for @user %>
-
-<%= form_for(@user, :url => user_path(:id => @user), :html => {:class => "form"}) do |f| %>
-  <%= render :partial => "form", :locals => { :f => f } %>
-<% end %>
-
-<%= content_for :sub_navigation do %>
-  <ul>
-    <li><%= link_to t('txt.common.back'), users_path, :class => 'back' %> | </li>
-    <li><%= link_to t('txt.views.users.new_link'), new_user_path%></li>
-  </ul>
-<% end %>
+<div class="row">
+  <div class="span9">
+    <%= page_header :title => t('txt.views.users.edit.header') %>
+    <%= render 'form', :user => @user %>
+  </div>
+  <div class="span3">
+    <div class="well sidebar">
+      <ul class="nav nav-list">
+        <li class="nav-header">Links</li>
+        <%= sidebar_item icon(:'th-list'), User.model_name.human(:count => 5), users_path, params[:action] == 'index' %>
+        <%= sidebar_item icon(:user), t('txt.views.users.new_link'), new_user_path, params[:action] == 'new' %>
+      </ul>
+    </div>
+  </div>
+</div>

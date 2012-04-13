@@ -185,7 +185,7 @@ en:
        email: "Email"
        role: "Role"
        active: "activated"
-       new_link: "New"
+       new_link: "New User"
        show_link: "Show"
        edit_link: "Edit"
        destroy_link: "Delete"

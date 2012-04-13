@@ -177,7 +177,7 @@ de:
        email: "E-Mail"
        role: "Rolle"
        active: "aktiviert"
-       new_link: "Neu"
+       new_link: "Neuer Benutzer"
        show_link: "Anzeigen"
        edit_link: "Bearbeiten"
        destroy_link: "Löschen"

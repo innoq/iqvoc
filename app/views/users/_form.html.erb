@@ -1,45 +1,15 @@
-<fieldset>
-  <ol>
-    <li>
-      <%= f.label :forename, User.human_attribute_name(:forename) %>
-      <%= f.text_field :forename %>
-    </li>
+<%= simple_form_for user, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :forename %>
+  <%= f.input :surname %>
+  <%= f.input :email %>
+  <%= f.input :telephone_number %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+  <%= f.input :role, :collection => User::ROLES.map { |r| [r.humanize, r] } %>
+  <%= f.input :active %>
 
-    <li>
-      <%= f.label :surname, User.human_attribute_name(:surname) %>
-      <%= f.text_field :surname %>
-    </li>
+  <div class="form-actions">
+  <%= f.button :submit, :class => 'btn btn-primary' %>
+  </div>
 
-    <li>
-      <%= f.label :email, User.human_attribute_name(:email) %>
-      <%= f.text_field :email %>
-    </li>
-
-    <li>
-      <%= f.label :telephone_number, User.human_attribute_name(:telephone_number) %>
-      <%= f.text_field :telephone_number %>
-    </li>
-
-    <li>
-      <%= f.label :password, User.human_attribute_name(:password) %>
-      <%= f.password_field :password %>
-    </li>
-
-    <li>
-      <%= f.label :password_confirmation, User.human_attribute_name(:password_confirmation) %>
-      <%= f.password_field :password_confirmation %>
-    </li>
-
-    <li>
-      <%= f.label :role, User.human_attribute_name(:role) %>
-      <%= f.select :role, User::ROLES.map {|r| [r.humanize, r]} %>
-    </li>
-
-    <li>
-      <%= f.check_box :active %>
-      <%= f.label :active, User.human_attribute_name(:active) %>
-    </li>
-  </ol>
-</fieldset>
-
-<%= f.submit t('txt.views.users.submit') %>
+<% end %>
