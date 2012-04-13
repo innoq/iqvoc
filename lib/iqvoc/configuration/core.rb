@@ -42,9 +42,8 @@ module Iqvoc
             :controller => "instance_configuration",
             :authorized? => proc { can? :manage, Iqvoc.config }
           }, {
-            :content => proc { link_to t("txt.views.navigation.about"), about_path },
-            :active? => proc { params[:controller] == "pages" &&
-                params[:action] == "about" }
+            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" },
+            :active? => false
           }
         ]
 
