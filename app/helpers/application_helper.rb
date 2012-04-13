@@ -16,6 +16,11 @@
 
 module ApplicationHelper
 
+  GLYPHS = {
+    :yes => "&#x2713;",
+    :no  => "&#x2717;"
+  }
+
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
         :default => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/"), # gsub because of a Rails bug :-(
@@ -85,8 +90,15 @@ module ApplicationHelper
     end
   end
 
-  def icon(name)
-    content_tag :i, "", :class => "icon-#{name}"
+  def icon(name, white = nil)
+    css_class = "icon-#{name}"
+    css_class << " icon-white" if white
+
+    content_tag :i, "", :class => css_class
+  end
+
+  def glyph(name)
+    raw GLYPHS[name]
   end
 
 end
