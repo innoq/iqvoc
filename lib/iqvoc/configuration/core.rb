@@ -4,7 +4,7 @@ module Iqvoc
   module Configuration
     module Core
       extend ActiveSupport::Concern
-      
+
       included do
         mattr_accessor :searchable_class_names,
           :unlimited_search_results,
@@ -13,7 +13,44 @@ module Iqvoc
           :change_note_class_name,
           :first_level_class_configuration_modules,
           :ability_class_name,
+          :navigation_items,
           :core_assets
+
+        self.navigation_items = [
+          {
+            :content => proc { link_to "Dashboard", dashboard_path },
+            :controller => "dashboard",
+            :authorized? => proc { can? :use, :dashboard }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.hierarchical"),
+                hierarchical_concepts_path },
+            :controller => "concepts/hierarchical"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.alphabetical"),
+                alphabetical_concepts_path(:letter => "a") },
+            :controller => "concepts/alphabetical"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.collections"),
+                collections_path },
+            :controller => "collections"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.search"), search_path },
+            :controller => "search_results"
+          }, {
+            :content => proc { link_to t("txt.views.navigation.users"), users_path },
+            :controller => "users",
+            :authorized? => proc { can? :manage, User }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.instance_configuration"),
+                instance_configuration_path },
+            :controller => "instance_configuration",
+            :authorized? => proc { can? :manage, Iqvoc.config }
+          }, {
+            :content => proc { link_to t("txt.views.navigation.about"), about_path },
+            :active? => proc { params[:controller] == "pages" &&
+                params[:action] == "about" }
+          }
+        ]
 
         self.core_assets = %w(
           manifest.css
@@ -51,7 +88,7 @@ module Iqvoc
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
         self.ability_class_name = 'Iqvoc::Ability'
-        
+
         # initialize
         self.config.register_settings({
           "title" => "iQvoc",
@@ -61,7 +98,7 @@ module Iqvoc
         })
         self.config.initialize_cache
       end
-      
+
       module ClassMethods
         def generate_secret_token
           require 'securerandom'
@@ -92,7 +129,7 @@ module Iqvoc
             return cfg
           end
         end
-      
+
         def change_note_class
           change_note_class_name.constantize
         end
@@ -108,7 +145,7 @@ module Iqvoc
         def ability_class
           ability_class_name.constantize
         end
-      
+
         def title
           return config["title"]
         end
@@ -116,7 +153,7 @@ module Iqvoc
         def available_languages
           return config["available_languages"]
         end
-      
+
         # @deprecated
         def title=(value)
           ActiveSupport::Deprecation.warn "title has been moved into instance configuration", caller
@@ -129,7 +166,7 @@ module Iqvoc
           self.config.register_setting("available_languages", value)
         end
       end
-      
+
     end
   end
 end

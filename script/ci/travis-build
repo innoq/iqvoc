@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+set -e
+set -x
+
+env="RAILS_ENV=test"
+
+export DISPLAY=:99.0
+bundle exec rake db:drop db:create db:migrate $env
+bundle exec rake test $env

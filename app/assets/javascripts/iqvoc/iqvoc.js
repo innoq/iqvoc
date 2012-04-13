@@ -1,4 +1,4 @@
-/*jslint vars: true, unparam: true, browser: true */
+/*jslint vars: true, unparam: true, browser: true, white: true */
 /*global jQuery */
 
 var IQVOC = (function($) {
@@ -59,6 +59,7 @@ var createNote = function(ev) {
 	// FIXME: Hardcoded UMT stuff
 	var isUsageNote = source.find("label:first")[0].getAttribute("for");
 	isUsageNote = isUsageNote ? isUsageNote.match(/^concept_note_umt_usage_notes/) : false;
+	var noteSelector = isUsageNote ? "select" : "textarea, input";
 
 	if(source.is(":hidden")) {
 		source.show();
@@ -67,7 +68,7 @@ var createNote = function(ev) {
 
 	var clone = source.clone();
 
-	var count = source.find(isUsageNote ? "select" : "textarea")[0].id
+	var count = source.find(noteSelector)[0].id
 			.match(/_(\d+)_/)[1];
 	count = String(parseInt(count, 10) + 1);
 	var newIdCount = "_" + count + "_",
@@ -83,15 +84,17 @@ var createNote = function(ev) {
 
 	var src, el;
 	if(!isUsageNote) {
-		src = source.find("textarea")[0];
-		el = clone.find("textarea").val("")[0];
+		src = source.find(noteSelector)[0];
+		el = clone.find(noteSelector).val("")[0];
 		el.id = src.id.replace(/_\d+_/, newIdCount);
 		el.name = src.name.replace(/\[\d+\]/, newNameCount);
 	}
 	src = source.find("select")[0];
-	el = clone.find("select")[0];
-	el.id = src.id.replace(/_\d+_/, newIdCount);
-	el.name = src.name.replace(/\[\d+\]/, newNameCount);
+	if(src) {
+		el = clone.find("select")[0];
+		el.id = src.id.replace(/_\d+_/, newIdCount);
+		el.name = src.name.replace(/\[\d+\]/, newNameCount);
+	}
 
 	clone.addClass("new");
 	$("ol", container).append(clone);
@@ -188,6 +191,15 @@ jQuery(document).ready(function($) {
 		IQVOC.EntitySelector(node);
 	});
 
+	// hide broader relations for top terms (mutually exclusive in mono hierarchies)
+	var topTerm = $("#concept_top_term.exclusive");
+	var onTopTermToggle = function(ev) {
+		var broader = topTerm.closest("li").next(); // XXX: brittle
+		broader[topTerm.prop("checked") ? "slideUp" : "slideDown"]();
+	};
+	topTerm.on("change", onTopTermToggle);
+	onTopTermToggle();
+
 	// Label editing (inline notes)
 	$(".note_relation ol li.inline_note.new").hide();
 	$(".note_relation input[type=button]").click(function(ev) {
@@ -247,4 +259,3 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-

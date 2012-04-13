@@ -36,27 +36,31 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Scopes
 
-  scope :by_language, lambda { |lang_code|
+  def self.by_language(lang_code)
     if (lang_code.is_a?(Array) && lang_code.include?(nil))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     else
       where(:language => lang_code)
     end
-  }
+  end
 
-  scope :by_query_value, lambda { |query|
-    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
-  }
+  def self.by_query_value(query)
+     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
+  end
 
-  scope :by_owner_type, lambda { |klass|
+  def self.by_owner_type(klass)
     where(:owner_type => klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
-  }
+  end
 
-  scope :for_concepts, where(:owner_type => 'Concept::Base')
+  def self.for_concepts
+    where(:owner_type => 'Concept::Base')
+  end
 
-  scope :for_labels,   where(:owner_type => 'Label::Base')
+  def self.for_labels
+    where(:owner_type => 'Label::Base')
+  end
 
-  scope :by_owner, lambda { |owner|
+  def self.by_owner(owner)
     if owner.is_a?(Label::Base)
       for_labels.where(:owner_id => owner.id)
     elsif owner.is_a?(Concept::Base)
@@ -64,7 +68,7 @@ class Note::Base < ActiveRecord::Base
     else
       raise "Note::Base.by_owner: Unknown owner (#{owner.inspect})"
     end
-  }
+  end
 
   # ********** Methods
 

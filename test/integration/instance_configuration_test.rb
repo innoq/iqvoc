@@ -24,7 +24,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
 
     # guest
     visit uri
-    assert_equal "/en/user_session/new.html", page.current_path
+    assert page.has_content?("No permission")
 
     ["reader", "editor", "publisher"].each do |role|
       login role

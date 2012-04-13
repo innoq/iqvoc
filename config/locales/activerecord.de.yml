@@ -115,6 +115,7 @@ de:
       concept/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
+        top_term: "Top Term"
       label/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"

@@ -17,7 +17,6 @@ body {
 
 form.button_to {
   display: inline-block;
-  margin: 0;
 }
 
 form.button_to input {
@@ -35,4 +34,105 @@ form ol {
 
 tr.highlightable {
   cursor: pointer;
+}
+
+/* visualizations */
+
+#infovis {
+  float: right;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  margin: 0 0 10px 10px;
+  border: 1px solid #EEE;
+}
+
+#infovis .button {
+  float: right;
+}
+
+#infovis .concept a {
+  color: #000;
+}
+
+#infovis.filtered .concept {
+  overflow: visible;
+  color: #111;
+}
+
+#infovis .label {
+  padding: 0 2px;
+  color: #111;
+  background-color: #EEE;
+}
+
+#infovis-label .label {
+  font-size: 0.8em;
+}
+
+/* ######################################## */
+/* # Core CSS. Customizing is discouraged # */
+/* ######################################## */
+
+#controls {
+  border-bottom: 2px solid #AAA;
+  padding: 2px 5px;
+  text-align: center;
+  background-color: #000;
+}
+
+#controls,
+#controls a {
+  height: 1.1em;
+  overflow: hidden;
+  line-height: 1.1em;
+    padding-bottom: 3px;
+}
+
+#controls * {
+  z-index: 99; /* work around overly wide header */
+}
+
+#controls a {
+  color: #EEE;
+}
+
+#controls ul {
+  border: 1px solid #AAA;
+  border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  padding: 5px;
+  text-align: left;
+}
+
+#controls ul a {
+  display: inline;
+  color: #000;
+}
+
+#controls h3 {
+  margin: 0.2em 0;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+#controls label {
+  display: block;
+  width: 100%;
+  font-weight: normal;
+}
+
+#auth_controls label {
+  display: inline;
+  font-weight: bold;
+}
+
+#auth_controls ul,
+#auth_controls li {
+  width: auto;
+}
+
+#auth_controls:hover ul,
+#auth_controls.hover ul {
+  right: 5px;
 }

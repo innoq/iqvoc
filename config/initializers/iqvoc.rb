@@ -15,11 +15,12 @@
 # limitations under the License.
 
 require 'iqvoc'
-require 'iqvoc/data_helper'
+require 'iqvoc/origin'
+require 'iqvoc/inline_data_helper'
 require 'iqvoc/version'
 require 'iqvoc/versioning'
 require 'iqvoc/deep_cloning'
-require 'iqvoc/rdf_helper'
+require 'iqvoc/rankable'
 require 'iqvoc/ability'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning

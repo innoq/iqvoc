@@ -25,7 +25,7 @@ class Note::SKOS::Base < Note::Base
     unless object =~ /^"(.+)"(@(.+))$/
       raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
     end
-    
+
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 

@@ -1,22 +1,22 @@
 <%= form_for @concept, :as => 'concept',
     :url => @concept.new_record? ? concepts_path : concept_path(:published => 0, :id => @concept),
     :html => {:class => "form"} do |f| %>
-  
+
   <!-- Base data -->
   <%= form_section_for_concept(t("txt.common.attributes")) do %>
     <%= f.label :follow_up %>
     <%= f.text_field :follow_up, :class => "datepicker" %>
-    
+
     <%= f.label :expired_at %>
     <%= f.text_field :expired_at, :class => "datepicker" %>
-    
+
     <%- Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class| -%>
       <%= render assoc_class.edit_partial_name(@concept),
         :concept => @concept, :klass => assoc_class, :f => f %>
     <%- end -%>
   <% end %>
   <!-- / Base data -->
-  
+
   <!-- Labelings -->
   <%= form_section_for_concept(Labeling::Base.model_name.human(:count => 2)) do %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
@@ -27,7 +27,7 @@
     <%- end -%>
   <% end %>
   <!-- / Labelings -->
-  
+
   <!-- Notes -->
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
     <%= render :partial => note_class.edit_partial_name(@concept),
@@ -42,8 +42,16 @@
         :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
     <%- end -%>
 
-    <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept),
-      :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
+      <li>
+        <label>
+          <%= f.check_box "top_term",
+                  :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) %>
+          <%= f.object.class.human_attribute_name("top_term") %>
+        </label>
+      </li>
+
+      <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(@concept),
+        :concept => @concept, :klass => Iqvoc::Concept.broader_relation_class %>
 
     <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
       <%= render relation_class.edit_partial_name(@concept), :concept => @concept, :klass => relation_class %>

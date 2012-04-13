@@ -19,7 +19,7 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.3'
 
 group :assets do
   gem 'uglifier', '>= 1.0.3'
@@ -34,21 +34,19 @@ gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
+gem 'fastercsv', :platforms => :ruby_18
 
 group :development do
-  gem 'awesome_print'
   gem 'heroku'
   gem 'view_marker'
 end
 
 group :development, :test do
+  gem 'awesome_print'
+
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
-    # v0.9 required for spork-testunit
-    gem 'spork', '~> 0.9.0.rc'
-    # head required for Ruby 1.9.3 compatibility; cf. https://github.com/sporkrb/spork-testunit/pull/17
-    gem 'spork-testunit', :git => 'git://github.com/sporkrb/spork-testunit.git'
   end
 
   platforms :jruby do
@@ -63,8 +61,10 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'memory_test_fix'
+  gem 'spork'
+  gem 'spork-testunit'
   gem 'turn'
+  gem 'minitest'
 end
 
 group :production do

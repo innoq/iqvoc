@@ -14,7 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'csv'
+if RUBY_VERSION < '1.9'
+  require 'fastercsv'
+  CSV = FCSV
+else
+  require 'csv'
+end
 
 class InstanceConfigurationController < ApplicationController
 

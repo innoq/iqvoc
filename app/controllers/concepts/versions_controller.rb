@@ -84,8 +84,9 @@ class Concepts::VersionsController < ApplicationController
 
     new_version.unlock
     new_version.save :validate => false
-    
+
     flash[:success] = t("txt.controllers.versioning.unlocked")
+
     redirect_to concept_path(:published => 0, :id => new_version)
   end
 

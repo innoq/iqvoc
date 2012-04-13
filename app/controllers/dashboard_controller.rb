@@ -18,7 +18,7 @@ class DashboardController < ApplicationController
 
   def index
     authorize! :use, :dashboard
-    
+
     @items = []
     Iqvoc.first_level_classes.each do |klass|
       @items += klass.for_dashboard.all

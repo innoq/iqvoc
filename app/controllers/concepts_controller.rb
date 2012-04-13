@@ -15,18 +15,17 @@
 # limitations under the License.
 
 class ConceptsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base
 
     respond_to do |format|
       format.json do # Search for widget
-        @concepts = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%")).all
-        response = []
-        @concepts.each { |concept| response << concept_widget_data(concept)}
-
-        render :json => response
+        scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
+            merge(Label::Base.by_query_value("#{params[:query]}%"))
+        scope = scope.where(:top_term => false) if params[:exclude_top_terms]
+        @concepts = scope.all.map { |concept| concept_widget_data(concept) }
+        render :json => @concepts
       end
       format.all do # RDF full export
         authorize! :full_export, Concept::Base
@@ -55,7 +54,7 @@ class ConceptsController < ApplicationController
       format.html do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept, 
+        ActiveRecord::Associations::Preloader.new(@concept,
           Iqvoc::Concept.base_class.default_includes + [:collection_members => {:collection => :labels},
           :broader_relations => {:target => [:pref_labels, :broader_relations]},
           :narrower_relations => {:target => [:pref_labels, :narrower_relations]}]).run
@@ -65,7 +64,7 @@ class ConceptsController < ApplicationController
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept, 
+        ActiveRecord::Associations::Preloader.new(@concept,
           [:labels,
           { :relations => { :target => [:labelings, :relations] } }]).run
 
@@ -83,7 +82,6 @@ class ConceptsController < ApplicationController
         }
         render :json => concept_data
       end
-      format.ttl
     end
   end
 

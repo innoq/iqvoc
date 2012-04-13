@@ -15,28 +15,36 @@
 # limitations under the License.
 
 class RdfController < ApplicationController
-
-  skip_before_filter :require_user
   skip_before_filter :set_locale
 
+  def scheme
+    respond_to do |format|
+      format.html { redirect_to about_path }
+      format.any do
+        authorize! :read, Iqvoc::Concept.root_class.instance
+        @top_concepts = Iqvoc::Concept.base_class.tops.published.all
+      end
+    end
+  end
+
   def show
-    scope = if (params[:published] == "0")
-      Iqvoc::Concept.base_class.scoped.unpublished
+    scope = if params[:published] == "0"
+      Iqvoc::Concept.base_class.unpublished
     else
-      Iqvoc::Concept.base_class.scoped.published
+      Iqvoc::Concept.base_class.published
     end
     if @concept = scope.by_origin(params[:id]).with_associations.last
       respond_to do |format|
-        format.html {
+        format.html do
           redirect_to concept_url(:id => @concept.origin, :published => params[:published])
-        }
-        format.any {
+        end
+        format.any do
           authorize! :read, @concept
-          render "show_concept"
-        }
+          render :show_concept
+        end
       end
     else
-      raise ActiveRecord::RecordNotFound.new("Coulnd't find either a concept matching '#{params[:id]}'.")
+      raise ActiveRecord::RecordNotFound.new("Concept '#{params[:id]}' not found.")
     end
   end
 

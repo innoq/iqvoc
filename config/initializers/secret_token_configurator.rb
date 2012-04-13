@@ -17,7 +17,7 @@
 # Be sure to restart your server when you modify this file.
 
 if Iqvoc.const_defined?(:Application)
-  
+
   if ENV['HEROKU']
     puts 'heroku app detected; using session secret from config vars...'
     Rails.application.config.secret_token = ENV['SECRET_TOKEN']
@@ -25,5 +25,5 @@ if Iqvoc.const_defined?(:Application)
     system "bundle exec rake setup:generate_secret_token"
     require Rails.root.join('config', 'initializers', 'secret_token.rb')
   end
-  
+
 end

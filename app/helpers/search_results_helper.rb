@@ -28,5 +28,5 @@ module SearchResultsHelper
     end
     text
   end
-  
+
 end

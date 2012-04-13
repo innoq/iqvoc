@@ -1,0 +1,6 @@
+<%= simple_form_for user_session, :url => user_session_path do |f| %>
+  <%= hidden_field_tag :back_to, params[:back_to].presence || @return_url %>
+  <%= f.input :email, :label => t("txt.views.user_sessions.email") %>
+  <%= f.input :password, :label => t("txt.views.user_sessions.password") %>
+  <%= submit_tag t("txt.views.user_sessions.login"), :class => 'btn btn-primary' %>
+<% end %>

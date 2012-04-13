@@ -32,7 +32,7 @@ class Label::Base < ActiveRecord::Base
 
   # ********* Scopes
 
-  scope :by_language, lambda { |lang_code|
+  def self.by_language(lang_code)
     if (lang_code.is_a?(Array) && lang_code.include?(nil))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     elsif lang_code.blank?
@@ -40,38 +40,40 @@ class Label::Base < ActiveRecord::Base
     else
       where(:language => lang_code)
     end
-  }
+  end
 
-  scope :begins_with, lambda { |letter|
+  def self.begins_with(letter)
     where("LOWER(SUBSTR(#{Label::Base.table_name}.value, 1, 1)) = :letter", :letter => letter.to_s.downcase)
-  }
+  end
 
-  scope :missing_translation, lambda { |lang, main_lang|
+  def self.missing_translation(lang, main_lang)
     joins(:concepts).
-      joins(sanitize_sql(["LEFT OUTER JOIN labelings pref_labelings ON
-          pref_labelings.id <> labelings.id AND
-          pref_labelings.owner_id = concepts.id AND
-          pref_labelings.type = '%s'", Iqvoc::Concept.pref_labeling_class_name])).
-      joins(sanitize_sql(["LEFT OUTER JOIN labels pref_labels ON
-          pref_labels.id = pref_labelings.target_id AND
-          pref_labels.language = '%s'", lang])).
-      where('labelings.type = :class_name', :class_name => Iqvoc::Concept.pref_labeling_class_name).
-      where('pref_labels.id IS NULL').
-      where('labels.language = :lang', :lang => main_lang).
-      includes(:pref_labeled_concepts)
-  }
+    joins(sanitize_sql(["LEFT OUTER JOIN labelings pref_labelings ON
+        pref_labelings.id <> labelings.id AND
+        pref_labelings.owner_id = concepts.id AND
+        pref_labelings.type = '%s'", Iqvoc::Concept.pref_labeling_class_name])).
+    joins(sanitize_sql(["LEFT OUTER JOIN labels pref_labels ON
+        pref_labels.id = pref_labelings.target_id AND
+        pref_labels.language = '%s'", lang])).
+    where('labelings.type = :class_name', :class_name => Iqvoc::Concept.pref_labeling_class_name).
+    where('pref_labels.id IS NULL').
+    where('labels.language = :lang', :lang => main_lang).
+    includes(:pref_labeled_concepts)
+  end
 
-  scope :by_query_value, lambda { |query|
+  def self.by_query_value(query)
     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
-  }
+  end
 
   # Attention: This means that even label classes without version controll will also
-  # have to set the published_at flag to be recognized as published!!
-  scope :published, lambda {
-    where(arel_table['published_at'].not_eq(nil))
-  }
+  # have to set the published_at flag to be recognized as published!
+  def self.published
+    where(arel_table[:published_at].not_eq(nil))
+  end
 
-  scope :unpublished, lambda { where(arel_table['published_at'].eq(nil)) }
+  def self.unpublished
+    where(arel_table[:published_at].eq(nil))
+  end
 
   # ********* Methods
 

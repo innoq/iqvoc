@@ -22,7 +22,7 @@ module SearchExtension
   end
 
   module ClassMethods
-    
+
     def multi_query(params = {})
       query_terms = params[:query].split(/\r\n/)
       results     = []

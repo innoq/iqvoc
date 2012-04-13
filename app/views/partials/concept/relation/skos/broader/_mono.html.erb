@@ -1,6 +1,9 @@
 <div class="relation">
   <h2><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h2>
   <div class="relation-body block">
+    <% if concept.top_term? %>
+      <strong><%= concept.class.human_attribute_name("top_term") %></strong>
+    <% end %>
 
     <%-
     only_published = params[:published] != "0"
@@ -21,7 +24,7 @@
           render concept.class.inline_partial_name, :concept => concept
         }.join(" &laquo; ").html_safe %>
       </div>
-    <% else %>
+    <% elsif not concept.top_term? %>
       <p>-</p>
     <% end %>
   </div>

@@ -1,3 +1,18 @@
+## 3.5.6 (2012-03-07)
+
+  * Refactored origin (URI slug) generation<br>
+    Now supports custom filters to extend generation logic. See more: https://github.com/innoq/iqvoc/blob/master/lib/iqvoc/origin.rb
+  * Bugfixes
+
+## 3.5.4 (2012-02-08)
+
+  * Top concepts<br>
+    From now on the hierarchical concept view only lists concepts marked as "top term".
+    This also includes a default concept scheme and support for top concepts in RDF views.
+  * Configurable navigation<br>
+    Use `Iqvoc.navigation_items` to inject additional navigation items.
+  * Bugfixes
+
 ## 3.5.1 (2012-02-01)
 
  * Bugfixes
@@ -22,7 +37,7 @@
  * Several asset pipeline related fixes
  * Largely simplified heroku setup
  * Improvements to engine mode
- 
+
 Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.3.0...v3.3.3
 
 ## 3.3.0 (2012-01-10)
@@ -31,7 +46,7 @@ Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.3.0...v3.3.3
  * Asset pipeline<br>
    [Detailed instructions](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine)
    on how to use iQvoc as a Rails Engine (including the asset pipeline).
-   
+
 This is a big update. Detailed commit log: https://github.com/innoq/iqvoc/compare/v3.2.6...v3.3.0
 
 ## 3.2.6 (2012-01-10)

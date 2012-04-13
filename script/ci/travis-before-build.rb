@@ -1,5 +1,6 @@
 # Start virtual X frame buffer
 system "sh -e /etc/init.d/xvfb start"
+sleep 3
 
 # Create a database.yml for the current database env
 puts "Setting up database.yml for #{ENV["DB"]}"

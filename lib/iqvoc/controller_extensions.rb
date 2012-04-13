@@ -3,11 +3,10 @@ require "active_support/concern"
 module Iqvoc
   module ControllerExtensions
     extend ActiveSupport::Concern
-    
+
     included do
       prepend_before_filter :set_locale
       before_filter :ensure_extension
-      before_filter :require_user
 
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -26,7 +25,7 @@ module Iqvoc
 
     # Force an extension to every url. (LOD)
     def ensure_extension
-      unless params[:format] || request.method != "GET"
+      unless params[:format] || !request.get?
         flash.keep
         redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html))
       end
@@ -34,12 +33,13 @@ module Iqvoc
 
     def handle_access_denied(exception)
       @exception = exception
-      render :template => 'errors/access_denied', :status => :access_denied
-    end
-
-    def handle_multiple_choices(exception)
-      @exception = exception
-      render :template => 'errors/multiple_choices', :status => :multiple_choices
+      @status = current_user ? 403 : 401
+      @user_session = UserSession.new if @status == 401
+      @return_url = request.fullpath
+      respond_to do |format|
+        format.html { render :template => 'errors/access_denied', :status => @status }
+        format.any  { head @status }
+      end
     end
 
     def handle_not_found(exception)
@@ -47,7 +47,8 @@ module Iqvoc
       SearchResultsController.prepare_basic_variables(self)
 
       respond_to do |format|
-        format.html { render :template => 'errors/not_found', :status => :not_found }
+        format.html { render :template => 'errors/not_found', :status => 404 }
+        format.any  { head 404 }
       end
     end
 
@@ -88,28 +89,12 @@ module Iqvoc
     end
 
     def current_user_session
-      return @current_user_session if defined?(@current_user_session)
-      @current_user_session = UserSession.find
+      @current_user_session ||= UserSession.find
     end
 
     def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.user
+      @current_user ||= current_user_session && current_user_session.user
     end
 
-    # TODO: Don't require an user (this is skipped in nearly every controller).
-    # Use Abilitys instead and handle the AccessDeniedException: (#handle_access_denied)
-    # * User logged in: Exception!
-    # * User not logged in: Redirect to login path!
-    # Don't forget to delete this method and all the /.*before_filter :require_user/
-    # statements in the controllers.
-    def require_user
-      unless current_user
-        flash[:error] = I18n.t("txt.controllers.application.login_required")
-        redirect_to new_user_session_url(:back_to => request.fullpath)
-        return false
-      end
-    end
-    
   end
 end

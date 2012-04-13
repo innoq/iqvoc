@@ -21,7 +21,7 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
   test "sign in" do
     user
     visit dashboard_path(:lang => :de)
-    assert page.has_content?("Sie müssen angemeldet sein, um diese Seite aufzurufen")
+    assert page.has_content?("Keine Berechtigung")
     visit new_user_session_path(:lang => :de)
     fill_in "E-Mail", :with => user.email
     fill_in "Passwort", :with => user.password

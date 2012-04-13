@@ -76,11 +76,11 @@ class SearchTest < ActionDispatch::IntegrationTest
     fill_in "q", :with => "Alpha"
     click_button("Search")
     assert page.has_css?("#search_results dt", :count => 1)
-    
+
     choose "Concept"
     click_button "Search"
     assert !page.has_css?("#search_results dt")
-    
+
     choose "Collection"
     click_button "Search"
     assert page.has_css?("#search_results dt")
@@ -104,7 +104,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?("#search_results dt", :count => 1)
     assert page.find("#search_results").has_content?("Forest")
 
-    # TTL & RDF/XML 
+    # TTL & RDF/XML
 
     ttl_uri = page.all("#abstract_uri a")[-2][:href]
     xml_uri = page.all("#abstract_uri a")[-1][:href]
@@ -187,7 +187,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     assert page.has_css?("#search_results dt", :count => 2)
 
-    # TTL & RDF/XML 
+    # TTL & RDF/XML
 
     ttl_uri = page.all("#abstract_uri a")[-2][:href]
     xml_uri = page.all("#abstract_uri a")[-1][:href]

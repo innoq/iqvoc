@@ -18,6 +18,6 @@ require "iqvoc/controller_extensions"
 
 class ApplicationController < ActionController::Base
   include Iqvoc::ControllerExtensions
-  
+
   protect_from_forgery
 end

@@ -1,5 +1,3 @@
-require 'iqvoc'
-
 module Iqvoc
   module Maker
 
@@ -118,7 +116,7 @@ module Iqvoc
 
       defaults = { # NB: must use strings, not symbols as keys due to YAML
         :value => value, # intentionally not a string; symbol takes precedence
-        "origin" => OriginMapping.merge(value),
+        "origin" => Iqvoc::Origin.new(value).to_s,
         "language" => Iqvoc::Concept.pref_labeling_languages.first,
         "published_at" => 2.days.ago
       }

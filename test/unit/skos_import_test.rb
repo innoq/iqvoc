@@ -19,8 +19,8 @@ require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
 
-  def setup
-    Iqvoc::Concept.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
+  setup do
+    Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
 
     Iqvoc.config.register_setting("languages.pref_labeling", ["de", "en"])
     Iqvoc.config.register_setting("languages.further_labelings.Labeling::SKOS::AltLabel", ["de", "en"])

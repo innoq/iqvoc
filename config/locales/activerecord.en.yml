@@ -38,7 +38,7 @@ en:
       concept/relation/skos/narrower/base:
         one:   "Narrower term"
         other: "Narrower terms"
-      concept/relation/related:
+      concept/relation/skos/related:
         one:   "Related term"
         other: "Related terms"
       label/skos/base:
@@ -115,6 +115,7 @@ en:
       concept/base:
         follow_up: "Reminder"
         expired_at: "Expired at"
+        top_term: "Top Term"
       label/base:
         follow_up: "Reminder"
         expired_at: "Expired at"

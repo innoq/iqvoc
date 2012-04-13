@@ -5,13 +5,13 @@ module Iqvoc
     @@if_published = lambda { |o| o.published? }
 
     def initialize(user = nil)
-
+      can :read, Iqvoc::Concept.root_class.instance
       can :read, ::Collection::Base
-
       can :read, [::Concept::Base, ::Label::Base], &@@if_published
 
       if user # Every logged in user ...
         can :use, :dashboard
+        can :destroy, UserSession
 
         if user.owns_role?(:editor) || user.owns_role?(:publisher) || user.owns_role?(:administrator) # Editors and above ...
           can :manage, ::Collection::Base
@@ -37,7 +37,8 @@ module Iqvoc
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
         end
-
+      else # no user
+        can :create, UserSession
       end
 
     end

@@ -56,18 +56,18 @@ class Collection::Base < Concept::Base
 
   #********** Scopes
 
-  scope :by_origin, lambda { |origin|
+  def self.by_origin(origin)
     where(:origin => origin)
-  }
+  end
 
-  scope :by_label_value, lambda { |val|
+  def self.by_label_value(val)
     includes(:labels).merge(Label::Base.by_query_value(val))
-  }
+  end
 
-  scope :tops, lambda {
+  def self.tops
     includes(:parent_collection_members).
       where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
-  }
+  end
 
   #********** Validations
 

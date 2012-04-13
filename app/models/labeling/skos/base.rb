@@ -24,9 +24,9 @@ class Labeling::SKOS::Base < Labeling::Base
 
   # ********** Scopes
 
-  scope :by_label_with_language, lambda { |label, language|
+  def self.by_label_with_language(label, language)
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
-  }
+  end
 
   # ********** Methods
 
@@ -63,7 +63,7 @@ class Labeling::SKOS::Base < Labeling::Base
       end
     end
     scope = scope.includes(:owner)
-    
+
     scope = case params[:for]
     when "concept"
       scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
@@ -73,7 +73,7 @@ class Labeling::SKOS::Base < Labeling::Base
       # no additional conditions
       scope
     end
-    
+
     scope
   end
 
@@ -84,7 +84,7 @@ class Labeling::SKOS::Base < Labeling::Base
   def self.build_from_rdf(subject, predicate, object)
     raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
     raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
-    
+
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 

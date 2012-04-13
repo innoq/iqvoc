@@ -41,29 +41,29 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   # ********* Scopes
 
-  scope :by_owner, lambda { |owner_id|
+  def self.by_owner(owner_id)
     where(:owner_id => owner_id)
-  }
+  end
 
-  scope :by_owner_origin, lambda { |owner_id|
-    includes(:owner).merge(Concept::Base.by_origin(owner_id))
-  }
+  def self.by_owner_origin(owner_origin)
+    includes(:owner).merge(Concept::Base.by_origin(owner_origin))
+  end
 
-  scope :by_target_origin, lambda { |owner_id|
-    includes(:target).merge(Concept::Base.by_origin(owner_id))
-  }
+  def self.by_target_origin(target_origin)
+    includes(:target).merge(Concept::Base.by_origin(target_origin))
+  end
 
-  scope :target_editor_selectable, lambda { # Lambda because Concept::Base.editor_selectable is currently not known + we don't want to call it at load time!
+  def self.target_editor_selectable
     includes(:target).merge(Concept::Base.editor_selectable)
-  }
+  end
 
-  scope :published, lambda { # Lambda because Concept::Base.published is currently not known + we don't want to call it at load time!
+  def self.published
     includes(:target).merge(Concept::Base.published)
-  }
+  end
 
-  scope :target_in_edit_mode, lambda { # Lambda because Concept::Base.in_edit_mode is currently not known + we don't want to call it at load time!
+  def self.target_in_edit_mode
     joins(:target).merge(Concept::Base.in_edit_mode)
-  }
+  end
 
   # ********* Methods
 
@@ -90,6 +90,26 @@ class Concept::Relation::Base < ActiveRecord::Base
   # if `singular` is true, only a single occurrence is allowed per instance
   def self.singular?
     false
+  end
+
+  def rank
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def rank=(val)
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def self.rankable?
+    self.class.included_modules.include?(Iqvoc::Rankable)
   end
 
 end

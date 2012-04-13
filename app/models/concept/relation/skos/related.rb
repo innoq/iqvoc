@@ -15,7 +15,18 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Related < Concept::Relation::SKOS::Base
-
   self.rdf_predicate = 'related'
+
+  def build_rdf(document, subject)
+    super
+    if self.class.rankable?
+      predicate = "ranked#{rdf_predicate.titleize}"
+
+      subject.Schema.build_predicate(predicate) do |blank_node|
+        blank_node.Schema.relationWeight(rank)
+        blank_node.Schema.relationTarget(IqRdf.build_uri(target.origin))
+      end
+    end
+  end
 
 end
