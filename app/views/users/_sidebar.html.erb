@@ -1,5 +1,5 @@
 <%= sidebar do %>
 <%= sidebar_header 'Links' %>
-<%= sidebar_item icon(:'th-list') + ' ' + User.model_name.human(:count => 5), users_path, params[:action] == 'index' %>
-<%= sidebar_item icon(:user) + ' ' + t('txt.views.users.new_link'), new_user_path, params[:action] == 'new' %>
+<%= sidebar_item :icon => :'th-list', :text => User.model_name.human(:count => 5), :path => users_path, :active => params[:action] == 'index' %>
+<%= sidebar_item :icon => :user, :text => t('txt.views.users.new_link'), :path => new_user_path, :active => params[:action] == 'new' %>
 <% end %>

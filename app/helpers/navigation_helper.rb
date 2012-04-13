@@ -14,14 +14,19 @@ module NavigationHelper
     content_tag :li, text, :class => 'nav-header'
   end
 
-  def sidebar_item(text = nil, path = nil, active = nil, &block)
+  def sidebar_item(opts = {}, &block)
     css_class = ''
-    css_class << 'active' if active
+    css_class << 'active' if opts.delete(:active)
 
     content = if block_given?
       capture(&block)
     else
-      link_to(text, path)
+      desc = ActiveSupport::SafeBuffer.new
+      if icon = opts.delete(:icon)
+        desc << icon(icon) << " "
+      end
+      desc << opts.delete(:text).to_s
+      link_to(desc.html_safe, opts.delete(:path))
     end
 
     content_tag :li, content, :class => css_class

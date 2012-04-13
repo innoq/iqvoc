@@ -5,11 +5,11 @@
   <% end %>
   <%= sidebar_header t('txt.views.dashboard.full_rdf_export') %>
   <% if can?(:full_export, Concept::Base) %>
-    <%= sidebar_item(icon(:download) + " Turtle", concepts_url(:format => :ttl)) %>
-    <%= sidebar_item(icon(:download) + " RDF/XML", concepts_url(:format => :rdf)) %>
+    <%= sidebar_item(:icon => :download, :text => "RDF/Turtle", :path => concepts_url(:format => :ttl)) %>
+    <%= sidebar_item(:icon => :download, :text => "RDF/XML", :path => concepts_url(:format => :rdf)) %>
   <% end %>
   <%= sidebar_header 'Extras' %>
   <% if can?(:import, Concept::Base) %>
-    <%= sidebar_item(icon(:upload) + " " + t('txt.views.dashboard.import'), import_url, params[:controller] == 'import') %>
+    <%= sidebar_item(:icon => :upload, :text => t('txt.views.dashboard.import'), :path => import_url, :active => params[:controller] == 'import') %>
   <% end %>
 <% end %>
