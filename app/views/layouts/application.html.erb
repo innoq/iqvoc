@@ -4,7 +4,6 @@
 <meta name="i18n-locale" content="<%= I18n.locale %>">
 <meta charset="utf-8">
 <%= csrf_meta_tag %>
-
 <title><%= Iqvoc.title || t("txt.common.iqvoc_title") %></title>
 <!-- HTML5 shim, for IE6-8 support of HTML elements -->
 <!--[if lt IE 9]>
@@ -14,20 +13,25 @@
 <!--[if lte IE 8]>
 <%= stylesheet_link_tag "iqvoc/ie_fixes" %>
 <![endif]-->
-
 <%= yield :head %>
 </head>
 <body>
-<%= render :partial => "layouts/navigation" %>
-
-<%#= render :partial => 'layouts/controls' %>
+<%= render 'layouts/navigation' %>
+<%#= render 'layouts/controls' %>
 
 <div class="container">
-  <%= yield :page_header %>
-  <% flash.each do |type, msg| %>
-    <%= alert(type) { msg } %>
-  <% end %>
-  <%= yield %>
+  <div class="row">
+    <div class="span9">
+      <%= yield :page_header %>
+      <% flash.each do |type, msg| %>
+        <%= alert(type) { msg } %>
+      <% end %>
+      <%= yield %>
+    </div>
+    <div class="span3">
+      <%= yield :sidebar %>
+    </div>
+  </div>
 </div>
 <script>
   // load JSON polyfill only if necessary

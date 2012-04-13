@@ -1,40 +1,29 @@
-<div class="row">
-  <div class="span9">
-    <%= page_header :title => t('txt.views.users.index.header') %>
-    <table class="table">
-      <thead>
-        <tr>
-          <th><%= t('txt.views.users.name') %></th>
-          <th><%= t('txt.views.users.email') %></th>
-          <th><%= t('txt.views.users.telephone_number') %></th>
-          <th><%= t('txt.views.users.role') %></th>
-          <th><%= t('txt.views.users.active') %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <tr>
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
-            <td><%= user.telephone_number %></td>
-            <td><%= user.role.humanize %></td>
-            <td><%= user.active? ? glyph(:yes) : glyph(:no) %></td>
-            <td>
-              <%= link_to icon(:edit) + " " + t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => "btn" %>
-              <%= link_to icon(:trash, :white) + " " + t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-  <div class="span3">
-    <div class="well sidebar">
-      <ul class="nav nav-list">
-        <li class="nav-header">Links</li>
-        <%= sidebar_item icon(:'th-list'), User.model_name.human(:count => 5), users_path, params[:action] == 'index' %>
-        <%= sidebar_item icon(:user), t('txt.views.users.new_link'), new_user_path, params[:action] == 'new' %>
-      </ul>
-    </div>
-  </div>
-</div>
+<%= page_header :title => t('txt.views.users.index.header') %>
+<table class="table">
+  <thead>
+    <tr>
+      <th><%= t('txt.views.users.name') %></th>
+      <th><%= t('txt.views.users.email') %></th>
+      <th><%= t('txt.views.users.telephone_number') %></th>
+      <th><%= t('txt.views.users.role') %></th>
+      <th><%= t('txt.views.users.active') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.telephone_number %></td>
+        <td><%= user.role.humanize %></td>
+        <td><%= user.active? ? glyph(:yes) : glyph(:no) %></td>
+        <td>
+          <%= link_to icon(:edit) + " " + t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => "btn" %>
+          <%= link_to icon(:trash, :white) + " " + t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render 'sidebar' %>

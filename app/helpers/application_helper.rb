@@ -63,9 +63,11 @@ module ApplicationHelper
   end
 
   def page_header(args = {})
-    content_tag :div, :class => "page-header" do
-      content_tag :h1 do
-        ("#{args.delete(:title)} #{content_tag(:small, args.delete(:desc))}").html_safe
+    content_for :page_header do
+      content_tag :div, :class => "page-header" do
+        content_tag :h1 do
+          ("#{args.delete(:title)} #{content_tag(:small, args.delete(:desc))}").html_safe
+        end
       end
     end
   end

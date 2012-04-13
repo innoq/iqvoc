@@ -1,65 +1,41 @@
-<div class="row">
-  <div class="span9">
-    <%= page_header :title => 'Dashboard' %>
-    <ul id="dashboard_controls">
-    <%#= link_to "Triple Store Sync", new_triple_store_sync_path %>
-    </ul>
-    <table class="table">
-      <thead>
-        <tr>
-          <th><%= t("txt.views.dashboard.type") %><%= sorting_controls_for(:class) %></th>
-          <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
-          <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
-          <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
-          <th><%= t("txt.views.dashboard.updated_at") %><%= sorting_controls_for(:updated_at) %></th>
-          <th><%= t("txt.views.dashboard.state") %><%= sorting_controls_for(:state) %></th>
-          <%- if params[:check_consistency] == "1" -%>
-            <th><%= t("txt.views.dashboard.consistent") %>?</th>
-          <%- else -%>
-            <th><%= link_to t("txt.views.dashboard.check_consistency"), dashboard_url(request.query_parameters.merge(:check_consistency => 1)) %></th>
-          <%- end -%>
-        </tr>
-      </thead>
-      <tbody>
-        <% @items.each do |item| -%>
-          <tr class="highlightable" data-url="<%= link_to_dashboard_item(item) %>">
-            <td><%= item.class.model_name.human %></td>
-            <td>
-              <%= render item.class.edit_link_partial_name, :item => item %>
-            </td>
-            <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
-            <td><%= l(item.follow_up) if item.follow_up.present? %></td>
-            <td><%= l(item.updated_at, :format => :short) %></td>
-            <td><%= item.state %></td>
-            <td>
-            <%- if params[:check_consistency] == "1" -%>
-              <%= consistency_status(item) %>
-            <%- end -%>
-            </td>
-          </tr>
-        <% end -%>
-      </tbody>
-    </table>
+<%= page_header :title => 'Dashboard' %>
 
-    <%= paginate @items %>
-  </div>
-  <div class="span3">
-    <div class="well sidebar">
-      <ul class="nav nav-list">
-        <li class="nav-header">Links</li>
-        <% Iqvoc.first_level_classes.each do |klass| %>
-          <%= content_tag :li, render(klass.new_link_partial_name) %>
-        <% end %>
-        <li class="nav-header"><%= t('txt.views.dashboard.full_rdf_export') %></li>
-        <%- if can?(:full_export, Concept::Base) -%>
-        <li><%= link_to icon(:download) + " Turtle", concepts_url(:format => :ttl) %></li>
-        <li><%= link_to icon(:download) + " RDF/XML", concepts_url(:format => :rdf) %></li>
+<table class="table">
+  <thead>
+    <tr>
+      <th><%= t("txt.views.dashboard.type") %><%= sorting_controls_for(:class) %></th>
+      <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
+      <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
+      <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
+      <th><%= t("txt.views.dashboard.updated_at") %><%= sorting_controls_for(:updated_at) %></th>
+      <th><%= t("txt.views.dashboard.state") %><%= sorting_controls_for(:state) %></th>
+      <%- if params[:check_consistency] == "1" -%>
+        <th><%= t("txt.views.dashboard.consistent") %>?</th>
+      <%- else -%>
+        <th><%= link_to t("txt.views.dashboard.check_consistency"), dashboard_url(request.query_parameters.merge(:check_consistency => 1)) %></th>
+      <%- end -%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| -%>
+      <tr class="highlightable" data-url="<%= link_to_dashboard_item(item) %>">
+        <td><%= item.class.model_name.human %></td>
+        <td>
+          <%= render item.class.edit_link_partial_name, :item => item %>
+        </td>
+        <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
+        <td><%= l(item.follow_up) if item.follow_up.present? %></td>
+        <td><%= l(item.updated_at, :format => :short) %></td>
+        <td><%= item.state %></td>
+        <td>
+        <%- if params[:check_consistency] == "1" -%>
+          <%= consistency_status(item) %>
         <%- end -%>
-        <li class="nav-header">Extras</li>
-        <%- if can?(:import, Concept::Base) -%>
-        <li><%= link_to icon(:upload) + " " + t('txt.views.dashboard.import'), import_url %></li>
-        <%- end -%>
-      </ul>
-    </div>
-  </div>
-</div>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<%= paginate @items %>
+<%= render 'sidebar' %>
