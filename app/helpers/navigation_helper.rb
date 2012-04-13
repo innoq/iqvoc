@@ -15,6 +15,10 @@ module NavigationHelper
   end
 
   def sidebar_item(opts = {}, &block)
+    if perms = opts.delete(:perms)
+      return nil if cannot?(*perms)
+    end
+
     css_class = ''
     css_class << 'active' if opts.delete(:active)
 
