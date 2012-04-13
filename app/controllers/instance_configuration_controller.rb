@@ -45,8 +45,8 @@ class InstanceConfigurationController < ApplicationController
       end
     }
 
-    if errors.blank?
-      flash[:notice] = t("txt.controllers.instance_configuration.update_success")
+    if errors.none?
+      flash[:success] = t("txt.controllers.instance_configuration.update_success")
     else
       flash[:error] = t("txt.controllers.instance_configuration.update_error",
           :error_messages => errors.join("; "))
@@ -54,7 +54,7 @@ class InstanceConfigurationController < ApplicationController
 
     redirect_to instance_configuration_url
   end
-  
+
   private
 
   # default value determines value type

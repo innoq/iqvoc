@@ -1,15 +1,11 @@
-<h2><%= t("txt.views.instance_configuration.caption").titleize %></h2>
+<%= page_header :title => t("txt.views.instance_configuration.caption").titleize %>
 
-<%= form_tag(instance_configuration_path, :method => :put, :class => "form large-labels") do %>
-  <fieldset>
-    <ol>
+<%= form_tag(instance_configuration_path, :method => :put, :class => "") do %>
       <% @settings.each do |key, value| %>
-      <li>
         <label><%= key %></label>
         <%= text_field_tag "config[#{key}]", value %>
-      </li>
       <% end %>
-    </ol>
-  </fieldset>
-  <%= submit_tag t("txt.common.save") %>
+  <div class="form-actions">
+    <%= submit_tag t("txt.common.save"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>
