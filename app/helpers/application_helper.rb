@@ -56,7 +56,7 @@ module ApplicationHelper
       end
     end
   end
-  
+
   def page_header(args = {})
     content_tag :div, :class => "page-header" do
       content_tag :h1 do
@@ -64,7 +64,7 @@ module ApplicationHelper
       end
     end
   end
-  
+
   def login_logout
     if current_user
       link_to t("txt.views.navigation.logout"), user_session_path, :method => :delete
@@ -72,17 +72,21 @@ module ApplicationHelper
       link_to t("txt.views.navigation.login"), new_user_session_path
     end
   end
-  
+
   def alert(type, opts = {}, &block)
     header = opts.delete(:header)
-    
+
     html = ActiveSupport::SafeBuffer.new
     html << content_tag(:strong, header) if header
     html << capture(&block)
-    
+
     content_tag(:div, :class => "alert alert-#{type}") do
       html
     end
+  end
+
+  def icon(name)
+    content_tag :i, "", :class => "icon-#{name}"
   end
 
 end

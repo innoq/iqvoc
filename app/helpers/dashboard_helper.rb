@@ -16,8 +16,8 @@
 
 module DashboardHelper
 
-  def sorting_arrows_for(name)
-    content_tag :div, :class => "sorting_arrows" do
+  def sorting_controls_for(name)
+    content_tag :span, :class => "sorting-controls" do
       link_to(image_tag("arrow_down.gif", :class => "arrow_down"),
         dashboard_path(:order => "asc", :by => name.to_s)) +
         link_to(image_tag("arrow_up.gif", :class => "arrow_up"),
@@ -34,9 +34,9 @@ module DashboardHelper
 
     content_tag :span, raw(msg), :class => css
   end
-  
+
   def link_to_dashboard_item(item)
-    if item.is_a?(Label::Base) 
+    if item.is_a?(Label::Base)
       item.published? ? label_path(:id => item.origin) : label_path(:published => 0, :id => item.origin)
     else
       item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)
