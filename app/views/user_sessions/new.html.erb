@@ -1,11 +1,9 @@
 <%= page_header :title => t("txt.views.user_sessions.header") %>
 
-<%= form_for @user_session, :url => user_session_path(:back_to => params[:back_to]), :class => "well" do |f| %>
-  <%= f.label :email, t("txt.views.user_sessions.email") %>
-  <%= f.text_field :email %>
-
-  <%= f.label :password, t("txt.views.user_sessions.password") %>
-  <%= f.password_field :password %>
-
-  <button type="submit" class="btn"><%= t("txt.views.user_sessions.login") %></button>
+<%= simple_form_for @user_session, :url => user_session_path(:back_to => params[:back_to]) do |f| %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <div class="form-actions">
+    <%= submit_tag t("txt.views.user_sessions.login"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>
