@@ -1,12 +1,10 @@
-<h2><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h2>
-
-<% if can?(:create, Iqvoc::Collection.base_class) %>
-  <p>
-    <%= link_to t("txt.views.collections.new"), new_collection_path,
-      :class => "button" %>
-  </p>
-<% end %>
+<%= page_header :title => Iqvoc::Collection.base_class.model_name.human(:count => 2) %>
 
 <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
   <%= render :partial => 'collection', :collection => @top_collections %>
 </ul>
+
+<%= sidebar do %>
+  <%= sidebar_item :icon => :edit, :text => t("txt.views.collections.new"), :path => new_collection_path,
+    :perms => [:create, Iqvoc::Collection.base_class], :active => params[:action] == 'new' %>
+<% end %>
