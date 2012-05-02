@@ -6,8 +6,8 @@ IQVOC.EntitySelector = (function($) {
 "use strict";
 
 var EntitySelector = function(node) {
-	if(!(this instanceof EntitySelector)) { // "new" keyword optional
-		return new EntitySelector(node);
+	if(arguments.length === 0) { // subclassing; skip initialization
+		return;
 	}
 	this.el = $(node).hide(); // XXX: rename
 	this.container = $('<div class="entity_select" />').data("widget", this);
@@ -58,7 +58,6 @@ $.extend(EntitySelector.prototype, {
 	onSelect: function(ev, ui) {
 		var el = $(this).val(""),
 			widget = el.closest(".entity_select").data("widget");
-
 		if(widget.add(ui.item.value)) {
 			var entity = widget.
 					createEntity({ id: ui.item.value, name: ui.item.label });

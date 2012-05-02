@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
 
 	// entity selection (edit mode)
 	$("input.entity_select").each(function(i, node) {
-		IQVOC.EntitySelector(node);
+		new IQVOC.QualifiedEntitySelector(node);
 	});
 
 	// hide broader relations for top terms (mutually exclusive in mono hierarchies)
