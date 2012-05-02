@@ -19,7 +19,7 @@ require 'integration_test_helper'
 class ConceptSchemeTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept = Factory(:concept, :broader_relations => [])
+    @concept = FactoryGirl.create(:concept, :broader_relations => [])
   end
 
   test "list top concepts in rdf scheme" do

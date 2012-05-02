@@ -63,7 +63,9 @@ class ConceptTest < ActiveSupport::TestCase
 
   test "concepts can have multiple preferred labels" do
     concept = FactoryGirl.build(:concept)
-    concept.labelings << FactoryGirl.build(:pref_labeling, :target => Factory(:pref_label, :language => Iqvoc::Concept.pref_labeling_languages.second))
+    concept.labelings << FactoryGirl.build(:pref_labeling,
+        :target => FactoryGirl.create(:pref_label,
+            :language => Iqvoc::Concept.pref_labeling_languages.second))
     concept.save!
     concept.reload
 

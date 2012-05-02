@@ -24,7 +24,8 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     ].map do |hsh|
       labelings = []
       hsh.each do |lang, val|
-        labelings << Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => val))
+        labelings << FactoryGirl.create(:pref_labeling,
+            :target => FactoryGirl.create(:pref_label, :language => lang, :value => val))
       end
       FactoryGirl.create(:concept, :pref_labelings => labelings)
     end
