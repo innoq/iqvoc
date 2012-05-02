@@ -89,7 +89,7 @@ class Concept::Base < ActiveRecord::Base
       # Split comma-separated origins and clean up parameter strings
       new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
 
-      # Extract (eventually) interpolated ranks out of origin strings e.g. "origin1:100"
+      # Extract interpolated ranks (if any) from origin strings (e.g. "origin1:100")
       new_origins = new_origins.each_with_object({}) do |e, hsh|
         # If there are no interpolated ranks, nil is set as the new hashes' values
         hsh[e.split(':')[0]] = e.split(':')[1]
