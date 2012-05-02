@@ -44,7 +44,7 @@ class RankedRelationsRdfTest < ActionController::TestCase
     @concept = Iqvoc::Concept.base_class.last
 
     @top_term.concept_relation_skos_relateds.
-        create_with_reverse_relation(@concept, { :rank => 13 })
+        create_with_reverse_relation(@concept, :rank => 13)
   end
 
   test "Turtle representation of individual concepts" do
