@@ -76,26 +76,24 @@ class Concept::Base < ActiveRecord::Base
   end
 
   after_save do |concept|
-    # Concept relations can be passed in two different formats,
-    # either with an interpolated rank or without one (for non-rankable relations).
+    # Process inline relations
+    #
+    # NB: rankable relations' target origins may include an embedded rank,
+    # delimited by a colon
     #
     # Examples:
-    # {'relation_name' => ['origin1', 'origin2']}
-    # {'relation_name' => ['origin1:100', 'origin2:90']}
-    #
-    # We have to deal with both cases.
-    # Interpolated ranks are only allowed for relations that are `rankable?`
+    # regular:  {'relation_name' => ['origin1', 'origin2']}
+    # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
       new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
 
-      # Extract interpolated ranks (if any) from origin strings (e.g. "origin1:100")
+      # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
+      # => { 'origin1' => nil, 'origin2' => 90 }
       new_origins = new_origins.each_with_object({}) do |e, hsh|
         key, value = e.split(":") # NB: defaults to nil if no rank is provided
         hsh[key] = value
       end
-      # => { 'origin1' => 100, 'origin2' => 90 }
-      # => { 'origin1' => nil, 'origin2' => nil }
 
       existing_origins = concept.send(relation_name).map { |r| r.target.origin }.uniq
 
