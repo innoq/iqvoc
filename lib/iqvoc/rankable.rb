@@ -8,9 +8,8 @@ module Iqvoc
       super
       if self.class.rankable?
         predicate = "ranked#{rdf_predicate.titleize}"
-        namespace = self.rdf_namespace.camelcase
 
-        subject.send(namespace).build_predicate(predicate) do |blank_node|
+        subject.Schema.build_predicate(predicate) do |blank_node|
           blank_node.Schema.relationWeight(rank)
           blank_node.Schema.relationTarget(IqRdf.build_uri(target.origin))
         end
