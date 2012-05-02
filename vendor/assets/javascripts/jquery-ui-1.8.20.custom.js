@@ -1,7 +1,7 @@
 /*!
- * jQuery UI 1.8.16
+ * jQuery UI 1.8.20
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -18,7 +18,7 @@ if ( $.ui.version ) {
 }
 
 $.extend( $.ui, {
-	version: "1.8.16",
+	version: "1.8.20",
 
 	keyCode: {
 		ALT: 18,
@@ -225,6 +225,11 @@ $(function() {
 	var body = document.body,
 		div = body.appendChild( div = document.createElement( "div" ) );
 
+	// access offsetHeight before setting the style to prevent a layout bug
+	// in IE 9 which causes the elemnt to continue to take up space even
+	// after it is removed from the DOM (#8026)
+	div.offsetHeight;
+
 	$.extend( div.style, {
 		minHeight: "100px",
 		height: "auto",
@@ -313,9 +318,9 @@ $.extend( $.ui, {
 
 })( jQuery );
 /*!
- * jQuery UI Widget 1.8.16
+ * jQuery UI Widget 1.8.20
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -553,21 +558,25 @@ $.Widget.prototype = {
 	},
 
 	_trigger: function( type, event, data ) {
-		var callback = this.options[ type ];
+		var prop, orig,
+			callback = this.options[ type ];
 
+		data = data || {};
 		event = $.Event( event );
 		event.type = ( type === this.widgetEventPrefix ?
 			type :
 			this.widgetEventPrefix + type ).toLowerCase();
-		data = data || {};
+		// the original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
 
 		// copy original event properties over to the new event
-		// this would happen if we could call $.event.fix instead of $.Event
-		// but we don't have a way to force an event to be fixed multiple times
-		if ( event.originalEvent ) {
-			for ( var i = $.event.props.length, prop; i; ) {
-				prop = $.event.props[ --i ];
-				event[ prop ] = event.originalEvent[ prop ];
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
 			}
 		}
 
@@ -580,10 +589,10 @@ $.Widget.prototype = {
 };
 
 })( jQuery );
-/*
- * jQuery UI Position 1.8.16
+/*!
+ * jQuery UI Position 1.8.20
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -596,6 +605,7 @@ $.ui = $.ui || {};
 var horizontalPositions = /left|center|right/,
 	verticalPositions = /top|center|bottom/,
 	center = "center",
+	support = {},
 	_position = $.fn.position,
 	_offset = $.fn.offset;
 
@@ -703,9 +713,11 @@ $.fn.position = function( options ) {
 			position.top -= elemHeight / 2;
 		}
 
-		// prevent fractions (see #5280)
-		position.left = Math.round( position.left );
-		position.top = Math.round( position.top );
+		// prevent fractions if jQuery version doesn't support them (see #5280)
+		if ( !support.fractions ) {
+			position.left = Math.round( position.left );
+			position.top = Math.round( position.top );
+		}
 
 		collisionPosition = {
 			left: position.left - marginLeft,
@@ -831,11 +843,54 @@ if ( !$.offset.setOffset ) {
 	};
 }
 
+// fraction support test (older versions of jQuery don't support fractions)
+(function () {
+	var body = document.getElementsByTagName( "body" )[ 0 ], 
+		div = document.createElement( "div" ),
+		testElement, testElementParent, testElementStyle, offset, offsetTotal;
+
+	//Create a "fake body" for testing based on method used in jQuery.support
+	testElement = document.createElement( body ? "div" : "body" );
+	testElementStyle = {
+		visibility: "hidden",
+		width: 0,
+		height: 0,
+		border: 0,
+		margin: 0,
+		background: "none"
+	};
+	if ( body ) {
+		$.extend( testElementStyle, {
+			position: "absolute",
+			left: "-1000px",
+			top: "-1000px"
+		});
+	}
+	for ( var i in testElementStyle ) {
+		testElement.style[ i ] = testElementStyle[ i ];
+	}
+	testElement.appendChild( div );
+	testElementParent = body || document.documentElement;
+	testElementParent.insertBefore( testElement, testElementParent.firstChild );
+
+	div.style.cssText = "position: absolute; left: 10.7432222px; top: 10.432325px; height: 30px; width: 201px;";
+
+	offset = $( div ).offset( function( _, offset ) {
+		return offset;
+	}).offset();
+
+	testElement.innerHTML = "";
+	testElementParent.removeChild( testElement );
+
+	offsetTotal = offset.top + offset.left + ( body ? 2000 : 0 );
+	support.fractions = offsetTotal > 21 && offsetTotal < 22;
+})();
+
 }( jQuery ));
-/*
- * jQuery UI Autocomplete 1.8.16
+/*!
+ * jQuery UI Autocomplete 1.8.20
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -871,6 +926,7 @@ $.widget( "ui.autocomplete", {
 		var self = this,
 			doc = this.element[ 0 ].ownerDocument,
 			suppressKeyPress;
+		this.isMultiLine = this.element.is( "textarea" );
 
 		this.element
 			.addClass( "ui-autocomplete-input" )
@@ -896,14 +952,10 @@ $.widget( "ui.autocomplete", {
 					self._move( "nextPage", event );
 					break;
 				case keyCode.UP:
-					self._move( "previous", event );
-					// prevent moving cursor to beginning of text field in some browsers
-					event.preventDefault();
+					self._keyEvent( "previous", event );
 					break;
 				case keyCode.DOWN:
-					self._move( "next", event );
-					// prevent moving cursor to end of text field in some browsers
-					event.preventDefault();
+					self._keyEvent( "next", event );
 					break;
 				case keyCode.ENTER:
 				case keyCode.NUMPAD_ENTER:
@@ -965,9 +1017,6 @@ $.widget( "ui.autocomplete", {
 				}, 150 );
 			});
 		this._initSource();
-		this.response = function() {
-			return self._response.apply( self, arguments );
-		};
 		this.menu = $( "<ul></ul>" )
 			.addClass( "ui-autocomplete" )
 			.appendTo( $( this.options.appendTo || "body", doc )[0] )
@@ -1049,6 +1098,13 @@ $.widget( "ui.autocomplete", {
 		if ( $.fn.bgiframe ) {
 			 this.menu.element.bgiframe();
 		}
+		// turning off autocomplete prevents the browser from remembering the
+		// value when navigating through history, so we re-enable autocomplete
+		// if the page is unloaded before the widget is destroyed. #7790
+		self.beforeunloadHandler = function() {
+			self.element.removeAttr( "autocomplete" );
+		};
+		$( window ).bind( "beforeunload", self.beforeunloadHandler );
 	},
 
 	destroy: function() {
@@ -1059,6 +1115,7 @@ $.widget( "ui.autocomplete", {
 			.removeAttr( "aria-autocomplete" )
 			.removeAttr( "aria-haspopup" );
 		this.menu.element.remove();
+		$( window ).unbind( "beforeunload", this.beforeunloadHandler );
 		$.Widget.prototype.destroy.call( this );
 	},
 
@@ -1094,16 +1151,11 @@ $.widget( "ui.autocomplete", {
 					url: url,
 					data: request,
 					dataType: "json",
-					autocompleteRequest: ++requestIndex,
 					success: function( data, status ) {
-						if ( this.autocompleteRequest === requestIndex ) {
-							response( data );
-						}
+						response( data );
 					},
 					error: function() {
-						if ( this.autocompleteRequest === requestIndex ) {
-							response( [] );
-						}
+						response( [] );
 					}
 				});
 			};
@@ -1134,20 +1186,32 @@ $.widget( "ui.autocomplete", {
 		this.pending++;
 		this.element.addClass( "ui-autocomplete-loading" );
 
-		this.source( { term: value }, this.response );
+		this.source( { term: value }, this._response() );
 	},
 
-	_response: function( content ) {
+	_response: function() {
+		var that = this,
+			index = ++requestIndex;
+
+		return function( content ) {
+			if ( index === requestIndex ) {
+				that.__response( content );
+			}
+
+			that.pending--;
+			if ( !that.pending ) {
+				that.element.removeClass( "ui-autocomplete-loading" );
+			}
+		};
+	},
+
+	__response: function( content ) {
 		if ( !this.options.disabled && content && content.length ) {
 			content = this._normalize( content );
 			this._suggest( content );
 			this._trigger( "open" );
 		} else {
 			this.close();
-		}
-		this.pending--;
-		if ( !this.pending ) {
-			this.element.removeClass( "ui-autocomplete-loading" );
 		}
 	},
 
@@ -1209,7 +1273,9 @@ $.widget( "ui.autocomplete", {
 	_resizeMenu: function() {
 		var ul = this.menu.element;
 		ul.outerWidth( Math.max(
-			ul.width( "" ).outerWidth(),
+			// Firefox wraps long text (possibly a rounding bug)
+			// so we add 1px to avoid the wrapping (#7513)
+			ul.width( "" ).outerWidth() + 1,
 			this.element.outerWidth()
 		) );
 	},
@@ -1244,6 +1310,14 @@ $.widget( "ui.autocomplete", {
 
 	widget: function() {
 		return this.menu.element;
+	},
+	_keyEvent: function( keyEvent, event ) {
+		if ( !this.isMultiLine || this.menu.element.is( ":visible" ) ) {
+			this._move( keyEvent, event );
+
+			// prevents moving cursor to beginning/end of the text field in some browsers
+			event.preventDefault();
+		}
 	}
 });
 
@@ -1416,7 +1490,7 @@ $.widget("ui.menu", {
 			}
 
 			var base = this.active.offset().top,
-				height = this.element.height();
+				height = this.element.height(),
 				result = this.element.children(".ui-menu-item").filter(function() {
 					var close = $(this).offset().top - base + height - $(this).height();
 					// TODO improve approximation
@@ -1444,10 +1518,10 @@ $.widget("ui.menu", {
 });
 
 }(jQuery));
-/*
- * jQuery UI Datepicker 1.8.16
+/*!
+ * jQuery UI Datepicker 1.8.20
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -1458,7 +1532,7 @@ $.widget("ui.menu", {
  */
 (function( $, undefined ) {
 
-$.extend($.ui, { datepicker: { version: "1.8.16" } });
+$.extend($.ui, { datepicker: { version: "1.8.20" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -1679,7 +1753,10 @@ $.extend(Datepicker.prototype, {
 			inst.trigger.click(function() {
 				if ($.datepicker._datepickerShowing && $.datepicker._lastInput == input[0])
 					$.datepicker._hideDatepicker();
-				else
+				else if ($.datepicker._datepickerShowing && $.datepicker._lastInput != input[0]) {
+					$.datepicker._hideDatepicker(); 
+					$.datepicker._showDatepicker(input[0]);
+				} else
 					$.datepicker._showDatepicker(input[0]);
 				return false;
 			});
@@ -2063,8 +2140,8 @@ $.extend(Datepicker.prototype, {
 					$.datepicker._updateDatepicker(inst);
 				}
 			}
-			catch (event) {
-				$.datepicker.log(event);
+			catch (err) {
+				$.datepicker.log(err);
 			}
 		}
 		return true;
@@ -2082,10 +2159,10 @@ $.extend(Datepicker.prototype, {
 			return;
 		var inst = $.datepicker._getInst(input);
 		if ($.datepicker._curInst && $.datepicker._curInst != inst) {
-			if ( $.datepicker._datepickerShowing ) {
-				$.datepicker._triggerOnClose($.datepicker._curInst);
-			}
 			$.datepicker._curInst.dpDiv.stop(true, true);
+			if ( inst && $.datepicker._datepickerShowing ) {
+				$.datepicker._hideDatepicker( $.datepicker._curInst.input[0] );
+			}
 		}
 		var beforeShow = $.datepicker._get(inst, 'beforeShow');
 		var beforeShowSettings = beforeShow ? beforeShow.apply(input, [input, inst]) : {};
@@ -2234,14 +2311,6 @@ $.extend(Datepicker.prototype, {
 	    return [position.left, position.top];
 	},
 
-	/* Trigger custom callback of onClose. */
-	_triggerOnClose: function(inst) {
-		var onClose = this._get(inst, 'onClose');
-		if (onClose)
-			onClose.apply((inst.input ? inst.input[0] : null),
-						  [(inst.input ? inst.input.val() : ''), inst]);
-	},
-
 	/* Hide the date picker from view.
 	   @param  input  element - the input field attached to the date picker */
 	_hideDatepicker: function(input) {
@@ -2253,7 +2322,6 @@ $.extend(Datepicker.prototype, {
 			var duration = this._get(inst, 'duration');
 			var postProcess = function() {
 				$.datepicker._tidyDialog(inst);
-				this._curInst = null;
 			};
 			if ($.effects && $.effects[showAnim])
 				inst.dpDiv.hide(showAnim, $.datepicker._get(inst, 'showOptions'), duration, postProcess);
@@ -2262,8 +2330,11 @@ $.extend(Datepicker.prototype, {
 					(showAnim == 'fadeIn' ? 'fadeOut' : 'hide'))]((showAnim ? duration : null), postProcess);
 			if (!showAnim)
 				postProcess();
-			$.datepicker._triggerOnClose(inst);
 			this._datepickerShowing = false;
+			var onClose = this._get(inst, 'onClose');
+			if (onClose)
+				onClose.apply((inst.input ? inst.input[0] : null),
+					[(inst.input ? inst.input.val() : ''), inst]);
 			this._lastInput = null;
 			if (this._inDialog) {
 				this._dialogInput.css({ position: 'absolute', left: '0', top: '-100px' });
@@ -2285,12 +2356,16 @@ $.extend(Datepicker.prototype, {
 	_checkExternalClick: function(event) {
 		if (!$.datepicker._curInst)
 			return;
-		var $target = $(event.target);
-		if ($target[0].id != $.datepicker._mainDivId &&
+
+		var $target = $(event.target),
+			inst = $.datepicker._getInst($target[0]);
+
+		if ( ( ( $target[0].id != $.datepicker._mainDivId &&
 				$target.parents('#' + $.datepicker._mainDivId).length == 0 &&
 				!$target.hasClass($.datepicker.markerClassName) &&
-				!$target.hasClass($.datepicker._triggerClass) &&
-				$.datepicker._datepickerShowing && !($.datepicker._inDialog && $.blockUI))
+				!$target.closest("." + $.datepicker._triggerClass).length &&
+				$.datepicker._datepickerShowing && !($.datepicker._inDialog && $.blockUI) ) ) ||
+			( $target.hasClass($.datepicker.markerClassName) && $.datepicker._curInst != inst ) )
 			$.datepicker._hideDatepicker();
 	},
 
@@ -3260,7 +3335,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8.16";
+$.datepicker.version = "1.8.20";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
