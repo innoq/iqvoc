@@ -25,15 +25,16 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     @concepts =  ["Tree", "Forest"].map do |english_label_value|
       FactoryGirl.create(:concept, :pref_labelings => [
-          Factory(:pref_labeling, :target => Factory(:pref_label, :language => :en, :value => english_label_value))
+          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label,
+              :language => :en, :value => english_label_value))
         ])
     end
 
     # create collection
     @collection = FactoryGirl.create(:collection, :concepts => @concepts,
         :labelings => [], :pref_labelings => [
-            Factory(:pref_labeling,
-                :target => Factory(:pref_label, :language => :en, :value => "Alpha"))
+            FactoryGirl.create(:pref_labeling,
+                :target => FactoryGirl.create(:pref_label, :language => :en, :value => "Alpha"))
         ])
   end
 
@@ -167,8 +168,8 @@ class SearchTest < ActionDispatch::IntegrationTest
     # create a large number of concepts
     12.times { |i|
       FactoryGirl.create(:concept,
-        :pref_labelings => [Factory(:pref_labeling,
-            :target => Factory(:pref_label, :language => :en,
+        :pref_labelings => [FactoryGirl.create(:pref_labeling,
+            :target => FactoryGirl.create(:pref_label, :language => :en,
               :value => "sample_#{sprintf("_%04d", i + 1)}"))])
     }
 

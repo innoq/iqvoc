@@ -1,0 +1,12 @@
+<div class="relation" id="<%= klass.model_name.to_relation_name %>">
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <div class="relation-body">
+    <%-
+      items = klass.where(:target_id => concept.id).includes(:target)
+      items = items.merge(Iqvoc::Concept.base_class.published) if params[:published] != "0"
+    -%>
+    <%= item_listing(items) do |rel|
+      link_to("#{rel.owner.pref_label} (#{rel.rank})", concept_path(:lang => rel.owner.pref_label.language, :id => rel.owner))
+    end %>
+  </div>
+</div>

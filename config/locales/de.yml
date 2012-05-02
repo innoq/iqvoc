@@ -325,6 +325,7 @@ de:
        orphan_error: "Es muss ein allgemeinerer Begriff oder Top Term zugewiesen werden."
        top_term_exclusive_error: "Einem Top Term darf kein allgemeinerer Begriff zugewiesen werden."
        top_term_rooted_error: "Top Terms dürfen nicht als spezifischere Begriffe verwendet werden."
+       invalid_rank_for_ranked_relations: 'Ungültiger Rang für %{relation} "%{relation_target_label}".'
        main_pref_label_language_missing_error: "Es muss mindestens ein bevorzugtes Label in der Hauptsprache des Thesaurus existieren."
        pref_labels_with_same_languages_error: "Es darf nur jeweils ein bevorzugtes Label zu einer Sprache geben."
        association_pref_labels_unpublished: "Das bevorzugte Label muss veröffentlicht sein."

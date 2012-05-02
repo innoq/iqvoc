@@ -14,8 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Relation::SKOS::Related < Concept::Relation::SKOS::Base
+# Be sure to restart your server when you modify this file.
 
-  self.rdf_predicate = 'related'
+if Iqvoc.const_defined?(:Application)
+
+  # Only require certain dependencies if app is actually running on heroku
+  Bundler.require(:heroku) if ENV['HEROKU']
 
 end

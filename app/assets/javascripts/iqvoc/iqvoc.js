@@ -109,6 +109,7 @@ jQuery(document).ready(function($) {
   var locale = $("head meta[name=i18n-locale]").attr("content");
 
   IQVOC.enhancedDropdown(".menu");
+  IQVOC.dynamicAuth("#auth_controls");
 
   if(IQVOC.visualization) {
     IQVOC.visualization.init("infovis", function(container) {
@@ -121,7 +122,7 @@ jQuery(document).ready(function($) {
   // language selection
   var langWidget = $("ul.lang-widget")[0];
   // primary language (converting links to radio buttons)
-  $(langWidget).find("a").each(function(i, node) {
+  $("a", langWidget).each(function(i, node) {
     var link = $(node),
       el = link.closest("li"),
       btn = $('<input type="radio" name="primary_language">');
@@ -170,7 +171,7 @@ jQuery(document).ready(function($) {
 
   // entity selection (edit mode)
   $("input.entity_select").each(function(i, node) {
-    IQVOC.EntitySelector(node);
+    new IQVOC.QualifiedEntitySelector(node);
   });
 
   // hide broader relations for top terms (mutually exclusive in mono hierarchies)
@@ -183,8 +184,8 @@ jQuery(document).ready(function($) {
   onTopTermToggle();
 
   // Label editing (inline notes)
-  $(".note_relation ol li.inline_note.new").hide();
-  $(".note_relation input[type=button]").click(function(ev) {
+  $("fieldset.note_relation ol li.inline_note.new").hide();
+  $("fieldset.note_relation input[type=button]").click(function(ev) {
     IQVOC.createNote.apply(this, arguments);
     langSelector.notify(); // trigger updateNoteLangs -- XXX: hacky!?
   });

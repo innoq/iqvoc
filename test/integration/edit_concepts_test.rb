@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class EditConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept = Factory(:concept)
+    @concept = FactoryGirl.create(:concept)
   end
 
   test "Create a new concept version" do

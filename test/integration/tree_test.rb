@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class TreeTest < ActionDispatch::IntegrationTest
 
   test "Browse hierarchical concepts tree" do
-    concept = Factory(:concept, :broader_relations => [])
+    concept = FactoryGirl.create(:concept, :broader_relations => [])
     narrower_concept = concept.narrower_relations.first.target
 
     visit hierarchical_concepts_path(:lang => :de, :format => :html)

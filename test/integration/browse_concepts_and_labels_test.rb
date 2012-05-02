@@ -25,7 +25,8 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
       [:de, "Baum"],
       [:de, "Forst"]
     ].map { |lang, text|
-      FactoryGirl.create(:concept, :pref_labelings => [Factory(:pref_labeling, :target => Factory(:pref_label, :language => lang, :value => text))])
+      FactoryGirl.create(:concept, :pref_labelings => [FactoryGirl.create(:pref_labeling,
+          :target => FactoryGirl.create(:pref_label, :language => lang, :value => text))])
     }
   end
 
