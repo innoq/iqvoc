@@ -91,8 +91,8 @@ class Concept::Base < ActiveRecord::Base
 
       # Extract interpolated ranks (if any) from origin strings (e.g. "origin1:100")
       new_origins = new_origins.each_with_object({}) do |e, hsh|
-        # If there are no interpolated ranks, nil is set as the new hashes' values
-        hsh[e.split(':')[0]] = e.split(':')[1]
+        key, value = e.split(":") # NB: defaults to nil if no rank is provided
+        hsh[key] = value
       end
       # => { 'origin1' => 100, 'origin2' => 90 }
       # => { 'origin1' => nil, 'origin2' => nil }
