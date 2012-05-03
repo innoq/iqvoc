@@ -109,7 +109,6 @@ jQuery(document).ready(function($) {
   var locale = $("head meta[name=i18n-locale]").attr("content");
 
   IQVOC.enhancedDropdown(".menu");
-  IQVOC.dynamicAuth("#auth_controls");
 
   if(IQVOC.visualization) {
     IQVOC.visualization.init("infovis", function(container) {
