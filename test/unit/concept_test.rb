@@ -22,11 +22,20 @@ class ConceptTest < ActiveSupport::TestCase
     @current_concept = FactoryGirl.create(:concept)
   end
 
-  test "should not create more than two versions of a concept" do
-    first_new_concept  = Concept::Base.new(@current_concept.attributes)
-    second_new_concept = Concept::Base.new(@current_concept.attributes)
-    assert first_new_concept.save
-    assert_equal second_new_concept.save, false
+  test "should not allow identical concepts" do
+    origin = "foo"
+    c1 = Concept::Base.new(:origin => origin)
+    c2 = Concept::Base.new(:origin => origin, :published_at => Time.now)
+    assert c1.save
+    assert c2.save
+
+    origin = "bar"
+    c1 = Concept::Base.new(:origin => origin)
+    c2 = Concept::Base.new(:origin => origin)
+    assert c1.save
+    assert_raise ActiveRecord::RecordInvalid do
+      c2.save!
+    end
   end
 
   test "should not save concept with empty preflabel" do
