@@ -50,8 +50,6 @@ module ApplicationHelper
 
   def options_for_language_select(selected = nil)
     locales_collection = Iqvoc.available_languages.map { |l| [l, l] }
-
-    options_for_select(locales_collection, selected)
   end
 
   def user_details(user)
