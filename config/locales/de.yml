@@ -67,6 +67,7 @@ de:
      of: von
      pending: "Lade…"
      translation_missing_for: "keine Übersetzung für"
+     type_to_search: "Tippen um zu suchen"
 
    views:
      layouts:
