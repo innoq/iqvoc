@@ -7,7 +7,7 @@
               :lang => note.language || nil
           }, true) do %>
         <%= f.simple_fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
-          <%= note_form.input :value, :as => :text, :label => assoc_klass.model_name.human, :input_html => { :rows => 4, :class => 'span4' } %>
+          <%= note_form.input :value, :as => :text, :label => assoc_klass.human_attribute_name(:value), :input_html => { :rows => 4, :class => 'span4' } %>
           <%= note_form.input :language, :collection => options_for_language_select(note.language), :label => t("txt.common.language"), :input_html => { :class => 'span1' } %>
 
           <% if note.new_record? %>
