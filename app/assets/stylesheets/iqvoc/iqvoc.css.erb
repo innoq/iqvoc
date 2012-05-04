@@ -36,6 +36,17 @@ tr.highlightable {
   cursor: pointer;
 }
 
+/* hacks */
+
+legend {
+  margin-bottom: 0;
+}
+
+fieldset > div:first-of-type {
+  -webkit-margin-top-collapse: separate;
+  margin-top: 27px;
+}
+
 /* visualizations */
 
 #infovis {
