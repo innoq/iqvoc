@@ -10,8 +10,7 @@
 
       <%= render 'layouts/controls' %>
 
-      <%= form_tag search_path, :method => :get, :class => "navbar-search",
-              :style => "float: none; text-align: center;" do %>
+      <%= form_tag search_path, :method => :get, :class => "navbar-search" do %>
         <input type="hidden" name="t" value="labeling-skos-base">
         <input type="hidden" name="qt" value="exact">
         <input type="hidden" name="for" value="all">
