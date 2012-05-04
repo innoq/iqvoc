@@ -5,35 +5,6 @@ var IQVOC = (function($) {
 
 "use strict";
 
-var collapseDropdown = function(node) {
-  var el = $(node || this);
-  el.find("ul").slideUp(function() {
-    el.removeClass("hover");
-  });
-};
-
-// augments Son of Suckerfish drop-down menus
-var enhancedDropdown = function(container) {
-  container = container.jquery ? container : $(container);
-  var menuItems = $("> li", container),
-    ddtimer;
-  menuItems.find("ul").hide();
-  menuItems.live({
-    mouseenter: function(ev) {
-      clearTimeout(ddtimer);
-      menuItems.not(this).filter(".hover").each(function(i, node) {
-        collapseDropdown(node);
-      });
-      $(this).addClass("hover")
-        .find("ul").not(".hidden").slideDown();
-    },
-    mouseleave: function(ev) {
-      clearTimeout(ddtimer);
-      ddtimer = setTimeout(jQuery.proxy(collapseDropdown, this), 600);
-    }
-  });
-};
-
 var createNote = function(ev) {
   var container = $(this).closest("div"),
     source = $("ol li:last-child", container);
@@ -97,7 +68,6 @@ if(Storage === null) {
 
 return {
   Storage: Storage,
-  enhancedDropdown: enhancedDropdown,
   createNote: createNote
 };
 
@@ -107,8 +77,6 @@ jQuery(document).ready(function($) {
   "use strict";
 
   var locale = $("head meta[name=i18n-locale]").attr("content");
-
-  IQVOC.enhancedDropdown(".menu");
 
   if(IQVOC.visualization) {
     IQVOC.visualization.init("infovis", function(container) {
