@@ -1,4 +1,4 @@
-/*jslint vars: true, unparam: true, browser: true */
+/*jslint vars: true, unparam: true, browser: true, white: true */
 /*global jQuery, IQVOC */
 
 IQVOC.LanguageSelector = (function($) {

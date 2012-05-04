@@ -1,7 +1,11 @@
 <ul id="controls" class="nav pull-right">
-  <li id="language_selection">
-    <a href="javascript:;" class="lang-widget"><%= t("txt.views.lang_widget.caption") %> &#9660;</a>
-    <ul class="lang-widget unstyled">
+  <li id="language_selection" class="dropdown">
+    <a href="javascript:;" class="dropdown-toggle">
+      <%= t("txt.views.lang_widget.caption") %>
+      <b class="caret"></b>
+    </a>
+
+    <ul class="lang-widget dropdown-menu">
       <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
         <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
@@ -24,7 +28,9 @@
       <% end %>
     </ul>
   </li>
+
   <li class="divider-vertical"></li>
+
   <li id="auth_controls">
     <% if current_user %>
       <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>

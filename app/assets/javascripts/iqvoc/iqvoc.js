@@ -87,6 +87,9 @@ jQuery(document).ready(function($) {
   }
 
   // language selection
+  $("#language_selection .dropdown-toggle").click(function(ev) { // use Bootstrap's Dropwdown, but without the side-effects
+    $(this).closest(".dropdown").toggleClass("open");
+  });
   var langWidget = $("ul.lang-widget")[0];
   // primary language (converting links to radio buttons)
   $("a", langWidget).each(function(i, node) {
