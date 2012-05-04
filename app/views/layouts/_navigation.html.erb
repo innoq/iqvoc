@@ -1,13 +1,15 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
+
       <a class="brand" href="#"><%= Iqvoc.config['title'] %></a>
-      <div class="nav-collapse">
-        <ul class="nav">
-          <%= nav_items Iqvoc.navigation_items %>
-        </ul>
-        <%= render 'layouts/controls' %>
-      </div><!-- /nav-collapse -->
+
+      <ul class="nav">
+        <%= nav_items Iqvoc.navigation_items %>
+      </ul>
+
+      <%= render 'layouts/controls' %>
+
     </div>
   </div>
 </div>
