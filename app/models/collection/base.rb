@@ -83,6 +83,10 @@ class Collection::Base < Concept::Base
     pref_label
   end
 
+  def name_with_concept_count # TODO: rename?
+    "#{pref_label.to_s} (#{concepts.count})"
+  end
+
   def build_rdf_subject(document, controller, &block)
     IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
   end

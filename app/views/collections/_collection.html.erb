@@ -1,6 +1,6 @@
 <%- has_children = collection.subcollections.any? -%>
 <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= collection.id %>">
-  <%= link_to collection.pref_label.to_s,
+  <%= link_to collection.name_with_concept_count,
           collection_path(:id => collection) %>
   <%- if has_children -%>
     <ul>

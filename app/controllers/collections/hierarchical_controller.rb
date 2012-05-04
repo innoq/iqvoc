@@ -31,7 +31,7 @@ class Collections::HierarchicalController < CollectionsController
           {
             :id => collection.id,
             :url => collection_path(:id => collection, :format => :html),
-            :text => CGI.escapeHTML(collection.pref_label.to_s),
+            :text => CGI.escapeHTML(collection.name_with_concept_count),
             :hasChildren => collection.subcollections.any?
           }
         end
