@@ -85,15 +85,6 @@ module ConceptsHelper
     page_header :title => concept.pref_label.to_s, :desc => desc.html_safe
   end
 
-  def form_section_for_concept(section_title, opts = {}, &block)
-    content_tag(:div, { :class => "row" }.merge(opts)) do
-      content_tag(:div, content_tag(:h2, section_title), :class => "span2") +
-      content_tag(:div, :class => "span10") do
-        content_tag(:div, capture(&block), :class => "well")
-      end
-    end
-  end
-
   private
 
   # Renders a partial taken from the .partial_name method of the objects
