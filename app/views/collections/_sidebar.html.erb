@@ -1,0 +1,5 @@
+<%= sidebar do %>
+  <%= sidebar_header 'Links' %>
+  <%= sidebar_item :icon => :edit, :text => t("txt.views.collections.new"), :path => new_collection_path,
+    :perms => [:create, Iqvoc::Collection.base_class], :active => params[:action] == 'new' %>
+<% end %>

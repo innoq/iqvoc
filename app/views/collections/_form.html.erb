@@ -3,16 +3,16 @@
 # too). If those two settings differ (e.g. in spez) don't forget to add
 # migrations to update existing data.
 -%>
+
+<%= simple_form_for collection, :url => collections_path, :html => { :class => 'form-horizontal' } do |f| %>
 <fieldset>
-  <legend>Labelings</legend>
-  <ol>
+  <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
       <%- languages.each do |language| -%>
         <%= render labeling_class.edit_partial_name(@collection), :f => f,
           :concept => @collection, :klass => labeling_class, :language => language %>
       <%- end -%>
     <%- end -%>
-  </ol>
 </fieldset>
 
 <%- # TODO: Add a Collection config for Note classes. %>
@@ -44,4 +44,8 @@
     map { |c| collection_widget_data(c) }.to_json %>
 </fieldset>
 
-<%= f.submit t("txt.common.save") %>
+<div class="form-actions">
+<%= f.button :submit, :class => 'btn btn-primary' %>
+</div>
+
+<% end %>
