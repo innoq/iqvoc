@@ -68,6 +68,7 @@ de:
      pending: "Lade…"
      translation_missing_for: "keine Übersetzung für"
      type_to_search: "Tippen um zu suchen"
+     hint_csv_input: "Mehrere Werte können kommagetrennt eingeben werden."
 
    views:
      layouts:

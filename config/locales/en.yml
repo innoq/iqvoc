@@ -68,6 +68,7 @@ en:
      pending: "Loading…"
      translation_missing_for: "translation missing for"
      type_to_search: "Type to search"
+     hint_csv_input: "Multiple values can be entered comma-separated."
 
    views:
      layouts:
