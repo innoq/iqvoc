@@ -14,13 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'static_attributes'
+
 class Note::Base < ActiveRecord::Base
+  extend StaticAttributes
 
   self.table_name = 'notes'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = nil
   self.rdf_predicate = nil
+
+  static_attr "view_section", "notes"
+  static_attr "view_section_sort_key", 100
+  static_attr "partial_name", "partials/note/base"
+  static_attr "edit_partial_name", "partials/note/edit_base"
+  static_attr "search_result_partial_name", "partials/note/search_result"
 
   # ********** Validations
 
@@ -96,31 +105,11 @@ class Note::Base < ActiveRecord::Base
     "#{self.value}"
   end
 
-  def self.view_section(obj)
-    "notes"
-  end
-
-  def self.view_section_sort_key(obj)
-    100
-  end
-
-  def self.partial_name(obj)
-    "partials/note/base"
-  end
-
-  def self.edit_partial_name(obj)
-    "partials/note/edit_base"
-  end
-
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
     by_query_value(query_str).
       by_language(params[:languages].to_a)
-  end
-
-  def self.search_result_partial_name
-    'partials/note/search_result'
   end
 
   def build_search_result_rdf(document, result)

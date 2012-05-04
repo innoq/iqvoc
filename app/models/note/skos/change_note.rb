@@ -18,13 +18,8 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
 
   self.rdf_predicate = 'changeNote'
 
-  def self.edit_partial_name(obj)
-    "partials/note/skos/edit_change_note"
-  end
-
-  def self.search_result_partial_name
-    'partials/note/skos/change_note/search_result'
-  end
+  static_attr "edit_partial_name", "partials/note/skos/edit_change_note"
+  static_attr "search_result_partial_name", "partials/note/skos/change_note/search_result"
 
   def self.single_query(params = {})
     query_str = build_query_string(params)
