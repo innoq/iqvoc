@@ -31,7 +31,7 @@
 
   <li class="divider-vertical"></li>
 
-  <li id="auth_controls">
+  <li>
     <% if current_user %>
       <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
     <% else %>
