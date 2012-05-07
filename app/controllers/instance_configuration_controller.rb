@@ -79,10 +79,10 @@ class InstanceConfigurationController < ApplicationController
     unless default_value.is_a? Array
       return convert_value(str, default_value.class)
     else
-      return str.blank? ? [] : str.parse_csv.map { |item|
+      return str.blank? ? [] : str.parse_csv.map do |item|
         item.strip!
         convert_value(item, default_value[0].class)
-      }
+      end
     end
   end
 
