@@ -2,7 +2,7 @@
   <h4><%= klass.model_name.human(:count => 2) %></h4>
   <div class="relation-body">
     <%-
-      items = klass.where(:target_id => concept.id).includes(:target)
+      items = klass.where(:target_id => concept.id).includes(:target).order("rank ASC")
       items = items.merge(Iqvoc::Concept.base_class.published) if params[:published] != "0"
     -%>
     <%= item_listing(items) do |rel|
