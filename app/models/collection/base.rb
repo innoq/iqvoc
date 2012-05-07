@@ -75,16 +75,16 @@ class Collection::Base < Concept::Base
 
   #********** Methods
 
+  def additional_info
+    concepts.count
+  end
+
   def to_param
     origin
   end
 
   def label
     pref_label
-  end
-
-  def name_with_concept_count # TODO: rename?
-    "#{pref_label.to_s} (#{concepts.count})"
   end
 
   def build_rdf_subject(document, controller, &block)
