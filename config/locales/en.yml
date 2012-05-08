@@ -55,7 +55,7 @@ en:
      editor: "Editor"
      referenced_concepts: "Referenced Concepts are currently being edited:"
      association_not_found: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     to_review: "To review"
+     to_review: "Send to review"
      is_in_review: "Document is in review"
      unpublished_version: Unpublished version
      consistent: "consistent"
@@ -205,13 +205,13 @@ en:
      versioning:
        edit_mode: "Continue editing"
        to_edit_mode: "Start editing"
-       publishing: "Release"
+       publishing: "Publish"
        delete: "Delete copy"
        delete_confirm: "Do you really want to delete this copy?"
        versioning_mode: "Create new version"
        unlock: "Unlock"
        preview_new_version: "Preview of the version in editing"
-       consistency_check: "Consistency check"
+       consistency_check: "Check consistency"
        current_revision: "Current revision %{rev}"
        in_ongoing_editing_by: "is being edited by %{user}"
      labelings:

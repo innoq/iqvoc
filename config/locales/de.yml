@@ -55,7 +55,7 @@ de:
      editor: "Redakteur"
      referenced_concepts: "Referenzierte Konzepte befinden sich in Bearbeitung:"
      association_not_found: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden"
-     to_review: "Vorlage zur Freigabe"
+     to_review: "Zur Freigabe vorlegen"
      is_in_review: "Dokument befindet sich im Reviewprozess"
      unpublished_version: Unveröffentlichte Version
      consistent: "konsistent"
@@ -203,7 +203,7 @@ de:
        versioning_mode: "Neue Version erstellen"
        unlock: "Entsperren"
        preview_new_version: "Vorschau der Version in Bearbeitung"
-       consistency_check: "Konsistenzprüfung"
+       consistency_check: "Konsistenz prüfen"
        current_revision: "Aktuelle Revision %{rev}"
        in_ongoing_editing_by: "in Bearbeitung von %{user}"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
