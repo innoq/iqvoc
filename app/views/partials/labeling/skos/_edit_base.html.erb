@@ -1,4 +1,4 @@
-<%= content_tag :div, { :class => "translation", :lang => language || nil }, true do %>
+<%= content_tag :div, :class => "translation", :lang => language || nil do %>
     <%- fieldname = "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]" -%>
     <%- label = klass.model_name.human(:count => 2) -%>
 
