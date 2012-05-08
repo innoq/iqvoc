@@ -4,7 +4,7 @@
 # migrations to update existing data.
 -%>
 
-<%= simple_form_for collection, :url => collections_path, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for collection, :as => :concept, :url => collections_path, :html => { :class => 'form-horizontal' } do |f| %>
 <fieldset>
   <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
   <p><%= t 'txt.common.hint_csv_input' %></p>
@@ -24,8 +24,7 @@
 <fieldset>
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
   <%= f.input "concept[inline_member_concept_origins]", :label => t('txt.common.type_to_search') do %>
-    <%= f.input_field "concept[inline_member_concept_origins]",
-      :value => @collection.inline_member_concept_origins.join(Iqvoc::InlineDataHelper::Joiner),
+    <%= text_field_tag "concept[inline_member_concept_origins]", @collection.inline_member_concept_origins.join(Iqvoc::InlineDataHelper::Joiner),
       :class => "entity_select",
       :"data-query-url" => concepts_path(:format => :json),
       :"data-entity-uri" => concept_path(:id => "{id}"),
@@ -37,8 +36,7 @@
 <fieldset>
   <legend><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></legend>
   <%= f.input "concept[inline_member_concept_origins]", :label => t('txt.common.type_to_search') do %>
-    <%= f.input_field "concept[inline_member_collection_origins]",
-      :value => @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::Joiner),
+    <%= text_field_tag "concept[inline_member_collection_origins]", @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::Joiner),
       :class => "entity_select",
       :"data-query-url" => collections_path(:format => :json),
       :"data-entity-uri" => collection_path(:id => "{id}"),
