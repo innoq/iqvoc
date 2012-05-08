@@ -87,7 +87,7 @@ $.extend(EntitySelector.prototype, {
     } else {
       el = $('<span />').text(entity.name);
     }
-    var delBtn = $('<a href="javascript:;" class="btn">x</a>'). // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
+    var delBtn = $('<a href="javascript:;" class="remove_entity">x</a>'). // "btn" to avoid fancy "button" class -- XXX: hacky workaround!?
       click(this.onDelete);
     return $("<li />").data("id", entity.id).append(el).append(delBtn)[0];
   },
