@@ -1,6 +1,6 @@
-<%= content_tag("div", { :class => "relation translation", :lang => defined?(concept) ? lang || nil : nil }, true) do %>
+<%= content_tag :fieldset, :class => "relation translation", :lang => (defined?(concept) ? lang || nil : nil) do %>
   <%- if defined?(concept) -%>
-    <h2><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h2>
+    <legend><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></legend>
     <div class="relation-body">
       <%= item_listing(concept.labels_for_labeling_class_and_language(klass, lang)) do |label|
         label.value

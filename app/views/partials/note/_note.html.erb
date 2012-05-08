@@ -1,5 +1,5 @@
 <% unless note.new_record? %>
-  <%= content_tag("div", { :class => "translation", :lang => note.language || nil }, true) do %>
+  <%= content_tag :div, :class => "translation", :lang => (note.language || nil) do %>
     <div class="note_language <%= note.language %>">
       (<%= note.language || '-' %>)
     </div>

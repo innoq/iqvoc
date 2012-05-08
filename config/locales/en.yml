@@ -69,6 +69,7 @@ en:
      translation_missing_for: "translation missing for"
      type_to_search: "Type to search"
      hint_csv_input: "Multiple values can be entered comma-separated."
+     form_errors: "Errors"
 
    views:
      layouts:
@@ -281,8 +282,8 @@ en:
        new_version_blank_error: "A new version does not exist yet!"
        delete: "Delete inctance."
        consistency_check_success: "Instance is consistent."
-       consistency_check_success_with_warning: "Instance is consistent but has no relations!"
-       consistency_check_error: "Instance is not consistent"
+       consistency_check_success_with_warning: "Instance is consistent but has no relations."
+       consistency_check_error: "Instance is inconsistent."
        virtuoso_exception: "The object has been published, but could not by synced with Virtuoso. Error: "
      labelings:
        save:

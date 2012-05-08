@@ -1,7 +1,4 @@
-<%= content_for :page_header do %>
-<%= page_header :title => link_to(@concept.origin, concept_path(:id => @concept.origin)),
-  :desc => Iqvoc::Concept.base_class.model_name.human %>
-<% end %>
+<%= concept_header @concept %>
 
 <%= error_messages_for @concept %>
 
@@ -21,4 +18,5 @@
   <% end %>
 <% end %>
 
-<%= render :partial => "concepts/base_data" %>
+<%= render 'form', :concept => @concept %>
+<%= render 'sidebar', :concept => @concept %>

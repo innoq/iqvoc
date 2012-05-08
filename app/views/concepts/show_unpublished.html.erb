@@ -1,6 +1,4 @@
-<%= content_for :page_header do %>
-<%= render 'show_head' %>
-<% end %>
+<%= render 'header' %>
 
 <%= alert :info, :header => t('txt.common.unpublished_version') + "." do %>
   <%= t("txt.views.versioning.current_revision", :rev => @concept.rev) %>
@@ -11,19 +9,19 @@
 
 <div class="editing_versioning_toolbar well">
   <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
-    <%= button_to t("txt.views.versioning.publishing"), 
+    <%= button_to t("txt.views.versioning.publishing"),
       concept_versions_merge_path(:origin => @concept.origin), :class => "btn btn-primary" %>
   <% end %>
-  <%= button_to t("txt.views.versioning.consistency_check"), 
+  <%= button_to t("txt.views.versioning.consistency_check"),
     concept_versions_consistency_check_path(:origin => @concept.origin), :class => :btn, :method => :get %>
 
   <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
-    <%= button_to t("txt.common.to_review"), 
+    <%= button_to t("txt.common.to_review"),
       concept_versions_to_review_path(:origin => @concept.origin), :class => :btn %>
   <% end %>
 
   <% unless @concept.locked? %>
-    <%= button_to t("txt.views.versioning.to_edit_mode"), 
+    <%= button_to t("txt.views.versioning.to_edit_mode"),
       concept_versions_lock_path(:origin => @concept.origin), :class => :btn %>
     <%= button_to t("txt.views.versioning.delete"),
       concept_path(:published => 0, :id => @concept.origin),
@@ -39,5 +37,6 @@
   <% end %>
 </div>
 
-<%= render 'visualization' %>
+<%#= render 'visualization' %>
 <%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
+<%= render 'sidebar', :concept => @concept %>

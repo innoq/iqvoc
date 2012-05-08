@@ -72,9 +72,14 @@ module ConceptsHelper
 
   def concept_header(concept)
     desc = Iqvoc::Concept.base_class.model_name.human
-    desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} " if concept.expired_at
 
-    page_header :title => concept.pref_label.to_s, :desc => desc.html_safe
+    if concept.expired_at
+      desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} "
+    end
+
+    title = concept.pref_label || concept.origin
+
+    page_header :title => title.to_s, :desc => desc.html_safe
   end
 
   private

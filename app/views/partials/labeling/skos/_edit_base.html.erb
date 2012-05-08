@@ -4,8 +4,8 @@
 
     <%= f.label label %>
     <%= f.input fieldname, :wrapper => :prepend, :label => false do %>
-      <span class="add-on"><%= language %></span><%= f.input_field fieldname,
-          :class => 'span4',
-          :value => concept.labelings_by_text(klass.name.to_relation_name, language) %>
+      <span class="add-on"><%= language %></span><%= text_field_tag fieldname,
+          concept.labelings_by_text(klass.name.to_relation_name, language),
+          :class => 'span4' %>
     <% end %>
 <% end %>

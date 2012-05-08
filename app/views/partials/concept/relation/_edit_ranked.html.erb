@@ -1,13 +1,13 @@
-<li>
-  <%= label_tag klass.name.to_relation_name,
-    klass.model_name.human(:count => klass.singular? ? 1 : 2) %>
-  <%= text_field_tag "concept[concept_relations_by_id][#{klass.name.to_relation_name}]", widget_values_ranked(concept, klass),
+<%- fieldname = "concept[concept_relations_by_id][#{klass.name.to_relation_name}]" -%>
+<%= f.input fieldname, :label => klass.model_name.human(:count => klass.singular? ? 1 : 2) do %>
+  <%= text_field_tag fieldname, widget_values_ranked(concept, klass),
     :id => klass.name.to_relation_name,
     :class => "entity_select",
     :"data-query-url" => concepts_path(:format => :json,
-        :exclude_top_terms => klass != Iqvoc::Concept.broader_relation_class || nil),
+    :exclude_top_terms => klass != Iqvoc::Concept.broader_relation_class || nil),
     :"data-entity-uri" => concept_path("{id}"),
     :"data-singular" => klass.singular? || nil,
     :"data-entities" => widget_entities_ranked(concept, klass),
     :"data-qualified" => "rank" %>
-</li>
+  <%= content_tag :p, t('txt.common.type_to_search'), :class => 'help-block' %>
+<% end %>

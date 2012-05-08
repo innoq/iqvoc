@@ -15,6 +15,10 @@ body {
   padding: 8px 0;
 }
 
+.sidebar input[type=checkbox] {
+  display: inline;
+}
+
 /* forms */
 
 form.button_to {
@@ -34,6 +38,10 @@ form.button_to {
   margin-bottom: 0;
 }
 
+dl.note_annotations {
+  margin-top: 6px;
+}
+
 .sorting-controls {
   margin-left: 2px;
 }
@@ -44,6 +52,25 @@ tr.highlightable {
 
 img.spinner {
   margin-left: -25px;
+}
+
+.alert-error ul {
+  margin-left: 30px;
+  margin-bottom: 0px;
+}
+
+/* jQuery UI customizations */
+
+.ui-widget {
+  font-family: inherit;
+  font-size: inherit;
+}
+.ui-widget .ui-widget {
+  font-size: inherit;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 /* navigation bar (based on Bootstrap) */
@@ -91,7 +118,7 @@ legend {
   margin-bottom: 0;
 }
 
-fieldset > div:first-of-type, ol:first-of-type {
+fieldset > div:first-of-type, ol:first-of-type, p {
   -webkit-margin-top-collapse: separate;
   margin-top: 27px;
 }

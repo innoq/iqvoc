@@ -1,3 +1,3 @@
-<h2><%= t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></h2>
+<%= page_header :title => t("txt.views.concepts.new", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %>
 <%= error_messages_for @concept %>
-<%= render :partial => "concepts/base_data" %>
+<%= render 'concepts/form', :concept => @concept %>

@@ -71,9 +71,12 @@ module ApplicationHelper
 
   def error_messages_for(object)
     if object.errors.any?
-      content_tag :ul, :class => "flash_error error_list" do
-        object.errors.full_messages.each do |msg|
-          concat(content_tag(:li, msg))
+      content_tag :div, :class => 'alert alert-error' do
+        content_tag(:p, content_tag(:strong, t('txt.common.form_errors'))) <<
+        content_tag(:ul) do
+          object.errors.full_messages.each do |msg|
+            concat content_tag(:li, msg)
+          end
         end
       end
     end

@@ -1,42 +1,34 @@
-<%= form_section_for_concept(assoc_klass.model_name.human(:count => 2), :class => "row note_relation") do %>
+<fieldset class="note_relation">
+  <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
     <% change_notes = owner_klass.send(assoc_klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>
     <% change_notes.each do |note| %>
       <li class="inline_note<%= " new" if note.new_record? %>">
-        <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
-          <% if note == change_notes.last %>
-            <%= note_form.label :value, assoc_klass.model_name.human(:count => 1) %>
-            <%= note_form.text_area :value, :rows => 5, :cols => 40 %>
-
-            <label><%= Note::Annotated::Base.model_name.human(:count => 2) %></label>
-            <dl class="note_annotations">
-              <% note.annotations.each do |na| %>
-                <dt><%= na.identifier %></dt>
-                <dd><%= na.value %></dd>
+        <%= f.simple_fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
+          <%# if note == change_notes.last %>
+            <%- css = note == change_notes.last ? '' : 'uneditable-input' -%>
+            <%= note_form.input :value do %>
+              <% if note == change_notes.last %>
+                <%= note_form.input_field :value, :as => :text, :class => 'span4', :rows => 4 %>
+              <% else %>
+                <p><%= note.value %></p>
               <% end %>
-            </dl>
+            <% end %>
+            <%= note_form.input :language, :collection => options_for_language_select(note.language), :label => t("txt.common.language"), :input_html => { :class => 'span1' } %>
 
-            <%= note_form.label :language, t("txt.common.language") %>
-            <%= note_form.select :language, options_for_language_select(note.language) %>
-          <% else %>
-            <label><%= t("txt.common.value") %></label>
-            <span><%= note.value %></span>
-
-            <dl class="note_annotations">
-              <% note.annotations.each do |na| %>
-                <dt><%= na.identifier %></dt>
-                <dd><%= na.value %></dd>
-              <% end %>
-            </dl>
-
-          <% end %>
-
-    <%#= note_form.check_box :"_destroy" %>
-    <%#= note_form.label :"_destroy", t("txt.views.labels.edit.delete") %>
+            <%= f.input :note_annotations, :label => Note::Annotated::Base.model_name.human(:count => 2) do %>
+              <dl class="note_annotations">
+                <% note.annotations.each do |na| %>
+                  <dt><%= na.identifier %></dt>
+                  <dd><%= na.value %></dd>
+                <% end %>
+              </dl>
+            <% end %>
+          <%# else %>
+          <%# end %>
         <% end %>
       </li>
-      <hr>
     <% end %>
   </ol>
-  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn">
-<% end %>
+  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn pull-right">
+</fieldset>
