@@ -123,7 +123,7 @@ return {
 jQuery(document).ready(function($) {
 	"use strict";
 
-	var locale = $("head meta[name=i18n-locale]").attr("content");
+	var locale = document.documentElement.getAttribute("lang");
 
 	IQVOC.enhancedDropdown(".menu");
 	IQVOC.dynamicAuth("#auth_controls");
