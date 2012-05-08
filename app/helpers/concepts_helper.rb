@@ -71,7 +71,7 @@ module ConceptsHelper
   end
 
   def concept_header(concept)
-    desc = Iqvoc::Concept.base_class.model_name.human
+    desc = concept.class.model_name.human
 
     if concept.expired_at
       desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} "
