@@ -1,6 +1,6 @@
-<%= content_tag :div, :class => "relation translation", :lang => (defined?(concept) ? lang || nil : nil) do %>
+<%= content_tag :div, :class => "relation translation panel", :lang => (defined?(concept) ? lang || nil : nil) do %>
   <%- if defined?(concept) -%>
-    <h2><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h2>
+    <h2><%= klass.model_name.human(:count => 2) %> <small><%= "#{t("languages.#{lang}", :default => lang.to_s)}" %></small></h2>
     <div class="relation-body">
       <%= item_listing(concept.labels_for_labeling_class_and_language(klass, lang)) do |label|
         label.value
