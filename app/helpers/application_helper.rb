@@ -58,7 +58,7 @@ module ApplicationHelper
 
   # Formats a list ob items or returns a remark if no items where given
   def item_listing(items, &block)
-    return content_tag :p, "-", :class => 'term-unavailable' if items.empty?
+    return nil if items.empty?
 
     content_tag :ul, :class => "entity_list" do
       items.map do |item|
