@@ -1,0 +1,33 @@
+#infovis {
+  float: right;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  margin: 0 0 10px 10px;
+  border: 1px solid #EEE;
+}
+
+#infovis .button {
+  float: right;
+}
+
+#infovis .concept {
+  a {
+    color: #000;
+  }
+}
+
+#infovis.filtered .concept {
+  overflow: visible;
+  color: #111;
+}
+
+#infovis .label {
+  padding: 0 2px;
+  color: #111;
+  background-color: #EEE;
+}
+
+#infovis-label .label {
+  font-size: 0.8em;
+}

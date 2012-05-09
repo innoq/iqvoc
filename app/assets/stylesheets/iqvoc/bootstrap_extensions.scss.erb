@@ -1,0 +1,37 @@
+[class^="icon-"], [class*=" icon-"] {
+  background-image: url("<%= asset_data_uri('bootstrap/glyphicons-halflings.png') %>")
+}
+
+.icon-white {
+  background-image: url("<%= asset_data_uri('bootstrap/glyphicons-halflings-white.png') %>");
+}
+
+.navbar .navbar-search {
+  overflow: auto; /* block formatting context to shrink in between surrounding floats */
+  float: none;
+  text-align: center;
+}
+
+.dropdown-menu {
+  h3 {
+    margin: 0 10px;
+  }
+  label {
+    margin: 0;
+    padding: 2px 10px;
+  }
+  label:hover, label:hover a {
+    text-decoration: none;
+    color: #FFF;
+    background-color: #08C;
+  }
+  label input, label a {
+    display: inline;
+  }
+  label input {
+    margin-right: 0.5em;
+  }
+  label a {
+    padding-left: 0;
+  }
+}

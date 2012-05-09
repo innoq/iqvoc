@@ -1,3 +1,11 @@
 /*
-*= require iqvoc/iqvoc
+*= require iqvoc/bootstrap_extensions
+*= require iqvoc/jquery-ui_extensions
+*= require iqvoc/layout
+*= require iqvoc/panel
+*= require iqvoc/sidebar
+*= require iqvoc/forms
+*= require iqvoc/entity_select
+*= require iqvoc/hacks
+*= require iqvoc/visualization
 */
