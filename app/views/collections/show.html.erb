@@ -1,4 +1,5 @@
-<%= render 'header' %>
+<%= render 'header', :collection => @collection %>
+<%= render 'sidebar', :collection => @collection %>
 
 <% if can?(:manage, @collection) %>
   <div class="editing_versioning_toolbar well">
@@ -14,16 +15,16 @@
 # TODO: We'll need a 'collection_view_data' helper (containing the following
 # "Note" stuff too).
 -%>
-<%= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
+<%#= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
 
 <% Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| %>
   <% (languages || Iqvoc.available_languages).each do |lang| %>
-    <%#= render labeling_class.partial_name(@collection), :klass => labeling_class, :concept => @collection, :lang => lang %>
+    <%= render labeling_class.partial_name(@collection), :klass => labeling_class, :concept => @collection, :lang => lang %>
   <% end %>
 <% end %>
 
 <div class="relation panel">
-  <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
+  <h2><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h2>
   <ul>
     <% @collection.note_skos_definitions.each do |definition| %>
       <li><%= definition.value %> (<%= definition.language %>)</li>
@@ -32,7 +33,7 @@
 </div>
 
 <div class="relation panel">
-  <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
+  <h2><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
     <ul>
       <%- @collection.concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.each do |concept| -%>

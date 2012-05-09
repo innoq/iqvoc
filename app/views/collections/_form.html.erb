@@ -4,7 +4,7 @@
 # migrations to update existing data.
 -%>
 
-<%= simple_form_for collection, :as => :concept, :url => collections_path, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection), :html => { :class => 'form-horizontal' } do |f| %>
 <fieldset>
   <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
   <p><%= t 'txt.common.hint_csv_input' %></p>
