@@ -1,0 +1,6 @@
+<%= concept_header @collection %>
+
+<%= content_for :head do -%>
+  <link href="<%= collection_url(@collection.origin, :format => :ttl, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
+  <link href="<%= collection_url(@collection.origin, :format => :rdf, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
+<% end -%>
