@@ -18,8 +18,8 @@
         <td><%= user.role.humanize %></td>
         <td><%= user.active? ? glyph(:yes) : glyph(:no) %></td>
         <td>
-          <%= link_to icon(:edit) + " " + t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => "btn" %>
-          <%= link_to icon(:trash, :white) + " " + t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
+          <%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => "btn" %>
+          <%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
         </td>
       </tr>
     <% end %>
