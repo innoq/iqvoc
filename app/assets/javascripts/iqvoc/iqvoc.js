@@ -187,7 +187,7 @@ jQuery(document).ready(function($) {
     $("input[type=checkbox].lang_check").attr("checked", false);
   });
   $("select.search_type").change(function() {
-    var result_type_filter = $("li.result_type_filter");
+    var result_type_filter = $(".result_type_filter");
     if($(this).val().match(/labeling/)) {
       result_type_filter.show();
     }

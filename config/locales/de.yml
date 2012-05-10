@@ -162,6 +162,7 @@ de:
        all: "alle"
        none: "keine"
        for: "Nach"
+       mode: "Modus"
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"

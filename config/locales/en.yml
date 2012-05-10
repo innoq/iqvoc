@@ -170,6 +170,7 @@ en:
        all: "all"
        none: "none"
        for: "For"
+       mode: "Mode"
      user_sessions:
        header: "Login"
        login: "Login"
@@ -259,7 +260,7 @@ en:
        invalid_key: "unknown key: #{key}"
        invalid_value: "unsupported value: %{key} (%{error_message})"
      search_results:
-       insufficient_data: "You entered insufficient search data"
+       insufficient_data: "You gave insufficient search data."
      users:
        successfully_created: "User has been successfully created."
        successfully_updated: "User has been successfully updated."
