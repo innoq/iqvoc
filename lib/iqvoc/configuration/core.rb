@@ -24,7 +24,8 @@ module Iqvoc
           }, {
             :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
                 hierarchical_concepts_path },
-            :controller => "concepts/hierarchical"
+            :controller => "concepts/hierarchical",
+            :active? => proc { %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).include?(params[:controller]) }
           }, {
             :content => proc { link_to t("txt.views.navigation.collections"),
                 collections_path },
@@ -42,8 +43,7 @@ module Iqvoc
             :controller => "instance_configuration",
             :authorized? => proc { can? :manage, Iqvoc.config }
           }, {
-            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" },
-            :active? => false
+            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" }
           }
         ]
 

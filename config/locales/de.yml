@@ -138,6 +138,7 @@ de:
        users: "Benutzer"
        collections: "Kollektionen"
        login: "Login"
+       sections: "Bereiche"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"

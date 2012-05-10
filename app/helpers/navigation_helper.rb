@@ -1,5 +1,24 @@
 module NavigationHelper
 
+  # expects an array of hashes with the following members:
+  # :content - usually a navigation link
+  # :active? - an optional function determining whether the respective item is
+  #     currently active
+  # :controller - an optional string, used instead of `active?` to check for a
+  #     specific controller
+  # :authorized? - an optional function determining whether the respective item
+  #     is available to the current user (defaults to true)
+  def nav_items(items)
+    items.map do |item|
+      if (not item[:authorized?]) || instance_eval(&item[:authorized?])
+        active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
+
+        content_tag "li", instance_eval(&item[:content]),
+            :class => ("active" if active)
+      end
+    end.join.html_safe
+  end
+
   def sidebar(&block)
     content_for :sidebar do
       content_tag :div, :class => 'well sidebar' do
@@ -30,7 +49,7 @@ module NavigationHelper
         desc << icon(icon) << " "
       end
       desc << opts.delete(:text).to_s
-      link_to(desc.html_safe, opts.delete(:path))
+      link_to(desc.html_safe, opts.delete(:path), opts)
     end
 
     content_tag :li, content, :class => css_class

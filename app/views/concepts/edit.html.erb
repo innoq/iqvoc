@@ -1,4 +1,5 @@
-<%= concept_header @concept %>
+<%= render 'header', :concept => @concept %>
+<%= render 'concepts/sidebars/singular', :concept => @concept %>
 
 <%= error_messages_for @concept %>
 
@@ -19,4 +20,3 @@
 <% end %>
 
 <%= render 'form', :concept => @concept %>
-<%= render 'sidebar', :concept => @concept %>

@@ -1,4 +1,5 @@
-<%= render 'header' %>
+<%= render 'header', :concept => @concept %>
+<%= render 'concepts/sidebars/singular', :concept => @concept %>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
     <div class="editing_versioning_toolbar well">
@@ -13,4 +14,3 @@
 <% end %>
 
 <%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
-<%= render 'sidebar', :concept => @concept %>

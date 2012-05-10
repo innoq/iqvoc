@@ -27,14 +27,11 @@ module ConceptsHelper
       (0..9).to_a +
       ['[']
 
-    content_tag :ul, :class => 'letter_selector' do
-      html = ""
-      letters.each do |letter|
-        html += content_tag(:li, link_to(letter, yield(letter)),
-          :class => "ui-corner-all ui-widget-content" +
-            ((params[:letter] == letter.to_s.downcase) ? " ui-state-active" : ""))
-      end
-      html.html_safe
+    content_tag :ul, :class => 'letter-selector unstyled' do
+      letters.map do |letter|
+        content_tag :li, link_to(letter, yield(letter)),
+          :class => ('active' if params[:letter] == letter.to_s.downcase)
+      end.join("").html_safe
     end
   end
 

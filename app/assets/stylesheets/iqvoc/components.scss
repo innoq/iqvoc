@@ -35,3 +35,26 @@ img.spinner {
 dt {
   margin-top: 10px;
 }
+
+.letter-selector {
+  $active: white;
+  margin: 0;
+  li {
+    a {
+      color: #BFBFBF;
+      font-weight: bold;
+    }
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    display: inline-block;
+    margin-right: 2px;
+    padding: 2px 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+    &.active {
+      background-color: $active;
+    }
+  }
+}
