@@ -1,4 +1,4 @@
-<div class="relation">
+<div class="<%= html_classes("relation", (class_name rescue nil)) %>">
   <%- if defined?(concept) -%>
     <% notes = concept.notes_for_class(klass) %>
     <h4><%= klass.model_name.human(:count => notes.count) %></h4>
