@@ -6,12 +6,6 @@
   background-image: url("<%= asset_data_uri('bootstrap/glyphicons-halflings-white.png') %>");
 }
 
-.navbar .navbar-search {
-  overflow: auto; /* block formatting context to shrink in between surrounding floats */
-  float: none;
-  text-align: center;
-}
-
 .dropdown-menu {
   h3 {
     margin: 0 10px;
@@ -19,25 +13,57 @@
   label {
     margin: 0;
     padding: 2px 10px;
-  }
-  label:hover, label:hover a {
-    text-decoration: none;
-    color: #FFF;
-    background-color: #08C;
-  }
-  label input, label a {
-    display: inline;
-  }
-  label input {
-    margin-right: 0.5em;
-  }
-  label a {
-    padding-left: 0;
+
+    &:hover, &:hover a {
+      text-decoration: none;
+      color: #FFF;
+      background-color: #08C;
+    }
+
+    input {
+      margin-right: 0.5em;
+      display: inline;
+    }
+
+    a {
+      padding-left: 0;
+      display: inline;
+    }
   }
 }
 
-.navbar .brand {
-  color: #fff;
+.navbar {
+  .brand {
+    color: #fff;
+  }
+
+  .navbar-inner {
+    padding: 0 5px;
+
+    background: -moz-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
+    background: -o-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
+    background: -ms-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
+    background: -webkit-gradient(linear,left top,left bottom,from(#373737),color-stop(0.5,#343434),to(#242424));
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(1,rgba(55, 55, 55, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0,rgba(36, 36, 36, 1)));
+    border-top: 1px solid #2A2A2A;
+    border-bottom: 1px solid black;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Hide search form
+@media (max-width: 1200px) {
+  .navbar-search {
+    display: none;
+  }
+}
+
+// Unify topbar margin on all viewports
+@media (min-width: 980px) {
+  .navbar-fixed-top {
+    position: static;
+    margin-bottom: 18px;
+  }
 }
 
 form#search {
@@ -46,13 +72,6 @@ form#search {
   }
 }
 
-.navbar-inner {
-  background: -moz-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-  background: -o-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-  background: -ms-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-  background: -webkit-gradient(linear,left top,left bottom,from(#373737),color-stop(0.5,#343434),to(#242424));
-  background: -webkit-gradient(linear,left bottom,left top,color-stop(1,rgba(55, 55, 55, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0,rgba(36, 36, 36, 1)));
-  border-top: 1px solid #2A2A2A;
-  border-bottom: 1px solid black;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+.page-header {
+  margin: 12px 0 18px 0;
 }
