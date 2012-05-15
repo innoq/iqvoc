@@ -1,4 +1,4 @@
-# encoding: UTF-8
+## encoding: UTF-8
 
 # Copyright 2011 innoQ Deutschland GmbH
 #
@@ -139,6 +139,7 @@ de:
        collections: "Kollektionen"
        login: "Login"
        sections: "Bereiche"
+       quick_search: "Schnellsuche"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"

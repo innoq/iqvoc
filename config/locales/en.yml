@@ -147,6 +147,7 @@ en:
        collections: "Collections"
        login: "Login"
        sections: "Sections"
+       quick_search: "Quick search"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"
