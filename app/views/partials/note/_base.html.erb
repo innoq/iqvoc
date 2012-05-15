@@ -3,14 +3,14 @@
     <% notes = concept.notes_for_class(klass) %>
     <h2><%= klass.model_name.human(:count => notes.count) %></h2>
     <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
+      <%= render :partial => 'partials/note/note', :collection => notes %>
     </div>
   <%-# SKOS-XL support -%>
   <%- elsif defined?(label) -%>
     <% notes = label.notes_for_class(klass) %>
     <h2><%= klass.model_name.human(:count => notes.count) %></h2>
     <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
+      <%= render :partial => 'partials/note/note', :collection => notes %>
     </div>
   <%- end -%>
 </div>
