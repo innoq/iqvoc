@@ -1,37 +1,40 @@
-<li id="language_selection" class="dropdown">
-  <a href="javascript:;" class="dropdown-toggle">
-    <%= t("txt.views.lang_widget.caption") %>
-    <b class="caret"></b>
-  </a>
+<ul class="nav pull-right">
+  <li class="divider-vertical"></li>
+  <li id="language_selection" class="dropdown">
+    <a href="javascript:;" class="dropdown-toggle">
+      <%= t("txt.views.lang_widget.caption") %>
+      <b class="caret"></b>
+    </a>
 
-  <ul class="lang-widget dropdown-menu">
-    <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
-      <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
-      <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
-        <li>
-          <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
-            :class => ("current" if lang == I18n.locale.to_s) %>
-        </li>
+    <ul class="lang-widget dropdown-menu">
+      <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
+        <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
+        <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
+          <li>
+            <%= link_to t("languages.#{lang}"), params.merge(:lang => lang),
+              :class => ("current" if lang == I18n.locale.to_s) %>
+          </li>
+        <% end %>
       <% end %>
-    <% end %>
 
-    <% if Iqvoc.available_languages.any? %>
-      <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
-      <% Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s }.each do |lang| %>
-        <li>
-          <label>
-            <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>
-          </label>
-        </li>
+      <% if Iqvoc.available_languages.any? %>
+        <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
+        <% Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s }.each do |lang| %>
+          <li>
+            <label>
+              <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>
+            </label>
+          </li>
+        <% end %>
       <% end %>
-    <% end %>
-  </ul>
-</li>
+    </ul>
+  </li>
 
-<li>
-  <% if current_user %>
-    <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
-  <% else %>
-    <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
-  <% end %>
-</li>
+  <li>
+    <% if current_user %>
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
+    <% else %>
+      <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
+    <% end %>
+  </li>
+</ul>
