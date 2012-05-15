@@ -36,18 +36,57 @@
       <div class="page-header">
         <h1 id="about">About <small>What is it?</small></h1>
       </div>
-        <p>iQvoc supports vocabularies that are common to many knowledge organisation systems, such as:</p>
+      <div class="row">
+        <div class="span4">
+          <p>iQvoc supports vocabularies that are common to many knowledge organisation systems, such as:</p>
 
-        <ul>
-          <li>Thesauri</li>
-          <li>Taxonomies</li>
-          <li>Classification schemes</li>
-          <li>Subject heading systems</li>
-        </ul>
+          <ul>
+            <li>Thesauri</li>
+            <li>Taxonomies</li>
+            <li>Classification schemes</li>
+            <li>Subject heading systems</li>
+          </ul>
 
-        <a href="https://twitter.com/iqvoc" class="twitter-follow-button" data-show-count="false">Follow @iqvoc</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-  </section>
+          <a href="https://twitter.com/iqvoc" class="twitter-follow-button" data-show-count="false">Follow @iqvoc</a>
+          <script>// !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+        <div class="span8">
+          <ul class="thumbnails">
+            <li class="span4">
+              <div id="screenshot1" class="modal hide">
+                <div class="modal-header">
+                  <button class="close" data-dismiss="modal">×</button>
+                  <h3>Concept View</h2>
+                </div>
+                <div class="modal-body">
+                  <img src="images/screen1_800x552.png">
+                  <p></p>
+                </div>
+              </div>
+              <div class="thumbnail">
+                <a data-toggle="modal" href="#screenshot1" class="thumbnail"><img src="images/screen1_800x552.png"></a>
+              </div>
+            </li>
+            <li class="span4">
+              <div id="screenshot2" class="modal hide">
+                <div class="modal-header">
+                  <button class="close" data-dismiss="modal">×</button>
+                  <h3>Dashboard</h2>
+                </div>
+                <div class="modal-body">
+                  <img src="images/screen2_800x552.png">
+                  <p>The dashboard serves as starting point for daily collaborative work.
+                    It lists all the current work-in-progress concepts and their respective status.</p>
+                </div>
+              </div>
+              <div class="thumbnail">
+                <a data-toggle="modal" href="#screenshot2" class="thumbnail"><img src="images/screen2_800x552.png"></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
     <section>
       <div class="page-header">
@@ -65,7 +104,11 @@
         </div>
         <div class="span4">
           <h2>Editorial Workflow</h2>
-          <p>The general vocabulary administrator may authorize registered users as vocabulary editors. Editing is performed in an extension of the original Web interface, so the editorial staff can be globally distributed and there is no need for any kind of additional tooling. More sophisticated editorial features are planned for version 2, including a fine grained work flow and life cycle management.</p>
+          <p>The general vocabulary administrator may authorize registered users as vocabulary editors.
+            Editing is performed in an extension of the original Web interface, so the editorial staff
+            can be globally distributed and there is no need for any kind of additional tooling. More
+            sophisticated editorial features are planned for version 2, including a fine grained work
+            flow and life cycle management.</p>
         </div>
       </div>
       <div class="row">
@@ -140,5 +183,7 @@
     </section>
 
   </div>
+  <script type="text/javascript" src="javascripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
 </body>
 </html>
