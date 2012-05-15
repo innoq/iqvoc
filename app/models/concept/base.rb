@@ -31,8 +31,7 @@ class Concept::Base < ActiveRecord::Base
 
   validates :origin, :presence => true, :on => :update
 
-  validate :ensure_maximum_two_versions_of_a_concept,
-    :on => :create
+  validate :ensure_distinct_versions, :on => :create
 
   validate :ensure_a_pref_label_in_the_primary_thesaurus_language,
     :on => :update
@@ -419,9 +418,20 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Validation methods
 
-  def ensure_maximum_two_versions_of_a_concept
-    if Concept::Base.by_origin(origin).count >= 2
+  # validates that
+  # a) no more than one concept with the same origin already exists
+  # b) if a concept with the same origin exists, its publication state differs
+  #    from the to-be-saved one's
+  def ensure_distinct_versions
+    query = Concept::Base.by_origin(origin)
+    existing_total = query.count
+    if existing_total >= 2
       errors.add :base, I18n.t("txt.models.concept.version_error")
+    elsif existing_total == 1
+      unless (query.published.count == 0 and published?) or
+             (query.published.count == 1 and not published?)
+        errors.add :base, I18n.t("txt.models.concept.version_error")
+      end
     end
   end
 

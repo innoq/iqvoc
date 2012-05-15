@@ -75,6 +75,10 @@ class Collection::Base < Concept::Base
 
   #********** Methods
 
+  def additional_info
+    concepts.count
+  end
+
   def to_param
     origin
   end

@@ -32,7 +32,8 @@ class Collections::HierarchicalController < CollectionsController
             :id => collection.id,
             :url => collection_path(:id => collection, :format => :html),
             :text => CGI.escapeHTML(collection.pref_label.to_s),
-            :hasChildren => collection.subcollections.any?
+            :hasChildren => collection.subcollections.any?,
+            :additionalText => " (#{collection.additional_info})"
           }
         end
         render :json => children.to_json
