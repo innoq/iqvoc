@@ -1,11 +1,9 @@
 .infovis,
 #infovis {
-  float: right;
-  width: 300px;
-  height: 300px;
+  width: 560px;
+  height: 560px;
   overflow: hidden;
-  margin: 0 0 10px 10px;
-  border: 1px solid #EEE;
+  margin: 0 auto;
 
   .button {
     float: right;
@@ -17,18 +15,32 @@
     }
   }
 
+  input[type="checkbox"] {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  label {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+
   &.filtered .concept {
     overflow: visible;
     color: #111;
   }
 
-  .label {
-    padding: 0 2px;
-    color: #111;
-    background-color: #EEE;
+  .btn {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
   }
-}
 
-#infovis-label .label {
-  font-size: 0.8em;
+  .btn {
+    &.resize {
+      display: none;
+    }
+  }
 }
