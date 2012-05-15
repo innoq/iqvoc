@@ -181,7 +181,7 @@ en:
        error: "Email and/or password wrong. Please check your given credentials."
      users:
        index:
-         header: "User management"
+         header: "User Management"
        new:
          header: "New user"
        edit:
