@@ -58,6 +58,7 @@ module Iqvoc
           iqvoc/visualization.js
           json2.js
           bootstrap/bootstrap.js
+          html5.js
         )
 
         self.searchable_class_names = [
