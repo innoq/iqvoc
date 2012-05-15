@@ -104,4 +104,8 @@ module ApplicationHelper
     raw GLYPHS[name]
   end
 
+  def html_classes(*args)
+    args.compact.join(" ")
+  end
+
 end

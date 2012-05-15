@@ -1,3 +1,4 @@
+.infovis,
 #infovis {
   float: right;
   width: 300px;
@@ -5,27 +6,27 @@
   overflow: hidden;
   margin: 0 0 10px 10px;
   border: 1px solid #EEE;
-}
 
-#infovis .button {
-  float: right;
-}
-
-#infovis .concept {
-  a {
-    color: #000;
+  .button {
+    float: right;
   }
-}
 
-#infovis.filtered .concept {
-  overflow: visible;
-  color: #111;
-}
+  .concept {
+    a {
+      color: #000;
+    }
+  }
 
-#infovis .label {
-  padding: 0 2px;
-  color: #111;
-  background-color: #EEE;
+  &.filtered .concept {
+    overflow: visible;
+    color: #111;
+  }
+
+  .label {
+    padding: 0 2px;
+    color: #111;
+    background-color: #EEE;
+  }
 }
 
 #infovis-label .label {
