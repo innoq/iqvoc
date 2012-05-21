@@ -42,7 +42,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     Kaminari.config.default_per_page = @pagination_setting
   end
 
-  test "Searching" do
+  test "searching" do
     visit search_path(:lang => 'en', :format => 'html')
 
     [{
@@ -50,7 +50,7 @@ class SearchTest < ActionDispatch::IntegrationTest
         :amount => 1, :result => 'Forest'
       }].each { |q|
       select q[:type], :from => "t"
-      fill_in "q", :with => q[:query]
+      fill_in "Search term(s)", :with => q[:query]
       select q[:query_type], :from => "qt"
 
       # select all languages
@@ -74,15 +74,15 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     select "Labels", :from => "t"
     select "contains", :from => "qt"
-    fill_in "q", :with => "Alpha"
+    fill_in "Search term(s)", :with => "Alpha"
     click_button("Search")
     assert page.has_css?("#search_results dt", :count => 1)
 
-    choose "Concept"
+    choose "Concepts"
     click_button "Search"
-    assert !page.has_css?("#search_results dt")
+    assert page.has_no_css?("#search_results dt")
 
-    choose "Collection"
+    choose "Collections"
     click_button "Search"
     assert page.has_css?("#search_results dt")
   end
@@ -92,7 +92,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     select "Labels", :from => "t"
     select "contains", :from => "qt"
-    fill_in "q", :with => "res"
+    fill_in "Search term(s)", :with => "res"
     select @collection.to_s, :from => "c"
 
     # select all languages
@@ -107,8 +107,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     assert page.has_content?("search:result1 a sdc:Result")
@@ -130,7 +130,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     select "Notes", :from => "t"
     select "contains", :from => "qt"
-    fill_in "q", :with => "ipsum"
+    fill_in "Search term(s)", :with => "ipsum"
     select @collection.to_s, :from => "c"
 
     # select all languages
@@ -149,7 +149,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     select "Labels", :from => "t"
     select "exact match", :from => "qt"
-    fill_in "q", :with => ""
+    fill_in "Search term(s)", :with => ""
     select @collection.to_s, :from => "c"
 
     # select all languages
@@ -164,7 +164,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.find("#search_results").has_content?("Forest")
   end
 
-  test "Pagination" do
+  test "pagination" do
     # create a large number of concepts
     12.times { |i|
       FactoryGirl.create(:concept,
@@ -177,7 +177,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     select "Labels", :from => "t"
     select "contains", :from => "qt"
-    fill_in "q", :with => "sample_"
+    fill_in "Search term(s)", :with => "sample_"
 
     click_button("Search")
 
@@ -190,8 +190,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     assert page.has_content?("sdc:totalResults 12;")

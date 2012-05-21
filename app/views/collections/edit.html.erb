@@ -1,3 +1,5 @@
 <%= render 'header', :collection => @collection %>
+<%= error_messages_for @collection %>
+
 <%= render 'form', :collection => @collection %>
 <%= render 'sidebar', :collection => @collection %>

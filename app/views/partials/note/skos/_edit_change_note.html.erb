@@ -1,4 +1,4 @@
-<fieldset class="note_relation">
+<fieldset class="note_relation" id="<%= assoc_klass.name.to_relation_name %>_data">
   <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
     <% change_notes = owner_klass.send(assoc_klass.name.to_relation_name).sort {|a,b| a.created_at <=> b.created_at } %>

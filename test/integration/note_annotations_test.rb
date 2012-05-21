@@ -48,8 +48,8 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     ttl = page.source.

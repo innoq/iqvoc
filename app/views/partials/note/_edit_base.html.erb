@@ -1,4 +1,4 @@
-<fieldset class="note_relation">
+<fieldset class="note_relation" id="<%= assoc_klass.name.to_relation_name %>_data">
   <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
     <% owner_klass.send(assoc_klass.name.to_relation_name).select{|n| n.class == assoc_klass}.each do |note| %>
@@ -7,7 +7,7 @@
           <%= note_form.input :value, :as => :text, :input_html => { :rows => 4, :class => 'span4' } %>
           <%= note_form.input :language, :collection => options_for_language_select(note.language), :label => t("txt.common.language"), :input_html => { :class => 'span1' } %>
 
-          <% if note.new_record? %>
+          <% unless note.new_record? %>
             <%= note_form.input :"_destroy", :as => :boolean, :label => t("txt.common.delete") %>
           <% end %>
         <% end %>

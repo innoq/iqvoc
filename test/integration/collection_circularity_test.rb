@@ -98,7 +98,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
         :with => "%s," % @coll1.origin
     click_button "Speichern"
 
-    assert page.has_css?(".flash_error")
+    assert page.has_css?(".alert-error")
     assert page.has_css?("#edit_concept")
     assert page.source.include?( # XXX: page.has_content? didn't work
         I18n.t("txt.controllers.collections.circular_error") % @coll1.pref_label)

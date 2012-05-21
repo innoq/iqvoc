@@ -1,4 +1,4 @@
-<div class="tabbable">  
+<div class="tabbable">
   <ul class="nav nav-tabs sections">
   <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
     <li class="<%= "active" if index == 0 %>"><a href="#<%= section_key %>" data-toggle="tab"><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></a></li>
