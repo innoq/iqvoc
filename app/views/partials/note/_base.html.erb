@@ -5,9 +5,9 @@
               elsif defined?(label)
                 label
               end %>
-    <% notes = object.notes_for_class(klass) %>
-    <h2><%= klass.model_name.human(:count => notes.count) %></h2>
-    <div class="relation-body">
-      <%= render :partial => 'partials/note/note', :collection => notes %>
-    </div>
+  <% notes = object.notes_for_class(klass) %>
+  <h2><%= klass.model_name.human(:count => notes.count) %></h2>
+  <div class="relation-body">
+    <%= render :partial => 'partials/note/note', :collection => notes %>
+  </div>
 </div>

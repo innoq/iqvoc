@@ -6,6 +6,7 @@
 *= require iqvoc/panel
 *= require iqvoc/sidebar
 *= require iqvoc/forms
+*= require iqvoc/note
 *= require iqvoc/entity_select
 *= require iqvoc/hacks
 *= require iqvoc/visualization
