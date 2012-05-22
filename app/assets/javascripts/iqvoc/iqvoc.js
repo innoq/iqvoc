@@ -77,7 +77,7 @@ return {
 jQuery(document).ready(function($) {
   "use strict";
 
-  var locale = $("head meta[name=i18n-locale]").attr("content");
+  var locale = document.documentElement.getAttribute("lang");
 
   if(IQVOC.visualization) {
     IQVOC.visualization.init("infovis", function(container) {
