@@ -3,20 +3,7 @@
 
 <%= error_messages_for @concept %>
 
-<% if @association_objects_in_editing_mode.present? %>
-  <% if @association_objects_in_editing_mode[:concept_relations].present? %>
-    <h4><%= t("txt.common.referenced_concepts") %></h4>
-    <ul>
-      <% @association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>
-        <li>
-          <%= concept_relation.class.model_name.human %>:
-          <%= link_to(concept_relation.target.pref_label.to_s,
-            concept_path(:published => 0, :id => concept_relation.target)) %>
-          [<%= t("txt.common.editor") %>: <%= user_details(concept_relation.target.locking_user) %>]
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-<% end %>
+<%= render 'concepts/notifications/referenced_concepts',
+  :association_objects_in_editing_mode => @association_objects_in_editing_mode %>
 
 <%= render 'form', :concept => @concept %>

@@ -53,7 +53,7 @@ de:
      delete: "Löschen"
      attributes: "Eigenschaften"
      editor: "Redakteur"
-     referenced_concepts: "Referenzierte Konzepte befinden sich in Bearbeitung:"
+     referenced_concepts: "Einige referenzierte Konzepte befinden sich momentan in Bearbeitung."
      association_not_found: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden"
      to_review: "Zur Freigabe vorlegen"
      is_in_review: "Dokument befindet sich im Reviewprozess"

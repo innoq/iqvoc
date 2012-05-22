@@ -34,7 +34,11 @@ module ApplicationHelper
   end
 
   def user_details(user)
-    "#{user.name} (#{user.telephone_number})"
+    details = mail_to(user.email, user.name)
+    if user.telephone_number?
+      details << " " << user.telephone_number
+    end
+    details
   end
 
   # Formats a list ob items or returns a remark if no items where given
