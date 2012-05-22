@@ -208,7 +208,7 @@ de:
        preview_new_version: "Vorschau der Version in Bearbeitung"
        consistency_check: "Konsistenz prüfen"
        current_revision: "Aktuelle Revision %{rev}"
-       in_ongoing_editing_by: "in Bearbeitung von %{user}"
+       in_ongoing_editing_by: "in Bearbeitung von %{user}."
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
        edit:

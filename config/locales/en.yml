@@ -216,7 +216,7 @@ en:
        preview_new_version: "Preview of the version in editing"
        consistency_check: "Check consistency"
        current_revision: "Current revision %{rev}"
-       in_ongoing_editing_by: "is being edited by %{user}"
+       in_ongoing_editing_by: "is being edited by %{user}."
      labelings:
        edit:
          header: "Edit labeling"
