@@ -14,7 +14,11 @@
                 <p><%= note.value %></p>
               <% end %>
             <% end %>
-            <%= note_form.input :language, :collection => options_for_language_select(note.language), :label => t("txt.common.language"), :input_html => { :class => 'span1' } %>
+            <%= note_form.input :language,
+              :collection => options_for_language_select(note.language),
+              :label => t("txt.common.language"),
+              :include_blank => false,
+              :input_html => { :class => 'span1' } %>
 
             <%= f.input :note_annotations, :label => Note::Annotated::Base.model_name.human(:count => 2) do %>
               <dl class="note_annotations">
