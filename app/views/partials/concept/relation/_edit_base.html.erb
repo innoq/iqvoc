@@ -8,5 +8,4 @@
     :"data-entity-uri" => concept_path("{id}"),
     :"data-singular" => klass.singular? || nil,
     :"data-entities" => widget_entities(concept, klass) %>
-  <%= content_tag :p, t('txt.common.type_to_search'), :class => 'help-block' %>
 <% end %>
