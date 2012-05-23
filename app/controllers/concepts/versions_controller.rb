@@ -48,7 +48,7 @@ class Concepts::VersionsController < ApplicationController
   def branch
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
-    raise "There is already an unpublished version for Concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise "There already is an unpublished version for concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
 
     authorize! :branch, current_concept
 
