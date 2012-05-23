@@ -4,7 +4,7 @@ module FormHelper
   ## Use simple_form_for and it's helpers for forms focused on records
   #
   ## Accepts a hash of arguments with the following keys:
-  ## for: id attribute of the input element (necessary for accessible labels)
+  ## id: id attribute of the input element (necessary for accessible labels)
   ## label: label text
   def input_block(options = {}, &block)
     label_text = options.delete(:label)
