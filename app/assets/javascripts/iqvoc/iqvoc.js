@@ -9,13 +9,7 @@ var createNote = function(ev) {
   var addButton = $(this);
   var container = addButton.closest("fieldset");
   var source = $("ol li:last-child", container);
-
-  // special case for usage notes
-  // a usage note contains a select box instead of a textarea
-  // FIXME: Hardcoded UMT stuff
-  var isUsageNote = source.find("label:first")[0].getAttribute("for");
-  isUsageNote = isUsageNote ? isUsageNote.match(/^concept_note_umt_usage_notes/) : false;
-  var noteSelector = isUsageNote ? "select" : "textarea, input";
+  var inputSelector = "input, select, textarea";
 
   if(source.is(":hidden")) {
     source.show();
@@ -24,33 +18,29 @@ var createNote = function(ev) {
 
   var clone = source.clone();
 
-  var count = source.find(noteSelector)[0].id
+  var count = source.find(inputSelector)[0].id
       .match(/_(\d+)_/)[1];
   count = String(parseInt(count, 10) + 1);
   var newIdCount = "_" + count + "_",
     newNameCount = "[" + count + "]";
 
-  clone.find("label")[0]
-    .setAttribute("for", (source.find("label")[0].getAttribute("for") || "")
-        .replace(/_\d+_/, newIdCount));
+  clone.find("label").each(function(index, element) {
+    var el = $(element);
+    if (el.attr("for")) {
+      el.attr("for", el.attr("for").replace(/_\d+_/, newIdCount));
+    }
+  })
 
-  // clone.find("input")
-  // .attr("id", source.find("input[type=hidden]").attr("id").replace(/_\d+_/, newIdCount))
-  // .attr("name", source.find("input[type=hidden]").attr("name").replace(/\[\d+\]/, newNameCount));
-
-  var src, el;
-  if(!isUsageNote) {
-    src = source.find(noteSelector)[0];
-    el = clone.find(noteSelector).val("")[0];
-    el.id = src.id.replace(/_\d+_/, newIdCount);
-    el.name = src.name.replace(/\[\d+\]/, newNameCount);
-  }
-  src = source.find("select")[0];
-  if(src) {
-    el = clone.find("select")[0];
-    el.id = src.id.replace(/_\d+_/, newIdCount);
-    el.name = src.name.replace(/\[\d+\]/, newNameCount);
-  }
+  clone.find(inputSelector).each(function(index, element) {
+    var el = $(element);
+    el.val("");
+    if (el.attr("id")) {
+      el.attr("id", el.attr("id").replace(/_\d+_/, newIdCount));
+    }
+    if (el.attr("name")) {
+      el.attr("name", el.attr("name").replace(/\[\d+\]/, newNameCount));
+    }
+  });
 
   clone.addClass("new");
   $("ol", container).append(clone);
