@@ -1,3 +1,12 @@
+## 3.5.7 (2012-05-24)
+
+  * Rankable (weighted) relations
+  * Counting concept members in collection hierarchy view
+  * Improved heroku support
+  * Bugfixes
+  
+Please note that this is the last tiny release before we hit 4.0.0.
+
 ## 3.5.6 (2012-03-07)
 
   * Refactored origin (URI slug) generation<br>
