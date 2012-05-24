@@ -29,4 +29,16 @@ module SearchResultsHelper
     text
   end
 
+  def results_header(results)
+    desc = if results.any?
+      "(#{results.total_count})"
+    else
+      t('txt.views.search_results.no_results_found')
+    end
+
+    content_tag :h2 do
+      raw( t('txt.views.search_results.search_results') << " " << content_tag(:small, desc) )
+    end
+  end
+
 end

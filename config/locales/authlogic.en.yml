@@ -33,6 +33,6 @@ en:
     attributes:
       user_session:
         login: login
-        email: email
-        password: password
+        email: Email
+        password: Password
         remember_me: remember me

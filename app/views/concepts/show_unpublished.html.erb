@@ -1,43 +1,42 @@
-<%= render 'show_head' %>
+<%= render 'header', :concept => @concept %>
+<%= render 'concepts/sidebars/singular', :concept => @concept %>
 
-<p class="flash_notice">
-  <%= t("txt.views.versioning.current_revision") %> <%= @concept.rev %>
+<%= alert :info, :header => t('txt.common.unpublished_version') + "." do %>
+  <%= t("txt.views.versioning.current_revision", :rev => @concept.rev) %>
   <% if @concept.locked? %>
-    <%= t("txt.views.versioning.in_ongoing_editing_by") %>
-    <%= @concept.locking_user.name %>
+    <%= t("txt.views.versioning.in_ongoing_editing_by", :user => @concept.locking_user.name) %>
   <% end %>
-</p>
+<% end %>
 
-<div class="editing_versioning_toolbar ui-corner-all ui-widget ui-widget-content">
-
+<div class="editing_versioning_toolbar well">
   <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.views.versioning.publishing"),
-      concept_versions_merge_path(:origin => @concept.origin) %>
+      concept_versions_merge_path(:origin => @concept.origin), :class => "btn btn-primary" %>
   <% end %>
   <%= button_to t("txt.views.versioning.consistency_check"),
-    concept_versions_consistency_check_path(:origin => @concept.origin),
-    :method => :get %>
+    concept_versions_consistency_check_path(:origin => @concept.origin), :class => :btn, :method => :get %>
 
   <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.common.to_review"),
-      concept_versions_to_review_path(:origin => @concept.origin) %>
+      concept_versions_to_review_path(:origin => @concept.origin), :class => :btn %>
   <% end %>
 
   <% unless @concept.locked? %>
     <%= button_to t("txt.views.versioning.to_edit_mode"),
-      concept_versions_lock_path(:origin => @concept.origin) %>
+      concept_versions_lock_path(:origin => @concept.origin), :class => :btn %>
     <%= button_to t("txt.views.versioning.delete"),
       concept_path(:published => 0, :id => @concept.origin),
       :method => :delete,
+      :class => :btn,
       :confirm => I18n.t("txt.views.versioning.delete_confirm") if can?(:destroy, @concept) %>
   <% else %>
     <%= button_to t("txt.views.versioning.unlock"),
-      concept_versions_unlock_path(:origin => @concept.origin) if can?(:unlock, @concept) %>
+      concept_versions_unlock_path(:origin => @concept.origin), :class => :btn if can?(:unlock, @concept) %>
     <%= link_to t("txt.views.versioning.edit_mode"),
       edit_concept_path(:published => 0, :id => @concept.origin),
-      :class => 'button' if can?(:update, @concept) %>
+      :class => :btn if can?(:update, @concept) %>
   <% end %>
 </div>
 
-<%= render 'visualization' %>
 <%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
+<%#= render 'visualization' %>

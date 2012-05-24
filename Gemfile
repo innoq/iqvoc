@@ -22,7 +22,8 @@ source 'http://rubygems.org'
 gem 'rails', '3.2.3'
 
 group :assets do
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier',   '>= 1.0.3'
+  gem 'sass-rails', '~> 3.2.5'
   gem 'therubyracer', :platforms => :ruby
 end
 
@@ -33,6 +34,7 @@ gem 'iq_rdf', '~> 0.1.2'
 gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
+gem 'simple_form'
 gem 'fastercsv', :platforms => :ruby_18
 
 group :development do
@@ -57,6 +59,7 @@ end
 group :test do
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'

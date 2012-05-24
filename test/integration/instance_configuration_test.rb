@@ -36,7 +36,6 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     login "administrator"
     visit uri
     assert_equal "/en/config.html", page.current_path
-    assert page.has_css?("fieldset input", :count => 4)
     assert page.has_css?("input#config_title")
     assert page.has_css?("input#config_available_languages")
     assert page.has_selector?(:xpath, '//input[@id="config_languages.pref_labeling"]')
@@ -46,7 +45,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
   end
 
   test "modify and persist configuration" do
-    assert page.find("h1.header").has_content? "iQvoc"
+    assert page.find("a.brand").has_content? "iQvoc"
 
     login "administrator"
     visit "/config"
@@ -54,14 +53,14 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     fill_in "config_title", :with => "lorem ipsum"
     click_button "Save"
 
-    assert page.find("h1.header").has_content? "lorem ipsum"
+    assert page.find("a.brand").has_content? "lorem ipsum"
 
     # ensure that settings persist across sessions -- XXX: ineffective!?
     check_page = lambda { |uri|
       visit uri
-      assert page.find("h1.header").has_content? "lorem ipsum"
+      assert page.find("a.brand").has_content? "lorem ipsum"
     }
-    for role in ["reader", "editor", "publisher", "administrator"]
+    ["reader", "editor", "publisher", "administrator"].each do |role|
       login role
       check_page.call "/config"
       logout

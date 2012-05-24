@@ -1,10 +1,8 @@
-<%= form_for user_session, :url => user_session_path do |f| %>
+<%= simple_form_for user_session, :url => user_session_path, :html => { :class => 'form-horizontal' } do |f| %>
   <%= hidden_field_tag :back_to, params[:back_to].presence || @return_url %>
-  <%= f.label :email, t("txt.views.user_sessions.email") %><br />
-  <%= f.text_field :email %><br />
-  <br />
-  <%= f.label :password, t("txt.views.user_sessions.password") %><br />
-  <%= f.password_field :password %><br />
-  <br />
-  <%= f.submit t("txt.views.user_sessions.login") %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <div class="form-actions">
+    <%= submit_tag t("txt.views.user_sessions.login"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>

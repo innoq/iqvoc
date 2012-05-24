@@ -1,0 +1,12 @@
+<%- published_param = concept.published? ? nil : "0" -%>
+
+<%= sidebar do %>
+  <%= sidebar_header t('txt.common.representations') %>
+  <%= sidebar_item :icon => 'share', :text => 'HTML', :path => rdf_url(concept.origin, :format => :html, :published => published_param, :lang => nil) %>
+  <%= sidebar_item :icon => 'share', :text => 'RDF/XML', :path => rdf_url(concept.origin, :format => :rdf, :published => published_param, :lang => nil), :id => 'rdf_link_xml' %>
+  <%= sidebar_item :icon => 'share', :text => 'RDF/Turtle', :path => rdf_url(concept.origin, :format => :ttl, :published => published_param, :lang => nil), :id => 'rdf_link_ttl' %>
+  <%= sidebar_header 'Links' %>
+  <%#= sidebar_item :icon => 'zoom-in', :text => 'Visualization', :path => '#visualization', :'data-toggle' => 'modal' %>
+  <%= sidebar_item :icon => :edit, :text => t('txt.views.concepts.new', :concept_class_name => Iqvoc::Concept.base_class.model_name.human), :path => new_concept_path,
+    :perms => [:create, Iqvoc::Concept.base_class], :active => params[:action] == 'new' %>
+<% end %>

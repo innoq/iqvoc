@@ -1,17 +1,16 @@
-<h2><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h2>
+<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
+  :desc => t('txt.views.navigation.alphabetical') %>
+<%= render 'concepts/sidebars/plural' %>
 
-<% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
-  <%= link_to t("txt.views.untranslated_concepts.caption"),
-    untranslated_concepts_path(:letter => params[:letter]),
-    :id => "untranslated" %>
-<% end %>
-
-<p><%= t("txt.views.concepts.select", :concept_class_name => Iqvoc::Concept.base_class.model_name.human(:count => 1)) %></p>
-
-<%= letter_selector { |letter| alphabetical_concepts_path(:letter => letter.to_s.downcase) } %>
-
-<ul>
-  <%= render :partial => "pref_labeling", :collection => @pref_labelings %>
-</ul>
+<div class="panel">
+  <div class="panel-header centered">
+    <%= letter_selector do |letter| %>
+      <% alphabetical_concepts_path(:letter => letter.to_s.downcase) %>
+    <% end %>
+  </div>
+  <ul>
+    <%= render :partial => 'pref_labeling', :collection => @pref_labelings %>
+  </ul>
+</div>
 
 <%= paginate @pref_labelings %>

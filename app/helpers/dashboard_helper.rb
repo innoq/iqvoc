@@ -16,8 +16,8 @@
 
 module DashboardHelper
 
-  def sorting_arrows_for(name)
-    content_tag :div, :class => "sorting_arrows" do
+  def sorting_controls_for(name)
+    content_tag :span, :class => "sorting-controls" do
       link_to(image_tag("arrow_down.gif", :class => "arrow_down"),
         dashboard_path(:order => "asc", :by => name.to_s)) +
         link_to(image_tag("arrow_up.gif", :class => "arrow_up"),

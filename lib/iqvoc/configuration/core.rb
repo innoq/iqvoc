@@ -22,13 +22,10 @@ module Iqvoc
             :controller => "dashboard",
             :authorized? => proc { can? :use, :dashboard }
           }, {
-            :content => proc { link_to t("txt.views.navigation.hierarchical"),
+            :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
                 hierarchical_concepts_path },
-            :controller => "concepts/hierarchical"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.alphabetical"),
-                alphabetical_concepts_path(:letter => "a") },
-            :controller => "concepts/alphabetical"
+            :controller => "concepts/hierarchical",
+            :active? => proc { %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).include?(params[:controller]) }
           }, {
             :content => proc { link_to t("txt.views.navigation.collections"),
                 collections_path },
@@ -46,23 +43,22 @@ module Iqvoc
             :controller => "instance_configuration",
             :authorized? => proc { can? :manage, Iqvoc.config }
           }, {
-            :content => proc { link_to t("txt.views.navigation.about"), about_path },
-            :active? => proc { params[:controller] == "pages" &&
-                params[:action] == "about" }
+            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" }
           }
         ]
 
         self.core_assets = %w(
           manifest.css
           manifest.js
-          blueprint/screen.css
-          blueprint/print.css
-          blueprint/ie.css
+          bootstrap/bootstrap.css
+          bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
           excanvas.js
           jit_rgraph.js
           iqvoc/visualization.js
           json2.js
+          bootstrap/bootstrap.js
+          html5.js
         )
 
         self.searchable_class_names = [

@@ -1,0 +1,30 @@
+.panel {
+  min-height: 20px;
+  padding: 0 19px 19px 19px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  h1, h2, h3, h4, h5, .panel-header {
+    border-bottom: 1px solid #eee;
+    margin: 0 -19px 0 -19px;
+    padding: 5px 10px;
+    margin-bottom: 25px;
+    background-color: #f5f5f5;
+    &.centered {
+      text-align: center;
+    }
+  }
+  h2 {
+    font-size: 18px;
+    line-height: 27px;
+    small {
+      font-size: 14px;
+    }
+  }
+  div:last-child {
+    margin-bottom: 0;
+  }
+}

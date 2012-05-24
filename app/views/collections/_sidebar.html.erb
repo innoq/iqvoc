@@ -1,0 +1,11 @@
+<%= sidebar do %>
+  <%= sidebar_header 'Links' %>
+  <%= sidebar_item :icon => :edit, :text => t("txt.views.collections.new"), :path => new_collection_path,
+    :perms => [:create, Iqvoc::Collection.base_class], :active => params[:action] == 'new' %>
+  <% if defined?(collection) %>
+  <%= sidebar_header t('txt.common.representations') %>
+  <%= sidebar_item :icon => 'share', :text => 'HTML', :path => collection_url(collection.origin, :format => :html, :lang => nil) %>
+  <%= sidebar_item :icon => 'share', :text => 'RDF/XML', :path => collection_url(collection.origin, :format => :rdf, :lang => nil), :id => 'rdf_link_xml' %>
+  <%= sidebar_item :icon => 'share', :text => 'RDF/Turtle', :path => collection_url(collection.origin, :format => :ttl, :lang => nil), :id => 'rdf_link_ttl' %>
+  <% end %>
+<% end %>

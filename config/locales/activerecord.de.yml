@@ -17,6 +17,9 @@
 de:
   activerecord:
     models:
+      user:
+        one:   "Benutzer"
+        other: "Benutzer"
       concept/base:
         one: "Konzept"
         other: "Konzepte"
@@ -117,6 +120,8 @@ de:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
         language: "Sprache"
+      note/base:
+        value: "Wert"
       user:
         forename: "Vorname"
         surname: "Nachname"

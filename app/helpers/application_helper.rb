@@ -16,24 +16,10 @@
 
 module ApplicationHelper
 
-  # expects an array of hashes with the following members:
-  # :content - usually a navigation link
-  # :active? - an optional function determining whether the respective item is
-  #     currently active
-  # :controller - an optional string, used instead of `active?` to check for a
-  #     specific controller
-  # :authorized? - an optional function determining whether the respective item
-  #     is available to the current user (defaults to true)
-  def nav_items(items)
-    items.map do |item|
-      if (not item[:authorized?]) || instance_eval(&item[:authorized?])
-        active = item[:controller] ? params[:controller] == item[:controller] :
-            (item[:active?] ? instance_eval(&item[:active?]) : false)
-        content_tag "li", instance_eval(&item[:content]),
-            :class => ("active" if active)
-      end
-    end.join.html_safe
-  end
+  GLYPHS = {
+    :yes => "&#x2713;",
+    :no  => "&#x2717;"
+  }
 
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
@@ -45,17 +31,19 @@ module ApplicationHelper
 
   def options_for_language_select(selected = nil)
     locales_collection = Iqvoc.available_languages.map { |l| [l, l] }
-
-    options_for_select(locales_collection, selected)
   end
 
   def user_details(user)
-    "#{user.name} (#{user.telephone_number})"
+    details = mail_to(user.email, user.name)
+    if user.telephone_number?
+      details << " " << user.telephone_number
+    end
+    details
   end
 
   # Formats a list ob items or returns a remark if no items where given
   def item_listing(items, &block)
-    return content_tag :p, "-", :class => 'term-unavailable' if items.empty?
+    return nil if items.empty?
 
     content_tag :ul, :class => "entity_list" do
       items.map do |item|
@@ -68,12 +56,56 @@ module ApplicationHelper
 
   def error_messages_for(object)
     if object.errors.any?
-      content_tag :ul, :class => "flash_error error_list" do
-        object.errors.full_messages.each do |msg|
-          concat(content_tag(:li, msg))
+      content_tag :div, :class => 'alert alert-error' do
+        content_tag(:p, content_tag(:strong, t('txt.common.form_errors'))) <<
+        content_tag(:ul) do
+          object.errors.full_messages.each do |msg|
+            concat content_tag(:li, msg)
+          end
         end
       end
     end
+  end
+
+  def page_header(args = {})
+    content_for :page_header do
+      content_tag :div, :class => "page-header" do
+        content_tag :h1 do
+          ("#{args.delete(:title)} #{content_tag(:small, args.delete(:desc))}").html_safe
+        end
+      end
+    end
+  end
+
+  def login_logout
+    if current_user
+      link_to t("txt.views.navigation.logout"), user_session_path, :method => :delete
+    else
+      link_to t("txt.views.navigation.login"), new_user_session_path
+    end
+  end
+
+  def alert(type, opts = {}, &block)
+    header = opts.delete(:header)
+
+    html = ActiveSupport::SafeBuffer.new
+    html << content_tag(:strong, header) if header
+    html << capture(&block)
+
+    content_tag(:div, :class => "alert alert-#{type}") do
+      html
+    end
+  end
+
+  def icon(name, white = nil)
+    css_class = "icon-#{name}"
+    css_class << " icon-white" if white
+
+    content_tag :i, "", :class => css_class
+  end
+
+  def glyph(name)
+    raw GLYPHS[name]
   end
 
   def html_classes(*args)

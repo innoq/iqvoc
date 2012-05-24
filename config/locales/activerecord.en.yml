@@ -17,6 +17,9 @@
 en:
   activerecord:
     models:
+      user:
+        one:   "User"
+        other: "Users"
       concept/base:
         one:   "Concept"
         other: "Concepts"
@@ -117,6 +120,8 @@ en:
         follow_up: "Reminder"
         expired_at: "Expired at"
         language: "Language"
+      note/base:
+        value: "Value"
       user:
         forename: "Forename"
         surname: "Surname"

@@ -1,0 +1,64 @@
+.language_flap {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #999;
+  float: left;
+  padding: 5px 10px 5px 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-right: 0;
+}
+
+.note_content {
+  overflow: auto;
+  padding: 10px 15px 10px 15px;
+
+  border: {
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+    color: #eee;
+    style: solid;
+  }
+
+  background-color: #04C1FF;
+  background-image: -o-linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
+  background-image: -moz-linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
+  background-image: -webkit-linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
+  background-image: -ms-linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
+  background-image: linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
+
+  -webkit-border-bottom-left-radius: 4px;
+     -moz-border-radius-bottomleft: 4px;
+          border-bottom-left-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+     -moz-border-radius-bottomright: 4px;
+          border-bottom-right-radius: 4px;
+
+  p {
+    margin: 0 0 20px 0;
+  }
+}
+
+dl.note_annotations {
+  float: left;
+  margin: 0;
+  width: 100%;
+  dt {
+    width: 120px;
+    clear: left;
+    float: left;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  dd {
+    float: left;
+    width: 400px;
+  }
+}

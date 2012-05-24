@@ -1,0 +1,14 @@
+<%= sidebar do %>
+  <%= sidebar_header 'Links' %>
+  <% Iqvoc.first_level_classes.each do |klass| %>
+    <%= sidebar_item { render(klass.new_link_partial_name) } %>
+  <% end %>
+  <%= sidebar_header t('txt.views.dashboard.full_rdf_export') %>
+  <%= sidebar_item(:icon => :download, :text => "RDF/Turtle", :path => concepts_url(:format => :ttl),
+    :perms => [:full_export, Concept::Base]) %>
+  <%= sidebar_item(:icon => :download, :text => "RDF/XML", :path => concepts_url(:format => :rdf),
+    :perms => [:full_export, Concept::Base]) %>
+  <%= sidebar_header 'Extras' %>
+  <%= sidebar_item(:icon => :upload, :text => t('txt.views.dashboard.import'),
+    :path => import_url, :active => params[:controller] == 'import', :perms => [:import, Concept::Base]) %>
+<% end %>

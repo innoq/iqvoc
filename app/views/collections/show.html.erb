@@ -1,19 +1,13 @@
-<%= content_for :head do -%>
-  <link href="<%= collection_url(@collection.origin, :format => :ttl, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
-  <link href="<%= collection_url(@collection.origin, :format => :rdf, :lang => nil) %>" type="application/rdf+xml" rel="alternate" title=""/>
-<% end -%>
-
-<h2><%= @collection.class.model_name.human %>: <%= @collection.pref_label.to_s %></h2>
-<div id="abstract_uri">
-  <%= render :partial => "partials/rdf_logo" %>
-  <%= collection_url(@collection.origin, :format => nil, :lang => nil) %>
-  (<%= link_to "Turtle", collection_url(@collection.origin, :format => :ttl, :lang => nil) %>, <%= link_to "RDF/XML", collection_url(@collection.origin, :format => :rdf, :lang => nil) %>)
-</div>
+<%= render 'header', :collection => @collection %>
+<%= render 'sidebar', :collection => @collection %>
 
 <% if can?(:manage, @collection) %>
-  <div class="editing_versioning_toolbar ui-corner-all ui-widget ui-widget-content">
-    <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => "button" %>
-    <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection), :method => :delete, :confirm => t('txt.views.users.sure', :default => 'Sure?') %>
+  <div class="editing_versioning_toolbar well">
+    <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => 'btn' %>
+    <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection),
+      :method => :delete,
+      :confirm => t('txt.views.users.sure', :default => 'Sure?'),
+      :class => 'btn btn-danger' %>
   </div>
 <% end %>
 
@@ -21,10 +15,16 @@
 # TODO: We'll need a 'collection_view_data' helper (containing the following
 # "Note" stuff too).
 -%>
-<%= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
+<%#= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(@collection) %>
 
-<div class="relation">
-  <h3><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h3>
+<% Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| %>
+  <% (languages || Iqvoc.available_languages).each do |lang| %>
+    <%= render labeling_class.partial_name(@collection), :klass => labeling_class, :concept => @collection, :lang => lang %>
+  <% end %>
+<% end %>
+
+<div class="relation panel">
+  <h2><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h2>
   <ul>
     <% @collection.note_skos_definitions.each do |definition| %>
       <li><%= definition.value %> (<%= definition.language %>)</li>
@@ -32,8 +32,8 @@
   </ul>
 </div>
 
-<div class="relation">
-  <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
+<div class="relation panel">
+  <h2><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
     <ul>
       <%- @collection.concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.each do |concept| -%>
@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="relation">
+<div class="relation panel">
   <h3><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h3>
   <ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
     <%= render :partial => 'collection', :collection => @collection.subcollections.sort {|a, b| a.pref_label <=> b.pref_label } %>

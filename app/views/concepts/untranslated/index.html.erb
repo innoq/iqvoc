@@ -1,23 +1,29 @@
-<h2><%= t("txt.views.untranslated_concepts.caption") %></h2>
+<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
+  :desc => t("txt.views.untranslated_concepts.caption") %>
+<%= render 'concepts/sidebars/plural' %>
 
 <% if I18n.locale != Iqvoc::Concept.pref_labeling_languages.first %>
-
-  <%= letter_selector { |letter| untranslated_concepts_path(:letter => letter.to_s.downcase) } %>
-
-  <ul>
-    <% @labels.each do |label| %>
-      <li>
-        <% if label.pref_labeled_concepts.length > 1 %>
-          <%= label.value %>:
-          <% for concept in label.pref_labeled_concepts %>
-            <%= link_to concept.origin, concept_path(concept) %>
+  <div class="panel">
+    <div class="panel-header centered">
+      <%= letter_selector do |letter| %>
+        <% untranslated_concepts_path(:letter => letter.to_s.downcase) %>
+      <% end %>
+    </div>
+    <ul>
+      <% @labels.each do |label| %>
+        <li>
+          <% if label.pref_labeled_concepts.length > 1 %>
+            <%= label.value %>:
+            <% label.pref_labeled_concepts.each do |concept| %>
+              <%= link_to concept.origin, concept_path(concept) %>
+            <% end %>
+          <% else %>
+            <%= link_to label.value, concept_path(label.pref_labeled_concepts[0]) %>
           <% end %>
-        <% else %>
-          <%= link_to label.value, concept_path(label.pref_labeled_concepts[0]) %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 
   <%= paginate @labels if @labels.present? %>
 <% end %>

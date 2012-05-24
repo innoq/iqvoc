@@ -1,0 +1,1 @@
+bundle exec rake db:drop db:migrate db:seed iqvoc:import:url URL=data/hobbies.nt NAMESPACE='http://hobbies.com#' RAILS_ENV=production

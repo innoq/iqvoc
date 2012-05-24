@@ -30,7 +30,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     }
   end
 
-  test "Selecting a concept in alphabetical view" do
+  test "selecting a concept in alphabetical view" do
     letter = "T" # => Only the "Tree" should show up in the english version
     visit alphabetical_concepts_path(:lang => 'en', :letter => letter, :format => :html)
     assert page.has_link?(@concepts[0].pref_label.to_s),
@@ -48,7 +48,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     assert !page.has_link?("Baum")
   end
 
-  test "Showing a concept page" do
+  test "showing a concept page" do
     visit concept_url(@concepts[1], :lang => 'en')
     assert page.has_content?("#{@concepts[1].pref_label}"),
         "'Preferred label: #{@concepts[1].pref_label}' missing in concepts#show"

@@ -22,7 +22,7 @@ class EditConceptsTest < ActionDispatch::IntegrationTest
     @concept = FactoryGirl.create(:concept)
   end
 
-  test "Create a new concept version" do
+  test "create a new concept version" do
     login('administrator')
     visit concept_path(@concept, :lang => 'de', :format => 'html')
     assert page.has_button?("Neue Version erstellen"), "Button 'Neue Version erstellen' is missing on concepts#show"

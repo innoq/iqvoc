@@ -1,4 +1,4 @@
-# encoding: UTF-8
+## encoding: UTF-8
 
 # Copyright 2011 innoQ Deutschland GmbH
 #
@@ -49,13 +49,13 @@ de:
      save: "Speichern"
      reset: "Zurücksetzen"
      language: "Sprache"
-     add_note: "Weitere hinzufügen"
+     add_note: "Hinzufügen"
      delete: "Löschen"
      attributes: "Eigenschaften"
      editor: "Redakteur"
-     referenced_concepts: "Referenzierte Konzepte befinden sich in Bearbeitung:"
+     referenced_concepts: "Einige referenzierte Konzepte befinden sich momentan in Bearbeitung."
      association_not_found: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden"
-     to_review: "Vorlage zur Freigabe"
+     to_review: "Zur Freigabe vorlegen"
      is_in_review: "Dokument befindet sich im Reviewprozess"
      unpublished_version: Unveröffentlichte Version
      consistent: "konsistent"
@@ -67,6 +67,10 @@ de:
      of: von
      pending: "Lade…"
      translation_missing_for: "keine Übersetzung für"
+     type_to_search: "Tippen um zu suchen"
+     hint_csv_input: "Mehrere Werte können kommagetrennt eingeben werden."
+     form_errors: "Fehler"
+     representations: "Repräsentationen"
 
    views:
      layouts:
@@ -127,13 +131,16 @@ de:
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
        back_to_preview: "Zurück zur Versionsvorschau"
-       instance_configuration: "Instanzkonfiguration"
+       instance_configuration: "Konfiguration"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
        search: "Suche"
        about: "Über"
        users: "Benutzer"
        collections: "Kollektionen"
+       login: "Login"
+       sections: "Bereiche"
+       quick_search: "Schnellsuche"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"
@@ -158,6 +165,7 @@ de:
        all: "alle"
        none: "keine"
        for: "Nach"
+       mode: "Modus"
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"
@@ -176,7 +184,7 @@ de:
        email: "E-Mail"
        role: "Rolle"
        active: "aktiviert"
-       new_link: "Neu"
+       new_link: "Neuer Benutzer"
        show_link: "Anzeigen"
        edit_link: "Bearbeiten"
        destroy_link: "Löschen"
@@ -199,10 +207,9 @@ de:
        versioning_mode: "Neue Version erstellen"
        unlock: "Entsperren"
        preview_new_version: "Vorschau der Version in Bearbeitung"
-       consistency_check: "Konsistenzprüfung"
-       current_revision: "Aktuelle Revision"
-       in_ongoing_editing_by: "in Bearbeitung von"
-       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
+       consistency_check: "Konsistenz prüfen"
+       current_revision: "Aktuelle Revision %{rev}"
+       in_ongoing_editing_by: "in Bearbeitung von %{user}."
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
      labelings:
        edit:

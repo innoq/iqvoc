@@ -1,0 +1,46 @@
+.infovis,
+#infovis {
+  width: 560px;
+  height: 560px;
+  overflow: hidden;
+  margin: 0 auto;
+
+  .button {
+    float: right;
+  }
+
+  .concept {
+    a {
+      color: #000;
+    }
+  }
+
+  input[type="checkbox"] {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  label {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+
+  &.filtered .concept {
+    overflow: visible;
+    color: #111;
+  }
+
+  .btn {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+
+  .btn {
+    &.resize {
+      display: none;
+    }
+  }
+}
