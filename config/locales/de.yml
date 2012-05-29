@@ -296,17 +296,17 @@ de:
        save:
          success: "Die Notiz wurde erfolgreich gespeichert."
      versioned_label:
-       success: "Label wurde erfolgreich angelegt."
-       error: "Label konnte nicht angelegt werden!"
-       empty_value: "Die Vorlageform muss ausgefüllt sein!"
-       update_success: "Label wurde erfolgreich aktualisiert."
-       update_error: "Label konnte nicht aktualisiert werden."
+       success: "Das Label wurde erstellt."
+       error: "Das Label konnte nicht gespeichert werden."
+       empty_value: "Die Vorlageform muss ausgefüllt sein."
+       update_success: "Das Label wurde aktualisiert."
+       update_error: "Das Label konnte nicht aktualisiert werden."
      versioned_concept:
-       success: "Konzept wurde erfolgreich angelegt."
-       error: "Konzept konnte nicht angelegt werden!"
-       empty_value: "Die Vorlageform muss ausgefüllt sein!"
-       update_success: "Konzept wurde erfolgreich aktualisiert."
-       update_error: "Konzept konnte nicht aktualisiert werden."
+       success: "Das Konzept wurde erfolgreich angelegt."
+       error: "Das Konzept konnte nicht angelegt werden."
+       empty_value: "Die Vorlageform muss ausgefüllt sein."
+       update_success: "Das Konzept wurde aktualisiert."
+       update_error: "Das Konzept konnte nicht aktualisiert werden."
        label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
