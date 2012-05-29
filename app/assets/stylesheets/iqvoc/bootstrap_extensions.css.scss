@@ -1,9 +1,9 @@
 [class^="icon-"], [class*=" icon-"] {
-  background-image: url("<%= asset_data_uri('bootstrap/glyphicons-halflings.png') %>")
+  background-image: asset-data-url('bootstrap/glyphicons-halflings.png');
 }
 
 .icon-white {
-  background-image: url("<%= asset_data_uri('bootstrap/glyphicons-halflings-white.png') %>");
+  background-image: asset-data-url('bootstrap/glyphicons-halflings-white.png');
 }
 
 .dropdown-menu {
