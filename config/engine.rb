@@ -9,6 +9,7 @@ require 'iq_rdf'
 require 'json'
 require 'rails_autolink'
 require 'fastercsv' if RUBY_VERSION < '1.9'
+require 'simple_form'
 
 require 'iqvoc/controller_extensions'
 
