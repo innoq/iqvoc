@@ -3,12 +3,11 @@ form {
     margin-left: 0;
     list-style: none;
   }
-}
-
-form.button_to {
-  display: inline-block;
-  margin-bottom: 0;
-  input {
-    margin: 0;
+  &.button_to {
+    display: inline-block;
+    margin-bottom: 0;
+    input {
+      margin: 0;
+    }
   }
 }
