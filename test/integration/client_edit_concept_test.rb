@@ -67,7 +67,7 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
     # save concept
     page.click_link_or_button("Speichern")
-    assert page.has_content?("Konzept wurde erfolgreich aktualisiert.")
+    assert page.has_css?(".alert.alert-success")
     # return to edit mode
     page.click_link_or_button("Bearbeitung fortsetzen")
     assert page.has_css?("#edit_concept")

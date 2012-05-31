@@ -29,22 +29,20 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
-    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.publishing")
     assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.versioning_mode")
     fill_in "concept_note_skos_change_notes_attributes_1_value",
         :with => "dolor sit amet"
     click_button "Save"
 
-    assert page.has_css?("dl.note_annotations", :count => 2)
+    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.publishing")
     assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 2)
+    assert page.has_css?("dl.note_annotations", :count => 1)
 
     # TTL & RDF/XML
 
