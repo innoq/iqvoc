@@ -1,3 +1,10 @@
+## 4.0.0 (2012-05-31)
+
+  * Completely redesigned UI
+  * Temporarily removed visualization graph<br>
+    Needs to be revisited in the near future
+  * Bugfixes
+
 ## 3.5.7 (2012-05-24)
 
   * Rankable (weighted) relations
