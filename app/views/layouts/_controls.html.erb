@@ -17,9 +17,10 @@
         <% end %>
       <% end %>
 
-      <% if Iqvoc.available_languages.any? %>
+      <% secondary_languages = Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s } %>
+      <% if secondary_languages.any? %>
         <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
-        <% Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s }.each do |lang| %>
+        <% secondary_languages.each do |lang| %>
           <li>
             <label>
               <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang}") %>
