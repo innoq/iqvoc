@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
     $(".translation[lang]").each(function(i, node) {
       var el = $(node),
         lang = el.attr("lang");
-      if(lang !== locale && $.inArray(lang, langSelected) === -1) {
+      if(lang && lang !== locale && $.inArray(lang, langSelected) === -1) {
         el.addClass("hidden");
       } else {
         el.removeClass("hidden");
