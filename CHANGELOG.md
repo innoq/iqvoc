@@ -1,3 +1,8 @@
+## 4.0.1 (2012-06-20)
+
+  * Rails application template
+  * Bugfixes
+
 ## 4.0.0 (2012-05-31)
 
   * Completely redesigned UI
