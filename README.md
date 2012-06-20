@@ -48,7 +48,7 @@ in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like 
 
 ### Custom
 
-We recommend running [iQvoc as a Rails engine](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine). 
+We recommend running [iQvoc as a Rails engine](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine).
 Running the cloned source code is possible but any modifications would require a fork.
 
 1. Configure your database via `config/database.template.yml`. Don't forget to rename it to `database.yml`
