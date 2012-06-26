@@ -7,7 +7,9 @@
 <%= simple_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection), :html => { :class => 'form-horizontal' } do |f| %>
 <fieldset>
   <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
-  <p><%= t 'txt.common.hint_csv_input' %></p>
+  <% if not Iqvoc.const_defined?(:SKOSXL) %>
+    <p><%= t 'txt.common.hint_csv_input' %></p>
+  <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
       <%- languages.each do |language| -%>
         <%= render labeling_class.edit_partial_name(@collection), :f => f,
