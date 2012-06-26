@@ -55,4 +55,14 @@ module NavigationHelper
     content_tag :li, content, :class => css_class
   end
 
+  def quick_search_class
+    klass = if Labeling.const_defined?(:SKOSXL)
+      Labeling::SKOSXL::Base
+    else
+      Labeling::SKOS::Base
+    end
+
+    klass.name.parameterize
+  end
+
 end
