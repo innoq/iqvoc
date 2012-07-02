@@ -2,6 +2,12 @@ tr.highlightable {
   cursor: pointer;
 }
 
+table.dashboard {
+  th {
+    white-space: nowrap;
+  }
+}
+
 .alert {
   p {
     margin: 0 0 10px 0;
