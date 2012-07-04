@@ -1,6 +1,7 @@
 <%- published_param = concept.published? ? nil : "0" -%>
 
 <%= sidebar do %>
+  <%= sidebar_item :icon => 'share', :text => t('txt.models.concept.uri'), :path => concept_url(concept.origin, :format => nil, :published => published_param, :lang => nil) %>
   <%= sidebar_header t('txt.common.representations') %>
   <%= sidebar_item :icon => 'share', :text => 'HTML', :path => rdf_url(concept.origin, :format => :html, :published => published_param, :lang => nil) %>
   <%= sidebar_item :icon => 'share', :text => 'RDF/XML', :path => rdf_url(concept.origin, :format => :rdf, :published => published_param, :lang => nil), :id => 'rdf_link_xml' %>
