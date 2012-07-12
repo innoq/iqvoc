@@ -1,11 +1,12 @@
 module Iqvoc
   class SkosImporter
 
-    FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class]
+    FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
     SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
       Iqvoc::Concept.note_classes +
       Iqvoc::Concept.relation_classes +
-      Iqvoc::Concept.match_classes
+      Iqvoc::Concept.match_classes +
+      Iqvoc::Collection.member_classes
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
 
@@ -72,6 +73,9 @@ module Iqvoc
     end
 
     def import_first_level_objects(types, subject, predicate, object)
+      @logger.debug "types: #{types}"
+      @logger.debug "predicate: #{predicate}"
+      @logger.debug "subject: #{subject}"
       if (predicate == "rdf:type" && types[object] && subject =~ /^:(.+)$/)
         # We've found a subject definition with a class we know and which is in our responsibility (":")
         origin = $1
@@ -86,6 +90,7 @@ module Iqvoc
           @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
         end
       end
+      
     end
 
     def import_second_level_objects(types, subject, predicate, object)
