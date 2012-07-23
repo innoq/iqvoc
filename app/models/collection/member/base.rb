@@ -18,6 +18,11 @@ class Collection::Member::Base < ActiveRecord::Base
 
   self.table_name = 'collection_members'
 
+  class_attribute :rdf_namespace, :rdf_predicate
+  self.rdf_namespace = nil
+  self.rdf_predicate = nil
+  
   belongs_to :collection, :class_name => 'Collection::Base'
+  belongs_to :target, :class_name => 'Concept::Base'
 
 end
