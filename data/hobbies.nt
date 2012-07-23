@@ -1,5 +1,7 @@
 <http://hobbies.com#indoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
+<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "indoors"@en .
 <http://hobbies.com#outdoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
+<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "outdoors"@en .
 <http://hobbies.com#achievement_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#achievement_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Achievement hobbies"@en .
 <http://hobbies.com#gardening> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
