@@ -21,7 +21,7 @@ class HygieneTest < ActiveSupport::TestCase
   end
 
   test "mixed whitespace" do
-    tab = "	"
+    tab = "\t"
     space = " "
     assert_no_occurrence "#{space}#{tab}\|#{tab}#{space}", "mixed whitespace", true
   end
