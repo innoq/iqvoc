@@ -9,7 +9,7 @@ module Iqvoc
         mattr_accessor :base_class_name, :member_class_names
 
         self.base_class_name = 'Collection::Unordered'
-        
+
         self.member_class_names  = ['Collection::Member::SKOS::Base']
       end
 
@@ -17,7 +17,7 @@ module Iqvoc
         def base_class
           base_class_name.constantize
         end
-        
+
         def member_classes
           member_class_names.map(&:constantize)
         end

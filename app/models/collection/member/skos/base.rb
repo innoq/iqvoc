@@ -20,13 +20,13 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
   self.rdf_predicate = "member"
 
   def self.build_from_rdf(subject, predicate, object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Collection." unless subject.is_a?(Collection::Base) 
+    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Collection." unless subject.is_a?(Collection::Base)
     raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a Collection or Concept." unless object.is_a?(Collection::Base) or object.is_a?(Concept::Base)
 
     if subject.send(:members).select{|rel| rel.collection_id == subject.id || rel.target == object}.empty?
       subject.send(:members) << self.new(:target => object)
       if object.is_a?(Collection::Base)
-        subject.send(:subcollections) << object 
+        subject.send(:subcollections) << object
       end
     end
 

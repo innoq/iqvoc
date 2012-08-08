@@ -90,7 +90,7 @@ module Iqvoc
           @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
         end
       end
-      
+
     end
 
     def import_second_level_objects(types, subject, predicate, object)
