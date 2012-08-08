@@ -1,3 +1,7 @@
+## 4.0.2 (TBA)
+
+  * Support for collections in SKOS importer (@fgimenez)
+
 ## 4.0.1 (2012-06-20)
 
   * Rails application template
