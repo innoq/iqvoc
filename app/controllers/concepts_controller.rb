@@ -64,19 +64,22 @@ class ConceptsController < ApplicationController
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept,
-          [:labels,
-          { :relations => { :target => [:labelings, :relations] } }]).run
+        ActiveRecord::Associations::Preloader.new(@concept, [:labels,
+            { :relations => { :target => [:labelings, :relations] } }]).run
 
+        published_relations = lambda { |concept|
+          return concept.relations.includes(:target).
+              merge(Iqvoc::Concept.base_class.published)
+        }
         concept_data = {
           :origin => @concept.origin,
           :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
-          :relations => @concept.relations.map { |relation|
+          :relations => published_relations.call(@concept).map { |relation|
             concept = relation.target
             {
               :origin => concept.origin,
               :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
-              :relations => concept.relations.length
+              :relations => published_relations.call(concept).count
             }
           }
         }
