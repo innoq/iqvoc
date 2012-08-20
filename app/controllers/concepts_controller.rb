@@ -46,7 +46,6 @@ class ConceptsController < ApplicationController
     end
 
     @concept = scope.last
-    logger.ap @concept
     raise ActiveRecord::RecordNotFound unless @concept
 
     authorize! :read, @concept
