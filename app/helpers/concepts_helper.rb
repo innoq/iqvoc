@@ -84,7 +84,7 @@ module ConceptsHelper
   # Renders a partial taken from the .partial_name method of the objects
   # associated to the concept.
   def render_concept_association(hash, concept, association_class, further_options = {})
-    html = if association_class.respond_to?(:hidden?) && association_class.hidden?
+    html = if association_class.respond_to?(:hidden?) && association_class.hidden?(concept)
       ""
     else
       render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
