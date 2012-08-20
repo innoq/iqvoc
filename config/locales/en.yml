@@ -205,7 +205,7 @@ en:
          message: "Your user account has insufficient permissions to display this page."
        not_found:
          header: "Not found"
-         tip: "You may want to use the search function to find content:"
+         tip: "You may want to use %{link} to find content."
      versioning:
        edit_mode: "Continue editing"
        to_edit_mode: "Start editing"

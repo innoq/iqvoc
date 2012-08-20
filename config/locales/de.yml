@@ -197,7 +197,7 @@ de:
          message: "Ihr Benutzerkonto besitzt keine ausreichenden Rechte, um diese Seite anzuzeigen."
        not_found:
          header: "Nicht gefunden"
-         tip: "Nutzen Sie die Suchfunktion, um Inhalte zu finden:"
+         tip: "Nutzen Sie die %{link}, um Inhalte zu finden."
      versioning:
        edit_mode: "Bearbeitung fortsetzen"
        to_edit_mode: "In Bearbeitung versetzen"
