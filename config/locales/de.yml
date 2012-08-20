@@ -93,7 +93,7 @@ de:
        unavailable: "Fehlende Übersetzungen für die Hauptsprache nicht verfügbar."
      hierarchical_concepts:
      concepts:
-       expired_at: "Abgelaufen am %{date}"
+       expired_at: "abgelaufen am %{date}"
        select: "Bitte wählen Sie ein %{concept_class_name} aus der unten aufgeführten Liste."
        new: "Neues %{concept_class_name}"
        pref_label: "Bevorzugtes Label"
@@ -108,7 +108,7 @@ de:
        versionview: "Versionsansicht für Label"
        follow_up: "Wiedervorlage"
        endings: "Endungen"
-       expired_at: "Abgelaufen am"
+       expired_at: "abgelaufen am"
        label_already_exists: "Es gibt bereits ein Label mit der eingegebenen Vorlageform"
        edit:
          header: "Bearbeitung von Label"

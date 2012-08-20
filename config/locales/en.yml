@@ -116,7 +116,7 @@ en:
        versionview: "Version display of Label"
        follow_up: "Follow up"
        endings: "Endings"
-       expired_at: "Expired at"
+       expired_at: "expired at"
        label_already_exists: "There already exists a label with the value"
        edit:
          header: "Editing of label"
