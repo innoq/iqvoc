@@ -1,6 +1,7 @@
-## 4.0.2 (TBA)
+## 4.0.2
 
   * Support for collections in SKOS importer (@fgimenez)
+  * Bugfixes
 
 ## 4.0.1 (2012-06-20)
 
