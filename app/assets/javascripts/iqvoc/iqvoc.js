@@ -67,6 +67,8 @@ return {
 jQuery(document).ready(function($) {
   "use strict";
 
+  IQVOC.quicksearch(".navbar-search .search-query");
+
   var locale = document.documentElement.getAttribute("lang");
 
   if(IQVOC.visualization) {
