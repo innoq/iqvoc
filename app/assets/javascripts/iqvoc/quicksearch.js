@@ -14,7 +14,11 @@ var defaults = {
 };
 
 function onSelect(ev, ui) {
-	document.location = ui.item.value;
+	if(ui.item.value) {
+		$(ev.target).val(ui.item.label);
+		document.location = ui.item.value;
+	}
+	ev.preventDefault();
 }
 
 function getConcepts(req, callback) {
@@ -40,7 +44,8 @@ function extractConcepts(html) {
 		return { value: el.attr("href"), label: $.trim(el.text()) };
 	});
 
-	return Array.prototype.slice.call(concepts, 0);
+	return concepts.length ? Array.prototype.slice.call(concepts, 0) :
+			[{ value: null, label: "no matches" }]; // TODO: i18n
 }
 
 return function(selector, options) {
