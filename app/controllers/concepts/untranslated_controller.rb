@@ -24,7 +24,7 @@ class Concepts::UntranslatedController < ConceptsController
     authorize! :read, Concept::Base
 
     scope = Iqvoc::Concept.pref_labeling_class.label_class.
-      begins_with(params[:letter]).
+      begins_with(params[:prefix]).
       missing_translation(I18n.locale, Iqvoc::Concept.pref_labeling_languages.first)
 
     if I18n.locale.to_s == Iqvoc::Concept.pref_labeling_languages.first # TODO: Should be 404!

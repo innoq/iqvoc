@@ -45,8 +45,8 @@ class Labeling::Base < ActiveRecord::Base
     includes(:target).merge(Label::Base.published)
   end
 
-  def self.label_begins_with(letter)
-    includes(:target).merge(Label::Base.begins_with(letter))
+  def self.label_begins_with(prefix)
+    includes(:target).merge(Label::Base.begins_with(prefix))
   end
 
   def self.by_label_language(lang)

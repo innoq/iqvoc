@@ -19,9 +19,11 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
+    params[:prefix] = params[:letter] if params[:prefix].nil? # legacy compatibility -- XXX: unnecessary!?
+
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
       concept_published.
-      label_begins_with(params[:letter]).
+      label_begins_with(params[:prefix]).
       by_label_language(I18n.locale).
       includes(:target).
       order("LOWER(#{Label::Base.table_name}.value)").

@@ -6,12 +6,12 @@
       :active => params[:controller] == 'concepts/hierarchical' %>
   <%= sidebar_item :text => t("txt.views.navigation.alphabetical"),
       :icon => 'list-alt',
-      :path => alphabetical_concepts_path(:letter => 'a'),
+      :path => alphabetical_concepts_path(:prefix => 'a'),
       :active => params[:controller] == 'concepts/alphabetical' %>
   <% if I18n.locale.to_s != Iqvoc::Concept.pref_labeling_languages.first %>
     <%= sidebar_item :icon => 'list-alt',
       :text => t("txt.views.untranslated_concepts.caption"),
-      :path => untranslated_concepts_path(:letter => params[:letter] || 'a'),
+      :path => untranslated_concepts_path(:prefix => params[:prefix] || 'a'),
       :active => params[:controller] == 'concepts/untranslated',
       :id => 'untranslated' %>
   <% end %>

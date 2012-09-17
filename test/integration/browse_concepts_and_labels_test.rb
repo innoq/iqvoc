@@ -32,16 +32,16 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   test "selecting a concept in alphabetical view" do
     letter = "T" # => Only the "Tree" should show up in the english version
-    visit alphabetical_concepts_path(:lang => 'en', :letter => letter, :format => :html)
+    visit alphabetical_concepts_path(:lang => 'en', :prefix => letter, :format => :html)
     assert page.has_link?(@concepts[0].pref_label.to_s),
-        "Concept '#{@concepts[0].pref_label}' not found on alphabetical concepts list (letter: #{letter})"
+        "Concept '#{@concepts[0].pref_label}' not found on alphabetical concepts list (prefix: #{letter})"
     assert !page.has_content?(@concepts[1].pref_label.to_s),
-        "Found concept '#{@concepts[1].pref_label}' on alphabetical concepts list (letter: #{letter})"
+        "Found concept '#{@concepts[1].pref_label}' on alphabetical concepts list (prefix: #{letter})"
     click_link_or_button(@concepts[0].pref_label.to_s)
     assert_equal concept_path(@concepts[0], :lang => 'en', :format => :html), URI.parse(current_url).path
 
     letter = "F" # => Only the "Forest" should show up in the english version
-    visit alphabetical_concepts_path(:lang => 'en', :letter => letter, :format => :html)
+    visit alphabetical_concepts_path(:lang => 'en', :prefix => letter, :format => :html)
     assert page.has_link?("Forest")
     assert !page.has_link?("Forst")
     assert !page.has_link?("Tree")

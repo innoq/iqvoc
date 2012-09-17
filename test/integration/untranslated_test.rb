@@ -37,7 +37,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
   # should fail (see the commit that introduced this very comment for details)
 
   test "showing only concepts without pref label in respective language" do
-    visit untranslated_concepts_path(:lang => :de, :letter => "x", :format => :html)
+    visit untranslated_concepts_path(:lang => :de, :prefix => "x", :format => :html)
     concepts = page.all("#content ul")[1].all("li") # XXX: too unspecific
 
     assert_equal :de, I18n.locale
@@ -45,7 +45,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
     assert_equal 1, concepts[0].all("a").length
     assert_equal "Xen2", concepts[0].find("a").text.strip
 
-    visit untranslated_concepts_path(:lang => :de, :letter => "y", :format => :html)
+    visit untranslated_concepts_path(:lang => :de, :prefix => "y", :format => :html)
     concepts = page.all("#content ul")[1].all("li") # XXX: too unspecific
 
     assert_equal 1, concepts.length
@@ -53,7 +53,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
   end
 
   test "showing error message for thesaurus's main language" do
-    visit untranslated_concepts_path(:lang => :en, :letter => "x", :format => :html)
+    visit untranslated_concepts_path(:lang => :en, :prefix => "x", :format => :html)
 
     assert_equal :en, I18n.locale
     assert_equal 1, page.all("#content .alert-error").length

@@ -42,8 +42,11 @@ class Label::Base < ActiveRecord::Base
     end
   end
 
-  def self.begins_with(letter)
-    where("LOWER(SUBSTR(#{Label::Base.table_name}.value, 1, 1)) = :letter", :letter => letter.to_s.downcase)
+  def self.begins_with(prefix)
+    prefix = prefix.to_s
+    table = Label::Base.table_name
+    where("LOWER(SUBSTR(#{table}.value, 1, :length)) = :prefix",
+        :length => prefix.length, :prefix => prefix.downcase)
   end
 
   def self.missing_translation(lang, main_lang)

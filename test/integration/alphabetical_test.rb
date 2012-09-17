@@ -32,7 +32,7 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
   end
 
   test "showing only concepts with a pref label in respective language" do
-    visit alphabetical_concepts_path(:lang => :en, :letter => "x", :format => :html)
+    visit alphabetical_concepts_path(:lang => :en, :prefix => "x", :format => :html)
     lists = page.all("#content ul")
     assert_equal 2, lists.length
     concepts = lists[1].all("li") # XXX: too unspecific
@@ -42,7 +42,7 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     assert_equal "Xen1", concepts[0].text.strip
     assert_equal "Xen2", concepts[1].text.strip
 
-    visit alphabetical_concepts_path(:lang => :de, :letter => "x", :format => :html)
+    visit alphabetical_concepts_path(:lang => :de, :prefix => "x", :format => :html)
     concepts = page.all("#content ul")[1].all("li") # XXX: too unspecific
 
     assert_equal :de, I18n.locale
