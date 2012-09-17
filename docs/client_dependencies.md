@@ -30,8 +30,9 @@ jQuery UI upgrade procedure
         git rm vendor/assets/stylesheets/jquery-ui-*.custom.css
         mv /tmp/ui/css/redmond/jquery-ui-*.custom.css vendor/assets/stylesheets/
         git rm vendor/assets/images/jquery-ui/*
+        mkdir -p vendor/assets/images/jquery-ui
         mv /tmp/ui/css/redmond/images/* vendor/assets/images/jquery-ui/
         git add vendor/assets/*ts/jquery-ui-*.custom*.{js,css} vendor/assets/images/jquery-ui/
 
 * update `app/assets/javascripts/framework.js` and
-  `app/assets/javascripts/framework.js` to reference the new version
+  `app/assets/stylesheets/framework.css` to reference the new version
