@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     match "concepts/:origin/to_review(.:format)"   => "concepts/versions#to_review", :as => "concept_versions_to_review"
     match "concepts/:origin/consistency_check(.:format)" => "concepts/versions#consistency_check", :as => "concept_versions_consistency_check"
 
-    match 'alphabetical_concepts/:prefix(.:format)'   => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
+    match 'alphabetical_concepts(/:prefix)(.:format)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'untranslated_concepts/:prefix(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 

@@ -21,6 +21,8 @@ class Concepts::AlphabeticalController < ConceptsController
 
     params[:prefix] = params[:letter] if params[:prefix].nil? # legacy compatibility -- XXX: unnecessary!?
 
+    redirect_to(url_for :prefix => "a") unless params[:prefix]
+
     @pref_labelings = Iqvoc::Concept.pref_labeling_class.
       concept_published.
       label_begins_with(params[:prefix]).
