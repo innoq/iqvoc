@@ -16,9 +16,11 @@
 
         <%= render "layouts/controls" %>
 
-        <%= render "layouts/quicksearch",
-                :form_class => "navbar-search pull-right",
-                :field_class => "search-query span2" %>
+        <% unless @suppress_quicksearch %>
+          <%= render "layouts/quicksearch",
+                  :form_class => "navbar-search pull-right",
+                  :field_class => "search-query span2" %>
+        <% end %>
       </div>
 
     </div>
