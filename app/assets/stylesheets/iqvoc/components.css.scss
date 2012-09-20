@@ -1,3 +1,13 @@
+.logo {
+  height: 45px;
+  line-height: 45px;
+  margin: 1em;
+  padding-left: 130px;
+  background-image: url(image_path("iqvoc_logo.png"));
+  background-size: 114px 45px;
+  background-repeat: no-repeat;
+}
+
 tr.highlightable {
   cursor: pointer;
 }
@@ -79,4 +89,3 @@ dt {
     }
   }
 }
-
