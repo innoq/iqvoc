@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
     resources :triple_store_syncs, :only => [:new, :create]
 
+    match "/" => "frontpage#index"
+
     match "concepts/:origin/branch(.:format)"      => "concepts/versions#branch",    :as => "concept_versions_branch"
     match "concepts/:origin/merge(.:format)"       => "concepts/versions#merge",     :as => "concept_versions_merge"
     match "concepts/:origin/lock(.:format)"        => "concepts/versions#lock",      :as => "concept_versions_lock"
@@ -55,7 +57,7 @@ Rails.application.routes.draw do
 
     match 'search(.:format)' => 'search_results#index', :as => 'search'
 
-    root :to => 'concepts/hierarchical#index', :format => nil
+    root :to => 'frontpage#index', :format => nil
   end
 
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
