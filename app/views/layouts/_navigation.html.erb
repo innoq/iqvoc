@@ -7,20 +7,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <%= link_to Iqvoc.config['title'], root_path, :class => 'brand' %></a>
+      <%= link_to Iqvoc.config["title"], root_path, :class => "brand" %></a>
 
       <div class="nav-collapse">
         <ul class="nav">
           <%= nav_items Iqvoc.navigation_items %>
         </ul>
 
-        <%= render 'layouts/controls' %>
+        <%= render "layouts/controls" %>
 
-        <%= form_tag alphabetical_concepts_path(:prefix => nil), :method => :get,
-                :class => "navbar-search pull-right" do %>
-          <input type="text" name="prefix" class="search-query span2"
-              placeholder="<%= t('txt.views.navigation.quick_search') %>">
-        <% end %>
+        <%= render "layouts/quicksearch",
+                :form_class => "navbar-search pull-right",
+                :field_class => "search-query span2" %>
       </div>
 
     </div>
