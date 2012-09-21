@@ -67,8 +67,9 @@ return {
 jQuery(document).ready(function($) {
   "use strict";
 
-  IQVOC.quicksearch(".quicksearch",
-      { autofocus: $("#content .quicksearch").length }); // front page only
+  IQVOC.quicksearch(".quicksearch", {
+      autofocus: $("#content .quicksearch").length // front page only
+  });
 
   var locale = document.documentElement.getAttribute("lang");
 
