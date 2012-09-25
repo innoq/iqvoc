@@ -2,5 +2,6 @@
         :class => (form_class rescue nil) do %>
   <%= text_field_tag "prefix", nil, :id => nil,
           :class => "quicksearch #{field_class rescue nil}",
+          :autofocus => (autofocus rescue nil),
           :placeholder => t("txt.views.navigation.quick_search") %>
 <% end %>

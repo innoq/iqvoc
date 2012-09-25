@@ -50,10 +50,7 @@ function extractConcepts(html) {
 
 return function(selector, options) {
 	options = options ? $.extend(defaults, options) : defaults;
-	var el = $(selector).autocomplete(options);
-	if(options.autofocus) {
-		el.focus();
-	}
+	$(selector).autocomplete(options);
 };
 
 }(jQuery));
