@@ -283,7 +283,6 @@ de:
        consistency_check_error: "Instanz ist inkonsistent!"
        to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
-       virtuoso_exception: "Das Objekt wurde veröffentlicht, konnte aber nicht mit Virtuoso synchronisiert werden. Fehler: "
      labelings:
        save:
          success: "Das Labeling wurde erfolgreich gespeichert."
