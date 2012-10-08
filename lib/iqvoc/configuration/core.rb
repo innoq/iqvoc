@@ -53,8 +53,6 @@ module Iqvoc
           bootstrap/bootstrap.css
           bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
-          excanvas.js
-          jit_rgraph.js
           json2.js
           bootstrap/bootstrap.js
           html5.js
