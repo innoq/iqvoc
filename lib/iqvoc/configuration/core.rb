@@ -55,7 +55,6 @@ module Iqvoc
           iqvoc/ie_fixes.css
           excanvas.js
           jit_rgraph.js
-          iqvoc/visualization.js
           json2.js
           bootstrap/bootstrap.js
           html5.js

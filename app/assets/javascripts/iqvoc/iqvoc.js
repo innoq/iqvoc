@@ -71,14 +71,6 @@ jQuery(document).ready(function($) {
 
   var locale = document.documentElement.getAttribute("lang");
 
-  if(IQVOC.visualization) {
-    IQVOC.visualization.init("infovis", function(container) {
-      if(IQVOC.Storage.getItem("visualization") === "enlarged") {
-        container.data("widget").toggleSize(true);
-      }
-    });
-  }
-
   // language selection
   $("#language_selection .dropdown-toggle").click(function(ev) { // use Bootstrap's Dropwdown, but without the side-effects
     $(this).closest(".dropdown").toggleClass("open");
