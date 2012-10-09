@@ -19,16 +19,18 @@
 
 <div class="container">
   <div class="row">
-    <div class="span9" id="content">
+    <div class="<%= content_for?(:sidebar) ? "span9" : "span12" %>" id="content">
       <%= yield :page_header %>
       <% flash.each do |type, msg| %>
         <%= alert(type) { msg } %>
       <% end %>
       <%= yield %>
     </div>
+    <% if content_for?(:sidebar) %>
     <div class="span3" id="sidebar">
       <%= yield :sidebar %>
     </div>
+    <% end %>
   </div>
 </div>
 <script>
