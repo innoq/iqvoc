@@ -1,15 +1,19 @@
-.logo {
-  height: 45px;
-  line-height: 45px;
-  margin: 1em;
-  padding-left: 130px;
-  background-image: url(image_path("iqvoc_logo.png"));
-  background-size: 114px 45px;
-  background-repeat: no-repeat;
+.navbar {
+  .quicksearch {
+  }
 }
 
-.quicksearch {
-  min-width: 20em;
+.onebox {
+  margin-top: 1em;
+  text-align: center;
+
+  .logo {
+    margin: 2em 0 1em 0;
+  }
+
+  .quicksearch {
+    min-width: 60%;
+  }
 }
 
 tr.highlightable {
