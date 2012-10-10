@@ -7,7 +7,7 @@ IQVOC.onebox = (function($) {
 
 function getConcepts(input, container) {
   var form = input.closest("form");
-  console.log("foo");
+
   $.ajax({
     type: form.attr("method"),
     url: form.attr("action"),
