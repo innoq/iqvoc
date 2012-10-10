@@ -33,7 +33,7 @@ return function(selector, options) {
   var resultList = $("<ul class=results />").appendTo(container);
 
   input.keyup(function() {
-    if (input.val() != initialValue) {
+    if (input.val() !== initialValue) {
       getConcepts(input, resultList);
     }
   });

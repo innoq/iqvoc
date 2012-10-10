@@ -26,10 +26,10 @@ var createNote = function(ev) {
 
   clone.find("label").each(function(index, element) {
     var el = $(element);
-    if (el.attr("for")) {
+    if(el.attr("for")) {
       el.attr("for", el.attr("for").replace(/_\d+_/, newIdCount));
     }
-  })
+  });
 
   clone.find(inputSelector).each(function(index, element) {
     var el = $(element);

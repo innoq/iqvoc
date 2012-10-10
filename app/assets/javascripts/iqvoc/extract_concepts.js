@@ -1,3 +1,6 @@
+/*jslint vars: true, white: true */
+/*global jQuery, IQVOC */
+
 IQVOC.extractConcepts = (function($) {
 
 "use strict";
