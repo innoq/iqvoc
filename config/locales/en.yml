@@ -149,6 +149,8 @@ en:
        login: "Login"
        sections: "Sections"
        quick_search: "Quick search"
+     frontpage:
+       type_to_browse: "Start typing to browse concepts"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"

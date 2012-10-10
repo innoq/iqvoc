@@ -11,8 +11,14 @@
     margin: 2em 0 1em 0;
   }
 
-  .quicksearch {
+  input {
     min-width: 60%;
+  }
+
+  ul {
+    margin: 0;
+    list-style: none;
+    text-align: left;
   }
 }
 

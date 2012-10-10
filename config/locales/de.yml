@@ -141,6 +141,8 @@ de:
        login: "Login"
        sections: "Bereiche"
        quick_search: "Schnellsuche"
+     frontpage:
+       type_to_browse: "Tippen um Konzepte zu durchsuchen"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"

@@ -196,4 +196,6 @@ jQuery(document).ready(function($) {
       }
     });
   });
+
+  IQVOC.onebox(".onebox");
 });
