@@ -1,8 +1,10 @@
-IQVOC.extractConcepts = (function($) {
+/*jslint vars: true, white: true */
+/*global jQuery, IQVOC */
 
-"use strict";
+IQVOC.extractConcepts = function(html) {
+  "use strict";
+  var $ = jQuery;
 
-function extractConcepts(html) {
   // disable scripts (adapted from jQuery's `load`)
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
   html = html.replace(rscript, "");
@@ -14,10 +16,4 @@ function extractConcepts(html) {
   });
 
   return concepts.length ? Array.prototype.slice.call(concepts, 0) : [];
-}
-
-return function(html) {
-  return extractConcepts(html);
 };
-
-}(jQuery));
