@@ -5,7 +5,15 @@ IQVOC.onebox = (function($) {
 
 "use strict";
 
-function getConcepts(input, container) {
+var renderResults = function(concepts, container) {
+  container.empty();
+  $.each(concepts, function(i, concept) {
+    var link = $("<a />").attr("href", concept.value).text(concept.label);
+    $("<li />").append(link).appendTo(container);
+  });
+};
+
+var getConcepts = function(input, container) {
   var form = input.closest("form");
   $.ajax({
     type: form.attr("method"),
@@ -15,15 +23,7 @@ function getConcepts(input, container) {
       renderResults(IQVOC.extractConcepts(data), container);
     }
   });
-}
-
-function renderResults(concepts, container) {
-  container.empty();
-  $.each(concepts, function(i, concept) {
-    var link = $("<a />").attr("href", concept.value).text(concept.label);
-    $("<li />").append(link).appendTo(container);
-  });
-}
+};
 
 return function(selector, options) {
   var container = $(selector);
