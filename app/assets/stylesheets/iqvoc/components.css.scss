@@ -4,8 +4,11 @@
 }
 
 .onebox {
-  margin-top: 1em;
+  padding-top: 80px;
+  margin-top: 2em;
   text-align: center;
+
+  background: asset-data-url("iqvoc_logo.png") top center no-repeat;
 
   .logo {
     margin: 2em 0 1em 0;
