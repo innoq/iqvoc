@@ -18,10 +18,10 @@ function getConcepts(input, container) {
 }
 
 function renderResults(concepts, container) {
-  container.html("");
-
-  $(concepts).each(function(i, concept) {
-    container.append('<li><a href="' + concept.value + '">' + concept.label + '</a></li>');
+  container.empty();
+  $.each(concepts, function(i, concept) {
+    var link = $("<a />").attr("href", concept.value).text(concept.label);
+    $("<li />").append(link).appendTo(container);
   });
 }
 
@@ -29,7 +29,7 @@ return function(selector, options) {
   var container = $(selector);
   var input = container.find("input[type=search]");
   var initialValue = input.val();
-  var resultList = $("<ul class=results />").appendTo(container);
+  var resultList = $('<ul class="results" />').appendTo(container);
 
   input.keyup(function() {
     if(input.val() !== initialValue) {
