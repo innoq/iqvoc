@@ -13,8 +13,7 @@ function extractConcepts(html) {
     return { value: el.attr("href"), label: $.trim(el.text()) };
   });
 
-  return concepts.length ? Array.prototype.slice.call(concepts, 0) :
-      [{ value: null, label: "no matches" }]; // TODO: i18n
+  return concepts.length ? Array.prototype.slice.call(concepts, 0) : [];
 }
 
 return function(html) {
