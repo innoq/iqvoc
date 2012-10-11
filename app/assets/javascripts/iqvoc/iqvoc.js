@@ -26,18 +26,18 @@ var createNote = function(ev) {
 
   clone.find("label").each(function(index, element) {
     var el = $(element);
-    if (el.attr("for")) {
+    if(el.attr("for")) {
       el.attr("for", el.attr("for").replace(/_\d+_/, newIdCount));
     }
-  })
+  });
 
   clone.find(inputSelector).each(function(index, element) {
     var el = $(element);
     el.val("");
-    if (el.attr("id")) {
+    if(el.attr("id")) {
       el.attr("id", el.attr("id").replace(/_\d+_/, newIdCount));
     }
-    if (el.attr("name")) {
+    if(el.attr("name")) {
       el.attr("name", el.attr("name").replace(/\[\d+\]/, newNameCount));
     }
   });
