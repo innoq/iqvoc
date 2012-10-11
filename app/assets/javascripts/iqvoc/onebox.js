@@ -32,13 +32,12 @@ return function(selector, options) {
   var resultList = $("<ul />").addClass("results").appendTo(container);
 
   input.keyup(function() {
-    var delay = 200;
-    clearTimeout(delay);
-    setTimeout(function() {
-      if (input.val() && input.val() != initialValue) {
-        getConcepts(input, resultList);
-      }
-    }, delay);
+    if (input.val().length == 0) {
+      resultList.empty();
+    }
+    else if (input.val().length > 0 && input.val() != initialValue) {
+      setTimeout(function() { getConcepts(input, resultList) }, 200);
+    }
   });
 };
 
