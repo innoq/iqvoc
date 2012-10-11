@@ -1,11 +1,10 @@
 /*jslint vars: true, white: true */
 /*global jQuery, IQVOC */
 
-IQVOC.extractConcepts = (function($) {
+IQVOC.extractConcepts = function(html) {
+  "use strict";
+  var $ = jQuery;
 
-"use strict";
-
-function extractConcepts(html) {
   // disable scripts (adapted from jQuery's `load`)
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
   html = html.replace(rscript, "");
@@ -18,10 +17,4 @@ function extractConcepts(html) {
 
   return concepts.length ? Array.prototype.slice.call(concepts, 0) :
       [{ value: null, label: "no matches" }]; // TODO: i18n
-}
-
-return function(html) {
-  return extractConcepts(html);
 };
-
-}(jQuery));
