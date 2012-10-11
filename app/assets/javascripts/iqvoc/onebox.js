@@ -7,7 +7,6 @@ IQVOC.onebox = (function($) {
 
 function getConcepts(input, container) {
   var form = input.closest("form");
-
   $.ajax({
     type: form.attr("method"),
     url: form.attr("action"),
@@ -33,7 +32,7 @@ return function(selector, options) {
   var resultList = $("<ul class=results />").appendTo(container);
 
   input.keyup(function() {
-    if (input.val() !== initialValue) {
+    if(input.val() !== initialValue) {
       getConcepts(input, resultList);
     }
   });
