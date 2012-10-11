@@ -19,10 +19,12 @@ function getConcepts(input, container) {
 }
 
 function renderResults(concepts, container) {
-  container.html("");
+  container.empty();
 
-  $(concepts).each(function(i, concept) {
-    container.append('<li><a href="' + concept.value + '">' + concept.label + '</a></li>');
+  $.each(concepts, function(i, concept) {
+
+    var link = $("<a />").attr("href", concept.value).text(concept.label);
+    $("<li />").append(link).appendTo(container);
   });
 }
 
@@ -30,12 +32,16 @@ return function(selector, options) {
   var container = $(selector);
   var input = container.find("input[type=search]");
   var initialValue = input.val();
-  var resultList = $("<ul class=results />").appendTo(container);
+  var resultList = $("<ul />").addClass("results").appendTo(container);
 
   input.keyup(function() {
-    if (input.val() != initialValue) {
-      getConcepts(input, resultList);
-    }
+    var delay = 200;
+    clearTimeout(delay);
+    setTimeout(function() {
+      if (input.val() && input.val() != initialValue) {
+        getConcepts(input, resultList);
+      }
+    }, delay);
   });
 };
 
