@@ -15,9 +15,6 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
-
-  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
-
   scope '(:lang)', :constraints => lambda { |params, req|
     lang = params[:lang]
     return lang.nil? || lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}$/
@@ -46,7 +43,6 @@ Rails.application.routes.draw do
 
     match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
 
-    match 'about(.:format)'     => 'pages#about',          :as => 'about'
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
     get 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'
@@ -56,6 +52,8 @@ Rails.application.routes.draw do
     post "import" => "import#import"
 
     match 'search(.:format)' => 'search_results#index', :as => 'search'
+
+    get "help" => "pages#help", :as => "help"
 
     root :to => 'frontpage#index', :format => nil
   end
