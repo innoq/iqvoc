@@ -51,13 +51,6 @@
   }
 }
 
-// Hide search form
-@media (max-width: 1200px) {
-  .navbar-search {
-    display: none;
-  }
-}
-
 // Unify topbar margin on all viewports
 @media (min-width: 980px) {
   .navbar-fixed-top {
