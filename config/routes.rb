@@ -15,6 +15,8 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
+  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
+
   scope '(:lang)', :constraints => lambda { |params, req|
     lang = params[:lang]
     return lang.nil? || lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}$/
