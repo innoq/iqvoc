@@ -43,6 +43,11 @@ module Iqvoc
             :controller => "instance_configuration",
             :authorized? => proc { can? :manage, Iqvoc.config }
           }, {
+            :content => proc { link_to t("txt.views.navigation.help"), help_path },
+            :controller => "pages",
+            :action => "help",
+            :authorized? => proc { can? :read, :help }
+          }, {
             :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" }
           }
         ]

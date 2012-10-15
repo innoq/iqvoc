@@ -9,6 +9,9 @@ module Iqvoc
       can :read, ::Collection::Base
       can :read, [::Concept::Base, ::Label::Base], &@@if_published
 
+      # static pages
+      can :read, :help
+
       if user # Every logged in user ...
         can :use, :dashboard
         can :destroy, UserSession
