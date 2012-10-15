@@ -27,25 +27,4 @@ class RdfController < ApplicationController
     end
   end
 
-  def show
-    scope = if params[:published] == "0"
-      Iqvoc::Concept.base_class.unpublished
-    else
-      Iqvoc::Concept.base_class.published
-    end
-    if @concept = scope.by_origin(params[:id]).with_associations.last
-      respond_to do |format|
-        format.html do
-          redirect_to concept_url(:id => @concept.origin, :published => params[:published])
-        end
-        format.any do
-          authorize! :read, @concept
-          render :show_concept
-        end
-      end
-    else
-      raise ActiveRecord::RecordNotFound.new("Concept '#{params[:id]}' not found.")
-    end
-  end
-
 end

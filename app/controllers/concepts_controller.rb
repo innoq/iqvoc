@@ -85,6 +85,8 @@ class ConceptsController < ApplicationController
         }
         render :json => concept_data
       end
+      format.ttl
+      format.rdf
     end
   end
 
