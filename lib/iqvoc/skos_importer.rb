@@ -147,7 +147,7 @@ module Iqvoc
     end
 
     def blank_node?(str)
-      str.to_s =~ /^_:.+/
+      str.dup.to_s =~ /^_:.+/
     end
 
     def extract_triple(line)
