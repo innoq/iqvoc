@@ -6,8 +6,8 @@ namespace :iqvoc do
     task :url => :environment do
       require 'iqvoc/skos_importer'
 
-      raise "You have to specify an url to be import data. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['URL']
-      raise "You have to specify a default namespace to be import data. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['NAMESPACE']
+      raise "You have to specify an url for the data file to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['URL']
+      raise "You have to specify a default namespace for the data to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['NAMESPACE']
       Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s)
     end
 

@@ -29,6 +29,7 @@ module Iqvoc
       end
 
       @seen_first_level_objects = {}
+      @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
@@ -43,10 +44,17 @@ module Iqvoc
     private
 
     def import(file)
+      # Collect blank nodes
+      file.each do |line|
+        identify_blank_nodes(*extract_triple(line))
+      end
+
+      file.rewind if file.is_a?(IO)
       types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
         types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
       end
+
       file.each do |line|
         import_first_level_objects(types, *extract_triple(line))
       end
@@ -70,6 +78,13 @@ module Iqvoc
         end
       end
 
+    end
+
+    def identify_blank_nodes(subject, predicate, object)
+      if blank_node?(subject)
+        @blank_nodes[subject] ||= []
+        @blank_nodes[subject] << [predicate, object]
+      end
     end
 
     def import_first_level_objects(types, subject, predicate, object)
@@ -114,6 +129,10 @@ module Iqvoc
         end
       end
 
+      if blank_node?(object)
+        object = @blank_nodes[object]
+      end
+
       types[predicate].build_from_rdf(subject, predicate, object)
     end
 
@@ -125,6 +144,10 @@ module Iqvoc
         end
       end
       @seen_first_level_objects[origin]
+    end
+
+    def blank_node?(str)
+      str.dup.to_s =~ /^_:.+/
     end
 
     def extract_triple(line)

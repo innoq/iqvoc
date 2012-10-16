@@ -20,16 +20,28 @@ class Note::SKOS::Base < Note::Base
 
   def self.build_from_rdf(subject, predicate, object)
     unless subject.class.reflections.include?(self.name.to_relation_name)
-      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.class.name} => #{self.class.name.to_relation_name})."
-    end
-    unless object =~ /^"(.+)"(@(.+))$/
-      raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to receive this kind of note (#{self.class.name} => #{self.class.name.to_relation_name})."
     end
 
-    lang = $3
-    value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
-
-    subject.send(self.name.to_relation_name) << self.new(:value => value, :language => lang)
+    case object
+    when String # Literal
+      unless object =~ /^"(.*)"(@(.+))$/
+        raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+      end
+      lang = $3
+      value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+      subject.send(self.name.to_relation_name) << self.new(:value => value, :language => lang)
+    when Array # Blank node
+      note = self.create!(:owner => subject)
+      object.each do |annotation|
+        ns, pred = *annotation.first.split(":", 2)
+        note.annotations.create! do |a|
+          a.namespace = ns
+          a.predicate = pred
+          a.value = annotation.last.match(/^"(.+)"$/)[1]
+        end
+      end
+    end
   end
 
   def build_rdf(document, subject)
