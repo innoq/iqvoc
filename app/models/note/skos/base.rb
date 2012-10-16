@@ -25,7 +25,7 @@ class Note::SKOS::Base < Note::Base
 
     case object
     when String # Literal
-      unless object =~ /^"(.+)"(@(.+))$/
+      unless object =~ /^"(.*)"(@(.+))$/
         raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
       end
       lang = $3
