@@ -20,7 +20,7 @@ class Note::SKOS::Base < Note::Base
 
   def self.build_from_rdf(subject, predicate, object)
     unless subject.class.reflections.include?(self.name.to_relation_name)
-      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of note (#{self.class.name} => #{self.class.name.to_relation_name})."
+      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to receive this kind of note (#{self.class.name} => #{self.class.name.to_relation_name})."
     end
 
     case object
