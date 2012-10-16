@@ -98,18 +98,18 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_not_nil Iqvoc::Concept.base_class.by_origin("_1").last
   end
 
-  test "blank nodes" do
-    test_data = (<<-DATA
-  <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
-  <http://www.example.com/car> <http://www.w3.org/2008/05/skos#prefLabel> "Car"@en .
-  <http://www.example.com/car> <http://www.w3.org/2004/02/skos/core#changeNote> _:A01 .
-  _:A01 <http://purl.org/dc/terms/modified> "2012-02-13T08:56:13+01:00" .
-  _:A01 <http://purl.org/dc/terms/creator> "Arnulf Beckenbauer"
-      DATA
-    ).split("\n")
+  # test "blank nodes" do
+  #   test_data = (<<-DATA
+  # <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+  # <http://www.example.com/car> <http://www.w3.org/2008/05/skos#prefLabel> "Car"@en .
+  # <http://www.example.com/car> <http://www.w3.org/2004/02/skos/core#changeNote> _:A01 .
+  # _:A01 <http://purl.org/dc/terms/modified> "2012-02-13T08:56:13+01:00" .
+  # _:A01 <http://purl.org/dc/terms/creator> "Arnulf Beckenbauer"
+  #     DATA
+  #   ).split("\n")
+  # end
 
 
-  end
 end
 
 class SkosCollectionImportTest < ActiveSupport::TestCase
