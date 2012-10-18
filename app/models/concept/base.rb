@@ -449,7 +449,7 @@ class Concept::Base < ActiveRecord::Base
   def ensure_rooted_top_terms
     if @full_validation
       if narrower_relations.includes(:target). # XXX: inefficient?
-          select { |rel| rel.target.top_term? }.any?
+          select { |rel| rel.target && rel.target.top_term? }.any?
         errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
       end
     end
