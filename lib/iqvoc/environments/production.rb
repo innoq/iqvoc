@@ -62,6 +62,12 @@ module Iqvoc::Environments
     # Send deprecation notices to registered listeners
     config.active_support.deprecation = :notify
 
+    # Enforce whitelist mode for mass assignment.
+    # This will create an empty whitelist of attributes available for mass-assignment for all models
+    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
+    # parameters by using an attr_accessible or attr_protected declaration.
+    config.active_record.whitelist_attributes = false
+
     # The JDBC driver URL for the connection to the virtuoso triple store.
     # Login credentials have to be stored here too. See
     # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
