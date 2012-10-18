@@ -472,7 +472,7 @@ class Concept::Base < ActiveRecord::Base
       send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
       labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
     languages = {}
-    pls.each do |pref_label|
+    pls.compact.each do |pref_label|
       lang = pref_label.language.to_s
       origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
       if (languages.keys.include?(lang) && languages[lang] != origin)
