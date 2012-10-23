@@ -34,7 +34,7 @@ Iqvoc.config do |config|
   })
 end
 
-# Iqvoc::Concept.base_class_name = "#{app_path}"
+# Iqvoc::Concept.base_class_name = "MyConceptClass"
 # Iqvoc::Concept.pref_labeling_class_name = "MyLabelingClass"
 # Iqvoc::Concept.further_relation_class_names << "MyConceptRelationClass"
 # Iqvoc::Concept.note_class_names = []

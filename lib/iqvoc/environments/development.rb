@@ -74,6 +74,12 @@ module Iqvoc::Environments
     # Prepend all log lines with the following tags
     # config.log_tags = [ :subdomain, :uuid ]
 
+    # Enforce whitelist mode for mass assignment.
+    # This will create an empty whitelist of attributes available for mass-assignment for all models
+    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
+    # parameters by using an attr_accessible or attr_protected declaration.
+    config.active_record.whitelist_attributes = false
+
     # The default URI prefix for RDF data. This will be followed by a document
     # specific shnippet like (specimenType) and the id.
   end
