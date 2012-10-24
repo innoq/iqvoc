@@ -72,12 +72,6 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Methods
 
-  # TODO: This should move to umt because it highly proprietary
-  def self.from_rdf(str)
-    h = Iqvoc::RdfHelper.split_literal(str)
-    self.new(:value => h[:value], :language => h[:language])
-  end
-
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
