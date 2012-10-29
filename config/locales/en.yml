@@ -318,8 +318,10 @@ en:
        label_error: "Invalid label assignments:\n%s"
      narrowers:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     triple_store_syncs:
-       success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
+     triplestore_sync:
+       caption: "Triplestore Synchronization"
+       start: "Start synchronization"
+       success: "%{concept_count} published concepts and %{label_count} published labels have been synchronized."
      collections:
        save:
          success: "The collection has been successfully created."

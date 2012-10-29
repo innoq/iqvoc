@@ -311,7 +311,9 @@ de:
        label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
-     triple_store_syncs:
+     triplestore_sync:
+       caption: "Triplestore-Synchronisierung"
+       start: "Synchronisierung starten"
        success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
      collections:
        save:

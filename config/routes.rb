@@ -28,8 +28,6 @@ Rails.application.routes.draw do
     resources :concepts
     resources :collections
 
-    resources :triple_store_syncs, :only => [:new, :create]
-
     match "/" => "frontpage#index"
 
     match "concepts/:origin/branch(.:format)"      => "concepts/versions#branch",    :as => "concept_versions_branch"
@@ -58,6 +56,9 @@ Rails.application.routes.draw do
     get "help" => "pages#help", :as => "help"
 
     root :to => 'frontpage#index', :format => nil
+
+    get "triplestore_sync" => "triplestore_sync#index"
+    post "triplestore_sync" => "triplestore_sync#sync"
   end
 
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
