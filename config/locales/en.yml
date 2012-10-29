@@ -149,6 +149,7 @@ en:
        login: "Login"
        sections: "Sections"
        quick_search: "Quick search"
+       help: "Help"
      frontpage:
        type_to_browse: "Start typing to browse concepts"
      search_results:

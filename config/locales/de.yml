@@ -141,6 +141,7 @@ de:
        login: "Login"
        sections: "Bereiche"
        quick_search: "Schnellsuche"
+       help: "Hilfe"
      frontpage:
        type_to_browse: "Tippen um Konzepte zu durchsuchen"
      search_results:
