@@ -325,6 +325,7 @@ de:
        circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
      triplestore_sync:
        success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
+       config_warning: "Bisher wurde kein Triplestore konfiguriert."
 
    models:
      label:

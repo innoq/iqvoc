@@ -21,7 +21,9 @@ class TriplestoreSyncController < ApplicationController
   def index
     authorize! :use, :dashboard
 
-    # TODO: check configuration for existing endpoint
+    if Iqvoc.config["triplestore"] == Iqvoc.config.defaults["triplestore"]
+      flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
+    end
 
     # per-class pagination
     @candidates = Iqvoc::RDFSync.candidates.map do |records|

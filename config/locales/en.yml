@@ -332,6 +332,7 @@ en:
        circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
      triplestore_sync:
        success: "%{concept_count} published concepts and %{label_count} published labels have been synchronized."
+       config_warning: "Triplestore has not been configured yet."
 
    models:
      label:
