@@ -3,6 +3,8 @@
   <% Iqvoc.first_level_classes.each do |klass| %>
     <%= sidebar_item { render(klass.new_link_partial_name) } %>
   <% end %>
+  <%= sidebar_item(:icon => :upload, :text => t('txt.controllers.triplestore_sync.caption'),
+    :path => triplestore_sync_path) %>
   <%= sidebar_header t('txt.views.dashboard.full_rdf_export') %>
   <%= sidebar_item(:icon => :download, :text => "RDF/Turtle", :path => concepts_url(:format => :ttl),
     :perms => [:full_export, Concept::Base]) %>
