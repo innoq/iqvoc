@@ -1,7 +1,7 @@
-<h2><%= t("txt.controllers.triplestore_sync.caption") %></h2>
+<h2><%= t("txt.views.triplestore_sync.caption") %></h2>
 
 <%= form_tag triplestore_sync_path(:format => nil, :lang => nil), :method => :post do %>
-  <%= submit_tag t("txt.controllers.triplestore_sync.start") %>
+  <%= submit_tag t("txt.views.triplestore_sync.start") %>
 <% end %>
 
 <% @candidates.each do |records| %>

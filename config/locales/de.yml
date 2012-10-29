@@ -237,6 +237,9 @@ de:
        import: Import
      collections:
        new: "Neue Kollektion"
+     triplestore_sync:
+       caption: "Triplestore-Synchronisierung"
+       start: "Synchronisierung starten"
 
    partials:
      note:
@@ -312,10 +315,6 @@ de:
        label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
-     triplestore_sync:
-       caption: "Triplestore-Synchronisierung"
-       start: "Synchronisierung starten"
-       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
      collections:
        save:
          success: "Die Kollektion wurde erfolgreich gespeichert."
@@ -324,6 +323,8 @@ de:
          success: "Die Kollektion wurde erfolgreich gelöscht."
          error: "Die Kollektion konnte nicht gelöscht werden."
        circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
+     triplestore_sync:
+       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
 
    models:
      label:
