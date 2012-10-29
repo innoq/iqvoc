@@ -87,7 +87,7 @@ GEM
     iq_rdf (0.1.8)
       builder
       bundler
-    iq_triplestorage (0.1.1)
+    iq_triplestorage (0.1.2)
       typhoeus
     jdbc-mysql (5.1.13)
     jdbc-sqlite3 (3.7.2)

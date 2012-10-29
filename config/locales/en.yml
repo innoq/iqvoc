@@ -331,7 +331,9 @@ en:
          error: "The collection could not be deleted."
        circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
      triplestore_sync:
-       success: "%{concept_count} published concepts and %{label_count} published labels have been synchronized."
+       success: "Synchronization successful."
+       error: "An error occurred during the synchronization process - some entities have not been synchronized."
+       config_info: "Synchronizing with triplestore: %{target_info}"
        config_warning: "Triplestore has not been configured yet."
 
    models:

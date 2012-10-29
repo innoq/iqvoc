@@ -23,6 +23,18 @@ class TriplestoreSyncController < ApplicationController
 
     if Iqvoc.config["triplestore"] == Iqvoc.config.defaults["triplestore"]
       flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
+    else
+      host = Iqvoc.config["triplestore"]
+      username = Iqvoc.config["triplestore_username"].presence
+      password = Iqvoc.config["triplestore_password"].presence
+      target_info = host
+      if username && password
+        target_info = "#{target_info} (as #{username} with password)" # XXX: i18n
+      elsif username
+        target_info = "#{target_info} (as #{username})" # XXX: i18n
+      end
+      flash.now[:info] = I18n.t("txt.controllers.triplestore_sync.config_info",
+          :target_info => target_info)
     end
 
     # per-class pagination
@@ -34,11 +46,21 @@ class TriplestoreSyncController < ApplicationController
   def sync
     authorize! :use, :dashboard
 
-    # TODO
+    base_url = request.protocol + request.host_with_port + root_path(:lang => nil) # XXX: brittle in the face of future changes?
+    host = URI.parse(Iqvoc.config["triplestore"])
+    port = host.port
+    host.port = 80 # XXX: hack to remove port from serialization
+    sync = Iqvoc::RDFSync.new(base_url, host.to_s, :port => port,
+        :username => Iqvoc.config["triplestore_username"].presence,
+        :password => Iqvoc.config["triplestore_password"].presence)
 
-    flash.now[:success] = I18n.t("txt.controllers.triplestore_sync.success")
+    if (sync.all rescue false)
+      flash[:success] = I18n.t("txt.controllers.triplestore_sync.success")
+    else
+      flash[:error] = I18n.t("txt.controllers.triplestore_sync.error")
+    end
 
-    render :action => "index"
+    redirect_to :action => "index"
   end
 
 end

@@ -9,7 +9,7 @@ class Iqvoc::RDFSync
     @base_url = base_url
     @target_host = target_host
     options = args.extract_options!
-    @target_port = options[:target_port]
+    @target_port = options[:port]
     @username = options[:username]
     @password = options[:password]
     @batch_size = options[:batch_size]

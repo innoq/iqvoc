@@ -6,7 +6,7 @@
 
 <% @candidates.each do |records| %>
   <% klass = records.table.engine %>
-  <h3><%= klass.name %></h3>
+  <h3><%= klass.model_name.human(:count => 2) %></h3>
   <ul>
     <% records.each do |record| %>
     <li><%= link_to record, record.to_s %></li>

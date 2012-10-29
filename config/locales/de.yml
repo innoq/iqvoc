@@ -324,7 +324,9 @@ de:
          error: "Die Kollektion konnte nicht gelöscht werden."
        circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
      triplestore_sync:
-       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
+       success: "Synchronisierung erfolgreich."
+       error: "Bei der Synchronisierung traten Fehler auf - einige Einträge wurden nicht synchronisiert."
+       config_info: "Synchronisierung mit Triplestore: %{target_info}"
        config_warning: "Bisher wurde kein Triplestore konfiguriert."
 
    models:
