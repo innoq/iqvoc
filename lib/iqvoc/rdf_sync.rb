@@ -55,8 +55,7 @@ class Iqvoc::RDFSync
 
   # yields batches of candidates for synchronization
   def gather_candidates # TODO: rename
-    classes = [::Concept::Base] # TODO: configurable (e.g. SKOS-XL needs to add labels)
-    classes.each do |klass|
+    Iqvoc::Sync.syncable_classes.each do |klass|
       klass.published.unsynced.find_in_batches(:batch_size => @batch_size) do |records|
         yield records
       end
