@@ -14,12 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'iqvoc/rdf_sync'
+
 class TriplestoreSyncController < ApplicationController
 
   def index
     authorize! :use, :dashboard
 
     # TODO: check configuration for existing endpoint
+
+    # per-class pagination
+    @candidates = Iqvoc::RDFSync.candidates.map do |records|
+      records.page(params[:page])
+    end
   end
 
   def sync

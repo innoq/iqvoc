@@ -3,3 +3,14 @@
 <%= form_tag triplestore_sync_path(:format => nil, :lang => nil), :method => :post do %>
   <%= submit_tag t("txt.controllers.triplestore_sync.start") %>
 <% end %>
+
+<% @candidates.each do |records| %>
+  <% klass = records.table.engine %>
+  <h3><%= klass.name %></h3>
+  <ul>
+    <% records.each do |record| %>
+    <li><%= link_to record, record.to_s %></li>
+    <% end %>
+  </ul>
+  <%= paginate records %>
+<% end %>

@@ -56,10 +56,17 @@ class Iqvoc::RDFSync
   # yields batches of candidates for synchronization
   def gather_candidates # TODO: rename
     Iqvoc::Sync.syncable_classes.each do |klass|
-      klass.published.unsynced.find_in_batches(:batch_size => @batch_size) do |records|
+      self.class.candidates(klass).find_in_batches(:batch_size => @batch_size) do |records|
         yield records
       end
     end
+  end
+
+  # returns one or multiple ActiveRecord::RelationS, depending on whether
+  # `klass` is provided
+  def self.candidates(klass=nil)
+    return klass ? klass.published.unsynced :
+        Iqvoc::Sync.syncable_classes.map { |klass| candidates(klass) }
   end
 
 end
