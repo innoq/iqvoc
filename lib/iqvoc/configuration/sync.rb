@@ -12,7 +12,8 @@ module Iqvoc
         Iqvoc.config.register_settings({
           "triplestore_url" => "http://example.org:8080",
           "triplestore_username" => "",
-          "triplestore_password" => ""
+          "triplestore_password" => "",
+          "triplestore_autosync" => false
         })
       end
 
