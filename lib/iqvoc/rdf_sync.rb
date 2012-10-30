@@ -20,20 +20,27 @@ class Iqvoc::RDFSync
     errors = false
 
     gather_candidates do |records|
-      success = sync(records)
-      if success
-        records.each do |record|
-          record.update_attribute(:rdf_updated_at, timestamp)
-        end
-      else
-        errors = true # XXX: too simplistic
-      end
+       success = sync(records, timestamp)
+       errors = true unless success
     end
 
     return !errors
   end
 
-  def sync(records)
+  def sync(records, timestamp=nil)
+    timestamp ||= Time.now
+
+    success = push(records)
+    if success
+      records.each do |record|
+        record.update_attribute(:rdf_updated_at, timestamp)
+      end
+    end
+
+    return success
+  end
+
+  def push(records)
     data = records.inject({}) do |memo, record|
       graph_uri = url_helpers.rdf_url(record.origin,
           :host => URI.parse(@base_url).host, :format => nil, :lang => nil)
