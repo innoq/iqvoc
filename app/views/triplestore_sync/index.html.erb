@@ -9,7 +9,14 @@
   <h3><%= klass.model_name.human(:count => 2) %></h3>
   <ul>
     <% records.each do |record| %>
-    <li><%= link_to record, record.to_s %></li>
+    <% # XXX: does not belong here -- also heavily over-engineered
+      doc = IqRdf::Document.new(root_url(:lang => nil))
+      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+        doc.namespaces(self.send(meth))
+      end
+      uri = record.build_rdf_subject(doc, controller).full_uri # XXX: we actually just want path, plus HTML format
+    %>
+    <li><%= link_to record.to_s, uri %></li>
     <% end %>
   </ul>
   <%= paginate records %>
