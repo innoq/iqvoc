@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'webmock'
 
 require 'iqvoc/rdf_sync'
 
@@ -45,6 +44,7 @@ class RDFSyncTest < ActiveSupport::TestCase
 
     # HTTP request mocking
     @observers = [] # one per request
+    WebMock.disable_net_connect!
     WebMock.stub_request(:any, /.*example.org.*/).with do |req|
       # not using WebMock's custom assertions as those didn't seem to provide
       # sufficient flexibility
@@ -59,6 +59,7 @@ class RDFSyncTest < ActiveSupport::TestCase
 
   teardown do
     WebMock.reset!
+    WebMock.allow_net_connect!
     raise(TypeError, "unhandled request observer") unless @observers.length == 0
   end
 
