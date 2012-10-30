@@ -17,6 +17,7 @@
 require 'iqvoc/rdf_sync'
 
 class TriplestoreSyncController < ApplicationController
+  include Iqvoc::RDFSync::Helper
 
   def index
     authorize! :use, :dashboard
@@ -46,15 +47,9 @@ class TriplestoreSyncController < ApplicationController
   def sync
     authorize! :use, :dashboard
 
-    base_url = root_url(:lang => nil) # XXX: brittle in the face of future changes?
-    host = URI.parse(Iqvoc.config["triplestore_url"])
-    port = host.port
-    host.port = 80 # XXX: hack to remove port from serialization
-    sync = Iqvoc::RDFSync.new(base_url, host.to_s, :port => port,
-        :username => Iqvoc.config["triplestore_username"].presence,
-        :password => Iqvoc.config["triplestore_password"].presence)
+    success = triplestore_syncer.all rescue false # XXX: long-running
 
-    if (sync.all rescue false)
+    if success
       flash[:success] = I18n.t("txt.controllers.triplestore_sync.success")
     else
       flash[:error] = I18n.t("txt.controllers.triplestore_sync.error")
