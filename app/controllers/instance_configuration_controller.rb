@@ -67,7 +67,7 @@ class InstanceConfigurationController < ApplicationController
     Iqvoc::InstanceConfiguration.validate_value(value)
     if default_value.is_a?(Array)
       return value.to_csv.strip
-    else # String, Fixnum / Float
+    else # boolean, String, Fixnum / Float
       return value.to_s
     end
   end
@@ -89,7 +89,15 @@ class InstanceConfigurationController < ApplicationController
   # converts string to given (non-complex) type
   # raises TypeError on failure
   def convert_value(str, type)
-    if type == String
+    if [TrueClass, FalseClass].include?(type)
+      if str == "true"
+        return true
+      elsif str == "false"
+        return false
+      else
+        raise TypeError, "expected boolean"
+      end
+    elsif type == String
       return str
     elsif type == Fixnum
       raise TypeError, "expected integer" unless str =~ /^[-+]?[0-9]+$/

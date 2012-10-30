@@ -103,7 +103,8 @@ module Iqvoc
 
       # cache current settings
       @defaults.each_with_object({}) do |(key, default_value), hsh|
-        @settings[key] = @records[key] || default_value
+        value = @records[key]
+        @settings[key] = value.nil? ? default_value : value
       end
     end
 
@@ -112,7 +113,7 @@ module Iqvoc
       if value == nil
         raise TypeError, "nil values not supported"
       end
-      unless [String, Fixnum, Float, Array].include?(value.class)
+      unless [TrueClass, FalseClass, String, Fixnum, Float, Array].include?(value.class)
         raise TypeError, "complex values not supported"
       end
     end
