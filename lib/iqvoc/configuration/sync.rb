@@ -10,7 +10,7 @@ module Iqvoc
         self.syncable_class_names = [Iqvoc::Concept.base_class_name]
 
         Iqvoc.config.register_settings({
-          "triplestore" => "http://example.org:8080",
+          "triplestore_url" => "http://example.org:8080",
           "triplestore_username" => "",
           "triplestore_password" => ""
         })

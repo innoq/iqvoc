@@ -21,10 +21,10 @@ class TriplestoreSyncController < ApplicationController
   def index
     authorize! :use, :dashboard
 
-    if Iqvoc.config["triplestore"] == Iqvoc.config.defaults["triplestore"]
+    if Iqvoc.config["triplestore_url"] == Iqvoc.config.defaults["triplestore_url"]
       flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
     else
-      host = Iqvoc.config["triplestore"]
+      host = Iqvoc.config["triplestore_url"]
       username = Iqvoc.config["triplestore_username"].presence
       password = Iqvoc.config["triplestore_password"].presence
       target_info = host
@@ -47,7 +47,7 @@ class TriplestoreSyncController < ApplicationController
     authorize! :use, :dashboard
 
     base_url = request.protocol + request.host_with_port + root_path(:lang => nil) # XXX: brittle in the face of future changes?
-    host = URI.parse(Iqvoc.config["triplestore"])
+    host = URI.parse(Iqvoc.config["triplestore_url"])
     port = host.port
     host.port = 80 # XXX: hack to remove port from serialization
     sync = Iqvoc::RDFSync.new(base_url, host.to_s, :port => port,
