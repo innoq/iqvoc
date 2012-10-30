@@ -46,7 +46,7 @@ class TriplestoreSyncController < ApplicationController
   def sync
     authorize! :use, :dashboard
 
-    base_url = request.protocol + request.host_with_port + root_path(:lang => nil) # XXX: brittle in the face of future changes?
+    base_url = root_url(:lang => nil) # XXX: brittle in the face of future changes?
     host = URI.parse(Iqvoc.config["triplestore_url"])
     port = host.port
     host.port = 80 # XXX: hack to remove port from serialization
