@@ -92,6 +92,10 @@ en:
          available_languages: available languages
          languages_pref_labeling: languages for preferred labels
          languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
+         triplestore_url: triplestore URL
+         triplestore_username: username for triplestore
+         triplestore_password: password for triplestore
+         triplestore_autosync: automatic triplestore synchronization
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
