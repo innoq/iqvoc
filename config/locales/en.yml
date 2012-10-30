@@ -87,6 +87,11 @@ en:
          matches: Concept mappings
      instance_configuration:
        caption: "Instance Configuration"
+       settings:
+         title: site title
+         available_languages: available languages
+         languages_pref_labeling: languages for preferred labels
+         languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"

@@ -87,6 +87,11 @@ de:
          logout: "Abmelden"
      instance_configuration:
        caption: "Instanzkonfiguration"
+       settings:
+         title: Titel
+         available_languages: verfügbare Sprachen
+         languages_pref_labeling: Sprachen für bevorzugte Labels
+         languages_further_labelings_Labeling::SKOS::AltLabel: Sprachen für alternative Labels
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"
