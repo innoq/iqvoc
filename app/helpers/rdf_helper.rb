@@ -25,7 +25,7 @@ module RdfHelper
       hash[c.id] = c.origin
     end
 
-    document << concept.build_rdf_subject(document, controller) do |c|
+    document << concept.build_rdf_subject(document, nil) do |c|
 
       concept.collection_members.each do |collection_member|
         if @rdf_helper_cached_collections[collection_member.collection_id]
