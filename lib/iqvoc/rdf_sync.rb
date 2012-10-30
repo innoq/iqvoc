@@ -14,6 +14,7 @@ class Iqvoc::RDFSync
     @password = options[:password]
     @batch_size = options[:batch_size]
     @view_context = options[:view_context] # XXX: not actually optional
+    raise(ArgumentError, "missing view context") unless @view_context # XXX: smell (see above)
   end
 
   def all # TODO: rename

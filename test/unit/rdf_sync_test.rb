@@ -28,7 +28,16 @@ class RDFSyncTest < ActiveSupport::TestCase
     @base_url = "http://example.com/"
     @target_host = "http://example.org"
     @username = "johndoe"
-    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username)
+
+    class FakeViewContext # XXX: does not belong here
+      def iqvoc_default_rdf_namespaces
+        return Iqvoc.rdf_namespaces
+      end
+    end
+    @view_context = FakeViewContext.new
+
+    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
+        :view_context => @view_context)
 
     @concepts = 15.times.map do
       FactoryGirl.create(:concept, :narrower_relations => [])
@@ -56,7 +65,7 @@ class RDFSyncTest < ActiveSupport::TestCase
   test "serialization" do
     concept = @concepts[0]
 
-    assert_equal(<<-EOS.strip, @sync.serialize(concept).strip)
+    assert @sync.serialize(concept).include?(<<-EOS.strip)
 <#{@base_url}#{concept.origin}> <#{@rdf}type> <#{@skos}Concept> .
     EOS
   end
@@ -101,7 +110,8 @@ class RDFSyncTest < ActiveSupport::TestCase
     batch_count = 3
 
     sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
-        :batch_size => (concept_count / batch_count).ceil)
+        :batch_size => (concept_count / batch_count).ceil,
+        :view_context => @view_context)
 
     (batch_count * 2).times do # two requests (reset + insert) per batch
       @observers << lambda { |req| } # no need to check details here
