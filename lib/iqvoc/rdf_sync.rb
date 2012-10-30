@@ -13,6 +13,7 @@ class Iqvoc::RDFSync
     @username = options[:username]
     @password = options[:password]
     @batch_size = options[:batch_size]
+    @view_context = options[:view_context] # XXX: not actually optional
   end
 
   def all # TODO: rename
@@ -54,9 +55,21 @@ class Iqvoc::RDFSync
   end
 
   def serialize(record)
+    # while this method is really fugly, iQvoc essentially requires us to mock a
+    # view in order to get to the RDF serialization
+
     doc = IqRdf::Document.new(@base_url)
-    doc.namespaces Iqvoc.rdf_namespaces
-    doc << record.build_rdf_subject(nil, nil) # XXX: not passing any arguments to see why they're at all necessary
+    Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+      doc.namespaces(@view_context.send(meth))
+    end
+
+    rdf_helper = Object.new.extend(RdfHelper)
+    if record.is_a? Iqvoc::Concept.base_class
+      rdf_helper.render_concept(doc, record)
+    else # XXX: must be extensible
+      raise NotImplementedError, "unable to render RDF for #{record.class}"
+    end
+
     return doc.to_ntriples
   end
 
@@ -90,7 +103,8 @@ module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
 
     return Iqvoc::RDFSync.new(base_url, host, :port => port,
         :username => Iqvoc.config["triplestore_username"].presence,
-        :password => Iqvoc.config["triplestore_password"].presence)
+        :password => Iqvoc.config["triplestore_password"].presence,
+        :view_context => view_context) # fugly, but necessary; cf. RDFSync#serialize
   end
 
 end
