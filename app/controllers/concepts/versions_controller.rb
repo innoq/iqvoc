@@ -28,6 +28,7 @@ class Concepts::VersionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if current_concept.blank? || current_concept.destroy
+        new_version.rdf_updated_at = nil
         new_version.publish
         new_version.unlock
         if new_version.valid_with_full_validation?
