@@ -34,7 +34,7 @@ class Concepts::VersionsController < ApplicationController
         if new_version.valid_with_full_validation?
           new_version.save
 
-          if Iqvoc.config["triplestore_autosync"]
+          if Iqvoc.config["triplestore.autosync"]
            synced = triplestore_syncer.sync([new_version]) # XXX: blocking
            flash[:warning] = "triplestore synchronization failed" unless synced # TODO: i18n
           end

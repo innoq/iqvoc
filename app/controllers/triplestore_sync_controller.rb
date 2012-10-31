@@ -22,12 +22,12 @@ class TriplestoreSyncController < ApplicationController
   def index
     authorize! :use, :dashboard
 
-    if Iqvoc.config["triplestore_url"] == Iqvoc.config.defaults["triplestore_url"]
+    if Iqvoc.config["triplestore.url"] == Iqvoc.config.defaults["triplestore.url"]
       flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
     else
-      host = Iqvoc.config["triplestore_url"]
-      username = Iqvoc.config["triplestore_username"].presence
-      password = Iqvoc.config["triplestore_password"].presence
+      host = Iqvoc.config["triplestore.url"]
+      username = Iqvoc.config["triplestore.username"].presence
+      password = Iqvoc.config["triplestore.password"].presence
       target_info = host
       if username && password
         target_info = "#{target_info} (as #{username} with password)" # XXX: i18n

@@ -97,14 +97,14 @@ module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
   def triplestore_syncer
     base_url = root_url(:lang => nil) # XXX: brittle in the face of future changes?
 
-    host = URI.parse(Iqvoc.config["triplestore_url"])
+    host = URI.parse(Iqvoc.config["triplestore.url"])
     port = host.port
     host.port = 80 # XXX: hack to remove port from serialization
     host = host.to_s
 
     return Iqvoc::RDFSync.new(base_url, host, :port => port,
-        :username => Iqvoc.config["triplestore_username"].presence,
-        :password => Iqvoc.config["triplestore_password"].presence,
+        :username => Iqvoc.config["triplestore.username"].presence,
+        :password => Iqvoc.config["triplestore.password"].presence,
         :view_context => view_context) # fugly, but necessary; cf. RDFSync#serialize
   end
 
