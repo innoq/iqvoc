@@ -1,3 +1,9 @@
+## 4.0.3
+
+  * New frontpage with quick search
+  * SKOS importer now supports blank nodes
+  * Bugfixes
+
 ## 4.0.2
 
   * Support for collections in SKOS importer (@fgimenez)
