@@ -40,7 +40,7 @@ class RdfController < ApplicationController
         end
         format.any do
           authorize! :read, @concept
-          render :show_concept
+          render "concepts/show"
         end
       end
     else
