@@ -1,3 +1,8 @@
+## 4.0.4
+
+  * Triplestore Sync
+  * Bugfixes
+
 ## 4.0.3
 
   * New frontpage with quick search
