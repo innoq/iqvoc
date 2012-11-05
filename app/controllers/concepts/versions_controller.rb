@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'iqvoc/rdf_sync'
+
 class Concepts::VersionsController < ApplicationController
+  include Iqvoc::RDFSync::Helper
 
   def merge
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
@@ -25,13 +28,17 @@ class Concepts::VersionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if current_concept.blank? || current_concept.destroy
+        new_version.rdf_updated_at = nil
         new_version.publish
         new_version.unlock
         if new_version.valid_with_full_validation?
           new_version.save
-          if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
-            new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
+
+          if Iqvoc.config["triplestore.autosync"]
+           synced = triplestore_syncer.sync([new_version]) # XXX: blocking
+           flash[:warning] = "triplestore synchronization failed" unless synced # TODO: i18n
           end
+
           flash[:success] = t("txt.controllers.versioning.published")
           redirect_to concept_path(:id => new_version)
         else
