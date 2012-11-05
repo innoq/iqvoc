@@ -30,7 +30,8 @@ end
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~> 0.1.2'
+gem 'iq_rdf'
+gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
@@ -67,6 +68,7 @@ group :test do
   gem 'spork-testunit'
   gem 'turn'
   gem 'minitest'
+  gem 'webmock'
 end
 
 group :production do

@@ -92,6 +92,10 @@ de:
          available_languages: verfügbare Sprachen
          languages_pref_labeling: Sprachen für bevorzugte Labels
          languages_further_labelings_Labeling::SKOS::AltLabel: Sprachen für alternative Labels
+         triplestore_url: Triplestore-URL
+         triplestore_username: Benutzername für Triplestore
+         triplestore_password: Passwort für Triplestore
+         triplestore_autosync: automatische Synchronisation mit Triplestore
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"
@@ -242,6 +246,9 @@ de:
        import: Import
      collections:
        new: "Neue Kollektion"
+     triplestore_sync:
+       caption: "Sync mit Triplestore"
+       start: "Synchronisierung starten"
 
    partials:
      note:
@@ -289,7 +296,6 @@ de:
        consistency_check_error: "Instanz ist inkonsistent!"
        to_review_success: "Wurde in den Freigabeprozess aufgenommen"
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
-       virtuoso_exception: "Das Objekt wurde veröffentlicht, konnte aber nicht mit Virtuoso synchronisiert werden. Fehler: "
      labelings:
        save:
          success: "Das Labeling wurde erfolgreich gespeichert."
@@ -318,8 +324,6 @@ de:
        label_error: "Ungültige Label-Zuordnungen:\n%s"
      narrowers:
        error: "Die Assoziation wurde nicht gefunden. Evtl. wurde diese von der anderen Seite bearbeitet. Bitte das Fenster neu laden!"
-     triple_store_syncs:
-       success: "Es wurden %{concept_count} freigegebene Concepts und %{label_count} freigegebene Labels synchronisiert."
      collections:
        save:
          success: "Die Kollektion wurde erfolgreich gespeichert."
@@ -328,6 +332,11 @@ de:
          success: "Die Kollektion wurde erfolgreich gelöscht."
          error: "Die Kollektion konnte nicht gelöscht werden."
        circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
+     triplestore_sync:
+       success: "Synchronisierung erfolgreich."
+       error: "Bei der Synchronisierung traten Fehler auf - einige Einträge wurden nicht synchronisiert."
+       config_info: "Synchronisierung mit Triplestore: %{target_info}"
+       config_warning: "Bisher wurde kein Triplestore konfiguriert."
 
    models:
      label:
