@@ -61,5 +61,5 @@ Rails.application.routes.draw do
   end
 
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
-  match '/:id(.:format)' => 'concepts#show', :as => 'rdf'
+  match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
 end
