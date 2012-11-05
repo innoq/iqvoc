@@ -228,7 +228,7 @@ de:
          header: "Labeling bearbeiten"
          submit: "Speichern"
      lang_widget:
-       caption: "Sprachauswahl"
+       caption: "Sprache"
        primary: "Primärsprache"
        secondary: "Sekundärsprachen"
      dashboard:

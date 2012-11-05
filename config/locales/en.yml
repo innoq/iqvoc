@@ -235,7 +235,7 @@ en:
          header: "Edit labeling"
          submit: "Save"
      lang_widget:
-       caption: "Language selection"
+       caption: "Language"
        primary: "Primary"
        secondary: "Secondary"
      dashboard:
