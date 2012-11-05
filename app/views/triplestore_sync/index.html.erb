@@ -1,7 +1,8 @@
-<h2><%= t("txt.views.triplestore_sync.caption") %></h2>
+<%= page_header :title => t("txt.views.triplestore_sync.caption") %>
+<%= render "dashboard/sidebar" %>
 
 <%= form_tag triplestore_sync_path(:format => nil, :lang => nil), :method => :post do %>
-  <%= submit_tag t("txt.views.triplestore_sync.start") %>
+  <%= submit_tag t("txt.views.triplestore_sync.start"), :class => "btn btn-primary" %>
 <% end %>
 
 <% @candidates.each do |records| %>

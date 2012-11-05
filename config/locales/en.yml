@@ -254,7 +254,7 @@ en:
      collections:
        new: "New collection"
      triplestore_sync:
-       caption: "Triplestore Synchronization"
+       caption: "Sync with Triplestore"
        start: "Start synchronization"
 
    partials:

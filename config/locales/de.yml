@@ -247,7 +247,7 @@ de:
      collections:
        new: "Neue Kollektion"
      triplestore_sync:
-       caption: "Triplestore-Synchronisierung"
+       caption: "Sync mit Triplestore"
        start: "Synchronisierung starten"
 
    partials:
