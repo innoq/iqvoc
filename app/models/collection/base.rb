@@ -151,7 +151,7 @@ class Collection::Base < Concept::Base
   #******** Validation methods
 
   # This only prevent circles of length 2.
-  #   # TODO: This shuold be a real circle detector (but still performant) or be
+  # TODO: This should be a real circle detector (but still performant) or be
   # removed (seems to me like the better idea).
   def circular_subcollections
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
