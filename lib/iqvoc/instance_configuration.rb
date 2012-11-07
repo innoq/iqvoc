@@ -78,7 +78,7 @@ module Iqvoc
       raise UnregisteredSetting unless @defaults.include?(key)
       self.class.validate_value(value)
 
-      json = JSON.dump(["#{value}"])[1..-2] # array wrapper ensures valid JSON text
+      json = JSON.dump([value])[1..-2] # array wrapper ensures valid JSON text
       if setting = ConfigurationSetting.find_by_key(key)
         setting.update_attributes(:value => json)
       else
