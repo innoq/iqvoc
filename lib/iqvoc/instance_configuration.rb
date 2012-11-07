@@ -78,7 +78,7 @@ module Iqvoc
       raise UnregisteredSetting unless @defaults.include?(key)
       self.class.validate_value(value)
 
-      json = JSON.dump(value)
+      json = JSON.dump(["#{value}"])[1..-2] # array wrapper ensures valid JSON text
       if setting = ConfigurationSetting.find_by_key(key)
         setting.update_attributes(:value => json)
       else
@@ -98,7 +98,7 @@ module Iqvoc
       # cache customized settings
       db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
       db_settings.each do |setting|
-        @records[setting.key] = JSON.load(setting.value)
+        @records[setting.key] = JSON.load("[#{setting.value}]")[0] # array wrapper ensures valid JSON text
       end
 
       # cache current settings
