@@ -12,7 +12,7 @@ class Iqvoc::RDFSync
     @target_port = options[:port]
     @username = options[:username]
     @password = options[:password]
-    @batch_size = options[:batch_size]
+    @batch_size = options[:batch_size] || 100
     @view_context = options[:view_context] # XXX: not actually optional
     raise(ArgumentError, "missing view context") unless @view_context # XXX: smell (see above)
   end
