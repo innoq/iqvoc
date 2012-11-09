@@ -22,6 +22,9 @@ class TriplestoreSyncController < ApplicationController
   def index
     authorize! :use, :dashboard
 
+    flash.now[:info] = [I18n.t("txt.controllers.triplestore_sync.batch_hint",
+        :host => root_url(:lang => nil))]
+
     if Iqvoc.config["triplestore.url"] == Iqvoc.config.defaults["triplestore.url"]
       flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
     else
@@ -34,7 +37,7 @@ class TriplestoreSyncController < ApplicationController
       elsif username
         target_info = "#{target_info} (as #{username})" # XXX: i18n
       end
-      flash.now[:info] = I18n.t("txt.controllers.triplestore_sync.config_info",
+      flash.now[:info] << I18n.t("txt.controllers.triplestore_sync.config_info",
           :target_info => target_info)
     end
 
