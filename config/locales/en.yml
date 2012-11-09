@@ -344,6 +344,7 @@ en:
        error: "An error occurred during the synchronization process - some entities have not been synchronized."
        config_info: "Synchronizing with triplestore: %{target_info}"
        config_warning: "Triplestore has not been configured yet."
+       batch_hint: "For a large data sets please advise your sysadmin to execute `rake sync:all[%{host}]`."
 
    models:
      label:

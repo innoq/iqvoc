@@ -21,8 +21,10 @@
   <div class="row">
     <div class="<%= content_for?(:sidebar) ? "span9" : "span12" %>" id="content">
       <%= yield :page_header %>
-      <% flash.each do |type, msg| %>
-        <%= alert(type) { msg } %>
+      <% flash.each do |type, messages| %>
+        <% (messages.is_a?(Array) ? messages : [messages]).each do |msg| %>
+          <%= alert(type) { msg } %>
+        <% end %>
       <% end %>
       <%= yield %>
     </div>

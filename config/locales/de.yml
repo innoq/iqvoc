@@ -337,6 +337,7 @@ de:
        error: "Bei der Synchronisierung traten Fehler auf - einige Einträge wurden nicht synchronisiert."
        config_info: "Synchronisierung mit Triplestore: %{target_info}"
        config_warning: "Bisher wurde kein Triplestore konfiguriert."
+       batch_hint: "Für große Datenmengen sollte vom Systemadministrator `rake sync:all[%{host}]` ausgeführt werden."
 
    models:
      label:
