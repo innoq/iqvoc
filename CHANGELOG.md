@@ -1,3 +1,7 @@
+## 4.0.6
+
+  * Bugfixes for Triplestore Sync and configuration
+
 ## 4.0.5
 
   * Fixed a bug where triple store sync wouldn't load in engine mode
