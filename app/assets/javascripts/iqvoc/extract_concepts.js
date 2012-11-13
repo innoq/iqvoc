@@ -12,7 +12,7 @@ IQVOC.extractConcepts = function(html) {
   var concepts = $("<div />").append(html).find("ul.concepts li");
   concepts = concepts.map(function(i, node) {
     var el = $("a", node);
-    return { value: el.attr("href"), label: $.trim(el.text()) };
+    return { value: el.attr("href"), label: $.trim(el.parent().text()).replace(/\s+/, " ") };
   });
 
   return concepts.length ? Array.prototype.slice.call(concepts, 0) : [];
