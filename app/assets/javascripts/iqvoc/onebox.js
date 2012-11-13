@@ -25,6 +25,14 @@ var getConcepts = function(input, container) {
   });
 };
 
+var delay = (function() {
+  var timer = 0;
+  return function(callback, ms) {
+    clearTimeout(timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+
 return function(selector, options) {
   var container = $(selector);
   var input = container.find("input[type=search]");
@@ -36,7 +44,7 @@ return function(selector, options) {
       resultList.empty();
     }
     else if (input.val().length > 0 && input.val() != initialValue) {
-      setTimeout(function() { getConcepts(input, resultList) }, 200);
+      delay(function() { getConcepts(input, resultList) }, 300);
     }
   });
 };
