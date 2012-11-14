@@ -6,7 +6,12 @@ IQVOC.onebox = (function($) {
 "use strict";
 
 var renderResults = function(html, container) {
-  container.html(html);
+  var results = $("<div />").append(html).find("ol.concepts li");
+  var pagination = $("<div />").append(html).find(".pagination");
+
+  container.html(results);
+  $(".pagination").remove();
+  container.parent().append(pagination);
 };
 
 var getConcepts = function(input, container) {
@@ -20,8 +25,7 @@ var getConcepts = function(input, container) {
       var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
       var html = data.replace(rscript, "");
 
-      var results = $("<div />").append(html).find("ol.concepts li");
-      renderResults(results, container);
+      renderResults(html, container);
     }
   });
 };
@@ -43,6 +47,7 @@ return function(selector, options) {
   input.keyup(function() {
     if (input.val().length == 0) {
       resultList.empty();
+      $(".pagination").remove();
     }
     else if (input.val().length > 0 && input.val() != initialValue) {
       delay(function() { getConcepts(input, resultList) }, 300);
