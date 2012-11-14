@@ -5,12 +5,8 @@ IQVOC.onebox = (function($) {
 
 "use strict";
 
-var renderResults = function(concepts, container) {
-  container.empty();
-  $.each(concepts, function(i, concept) {
-    var link = $("<a />").attr("href", concept.value).text(concept.label);
-    $("<li />").append(link).appendTo(container);
-  });
+var renderResults = function(html, container) {
+  container.html(html);
 };
 
 var getConcepts = function(input, container) {
@@ -20,7 +16,12 @@ var getConcepts = function(input, container) {
     url: form.attr("action"),
     data: form.serialize(),
     success: function(data, status, xhr) {
-      renderResults(IQVOC.extractConcepts(data), container);
+      // disable scripts (adapted from jQuery's `load`)
+      var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+      var html = data.replace(rscript, "");
+
+      var results = $("<div />").append(html).find("ol.concepts li");
+      renderResults(results, container);
     }
   });
 };
@@ -37,7 +38,7 @@ return function(selector, options) {
   var container = $(selector);
   var input = container.find("input[type=search]");
   var initialValue = input.val();
-  var resultList = $("<ul />").addClass("results").appendTo(container);
+  var resultList = $("<ol />").addClass("results concepts unstyled").appendTo(container);
 
   input.keyup(function() {
     if (input.val().length == 0) {

@@ -18,7 +18,7 @@
     min-width: 60%;
   }
 
-  ul {
+  ol {
     margin-left: 0;
     list-style: none;
     text-align: left;
@@ -61,8 +61,10 @@ img.spinner {
   margin-top: 2px;
 }
 
-dt {
-  margin-top: 10px;
+dl {
+  dt {
+    margin-top: 10px;
+  }
 }
 
 .letter-selector {
@@ -103,6 +105,21 @@ dt {
           background: inherit;
         }
       }
+    }
+  }
+}
+
+ol.concepts {
+  li {
+    margin-bottom: 15px;
+    p {
+      margin: 0;
+    }
+    p.term {
+      font-weight: bold;
+    }
+    p.uri {
+      color: green;
     }
   }
 }

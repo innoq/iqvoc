@@ -1,5 +1,4 @@
 //= require iqvoc/iqvoc
-//= require iqvoc/extract_concepts
 //= require iqvoc/quicksearch
 //= require iqvoc/onebox
 //= require iqvoc/langselect

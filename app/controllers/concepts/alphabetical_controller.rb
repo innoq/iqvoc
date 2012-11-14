@@ -35,7 +35,9 @@ class Concepts::AlphabeticalController < ConceptsController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => Iqvoc::Concept.base_class.default_includes).run
+    includes = Iqvoc::Concept.base_class.default_includes
+    includes << Note::SKOS::Definition.name.to_relation_name
+    ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => includes).run
   end
 
 end
