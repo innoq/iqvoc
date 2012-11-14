@@ -5,6 +5,9 @@ IQVOC.onebox = (function($) {
 
 "use strict";
 
+var resultList = $("<ol />").addClass("results concepts unstyled")
+var spinner = $("<img />").attr("src", "<%= asset_path('spinner_24x24.gif') %>");
+
 var renderResults = function(html, container) {
   var results = $("<div />").append(html).find("ol.concepts li");
   var pagination = $("<div />").append(html).find(".pagination");
@@ -25,6 +28,7 @@ var getConcepts = function(input, container) {
       var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
       var html = data.replace(rscript, "");
 
+      spinner.addClass("hidden");
       renderResults(html, container);
     }
   });
@@ -38,18 +42,26 @@ var delay = (function() {
   };
 })();
 
+var reset = function() {
+  resultList.empty();
+  $(".pagination").remove();
+};
+
 return function(selector, options) {
   var container = $(selector);
   var input = container.find("input[type=search]");
   var initialValue = input.val();
-  var resultList = $("<ol />").addClass("results concepts unstyled").appendTo(container);
+
+  container.append(resultList).append(spinner.addClass("hidden"));
 
   input.keyup(function() {
     if (input.val().length == 0) {
-      resultList.empty();
-      $(".pagination").remove();
+      reset();
+      spinner.addClass("hidden");
     }
     else if (input.val().length > 0 && input.val() != initialValue) {
+      reset();
+      spinner.removeClass("hidden");
       delay(function() { getConcepts(input, resultList) }, 300);
     }
   });
