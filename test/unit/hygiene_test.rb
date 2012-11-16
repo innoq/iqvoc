@@ -26,10 +26,6 @@ class HygieneTest < ActiveSupport::TestCase
     assert_no_occurrence "#{space}#{tab}\|#{tab}#{space}", "mixed whitespace", true
   end
 
-  test "quotation mark consistency" do
-    assert_no_occurrence '^require "', "`require` should use single quotes"
-  end
-
   def assert_no_occurrence(pattern, error_message, extended=false)
     extra_options = extended ? "E" : ""
     lines = `git grep -In#{extra_options} '#{pattern}' | grep -v '^vendor/'`
