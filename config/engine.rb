@@ -29,6 +29,13 @@ module Iqvoc
     initializer "iqvoc.add_assets_to_precompilation" do |app|
       app.config.assets.precompile += Iqvoc.core_assets
     end
+
+    initializer "iqvoc.load_migrations" do |app|
+      app.class.configure do
+        # Pull in all the migrations to the application embedding iqvoc
+        config.paths['db/migrate'] += Iqvoc::Engine.paths['db/migrate'].existent
+      end
+    end
   end
 
 end
