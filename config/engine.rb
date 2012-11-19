@@ -13,6 +13,7 @@ require 'simple_form'
 require 'sass'
 require 'sass-rails'
 
+
 require 'iqvoc/controller_extensions'
 
 module Iqvoc
