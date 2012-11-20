@@ -31,10 +31,8 @@ module Iqvoc
     end
 
     initializer "iqvoc.load_migrations" do |app|
-      app.class.configure do
-        # Pull in all the migrations to the application embedding iqvoc
-        config.paths['db/migrate'] += Iqvoc::Engine.paths['db/migrate'].existent
-      end
+      # Pull in all the migrations to the application embedding iqvoc
+      app.config.paths['db/migrate'] += Iqvoc::Engine.paths['db/migrate'].existent
     end
   end
 
