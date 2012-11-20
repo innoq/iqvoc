@@ -1,9 +1,9 @@
 class ChangeUmtNoteAnnotationsToDct < ActiveRecord::Migration
   def self.up
-    Note::Annotated::Base.update_all({:namespace => "dct", :predicate => "creator"}, {:namespace => "umt", :predicate => "editor"})
+    execute "UPDATE note_annotations SET namespace = 'dct', predicate = 'creator' WHERE namespace = 'umt' AND predicate = 'editor'"
   end
 
   def self.down
-    Note::Annotated::Base.update_all({:namespace => "umt", :predicate => "editor"}, {:namespace => "dct", :predicate => "creator"})
+    execute "UPDATE note_annotations SET namespace = 'umt', predicate = 'editor' WHERE namespace = 'dct' AND predicate = 'creator'"
   end
 end
