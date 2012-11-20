@@ -3,7 +3,7 @@ class SeparateNoteAnnotationPredicates < ActiveRecord::Migration
     rename_column :note_annotations, :identifier, :predicate
     add_column :note_annotations, :namespace, :string, :limit => 50
 
-    annotations = execute("SELECT id, predicate FROM note_annotations")
+    annotations = select_rows("SELECT id, predicate FROM note_annotations")
 
     annotations.each do |annotation|
       namespace, predicate = annotation[1].split(":", 2)
@@ -12,7 +12,7 @@ class SeparateNoteAnnotationPredicates < ActiveRecord::Migration
   end
 
   def self.down
-    annotations = execute("SELECT id, predicate, namespace FROM note_annotations")
+    annotations = select_rows("SELECT id, predicate, namespace FROM note_annotations")
 
     annotations.each do |annotation|
       identifier = [annotation[2], annotation[1]].join(":")
