@@ -34,8 +34,8 @@ var getConcepts = function(input, container) {
   });
 };
 
-var delay = (function() {
-  var timer = 0;
+var debounce = (function() {
+  var timer;
   return function(callback, ms) {
     clearTimeout(timer);
     timer = setTimeout(callback, ms);
@@ -47,7 +47,7 @@ var reset = function() {
   $(".pagination").remove();
 };
 
-return function(selector, options) {
+return function(selector) {
   var container = $(selector);
   var input = container.find("input[type=search]");
   var initialValue = input.val();
@@ -62,7 +62,7 @@ return function(selector, options) {
     else if(input.val().length > 0 && input.val() !== initialValue) {
       reset();
       spinner.removeClass("hidden");
-      delay(function() { getConcepts(input, resultList); }, 300);
+      debounce(function() { getConcepts(input, resultList); }, 300);
     }
   });
 };
