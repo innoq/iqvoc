@@ -25,7 +25,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     @skos = "http://www.w3.org/2004/02/skos/core#"
 
     @base_url = "http://example.com/"
-    @target_host = "http://example.org"
+    @target_host = "http://example.org/sesame/repositories/test"
     @username = "johndoe"
 
     class FakeViewContext # XXX: does not belong here
@@ -71,22 +71,13 @@ class RDFSyncTest < ActiveSupport::TestCase
     EOS
   end
 
-  test "single-batch syncronization" do
+  test "single-batch synchronization" do
     concepts = @concepts[0..4]
 
     @observers << lambda do |req|
       concepts.each do |concept|
         uri = @base_url + concept.origin
-        assert req.body.include?("CLEAR GRAPH <#{uri}>")
-      end
-    end
-    @observers << lambda do |req|
-      concepts.each do |concept|
-        path = req.uri.path
-        assert path.start_with?("/DAV/home/#{@username}/")
-        assert_equal 4, path.count("/")
-        uri = @base_url + concept.origin
-        assert req.body.include?("INSERT IN GRAPH <#{uri}> {")
+        assert req.body.include?("<#{uri}> {")
       end
     end
     res = @sync.sync(concepts)
@@ -98,9 +89,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     assert_not_equal 0, concepts.count
     assert_not_equal 0, concepts.where(:rdf_updated_at => nil).count
 
-    2.times do # 3 * 2 requests (reset + insert per batch)
-      @observers << lambda { |req| } # no need to check details here
-    end
+    @observers << lambda { |req| } # no need to check details here
     assert @sync.all
     assert_equal 0, concepts.where(:rdf_updated_at => nil).count
   end
@@ -114,7 +103,7 @@ class RDFSyncTest < ActiveSupport::TestCase
         :batch_size => (concept_count / batch_count).ceil,
         :view_context => @view_context)
 
-    (batch_count * 2).times do # two requests (reset + insert) per batch
+    batch_count.times do
       @observers << lambda { |req| } # no need to check details here
     end
     assert sync.all
