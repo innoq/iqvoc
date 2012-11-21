@@ -5,11 +5,10 @@ require 'iq_triplestorage/virtuoso_adaptor'
 class Iqvoc::RDFSync
   delegate :url_helpers, :to => "Rails.application.routes"
 
-  def initialize(base_url, target_host, *args)
+  def initialize(base_url, target_url, *args)
     @base_url = base_url
-    @target_host = target_host
+    @target_url = target_url
     options = args.extract_options!
-    @target_port = options[:port]
     @username = options[:username]
     @password = options[:password]
     @batch_size = options[:batch_size] || 100
@@ -50,8 +49,8 @@ class Iqvoc::RDFSync
       memo
     end
 
-    adaptor = IqTriplestorage::VirtuosoAdaptor.new(@target_host, @target_port,
-        @username, @password)
+    adaptor = IqTriplestorage::VirtuosoAdaptor.new(@target_url,
+        :username => @username, :password => @password)
     return adaptor.batch_update(data)
   end
 
@@ -97,12 +96,7 @@ module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
   def triplestore_syncer
     base_url = root_url(:lang => nil) # XXX: brittle in the face of future changes?
 
-    host = URI.parse(Iqvoc.config["triplestore.url"])
-    port = host.port
-    host.port = 80 # XXX: hack to remove port from serialization
-    host = host.to_s
-
-    return Iqvoc::RDFSync.new(base_url, host, :port => port,
+    return Iqvoc::RDFSync.new(base_url, Iqvoc.config["triplestore.url"],
         :username => Iqvoc.config["triplestore.username"].presence,
         :password => Iqvoc.config["triplestore.password"].presence,
         :view_context => view_context) # fugly, but necessary; cf. RDFSync#serialize
