@@ -1,14 +1,27 @@
 # encoding: UTF-8
 
-require 'iq_triplestorage/virtuoso_adaptor'
-
 class Iqvoc::RDFSync
   delegate :url_helpers, :to => "Rails.application.routes"
 
-  def initialize(base_url, target_url, *args)
+  ADAPTORS = { # XXX: inappropriate?
+    "virtuoso" => lambda do  |host_url, options|
+      require 'iq_triplestorage/virtuoso_adaptor'
+      return IqTriplestorage::VirtuosoAdaptor.new(host_url, options)
+    end,
+    "sesame" => lambda do |host_url, options|
+      require 'iq_triplestorage/sesame_adaptor'
+      host_url, _, repo = host_url.rpartition("/repositories/")
+      if host_url.blank? || repo.blank?
+       raise ArgumentError, "missing repository in Sesame URL"
+      end
+      options[:repository] = repo
+      return IqTriplestorage::SesameAdaptor.new(host_url, options)
+    end
+  }
+
+  def initialize(base_url, target_url, options)
     @base_url = base_url
     @target_url = target_url
-    options = args.extract_options!
     @username = options[:username]
     @password = options[:password]
     @batch_size = options[:batch_size] || 100
@@ -49,8 +62,9 @@ class Iqvoc::RDFSync
       memo
     end
 
-    adaptor = IqTriplestorage::VirtuosoAdaptor.new(@target_url,
-        :username => @username, :password => @password)
+    adaptor_type = "sesame" # XXX: hard-coded
+    adaptor = ADAPTORS[adaptor_type].call(@target_url, :username => @username,
+        :password => @password)
     return adaptor.batch_update(data)
   end
 

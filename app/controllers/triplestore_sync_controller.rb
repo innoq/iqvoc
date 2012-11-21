@@ -50,12 +50,18 @@ class TriplestoreSyncController < ApplicationController
   def sync
     authorize! :use, :dashboard
 
-    success = triplestore_syncer.all # XXX: long-running
+    flash[:error] = []
+    begin
+      success = triplestore_syncer.all # XXX: long-running
+    rescue => exc
+      success = false
+      flash[:error] << exc.message
+    end
 
     if success
       flash[:success] = I18n.t("txt.controllers.triplestore_sync.success")
     else
-      flash[:error] = I18n.t("txt.controllers.triplestore_sync.error")
+      flash[:error] << I18n.t("txt.controllers.triplestore_sync.error")
     end
 
     redirect_to :action => "index"
