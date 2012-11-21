@@ -5,66 +5,77 @@ IQVOC.onebox = (function($) {
 
 "use strict";
 
-var resultList = $('<ol class="results concepts unstyled" />');
-var spinner = $("<img />").attr("src", "<%= asset_path('spinner_24x24.gif') %>");
+function OneBox(form) {
+  this.form = form.jquery ? form : $(form);
+  this.input = $(".onebox-input", this.form); // TODO: document
+  this.container = this.form.removeClass("onebox").
+      wrap('<div class="onebox" />').parent(); // TODO: document
+  this.results = $('<ol class="results concepts unstyled" />');
+  this.spinner = $("<img />").
+      attr("src", "<%= asset_path('spinner_24x24.gif') %>").
+      appendTo(this.container).hide();
 
-var renderResults = function(html, container) {
-  var results = $("<div />").append(html).find("ol.concepts li");
-  var pagination = $("<div />").append(html).find(".pagination");
-
-  container.html(results);
-  $(".pagination").remove();
-  container.parent().append(pagination);
+  this.form.on("submit", $.proxy(this, "onSubmit"));
+  this.input.on("keyup", debounce($.proxy(this, "onInput"), 300));
+}
+OneBox.prototype.reset = function() {
+  this.container.children().not(this.form).not(this.spinner).remove();
 };
+OneBox.prototype.renderResults = function(html) {
+  var doc = $("<div />").append(html);
+  var items = $(".concepts > li", doc);
+  var pagination = $(".pagination", doc);
 
-var getConcepts = function(input, container) {
-  var form = input.closest("form");
+  this.reset();
+  this.results.empty().append(items).appendTo(this.container);
+  pagination.appendTo(this.container);
+};
+OneBox.prototype.onSubmit = function(ev) {
+  ev.preventDefault(); // handled by #onInput
+};
+OneBox.prototype.onInput = function(ev) {
+  var val = this.input.val();
+  this.reset();
+  if(val.length > 0 && val !== this.initialValue) {
+    this.getConcepts();
+  }
+};
+OneBox.prototype.getConcepts = function() {
+  this.spinner.show();
   $.ajax({
-    type: form.attr("method"),
-    url: form.attr("action"),
-    data: form.serialize(),
-    success: function(data, status, xhr) {
-      // disable scripts (adapted from jQuery's `load`)
-      var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-      var html = data.replace(rscript, "");
-
-      spinner.addClass("hidden");
-      renderResults(html, container);
-    }
+    type: this.form.attr("method"),
+    url: this.form.attr("action"),
+    data: this.form.serialize(),
+    success: $.proxy(this, "onResults")
   });
 };
+OneBox.prototype.onResults = function(html, status, xhr) {
+  // disable scripts (adapted from jQuery#load)
+  var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+  html = html.replace(rscript, "");
 
-var debounce = (function() {
-  var timer;
-  return function(callback, ms) {
-    clearTimeout(timer);
-    timer = setTimeout(callback, ms);
-  };
-}());
-
-var reset = function() {
-  resultList.empty();
-  $(".pagination").remove();
+  this.spinner.hide();
+  this.renderResults(html);
 };
 
 return function(selector) {
-  var container = $(selector);
-  var input = container.find("input[type=search]");
-  var initialValue = input.val();
-
-  container.append(resultList).append(spinner.addClass("hidden"));
-
-  input.keyup(function() {
-    if(input.val().length === 0) {
-      reset();
-      spinner.addClass("hidden");
-    }
-    else if(input.val().length > 0 && input.val() !== initialValue) {
-      reset();
-      spinner.removeClass("hidden");
-      debounce(function() { getConcepts(input, resultList); }, 300);
-    }
-  });
+  return new OneBox(selector); // XXX: returning an instance of a private class seems weird
 };
+
+function debounce(fn, delay) { // TODO: move elsewhere
+  var timer;
+  return function() {
+    var self = this;
+    var args = arguments;
+    if(timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    timer = setTimeout(function() {
+      fn.apply(self, args);
+      timer = null;
+    }, delay);
+  };
+}
 
 }(jQuery));
