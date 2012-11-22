@@ -53,7 +53,7 @@ class RDFSyncTest < ActiveSupport::TestCase
       fn.call(req)
       true
     end.to_return do |req|
-      { :status => 201 }
+      { :status => 204 }
     end
   end
 
@@ -76,8 +76,14 @@ class RDFSyncTest < ActiveSupport::TestCase
 
     @observers << lambda do |req|
       concepts.each do |concept|
-        uri = @base_url + concept.origin
-        assert req.body.include?("<#{uri}> {")
+        assert_equal :delete, req.method
+      end
+    end
+    @observers << lambda do |req|
+      concepts.each do |concept|
+        assert_equal :post, req.method
+        graph_uri = @base_url + concept.origin
+        assert req.body.include?("<#{graph_uri}> {")
       end
     end
     res = @sync.sync(concepts)
@@ -89,7 +95,9 @@ class RDFSyncTest < ActiveSupport::TestCase
     assert_not_equal 0, concepts.count
     assert_not_equal 0, concepts.where(:rdf_updated_at => nil).count
 
-    @observers << lambda { |req| } # no need to check details here
+    2.times do # 2 requests (reset + insert) per batch
+      @observers << lambda { |req| } # no need to check details here
+    end
     assert @sync.all
     assert_equal 0, concepts.where(:rdf_updated_at => nil).count
   end
@@ -103,7 +111,7 @@ class RDFSyncTest < ActiveSupport::TestCase
         :batch_size => (concept_count / batch_count).ceil,
         :view_context => @view_context)
 
-    batch_count.times do
+    (2 * batch_count).times do # 2 requests (reset + insert) per batch
       @observers << lambda { |req| } # no need to check details here
     end
     assert sync.all
