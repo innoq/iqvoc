@@ -1,7 +1,8 @@
-## [TBD]
+## [4.0.7]
 
   * Added support for Sesame as triplestore synchronization target
-  * Ditched Ruby 1.8 compatibility; iQvoc now requires Ruby 1.9+
+  * Ditched Ruby 1.8 API compatibility; iQvoc now requires Ruby 1.9+
+  * Improved instant search on front page
 
 ## 4.0.6
 
