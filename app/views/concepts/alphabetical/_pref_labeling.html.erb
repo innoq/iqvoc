@@ -11,7 +11,7 @@
   pref_labeling.owner.send(Note::SKOS::Definition.name.to_relation_name).any? %>
   <% pref_labeling.owner.send(Note::SKOS::Definition.name.to_relation_name).each do |definition| %>
     <p class="definition" lang="<%= definition.language %>">
-      <%= pref_labeling.owner.send(Note::SKOS::Definition.name.to_relation_name).first.value %>
+      <%= definition.value %>
     </p>
   <% end %>
 <% end %>
