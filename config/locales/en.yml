@@ -338,7 +338,7 @@ en:
        destroy:
          success: "The collection has been successfully deleted."
          error: "The collection could not be deleted."
-       circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
+       circular_error: "Invalid sub-collection assignments due to circular references: %{label}"
      triplestore_sync:
        success: "Synchronization successful."
        error: "An error occurred during the synchronization process - some entities have not been synchronized."

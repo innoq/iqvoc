@@ -331,7 +331,7 @@ de:
        destroy:
          success: "Die Kollektion wurde erfolgreich gelöscht."
          error: "Die Kollektion konnte nicht gelöscht werden."
-       circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen:\n%s"
+       circular_error: "Ungültige Subkollektions-Zuordnungen aufgrund von Zirkelbezügen: %{label}"
      triplestore_sync:
        success: "Synchronisierung erfolgreich."
        error: "Bei der Synchronisierung traten Fehler auf - einige Einträge wurden nicht synchronisiert."

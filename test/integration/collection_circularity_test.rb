@@ -82,29 +82,29 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     login("administrator")
 
     # add coll2 as subcollection of coll1
-    visit edit_collection_path(@coll1, :lang => "de", :format => "html")
+    visit edit_collection_path(@coll1, :lang => "en", :format => "html")
     fill_in "concept_inline_member_collection_origins",
         :with => "%s," % @coll2.origin
-    click_button "Speichern"
+    click_button "Save"
 
     assert page.has_no_css?(".flash_error")
     assert page.has_content?(I18n.t("txt.controllers.collections.save.success"))
     assert page.has_link?(@coll2.pref_label.to_s,
-        :href => collection_path(@coll2, :lang => "de", :format => "html"))
+        :href => collection_path(@coll2, :lang => "en", :format => "html"))
 
     # add coll1 as subcollection of coll2
-    visit edit_collection_path(@coll2, :lang => "de", :format => "html")
+    visit edit_collection_path(@coll2, :lang => "en", :format => "html")
     fill_in "concept_inline_member_collection_origins",
         :with => "%s," % @coll1.origin
-    click_button "Speichern"
+    click_button "Save"
 
     assert page.has_css?(".alert-error")
     assert page.has_css?("#edit_concept")
-    assert page.source.include?( # XXX: page.has_content? didn't work
-        I18n.t("txt.controllers.collections.circular_error") % @coll1.pref_label)
+    assert page.has_content?( # XXX: page.has_content? didn't work
+        I18n.t("txt.controllers.collections.circular_error", :label => @coll1.pref_label))
 
     # ensure coll1 is not a subcollection of coll2
-    visit collection_path(@coll2, :lang => "de", :format => "html")
+    visit collection_path(@coll2, :lang => "en", :format => "html")
     assert page.has_no_css?(".relation ul.treeview li") # XXX: too unspecific
   end
 end

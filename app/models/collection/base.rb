@@ -157,7 +157,7 @@ class Collection::Base < Concept::Base
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(self)
         errors.add(:base,
-          I18n.t("txt.controllers.collections.circular_error") % subcollection.pref_label)
+          I18n.t("txt.controllers.collections.circular_error", :label => subcollection.pref_label))
       end
     end
   end
