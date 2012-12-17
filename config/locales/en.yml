@@ -299,7 +299,7 @@ en:
        to_review_success: "Successfully sent to review."
        to_review_error: "Could not be sent to review."
        new_version_blank_error: "A new version does not exist yet!"
-       delete: "Delete inctance."
+       delete: "Delete instance."
        consistency_check_success: "Instance is consistent."
        consistency_check_success_with_warning: "Instance is consistent but has no relations."
        consistency_check_error: "Instance is inconsistent."
