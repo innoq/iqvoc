@@ -1,0 +1,370 @@
+# encoding: UTF-8
+
+# Copyright 2011 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+pt:
+  languages:
+    de: Alemão
+    en: Inglês
+    none: Sci.
+    fr: Francês
+    sl: Esloveno
+    pl: Polonês
+    pt: Português
+    es: Espanhol
+    gr: Grego
+    bg: Búlgaro
+    nl: Holandês
+    hu: Húngaro
+    it: Italiano
+    cs: Checo
+    sk: Eslovaco
+  views:
+    pagination:
+      first: "&laquo; Primeira"
+      previous: "&lt; Voltar"
+      next: "Próxima &gt;"
+      last: "Última &raquo;"
+      truncate: "&hellip;"
+  txt:
+   common:
+     iqvoc_title: "Sistema de Gerenciamento de Vocabulário iQvoc"
+     pref_label: "Rótulo Preferencial"
+     edit: "Editar"
+     value: "Valor"
+     back: "Voltar"
+     welcome: "Olá %{user_name}"
+     save: "Salvar"
+     reset: "Reiniciar"
+     language: "Língua"
+     add_note: "Adicionar"
+     delete: "Excluir"
+     attributes: "Propriedades"
+     editor: "pelo editor"
+     referenced_concepts: "Alguns conceitos referenciados estão sendo alterados neste momento."
+     association_not_found: "Relação não encontrada. Provavelmente removida no destino. Por favor atualize a janela do seu navegador."
+     to_review: "Enviar para revisão"
+     is_in_review: "Documento está na revisão"
+     unpublished_version: "Versão não publicada"
+     consistent: "consistente"
+     inconsistent: "inconsistente"
+     state:
+       published: "Publicado"
+       in_review: "Em revisão"
+       checked_out: "Verificado"
+     of: de
+     pending: "Carregando…"
+     translation_missing_for: "tradução faltando para"
+     type_to_search: "Digite para buscar"
+     hint_csv_input: " Vários valores podem ser inseridos separados por vírgula."
+     form_errors: "Erros"
+     representations: "Representações"
+
+   views:
+     layouts:
+       application:
+         header: "Gerenciador de Vocabulário innoQ"
+         select_language: "Seleciona a Língua"
+         login: "Entrar"
+         logout: "Sair"
+       sections:
+         main: "Principal"
+         labels: "Rótulos"
+         relations: "Relações"
+         notes: "Notas"
+         matches: "Mapeamentos conceituais"
+     instance_configuration:
+       caption: "Configuração da Instância"
+       settings:
+         title: "título do sítio"
+         available_languages: "línguas disponíveis"
+         languages_pref_labeling: "línguas para os rótulos preferenciais"
+         languages_further_labelings_Labeling::SKOS::AltLabel: "línguas para os rótulos alternativos"
+         triplestore_url: "URL do repositório de triplas"
+         triplestore_username: "usuário do repositório de triplas"
+         triplestore_password: "senha do repositório de triplas"
+         triplestore_autosync: "sincronização automática do repositório de triplas"
+     alphabetical_concepts:
+     untranslated_concepts:
+       caption: "Tradução Faltando"
+       unavailable: "Traduções que faltam para a língua principal não estão disponíveis."
+     hierarchical_concepts:
+     concepts:
+       expired_at: "Expirado em %{date}"
+       select: "Por favor selecione um dos %{concept_class_name} listados abaixo."
+       new: "Novo %{concept_class_name}"
+       alt_label: "Rótulo Alternativo"
+       pref_label: "PrefLabel"
+       close_match: "CloseMatch"
+       classifiers: "Classes de ambiente"
+     labels:
+       new: "Novo rótulo"
+       template_form: "Forma literal"
+       language: "Língua"
+       definitions: "Definições"
+       base_form: "Forma básica"
+       inflectional_code: "Codificação flexiva"
+       inflectionals: "Flexões"
+       homographs: "Homógrafos"
+       qualifiers: "Qualificadores"
+       translations: "Traduções"
+       pref_label_of: "Rótulo preferido de"
+       alt_label_of: "Rótulo alternativo de"
+       versionview: "Versão de apresentação do Rótulo"
+       follow_up: "Reapresentação"
+       endings: "Fins"
+       expired_at: "Expirado em"
+       label_already_exists: "Já existe um rótulo com o valor"
+       edit:
+         header: "Alteração de Rótulo"
+         save: "Salvar"
+         base_data: "Propriedades"
+         delete: "Excluir"
+         delete_confirm: "A relação será excluída. Você tem certeza?"
+         edit: "Alterar"
+         apply: "Aplicar"
+         add_note: "Adicionar"
+         reset: "Reiniciar"
+       inflectionals_used_in: "Mesma grafia em uso pelos seguintes rótulos:"
+     notes:
+       value: "Valor"
+       language: "Língua"
+       save: "Salvar"
+       edit: 
+         header: "Alterar notas"
+     navigation:
+       back_to_edit_versioned_object: "Retornar para edição"
+       back_to_show: "Retornar para edição original"
+       back_to_preview: "Retornar para a versão de pré-visualização"
+       instance_configuration: "Configuração"
+       hierarchical: "Hierárquico"
+       alphabetical: "Alfabético"
+       search: "Busca"
+       about: "Sobre"
+       users: "Usuários"
+       collections: "Coleções"
+       login: "Entrar"
+       sections: "Seções"
+       quick_search: "Consulta rápida"
+       help: "Ajuda"
+     frontpage:
+       type_to_browse: "Começe digitando para navegar nos conceitos"
+     search_results:
+       header: "Busca"
+       inflectionals: "flexões"
+       contains: "contém"
+       ends_with: "termina com"
+       begins_with: "inicia com"
+       exact: "correspondência exata"
+       regexp: "expressão regular (avançado)"
+       search_term: "Buscar o(s) termo(s)"
+       search_term_in_results: "Buscar termo"
+       no_results: "Nehum resultado"
+       search_languages: "Línguas"
+       search_results: "Buscar resultados"
+       results_found:
+         one: "Sua busca por <strong>%{query}</strong> retornou o %{count} resultado abaixo."
+         other: "Sua busca por <strong>%{query}</strong> retornou os %{count} resultados abaixo."
+       no_results_found: "Sua busca retornou nenhum resultado."
+       submit: "Buscar"
+       type: "digite"
+       used_as: "usado como"
+       language: "língua"
+       all: "todos"
+       none: "nenhum"
+       for: "Para"
+       mode: "Modo"
+     user_sessions:
+       header: "Entrar"
+       login: "Usuário"
+       email: "Email"
+       password: "Senha"
+       remember_me: "Permanecer conectado"
+       error: "Email ou senha incorreto. Por favor verifique as credenciais fornecidas."
+     users:
+       index:
+         header: "Gerenciamento de Usuário"
+       new:
+         header: "Novo usuário"
+       edit:
+         header: "Alterar usuário"
+       name: "Nome"
+       email: "Email"
+       role: "Papel"
+       active: "ativo"
+       new_link: "Novo Usuário"
+       show_link: "Exibir"
+       edit_link: "Alterar"
+       destroy_link: "Excluir"
+       sure: "Você tem certeza?"
+       submit: "Salvar"
+       telephone_number: "Número de telefone"
+     errors:
+       access_denied:
+         header: "Sem permissão"
+         message: "Sua conta de usuário não tem permissão suficiente para exibir esta página."
+       not_found:
+         header: "Não encontrado"
+         tip: "Você pode querer usar %{link} para encontrar conteúdo."
+     versioning:
+       edit_mode: "Continuar alterando"
+       to_edit_mode: "Iniciar alteração"
+       publishing: "Publicar"
+       delete: "Excluir cópia"
+       delete_confirm: "Você realmente deseja excluir esta cópia?"
+       versioning_mode: "Criar nova versão"
+       unlock: "Destravar"
+       preview_new_version: "Pré-visualização da versão em alteração"
+       consistency_check: "Verificar consistência"
+       current_revision: "Revisão atual %{rev}"
+       in_ongoing_editing_by: "está sendo editado por %{user}."
+     labelings:
+       edit:
+         header: "Alterar rótulos"
+         submit: "Salvar"
+     lang_widget:
+       caption: "Língua"
+       primary: "Primeira"
+       secondary: "Segunda"
+     dashboard:
+       type: "Tipo"
+       value: "Nome"
+       locking_user: "Travado por"
+       follow_up: "Reapresentar"
+       updated_at: "Atualizado em"
+       to_review: "Submissão para revisão"
+       check_consistency: "Verificar consistência"
+       consistent: "Consistente"
+       inconsistent: "Inconsistente"
+       state: "Estado"
+       full_rdf_export: "Exportação de RDF completa"
+       import: "Importar"
+     collections:
+       new: "Nova coleção"
+     triplestore_sync:
+       caption: "Sincronizar com o Repositório de Triplas"
+       start: "Iniciar sincronização"
+
+   partials:
+     note:
+     collection:
+       skos:
+         member:
+     label:
+       relation:
+     concept:
+       relation:
+     labeling:
+       concept:
+       label:
+     match:
+
+   controllers:
+     instance_configuration:
+       update_success: "Configuration updated."
+       update_error: "Errors occurred while updating configuration: %{error_messages}."
+       invalid_key: "unknown key: #{key}"
+       invalid_value: "unsupported value: %{key} (%{error_message})"
+     search_results:
+       insufficient_data: "You gave insufficient search data."
+     users:
+       successfully_created: "User has been successfully created."
+       successfully_updated: "User has been successfully updated."
+     user_sessions:
+       login_success: "Login successful."
+       logout_success: "Logout successful."
+     versioning:
+       branch_error: "A new version already exists!"
+       published: "Instance has been successfully released."
+       published_with_warning: "Instance has been successfully released, but it has no relations!"
+       merged_delete_error: "Label could not be deleted!"
+       merged_publishing_error: "Instance could not be released!"
+       branched: "Instance copy has been created and locked."
+       locked: "Instance has been locked."
+       lock_error: "Instance has been locked already!"
+       unlocked: "Instance has been unlocked."
+       unlock_error: "Instance has been unlocked alraedy!"
+       to_review_success: "Successfully sent to review."
+       to_review_error: "Could not be sent to review."
+       new_version_blank_error: "A new version does not exist yet!"
+       delete: "Delete inctance."
+       consistency_check_success: "Instance is consistent."
+       consistency_check_success_with_warning: "Instance is consistent but has no relations."
+       consistency_check_error: "Instance is inconsistent."
+     labelings:
+       save:
+         success: "The labeling has been saved."
+         error: "The labeling could not have been saved."
+     label_versions:
+       delete: "New Label version has been deleted."
+       delete_error: "New Label version could not be deleted."
+     concept_versions:
+       delete: "New Concept version has been deleted."
+       delete_error: "New Concept version could not be deleted"
+     notes:
+       save:
+         success: "The note has been saved."
+     versioned_label:
+       success: "Label has been successfully created."
+       error: "Label could not be created!"
+       empty_value: "Literal form must be given!"
+       update_success: "Label has been successfully modified."
+       update_error: "Label could not be modified!"
+     versioned_concept:
+       success: "Concept has been successfully created."
+       error: "Concept could not be created!"
+       empty_value: "Literal form must be given!"
+       update_success: "Concept has been successfully modified."
+       update_error: "Concept could not be modified!"
+       label_error: "Invalid label assignments:\n%s"
+     narrowers:
+       error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
+     collections:
+       save:
+         success: "The collection has been successfully created."
+         error: "The collection could not be created."
+       destroy:
+         success: "The collection has been successfully deleted."
+         error: "The collection could not be deleted."
+       circular_error: "Invalid sub-collection assignments due to circular references: %{label}"
+     triplestore_sync:
+       success: "Synchronization successful."
+       error: "An error occurred during the synchronization process - some entities have not been synchronized."
+       config_info: "Synchronizing with triplestore: %{target_info}"
+       config_warning: "Triplestore has not been configured yet."
+       batch_hint: "For a large data sets please advise your sysadmin to execute `rake sync:all[%{host}]`."
+
+   models:
+     label:
+       version_error: "New Label version already exists."
+       value_error: "Literal form must be given."
+     concept:
+       uri: "Concept URI"
+       origin_error: "Invalid origin."
+       version_error: "New Concept version already exists."
+       no_pref_label_error: "At least one preferred label must be specified."
+       orphan_error: "Missing broader term or Top Term assignment."
+       top_term_exclusive_error: "A Top Term must not have any broader terms."
+       top_term_rooted_error: "Top Terms must not be used as narrower terms."
+       invalid_rank_for_ranked_relations: 'Invalid rank for %{relation} "%{relation_target_label}".'
+       main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."
+       pref_labels_with_same_languages_error: "There must be only one preferred Label per language."
+       association_pref_labels_unpublished: "The preferred Label has to be published."
+       association_alt_labels_unpublished: "Alternative labels have to be published."
+       association_hidden_labels_unpublished: "Hidden labels have to be published."
+       association_broader_unpublished: "Broader terms have to be published."
+       association_narrower_unpublished: "Specific terms have to be published."
+       association_related_unpublished: "Related terms have to be published."
+       no_pref_label: "-- no PrefLabel --"
