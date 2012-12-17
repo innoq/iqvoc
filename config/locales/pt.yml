@@ -48,7 +48,7 @@ pt:
      welcome: "Olá %{user_name}"
      save: "Salvar"
      reset: "Reiniciar"
-     language: "Língua"
+     language: "Idioma"
      add_note: "Adicionar"
      delete: "Excluir"
      attributes: "Propriedades"
@@ -76,7 +76,7 @@ pt:
      layouts:
        application:
          header: "Gerenciador de Vocabulário innoQ"
-         select_language: "Seleciona a Língua"
+         select_language: "Seleciona o idioma"
          login: "Entrar"
          logout: "Sair"
        sections:
@@ -89,9 +89,9 @@ pt:
        caption: "Configuração da Instância"
        settings:
          title: "título do sítio"
-         available_languages: "línguas disponíveis"
-         languages_pref_labeling: "línguas para os rótulos preferenciais"
-         languages_further_labelings_Labeling::SKOS::AltLabel: "línguas para os rótulos alternativos"
+         available_languages: "idiomas disponíveis"
+         languages_pref_labeling: "idiomas para os rótulos preferenciais"
+         languages_further_labelings_Labeling::SKOS::AltLabel: "idiomas para os rótulos alternativos"
          triplestore_url: "URL do repositório de triplas"
          triplestore_username: "usuário do repositório de triplas"
          triplestore_password: "senha do repositório de triplas"
@@ -99,7 +99,7 @@ pt:
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Tradução Faltando"
-       unavailable: "Traduções que faltam para a língua principal não estão disponíveis."
+       unavailable: "Traduções que faltam para o idioma principal não estão disponíveis."
      hierarchical_concepts:
      concepts:
        expired_at: "Expirado em %{date}"
@@ -112,7 +112,7 @@ pt:
      labels:
        new: "Novo rótulo"
        template_form: "Forma literal"
-       language: "Língua"
+       language: "Idioma"
        definitions: "Definições"
        base_form: "Forma básica"
        inflectional_code: "Codificação flexiva"
@@ -140,7 +140,7 @@ pt:
        inflectionals_used_in: "Mesma grafia em uso pelos seguintes rótulos:"
      notes:
        value: "Valor"
-       language: "Língua"
+       language: "Idioma"
        save: "Salvar"
        edit: 
          header: "Alterar notas"
@@ -172,7 +172,7 @@ pt:
        search_term: "Buscar o(s) termo(s)"
        search_term_in_results: "Buscar termo"
        no_results: "Nehum resultado"
-       search_languages: "Línguas"
+       search_languages: "Idiomas"
        search_results: "Buscar resultados"
        results_found:
          one: "Sua busca por <strong>%{query}</strong> retornou o %{count} resultado abaixo."
@@ -181,7 +181,7 @@ pt:
        submit: "Buscar"
        type: "digite"
        used_as: "usado como"
-       language: "língua"
+       language: "idioma"
        all: "todos"
        none: "nenhum"
        for: "Para"
@@ -235,7 +235,7 @@ pt:
          header: "Alterar rótulos"
          submit: "Salvar"
      lang_widget:
-       caption: "Língua"
+       caption: "Idioma"
        primary: "Primeira"
        secondary: "Segunda"
      dashboard:
