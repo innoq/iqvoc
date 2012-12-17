@@ -1,0 +1,38 @@
+# encoding: UTF-8
+
+# Copyright 2011 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+pt:
+  authlogic:
+    error_messages:
+      login_blank: "não pode ser vazio"
+      login_not_found: "não é valido"
+      login_invalid: "deve conter apenas letras, números, espaços, e .-_@ por favor."
+      consecutive_failed_logins_limit_exceeded: "Excedeu o limite de falhas de autenticação, a conta está desabilitada."
+      email_invalid: "precisa parecer com um endereço de email."
+      password_blank: "não pode ser vazio"
+      password_invalid: "não é valido"
+      not_active: "Sua conta não está ativa"
+      not_confirmed: "Sua conta não está confirmada"
+      not_approved: "Sua conta não está aprovada"
+      no_authentication_details: "Você não forneceu nenhum detalhe para autenticação."
+    models:
+      user_session: "UserSession"
+    attributes:
+      user_session:
+        login: "login"
+        email: "Email"
+        password: "Senha"
+        remember_me: "Me lembre"
