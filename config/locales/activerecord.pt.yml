@@ -119,7 +119,7 @@ pt:
       label/base:
         follow_up: "Lembrete"
         expired_at: "Expirado em"
-        language: "Língua"
+        language: "Idioma"
       note/base:
         value: "Valor"
       user:
