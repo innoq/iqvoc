@@ -42,7 +42,7 @@ pt:
    common:
      iqvoc_title: "Sistema de Gerenciamento de Vocabulário iQvoc"
      pref_label: "Rótulo Preferencial"
-     edit: "Editar"
+     edit: "Alterar"
      value: "Valor"
      back: "Voltar"
      welcome: "Olá %{user_name}"
@@ -229,7 +229,7 @@ pt:
        preview_new_version: "Pré-visualização da versão em alteração"
        consistency_check: "Verificar consistência"
        current_revision: "Revisão atual %{rev}"
-       in_ongoing_editing_by: "está sendo editado por %{user}."
+       in_ongoing_editing_by: "está sendo alterado por %{user}."
      labelings:
        edit:
          header: "Alterar rótulos"
