@@ -169,11 +169,12 @@ module Iqvoc
 
     def load_first_level_object(origin)
       unless @seen_first_level_objects[origin]
-        FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+        klass = @existing_origins[origin]
+        if klass
           @seen_first_level_objects[origin] = klass.by_origin(origin).last
-          break if @seen_first_level_objects[origin]
         end
       end
+
       @seen_first_level_objects[origin]
     end
 
