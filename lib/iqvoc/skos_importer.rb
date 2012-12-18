@@ -3,10 +3,10 @@ module Iqvoc
 
     FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
     SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
-      Iqvoc::Concept.note_classes +
-      Iqvoc::Concept.relation_classes +
-      Iqvoc::Concept.match_classes +
-      Iqvoc::Collection.member_classes
+        Iqvoc::Concept.note_classes +
+        Iqvoc::Concept.relation_classes +
+        Iqvoc::Concept.match_classes +
+        Iqvoc::Collection.member_classes
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
 
@@ -28,7 +28,17 @@ module Iqvoc
         @prefixes[uri] = "#{pref.to_s}:"
       end
 
-      @seen_first_level_objects = {}
+      @seen_first_level_objects = {} # Concept cache (don't load any concept twice from db)
+      @new_subjects = [] # Concepts to be published later
+
+      # Triples the importer doesn't understand immediately. Example:
+      #
+      #     :a skos:prefLabel "foo". # => What is :a? Remember this and try again later
+      #     ....
+      #     :a rdf:type skos:Concept # => Now I know :a, good I remebered it's prefLabel...
+      @unknown_second_level_tripes = []
+
+      # Hash of arrays of arrays: { "_:n123" => [["pred1", "obj1"], ["pred2", "obj2"]] }
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
@@ -44,32 +54,26 @@ module Iqvoc
     private
 
     def import(file)
-      # Collect blank nodes
-      file.each do |line|
-        identify_blank_nodes(*extract_triple(line))
-      end
-
-      file.rewind if file.is_a?(IO)
-      types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
+      first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
-        types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
+        first_level_types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
       end
-
-      file.each do |line|
-        import_first_level_objects(types, *extract_triple(line))
-      end
-      new_subjects = @seen_first_level_objects.dup # Remember the objects seen yet, because they are the ones to be published later
-
-      file.rewind if file.is_a?(IO)
-      types = {}
+      second_level_types = {}
       SECOND_LEVEL_OBJECT_CLASSES.each do |klass|
-        types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
-      end
-      file.each do |line|
-        import_second_level_objects(types, *extract_triple(line))
+        second_level_types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
       end
 
-      new_subjects.each do |id, subject|
+      file.each do |line|
+        identify_blank_nodes(*extract_triple(line)) ||
+            import_first_level_objects(first_level_types, *extract_triple(line)) ||
+            import_second_level_objects(second_level_types, false, *extract_triple(line))
+      end
+
+      @unknown_second_level_tripes.each do |s, p, o|
+        import_second_level_objects(second_level_types, true, s, p, o)
+      end
+
+      @new_subjects.each do |subject|
         if subject.valid_with_full_validation?
           subject.publish
           subject.save!
@@ -84,6 +88,9 @@ module Iqvoc
       if blank_node?(subject)
         @blank_nodes[subject] ||= []
         @blank_nodes[subject] << [predicate, object]
+        true
+      else
+        false
       end
     end
 
@@ -103,20 +110,29 @@ module Iqvoc
           end
         else
           @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
+          @new_subjects << @seen_first_level_objects[origin]
         end
+        true
+      else
+        false
       end
-
     end
 
-    def import_second_level_objects(types, subject, predicate, object)
+    def import_second_level_objects(types, final, subject, predicate, object)
       return unless (subject =~ /^:(.*)$/ && types[predicate]) # We're not responsible for this
+
+      initial_triple = [subject, predicate, object]
 
       # Load the subject and replace the string by the respective data object
       subject_origin = $1
       subject = load_first_level_object(subject_origin)
       unless subject
-        @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
-        return
+        if final
+          @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
+        else
+          @unknown_second_level_tripes << initial_triple
+        end
+        return false
       end
 
       # Load the data object for the object string if this is representing a thing in our domain
@@ -124,13 +140,28 @@ module Iqvoc
         object_origin = $1
         object = load_first_level_object(object_origin)
         unless object
-          @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
-          return
+          if final
+            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+          else
+            @unknown_second_level_tripes << initial_triple
+          end
+          return false
         end
       end
 
+      # If not in final mode every :my_concept :bla _:blank_node. triple should
+      # be saved for final mode. Why? Example:
+      #
+      #    :a iqvoc:changeNote _:b01 # => I do not know know anything about the blank node now
+      #    _:b01 dc:author "DHH"...
+      #
       if blank_node?(object)
-        object = @blank_nodes[object]
+        if final
+          object = @blank_nodes[object]
+        else
+          @unknown_second_level_tripes << initial_triple
+          return false
+        end
       end
 
       types[predicate].build_from_rdf(subject, predicate, object)
