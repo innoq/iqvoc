@@ -142,7 +142,7 @@ pt:
        value: "Valor"
        language: "Idioma"
        save: "Salvar"
-       edit: 
+       edit:
          header: "Alterar notas"
      navigation:
        back_to_edit_versioned_object: "Retornar para edição"
