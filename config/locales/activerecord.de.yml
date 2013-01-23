@@ -24,11 +24,11 @@ de:
         one: "Konzept"
         other: "Konzepte"
       concept/relation/base:
-        one:   "Relation"
-        other: "Relations"
+        one:   "Beziehung"
+        other: "Beziehungen"
       concept/relation/skos/base:
-        one:   "Relation"
-        other: "Relations"
+        one:   "Beziehung"
+        other: "Beziehungen"
       concept/relation/skos/broader/mono:
         one:   "Allgemeinerer Begriff"
         other: "Allgemeinere Begriffe"
@@ -115,7 +115,7 @@ de:
       concept/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
-        top_term: "Top Term"
+        top_term: "Begriff oberster Ebene"
       label/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
