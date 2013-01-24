@@ -54,6 +54,8 @@ module Iqvoc
     private
 
     def import(file)
+      start = Time.now
+      
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
         first_level_types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
@@ -69,18 +71,30 @@ module Iqvoc
             import_second_level_objects(second_level_types, false, *extract_triple(line))
       end
 
+      @logger.debug("Computing 'forward' defined triples...")
       @unknown_second_level_tripes.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
+      first_import_step_done = Time.now
+      @logger.debug("Basic import done (took #{(first_import_step_done - start).to_i} seconds).")
+      
+      @logger.debug("Publishing #{@new_subjects.count} new subjects...")
+      published = 0
       @new_subjects.each do |subject|
         if subject.valid_with_full_validation?
           subject.publish
           subject.save!
+          published += 1
         else
-          @logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
+          @logger.warn "WARNING: Publishing failed! Subject ('#{subject.origin}') invalid: #{subject.errors.to_hash.inspect}"
         end
       end
+
+      done = Time.now
+      @logger.debug("Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} where invalid.")   
+      puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
+      puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
     end
 
@@ -95,9 +109,6 @@ module Iqvoc
     end
 
     def import_first_level_objects(types, subject, predicate, object)
-      @logger.debug "types: #{types}"
-      @logger.debug "predicate: #{predicate}"
-      @logger.debug "subject: #{subject}"
       if (predicate == "rdf:type" && types[object] && subject =~ /^:(.+)$/)
         # We've found a subject definition with a class we know and which is in our responsibility (":")
         origin = $1
