@@ -23,12 +23,12 @@ class MultiLogger
   end
  
   def add(level, *args)
-    @loggers.each { |logger| logger.add(level, args) }
+    @loggers.each { |logger| logger.add(level, *args) }
   end
  
   Logger::Severity.constants.each do |level|
     define_method(level.downcase) do |*args|                
-      @loggers.each { |logger| logger.send(level.downcase, args) }
+      @loggers.each { |logger| logger.send(level.downcase, *args) }
     end
  
     define_method("#{ level.downcase }?".to_sym) do
