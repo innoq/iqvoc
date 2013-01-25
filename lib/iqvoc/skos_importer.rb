@@ -8,6 +8,8 @@ module Iqvoc
         Iqvoc::Concept.match_classes +
         Iqvoc::Collection.member_classes
 
+    TABLES = (FIRST_LEVEL_OBJECT_CLASSES + SECOND_LEVEL_OBJECT_CLASSES + [Iqvoc::Label.base_class]).map(&:table_name).uniq
+
     def initialize(file, default_namespace_url, logger = Rails.logger)
 
       @logger = logger
@@ -47,8 +49,13 @@ module Iqvoc
           @existing_origins[thing.origin] = klass
         end
       end
-
-      import(file)
+      
+      begin
+        disable_indexes
+        import(file)
+      ensure
+        enable_indexes
+      end
     end
 
     private
@@ -96,6 +103,30 @@ module Iqvoc
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
+    end
+        
+    def disable_indexes
+      mysql? do |connection|
+        @logger.info("Disabling indexes on #{TABLES.join(", ")}")
+        TABLES.each do |t|
+          connection.execute("ALTER TABLE #{t} DISABLE KEYS;")
+        end
+      end
+    end
+    
+    def enable_indexes
+      mysql? do |connection|
+        @logger.info("Reenabling indexes on #{TABLES.join(", ")}")
+        TABLES.each do |t|
+          connection.execute("ALTER TABLE #{t} ENABLE KEYS;")
+        end
+      end
+    end
+    
+    def mysql?
+      if ActiveRecord::Base.connection.adapter_name =~ /MySQL/i
+        yield(ActiveRecord::Base.connection)
+      end
     end
 
     def identify_blank_nodes(subject, predicate, object)
