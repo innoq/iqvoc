@@ -124,22 +124,52 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
+  module RelationAPI
+    extend Concept::Relation::ReverseRelationExtension
+
+    def for_class(relation_class)
+      if proxy_association.target.empty?
+        proxy_association.owner.relations.to_a
+      end
+      proxy_association.target.select{|assoc| assoc.is_a? relation_class}
+    end
+
+    def available_names
+      Iqvoc::Concept.further_relation_classes.map(&:relation_name) + %w(skos_broader skos_narrower)
+    end
+
+    protected
+
+    base_assocs = {
+      'skos_broader'  => Iqvoc::Concept.broader_relation_class,
+      'skos_narrower' => Iqvoc::Concept.broader_relation_class.narrower_class
+    }
+    assocs = Iqvoc::Concept.further_relation_class_names.inject(base_assocs) {|hash, name| hash[name.constantize.relation_name] = name.constantize; hash}
+
+    assocs.each do |relation_name, relation_class|
+      define_method relation_name do
+        for_class relation_class
+      end
+    end
+  end
+
+  has_many :relations, :foreign_key => 'owner_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy, :extend => RelationAPI
+
   has_many :related_concepts, :through => :relations, :source => :target
-  has_many :referenced_relations, :foreign_key => 'target_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
+  has_many :referenced_relations, :foreign_key => 'target_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
   has_many :labels, :through => :labelings, :source => :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
-  has_many :notes, :class_name => "Note::Base", :as => :owner, :dependent => :destroy
-  include_to_deep_cloning({:notes => :annotations})
+  has_many :notes, :class_name => 'Note::Base', :as => :owner, :dependent => :destroy
+  include_to_deep_cloning(:notes => :annotations)
 
-  has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base", :dependent => :destroy
+  has_many :matches, :foreign_key => 'concept_id', :class_name => 'Match::Base', :dependent => :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Concept", :dependent => :destroy
+  has_many :collection_members, :foreign_key => 'target_id', :class_name => 'Collection::Member::Concept', :dependent => :destroy
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
@@ -147,34 +177,17 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Concept2Concept relations
 
-  # Broader
-  # FIXME: Actually this is not needed anymore.
-  # BUT: the include in scope :tops doesn't work with
-  # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
-  has_many :broader_relations,
-    :foreign_key => :owner_id,
-    :class_name => Iqvoc::Concept.broader_relation_class_name,
-    :extend => Concept::Relation::ReverseRelationExtension
+  # Broader -- NOTE: read-only!
+  def broader_relations
+    self.relations.skos_broader
+  end
+  deprecate :broader_relations
 
   # Narrower
-  # FIXME: Actually this is not needed anymore.
-  # BUT: the include in scope :tops doesn't work with
-  # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
-  has_many :narrower_relations,
-    :foreign_key => :owner_id,
-    :class_name => Iqvoc::Concept.broader_relation_class.narrower_class.name,
-    :extend => Concept::Relation::ReverseRelationExtension
-
-  # Relations
-  # e.g. 'concept_relation_skos_relateds'
-  # Attention: Iqvoc::Concept.relation_class_names loads the Concept::Relation::*
-  # classes!
-  Iqvoc::Concept.relation_class_names.each do |relation_class_name|
-    has_many relation_class_name.to_relation_name,
-      :foreign_key => :owner_id,
-      :class_name  => relation_class_name,
-      :extend => Concept::Relation::ReverseRelationExtension
+  def narrower_relations
+    self.relations.skos_narrower
   end
+  deprecate :narrower_relations
 
   # *** Labels/Labelings
 
@@ -448,8 +461,8 @@ class Concept::Base < ActiveRecord::Base
   # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
   def ensure_rooted_top_terms
     if @full_validation
-      if narrower_relations.includes(:target). # XXX: inefficient?
-          select { |rel| rel.target && rel.target.top_term? }.any?
+      if relations.includes(:target).skos_narrower. # XXX: inefficient?
+          select { |rel| rel.target.try :top_term? }.any?
         errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
       end
     end

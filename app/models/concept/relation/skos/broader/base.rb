@@ -27,7 +27,7 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
   end
 
   def self.view_section(obj)
-    "main"
+    'main'
   end
 
   def self.view_section_sort_key(obj)
@@ -36,6 +36,10 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
 
   def self.narrower_editable
     !singular?
+  end
+
+  def self.relation_name
+    'skos_broader'
   end
 
 end

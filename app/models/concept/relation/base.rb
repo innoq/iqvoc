@@ -112,4 +112,10 @@ class Concept::Relation::Base < ActiveRecord::Base
     self.class.included_modules.include?(Iqvoc::Rankable)
   end
 
+  def self.relation_name
+    relname = self.name.underscore.gsub('/', '_').sub('concept_relation_', '')
+    Rails.logger.warn "WARN: Inferring relation name #{relname} from class name (#{self.name}), you should define self.relation_name in your relation class."
+    relname
+  end
+
 end

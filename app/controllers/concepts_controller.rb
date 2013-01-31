@@ -56,8 +56,9 @@ class ConceptsController < ApplicationController
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new(@concept,
           Iqvoc::Concept.base_class.default_includes + [:collection_members => {:collection => :labels},
-          :broader_relations => {:target => [:pref_labels, :broader_relations]},
-          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}]).run
+#           :broader_relations => {:target => [:pref_labels, :broader_relations]},
+#           :narrower_relations => {:target => [:pref_labels, :narrower_relations]}
+          ]).run
 
         published ? render('show_published') : render('show_unpublished')
       end
