@@ -1,12 +1,19 @@
 module Iqvoc
   module RDFAPI
+    FIRST_LEVEL_OBJECT_CLASSES  = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
+    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
+                                  Iqvoc::Concept.note_classes +
+                                  Iqvoc::Concept.relation_classes +
+                                  Iqvoc::Concept.match_classes +
+                                  Iqvoc::Collection.member_classes
 
-    OBJECT_DICTIONARY = Iqvoc::SkosImporter::FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
+
+    OBJECT_DICTIONARY = FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
       hash["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
       hash
     end
 
-    PREDICATE_DICTIONARY = Iqvoc::SkosImporter::SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
+    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
       hash["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
       hash
     end
