@@ -16,22 +16,26 @@
 
 class Collection::Member::SKOS::Base < Collection::Member::Base
 
-  self.rdf_namespace = "skos"
-  self.rdf_predicate = "member"
+  self.rdf_namespace = 'skos'
+  self.rdf_predicate = 'member'
 
-  def self.build_from_rdf(subject, predicate, object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Collection." unless subject.is_a?(Collection::Base)
-    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a Collection or Concept." unless object.is_a?(Collection::Base) or object.is_a?(Concept::Base)
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Collection." unless rdf_subject.is_a?(Collection::Base)
+    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a Collection or Concept." unless rdf_object.is_a?(Collection::Base) or rdf_object.is_a?(Concept::Base)
 
-    if subject.send(:members).select{|rel| rel.collection_id == subject.id || rel.target == object}.empty?
-      subject.send(:members) << self.new(:target => object)
-      if object.is_a?(Collection::Base)
-        subject.send(:subcollections) << object
+    member_instance = rdf_subject.send(:members).select{|rel| rel.collection_id == rdf_subject.id || rel.target == rdf_object}.first
+    if member_instance.nil?
+      member_instance = (rdf_predicate || self).new(:target => rdf_object)
+      rdf_subject.send(:members) << member_instance
+
+      if rdf_object.is_a?(Collection::Base)
+        rdf_subject.send(:subcollections) << rdf_object
       end
     end
 
-    if object.send(:collections).select{|coll| coll.id == subject.id}.empty?
-      object.send(:collections) << subject
+    if rdf_object.send(:collections).select{|coll| coll.id == rdf_subject.id}.empty?
+      rdf_object.send(:collections) << rdf_subject
     end
+    member_instance
   end
 end
