@@ -35,11 +35,11 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def self.partial_name(obj)
-    "partials/labeling/skos/base"
+    'partials/labeling/skos/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/labeling/skos/edit_base"
+    'partials/labeling/skos/edit_base'
   end
 
   def self.single_query(params = {})
@@ -65,10 +65,10 @@ class Labeling::SKOS::Base < Labeling::Base
     scope = scope.includes(:owner)
 
     scope = case params[:for]
-    when "concept"
-      scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
-    when "collection"
-      scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
+    when 'concept'
+      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
+    when 'collection'
+      scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
     else
       # no additional conditions
       scope
@@ -82,15 +82,15 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def self.build_from_rdf(subject, predicate, object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
-    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))?$/
+    raise "#{self.name}#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
+    raise "#{self.name}#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
-    predicate = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[predicate] || self
-    predicate.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
-      subject.send(self.name.to_relation_name) << label
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[predicate] || self
+    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
+      subject.send(predicate_class.name.to_relation_name) << label
     end
   end
 

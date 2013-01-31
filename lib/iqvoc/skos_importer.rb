@@ -44,18 +44,16 @@ module Iqvoc
       end
 
       file.rewind if file.is_a?(IO)
-      types = Iqvoc::RDFAPI::OBJECT_DICTIONARY # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
 
       file.each do |line|
-        import_first_level_objects(types, *extract_triple(line))
+        import_first_level_objects(Iqvoc::RDFAPI::OBJECT_DICTIONARY, *extract_triple(line))
       end
+
       new_subjects = @seen_first_level_objects.dup # Remember the objects seen yet, because they are the ones to be published later
 
       file.rewind if file.is_a?(IO)
-      types = Iqvoc::RDFAPI::PREDICATE_DICTIONARY
-
       file.each do |line|
-        import_second_level_objects(types, *extract_triple(line))
+        import_second_level_objects(Iqvoc::RDFAPI::PREDICATE_DICTIONARY, *extract_triple(line))
       end
 
       new_subjects.each do |id, subject|
