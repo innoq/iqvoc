@@ -81,16 +81,16 @@ class Labeling::SKOS::Base < Labeling::Base
     'partials/labeling/skos/search_result'
   end
 
-  def self.build_from_rdf(subject, predicate, object)
-    raise "#{self.name}#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
-    raise "#{self.name}#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))?$/
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."     unless rdf_subject.is_a?(Concept::Base)
+    raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
-    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[predicate] || self
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
-      subject.send(predicate_class.name.to_relation_name) << label
+      rdf_subject.send(predicate_class.name.to_relation_name) << label
     end
   end
 
