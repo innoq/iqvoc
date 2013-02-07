@@ -124,42 +124,13 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  module RelationAPI
-    extend Concept::Relation::ReverseRelationExtension
-
-    def for_class(relation_class)
-      if proxy_association.target.empty?
-        proxy_association.owner.relations.to_a
-      end
-      proxy_association.target.select{|assoc| assoc.is_a? relation_class}
-    end
-
-    def available_names
-      Iqvoc::Concept.further_relation_classes.map(&:relation_name) + %w(skos_broader skos_narrower)
-    end
-
-    protected
-
-    base_assocs = {
-      'skos_broader'  => Iqvoc::Concept.broader_relation_class,
-      'skos_narrower' => Iqvoc::Concept.broader_relation_class.narrower_class
-    }
-    assocs = Iqvoc::Concept.further_relation_class_names.inject(base_assocs) {|hash, name| hash[name.constantize.relation_name] = name.constantize; hash}
-
-    assocs.each do |relation_name, relation_class|
-      define_method relation_name do
-        for_class relation_class
-      end
-    end
-  end
-
-  has_many :relations, :foreign_key => 'owner_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy, :extend => RelationAPI
+  has_many :relations, :foreign_key => 'owner_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy, :extend => RelationSubtypeExtensions
 
   has_many :related_concepts, :through => :relations, :source => :target
   has_many :referenced_relations, :foreign_key => 'target_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
+  has_many :labelings, :foreign_key => 'owner_id', :class_name => 'Labeling::Base', :dependent => :destroy, :extend => LabelingSubtypeExtensions
   has_many :labels, :through => :labelings, :source => :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
@@ -183,11 +154,21 @@ class Concept::Base < ActiveRecord::Base
   end
   deprecate :broader_relations
 
-  # Narrower
+  def broader_relations=(foo)
+    self.relations.skos_broader = foo
+  end
+  deprecate :broader_relations=
+
+  # Narrower -- NOTE: read-only!
   def narrower_relations
     self.relations.skos_narrower
   end
   deprecate :narrower_relations
+
+  def narrower_relations=(foo)
+    self.relations.skos_narrower = foo
+  end
+  deprecate :narrower_relations=
 
   # *** Labels/Labelings
 
@@ -203,6 +184,7 @@ class Concept::Base < ActiveRecord::Base
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
       :class_name => labeling_class_name
+
     # Only clone superclass relations
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
       # When a Label has only one labeling (the "no skosxl" case) we'll have to

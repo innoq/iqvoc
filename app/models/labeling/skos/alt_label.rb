@@ -18,4 +18,8 @@ class Labeling::SKOS::AltLabel < Labeling::SKOS::Base
 
   self.rdf_predicate = 'altLabel'
 
+  def self.relation_name
+    'skos_alt'
+  end
+
 end

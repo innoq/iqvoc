@@ -27,4 +27,8 @@ class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
     50
   end
 
+  def self.relation_name
+    'skos_pref'
+  end
+
 end

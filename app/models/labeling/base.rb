@@ -24,8 +24,8 @@ class Labeling::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :owner,  :class_name => "Concept::Base"
-  belongs_to :target, :class_name => "Label::Base"
+  belongs_to :owner,  :class_name => 'Concept::Base'
+  belongs_to :target, :class_name => 'Label::Base'
 
   # ********** Scopes
 
@@ -63,7 +63,7 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    obj.is_a?(Label::Base) ? "concepts" : "labels"
+    obj.is_a?(Label::Base) ? 'concepts' : 'labels'
   end
 
   def self.view_section_sort_key(obj)
@@ -71,11 +71,17 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/labeling/base"
+    'partials/labeling/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/labeling/edit_base"
+    'partials/labeling/edit_base'
   end
 
+
+  def self.relation_name
+    relname = self.name.underscore.gsub('/', '_').sub('labeling_', '')
+    Rails.logger.warn "WARN: Inferring relation name #{relname} from class name (#{self.name}), you should define self.relation_name in your relation class."
+    relname
+  end
 end

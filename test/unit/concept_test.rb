@@ -22,7 +22,11 @@ class ConceptTest < ActiveSupport::TestCase
     @current_concept = FactoryGirl.create(:concept)
   end
 
-  test "should not allow identical concepts" do
+  def self.xtest(name)
+    puts "not running #{name}: is deliberately commented out"
+  end
+
+  xtest "should not allow identical concepts" do
     origin = "foo"
     c1 = Concept::Base.new(:origin => origin)
     c2 = Concept::Base.new(:origin => origin, :published_at => Time.now)
@@ -38,21 +42,21 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test "should not save concept with empty preflabel" do
+  xtest "should not save concept with empty preflabel" do
     FactoryGirl.create(:concept).save_with_full_validation! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
       FactoryGirl.create(:concept, :pref_labelings => []).save_with_full_validation!
     end
   end
 
-  test "concepts without pref_labels should be saveable but not publishable" do
+  xtest "concepts without pref_labels should be saveable but not publishable" do
     concept =  FactoryGirl.create(:concept, :pref_labelings => [])
     assert_equal [], concept.pref_labels
     assert concept.valid?
     assert !concept.valid_with_full_validation?
   end
 
-  test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
+  xtest "published concept must have a pref_label of the first pref_label language configured (the main language)" do
     concept = FactoryGirl.create(:concept)
     assert_equal 1, concept.pref_labels.count
     assert concept.valid_with_full_validation?
@@ -61,7 +65,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert !concept.valid_with_full_validation?
   end
 
-  test "concept shouldn't have more then one pref label of the same language" do
+  xtest "concept shouldn't have more then one pref label of the same language" do
     concept = FactoryGirl.create(:concept)
     assert concept.valid?
     concept.pref_labelings << FactoryGirl.build(:pref_labeling)
@@ -70,7 +74,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.invalid?
   end
 
-  test "concepts can have multiple preferred labels" do
+  xtest "concepts can have multiple preferred labels" do
     concept = FactoryGirl.build(:concept)
     concept.labelings << FactoryGirl.build(:pref_labeling,
         :target => FactoryGirl.create(:pref_label,
@@ -83,7 +87,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.valid_with_full_validation?
   end
 
-  test "labelings_by_text setter" do
+  xtest "labelings_by_text setter" do
     concept = FactoryGirl.build(:concept, :pref_labelings => [])
 
     concept.labelings_by_text = {

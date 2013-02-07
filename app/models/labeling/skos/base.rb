@@ -16,7 +16,7 @@
 
 class Labeling::SKOS::Base < Labeling::Base
 
-  self.rdf_namespace = "skos"
+  self.rdf_namespace = 'skos'
 
   # ********** Associations
 
