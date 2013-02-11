@@ -15,11 +15,12 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
+require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
 
   setup do
-    @current_concept = FactoryGirl.create(:concept)
+#     @current_concept = FactoryGirl.create(:concept)
   end
 
   def self.xtest(name)
@@ -103,6 +104,18 @@ class ConceptTest < ActiveSupport::TestCase
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
     }
     assert !concept.save
+  end
+
+  test 'assigning labeling subtypes' do
+    concept = Iqvoc::RDFAPI.devour 'c0815 rdf:type skos:Concept'
+    concept.save
+    Iqvoc::RDFAPI.devour 'c0815 skos:prefLabel "foo-en"@en'
+    Iqvoc::RDFAPI.devour 'c0815 skos:prefLabel "foo-de"@de'
+    Iqvoc::RDFAPI.devour 'c0815 skos:altLabel "foo-bar"@en'
+    Iqvoc::RDFAPI.devour 'c0815 skos:altLabel "foo-baz"@en'
+    assert_equal 4, concept.labelings.count
+    assert_equal 2, concept.labelings.skos_pref.size
+    assert_equal 2, concept.labelings.skos_alt.size
   end
 
 end

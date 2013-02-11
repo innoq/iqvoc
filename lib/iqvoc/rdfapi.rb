@@ -1,17 +1,46 @@
+# encoding: UTF-8
+
+# Copyright 2011 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 module Iqvoc
   module RDFAPI
+    FIRST_LEVEL_OBJECT_CLASSES  = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
+    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
+                                  Iqvoc::Concept.note_classes +
+                                  Iqvoc::Concept.relation_classes +
+                                  Iqvoc::Concept.match_classes +
+                                  Iqvoc::Collection.member_classes
 
-    OBJECT_DICTIONARY = Iqvoc::SkosImporter::FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
+    OBJECT_DICTIONARY = FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
       hash["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
       hash
     end
 
-    PREDICATE_DICTIONARY = Iqvoc::SkosImporter::SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
+    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
       hash["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
       hash
     end
 
-    def self.devour(rdf_subject, rdf_predicate, rdf_object)
+    def self.devour(rdf_subject_or_string, rdf_predicate = nil, rdf_object = nil)
+      if rdf_predicate.nil? and rdf_object.nil?
+        # we have a single string to parse and interpret
+        rdf_subject, rdf_predicate, rdf_object = rdf_subject_or_string.split(/\s+/)
+      else
+        rdf_subject = rdf_subject_or_string
+      end
+
       case rdf_predicate
       when 'a', 'rdf:type'
         case rdf_object

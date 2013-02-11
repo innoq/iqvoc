@@ -18,22 +18,26 @@ class Note::SKOS::Base < Note::Base
 
   self.rdf_namespace = 'skos'
 
-  def self.build_from_rdf(subject, predicate, object)
-    unless subject.class.reflections.include?(self.name.to_relation_name)
-      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to receive this kind of note (#{self.class.name} => #{self.class.name.to_relation_name})."
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    rdf_subject = Concept::Base.subject_from_rdf(rdf_subject)
+    unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
     end
 
-    case object
+    target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    case rdf_object
     when String # Literal
-      unless object =~ /^"(.*)"(@(.+))$/
-        raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+      unless rdf_object =~ /^"(.*)"(@(.+))$/
+        raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
       value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
-      subject.send(self.name.to_relation_name) << self.new(:value => value, :language => lang)
+      target_class.new(:value => value, :language => lang).tap do |new_instance|
+        rdf_subject.send(target_class.name.to_relation_name) << new_instance
+      end
     when Array # Blank node
-      note = self.create!(:owner => subject)
-      object.each do |annotation|
+      note = target_class.create!(:owner => rdf_subject)
+      rdf_object.each do |annotation|
         ns, pred = *annotation.first.split(":", 2)
         note.annotations.create! do |a|
           a.namespace = ns
@@ -45,19 +49,19 @@ class Note::SKOS::Base < Note::Base
   end
 
   def build_rdf(document, subject)
-    ns, id = "", ""
-    if (self.rdf_namespace && self.rdf_predicate)
+    ns, id = '', ''
+    if self.rdf_namespace and self.rdf_predicate
       ns, id = self.rdf_namespace, self.rdf_predicate
     elsif self.class == Note::SKOS::Base # This could be done by setting self.rdf_predicate to 'note'. But all subclasses would inherit this value.
-      ns, id = "Skos", "note"
+      ns, id = 'Skos', 'note'
     else
-      raise "Note::SKOS::Base#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
+      raise "#{self.class.name}#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
     end
 
     if (IqRdf::Namespace.find_namespace_class(ns))
       subject.send(ns).send(id, value, :lang => language)
     else
-      raise "Note::SKOS::Base#build_rdf: couldn't find Namespace '#{ns}'."
+      raise "#{self.class.name}#build_rdf: couldn't find Namespace '#{ns}'."
     end
   end
 

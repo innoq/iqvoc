@@ -78,10 +78,22 @@ class Labeling::Base < ActiveRecord::Base
     'partials/labeling/edit_base'
   end
 
-
   def self.relation_name
     relname = self.name.underscore.gsub('/', '_').sub('labeling_', '')
     Rails.logger.warn "WARN: Inferring relation name #{relname} from class name (#{self.name}), you should define self.relation_name in your relation class."
     relname
   end
+
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
+    raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
+
+    lang, value = $3, JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
+      rdf_subject.send(predicate_class.name.to_relation_name) << label
+    end
+  end
+
 end

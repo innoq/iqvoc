@@ -25,7 +25,7 @@ class Concept::Base < ActiveRecord::Base
 
   class_attribute :rdf_namespace, :rdf_class
   self.rdf_namespace = nil
-  self.rdf_class = nil
+  self.rdf_class     = nil
 
   # ********** Validations
 
@@ -174,16 +174,16 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :pref_labelings,
     :foreign_key => 'owner_id',
-    :class_name => Iqvoc::Concept.pref_labeling_class_name
+    :class_name  => Iqvoc::Concept.pref_labeling_class_name
 
   has_many :pref_labels,
     :through => :pref_labelings,
-    :source => :target
+    :source  => :target
 
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       :foreign_key => 'owner_id',
-      :class_name => labeling_class_name
+      :class_name  => labeling_class_name
 
     # Only clone superclass relations
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
@@ -406,9 +406,22 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def associated_objects_in_editing_mode
-    {
-      :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
-    }
+    { :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode }
+  end
+
+  def self.from_origin_or_instance(rdf_subject)
+    case rdf_subject
+    when self
+      rdf_subject
+    when String, Symbol
+      if thing = self.find_by_origin(rdf_subject) # find all subclasses of this class
+        thing.becomes(thing.type.constantize)    # cast object to its subclass
+      else
+        raise "no #{self} with origin #{rdf_subject} was found"
+      end
+    else
+      raise "rdf_subject must be a #{self} or a String (=origin) but #{rdf_subject.inspect} was given"
+    end
   end
 
   # ********** Validation methods

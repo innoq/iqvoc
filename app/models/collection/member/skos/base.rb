@@ -19,22 +19,23 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'member'
 
-  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Collection." unless rdf_subject.is_a?(Collection::Base)
-    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a Collection or Concept." unless rdf_object.is_a?(Collection::Base) or rdf_object.is_a?(Concept::Base)
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object) # <<collection>>, <<member>>, <<concept|collection>>
+    rdf_subject     = Collection::Base.from_origin_or_instance(rdf_subject)
+    rdf_object      = Concept::Base.from_origin_or_instance(rdf_object)
+    member_instance = rdf_subject.members.to_a.find {|rel| rel.target == rdf_object || rel.target_id == rdf_object.id}
 
-    member_instance = rdf_subject.send(:members).select{|rel| rel.collection_id == rdf_subject.id || rel.target == rdf_object}.first
     if member_instance.nil?
-      member_instance = (rdf_predicate || self).new(:target => rdf_object)
-      rdf_subject.send(:members) << member_instance
+      predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+      member_instance = predicate_class.new(:target => rdf_object)
+      rdf_subject.members << member_instance
 
       if rdf_object.is_a?(Collection::Base)
-        rdf_subject.send(:subcollections) << rdf_object
+        rdf_subject.subcollections << rdf_object
       end
     end
 
-    if rdf_object.send(:collections).select{|coll| coll.id == rdf_subject.id}.empty?
-      rdf_object.send(:collections) << rdf_subject
+    if rdf_object.collections.select{|coll| coll.id == rdf_subject.id}.empty?
+      rdf_object.collections << rdf_subject
     end
     member_instance
   end

@@ -36,8 +36,8 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   # ********* Associations
 
-  belongs_to :owner,  :class_name => "Concept::Base"
-  belongs_to :target, :class_name => "Concept::Base"
+  belongs_to :owner,  :class_name => 'Concept::Base'
+  belongs_to :target, :class_name => 'Concept::Base'
 
   # ********* Scopes
 
@@ -71,8 +71,12 @@ class Concept::Relation::Base < ActiveRecord::Base
     self
   end
 
+  def self.bidirectional?
+    !!self.reverse_relation_class
+  end
+
   def self.view_section(obj)
-    "relations"
+    'relations'
   end
 
   def self.view_section_sort_key(obj)
@@ -80,11 +84,11 @@ class Concept::Relation::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/concept/relation/base"
+    'partials/concept/relation/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/concept/relation/edit_base"
+    'partials/concept/relation/edit_base'
   end
 
   # if `singular` is true, only a single occurrence is allowed per instance

@@ -4,16 +4,9 @@ module Concept
 
     def for_class(relation_class)
       if proxy_association.target.empty?
-        proxy_association.owner.relations.to_a
+        proxy_association.target = proxy_association.owner.relations.all
       end
       proxy_association.target.select{|assoc| assoc.is_a? relation_class}
-    end
-
-    def assign_for_class(relation_class, relations)
-      for_class(relation_class).each &:destroy
-      relations.each do |relation|
-        proxy_association.target << relation
-      end
     end
 
     def available_names
@@ -34,8 +27,9 @@ module Concept
       end
 
       define_method "#{relation_name}=" do |relations|
-        assign_for_class relation_class, relations
+        raise "don't do this!"
       end
     end
+
   end
 end

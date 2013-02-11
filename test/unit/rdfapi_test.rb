@@ -1,58 +1,85 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/rdfapi'
 
-RDFAPI = Iqvoc::RDFAPI
-class RDFAPITest < ActiveSupport::TestCase
+API = Iqvoc::RDFAPI
+class APITest < ActiveSupport::TestCase
+
+  test 'should allow passing subject, predicate and object' do
+    result = API.devour 'foobar', 'a', 'Concept::SKOS::Base'
+    assert result.is_a? Concept::SKOS::Base
+  end
+
+  test 'should allow passing single string that will be interpreted' do
+    result = API.devour 'foobar a Concept::SKOS::Base'
+    assert result.is_a? Concept::SKOS::Base
+  end
 
   test 'should instantiate known class names using strings only' do
-    result = RDFAPI.devour 'foobar', 'a', 'Concept::SKOS::Base'
+    result = API.devour 'foobar', 'a', 'Concept::SKOS::Base'
     assert result.is_a? Concept::SKOS::Base
     assert_equal result.origin, 'foobar'
   end
 
+  test 'should rause error when using string class name for nonexistent class' do
+    assert_raise NameError do
+      result = API.devour 'foobar', 'a', 'Concept::SKOS::Blah'
+    end
+  end
+
   test 'should instantiate known class names using constant' do
-    result = RDFAPI.devour 'foobar', 'a', Concept::SKOS::Base
+    result = API.devour 'foobar', 'a', Concept::SKOS::Base
     assert result.is_a? Concept::SKOS::Base
     assert_equal result.origin, 'foobar'
   end
 
   test 'should instantiate known class names from dictionary using strings only' do
-    concept_result1 = RDFAPI.devour 'foofoo', 'a', 'skos:Concept'
+    concept_result1 = API.devour 'foofoo', 'a', 'skos:Concept'
     assert concept_result1.is_a? Iqvoc::Concept.base_class
 
-    concept_result2 = RDFAPI.devour 'foobar', 'rdf:type', 'skos:Concept'
+    concept_result2 = API.devour 'foobar', 'rdf:type', 'skos:Concept'
     assert concept_result2.is_a? Iqvoc::Concept.base_class
 
-    collection_result = RDFAPI.devour 'foobaz', 'a', 'skos:Collection'
+    collection_result = API.devour 'foobaz', 'a', 'skos:Collection'
     assert collection_result.is_a? Iqvoc::Collection.base_class
   end
 
-  test 'should add member to collection using strings only' do
-    foobar = RDFAPI.devour *%w(foobar a skos:Concept)
-    barbaz = RDFAPI.devour *%w(barbaz a skos:Collection)
-    member = RDFAPI.devour barbaz, 'skos:member', foobar
+  test 'should add member to collection using string predicate ' do
+    foobar = API.devour 'foobar a skos:Concept'
+    barbaz = API.devour 'barbaz a skos:Collection'
+    member = API.devour barbaz, 'skos:member', foobar
 
     assert member.save
     assert member.is_a?(Collection::Member::SKOS::Base)
-    assert_equal member.collection, barbaz
-    assert_equal member.target, foobar
+    assert_equal barbaz, member.collection
+    assert_equal foobar, member.target
+  end
+
+  test 'should add member to collection using strings only' do
+    API.devour('foobar-concept a skos:Concept').save
+    API.devour('barbaz-collection a skos:Collection').save
+    member = API.devour 'barbaz-collection skos:member foobar-concept'
+
+    assert member.save
+    assert member.is_a?(Collection::Member::SKOS::Base)
+    assert_equal 'barbaz-collection', member.collection.origin
+    assert_equal 'foobar-concept', member.target.origin
   end
 
   test 'should add member to collection using classes' do
-    foobar = RDFAPI.devour *%w(foobar a skos:Concept)
-    barbaz = RDFAPI.devour *%w(barbaz a skos:Collection)
-    member = RDFAPI.devour barbaz, Collection::Member::SKOS::Base, foobar
+    foobar = API.devour 'foobar a skos:Concept'
+    barbaz = API.devour 'barbaz a skos:Collection'
+    member = API.devour barbaz, Collection::Member::SKOS::Base, foobar
 
     assert member.save
     assert member.is_a?(Collection::Member::SKOS::Base)
-    assert_equal member.collection, barbaz
-    assert_equal member.target, foobar
+    assert_equal barbaz, member.collection
+    assert_equal foobar, member.target
   end
 
   test 'should set pref label using string' do
-    foobar = RDFAPI.devour *%w(foobar a skos:Concept)
+    foobar = API.devour *%w(foobar a skos:Concept)
     foobar.save
-    labeling = RDFAPI.devour foobar, 'skos:prefLabel', '"Foo Bar"@en'
+    labeling = API.devour foobar, 'skos:prefLabel', '"Foo Bar"@en'
 
     assert labeling.is_a? Labeling::SKOS::PrefLabel
     assert_equal 'en', labeling.target.language
@@ -62,8 +89,8 @@ class RDFAPITest < ActiveSupport::TestCase
   end
 
   test 'should set pref label using class' do
-    foobar   = RDFAPI.devour *%w(foobar a skos:Concept)
-    labeling = RDFAPI.devour foobar, Labeling::SKOS::PrefLabel, '"Foo Bar"@en'
+    foobar   = API.devour 'foobar a skos:Concept'
+    labeling = API.devour foobar, Labeling::SKOS::PrefLabel, '"Foo Bar"@en'
 
     assert labeling.is_a? Labeling::SKOS::PrefLabel
     assert_equal 'en', labeling.target.language
@@ -72,8 +99,8 @@ class RDFAPITest < ActiveSupport::TestCase
   end
 
   test 'should set alt label using string' do
-    foobar   = RDFAPI.devour *%w(foobar a skos:Concept)
-    labeling = RDFAPI.devour foobar, 'skos:altLabel', '"Foo Bar"@de'
+    foobar   = API.devour 'foobar a skos:Concept'
+    labeling = API.devour foobar, 'skos:altLabel', '"Foo Bar"@de'
 
     assert labeling.is_a? Labeling::SKOS::AltLabel
     assert_equal 'de', labeling.target.language
