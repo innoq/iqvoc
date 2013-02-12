@@ -19,7 +19,7 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 
 group :assets do
   gem 'uglifier',   '>= 1.0.3'
