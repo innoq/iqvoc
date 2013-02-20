@@ -34,6 +34,7 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
     end
     if error
       flash.now[:error] = error
+      render :status => 400
       return
     end
 
