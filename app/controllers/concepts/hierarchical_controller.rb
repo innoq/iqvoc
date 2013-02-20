@@ -19,11 +19,8 @@ class Concepts::HierarchicalController < ConceptsController
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
-    scope = if params[:published] == '0'
-      Iqvoc::Concept.base_class.editor_selectable
-    else
-      Iqvoc::Concept.base_class.published
-    end
+    scope = Iqvoc::Concept.base_class
+    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
 
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]

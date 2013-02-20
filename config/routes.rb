@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     resources :concepts
     resources :collections
 
+    get "hierarchy" => "hierarchy#index"
+
     get "triplestore_sync" => "triplestore_sync#index"
     post "triplestore_sync" => "triplestore_sync#sync"
 

@@ -22,6 +22,18 @@ module ConceptsHelper
       :locals => { :concepts => concepts, :broader => broader }
   end
 
+  # turns a hash of concept/relations pairs of arbitrary nesting depth into the
+  # corresponding HTML list
+  def nested_list(hash, ordered=false)
+    content_tag(ordered ? "ol" : "ul") do
+      hash.map do |concept, rels|
+        rels.empty? ? content_tag("li", concept) : content_tag("li") do
+          h(concept) + nested_list(rels, ordered) # NB: recursive
+        end
+      end.join("\n").html_safe
+    end
+  end
+
   def letter_selector(&block)
     letters = ('A'..'Z').to_a +
       (0..9).to_a +
