@@ -44,7 +44,8 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
       scope = scope.includes(:broader_relations, :narrower_relations)
     end
 
-    @concepts = populate_hierarchy(root_concept, scope, depth)
+    @concepts = {}
+    @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth)
   end
 
   # returns a hash of concept/relations pairs of arbitrary nesting depth
