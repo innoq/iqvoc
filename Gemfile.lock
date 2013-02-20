@@ -43,6 +43,10 @@ GEM
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
     awesome_print (1.1.0)
+    better_errors (0.3.2)
+      coderay (>= 1.0.0)
+      erubis (>= 2.7.0)
+    binding_of_caller (0.6.8)
     bouncy-castle-java (1.5.0146.1)
     builder (3.0.4)
     cancan (1.6.8)
@@ -60,6 +64,7 @@ GEM
       json
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
+    coderay (1.0.8)
     crack (0.3.1)
     database_cleaner (0.8.0)
     erubis (2.7.0)
@@ -112,6 +117,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.1)
     mime-types (1.21)
     minitest (3.4.0)
     multi_json (1.5.1)
@@ -121,6 +127,10 @@ GEM
     nokogiri (1.5.5-java)
     pg (0.14.1)
     polyglot (0.3.3)
+    pry (0.9.10)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.3.1)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -164,6 +174,7 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    slop (3.3.3)
     spoon (0.0.1)
     spork (0.9.2)
     spork-testunit (0.0.8)
@@ -206,6 +217,8 @@ DEPENDENCIES
   activerecord-oracle_enhanced-adapter
   authlogic
   awesome_print
+  better_errors
+  binding_of_caller
   cancan
   capybara
   capybara-screenshot
@@ -223,6 +236,7 @@ DEPENDENCIES
   mysql2
   nokogiri (~> 1.5.0)
   pg
+  pry
   rails (= 3.2.12)
   rails_autolink
   sass-rails (~> 3.2.5)

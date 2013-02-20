@@ -41,6 +41,9 @@ gem 'fastercsv', :platforms => :ruby_18
 group :development do
   gem 'heroku'
   gem 'view_marker'
+  gem 'better_errors'
+  gem 'binding_of_caller', :platform => :ruby
+  gem 'pry', :platform => :ruby
 end
 
 group :development, :test do
