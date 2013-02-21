@@ -38,7 +38,7 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
       return
     end
 
-    # NB: order matters due to the following `where` clause
+    # NB: order matters due to the `where` clause below
     if direction == "up"
       scope = scope.includes(:narrower_relations, :broader_relations)
     else

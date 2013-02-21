@@ -20,7 +20,22 @@ class HierarchyTest < ActionController::TestCase
 
   setup do
     @controller = HierarchyController.new
-    @root_concept = create_concept("foo", "Foo", "en")
+
+    # create a concept hierarchy
+
+    concepts = YAML.load <<-EOS
+root:
+  foo:
+  bar:
+    alpha:
+    bravo:
+      uno:
+      dos:
+        lorem:
+        ipsum:
+    EOS
+    rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
+    @concepts = create_hierarchy(concepts, rel_class, {})
   end
 
   test "root parameter handling" do
@@ -36,13 +51,102 @@ class HierarchyTest < ActionController::TestCase
     entries = css_select("ul.concept-hierarchy li")
     assert_equal entries.length, 0
 
-    get :index, :format => "html", :root => @root_concept.origin
+    get :index, :format => "html", :root => "root"
     assert_response 200
     assert_equal flash[:error], nil
-    entries = css_select("ul.concept-hierarchy li").
-        map { |node| node.children.map(&:content).join("") }
+    entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 1
-    assert_equal entries[0], "Foo"
+    assert_equal entries[0], "Root"
+
+    get :index, :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo", "Bar"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries, ["Alpha", "Bravo"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Uno", "Dos"]
+    entries = css_select("ul.concept-hierarchy li li li li li")
+    assert_equal entries.length, 0 # exceeded default depth
+
+    get :index, :format => "html", :root => "bravo"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Bravo"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Uno", "Dos"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries, ["Lorem", "Ipsum"]
+    entries = css_select("ul.concept-hierarchy li li li li")
+    assert_equal entries.length, 0
+
+    get :index, :format => "html", :root => "lorem"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Lorem"]
+    entries = css_select("ul.concept-hierarchy li li")
+    assert_equal entries.length, 0
+  end
+
+  test "depth handling" do
+    selector = "ul.concept-hierarchy li li li li li"
+    get :index, :format => "html", :root => "root"
+    entries = css_select(selector)
+    assert_equal entries.length, 0 # default depth is 3
+
+    get :index, :format => "html", :root => "root", :depth => 4
+    entries = css_select(selector)
+    assert_equal entries.length, 2
+  end
+
+  test "direction handling" do
+    get :index, :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Uno", "Dos"]
+
+    get :index, :format => "html", :root => "root", :dir => "up"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = css_select("ul.concept-hierarchy li li")
+    assert_equal entries.length, 0
+
+    get :index, :format => "html", :root => "lorem"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Lorem"]
+    entries = css_select("ul.concept-hierarchy li li")
+    assert_equal entries.length, 0
+
+    get :index, :format => "html", :root => "lorem", :dir => "up"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Lorem"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Bar"]
+    entries = css_select("ul.concept-hierarchy li li li li li")
+    assert_equal entries.length, 0
+
+    get :index, :format => "html", :root => "lorem", :dir => "up", :depth => 4
+    entries = get_entries("ul.concept-hierarchy li li li li li")
+    assert_equal entries, ["Root"]
+  end
+
+  def get_entries(selector)
+    return css_select(selector).map { |node| node.children.first.content }
+  end
+
+  def create_hierarchy(hash, rel_class, memo=nil, parent=nil)
+    hash.each do |origin, children|
+      concept = create_concept(origin, origin.capitalize, "en")
+      memo[origin] = concept if memo
+      link_concepts(parent, rel_class, concept) if parent
+      create_hierarchy(children, rel_class, memo, concept) unless children.blank?
+    end
+    return memo
+  end
+
+  def link_concepts(source, rel_class, target)
+      rel_name = rel_class.name.to_relation_name
+      source.send(rel_name).create_with_reverse_relation(target)
   end
 
   def create_concept(origin, pref_label, label_lang, published=true)
