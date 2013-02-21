@@ -16,7 +16,7 @@
 
 class HierarchyController < ApplicationController # XXX: largely duplicates concepts' hierarchical controller
 
-  def index
+  def show
     authorize! :read, Iqvoc::Concept.base_class
 
     root_origin = params[:root]
