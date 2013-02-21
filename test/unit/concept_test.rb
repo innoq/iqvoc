@@ -17,11 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
-
-  setup do
-    @current_concept = FactoryGirl.create(:concept)
-  end
-
   test "should not allow identical concepts" do
     origin = "foo"
     c1 = Concept::Base.new(:origin => origin)
