@@ -86,8 +86,8 @@ root:
   end
 
   test "depth handling" do
-    next
     selector = "ul.concept-hierarchy li li li li li"
+
     get :show, :format => "html", :root => "root"
     entries = css_select(selector)
     assert_equal entries.length, 0 # default depth is 3
@@ -95,10 +95,21 @@ root:
     get :show, :format => "html", :root => "root", :depth => 4
     entries = css_select(selector)
     assert_equal entries.length, 2
+
+    get :show, :format => "html", :root => "root", :depth => 1
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo", "Bar"]
+    entries = css_select("ul.concept-hierarchy li li li")
+    assert_equal entries.length, 0
+
+    get :show, :format => "html", :root => "root", :depth => "invalid"
+    assert_response 400
+    assert_equal flash[:error], "invalid depth parameter"
   end
 
   test "direction handling" do
-    next
     get :show, :format => "html", :root => "root"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]

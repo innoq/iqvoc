@@ -21,17 +21,21 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
 
     root_origin = params[:root]
     direction = params[:dir] == "up" ? "up" : "down"
-    depth = (params[:depth] || "3").to_i
+    depth = params[:depth].blank? ? 3 : (Float(params[:depth]).to_i rescue nil)
     siblings = params[:siblings] || false
 
     scope = Iqvoc::Concept.base_class
     scope = params[:published] == "0" ? scope.editor_selectable : scope.published
 
+    # validate depth parameter
+    error = "invalid depth parameter" unless depth # TODO: i18n
+    # validate root parameter
     error = "missing root parameter" unless root_origin # TODO: i18n
     unless error
       root_concept = scope.where(:origin => root_origin).first
       error = "invalid root parameter" unless root_concept # TODO: i18n
     end
+    # error handling
     if error
       flash.now[:error] = error
       render :status => 400
