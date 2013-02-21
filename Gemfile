@@ -43,11 +43,11 @@ group :development do
   gem 'view_marker'
   gem 'better_errors'
   gem 'binding_of_caller', :platform => :ruby
-  gem 'pry', :platform => :ruby
 end
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'pry', :platform => :ruby
 
   platforms :ruby do
     gem 'mysql2'
