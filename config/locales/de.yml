@@ -361,3 +361,5 @@ de:
        association_narrower_unpublished: "Spezifischere Begriffe müssen veröffentlicht sein."
        association_related_unpublished: "Verwandte Begriffe müssen veröffentlicht sein."
        no_pref_label: "-- kein PrefLabel --"
+       pref_label_not_unique: "Das PrefLabel %{label} ist bereits in Verwendung."
+       pref_labels_not_unique: "Die PrefLabels %{label} sind bereits in Verwendung."

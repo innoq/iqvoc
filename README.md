@@ -1,6 +1,7 @@
 # iQvoc
 
 [![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
+[![Code Climate](https://codeclimate.com/github/innoq/iqvoc.png)](https://codeclimate.com/github/innoq/iqvoc)
 
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
@@ -97,6 +98,6 @@ iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH]
 
 ## License
 
-Copyright 2011 innoQ Deutschland GmbH
+Copyright 2013 innoQ Deutschland GmbH
 
 Licensed under the Apache License, Version 2.0

@@ -29,7 +29,7 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "AeaeUeueOeoess", Iqvoc::Origin.new("ÄäÜüÖöß").to_s
   end
 
-  def test_should_camalize_string
+  def test_should_camelize_string
     assert_equal "AWeighting", Iqvoc::Origin.new("'A' Weighting").to_s
   end
 

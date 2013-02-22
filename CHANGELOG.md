@@ -1,4 +1,10 @@
-## [4.0.7]
+## [4.0.8]
+
+  * Portugese and spanish UI translations (@nitaibezerra)
+  * [FIX] Versioning of concepts did not work
+  * Bugfixes
+
+## 4.0.7
 
   * Added support for Sesame as triplestore synchronization target
   * Ditched Ruby 1.8 API compatibility; iQvoc now requires Ruby 1.9+

@@ -17,11 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
-
-  setup do
-    @current_concept = FactoryGirl.create(:concept)
-  end
-
   test "should not allow identical concepts" do
     origin = "foo"
     c1 = Concept::Base.new(:origin => origin)
@@ -68,6 +63,20 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
     assert concept.invalid?
+  end
+
+  test "unique pref label" do
+    label = Label::SKOS::Base.create(:value => "foo", :language => "en")
+
+    concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept1.pref_labels << label
+    concept1.save!
+    assert concept1.valid_with_full_validation?
+
+    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept2.pref_labels << label
+    concept2.save!
+    assert concept2.invalid_with_full_validation?
   end
 
   test "concepts can have multiple preferred labels" do
