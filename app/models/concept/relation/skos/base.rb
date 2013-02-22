@@ -24,7 +24,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
     relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
 
-    relation_instance = rdf_subject.send(self.name.to_relation_name).select{|rel| rel.target == object}
+    relation_instance = rdf_subject.send(self.name.to_relation_name).select{|rel| rel.target == rdf_object}
     unless relation_instance
       relation_instance = relation_class.new(:target => rdf_object)
       rdf_subject.send(self.name.to_relation_name) << relation_instance
