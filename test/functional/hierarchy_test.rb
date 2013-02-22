@@ -137,12 +137,52 @@ root:
     assert_equal entries.length, 0
 
     get :show, :format => "html", :root => "lorem", :dir => "up", :depth => 4
+    page.all("ul.concept-hierarchy li").
+        map { |node| node.native.children.first.text }
     entries = get_entries("ul.concept-hierarchy li li li li li")
     assert_equal entries, ["Root"]
   end
 
+  test "siblings handling" do
+    get :show, :format => "html", :root => "foo"
+    entries = get_all_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Foo"]
+
+    get :show, :format => "html", :root => "foo", :siblings => true
+    entries = get_all_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Foo", "Bar"]
+
+    get :show, :format => "html", :root => "lorem"
+    entries = get_all_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Lorem"]
+
+    get :show, :format => "html", :root => "lorem", :dir => "up",
+        :siblings => true
+    entries = get_all_entries("ul.concept-hierarchy li")
+    assert_equal entries.length, 8
+    ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo"].each do |name|
+      assert entries.include?(name), "missing entry: #{name}"
+    end
+
+    get :show, :format => "html", :root => "lorem", :dir => "up",
+        :siblings => true, :depth => 4
+    entries = get_all_entries("ul.concept-hierarchy li")
+    assert_equal entries.length, 9
+    ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo", "Root"].each do |name|
+      assert entries.include?(name), "missing entry: #{name}"
+    end
+  end
+
+  def get_all_entries(selector)
+    return page.all(selector).map { |node| node.native.children.first.text }
+  end
+
   def get_entries(selector)
     return css_select(selector).map { |node| node.children.first.content }
+  end
+
+  def page # XXX: should not be necessary!?
+    return Capybara::Node::Simple.new(@response.body)
   end
 
   def create_hierarchy(hash, rel_class, memo=nil, parent=nil)

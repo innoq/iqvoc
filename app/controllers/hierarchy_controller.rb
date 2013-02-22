@@ -22,7 +22,7 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
     root_origin = params[:root]
     direction = params[:dir] == "up" ? "up" : "down"
     depth = params[:depth].blank? ? 3 : (Float(params[:depth]).to_i rescue nil)
-    siblings = params[:siblings] || false
+    include_siblings = params[:siblings] || false
 
     scope = Iqvoc::Concept.base_class
     scope = params[:published] == "0" ? scope.editor_selectable : scope.published
@@ -50,12 +50,17 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
     end
 
     @concepts = {}
-    @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth)
+    if include_siblings
+      determine_siblings(root_concept).each { |sib| @concepts[sib] = {} }
+    end
+    @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth, 0,
+        include_siblings)
   end
 
   # returns a hash of concept/relations pairs of arbitrary nesting depth
   # NB: recursive, triggering one database query per iteration
-  def populate_hierarchy(root_concept, scope, max_depth, current_depth=0)
+  def populate_hierarchy(root_concept, scope, max_depth, current_depth=0,
+      include_siblings=false)
     current_depth += 1
     data = {}
 
@@ -64,10 +69,21 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
     rels = scope.where(Concept::Relation::Base.arel_table[:target_id].
         eq(root_concept.id))
     rels.each do |concept|
-      data[concept] = populate_hierarchy(concept, scope, max_depth, current_depth)
+      if include_siblings
+        determine_siblings(concept).each { |sib| data[sib] = {} }
+      end
+      data[concept] = populate_hierarchy(concept, scope, max_depth,
+          current_depth, include_siblings)
     end
 
     return data
+  end
+
+  # NB: includes support for poly-hierarchies -- XXX: untested
+  def determine_siblings(concept)
+    return concept.broader_relations.map do |rel|
+      rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
+    end.flatten.uniq
   end
 
 end
