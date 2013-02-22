@@ -65,6 +65,20 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.invalid?
   end
 
+  test "unique pref label" do
+    label = Label::SKOS::Base.create(:value => "foo", :language => "en")
+
+    concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept1.pref_labels << label
+    concept1.save!
+    assert concept1.valid_with_full_validation?
+
+    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept2.pref_labels << label
+    concept2.save!
+    assert concept2.invalid_with_full_validation?
+  end
+
   test "concepts can have multiple preferred labels" do
     concept = FactoryGirl.build(:concept)
     concept.labelings << FactoryGirl.build(:pref_labeling,

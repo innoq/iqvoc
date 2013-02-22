@@ -11,6 +11,7 @@ module Concept
       validate :exclusive_top_term
       validate :rooted_top_terms
       validate :valid_rank_for_ranked_relations
+      validate :unique_pref_label
     end
 
     def distinct_versions
@@ -70,6 +71,32 @@ module Concept
           errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
         end
         languages[lang] = origin
+      end
+    end
+
+    def unique_pref_label
+      if @full_validation
+        # checks if there are any existing pref labels with the same
+        # language and value
+        conflicting_pref_labels = pref_labels.select do |l|
+          Labeling::SKOS::PrefLabel.
+            joins(:target).
+            where(:labels => { :value => l.value, :language => l.language }).
+            where("labelings.owner_id != ?", id).
+            any?
+        end
+
+        if conflicting_pref_labels.any?
+          if conflicting_pref_labels.one?
+            errors.add :base,
+              I18n.t("txt.models.concept.pref_label_not_unique",
+                :label => conflicting_pref_labels.last.value)
+          else
+            errors.add :base,
+              I18n.t("txt.models.concept.pref_labels_not_unique",
+                :label => conflicting_pref_labels.map(&:value).join(", "))
+          end
+        end
       end
     end
 
