@@ -19,7 +19,7 @@ class Note::SKOS::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    rdf_subject = Concept::Base.subject_from_rdf(rdf_subject)
+    rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
     unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
       raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
     end

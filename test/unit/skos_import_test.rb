@@ -30,7 +30,7 @@ class SkosImportTest < ActiveSupport::TestCase
 <http://www.example.com/animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Animal"@en .
-<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#altLabel> "Viehzeug"@de .
+<http://www.example.com/<> <http://www.w3.org/2008/05/skos#altLabel> "Viehzeug"@de .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#definition> "Ein Tier ist kein Mensch."@de .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#narrower> <http://www.example.com/cow> .
 <http://www.example.com/cow> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
@@ -73,12 +73,12 @@ class SkosImportTest < ActiveSupport::TestCase
 
     assert_equal "Animal", concepts["animal"].pref_label.to_s
 
-    broader_relation = concepts["cow"].broader_relations.first
+    broader_relation = concepts["cow"].relations.broader.first
     assert_not_nil broader_relation
     assert_not_nil broader_relation.target
     assert_equal concepts["animal"].origin, broader_relation.target.origin
 
-    narrower_relations = concepts["animal"].narrower_relations
+    narrower_relations = concepts["animal"].relations.narrower
     assert_equal 3, narrower_relations.count
 
     note = concepts["animal"].note_skos_definitions.first

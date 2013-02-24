@@ -23,19 +23,17 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     rdf_object     = Concept::Base.from_origin_or_instance(rdf_object)
     relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
 
-    relation_instance = rdf_subject.send(relation_class.relation_name).select{|rel| rel.target == object }
+    relation_instance = rdf_subject.relations.find_by_target_and_class(rdf_object, relation_class)
     unless relation_instance
-      relation_instance = relation_class.new(:target => rdf_object)
-      rdf_subject.send(relation_class.relation_name) << relation_instance
+      relation_instance = relation_class.new(:target => rdf_object, :owner => rdf_subject)
+      # TODO: make sure this relation instance is eventually saved!
     end
 
     if relation_class.bidirectional?
       reverse_class      = relation_class.reverse_relation_class
-      reverse_collection = rdf_object.send(reverse_class.name.to_relation_name)
-      if reverse_collection.select{|rel| rel.target == rdf_subject}.empty?
-        reverse_instance = reverse_class.new(:target => rdf_subject)
-        reverse_collection << reverse_instance
-      end
+      reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
+      reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
+      # TODO: make sure this relation instance is eventually saved!
     end
   end
 

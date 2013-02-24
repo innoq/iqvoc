@@ -150,25 +150,25 @@ class Concept::Base < ActiveRecord::Base
 
   # Broader -- NOTE: read-only!
   def broader_relations
+    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.skos_broader
   end
-  deprecate :broader_relations
 
   def broader_relations=(foo)
+    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.skos_broader = foo
   end
-  deprecate :broader_relations=
 
   # Narrower -- NOTE: read-only!
   def narrower_relations
+    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.skos_narrower
   end
-  deprecate :narrower_relations
 
   def narrower_relations=(foo)
+    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.skos_narrower = foo
   end
-  deprecate :narrower_relations=
 
   # *** Labels/Labelings
 
@@ -279,15 +279,15 @@ class Concept::Base < ActiveRecord::Base
   # ********** Class methods
 
   def self.inline_partial_name
-    "partials/concept/inline_base"
+    'partials/concept/inline_base'
   end
 
   def self.new_link_partial_name
-    "partials/concept/new_link_base"
+    'partials/concept/new_link_base'
   end
 
   def self.edit_link_partial_name
-    "partials/concept/edit_link_base"
+    'partials/concept/edit_link_base'
   end
 
   # ********** Methods
@@ -415,7 +415,7 @@ class Concept::Base < ActiveRecord::Base
       rdf_subject
     when String, Symbol
       if thing = self.find_by_origin(rdf_subject) # find all subclasses of this class
-        thing.becomes(thing.type.constantize)    # cast object to its subclass
+        thing.becomes(thing.type.constantize)     # cast object to its actual type
       else
         raise "no #{self} with origin #{rdf_subject} was found"
       end
@@ -434,11 +434,11 @@ class Concept::Base < ActiveRecord::Base
     query = Concept::Base.by_origin(origin)
     existing_total = query.count
     if existing_total >= 2
-      errors.add :base, I18n.t("txt.models.concept.version_error")
+      errors.add :base, I18n.t('txt.models.concept.version_error')
     elsif existing_total == 1
       unless (query.published.count == 0 and published?) or
              (query.published.count == 1 and not published?)
-        errors.add :base, I18n.t("txt.models.concept.version_error")
+        errors.add :base, I18n.t('txt.models.concept.version_error')
       end
     end
   end
@@ -447,7 +447,7 @@ class Concept::Base < ActiveRecord::Base
   def ensure_exclusive_top_term
     if @full_validation
       if top_term && broader_relations.any?
-        errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
+        errors.add :base, I18n.t('txt.models.concept.top_term_exclusive_error')
       end
     end
   end
@@ -458,7 +458,7 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation
       if relations.includes(:target).skos_narrower. # XXX: inefficient?
           select { |rel| rel.target.try :top_term? }.any?
-        errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
+        errors.add :base, I18n.t('txt.models.concept.top_term_rooted_error')
       end
     end
   end
@@ -467,9 +467,9 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation
       labels = pref_labels.select{|l| l.published?}
       if labels.count == 0
-        errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
+        errors.add :base, I18n.t('txt.models.concept.no_pref_label_error')
       elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-        errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
+        errors.add :base, I18n.t('txt.models.concept.main_pref_label_language_missing_error')
       end
     end
   end
@@ -484,7 +484,7 @@ class Concept::Base < ActiveRecord::Base
       lang = pref_label.language.to_s
       origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
       if (languages.keys.include?(lang) && languages[lang] != origin)
-        errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
+        errors.add :pref_labelings, I18n.t('txt.models.concept.pref_labels_with_same_languages_error')
       end
       languages[lang] = origin
     end
@@ -494,7 +494,7 @@ class Concept::Base < ActiveRecord::Base
     if @full_validation
       relations.each do |relation|
         if relation.class.rankable? && !(0..100).include?(relation.rank)
-          errors.add :base, I18n.t("txt.models.concept.invalid_rank_for_ranked_relations",
+          errors.add :base, I18n.t('txt.models.concept.invalid_rank_for_ranked_relations',
             :relation => relation.class.model_name.human.downcase,
             :relation_target_label => relation.target.pref_label.to_s)
         end

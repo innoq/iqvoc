@@ -13,6 +13,10 @@ module Concept
       Iqvoc::Concept.further_relation_classes.map(&:relation_name) + %w(skos_broader skos_narrower)
     end
 
+    def find_by_target_and_class(target_obj, target_class)
+      self.for_class(target_class).find{|rel| rel.target == target_obj || rel.target_id == target_obj.id }
+    end
+
     protected
 
     base_assocs = {

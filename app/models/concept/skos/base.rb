@@ -16,8 +16,8 @@
 
 class Concept::SKOS::Base < Concept::Base
 
-  self.rdf_namespace = "skos"
-  self.rdf_class = "Concept"
+  self.rdf_namespace = 'skos'
+  self.rdf_class = 'Concept'
 
   def build_rdf_subject(document, controller, &block)
     ns = IqRdf::Namespace.find_namespace_class(self.rdf_namespace)
@@ -25,8 +25,8 @@ class Concept::SKOS::Base < Concept::Base
     subject = IqRdf.build_uri(self.origin, ns.build_uri(self.rdf_class), &block)
 
     # ensure skos:Concept type is present
-    unless self.rdf_namespace == "skos" && self.rdf_class == "Concept"
-      subject.Rdf.build_predicate("type", IqRdf::Skos.build_uri("Concept"))
+    unless self.rdf_namespace == 'skos' && self.rdf_class == 'Concept'
+      subject.Rdf.build_predicate('type', IqRdf::Skos.build_uri('Concept'))
     end
 
     return subject

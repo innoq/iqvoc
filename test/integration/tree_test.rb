@@ -20,7 +20,7 @@ class TreeTest < ActionDispatch::IntegrationTest
 
   test "browse hierarchical concepts tree" do
     concept = FactoryGirl.create(:concept, :broader_relations => [])
-    narrower_concept = concept.narrower_relations.first.target
+    narrower_concept = concept.relations.skos_narrower.first.target
 
     visit hierarchical_concepts_path(:lang => :de, :format => :html)
     assert page.has_link?(concept.pref_label.to_s),

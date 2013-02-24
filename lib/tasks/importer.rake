@@ -6,9 +6,40 @@ namespace :iqvoc do
     task :url => :environment do
       require 'iqvoc/skos_importer'
 
-      raise "You have to specify an url for the data file to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['URL']
-      raise "You have to specify a default namespace for the data to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['NAMESPACE']
+      raise 'You have to specify an url for the data file to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=' unless ENV['URL']
+      raise 'You have to specify a default namespace for the data to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=' unless ENV['NAMESPACE']
       Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s)
+    end
+
+    task :test => :environment do
+      str = <<-EOS
+<http://www.example.com/animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+<http://www.example.com/cow> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+<http://www.example.com/donkey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+<http://www.example.com/monkey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+<http://not-my-problem.com/me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.
+<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .
+<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Animal"@en .
+<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#altLabel> "Viehzeug"@de .
+<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#definition> "Ein Tier ist kein Mensch."@de .
+<http://www.example.com/animal> <http://www.w3.org/2008/05/skos#narrower> <http://www.example.com/cow> .
+<http://www.example.com/cow> <http://www.w3.org/2008/05/skos#prefLabel> "Kuh"@de .
+<http://www.example.com/cow> <http://www.w3.org/2008/05/skos#prefLabel> "Cow"@en .
+<http://www.example.com/cow> <http://www.w3.org/2008/05/skos#altLabel> "Rind"@de .
+<http://www.example.com/cow> <http://www.w3.org/2008/05/skos#broader> <http://www.example.com/animal> .
+<http://www.example.com/donkey> <http://www.w3.org/2008/05/skos#prefLabel> "Esel"@de .
+<http://www.example.com/donkey> <http://www.w3.org/2008/05/skos#prefLabel> "Donkey"@en .
+<http://www.example.com/donkey> <http://www.w3.org/2008/05/skos#broader> <http://www.example.com/animal> .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#prefLabel> "Affe"@de .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#prefLabel> "Monkey"@en .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#altLabel> "\u00C4ffle"@de .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#altLabel> "Ape"@en .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#broader> <http://www.example.com/animal> .
+<http://www.example.com/monkey> <http://www.w3.org/2008/05/skos#exactMatch> <http://dbpedia.org/page/Monkey> .
+
+      EOS
+
+      Iqvoc::RDFAPI.parse_nt(str, 'http://www.example.com/')
     end
 
   end
