@@ -20,7 +20,7 @@ module Iqvoc
     class ParsedTriple
       def initialize(parser, matchdata)
         @parser = parser
-        @m = matchdata
+        @m      = matchdata
       end
 
       def ok?
@@ -32,12 +32,14 @@ module Iqvoc
       def subject
         @subject ||= begin
           if @m[:SubjectNodeName] # blank node
-#             Node.find(:name => @m[:SubjectNodeName])
-            puts "ignoring blank node #{@m[:SubjectNodeName]} in subject."
-            :skip
+            if origin = @parser.named_nodes[@m[:SubjectNodeName]]
+              origin
+            else
+              # TODO: generate a new origin and store the nodename->origin mapping
+              @parser.named_nodes[@m[:SubjectNodeName]] = Iqvoc::Origin.new(@m[:SubjectNodeName])
+            end
           elsif @parser.prefixes[@m[:SubjectUriPrefix]] == '' # subject we want to import
-#             Node.find(:origin => Iqvoc::Origin.new(@m[:SubjectUriOrigin]).to_s)
-            ":#{Iqvoc::Origin.new(@m[:SubjectUriOrigin]).to_s}"
+            ":#{Iqvoc::Origin.new(@m[:SubjectUriOrigin])}"
           else
             puts "ignoring unknown prefix #{@m[:SubjectUriPrefix]}."
             :skip
@@ -58,12 +60,14 @@ module Iqvoc
       def object
         @object ||= begin
           if @m[:ObjectNodeName] # blank node
-#             Node.find(:name => @m[:ObjectNodeName])
-            puts "ignoring blank node #{@m[:ObjectNodeName]} in object."
-            :skip
+            if origin = @parser.named_nodes[@m[:ObjectNodeName]]
+              origin
+            else
+              # TODO: generate a new origin and store the nodename->origin mapping
+              @parser.named_nodes[@m[:ObjectNodeName]] = Iqvoc::Origin.new(@m[:ObjectNodeName])
+            end
           elsif prefix = @parser.prefixes[@m[:ObjectUriPrefix]]
-#             Node.find(:origin => Iqvoc::Origin.new(@m[:ObjectUriOrigin]).to_s)
-            "#{prefix}:#{Iqvoc::Origin.new(@m[:ObjectUriOrigin]).to_s}"
+            "#{prefix}:#{Iqvoc::Origin.new(@m[:ObjectUriOrigin])}"
           elsif @m[:ObjectString] # string literal
             @m[:Object]
           else

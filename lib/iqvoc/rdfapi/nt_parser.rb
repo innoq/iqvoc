@@ -19,7 +19,7 @@ module Iqvoc
     autoload :ParsedTriple, 'iqvoc/rdfapi/parsed_triple'
 
     class NTParser
-      attr_reader :prefixes
+      attr_reader :prefixes, :context, :lookup, :blank_nodes
 
       def initialize(io, default_namespace_url)
         io.rewind
