@@ -92,7 +92,7 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def build_rdf(document, subject)
-    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.to_s, :lang => target.language)
+    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.value.to_s, :lang => target.language)
   end
 
   def build_search_result_rdf(document, result)
