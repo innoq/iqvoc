@@ -60,15 +60,15 @@ Rails.application.routes.draw do
 
     root :to => 'frontpage#index', :format => nil
   end
-  
+
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
- 
-   
+
+
   get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
   get '/:id(.:format)' => 'rdf#show', :as => 'rdf'
-  get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show" 
-  
+  get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
+
 
   root :to => 'frontpage#index', :format => nil
 end
