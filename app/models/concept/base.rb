@@ -323,12 +323,12 @@ class Concept::Base < ActiveRecord::Base
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale.to_s
+    lang = I18n.locale.to_s == "none" ? nil : I18n.locale.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
       end
-      hash[label.language.to_s] = label
+      hash[label.language] = label
     end
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
@@ -342,12 +342,16 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
-    lang = lang.to_s unless lang.nil?
+    if lang == "none"
+      lang = nil
+    elsif lang
+      lang = lang.to_s
+    end 
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
-    return ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{|l| l.published? || !only_published}
+    ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{|l| l.published? || !only_published}
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
