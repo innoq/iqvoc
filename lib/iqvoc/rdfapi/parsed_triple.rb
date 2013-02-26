@@ -16,8 +16,8 @@
 
 module Iqvoc
   module RDFAPI
-
     class ParsedTriple
+
       def initialize(parser, matchdata)
         @parser = parser
         @m      = matchdata
@@ -32,12 +32,7 @@ module Iqvoc
       def subject
         @subject ||= begin
           if @m[:SubjectNodeName] # blank node
-            if origin = @parser.named_nodes[@m[:SubjectNodeName]]
-              origin
-            else
-              # TODO: generate a new origin and store the nodename->origin mapping
-              @parser.named_nodes[@m[:SubjectNodeName]] = Iqvoc::Origin.new(@m[:SubjectNodeName])
-            end
+            @parser.named_nodes[@m[:SubjectNodeName]] ||= Iqvoc::Origin.new(@m[:SubjectNodeName])
           elsif @parser.prefixes[@m[:SubjectUriPrefix]] == '' # subject we want to import
             ":#{Iqvoc::Origin.new(@m[:SubjectUriOrigin])}"
           else
@@ -60,12 +55,7 @@ module Iqvoc
       def object
         @object ||= begin
           if @m[:ObjectNodeName] # blank node
-            if origin = @parser.named_nodes[@m[:ObjectNodeName]]
-              origin
-            else
-              # TODO: generate a new origin and store the nodename->origin mapping
-              @parser.named_nodes[@m[:ObjectNodeName]] = Iqvoc::Origin.new(@m[:ObjectNodeName])
-            end
+            @parser.named_nodes[@m[:ObjectNodeName]] ||= Iqvoc::Origin.new(@m[:ObjectNodeName])
           elsif prefix = @parser.prefixes[@m[:ObjectUriPrefix]]
             "#{prefix}:#{Iqvoc::Origin.new(@m[:ObjectUriOrigin])}"
           elsif @m[:ObjectString] # string literal

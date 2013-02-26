@@ -50,6 +50,7 @@ module Iqvoc
       end
 
       class UmlautReplacer < GenericFilter
+        # FIXME: why not use I18n transliteration here?
         def call(obj, str)
           str = str.gsub(/Ö/, 'Oe').
             gsub(/Ä/, 'Ae').
