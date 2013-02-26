@@ -197,7 +197,7 @@ module Iqvoc
     end
 
     def extract_triple(line)
-      raise "'#{line}' doesn't look like valid ntriples data." unless line =~ /^(.*)\.\w*$/
+      raise "'#{line}' doesn't look like valid ntriples data." unless line =~ /^(.*)\.\s*$/
       line = $1.squish
 
       triple = line.split(' ', 3) # The first one are uris the last can be a literal too
