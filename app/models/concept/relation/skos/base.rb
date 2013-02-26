@@ -18,15 +18,25 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
   self.rdf_namespace = 'skos'
 
-  def self.build_from_rdf(subject, predicate, object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
-    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a Concept." unless object.is_a?(Concept::Base)
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept." unless rdf_subject.is_a? Concept::Base
+    raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a Concept."   unless rdf_object.is_a? Concept::Base
 
-    if subject.send(self.name.to_relation_name).select{|rel| rel.target_id == object.id || rel.target == object}.empty?
-      subject.send(self.name.to_relation_name) << self.new(:target => object)
+    relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+
+    relation_instance = rdf_subject.send(self.name.to_relation_name).select{|rel| rel.target == rdf_object}
+    unless relation_instance
+      relation_instance = relation_class.new(:target => rdf_object)
+      rdf_subject.send(self.name.to_relation_name) << relation_instance
     end
-    if self.reverse_relation_class && object.send(self.reverse_relation_class.name.to_relation_name).select{|rel| rel.target_id == subject.id || rel.target == subject}.empty?
-      object.send(self.reverse_relation_class.name.to_relation_name) << self.reverse_relation_class.new(:target => subject)
+
+    if relation_class.bidirectional?
+      reverse_class      = relation_class.reverse_relation_class
+      reverse_collection = rdf_object.send(reverse_class.name.to_relation_name)
+      if reverse_collection.select{|rel| rel.target == rdf_subject}.empty?
+        reverse_instance = reverse_class.new(:target => rdf_subject)
+        reverse_collection << reverse_instance
+      end
     end
   end
 
