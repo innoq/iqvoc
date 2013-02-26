@@ -43,6 +43,26 @@ end
 # Iqvoc.core_assets += []
 EOF
 
+remove_file "app/assets/javascripts/application.js"
+create_file "app/assets/javascripts/manifest.js", <<-EOF
+//= require framework
+//= require iqvoc/manifest
+
+//= require #{app_path}/manifest
+EOF
+create_file "app/assets/javascripts/#{app_path}/manifest.js"
+
+remove_file "app/assets/stylesheets/application.css"
+create_file "app/assets/stylesheets/manifest.css", <<-EOF
+/*
+*= require framework
+*= require iqvoc/manifest
+
+*= require #{app_path}/manifest
+*/
+EOF
+create_file "app/assets/stylesheets/#{app_path}/manifest.css"
+
 remove_file "public/index.html"
 remove_file "app/controllers/application_controller.rb"
 remove_file "app/helpers/application_helper.rb"
