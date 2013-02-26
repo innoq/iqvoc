@@ -1,15 +1,9 @@
+require 'iqvoc/rdfapi'
+
 module Iqvoc
   class SkosImporter
 
-    FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
-    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
-      Iqvoc::Concept.note_classes +
-      Iqvoc::Concept.relation_classes +
-      Iqvoc::Concept.match_classes +
-      Iqvoc::Collection.member_classes
-
     def initialize(file, default_namespace_url, logger = Rails.logger)
-
       @logger = logger
 
       unless file.is_a?(File) || file.is_a?(Array)
@@ -32,8 +26,8 @@ module Iqvoc
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
-      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
-        klass.select("origin").all.each do |thing|
+      Iqvoc::RDFAPI::FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+        klass.select('origin').all.each do |thing|
           @existing_origins[thing.origin] = klass
         end
       end
@@ -50,23 +44,16 @@ module Iqvoc
       end
 
       file.rewind if file.is_a?(IO)
-      types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
-      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
-        types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
-      end
 
       file.each do |line|
-        import_first_level_objects(types, *extract_triple(line))
+        import_first_level_objects(Iqvoc::RDFAPI::OBJECT_DICTIONARY, *extract_triple(line))
       end
+
       new_subjects = @seen_first_level_objects.dup # Remember the objects seen yet, because they are the ones to be published later
 
       file.rewind if file.is_a?(IO)
-      types = {}
-      SECOND_LEVEL_OBJECT_CLASSES.each do |klass|
-        types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
-      end
       file.each do |line|
-        import_second_level_objects(types, *extract_triple(line))
+        import_second_level_objects(Iqvoc::RDFAPI::PREDICATE_DICTIONARY, *extract_triple(line))
       end
 
       new_subjects.each do |id, subject|
@@ -74,7 +61,7 @@ module Iqvoc
           subject.publish
           subject.save!
         else
-          @logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically.."
+          @logger.warn "WARNING: Subject not valid: '#{subject.origin}'. Won't be published automatically."
         end
       end
 
@@ -138,7 +125,7 @@ module Iqvoc
 
     def load_first_level_object(origin)
       unless @seen_first_level_objects[origin]
-        FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+        Iqvoc::RDFAPI::FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
           @seen_first_level_objects[origin] = klass.by_origin(origin).last
           break if @seen_first_level_objects[origin]
         end

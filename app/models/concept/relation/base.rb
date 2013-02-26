@@ -71,6 +71,10 @@ class Concept::Relation::Base < ActiveRecord::Base
     self
   end
 
+  def self.bidirectional?
+    !!self.reverse_relation_class
+  end
+
   def self.view_section(obj)
     "relations"
   end

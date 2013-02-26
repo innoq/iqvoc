@@ -18,7 +18,7 @@ en:
   languages:
     de: German
     en: English
-    none: Sci.
+    none: Unbekannt
     fr: French
     sl: Slovenian
     pl: Polish
@@ -31,6 +31,10 @@ en:
     it: Italian
     cs: Czech
     sk: Slovak
+    et: Estonian
+    dk: Danish
+    fi: Finnish
+    sv: Swedish
   views:
     pagination:
       first: "&laquo; First"
