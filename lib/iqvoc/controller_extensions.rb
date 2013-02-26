@@ -19,7 +19,6 @@ module Iqvoc
 
     def default_url_options(options = nil)
       { :format => params[:format], :lang => I18n.locale }.
-        reject { |key, value| key == :lang and value.to_s.strip.blank? }. # Strip out the lang parameter if it's empty.
         merge(options || {})
     end
 
@@ -53,9 +52,7 @@ module Iqvoc
     end
 
     def set_locale
-      if Iqvoc::Concept.pref_labeling_languages.include?(nil)
-        I18n.locale = " "
-      elsif params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
+      if params[:lang].present? && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
         I18n.locale = params[:lang]
       else
         I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
