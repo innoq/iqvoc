@@ -18,7 +18,7 @@ pt:
   languages:
     de: Alemão
     en: Inglês
-    none: Sci.
+    none: Desconhecido
     fr: Francês
     sl: Esloveno
     pl: Polonês
@@ -31,6 +31,10 @@ pt:
     it: Italiano
     cs: Checo
     sk: Eslovaco
+    et: Estoniano
+    dk: Dinamarquês
+    fi: Finlandês
+    sv: Sueco
   views:
     pagination:
       first: "&laquo; Primeira"

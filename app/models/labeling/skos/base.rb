@@ -35,11 +35,11 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def self.partial_name(obj)
-    "partials/labeling/skos/base"
+    'partials/labeling/skos/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/labeling/skos/edit_base"
+    'partials/labeling/skos/edit_base'
   end
 
   def self.single_query(params = {})
@@ -65,10 +65,10 @@ class Labeling::SKOS::Base < Labeling::Base
     scope = scope.includes(:owner)
 
     scope = case params[:for]
-    when "concept"
-      scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
-    when "collection"
-      scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
+    when 'concept'
+      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
+    when 'collection'
+      scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
     else
       # no additional conditions
       scope
@@ -81,18 +81,21 @@ class Labeling::SKOS::Base < Labeling::Base
     'partials/labeling/skos/search_result'
   end
 
-  def self.build_from_rdf(subject, predicate, object)
-    raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
-    raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))?$/
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."     unless rdf_subject.is_a?(Concept::Base)
+    raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
-    subject.send(self.name.to_relation_name) << self.new(:target => self.label_class.new(:value => value, :language => lang))
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
+      rdf_subject.send(predicate_class.name.to_relation_name) << label
+    end
   end
 
   def build_rdf(document, subject)
-    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.to_s, :lang => target.language)
+    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.value.to_s, :lang => target.language)
   end
 
   def build_search_result_rdf(document, result)
