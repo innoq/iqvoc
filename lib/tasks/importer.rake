@@ -9,8 +9,8 @@ namespace :iqvoc do
       require 'iqvoc/skos_importer'
 
       raise "You have to specify an url for the data file to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['URL']
-      raise "You have to specify a default namespace for the data to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['NAMESPACE'] 
-      
+      raise "You have to specify a default namespace for the data to be imported. Example: rake iqvoc:import:url URL=... NAMESPACE=" unless ENV['NAMESPACE']
+
       stdout_logger = Logger.new(STDOUT)
       stdout_logger.level = Logger::INFO
       Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s, MultiLogger.new(stdout_logger, Rails.logger))
