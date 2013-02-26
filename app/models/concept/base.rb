@@ -27,19 +27,7 @@ class Concept::Base < ActiveRecord::Base
   self.rdf_namespace = nil
   self.rdf_class = nil
 
-  # ********** Validations
-
-  validates :origin, :presence => true, :on => :update
-
-  validate :ensure_distinct_versions, :on => :create
-
-  validate :ensure_a_pref_label_in_the_primary_thesaurus_language,
-    :on => :update
-
-  validate :ensure_no_pref_labels_share_the_same_language
-  validate :ensure_exclusive_top_term
-  validate :ensure_rooted_top_terms
-  validate :ensure_valid_rank_for_ranked_relations
+  include Concept::Validations
 
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
@@ -414,84 +402,6 @@ class Concept::Base < ActiveRecord::Base
     {
       :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
     }
-  end
-
-  # ********** Validation methods
-
-  # validates that
-  # a) no more than one concept with the same origin already exists
-  # b) if a concept with the same origin exists, its publication state differs
-  #    from the to-be-saved one's
-  def ensure_distinct_versions
-    query = Concept::Base.by_origin(origin)
-    existing_total = query.count
-    if existing_total >= 2
-      errors.add :base, I18n.t("txt.models.concept.version_error")
-    elsif existing_total == 1
-      unless (query.published.count == 0 and published?) or
-             (query.published.count == 1 and not published?)
-        errors.add :base, I18n.t("txt.models.concept.version_error")
-      end
-    end
-  end
-
-  # top term and broader relations are mutually exclusive
-  def ensure_exclusive_top_term
-    if @full_validation
-      if top_term && broader_relations.any?
-        errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
-      end
-    end
-  end
-
-  # top terms must never be used as descendants (narrower relation targets)
-  # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
-  def ensure_rooted_top_terms
-    if @full_validation
-      if narrower_relations.includes(:target). # XXX: inefficient?
-          select { |rel| rel.target && rel.target.top_term? }.any?
-        errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
-      end
-    end
-  end
-
-  def ensure_a_pref_label_in_the_primary_thesaurus_language
-    if @full_validation
-      labels = pref_labels.select{|l| l.published?}
-      if labels.count == 0
-        errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
-      elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-        errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
-      end
-    end
-  end
-
-  def ensure_no_pref_labels_share_the_same_language
-    # We have many sources a prefLabel can be defined in
-    pls = pref_labelings.map(&:target) +
-      send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
-      labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
-    languages = {}
-    pls.compact.each do |pref_label|
-      lang = pref_label.language.to_s
-      origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
-      if (languages.keys.include?(lang) && languages[lang] != origin)
-        errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
-      end
-      languages[lang] = origin
-    end
-  end
-
-  def ensure_valid_rank_for_ranked_relations
-    if @full_validation
-      relations.each do |relation|
-        if relation.class.rankable? && !(0..100).include?(relation.rank)
-          errors.add :base, I18n.t("txt.models.concept.invalid_rank_for_ranked_relations",
-            :relation => relation.class.model_name.human.downcase,
-            :relation_target_label => relation.target.pref_label.to_s)
-        end
-      end
-    end
   end
 
 end

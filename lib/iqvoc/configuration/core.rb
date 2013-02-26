@@ -58,7 +58,6 @@ module Iqvoc
           bootstrap/bootstrap.css
           bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
-          json2.js
           bootstrap/bootstrap.js
           html5.js
         )

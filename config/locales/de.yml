@@ -18,7 +18,7 @@ de:
   languages:
     de: Deutsch
     en: Englisch
-    none: Wiss.
+    none: Unbekannt
     fr: Französisch
     sl: Slowenisch
     pl: Polnisch
@@ -31,6 +31,10 @@ de:
     it: Italienisch
     cs: Tschechisch
     sk: Slowakisch
+    et: Estnisch
+    dk: Dänisch
+    fi: Finnisch
+    sv: Schwedisch
   views:
     pagination:
       first: "&laquo; Erste"
@@ -361,3 +365,5 @@ de:
        association_narrower_unpublished: "Spezifischere Begriffe müssen veröffentlicht sein."
        association_related_unpublished: "Verwandte Begriffe müssen veröffentlicht sein."
        no_pref_label: "-- kein PrefLabel --"
+       pref_label_not_unique: "Das PrefLabel %{label} ist bereits in Verwendung."
+       pref_labels_not_unique: "Die PrefLabels %{label} sind bereits in Verwendung."

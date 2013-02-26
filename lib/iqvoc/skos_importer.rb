@@ -1,3 +1,5 @@
+require 'iqvoc/rdfapi'
+
 module Iqvoc
   class SkosImporter
 
@@ -11,7 +13,6 @@ module Iqvoc
     TABLES = (FIRST_LEVEL_OBJECT_CLASSES + SECOND_LEVEL_OBJECT_CLASSES + [Iqvoc::Label.base_class]).map(&:table_name).uniq
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
-
       @logger = logger
 
       unless file.is_a?(File) || file.is_a?(Array)
@@ -44,12 +45,12 @@ module Iqvoc
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
-      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
-        klass.select("origin").all.each do |thing|
+      Iqvoc::RDFAPI::FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+        klass.select('origin').all.each do |thing|
           @existing_origins[thing.origin] = klass
         end
       end
-      
+
       begin
         disable_indexes
         import(file)
@@ -62,7 +63,7 @@ module Iqvoc
 
     def import(file)
       start = Time.now
-      
+
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
       FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
         first_level_types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
@@ -85,7 +86,7 @@ module Iqvoc
 
       first_import_step_done = Time.now
       @logger.debug("Basic import done (took #{(first_import_step_done - start).to_i} seconds).")
-      
+
       @logger.debug("Publishing #{@new_subjects.count} new subjects...")
       published = 0
       @new_subjects.each do |subject|
@@ -99,12 +100,12 @@ module Iqvoc
       end
 
       done = Time.now
-      @logger.debug("Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} where invalid.")   
+      @logger.debug("Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} where invalid.")
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
     end
-        
+
     def disable_indexes
       mysql? do |connection|
         @logger.info("Disabling indexes on #{TABLES.join(", ")}")
@@ -113,7 +114,7 @@ module Iqvoc
         end
       end
     end
-    
+
     def enable_indexes
       mysql? do |connection|
         @logger.info("Reenabling indexes on #{TABLES.join(", ")}")
@@ -122,7 +123,7 @@ module Iqvoc
         end
       end
     end
-    
+
     def mysql?
       if ActiveRecord::Base.connection.adapter_name =~ /MySQL/i
         yield(ActiveRecord::Base.connection)
