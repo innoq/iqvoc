@@ -19,35 +19,35 @@ class Collection::Base < Concept::Base
   #*********** Associations
 
   has_many Note::SKOS::Definition.name.to_relation_name,
-    :class_name => 'Note::SKOS::Definition',
-    :as => :owner,
-    :dependent => :destroy
+      :class_name => 'Note::SKOS::Definition',
+      :as => :owner,
+      :dependent => :destroy
 
   has_many :members,
-    :class_name  => 'Collection::Member::Base',
-    :foreign_key => 'collection_id',
-    :dependent   => :destroy
+      :class_name  => 'Collection::Member::Base',
+      :foreign_key => 'collection_id',
+      :dependent   => :destroy
 
   has_many :concept_members,
-    :class_name  => 'Collection::Member::Concept',
-    :foreign_key => 'collection_id',
-    :dependent   => :destroy
+      :class_name  => 'Collection::Member::Concept',
+      :foreign_key => 'collection_id',
+      :dependent   => :destroy
   has_many :concepts,
-    :through => :concept_members
+      :through => :concept_members
 
   has_many :collection_members,
-    :class_name  => 'Collection::Member::Collection',
-    :foreign_key => 'collection_id',
-    :dependent   => :destroy
+      :class_name  => 'Collection::Member::Collection',
+      :foreign_key => 'collection_id',
+      :dependent   => :destroy
   has_many :subcollections,
-    :through => :collection_members
+      :through => :collection_members
 
   has_many :parent_collection_members,
-    :class_name  => 'Collection::Member::Collection',
-    :foreign_key => 'target_id',
-    :dependent   => :destroy
+      :class_name  => 'Collection::Member::Collection',
+      :foreign_key => 'target_id',
+      :dependent   => :destroy
   has_many :parent_collections,
-    :through => :parent_collection_members
+      :through => :parent_collection_members
 
 
   #********** Hooks
@@ -66,7 +66,7 @@ class Collection::Base < Concept::Base
 
   def self.tops
     includes(:parent_collection_members).
-      where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
+        where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
   end
 
   #********** Validations
@@ -93,7 +93,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_concept_origins=(origins)
     @member_concept_origins = origins.to_s.
-      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_concept_origins
@@ -110,12 +110,12 @@ class Collection::Base < Concept::Base
 
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.
-      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_collection_origins
     @member_collection_origins || collection_members.
-      map { |m| m.subcollection.origin }.uniq
+        map { |m| m.subcollection.origin }.uniq
   end
 
   def inline_member_collections
@@ -159,6 +159,15 @@ class Collection::Base < Concept::Base
         errors.add(:base,
           I18n.t("txt.controllers.collections.circular_error", :label => subcollection.pref_label))
       end
+    end
+  end
+
+  def pref_label_in_primary_thesaurus_language
+    labels = self.send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target).select{|l| l.published?}
+    if labels.count == 0
+      errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
+    elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+      errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
     end
   end
 
