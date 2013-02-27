@@ -29,7 +29,13 @@ module Iqvoc
     }
 
     def self.parse_inline_values(str)
-      str.parse_csv(CSVOptions)
+      options = CSVOptions.clone
+      options[:col_sep] = options[:col_sep].strip
+      begin
+        str.parse_csv(options).map(&:strip)
+      rescue CSV::MalformedCSVError => exc
+        str.parse_csv(CSVOptions)
+      end
     end
 
     def self.generate_inline_values(values)
