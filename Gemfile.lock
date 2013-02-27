@@ -221,7 +221,7 @@ DEPENDENCIES
   cancan
   capybara
   capybara-screenshot
-  capybara-webkit
+  capybara-webkit (~> 0.14.2)
   database_cleaner
   factory_girl_rails
   fastercsv
