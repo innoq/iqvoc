@@ -51,10 +51,10 @@ class Concept::Base < ActiveRecord::Base
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base
         self.send(relation_name).all.map(&:destroy)
-        lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
-        lang_values.each do |lang, values|
+        lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
+        lang_values.each do |lang, inline_values|
           lang = nil if lang.to_s == 'none'
-          values.split(Iqvoc::InlineDataHelper::Splitter).each do |value|
+          Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
             value.squish!
             self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
           end
@@ -74,7 +74,7 @@ class Concept::Base < ActiveRecord::Base
     # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
-      new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
+      new_origins = new_origins.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:squish)
 
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
@@ -289,18 +289,22 @@ class Concept::Base < ActiveRecord::Base
   def labelings_by_text=(hash)
     @labelings_by_text = hash
 
-     # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
-    @labelings_by_text.each do |relation_name, array_or_hash|
-      @labelings_by_text[relation_name] = {nil => array_or_hash.first} if array_or_hash.is_a?(Array)
+    @labelings_by_text.each do |relation_name, labels_by_lang|
+      # if `language` is `nil`, the respective HTML form field returns an array
+      # instead of a hash (`<input name=bla[labeling_class][]>`)
+      if labels_by_lang.is_a?(Array)
+        @labelings_by_text[relation_name] = { nil => labels_by_lang.first }
+      end
     end
 
     @labelings_by_text
   end
 
   def labelings_by_text(relation_name, language)
-    (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
-      self.send(relation_name).by_label_language(language).
-      map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
+    (@labelings_by_text && @labelings_by_text[relation_name] &&
+        @labelings_by_text[relation_name][language]) ||
+        Iqvoc::InlineDataHelper.generate_inline_values(self.send(relation_name).
+            by_label_language(language).map { |l| l.target.value })
   end
 
   def concept_relations_by_id=(hash)
@@ -310,7 +314,7 @@ class Concept::Base < ActiveRecord::Base
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
       self.send(relation_name).map { |l| l.target.origin }.
-      join(Iqvoc::InlineDataHelper::Joiner)
+      join(Iqvoc::InlineDataHelper::JOINER)
   end
 
   def concept_relations_by_id_and_rank(relation_name)
