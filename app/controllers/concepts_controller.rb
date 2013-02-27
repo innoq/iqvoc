@@ -27,9 +27,8 @@ class ConceptsController < ApplicationController
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render :json => @concepts
       end
-      format.all do # RDF full export
-        authorize! :full_export, Concept::Base
-      end
+      # RDF full export
+      format.any(:rdf, :ttl) { authorize! :full_export, Concept::Base }
     end
   end
 
