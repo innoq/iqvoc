@@ -20,7 +20,7 @@ require 'integration_test_helper'
 class InstanceConfigurationTest < ActionDispatch::IntegrationTest
 
   test "configuration privileges" do
-    uri = "/config"
+    uri = "/en/config"
 
     # guest
     visit uri
@@ -48,7 +48,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     assert page.find("a.brand").has_content? "iQvoc"
 
     login "administrator"
-    visit "/config"
+    visit "/en/config"
 
     fill_in "config_title", :with => "lorem ipsum"
     click_button "Save"
@@ -62,9 +62,9 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     }
     ["reader", "editor", "publisher", "administrator"].each do |role|
       login role
-      check_page.call "/config"
+      check_page.call "/en/config"
       logout
-      check_page.call "/search"
+      check_page.call "/en/search"
     end
 
     # TODO: test routes-by-language availability, post-modification

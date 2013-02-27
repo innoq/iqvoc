@@ -1,7 +1,7 @@
 <%= page_header :title => t("txt.views.triplestore_sync.caption") %>
 <%= render "dashboard/sidebar" %>
 
-<%= form_tag triplestore_sync_path(:format => nil, :lang => nil), :method => :post do %>
+<%= form_tag triplestore_sync_path(:format => nil), :method => :post do %>
   <%= submit_tag t("txt.views.triplestore_sync.start"), :class => "btn btn-primary" %>
 <% end %>
 

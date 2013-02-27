@@ -33,7 +33,8 @@ class Label::Base < ActiveRecord::Base
   # ********* Scopes
 
   def self.by_language(lang_code)
-    if (lang_code.is_a?(Array) && lang_code.include?(nil))
+    lang_code = nil if lang_code.to_s == "none"
+    if (lang_code.is_a?(Array) && lang_code.include?("none"))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     elsif lang_code.blank?
       where(arel_table[:language].eq(nil))
@@ -93,8 +94,8 @@ class Label::Base < ActiveRecord::Base
   end
 
   def to_s
-    if language.to_s != I18n.locale.to_s.strip
-      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale.to_s.strip}']"
+    if (language.presence || "none") != I18n.locale.to_s
+      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
     else
       value.to_s
     end

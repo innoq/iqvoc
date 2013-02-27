@@ -2,7 +2,7 @@
 
 <% if @results %>
   <%= content_for :head do %>
-    <link href="<%= url_for(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="text/turtle" rel="alternate" title=""/>
-    <link href="<%= url_for(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="application/rdf+xml" rel="alternate" title=""/>
+    <link href="<%= rdf_search_path(request.query_parameters.merge(:format => :ttl, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="text/turtle" rel="alternate" title=""/>
+    <link href="<%= rdf_search_path(request.query_parameters.merge(:format => :rdf, :lang => nil, :page => @results.current_page, :only_path => false)) %>" type="application/rdf+xml" rel="alternate" title=""/>
   <% end %>
 <% end %>
