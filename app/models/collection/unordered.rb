@@ -21,5 +21,5 @@ class Collection::Unordered < Collection::SKOS::Base
     ActiveSupport::Deprecation.warn("Collection::Unordered is deprecated. Use Collection::SKOS::Unordered instead.")
     super
   end
-  
+
 end

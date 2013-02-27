@@ -64,11 +64,11 @@ class Collection::Base < Concept::Base
   def subcollections
     members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
   end
-  
+
   def concepts
     members.map(&:target).select { |m| !m.is_a?(::Collection::Base) }
   end
-  
+
   def additional_info
     concepts.count
   end

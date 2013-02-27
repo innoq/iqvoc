@@ -24,7 +24,7 @@ class Collection::Member::Base < ActiveRecord::Base
 
   belongs_to :collection, :class_name => 'Collection::Base'
   belongs_to :target, :class_name => 'Concept::Base'
-   
+
   def self.view_section(obj)
     "main"
   end

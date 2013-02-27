@@ -18,7 +18,7 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
 
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'member'
-  
+
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Collection."          unless rdf_subject.is_a?(Collection::Base)
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a Collection or Concept." unless rdf_object.is_a?(Collection::Base) or rdf_object.is_a?(Concept::Base)
