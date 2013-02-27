@@ -18,9 +18,7 @@ class Match::Base < ActiveRecord::Base
 
   self.table_name = 'matches'
 
-  class_attribute :rdf_namespace, :rdf_predicate
-  self.rdf_namespace = nil
-  self.rdf_predicate = nil
+  include ActsAsRdfPredicate
 
   # ********** Associations
 
@@ -39,7 +37,7 @@ class Match::Base < ActiveRecord::Base
   # ********** Methods
 
   def self.view_section(obj)
-    "matches"
+    'matches'
   end
 
   def self.view_section_sort_key(obj)
@@ -47,11 +45,11 @@ class Match::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/match/base"
+    'partials/match/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/match/edit_base"
+    'partials/match/edit_base'
   end
 
 end

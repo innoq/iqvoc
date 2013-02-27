@@ -15,12 +15,9 @@
 # limitations under the License.
 
 class Labeling::Base < ActiveRecord::Base
+  include ActsAsRdfPredicate
 
   self.table_name = 'labelings'
-
-  class_attribute :rdf_namespace, :rdf_predicate
-  self.rdf_namespace = nil
-  self.rdf_predicate = nil
 
   # ********** Associations
 
@@ -76,12 +73,6 @@ class Labeling::Base < ActiveRecord::Base
 
   def self.edit_partial_name(obj)
     'partials/labeling/edit_base'
-  end
-
-  def self.relation_name
-    relname = self.name.underscore.gsub('/', '_').sub('labeling_', '')
-    Rails.logger.warn "WARN: Inferring relation name #{relname} from class name (#{self.name}), you should define self.relation_name in your relation class."
-    relname
   end
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)

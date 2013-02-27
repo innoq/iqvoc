@@ -99,7 +99,7 @@ class CanonicalTripleGrammarTest < ActiveSupport::TestCase
   end
 
   test 'should recognize line' do
-      matchdata = r_line.match('    :foo   rdf:type    skos:Concept  ')
+    matchdata = r_line.match('    :foo   rdf:type    skos:Concept  ')
     assert_equal ':foo   rdf:type    skos:Concept', matchdata[:Triple]
   end
 end

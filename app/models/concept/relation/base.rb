@@ -30,9 +30,7 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   self.table_name = 'concept_relations'
 
-  class_attribute :rdf_namespace, :rdf_predicate
-  self.rdf_namespace = nil
-  self.rdf_predicate = nil
+  include ActsAsRdfPredicate
 
   # ********* Associations
 
@@ -98,7 +96,7 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def rank
     unless self.class.rankable?
-      raise "Use `include Rankable` to make a concept relation rankable."
+      raise 'Use `include Rankable` to make a concept relation rankable.'
     else
       super
     end
@@ -106,7 +104,7 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def rank=(val)
     unless self.class.rankable?
-      raise "Use `include Rankable` to make a concept relation rankable."
+      raise 'Use `include Rankable` to make a concept relation rankable.'
     else
       super
     end
@@ -114,12 +112,6 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def self.rankable?
     self.class.included_modules.include?(Iqvoc::Rankable)
-  end
-
-  def self.relation_name
-    relname = self.name.underscore.gsub('/', '_').sub('concept_relation_', '')
-    Rails.logger.warn "WARN: Inferring relation name #{relname} from class name (#{self.name}), you should define self.relation_name in your relation class."
-    relname
   end
 
 end

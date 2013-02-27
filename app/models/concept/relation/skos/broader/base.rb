@@ -38,8 +38,4 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
     !singular?
   end
 
-  def self.relation_name
-    'skos_broader'
-  end
-
 end

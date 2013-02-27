@@ -24,14 +24,9 @@ require 'singleton'
 #   singleton and merely a static, virtual node
 class Concept::SKOS::Scheme
   include Singleton
+  include ActsAsRdfClass
 
-  def self.rdf_class
-    :ConceptScheme
-  end
-
-  def self.rdf_namespace
-    :skos
-  end
+  acts_as_rdf_class 'skos:ConceptScheme'
 
   def origin
     :scheme

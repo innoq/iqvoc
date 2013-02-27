@@ -16,23 +16,21 @@
 
 class Match::SKOS::Base < Match::Base
 
-  self.rdf_namespace = 'skos'
-
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
     match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
 
-    raise "#{self.class}#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of match (#{self.name} => #{match_class.relation_name})." unless subject.class.reflections.include?(match_class.relation_name)
-    raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right?
+    raise "#{self.class}#build_from_rdf: Subject (#{rdf_subject}) must be able to recieve this kind of match (#{self.name} => #{match_class.relation_name})." unless rdf_subject.class.reflections.include?(match_class.relation_name)
+    raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right? # FIXME: use CanonicalTrripleGrammar for this
     uri = $1
 
     match_class.new(:value => uri).tap do |match|
-      subject.send(match_class.relation_name) << match
+      rdf_subject.send(match_class.relation_name) << match
     end
   end
 
   def build_rdf(document, subject)
-    raise "Match::SKOS::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate." unless self.rdf_namespace && self.rdf_predicate
+    raise "#{self.class}#build_rdf: Class #{self.name} needs to call acts_as_rdf_predicate 'ns:type'." unless self.implements_rdf?
 
     if (IqRdf::Namespace.find_namespace_class(self.rdf_namespace.camelcase))
       subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, URI.parse(value))

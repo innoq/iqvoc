@@ -16,8 +16,7 @@
 
 class Collection::Member::SKOS::Base < Collection::Member::Base
 
-  self.rdf_namespace = 'skos'
-  self.rdf_predicate = 'member'
+  acts_as_rdf_predicate 'skos:member'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object) # <<collection>>, <<member>>, <<concept|collection>>
     rdf_subject     = Collection::Base.from_origin_or_instance(rdf_subject)

@@ -34,8 +34,4 @@ class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
     'partials/concept/relation/skos/narrower'
   end
 
-  def self.relation_name
-    'skos_narrower'
-  end
-
 end

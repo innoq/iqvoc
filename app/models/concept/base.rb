@@ -23,9 +23,7 @@ class Concept::Base < ActiveRecord::Base
   class_attribute :default_includes
   self.default_includes = []
 
-  class_attribute :rdf_namespace, :rdf_class
-  self.rdf_namespace = nil
-  self.rdf_class     = nil
+  include ActsAsRdfClass
 
   # ********** Validations
 

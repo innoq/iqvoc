@@ -18,9 +18,7 @@ class Note::Base < ActiveRecord::Base
 
   self.table_name = 'notes'
 
-  class_attribute :rdf_namespace, :rdf_predicate
-  self.rdf_namespace = nil
-  self.rdf_predicate = nil
+  include ActsAsRdfPredicate
 
   # ********** Validations
 
@@ -30,7 +28,7 @@ class Note::Base < ActiveRecord::Base
 
   belongs_to :owner, :polymorphic => true
 
-  has_many :annotations, :class_name => "Note::Annotated::Base", :foreign_key => :note_id, :dependent => :destroy
+  has_many :annotations, :class_name => 'Note::Annotated::Base', :foreign_key => :note_id, :dependent => :destroy
 
   accepts_nested_attributes_for :annotations
 

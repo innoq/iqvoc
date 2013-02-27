@@ -16,12 +16,10 @@
 
 class Note::SKOS::Base < Note::Base
 
-  self.rdf_namespace = 'skos'
-
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
     unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
-      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.relation_name})."
     end
 
     target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
@@ -31,9 +29,9 @@ class Note::SKOS::Base < Note::Base
         raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
-      value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+      value = JSON.parse(%Q{["#{$1}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
       target_class.new(:value => value, :language => lang).tap do |new_instance|
-        rdf_subject.send(target_class.name.to_relation_name) << new_instance
+        rdf_subject.send(target_class.relation_name) << new_instance
       end
     when Array # Blank node
       note = target_class.create!(:owner => rdf_subject)

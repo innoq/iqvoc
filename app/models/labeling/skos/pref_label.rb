@@ -16,7 +16,7 @@
 
 class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
 
-  self.rdf_predicate = 'prefLabel'
+  acts_as_rdf_predicate 'skos:prefLabel'
 
   # if `singular` is true, only a single occurrence is allowed per instance
   def self.singular?
@@ -25,10 +25,6 @@ class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
 
   def self.view_section_sort_key(obj)
     50
-  end
-
-  def self.relation_name
-    'skos_pref'
   end
 
 end

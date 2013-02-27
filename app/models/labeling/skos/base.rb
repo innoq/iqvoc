@@ -16,11 +16,9 @@
 
 class Labeling::SKOS::Base < Labeling::Base
 
-  self.rdf_namespace = 'skos'
-
   # ********** Associations
 
-  belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
+  belongs_to :target, :class_name => 'Label::Base', :dependent => :destroy # the destroy is new
 
   # ********** Scopes
 

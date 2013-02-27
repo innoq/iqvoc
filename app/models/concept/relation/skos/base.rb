@@ -16,8 +16,6 @@
 
 class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
-  self.rdf_namespace = 'skos'
-
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     rdf_subject    = Concept::Base.from_origin_or_instance(rdf_subject)
     rdf_object     = Concept::Base.from_origin_or_instance(rdf_object)

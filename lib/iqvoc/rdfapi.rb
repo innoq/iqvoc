@@ -36,14 +36,14 @@ module Iqvoc
     # lookup table for RDF object names to Ruby class names.
     # Ex: 'skos:Concept' => Concept::SKOS::Base
     OBJECT_DICTIONARY = FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
-      hash["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
+      hash[klass.rdf_internal_name] = klass
       hash
     end
 
     # lookup table for RDF predicate names to Ruby class names.
     # Ex: 'skos:prefLabel' => Labeling::SKOS::PrefLabel
     PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
-      hash["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
+      hash[klass.rdf_internal_name] = klass
       hash
     end
 
