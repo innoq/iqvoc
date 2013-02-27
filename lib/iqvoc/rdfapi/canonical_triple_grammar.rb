@@ -88,11 +88,16 @@ module Iqvoc
          #{r_object} /x
       end
 
+      def r_eol
+        /\r?\n/
+      end
+
       def r_line(context = '')
         /^
           [[:blank:]]*
           (?<#{context}Triple> #{r_triple})
           [[:blank:]]*
+          #{r_eol}
         $/x
       end
 

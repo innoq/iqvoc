@@ -43,15 +43,15 @@ module Iqvoc
 
       def r_name(context = '')
         my_context = context + 'Name'
-        /(?<#{my_context}> [A-Za-z][A-Za-z0-9]*)/x
+        /(?<#{my_context}> [A-Za-z][A-Za-z0-9]* )/x
       end
 
       def r_uri_prefix(context = '')
-        /(?<#{context}Prefix> #{c_prefixes})/x
+        /(?<#{context}Prefix> #{c_prefixes} )/x
       end
 
       def r_uri_origin(context = '')
-        /(?<#{context}Origin> [^<>\s]+)/x
+        /(?<#{context}Origin> [^<>\s]+ )/x
       end
 
       def r_knowable_uri(context = '')
@@ -62,10 +62,6 @@ module Iqvoc
         r_uri_origin(context)
       end
 
-      def r_comment(context = '')
-        /#[^\r\n]*/
-      end
-
       def r_uriref(context = '')
         my_context = context + 'Uri'
         /<
@@ -73,7 +69,7 @@ module Iqvoc
              #{r_knowable_uri(my_context)} |
              #{r_absolute_uri(my_context)}
           )
-        > /x
+        >/x
       end
 
       def r_named_node(context = '')
@@ -103,17 +99,19 @@ module Iqvoc
 
       def r_datatype_string(context = '')
         my_context = context + 'Datatype'
-        / "#{r_string(my_context)}"
-          \^\^
-          #{r_uriref(my_context)}
-        /x
+        /(?<#{my_context}>
+            " #{r_string(my_context)} "
+            \^\^
+            #{r_uriref(my_context)}
+          )/x
       end
 
       def r_lang_string(context = '')
         my_context = context + 'Langstring'
-        / " #{r_string(my_context)} "
+        /(?<#{my_context}>
+          " #{r_string(my_context)} "
           ( @#{r_language(my_context)} )?
-        /x
+          )/x
       end
 
       def r_literal(context = '')
@@ -129,20 +127,29 @@ module Iqvoc
           )/x
       end
 
-      def r_triple(context = '')
+      def r_comment
+        /#[^\r\n]*/
+      end
+
+      def r_triple
         /#{r_subject}  [[:blank:]]+
          #{r_predicate}[[:blank:]]+
          #{r_object}   [[:blank:]]*
          \.            [[:blank:]]*/x
       end
 
-      def r_line(context = '')
+      def r_eol
+        /\r?\n/
+      end
+
+      def r_line
         /^
           [[:blank:]]*
           (
-            (?<#{context}Comment> #{r_comment}) |
-            (?<#{context}Triple> #{r_triple})
+            (?<Comment> #{r_comment}) |
+            (?<Triple> #{r_triple})
           )
+          #{r_eol}
         $/x
       end
 

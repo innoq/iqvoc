@@ -16,10 +16,8 @@
 
 module Iqvoc
   module RDFAPI
-    autoload :ParsedTriple, 'iqvoc/rdfapi/parsed_triple'
-
-    class NTParser < TripleParser
-      include NTGrammar
+    class NTParser < CanonicalTripleParser
+      include Iqvoc::RDFAPI::NTGrammar
 
       def initialize(io, default_namespace_url)
         super(io)
@@ -44,7 +42,7 @@ module Iqvoc
             puts "processing triple #{matchdata[:Triple]}"
             triple = ParsedTriple.new(self, matchdata)
             if triple.ok?
-              yield triple.subject, triple.predicate, triple.object if block_given?
+              yield triple if block_given?
             else
               next
             end

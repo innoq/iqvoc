@@ -39,20 +39,19 @@ module Iqvoc
         end
       end
 
-      protected
-
       def each_valid_line
         @stream.each_line do |line_data|
           # This does the whole tokenization magic for us. All that's left to to
           # is collect the matchdata tokens and handle the conditions FSM like.
           # To see all possible tokens call r_line.names
+          next if line_data.blank?
           matchdata = r_line.match(line_data)
 
           if matchdata
             yield matchdata
           else
             puts 'ERR: unmatched line data:'
-            puts line_data
+            puts line_data.inspect
           end
         end
       end

@@ -14,10 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+$LOAD_PATH << 'lib/iqvoc/rdfapi'
+
 module Iqvoc
   module RDFAPI
+    autoload :NTGrammar, 'iqvoc/rdfapi/nt_grammar'
     autoload :NTParser, 'iqvoc/rdfapi/nt_parser'
+    autoload :CanonicalTripleGrammar, 'iqvoc/rdfapi/canonical_triple_grammar'
     autoload :CanonicalTripleParser, 'iqvoc/rdfapi/canonical_triple_parser'
+    autoload :ParsedTriple, 'iqvoc/rdfapi/parsed_triple'
 
     # lists of class names that are supported for Triple import.
     # we allow the user to define these names in Iqvoc::Config.
@@ -96,6 +101,7 @@ module Iqvoc
       end
     end
 
+    # take an internal canonical triple and devour it
     def self.eat(parsed_triple_data)
       case parsed_triple_data[:Predicate]
       when 'a', 'rdf:type'
@@ -124,7 +130,6 @@ module Iqvoc
       parser = CanonicalTripleParser.new(io_or_string)
       parser.each_valid_triple do |line|
         result = self.eat(line)
-        puts result.inspect
         result.save or puts "ERROR saving triple: #{result.errors.inspect}"
       end
     end
@@ -139,11 +144,11 @@ module Iqvoc
       end
       parser = NTParser.new str_or_io, default_namespace_url
 
-      parser.each_valid_triple do |*triple|
+      parser.each_valid_triple do |triple|
         if block_given?
-          yield *triple
+          yield triple
         else
-          self.eat(*triple).save
+          self.eat(triple).save
         end
       end
     end

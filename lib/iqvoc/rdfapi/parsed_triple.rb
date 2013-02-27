@@ -21,6 +21,11 @@ module Iqvoc
       def initialize(parser, matchdata)
         @parser = parser
         @m      = matchdata
+        @internal_data = {}
+      end
+
+      def [](key)
+        @internal_data[key.to_sym]
       end
 
       def ok?
@@ -30,7 +35,7 @@ module Iqvoc
       end
 
       def subject
-        @subject ||= begin
+        @internal_data[:Subject] ||= begin
           if @m[:SubjectNodeName] # blank node
             @parser.named_nodes[@m[:SubjectNodeName]] ||= Iqvoc::Origin.new(@m[:SubjectNodeName])
           elsif @parser.prefixes[@m[:SubjectUriPrefix]] == '' # subject we want to import
@@ -43,7 +48,7 @@ module Iqvoc
       end
 
       def predicate
-        @predicate ||= begin
+        @internal_data[:Predicate] ||= begin
           if prefix = @parser.prefixes[@m[:PredicateUriPrefix]] # known prefix
             "#{prefix}:#{@m[:PredicateUriOrigin]}"
           else
@@ -53,7 +58,7 @@ module Iqvoc
       end
 
       def object
-        @object ||= begin
+        @internal_data[:Object] ||= begin
           if @m[:ObjectNodeName] # blank node
             @parser.named_nodes[@m[:ObjectNodeName]] ||= Iqvoc::Origin.new(@m[:ObjectNodeName])
           elsif prefix = @parser.prefixes[@m[:ObjectUriPrefix]]
