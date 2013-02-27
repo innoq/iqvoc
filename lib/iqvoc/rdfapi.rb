@@ -50,6 +50,15 @@ module Iqvoc
       end
     end
 
+    class ObjectPublisher
+      def self.build_from_parsed_tokens(tokens)
+        if rdf_subject = RDFAPI.cached(tokens[:SubjectOrigin])
+          rdf_subject.published_at = tokens[:ObjectDatatypeString]
+        end
+        rdf_subject
+      end
+    end
+
     # lists of class names that are supported for Triple import.
     # we allow the user to define these names in Iqvoc::Config.
     FIRST_LEVEL_OBJECT_CLASSES  = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
@@ -68,7 +77,11 @@ module Iqvoc
 
     # lookup table for RDF predicate names to Ruby class names.
     # Ex: 'skos:prefLabel' => Labeling::SKOS::PrefLabel
-    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject('rdf:type' => ObjectInstanceBuilder, 'a' => ObjectInstanceBuilder) do |hash, klass|
+    internal_mapping = {
+      'rdf:type'          => ObjectInstanceBuilder,
+      'iqvoc:publishedAt' => ObjectPublisher
+    }
+    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject(internal_mapping) do |hash, klass|
       hash[klass.rdf_internal_name] = klass
       hash
     end

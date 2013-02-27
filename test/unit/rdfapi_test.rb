@@ -99,5 +99,16 @@ class APITest < ActiveSupport::TestCase
     assert labeling.save
   end
 
+  test 'should allow publishing a concept' do
+    origin = "_#{rand 10000}"
+    API.parse_triples <<-EOS
+      :#{origin} rdf:type skos:Concept
+      :#{origin} skos:prefLabel "Foo Bar"@en
+    EOS
+    assert !API.cached(origin).published?
+
+    API.parse_triple %Q(:#{origin} iqvoc:publishedAt "#{3.days.ago}"^^<DateTime>)
+    assert API.cached(origin).published?
+  end
 
 end
