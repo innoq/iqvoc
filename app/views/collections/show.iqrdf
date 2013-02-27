@@ -2,7 +2,7 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces(self.send(meth))
 end
 
-document << @collection.build_rdf_subject(document, controller) do |collection|
+document << @collection.build_rdf_subject do |collection|
   @collection.labelings.each do |labeling|
     labeling.build_rdf(document, collection)
   end
