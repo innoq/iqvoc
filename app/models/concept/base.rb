@@ -301,9 +301,10 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def labelings_by_text(relation_name, language)
-    (@labelings_by_text && @labelings_by_text[relation_name] && @labelings_by_text[relation_name][language]) ||
-      self.send(relation_name).by_label_language(language).
-      map { |l| l.target.value }.join(Iqvoc::InlineDataHelper::Joiner)
+    (@labelings_by_text && @labelings_by_text[relation_name] &&
+        @labelings_by_text[relation_name][language]) ||
+        Iqvoc::InlineDataHelper.generate_inline_values(self.send(relation_name).
+            by_label_language(language).map { |l| l.target.value })
   end
 
   def concept_relations_by_id=(hash)

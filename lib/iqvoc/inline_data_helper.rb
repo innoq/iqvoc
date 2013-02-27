@@ -19,7 +19,7 @@ require 'csv'
 module Iqvoc
   module InlineDataHelper
 
-    # delimiters for strings representing a list of values
+    # delimiters for strings representing a list of values - XXX: lacks encapsulation
     Joiner = ", "
     Splitter = /[,\n] */
 
