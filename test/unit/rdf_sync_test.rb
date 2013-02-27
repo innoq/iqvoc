@@ -21,12 +21,12 @@ require 'iqvoc/rdf_sync'
 class RDFSyncTest < ActiveSupport::TestCase
 
   setup do
-    @rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    @skos = "http://www.w3.org/2004/02/skos/core#"
+    @rdf  = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+    @skos = 'http://www.w3.org/2004/02/skos/core#'
 
-    @base_url = "http://example.com/"
-    @target_host = "http://example.org/sesame/repositories/test"
-    @username = "johndoe"
+    @base_url    = 'http://example.com/'
+    @target_host = 'http://example.org/sesame/repositories/test'
+    @username    = 'johndoe'
 
     class FakeViewContext # XXX: does not belong here
       def iqvoc_default_rdf_namespaces
@@ -35,12 +35,18 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     @view_context = FakeViewContext.new
 
-    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
-        :view_context => @view_context)
+    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username, :view_context => @view_context)
 
-    @concepts = 15.times.map do
-      FactoryGirl.create(:concept, :narrower_relations => [])
+    15.times do |i|
+      origin = '_%05d' % i
+      Iqvoc::RDFAPI.parse_triples <<-EOT
+        :#{origin} rdf:type skos:Concept
+        :#{origin} skos:prefLabel "Concept no. #{i}"@en
+        :#{origin} skos:prefLabel "Konzept nr. #{i}"@de
+        :#{origin} iqvoc:publishedAt "#{DateTime.now}"^^<DateTime>
+      EOT
     end
+    @concepts = Iqvoc::Concept.base_class.all
 
     # HTTP request mocking
     @observers = [] # one per request
@@ -49,8 +55,8 @@ class RDFSyncTest < ActiveSupport::TestCase
       # not using WebMock's custom assertions as those didn't seem to provide
       # sufficient flexibility
       fn = @observers.shift
-      raise(TypeError, "missing request observer: #{req.inspect}") unless fn
-      fn.call(req)
+      raise TypeError, "missing request observer: #{req.inspect}" unless fn
+      fn.call req
       true
     end.to_return do |req|
       { :status => 204 }
@@ -60,18 +66,16 @@ class RDFSyncTest < ActiveSupport::TestCase
   teardown do
     WebMock.reset!
     WebMock.allow_net_connect!
-    raise(TypeError, "unhandled request observer") unless @observers.length == 0
+    raise TypeError, "unhandled request observer" unless @observers.length == 0
   end
 
-  test "serialization" do
+  test 'serialization' do
     concept = @concepts[0]
 
-    assert @sync.serialize(concept).include?(<<-EOS.strip)
-<#{@base_url}#{concept.origin}> <#{@rdf}type> <#{@skos}Concept> .
-    EOS
+    assert @sync.serialize(concept).include?("<#{@base_url}#{concept.origin}> <#{@rdf}type> <#{@skos}Concept> .")
   end
 
-  test "single-batch synchronization" do
+  test 'single-batch synchronization' do
     concepts = @concepts[0..4]
 
     @observers << lambda do |req|
@@ -79,6 +83,7 @@ class RDFSyncTest < ActiveSupport::TestCase
         assert_equal :delete, req.method
       end
     end
+
     @observers << lambda do |req|
       concepts.each do |concept|
         assert_equal :post, req.method
@@ -89,7 +94,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     res = @sync.sync(concepts)
   end
 
-  test "full synchronization" do
+  test 'full synchronization' do
     concepts = Iqvoc::Concept.base_class.published.unsynced
 
     assert_not_equal 0, concepts.count
@@ -102,13 +107,13 @@ class RDFSyncTest < ActiveSupport::TestCase
     assert_equal 0, concepts.where(:rdf_updated_at => nil).count
   end
 
-  test "request batches" do
-    concepts = Iqvoc::Concept.base_class.published.unsynced
+  test 'request batches' do
+    concepts      = Iqvoc::Concept.base_class.published.unsynced
     concept_count = concepts.count
-    batch_count = 3
+    batch_count   = 3
 
     sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
-        :batch_size => (concept_count / batch_count).ceil,
+        :batch_size   => (concept_count / batch_count).ceil,
         :view_context => @view_context)
 
     (2 * batch_count).times do # 2 requests (reset + insert) per batch

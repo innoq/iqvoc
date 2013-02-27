@@ -24,12 +24,20 @@ module Iqvoc
     autoload :CanonicalTripleParser, 'iqvoc/rdfapi/canonical_triple_parser'
     autoload :ParsedTriple, 'iqvoc/rdfapi/parsed_triple'
 
+    protected
+
     class ObjectInstanceBuilder
-      # FIXME: yepp, this is not threadsafe -- fix this later.
+      # FIXME: yepp, this is not thread safe -- fix this later.
       @@lookup_by_origin = {}
 
-      def self.by_origin(origin)
-        @@lookup_by_origin[origin.to_s]
+      def self.by_origin(origin, klass = nil)
+        @@lookup_by_origin[origin.to_s] ||= begin
+          thing = (klass || ::Concept::Base).find_by_origin(origin)
+          if thing
+            actual_klass = thing.type ? thing.type.constantize : ::Concept::Base
+            @@lookup_by_origin[origin.to_s] = thing.class == actual_klass ? thing : thing.becomes(actual_klass) # cast object to its actual type
+          end
+        end
       end
 
       def self.build_from_parsed_tokens(tokens)
@@ -37,16 +45,11 @@ module Iqvoc
 
         klass  = Iqvoc::RDFAPI::OBJECT_DICTIONARY[tokens[:Object]]
         origin = tokens[:SubjectOrigin]
-
-        @@lookup_by_origin[origin.to_s] ||= begin
-          thing = klass.find_by_origin(origin)
-          if thing
-            actual_klass = thing.type.constantize
-            @@lookup_by_origin[origin.to_s] = thing.class == actual_klass ? thing : thing.becomes(actual_klass) # cast object to its actual type
-          else
-            @@lookup_by_origin[origin.to_s] = klass.new(:origin => origin)
-          end
+        thing  = self.by_origin(origin, klass)
+        if thing.nil?
+          thing = @@lookup_by_origin[origin.to_s] = klass.new(:origin => origin)
         end
+        thing
       end
     end
 
@@ -67,6 +70,8 @@ module Iqvoc
                                   Iqvoc::Concept.relation_classes +
                                   Iqvoc::Concept.match_classes +
                                   Iqvoc::Collection.member_classes
+
+    public
 
     # lookup table for RDF object names to Ruby class names.
     # Ex: 'skos:Concept' => Concept::SKOS::Base

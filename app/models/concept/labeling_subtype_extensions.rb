@@ -8,12 +8,12 @@ module Concept
     end
 
     def available_names
-      ['skos_pref'] + Iqvoc::Concept.labeling_class_names.map{|name, rest| name.constantize.relation_name}
+      ['skos_pref_label'] + Iqvoc::Concept.labeling_class_names.map{|name, rest| name.constantize.relation_name}
     end
 
     protected
 
-    base_labelings = {'skos_pref' => Iqvoc::Concept.pref_labeling_class_name.constantize}
+    base_labelings = {'skos_pref_label' => Iqvoc::Concept.pref_labeling_class_name.constantize}
     labelings = Iqvoc::Concept.further_labeling_class_names.inject(base_labelings) do |hash, name|
       klass = name.first.constantize
       hash[klass.relation_name] = klass

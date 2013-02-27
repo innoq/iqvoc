@@ -22,7 +22,7 @@ module Iqvoc
       end
 
       def r_absolute_uri(context = '')
-        /(?<#{context}Uri> [^<>\s]+ )/x
+        /(?<#{context}Uri> [^<>\s@]+ )/x
       end
 
       def r_namespaced_origin(context = '')
