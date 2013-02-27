@@ -52,6 +52,9 @@ class InlineDataTest < ActiveSupport::TestCase
     inline_values = 'lorem, "foo, bar",ipsum' # inconsistent whitespace
     assert_raises(CSV::MalformedCSVError) do
       Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+
+    inline_values = ''
+    assert_equal [], Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
     end
   end
 

@@ -28,14 +28,15 @@ module Iqvoc
       :quote_char => '"'
     }
 
-    def self.parse_inline_values(str)
+    def self.parse_inline_values(inline_values)
       options = CSVOptions.clone
       options[:col_sep] = options[:col_sep].strip
       begin
-        str.parse_csv(options).map(&:strip)
+        values = inline_values.parse_csv(options)
       rescue CSV::MalformedCSVError => exc
-        str.parse_csv(CSVOptions)
+        values = inline_values.parse_csv(CSVOptions)
       end
+      values ? values.map(&:strip) : []
     end
 
     def self.generate_inline_values(values)
