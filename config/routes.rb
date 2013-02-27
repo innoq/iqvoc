@@ -17,9 +17,9 @@
 Rails.application.routes.draw do
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
-  scope '(:lang)', :constraints => lambda { |params, req|
+  scope ':lang', :constraints => lambda { |params, req|
     lang = params[:lang]
-    return lang.nil? || lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || " "}$/
+    return lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|")}$/
   } do
 
     resource  :user_session, :only => [:new, :create, :destroy]
@@ -61,6 +61,14 @@ Rails.application.routes.draw do
     root :to => 'frontpage#index', :format => nil
   end
 
+  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
   match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
-  match '/:id(.:format)' => 'rdf#show', :as => 'rdf'
+
+  get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
+  get '/:id(.:format)' => 'rdf#show', :as => 'rdf'
+  get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
+  get '/collectionss', :as => "rdf_collections", :to => "collections#index"
+
+
+  root :to => 'frontpage#index', :format => nil
 end
