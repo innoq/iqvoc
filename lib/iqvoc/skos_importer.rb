@@ -51,17 +51,20 @@ module Iqvoc
         end
       end
 
-      begin
-        disable_indexes
-        import(file)
-      ensure
-        enable_indexes
-      end
+      import file
     end
 
     private
 
+    def before
+    end
+
+    def after
+    end
+
     def import(file)
+      before
+
       start = Time.now
 
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
@@ -104,30 +107,7 @@ module Iqvoc
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
-    end
-
-    def disable_indexes
-      mysql? do |connection|
-        @logger.info("Disabling indexes on #{TABLES.join(", ")}")
-        TABLES.each do |t|
-          connection.execute("ALTER TABLE #{t} DISABLE KEYS;")
-        end
-      end
-    end
-
-    def enable_indexes
-      mysql? do |connection|
-        @logger.info("Reenabling indexes on #{TABLES.join(", ")}")
-        TABLES.each do |t|
-          connection.execute("ALTER TABLE #{t} ENABLE KEYS;")
-        end
-      end
-    end
-
-    def mysql?
-      if ActiveRecord::Base.connection.adapter_name =~ /MySQL/i
-        yield(ActiveRecord::Base.connection)
-      end
+      after
     end
 
     def identify_blank_nodes(subject, predicate, object)
