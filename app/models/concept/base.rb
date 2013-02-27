@@ -53,7 +53,7 @@ class Concept::Base < ActiveRecord::Base
         self.send(relation_name).all.map(&:destroy)
         lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
         lang_values.each do |lang, inline_values|
-          values.split(Iqvoc::InlineDataHelper::Splitter).each do |value|
+          Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
             value.squish!
             self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
           end
