@@ -409,19 +409,26 @@ class Concept::Base < ActiveRecord::Base
     { :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode }
   end
 
-  def self.from_origin_or_instance(rdf_subject)
-    case rdf_subject
+  def self.from_origin_or_instance(origin, no_raise = false)
+    case origin
     when self
-      rdf_subject
+      origin
     when String, Symbol
-      if thing = self.find_by_origin(rdf_subject) # find all subclasses of this class
+      origin = origin.sub(/^:/, '') # strip default namespace -- HACK!
+      if thing = self.find_by_origin(origin) # find all subclasses of this class
         thing.becomes(thing.type.constantize)     # cast object to its actual type
       else
-        raise "no #{self} with origin #{rdf_subject} was found"
+        raise "no #{self} with origin #{origin} was found" unless no_raise
       end
     else
-      raise "rdf_subject must be a #{self} or a String (=origin) but #{rdf_subject.inspect} was given"
+      raise "origin must be a #{self} or a String (=origin) but #{origin.inspect} was given"
     end
+  end
+
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    raise "expected rdf_predicate to be rdf:type but was #{rdf_predicate}" unless rdf_predicate == 'rdf:type'
+    klass = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    klass.from_origin_or_instance(rdf_subject, :no_raise) || klass.new(:origin => rdf_subject)
   end
 
   # ********** Validation methods

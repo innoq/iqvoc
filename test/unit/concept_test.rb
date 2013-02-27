@@ -19,22 +19,18 @@ require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
 
-  setup do
-#     @current_concept = FactoryGirl.create(:concept)
-  end
-
   def self.xtest(name)
     puts "not running #{name}: is deliberately commented out"
   end
 
-  xtest "should not allow identical concepts" do
-    origin = "foo"
+  test "should not allow identical concepts" do
+    origin = 'foo'
     c1 = Concept::Base.new(:origin => origin)
     c2 = Concept::Base.new(:origin => origin, :published_at => Time.now)
     assert c1.save
     assert c2.save
 
-    origin = "bar"
+    origin = 'bar'
     c1 = Concept::Base.new(:origin => origin)
     c2 = Concept::Base.new(:origin => origin)
     assert c1.save

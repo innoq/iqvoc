@@ -55,7 +55,6 @@ class APITest < ActiveSupport::TestCase
     foobar = API.devour 'foobar a skos:Concept'
     barbaz = API.devour 'barbaz a skos:Collection'
     member = API.devour barbaz, 'skos:member', foobar
-
     assert member.save
     assert member.is_a?(Collection::Member::SKOS::Base)
     assert_equal barbaz, member.collection
@@ -85,10 +84,10 @@ class APITest < ActiveSupport::TestCase
   end
 
   test 'should add member to collection using multiline string' do
-    API.slurp <<-EOS
-      foobar a skos:Concept
-      barbaz a skos:Collection
-      barbaz Collection::Member::SKOS::Base foobar
+    API.parse_triples <<-EOS
+      :foobar rdf:type skos:Concept
+      :barbaz rdf:type skos:Collection
+      :barbaz skos:member :foobar
     EOS
 
     assert Iqvoc::Concept.base_class.find_by_origin('foobar')
@@ -108,7 +107,7 @@ class APITest < ActiveSupport::TestCase
   end
 
   test 'should set pref label using multiline string' do
-    API.slurp <<-EOS
+    API.parse_triples <<-EOS
       :foobar rdf:type skos:Concept
       :foobar skos:prefLabel "Foo Bar"@en
       :foobar skos:prefLabel "Föö Bär"@de

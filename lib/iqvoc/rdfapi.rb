@@ -17,6 +17,7 @@
 module Iqvoc
   module RDFAPI
     autoload :NTParser, 'iqvoc/rdfapi/nt_parser'
+    autoload :CanonicalTripleParser, 'iqvoc/rdfapi/canonical_triple_parser'
 
     # lists of class names that are supported for Triple import.
     # we allow the user to define these names in Iqvoc::Config.
@@ -88,11 +89,25 @@ module Iqvoc
         end
         target.find_or_initialize_by_origin(rdf_subject)
       when String
-        # dictionary lookup
         target = PREDICATE_DICTIONARY[rdf_predicate] || rdf_predicate.constantize
         target.build_from_rdf(rdf_subject, target, rdf_object)
       else # is a class
         rdf_predicate.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+      end
+    end
+
+    def self.eat(parsed_triple_data)
+      case parsed_triple_data[:Predicate]
+      when 'a', 'rdf:type'
+        target = OBJECT_DICTIONARY[parsed_triple_data[:Object]]
+      else
+        target = PREDICATE_DICTIONARY[parsed_triple_data[:Predicate]]
+      end
+
+      if target
+        target.build_from_rdf(parsed_triple_data[:Subject], parsed_triple_data[:Predicate], parsed_triple_data[:Object])
+      else
+        puts "ERR: #{parsed_triple_data[:Predicate]} maps to no target"
       end
     end
 
@@ -105,18 +120,12 @@ module Iqvoc
     # Triples may consist of explicit Ruby class names or namespaced RDF-Triples.
     # If you want to import generic N-Triples (With complete URIs instead of just namesoaces),
     # use RDFAPI.parse_nt.
-    def self.slurp(io_or_string)
-      case io_or_string
-      when String
-        stream = StringIO.new io_or_string
-      when IO
-        stream = io_or_string
-      else
-        raise "I'd like an IO or a String, please."
-      end
-
-      stream.each_line do |line|
-        self.devour(line.strip).save
+    def self.parse_triples(io_or_string)
+      parser = CanonicalTripleParser.new(io_or_string)
+      parser.each_valid_triple do |line|
+        result = self.eat(line)
+        puts result.inspect
+        result.save or puts "ERROR saving triple: #{result.errors.inspect}"
       end
     end
 
@@ -134,7 +143,7 @@ module Iqvoc
         if block_given?
           yield *triple
         else
-          self.devour(*triple).save
+          self.eat(*triple).save
         end
       end
     end

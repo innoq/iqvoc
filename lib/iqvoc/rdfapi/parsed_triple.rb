@@ -58,8 +58,8 @@ module Iqvoc
             @parser.named_nodes[@m[:ObjectNodeName]] ||= Iqvoc::Origin.new(@m[:ObjectNodeName])
           elsif prefix = @parser.prefixes[@m[:ObjectUriPrefix]]
             "#{prefix}:#{Iqvoc::Origin.new(@m[:ObjectUriOrigin])}"
-          elsif @m[:ObjectString] # string literal
-            @m[:Object]
+          elsif @m[:ObjectLangstringString] # string literal
+            @m[:ObjectLangstring]
           else
             :skip
           end
