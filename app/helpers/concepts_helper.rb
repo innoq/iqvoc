@@ -40,7 +40,7 @@ module ConceptsHelper
   def concept_view_data(concept)
     res = {}
 
-    render_concept_association(res, concept, Collection::Member::Concept)
+    render_concept_association(res, concept, Collection::Member::Base)
 
     Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
       (languages || Iqvoc.available_languages).each do |lang|

@@ -49,8 +49,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection,
       [:pref_labels,
-      {:subcollections => [:pref_labels, :subcollections]},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+      {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
   end
 
   def new
@@ -84,8 +83,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection, [
       :pref_labels,
-      {:subcollections => :pref_labels},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+      {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
 
     build_note_relations
   end

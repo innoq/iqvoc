@@ -8,7 +8,7 @@ module Iqvoc
       included do
         mattr_accessor :base_class_name, :member_class_names
 
-        self.base_class_name = 'Collection::Unordered'
+        self.base_class_name = 'Collection::SKOS::Unordered'
 
         self.member_class_names  = ['Collection::Member::SKOS::Base']
       end

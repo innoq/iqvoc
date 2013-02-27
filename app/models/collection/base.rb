@@ -28,22 +28,8 @@ class Collection::Base < Concept::Base
       :foreign_key => 'collection_id',
       :dependent   => :destroy
 
-  has_many :concept_members,
-      :class_name  => 'Collection::Member::Concept',
-      :foreign_key => 'collection_id',
-      :dependent   => :destroy
-  has_many :concepts,
-      :through => :concept_members
-
-  has_many :collection_members,
-      :class_name  => 'Collection::Member::Collection',
-      :foreign_key => 'collection_id',
-      :dependent   => :destroy
-  has_many :subcollections,
-      :through => :collection_members
-
-  has_many :parent_collection_members,
-      :class_name  => 'Collection::Member::Collection',
+    has_many :parent_collection_members,
+      :class_name  => 'Collection::Member::Base',
       :foreign_key => 'target_id',
       :dependent   => :destroy
   has_many :parent_collections,
@@ -66,7 +52,7 @@ class Collection::Base < Concept::Base
 
   def self.tops
     includes(:parent_collection_members).
-        where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
+        where("#{Collection::Member::Base.table_name}.target_id IS NULL")
   end
 
   #********** Validations
@@ -75,6 +61,14 @@ class Collection::Base < Concept::Base
 
   #********** Methods
 
+  def subcollections
+    members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
+  end
+  
+  def concepts
+    members.map(&:target).select { |m| !m.is_a?(::Collection::Base) }
+  end
+  
   def additional_info
     concepts.count
   end
@@ -97,7 +91,7 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins
-    @member_concept_origins || concept_members.map { |m| m.concept.origin }.uniq
+    @member_concept_origins || concepts.map { |m| m.origin }.uniq
   end
 
   def inline_member_concepts
@@ -114,8 +108,8 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collection_members.
-        map { |m| m.subcollection.origin }.uniq
+    @member_collection_origins || collections.
+        map { |m| m.origin }.uniq
   end
 
   def inline_member_collections

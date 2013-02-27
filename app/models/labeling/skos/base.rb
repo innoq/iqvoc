@@ -54,7 +54,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Unordered.where(:origin => params[:collection_origin]).last
+      collection = Collection::Base.where(:origin => params[:collection_origin]).last
       if collection
         scope = scope.includes(:owner => :collection_members)
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection)
