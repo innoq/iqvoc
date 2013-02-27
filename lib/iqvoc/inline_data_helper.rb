@@ -14,12 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'csv'
+
 module Iqvoc
   module InlineDataHelper
 
     # delimiters for strings representing a list of values
     Joiner = ", "
     Splitter = /[,\n] */
+
+    CSVOptions = {
+      :col_sep => ", ",
+      :quote_char => '"'
+    }
+
+    def self.parse_inline_values(str)
+      str.parse_csv(CSVOptions)
+    end
+
+    def self.generate_inline_values(values)
+      values.to_csv(CSVOptions).strip
+    end
 
   end
 end
