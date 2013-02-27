@@ -51,8 +51,8 @@ class Concept::Base < ActiveRecord::Base
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base
         self.send(relation_name).all.map(&:destroy)
-        lang_values = {nil => lang_values.first} if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
-        lang_values.each do |lang, values|
+        lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
+        lang_values.each do |lang, inline_values|
           values.split(Iqvoc::InlineDataHelper::Splitter).each do |value|
             value.squish!
             self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
@@ -288,9 +288,12 @@ class Concept::Base < ActiveRecord::Base
   def labelings_by_text=(hash)
     @labelings_by_text = hash
 
-     # For language = nil: <input name=bla[labeling_class][]> => Results in an Array!
-    @labelings_by_text.each do |relation_name, array_or_hash|
-      @labelings_by_text[relation_name] = {nil => array_or_hash.first} if array_or_hash.is_a?(Array)
+    @labelings_by_text.each do |relation_name, labels_by_lang|
+      # if `language` is `nil`, the respective HTML form field returns an array
+      # instead of a hash (`<input name=bla[labeling_class][]>`)
+      if labels_by_lang.is_a?(Array)
+        @labelings_by_text[relation_name] = { nil => labels_by_lang.first }
+      end
     end
 
     @labelings_by_text
