@@ -22,6 +22,7 @@ require 'iqvoc/versioning'
 require 'iqvoc/deep_cloning'
 require 'iqvoc/rankable'
 require 'iqvoc/ability'
+require 'iqvoc/skos_importer'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
