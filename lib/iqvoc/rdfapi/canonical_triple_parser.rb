@@ -44,6 +44,7 @@ module Iqvoc
       attr_reader :prefixes, :context, :lookup, :blank_nodes
 
       extend CanonicalTripleGrammar
+      include CanonicalTripleGrammar
 
       def initialize(io)
         io.rewind if io.is_a? IO
@@ -64,7 +65,7 @@ module Iqvoc
           # This does the whole tokenization magic for us. All that's left to to
           # is collect the matchdata tokens and handle the conditions FSM like.
           # To see all possible tokens call r_line.names
-          matchdata = self.class.parse_single_line(line_data)
+          matchdata = r_line.match line_data
 
           if matchdata
             yield matchdata
