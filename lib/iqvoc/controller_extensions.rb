@@ -62,7 +62,7 @@ module Iqvoc
     def concept_widget_data(concept, rank = nil)
       data = {
         :id => concept.origin,
-        :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
+        :name => (concept.pref_label && concept.pref_label.value).to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
       }
       data[:rank] = rank if rank
       data
