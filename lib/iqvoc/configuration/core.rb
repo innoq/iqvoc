@@ -146,11 +146,11 @@ module Iqvoc
         def title
           return config["title"]
         end
-        
+
         def note_languages
           return config["note_languages"]
         end
-     
+
         def all_languages
           (Iqvoc::Concept.pref_labeling_languages + Iqvoc::Concept.further_labeling_class_names.values.flatten + note_languages).compact.map(&:to_s).uniq
         end

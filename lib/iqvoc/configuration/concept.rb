@@ -131,7 +131,7 @@ module Iqvoc
         def supports_multi_language_pref_labelings?
           pref_labeling_languages.size > 1
         end
-        
+
         def include_modules
           include_module_names.map(&:constantize)
         end
