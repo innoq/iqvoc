@@ -93,7 +93,7 @@ en:
        caption: "Instance Configuration"
        settings:
          title: site title
-         available_languages: available languages
+         note_languages: languages for notes
          languages_pref_labeling: languages for preferred labels
          languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
          triplestore_url: triplestore URL
