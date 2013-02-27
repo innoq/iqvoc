@@ -347,7 +347,7 @@ class Concept::Base < ActiveRecord::Base
       lang = nil
     elsif lang
       lang = lang.to_s
-    end 
+    end
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
