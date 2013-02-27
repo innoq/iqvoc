@@ -19,6 +19,10 @@ require 'csv'
 module Iqvoc
   module InlineDataHelper
 
+    # delimiters for strings representing a list of values
+    Joiner = ", "
+    Splitter = /[,\n] */
+
     CSVOptions = {
       :col_sep => ", ",
       :quote_char => '"'

@@ -92,7 +92,8 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins=(origins)
-    @member_concept_origins = Iqvoc::InlineDataHelper.parse_inline_values(origins.to_s)
+    @member_concept_origins = origins.to_s.
+      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_concept_origins
@@ -108,7 +109,8 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins=(origins)
-    @member_collection_origins = Iqvoc::InlineDataHelper.parse_inline_values(origins.to_s)
+    @member_collection_origins = origins.to_s.
+      split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
   end
 
   def inline_member_collection_origins
