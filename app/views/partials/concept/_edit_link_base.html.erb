@@ -1,4 +1,5 @@
-<%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)) %>
+<% label = item.pref_label.to_s.presence || ":#{item.origin} (#{t("txt.common.translation_missing_for")} #{[I18n.locale.to_s, Iqvoc::Concept.pref_labeling_languages.first.to_s].uniq.join(", ")})" %>
+<%= link_to truncate(label, :length => 45), (item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)) %>
 <%- if (item.additional_info) -%>
   (<%= item.additional_info %>)
 <%- end -%>
