@@ -21,16 +21,34 @@ module Iqvoc
 
     # parses the iQvoc internal canonical triple format.
     # It ist basically N-Triples with with a simplified TTL syntax.
+
+    # The Following tokens are generated when using this parser:
+    #  Subject
+    #    SubjectPrefix
+    #    SubjectOrigin
+    #  Predicate
+    #    PredicatePrefix
+    #    PredicateOrigin
+    #  Object
+    #    ObjectPrefix
+    #    ObjectOrigin
+    #    ObjectUri
+    #    ObjectLangstring
+    #      ObjectLangstringString
+    #      ObjectLangstringLanguage
+    #    ObjectDatatype
+    #      ObjectDatatypeString
+    #      ObjectDatatypeUri
+
     class CanonicalTripleParser
       attr_reader :prefixes, :context, :lookup, :blank_nodes
 
-      include CanonicalTripleGrammar
+      extend CanonicalTripleGrammar
 
       def initialize(io)
         io.rewind if io.is_a? IO
-        @stream   = io
-        @context  = {}
-        @lookup   = {}
+        @stream = io
+        @lookup = {}
       end
 
       def each_valid_triple
@@ -41,11 +59,12 @@ module Iqvoc
 
       def each_valid_line
         @stream.each_line do |line_data|
+          next if line_data.blank?
+
           # This does the whole tokenization magic for us. All that's left to to
           # is collect the matchdata tokens and handle the conditions FSM like.
           # To see all possible tokens call r_line.names
-          next if line_data.blank?
-          matchdata = r_line.match(line_data)
+          matchdata = self.class.parse_single_line(line_data)
 
           if matchdata
             yield matchdata
@@ -54,6 +73,10 @@ module Iqvoc
             puts line_data.inspect
           end
         end
+      end
+
+      def self.parse_single_line(string)
+        r_line.match string
       end
     end
 

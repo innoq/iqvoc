@@ -44,15 +44,19 @@ module Iqvoc
 
       def r_datatype_string(context = '')
         my_context = context + 'Datatype'
-        /"#{r_string(my_context)}"
+        /(?<#{my_context}>
+          "#{r_string(my_context)}"
           \^\^
-          #{r_uriref(my_context)}/x
+          #{r_uriref(my_context)}
+          )/x
       end
 
       def r_lang_string(context = '')
         my_context = context + 'Langstring'
-        /"#{r_string(my_context)}"
-        ( @#{r_language(my_context)} )? /x
+        /(?<#{my_context}>
+          "#{r_string(my_context)}"
+          ( @#{r_language(my_context)} )?
+          )/x
       end
 
       def r_literal(context = '')
@@ -97,7 +101,7 @@ module Iqvoc
           [[:blank:]]*
           (?<#{context}Triple> #{r_triple})
           [[:blank:]]*
-          #{r_eol}
+          (#{r_eol})?
         $/x
       end
 

@@ -149,7 +149,7 @@ module Iqvoc
             (?<Comment> #{r_comment}) |
             (?<Triple> #{r_triple})
           )
-          #{r_eol}
+          (#{r_eol})?
         $/x
       end
 
