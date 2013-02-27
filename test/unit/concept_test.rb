@@ -17,6 +17,7 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
+
   test "should not allow identical concepts" do
     origin = "foo"
     c1 = Concept::Base.new(:origin => origin)
@@ -108,6 +109,45 @@ class ConceptTest < ActiveSupport::TestCase
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
     }
     assert !concept.save
+  end
+
+  test "labels including commas" do
+    labels_for = lambda do |concept, type|
+        type.includes(:target).where(:owner_id => concept.id).
+            map { |ln| ln.target.value }
+    end
+
+    form_data = {
+      "labelings_by_text" => {
+        "labeling_skos_pref_labels" => { "en" => "lipsum" },
+        "labeling_skos_alt_labels" => { "en" => "foo, bar" }
+      }
+    }
+    concept = Iqvoc::Concept.base_class.create(form_data)
+
+    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal "lipsum",
+        concept.labelings_by_text("labeling_skos_pref_labels", "en")
+    assert_equal ["foo", "bar"],
+        labels_for.call(concept, Labeling::SKOS::AltLabel)
+    assert_equal "foo, bar",
+        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+
+    form_data = {
+      "labelings_by_text" => {
+        "labeling_skos_pref_labels" => { "en" => "lipsum" },
+        "labeling_skos_alt_labels" => { "en" => 'lorem, "foo, bar", ipsum' }
+      }
+    }
+    concept = Iqvoc::Concept.base_class.create(form_data)
+
+    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal "lipsum",
+        concept.labelings_by_text("labeling_skos_pref_labels", "en")
+    assert_equal ["lorem", "foo, bar", "ipsum"],
+        labels_for.call(concept, Labeling::SKOS::AltLabel)
+    assert_equal 'lorem, "foo, bar", ipsum',
+        concept.labelings_by_text("labeling_skos_alt_labels", "en")
   end
 
 end
