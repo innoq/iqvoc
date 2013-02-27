@@ -23,24 +23,24 @@ module Iqvoc
     Joiner = ", "
     Splitter = /[,\n] */
 
-    CSVOptions = {
+    CSV_OPTIONS = {
       :col_sep => ", ",
       :quote_char => '"'
     }
 
     def self.parse_inline_values(inline_values)
-      options = CSVOptions.clone
+      options = CSV_OPTIONS.clone
       options[:col_sep] = options[:col_sep].strip
       begin
         values = inline_values.parse_csv(options)
       rescue CSV::MalformedCSVError => exc
-        values = inline_values.parse_csv(CSVOptions)
+        values = inline_values.parse_csv(CSV_OPTIONS)
       end
       values ? values.map(&:strip) : []
     end
 
     def self.generate_inline_values(values)
-      values.to_csv(CSVOptions).strip
+      values.to_csv(CSV_OPTIONS).strip
     end
 
   end
