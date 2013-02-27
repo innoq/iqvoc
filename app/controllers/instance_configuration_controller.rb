@@ -39,6 +39,8 @@ class InstanceConfigurationController < ApplicationController
         begin
           Iqvoc.config[key] = deserialize(value, default_value)
         rescue TypeError => exc
+          Rails.logger.error(exc)
+          Rails.logger.error(exc.backtrace.join("\n"))
           errors << t("txt.controllers.instance_configuration.invalid_value",
               :key => key, :error_message => exc.message)
         end
@@ -93,6 +95,8 @@ class InstanceConfigurationController < ApplicationController
         raise TypeError, "expected boolean"
       end
     elsif type == String
+      return str
+    elsif type == Symbol
       return str
     elsif type == Fixnum
       raise TypeError, "expected integer" unless str =~ /^[-+]?[0-9]+$/
