@@ -74,7 +74,7 @@ class Concept::Base < ActiveRecord::Base
     # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
-      new_origins = new_origins.split(Iqvoc::InlineDataHelper::Splitter).map(&:squish)
+      new_origins = new_origins.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:squish)
 
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
@@ -314,7 +314,7 @@ class Concept::Base < ActiveRecord::Base
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
       self.send(relation_name).map { |l| l.target.origin }.
-      join(Iqvoc::InlineDataHelper::Joiner)
+      join(Iqvoc::InlineDataHelper::JOINER)
   end
 
   def concept_relations_by_id_and_rank(relation_name)

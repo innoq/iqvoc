@@ -20,8 +20,8 @@ module Iqvoc
   module InlineDataHelper
 
     # delimiters for strings representing a list of values - XXX: lacks encapsulation
-    Joiner = ", "
-    Splitter = /[,\n] */
+    JOINER = ", "
+    SPLITTER = /[,\n] */
 
     CSV_OPTIONS = {
       :col_sep => ", ",
