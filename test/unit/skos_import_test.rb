@@ -59,7 +59,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_equal decoded_val, "Äffle"
   end
 
-  test "basic_importer_functionality" do
+  xtest "basic_importer_functionality" do
     assert_difference('Concept::Base.count', 4) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end
@@ -90,7 +90,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_equal "http://dbpedia.org/page/Monkey", match.value
   end
 
-  test "incorrect origin" do
+  xtest "incorrect origin" do
     assert_difference('Concept::Base.count', 1) do
       Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/")
     end
@@ -98,7 +98,7 @@ class SkosImportTest < ActiveSupport::TestCase
     assert_not_nil Iqvoc::Concept.base_class.by_origin("_1").last
   end
 
-  test "blank nodes" do
+  xtest "blank nodes" do
     test_data = (<<-DATA
       <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
       <http://www.example.com/car> <http://www.w3.org/2008/05/skos#prefLabel> "Car"@en .
@@ -149,7 +149,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
      DATA
     ).split("\n")
 
-  test "basic importer functionality" do
+  xtest "basic importer functionality" do
     assert_difference('Collection::Base.count', 2) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end
@@ -174,7 +174,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
     assert_not_nil concept_member
   end
 
-  test "subcollections importer functionality" do
+  xtest "subcollections importer functionality" do
     assert_difference('Collection::Base.count', 2) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end

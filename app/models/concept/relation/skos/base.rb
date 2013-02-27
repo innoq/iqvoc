@@ -17,6 +17,8 @@
 class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
+
     rdf_subject    = Concept::Base.from_origin_or_instance(rdf_subject)
     rdf_object     = Concept::Base.from_origin_or_instance(rdf_object)
     relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
@@ -33,6 +35,32 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
       reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
       # TODO: make sure this relation instance is eventually saved!
     end
+    relation_instance
+  end
+
+  def self.build_from_parsed_tokens(tokens)
+    rdf_subject    = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    rdf_object     = Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])
+    relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
+
+    relation_instance = rdf_subject.relations.find_by_target_and_class(rdf_object, relation_class)
+    unless relation_instance
+      relation_instance = relation_class.new(:target => rdf_object, :owner => rdf_subject)
+    end
+
+    if relation_class.bidirectional?
+      reverse_class      = relation_class.reverse_relation_class
+      reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
+      reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
+      # TODO: make sure this relation instance is eventually saved!
+    end
+
+    # NOTE: this is not really clean: We create two object instances for a single
+    # RDF 'statement', which does not go nicely with the idea that we can just call
+    # 'save' on the return value of this method to persist a statement (e.g. in RDFAPI.eat)
+    # We should seriously consider building and persisting the reverse association in a
+    # before_save callback instead.
+    relation_instance
   end
 
   def build_rdf(document, subject)

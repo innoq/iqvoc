@@ -17,6 +17,7 @@
 class Match::SKOS::Base < Match::Base
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
     rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
     match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
 
@@ -37,6 +38,12 @@ class Match::SKOS::Base < Match::Base
     else
       raise "#{self.class}#build_rdf: couldn't find Namespace '#{self.rdf_namespace.camelcase}'."
     end
+  end
+
+  def self.build_from_parsed_tokens(tokens)
+    rdf_subject = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
+    match_class.new(:value => tokens[:ObjectUri], :concept => rdf_subject)
   end
 
 end

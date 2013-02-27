@@ -412,7 +412,6 @@ class Concept::Base < ActiveRecord::Base
     when self
       origin
     when String, Symbol
-      origin = origin.sub(/^:/, '') # strip default namespace -- HACK!
       if thing = self.find_by_origin(origin) # find all subclasses of this class
         thing.becomes(thing.type.constantize)     # cast object to its actual type
       else
@@ -421,12 +420,6 @@ class Concept::Base < ActiveRecord::Base
     else
       raise "origin must be a #{self} or a String (=origin) but #{origin.inspect} was given"
     end
-  end
-
-  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    raise "expected rdf_predicate to be rdf:type but was #{rdf_predicate}" unless rdf_predicate == 'rdf:type'
-    klass = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-    klass.from_origin_or_instance(rdf_subject, :no_raise) || klass.new(:origin => rdf_subject)
   end
 
   # ********** Validation methods

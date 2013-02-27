@@ -19,10 +19,6 @@ require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
 
-  def self.xtest(name)
-    puts "not running #{name}: is deliberately commented out"
-  end
-
   test "should not allow identical concepts" do
     origin = 'foo'
     c1 = Concept::Base.new(:origin => origin)

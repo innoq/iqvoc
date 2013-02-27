@@ -27,6 +27,4 @@ class NTParserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should '
-
 end

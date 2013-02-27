@@ -27,3 +27,9 @@ end
 
 Spork.each_run do
 end
+
+class ActiveSupport::TestCase
+  def self.xtest(name)
+    puts "not running #{name}: is deliberately commented out"
+  end
+end

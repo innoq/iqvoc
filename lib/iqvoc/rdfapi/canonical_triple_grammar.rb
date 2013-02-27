@@ -26,8 +26,8 @@ module Iqvoc
       end
 
       def r_namespaced_origin(context = '')
-        /(?<#{context}Prefix> ([A-Za-z][A-Za-z0-9]*)? ) :
-         (?<#{context}Origin> [_A-Za-z][A-Za-z0-9]* )/x
+        /(?<#{context}Prefix> ([A-Za-z][A-Za-z0-9_]*)? ) :
+         (?<#{context}Origin> [^<>\s]+ )/x
       end
 
       def r_language(context = '')

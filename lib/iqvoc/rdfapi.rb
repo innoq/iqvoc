@@ -24,6 +24,32 @@ module Iqvoc
     autoload :CanonicalTripleParser, 'iqvoc/rdfapi/canonical_triple_parser'
     autoload :ParsedTriple, 'iqvoc/rdfapi/parsed_triple'
 
+    class ObjectInstanceBuilder
+      # FIXME: yepp, this is not threadsafe -- fix this later.
+      @@lookup_by_origin = {}
+
+      def self.by_origin(origin)
+        @@lookup_by_origin[origin.to_s]
+      end
+
+      def self.build_from_parsed_tokens(tokens)
+        raise "expected predicate to be rdf:type but #{tokens[:Predicate]} was found." unless ['rdf:type', self].include? tokens[:Predicate]
+
+        klass  = Iqvoc::RDFAPI::OBJECT_DICTIONARY[tokens[:Object]]
+        origin = tokens[:SubjectOrigin]
+
+        @@lookup_by_origin[origin.to_s] ||= begin
+          thing = klass.find_by_origin(origin)
+          if thing
+            actual_klass = thing.type.constantize
+            @@lookup_by_origin[origin.to_s] = thing.class == actual_klass ? thing : thing.becomes(actual_klass) # cast object to its actual type
+          else
+            @@lookup_by_origin[origin.to_s] = klass.new(:origin => origin)
+          end
+        end
+      end
+    end
+
     # lists of class names that are supported for Triple import.
     # we allow the user to define these names in Iqvoc::Config.
     FIRST_LEVEL_OBJECT_CLASSES  = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
@@ -42,76 +68,21 @@ module Iqvoc
 
     # lookup table for RDF predicate names to Ruby class names.
     # Ex: 'skos:prefLabel' => Labeling::SKOS::PrefLabel
-    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
+    PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject('rdf:type' => ObjectInstanceBuilder, 'a' => ObjectInstanceBuilder) do |hash, klass|
       hash[klass.rdf_internal_name] = klass
       hash
     end
 
-    # Take a single triple and import it into the relational data model.
-    # The triple may either be passed as a single string or as three separate
-    # arguments, denoting Subject, predicate and Object in that order.
-    # Subject and Object can be a String denoting an 'origin' or an Instance
-    # of any SKOS class. Some examples:
-    # Subject may be:
-    #  * ':monkey' (default namespace with origin 'monkey')
-    #  * 'monkey' (default namespace may be omitted)
-    #  * <Concept::SKOS::Base @origin='monkey'...> (an instance of a concept class)
-    # Predicate may be:
-    #  * 'rdf:type', 'skos:prefLabel' (an RDF class name)
-    #  * Collection::Member::SKOS::Base (a Ruby relation class)
-    #  * 'Collection::Member::SKOS::Base' (a Ruby relation class name)
-    # Object may be:
-    #  * 'skos:Concept' (an RDF class name)
-    #  * Concept::SKOS::Base (a ruby class)
-    #  * 'Concept::SKOS::Base' (a ruby class name)
-    #  * <Concept::SKOS::Base @origin='animal'...> (an instance of a concept class)
-    #  * '"Monkey"@en' (a String literal)
-    #  * ':animal' (default namespace with origin 'animal')
-    #  * 'animal' (default namespace may be omitted)
-    def self.devour(rdf_subject_or_string, rdf_predicate = nil, rdf_object = nil)
-      if rdf_predicate.nil? and rdf_object.nil?
-        # we have a single string to parse and interpret
-        rdf_subject, rdf_predicate, rdf_object = rdf_subject_or_string.split(/\s+/, 3)
-      else
-        rdf_subject = rdf_subject_or_string
-      end
-
-      if rdf_subject.is_a? String
-        rdf_subject = rdf_subject.sub(/^:/, '') # strip default namespace
-      end
-
-      if rdf_object.is_a? String
-        rdf_object = rdf_object.sub(/^:/, '') # strip default namespace
-      end
-
-      case rdf_predicate
-      when 'a', 'rdf:type'
-        case rdf_object
-        when String
-          target = OBJECT_DICTIONARY[rdf_object] || rdf_object.constantize
-        else
-          target = rdf_object
-        end
-        target.find_or_initialize_by_origin(rdf_subject)
-      when String
-        target = PREDICATE_DICTIONARY[rdf_predicate] || rdf_predicate.constantize
-        target.build_from_rdf(rdf_subject, target, rdf_object)
-      else # is a class
-        rdf_predicate.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-      end
+    def self.cached(origin)
+      ObjectInstanceBuilder.by_origin(origin)
     end
 
     # take an internal canonical triple and devour it
     def self.eat(parsed_triple_data)
-      case parsed_triple_data[:Predicate]
-      when 'a', 'rdf:type'
-        target = OBJECT_DICTIONARY[parsed_triple_data[:Object]]
-      else
-        target = PREDICATE_DICTIONARY[parsed_triple_data[:Predicate]]
-      end
+      target = PREDICATE_DICTIONARY[parsed_triple_data[:Predicate]]
 
       if target
-        target.build_from_rdf(parsed_triple_data[:Subject], parsed_triple_data[:Predicate], parsed_triple_data[:Object])
+        target.build_from_parsed_tokens(parsed_triple_data)
       else
         puts "ERR: #{parsed_triple_data[:Predicate]} maps to no target"
       end
@@ -129,9 +100,27 @@ module Iqvoc
     def self.parse_triples(io_or_string)
       parser = CanonicalTripleParser.new(io_or_string)
       parser.each_valid_triple do |line|
-        result = self.eat(line)
-        result.save or puts "ERROR saving triple: #{result.errors.inspect}"
+        if block_given?
+          yield triple
+        else
+          result = self.eat(line)
+          result.save or puts "ERROR saving triple: #{result.errors.inspect}"
+        end
       end
+    end
+
+    def self.parse_triple(str)
+      result = CanonicalTripleParser.parse_single_line(str)
+      if result
+        self.eat(result)
+      else
+        puts "#{str.inspect} is not a valid triple line."
+        nil
+      end
+    end
+
+    def self.<<(str)
+      self.parse_triples(str)
     end
 
     # N-Triples importer. This basically instantiates an NTParser and

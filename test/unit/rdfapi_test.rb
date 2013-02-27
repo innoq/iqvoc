@@ -7,97 +7,62 @@ API = Iqvoc::RDFAPI
 class APITest < ActiveSupport::TestCase
 
   test 'should allow passing namespaced subject, predicate and object' do
-    result = API.devour ':foobar', 'rdf:type', 'Concept::SKOS::Base'
+    result = API.parse_triple(':foobar rdf:type skos:Concept')
     assert result.is_a? Concept::SKOS::Base
     assert_equal 'foobar', result.origin
   end
 
-  test 'should interpret missing ":" as default namespace' do
-    result = API.devour 'foobar', 'a', 'Concept::SKOS::Base'
-    assert result.is_a? Concept::SKOS::Base
-  end
-
-  test 'should allow passing single string that will be interpreted' do
-    result = API.devour 'foobar a Concept::SKOS::Base'
-    assert result.is_a? Concept::SKOS::Base
-  end
-
-  test 'should instantiate known class names using strings only' do
-    result = API.devour 'foobar', 'a', 'Concept::SKOS::Base'
-    assert result.is_a? Concept::SKOS::Base
-    assert_equal result.origin, 'foobar'
-  end
-
-  test 'should raise error when using string class name for nonexistent class' do
-    assert_raise NameError do
-      result = API.devour 'foobar', 'a', 'Concept::SKOS::Blah'
-    end
-  end
-
-  test 'should instantiate known class names using constant' do
-    result = API.devour 'foobar', 'a', Concept::SKOS::Base
-    assert result.is_a? Concept::SKOS::Base
-    assert_equal result.origin, 'foobar'
-  end
-
   test 'should instantiate known class names from dictionary using strings only' do
-    concept_result1 = API.devour 'foofoo', 'a', 'skos:Concept'
+    concept_result1 = API.parse_triple(':foofoo rdf:type skos:Concept')
     assert concept_result1.is_a? Iqvoc::Concept.base_class
 
-    concept_result2 = API.devour 'foobar', 'rdf:type', 'skos:Concept'
-    assert concept_result2.is_a? Iqvoc::Concept.base_class
-
-    collection_result = API.devour 'foobaz', 'a', 'skos:Collection'
+    collection_result = API.parse_triple(':foobaz rdf:type skos:Collection')
     assert collection_result.is_a? Iqvoc::Collection.base_class
   end
 
-  test 'should add member to collection using string predicate ' do
-    foobar = API.devour 'foobar a skos:Concept'
-    barbaz = API.devour 'barbaz a skos:Collection'
-    member = API.devour barbaz, 'skos:member', foobar
-    assert member.save
-    assert member.is_a?(Collection::Member::SKOS::Base)
-    assert_equal barbaz, member.collection
-    assert_equal foobar, member.target
-  end
-
   test 'should add member to collection using strings only' do
-    API.devour('foobar-concept a skos:Concept').save
-    API.devour('barbaz-collection a skos:Collection').save
-    member = API.devour 'barbaz-collection skos:member foobar-concept'
+    collection_origin = "_#{rand 10000}"
+    concept_origin    = "_#{rand 10000}"
+
+    API.parse_triple(%Q(:#{concept_origin} rdf:type skos:Concept)).save
+    API.parse_triple(%Q(:#{collection_origin} rdf:type skos:Collection)).save
+    member = API.parse_triple(%Q(:#{collection_origin} skos:member :#{concept_origin}))
 
     assert member.save
     assert member.is_a?(Collection::Member::SKOS::Base)
-    assert_equal 'barbaz-collection', member.collection.origin
-    assert_equal 'foobar-concept', member.target.origin
+    assert_equal collection_origin, member.collection.origin
+    assert_equal concept_origin, member.target.origin
   end
 
-  test 'should add member to collection using classes' do
-    foobar = API.devour 'foobar a skos:Concept'
-    barbaz = API.devour 'barbaz a skos:Collection'
-    member = API.devour barbaz, Collection::Member::SKOS::Base, foobar
+  test 'should cache created concepts' do
+    assert_nil API.cached('monkey')
+    assert_nil API.cached('nietzsche')
 
-    assert member.save
-    assert member.is_a?(Collection::Member::SKOS::Base)
-    assert_equal barbaz, member.collection
-    assert_equal foobar, member.target
+    API.parse_triple(':monkey rdf:type skos:Concept')
+    assert_not_nil API.cached('monkey')
+    API.parse_triple(':nietzsche rdf:type skos:Concept')
+    assert_not_nil API.cached('monkey')
+    assert_not_nil API.cached('nietzsche')
   end
 
   test 'should add member to collection using multiline string' do
+    collection_origin = "_#{rand 10000}"
+    concept_origin    = "_#{rand 10000}"
     API.parse_triples <<-EOS
-      :foobar rdf:type skos:Concept
-      :barbaz rdf:type skos:Collection
-      :barbaz skos:member :foobar
+      :#{concept_origin} rdf:type skos:Concept
+      :#{collection_origin} rdf:type skos:Collection
+      :#{collection_origin} skos:member :#{concept_origin}
     EOS
 
-    assert Iqvoc::Concept.base_class.find_by_origin('foobar')
-    assert Iqvoc::Collection.base_class.find_by_origin('barbaz')
+    assert Iqvoc::Concept.base_class.find_by_origin(concept_origin)
+    coll = Iqvoc::Collection.base_class.find_by_origin(collection_origin)
+    assert coll
   end
 
   test 'should set pref label using string' do
-    foobar = API.devour *%w(foobar a skos:Concept)
+    foobar = API.parse_triple(':foobar rdf:type skos:Concept')
     foobar.save
-    labeling = API.devour foobar, 'skos:prefLabel', '"Foo Bar"@en'
+    labeling = API.parse_triple(':foobar skos:prefLabel "Foo Bar"@en')
 
     assert labeling.is_a? Labeling::SKOS::PrefLabel
     assert_equal 'en', labeling.target.language
@@ -107,32 +72,26 @@ class APITest < ActiveSupport::TestCase
   end
 
   test 'should set pref label using multiline string' do
+    origin = "_#{rand 10000}"
     API.parse_triples <<-EOS
-      :foobar rdf:type skos:Concept
-      :foobar skos:prefLabel "Foo Bar"@en
-      :foobar skos:prefLabel "Föö Bär"@de
+      :#{origin} rdf:type skos:Concept
+      :#{origin} skos:prefLabel "Foo Bar"@en
+      :#{origin} skos:prefLabel "Föö Bär"@de
     EOS
 
-    foobar = Concept::SKOS::Base.find_by_origin 'foobar'
+    concept = Iqvoc::Concept.base_class.find_by_origin origin
+    assert_not_nil API.cached(origin)
+    assert_not_nil concept
 
-    assert foobar.pref_labels
-    assert_equal 'Foo Bar', foobar.pref_labels.find_by_language('en').value
-    assert_equal 'Föö Bär', foobar.pref_labels.find_by_language('de').value
-  end
-
-  test 'should set pref label using class' do
-    foobar   = API.devour ':foobar rdf:type skos:Concept'
-    labeling = API.devour foobar, Labeling::SKOS::PrefLabel, '"Foo Bar"@en'
-
-    assert labeling.is_a? Labeling::SKOS::PrefLabel
-    assert_equal 'en', labeling.target.language
-    assert_equal 'Foo Bar', labeling.target.value
-    assert labeling.save
+    assert concept.pref_labels
+    assert_equal 'Foo Bar', concept.pref_labels.find_by_language('en').value
+    assert_equal 'Föö Bär', concept.pref_labels.find_by_language('de').value
   end
 
   test 'should set alt label using string' do
-    foobar   = API.devour ':foobar rdf:type skos:Concept'
-    labeling = API.devour foobar, 'skos:altLabel', '"Foo Bar"@de'
+    origin = "_#{rand 10000}"
+    foobar   = API.parse_triple(%Q(:#{origin} rdf:type skos:Concept))
+    labeling = API.parse_triple(%Q(:#{origin} skos:altLabel "Foo Bar"@de))
 
     assert labeling.is_a? Labeling::SKOS::AltLabel
     assert_equal 'de', labeling.target.language

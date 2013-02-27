@@ -76,6 +76,7 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
     rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
@@ -85,6 +86,16 @@ class Labeling::Base < ActiveRecord::Base
     predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
       rdf_subject.send(predicate_class.name.to_relation_name) << label
     end
+  end
+
+  def self.build_from_parsed_tokens(tokens)
+    rdf_subject = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+
+    lang, value = tokens[:ObjectLangstringLanguage], JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
+
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
+    label = predicate_class.label_class.new :value => value, :language => lang
+    predicate_class.new :owner => rdf_subject, :target => label
   end
 
 end
