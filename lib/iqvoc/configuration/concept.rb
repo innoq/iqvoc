@@ -9,13 +9,13 @@ module Iqvoc
         Iqvoc.first_level_class_configuration_modules << self
 
         mattr_accessor :base_class_name, :root_class_name,
-        :broader_relation_class_name, :further_relation_class_names,
-        :pref_labeling_class_name,
-        :match_class_names,
-        :note_class_names,
-        :additional_association_class_names,
-        :view_sections,
-        :include_module_names
+            :broader_relation_class_name, :further_relation_class_names,
+            :pref_labeling_class_name,
+            :match_class_names,
+            :note_class_names,
+            :additional_association_class_names,
+            :view_sections,
+            :include_module_names
 
         self.base_class_name              = 'Concept::SKOS::Base'
         self.root_class_name              = 'Concept::SKOS::Scheme'

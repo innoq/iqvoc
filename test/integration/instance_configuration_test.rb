@@ -37,7 +37,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     visit uri
     assert_equal "/en/config.html", page.current_path
     assert page.has_css?("input#config_title")
-    assert page.has_css?("input#config_available_languages")
+    assert page.has_css?("input#config_note_languages")
     assert page.has_selector?(:xpath, '//input[@id="config_languages.pref_labeling"]')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.further_labelings.Labeling::SKOS::AltLabel"]')
 

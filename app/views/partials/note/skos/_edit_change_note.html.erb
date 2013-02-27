@@ -15,7 +15,7 @@
               <% end %>
             <% end %>
             <%= note_form.input :language,
-              :collection => options_for_language_select(note.language),
+              :collection => Iqvoc.note_languages.map { |l| [l, l]},
               :label => t("txt.common.language"),
               :include_blank => false,
               :input_html => { :class => 'span1' } %>
