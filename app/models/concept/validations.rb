@@ -80,9 +80,10 @@ module Concept
         # language and value
         conflicting_pref_labels = pref_labels.select do |l|
           Labeling::SKOS::PrefLabel.
-            joins(:target).
+            joins(:owner, :target).
             where(:labels => { :value => l.value, :language => l.language }).
             where("labelings.owner_id != ?", id).
+            where("concepts.origin != ?", origin).
             any?
         end
 

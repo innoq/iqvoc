@@ -18,7 +18,7 @@
     <% end %>
   <% end %>
 
-  <% secondary_languages = Iqvoc.available_languages.reject { |lang| lang == I18n.locale.to_s } %>
+  <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
   <% if secondary_languages.any? %>
     <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
     <% secondary_languages.each do |lang| %>

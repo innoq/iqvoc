@@ -57,6 +57,8 @@ module Iqvoc
     private
 
     def import(file)
+      ActiveSupport.run_load_hooks(:skos_importer_before_import, self)
+
       start = Time.now
 
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
@@ -99,6 +101,7 @@ module Iqvoc
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
+      ActiveSupport.run_load_hooks(:skos_importer_after_import, self)
     end
 
     def identify_blank_nodes(subject, predicate, object)
@@ -217,5 +220,6 @@ module Iqvoc
       triple
     end
 
+    ActiveSupport.run_load_hooks(:skos_importer, self)
   end
 end

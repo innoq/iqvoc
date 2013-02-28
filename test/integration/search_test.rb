@@ -49,9 +49,9 @@ class SearchTest < ActionDispatch::IntegrationTest
         :type => 'Labels', :query => 'Forest', :query_type => 'contains',
         :amount => 1, :result => 'Forest'
       }].each { |q|
-      select q[:type], :from => "t"
+      find("#t").select q[:type]
       fill_in "Search term(s)", :with => q[:query]
-      select q[:query_type], :from => "qt"
+      find("#qt").select q[:query_type]
 
       # select all languages
       page.all(:css, ".lang_check").each do |cb|
@@ -72,8 +72,8 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "collection/concept filter" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
     fill_in "Search term(s)", :with => "Alpha"
     click_button("Search")
     assert page.has_css?("#search_results dt", :count => 1)
@@ -90,10 +90,10 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "searching within collections" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
     fill_in "Search term(s)", :with => "res"
-    select @collection.to_s, :from => "c"
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -128,10 +128,10 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Notes", :from => "t"
-    select "contains", :from => "qt"
+    find("#t").select "Notes"
+    find("#qt").select "contains"
     fill_in "Search term(s)", :with => "ipsum"
-    select @collection.to_s, :from => "c"
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -147,10 +147,10 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "empty query with selected collection should return all collection members" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "exact match", :from => "qt"
+    find("#t").select "Labels"
+    find("#qt").select "exact match"
     fill_in "Search term(s)", :with => ""
-    select @collection.to_s, :from => "c"
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -175,8 +175,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
     fill_in "Search term(s)", :with => "sample_"
 
     click_button("Search")
@@ -184,7 +184,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?("#search_results dt", :count => 5)
     assert page.has_css?(".pagination .page", :count => 3)
 
-    click_link("3")
+    find(".pagination").all(".page").last.find("a").click
 
     assert page.has_css?("#search_results dt", :count => 2)
 

@@ -93,7 +93,6 @@ pt:
        caption: "Configuração da Instância"
        settings:
          title: "título do sítio"
-         available_languages: "idiomas disponíveis"
          languages_pref_labeling: "idiomas para os rótulos preferenciais"
          languages_further_labelings_Labeling::SKOS::AltLabel: "idiomas para os rótulos alternativos"
          triplestore_url: "URL do repositório de triplas"

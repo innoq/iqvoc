@@ -87,13 +87,13 @@ class Collection::Base < Concept::Base
     pref_label
   end
 
-  def build_rdf_subject(document, controller, &block)
+  def build_rdf_subject(&block)
     IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
   end
 
   def inline_member_concept_origins=(origins)
     @member_concept_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_concept_origins
@@ -110,7 +110,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::Splitter).map(&:strip)
+      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_collection_origins

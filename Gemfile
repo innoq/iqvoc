@@ -48,6 +48,7 @@ end
 group :development, :test do
   gem 'awesome_print'
   gem 'pry', :platform => :ruby
+  gem 'pry-remote', :platform => :ruby
 
   platforms :ruby do
     gem 'mysql2'
@@ -64,7 +65,7 @@ group :test do
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit', '~> 0.13.0'
+  gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'spork'
