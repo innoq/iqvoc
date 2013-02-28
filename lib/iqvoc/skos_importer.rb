@@ -8,9 +8,7 @@ module Iqvoc
         Iqvoc::Concept.note_classes +
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
-        Iqvoc::Collection.member_classes
-
-    TABLES = (FIRST_LEVEL_OBJECT_CLASSES + SECOND_LEVEL_OBJECT_CLASSES + [Iqvoc::Label.base_class]).map(&:table_name).uniq
+        [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
       @logger = logger

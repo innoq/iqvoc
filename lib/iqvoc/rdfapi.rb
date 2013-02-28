@@ -21,7 +21,7 @@ module Iqvoc
                                   Iqvoc::Concept.note_classes +
                                   Iqvoc::Concept.relation_classes +
                                   Iqvoc::Concept.match_classes +
-                                  Iqvoc::Collection.member_classes
+                                  [Iqvoc::Collection.member_class]
 
     OBJECT_DICTIONARY = FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|
       hash["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass

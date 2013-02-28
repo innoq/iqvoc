@@ -31,7 +31,8 @@ class SearchTest < ActionDispatch::IntegrationTest
     end
 
     # create collection
-    @collection = FactoryGirl.create(:collection, :concepts => @concepts,
+    @collection = FactoryGirl.create(:collection,
+      :members => @concepts.map { |c| Iqvoc::Collection.member_class.new(:target => c) },
         :labelings => [], :pref_labelings => [
             FactoryGirl.create(:pref_labeling,
                 :target => FactoryGirl.create(:pref_label, :language => :en, :value => "Alpha"))
