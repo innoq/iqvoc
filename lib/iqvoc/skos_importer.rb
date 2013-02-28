@@ -56,14 +56,8 @@ module Iqvoc
 
     private
 
-    def before
-    end
-
-    def after
-    end
-
     def import(file)
-      before
+      ActiveSupport.run_load_hooks(:before_skos_import)
 
       start = Time.now
 
@@ -107,7 +101,7 @@ module Iqvoc
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
-      after
+      ActiveSupport.run_load_hooks(:after_skos_import)
     end
 
     def identify_blank_nodes(subject, predicate, object)
