@@ -80,6 +80,4 @@ class RDFAPITest < ActiveSupport::TestCase
     assert_equal 'Foo Bar', labeling.target.value
     assert labeling.save
   end
-
-
 end
