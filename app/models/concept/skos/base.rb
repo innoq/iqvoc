@@ -33,12 +33,12 @@ class Concept::SKOS::Base < Concept::Base
   end
 
   # ********** Scopes
-  def self.expired(time=Time.now)
+  def self.expired(time = Time.now)
     where(arel_table[:expired_at].lt(time))
   end
 
-  def self.not_expired(time=Time.now)
     row = arel_table[:expired_at]
     where((row.eq(nil)).or(row.gteq(time)))
+  def self.not_expired(time = Time.now)
   end
 end
