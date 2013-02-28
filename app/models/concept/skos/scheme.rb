@@ -32,7 +32,7 @@ class Concept::SKOS::Scheme
     :scheme
   end
 
-  def build_rdf_subject(document, controller, &block)
+  def build_rdf_subject(&block)
     ns = IqRdf::Namespace.find_namespace_class(self.class.rdf_namespace.to_sym)
     raise "Namespace '#{rdf_namespace}' is not defined in IqRdf document." unless ns
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)

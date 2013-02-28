@@ -1,7 +1,7 @@
 <%= page_header :title => t("txt.views.triplestore_sync.caption") %>
 <%= render "dashboard/sidebar" %>
 
-<%= form_tag triplestore_sync_path(:format => nil, :lang => nil), :method => :post do %>
+<%= form_tag triplestore_sync_path(:format => nil), :method => :post do %>
   <%= submit_tag t("txt.views.triplestore_sync.start"), :class => "btn btn-primary" %>
 <% end %>
 
@@ -15,7 +15,7 @@
       Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
         doc.namespaces(self.send(meth))
       end
-      uri = record.build_rdf_subject(doc, controller).full_uri # XXX: we actually just want path, plus HTML format
+      uri = record.build_rdf_subject.full_uri # XXX: we actually just want path, plus HTML format
     %>
     <li><%= link_to record.to_s, uri %></li>
     <% end %>

@@ -18,7 +18,7 @@ class Concept::SKOS::Base < Concept::Base
 
   acts_as_rdf_class 'skos:Concept'
 
-  def build_rdf_subject(document, controller, &block)
+  def build_rdf_subject(&block)
     ns = IqRdf::Namespace.find_namespace_class(self.rdf_namespace)
     raise "Namespace '#{self.rdf_namespace}' is not defined in IqRdf document." unless ns
     subject = IqRdf.build_uri(self.origin, ns.build_uri(self.rdf_class), &block)

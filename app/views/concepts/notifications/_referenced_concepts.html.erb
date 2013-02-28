@@ -1,4 +1,4 @@
-<% if association_objects_in_editing_mode[:concept_relations].any? %>
+<% if association_objects_in_editing_mode && association_objects_in_editing_mode[:concept_relations].any? %>
   <%= alert(:notice, :header => t('txt.common.referenced_concepts')) do %>
   <ul>
     <% association_objects_in_editing_mode[:concept_relations].each do |concept_relation| %>

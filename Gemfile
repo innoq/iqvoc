@@ -19,7 +19,7 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 
 group :assets do
   gem 'uglifier',   '>= 1.0.3'
@@ -41,10 +41,14 @@ gem 'fastercsv', :platforms => :ruby_18
 group :development do
   gem 'heroku'
   gem 'view_marker'
+  gem 'better_errors'
+  gem 'binding_of_caller', :platform => :ruby
 end
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'pry', :platform => :ruby
+  gem 'pry-remote', :platform => :ruby
 
   platforms :ruby do
     gem 'mysql2'
@@ -61,7 +65,7 @@ group :test do
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit'
+  gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'spork'

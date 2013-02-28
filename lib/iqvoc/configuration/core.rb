@@ -58,7 +58,6 @@ module Iqvoc
           bootstrap/bootstrap.css
           bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
-          json2.js
           bootstrap/bootstrap.js
           html5.js
         )
@@ -90,9 +89,9 @@ module Iqvoc
         # initialize
         self.config.register_settings({
           "title" => "iQvoc",
-          "available_languages" => ["en", "de"],
           "languages.pref_labeling" => ["en", "de"],
-          "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"]
+          "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
+          "note_languages" => ["en", "de"]
         })
         self.config.initialize_cache
       end
@@ -148,8 +147,12 @@ module Iqvoc
           return config["title"]
         end
 
-        def available_languages
-          return config["available_languages"]
+        def note_languages
+          return config["note_languages"]
+        end
+
+        def all_languages
+          (Iqvoc::Concept.pref_labeling_languages + Iqvoc::Concept.further_labeling_class_names.values.flatten + note_languages).compact.map(&:to_s).uniq
         end
 
         # @deprecated
@@ -158,11 +161,6 @@ module Iqvoc
           self.config.register_setting("title", value)
         end
 
-        # @deprecated
-        def available_languages=(value)
-          ActiveSupport::Deprecation.warn "available_languages has been moved into instance configuration", caller
-          self.config.register_setting("available_languages", value)
-        end
       end
 
     end

@@ -18,7 +18,7 @@ en:
   languages:
     de: German
     en: English
-    none: Sci.
+    none: Unbekannt
     fr: French
     sl: Slovenian
     pl: Polish
@@ -31,6 +31,10 @@ en:
     it: Italian
     cs: Czech
     sk: Slovak
+    et: Estonian
+    dk: Danish
+    fi: Finnish
+    sv: Swedish
   views:
     pagination:
       first: "&laquo; First"
@@ -89,7 +93,7 @@ en:
        caption: "Instance Configuration"
        settings:
          title: site title
-         available_languages: available languages
+         note_languages: languages for notes
          languages_pref_labeling: languages for preferred labels
          languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
          triplestore_url: triplestore URL
@@ -368,3 +372,5 @@ en:
        association_narrower_unpublished: "Specific terms have to be published."
        association_related_unpublished: "Related terms have to be published."
        no_pref_label: "-- no PrefLabel --"
+       pref_label_not_unique: "The preferred label '%{label}' is already in use."
+       pref_labels_not_unique: "The preferred labels '%{label}' are already in use."

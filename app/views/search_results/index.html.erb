@@ -13,8 +13,8 @@
 
     <%= input_block :label => t('txt.views.search_results.mode'), :id => 'qt' do %>
       <%= select_tag :qt, options_for_select([
-          [t('txt.views.search_results.exact'), 'exact'],
           [t('txt.views.search_results.contains'), 'contains'],
+          [t('txt.views.search_results.exact'), 'exact'],
           [t('txt.views.search_results.ends_with'), 'ends_with'],
           [t('txt.views.search_results.begins_with'), 'begins_with']
         ], params[:qt]) %>
