@@ -65,7 +65,7 @@ Rails.application.routes.draw do
   get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
   get '/:id(.:format)' => 'rdf#show', :as => 'rdf'
   get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
-  get '/collectionss', :as => "rdf_collections", :to => "collections#index"
+  get '/collections', :as => "rdf_collections", :to => "collections#index"
 
 
   root :to => 'frontpage#index', :format => nil
