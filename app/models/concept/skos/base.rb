@@ -37,8 +37,8 @@ class Concept::SKOS::Base < Concept::Base
     where(arel_table[:expired_at].lt(time))
   end
 
-    row = arel_table[:expired_at]
-    where((row.eq(nil)).or(row.gteq(time)))
   def self.not_expired(time = Time.now)
+    col = arel_table[:expired_at]
+    where((col.eq(nil)).or(col.gteq(time)))
   end
 end
