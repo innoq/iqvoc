@@ -69,7 +69,7 @@ module Iqvoc
 
     # retrieve individual setting, using default value as fallback
     def [](key)
-      initialize_cache # relying on ActiveRecord query cache -- XXX: inefficient (caching doesn't include processing/indexing)
+      initialize_cache if @settings.blank?
       return @settings[key]
     end
 
@@ -95,7 +95,6 @@ module Iqvoc
     # populate settings caches
     # (subsequent updates will happen automatically via the respective setters)
     def initialize_cache
-      return if @settings
       # cache customized settings
       db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
       db_settings.each do |setting|
