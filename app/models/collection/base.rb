@@ -81,7 +81,7 @@ class Collection::Base < Concept::Base
     pref_label
   end
 
-  def build_rdf_subject(document, controller, &block)
+  def build_rdf_subject(&block)
     IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
   end
 

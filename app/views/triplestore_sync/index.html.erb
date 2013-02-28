@@ -15,7 +15,7 @@
       Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
         doc.namespaces(self.send(meth))
       end
-      uri = record.build_rdf_subject(doc, controller).full_uri # XXX: we actually just want path, plus HTML format
+      uri = record.build_rdf_subject.full_uri # XXX: we actually just want path, plus HTML format
     %>
     <li><%= link_to record.to_s, uri %></li>
     <% end %>

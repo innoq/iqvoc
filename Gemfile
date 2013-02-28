@@ -48,6 +48,7 @@ end
 group :development, :test do
   gem 'awesome_print'
   gem 'pry', :platform => :ruby
+  gem 'pry-remote', :platform => :ruby
 
   platforms :ruby do
     gem 'mysql2'
