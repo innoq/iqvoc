@@ -66,6 +66,8 @@ class HierarchyController < ApplicationController
     end
   end
 
+  private
+
   # returns a hash of concept/relations pairs of arbitrary nesting depth
   # NB: recursive, triggering one database query per iteration
   def populate_hierarchy(root_concept, scope, max_depth, current_depth=0,
