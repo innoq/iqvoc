@@ -127,34 +127,34 @@ class Collection::Base < Concept::Base
 
   #********** Hook methods
 
-  def regenereate_members(target_class, target_origins)
+  def regenerate_members(target_class, target_origins)
     return if target_origins.nil? # There is nothing to do
-    exsisting = self.members.includes(:target)
-    exsisting = if target_class <= Collection::Base
-      exsisting.select { |m| m.target.is_a?(Collection::Base) }
+    existing = self.members.includes(:target)
+    existing = if target_class <= Collection::Base
+      existing.select { |m| m.target.is_a?(Collection::Base) }
     else
-      exsisting.reject { |m| m.target.is_a?(Collection::Base) }
+      existing.reject { |m| m.target.is_a?(Collection::Base) }
     end
     new = []
     target_origins.each do |new_origin|
-      member = exsisting.find{ |m| m.target.origin == new_origin }
+      member = existing.find{ |m| m.target.origin == new_origin }
       unless member
         c = target_class.by_origin(new_origin).first
         member = Iqvoc::Collection.member_class.create(:collection => self, :target => c) if c
       end
       new << member if member
     end
-    (exsisting - new).each do |m|
+    (existing - new).each do |m|
       m.destroy
     end
   end
 
   def regenerate_concept_members
-    regenereate_members(Concept::Base, @member_concept_origins)
+    regenerate_members(Concept::Base, @member_concept_origins)
   end
 
   def regenerate_collection_members
-    regenereate_members(Collection::Base, @member_collection_origins)
+    regenerate_members(Collection::Base, @member_collection_origins)
   end
 
   #******** Validation methods
