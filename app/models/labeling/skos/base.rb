@@ -28,6 +28,11 @@ class Labeling::SKOS::Base < Labeling::Base
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
   end
 
+  def self.expired_ones(flag=false)
+    return includes(:owner).merge(Iqvoc::Concept.base_class.expired) if flag
+    includes(:owner).merge(Iqvoc::Concept.base_class.not_expired)
+  end
+
   # ********** Methods
 
   def self.label_class
