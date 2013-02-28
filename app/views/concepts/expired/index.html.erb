@@ -1,0 +1,16 @@
+<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
+                :desc => t('txt.views.navigation.expired') %>
+<%= render 'concepts/sidebars/plural' %>
+
+<div class="panel">
+  <div class="panel-header centered">
+    <%= letter_selector do |letter| %>
+        <% expired_concepts_path(:prefix => letter.to_s.downcase) %>
+    <% end %>
+  </div>
+  <ol class="concepts unstyled">
+    <%= render :partial => 'concepts/alphabetical/pref_labeling', :collection => @pref_labelings %>
+  </ol>
+</div>
+
+<%= paginate @pref_labelings %>
