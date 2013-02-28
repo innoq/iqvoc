@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class HierarchyController < ApplicationController # XXX: largely duplicates concepts' hierarchical controller
+class HierarchyController < ApplicationController
 
   def show
     authorize! :read, Iqvoc::Concept.base_class
@@ -55,6 +55,15 @@ class HierarchyController < ApplicationController # XXX: largely duplicates conc
     end
     @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth, 0,
         include_siblings)
+
+    @relation_class = Iqvoc::Concept.broader_relation_class
+    @relation_class = @relation_class.narrower_class unless direction == "up"
+
+    respond_to do |format|
+      format.html
+      format.ttl
+      format.rdf
+    end
   end
 
   # returns a hash of concept/relations pairs of arbitrary nesting depth

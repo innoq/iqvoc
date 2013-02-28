@@ -36,6 +36,90 @@ root:
     EOS
     rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
     @concepts = create_hierarchy(concepts, rel_class, {})
+    @concepts["root"].update_attribute("top_term", true)
+  end
+
+  test "unsupported content type" do
+    get :show, :lang => "en", :format => "N/A", :root => "root"
+    assert_response 406
+  end
+
+  test "RDF representations" do
+    # Turtle
+
+    get :show, :lang => "en", :format => "ttl", :root => "root"
+    assert_response 200
+    assert_equal @response.content_type, "text/turtle"
+    assert @response.body.include?(<<-EOS)
+:root a skos:Concept;
+      skos:topConceptOf :scheme;
+      skos:prefLabel "Root"@en;
+      skos:narrower :foo;
+      skos:narrower :bar.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:foo a skos:Concept;
+     skos:prefLabel "Foo"@en.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:bar a skos:Concept;
+     skos:prefLabel "Bar"@en;
+     skos:narrower :alpha;
+     skos:narrower :bravo.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:alpha a skos:Concept;
+       skos:prefLabel "Alpha"@en.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:bravo a skos:Concept;
+       skos:prefLabel "Bravo"@en;
+       skos:narrower :uno;
+       skos:narrower :dos.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:uno a skos:Concept;
+     skos:prefLabel "Uno"@en.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:dos a skos:Concept;
+     skos:prefLabel "Dos"@en.
+    EOS
+
+    get :show, :lang => "en", :format => "ttl", :root => "lorem", :dir => "up"
+    assert_response 200
+    assert_equal @response.content_type, "text/turtle"
+    puts @response.body
+    assert @response.body.include?(<<-EOS)
+:lorem a skos:Concept;
+       skos:prefLabel "Lorem"@en;
+       skos:broader :dos.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:lorem a skos:Concept;
+       skos:prefLabel "Lorem"@en;
+       skos:broader :dos.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:dos a skos:Concept;
+     skos:prefLabel "Dos"@en;
+     skos:broader :bravo.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:bravo a skos:Concept;
+       skos:prefLabel "Bravo"@en;
+       skos:broader :bar.
+    EOS
+    assert @response.body.include?(<<-EOS)
+:bar a skos:Concept;
+     skos:prefLabel "Bar"@en.
+    EOS
+
+    # RDF/XML
+
+    get :show, :lang => "en", :format => "rdf", :root => "root"
+    assert_response 200
+    assert_equal @response.content_type, "application/xml+rdf"
   end
 
   test "root parameter handling" do
