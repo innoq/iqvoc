@@ -14,5 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class Collection::Unordered < Collection::SKOS::Base
+
+  def initialize(*args)
+    ActiveSupport::Deprecation.warn("Collection::Unordered is deprecated. Use Collection::SKOS::Unordered instead.")
+    super
+  end
+
 end

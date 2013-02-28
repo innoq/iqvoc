@@ -44,8 +44,6 @@ Rails.application.routes.draw do
     match 'untranslated_concepts/:prefix(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
 
-    match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
-
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
     get 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'

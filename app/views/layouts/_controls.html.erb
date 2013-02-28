@@ -12,7 +12,7 @@
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
         <nobr>
           <li>
-          <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), params.merge(:lang => lang),
+          <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), params.merge(:lang => lang || "none"),
               :class => ("current" if lang == I18n.locale.to_s) %>
           </li></nobr>
     <% end %>
