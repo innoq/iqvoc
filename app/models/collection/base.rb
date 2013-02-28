@@ -28,22 +28,8 @@ class Collection::Base < Concept::Base
       :foreign_key => 'collection_id',
       :dependent   => :destroy
 
-  has_many :concept_members,
-      :class_name  => 'Collection::Member::Concept',
-      :foreign_key => 'collection_id',
-      :dependent   => :destroy
-  has_many :concepts,
-      :through => :concept_members
-
-  has_many :collection_members,
-      :class_name  => 'Collection::Member::Collection',
-      :foreign_key => 'collection_id',
-      :dependent   => :destroy
-  has_many :subcollections,
-      :through => :collection_members
-
   has_many :parent_collection_members,
-      :class_name  => 'Collection::Member::Collection',
+      :class_name  => 'Collection::Member::Base',
       :foreign_key => 'target_id',
       :dependent   => :destroy
   has_many :parent_collections,
@@ -66,7 +52,12 @@ class Collection::Base < Concept::Base
 
   def self.tops
     includes(:parent_collection_members).
-        where("#{Collection::Member::Collection.table_name}.target_id IS NULL")
+        where("#{Collection::Member::Base.table_name}.target_id IS NULL")
+  end
+
+  def self.by_parent_id(parent_id)
+    includes(:parent_collection_members).
+        where(Collection::Member::Base.arel_table[:collection_id].eq(parent_id))
   end
 
   #********** Validations
@@ -74,6 +65,14 @@ class Collection::Base < Concept::Base
   validate :circular_subcollections
 
   #********** Methods
+
+  def subcollections
+    members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
+  end
+
+  def concepts
+    members.map(&:target).select { |m| !m.is_a?(::Collection::Base) }
+  end
 
   def additional_info
     concepts.count
@@ -93,11 +92,11 @@ class Collection::Base < Concept::Base
 
   def inline_member_concept_origins=(origins)
     @member_concept_origins = origins.to_s.
-      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_concept_origins
-    @member_concept_origins || concept_members.map { |m| m.concept.origin }.uniq
+    @member_concept_origins || concepts.map { |m| m.origin }.uniq
   end
 
   def inline_member_concepts
@@ -110,12 +109,12 @@ class Collection::Base < Concept::Base
 
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.
-      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collection_members.
-        map { |m| m.subcollection.origin }.uniq
+    @member_collection_origins || collections.
+        map { |m| m.origin }.uniq
   end
 
   def inline_member_collections
@@ -128,24 +127,34 @@ class Collection::Base < Concept::Base
 
   #********** Hook methods
 
-  def regenerate_concept_members
-    return if @member_concept_origins.nil? # There is nothing to do
-    concept_members.destroy_all
-    @member_concept_origins.each do |new_origin|
-      Concept::Base.by_origin(new_origin).each do |c|
-        concept_members.create!(:target_id => c.id)
+  def regenerate_members(target_class, target_origins)
+    return if target_origins.nil? # There is nothing to do
+    existing = self.members.includes(:target)
+    existing = if target_class <= Collection::Base
+      existing.select { |m| m.target.is_a?(Collection::Base) }
+    else
+      existing.reject { |m| m.target.is_a?(Collection::Base) }
+    end
+    new = []
+    target_origins.each do |new_origin|
+      member = existing.find{ |m| m.target.origin == new_origin }
+      unless member
+        c = target_class.by_origin(new_origin).first
+        member = Iqvoc::Collection.member_class.create(:collection => self, :target => c) if c
       end
+      new << member if member
+    end
+    (existing - new).each do |m|
+      m.destroy
     end
   end
 
+  def regenerate_concept_members
+    regenerate_members(Concept::Base, @member_concept_origins)
+  end
+
   def regenerate_collection_members
-    return if @member_collection_origins.nil? # There is nothing to do
-    collection_members.destroy_all
-    @member_collection_origins.each do |new_origin|
-      Iqvoc::Collection.base_class.where(:origin => new_origin).each do |c|
-        collection_members.create!(:target_id => c.id)
-      end
-    end
+    regenerate_members(Collection::Base, @member_collection_origins)
   end
 
   #******** Validation methods
@@ -154,8 +163,8 @@ class Collection::Base < Concept::Base
   # TODO: This should be a real circle detector (but still performant) or be
   # removed (seems to me like the better idea).
   def circular_subcollections
-    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
-      if subcollection.subcollections.all.include?(self)
+    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).includes(:members => :target).each do |subcollection|
+      if subcollection.subcollections.include?(self)
         errors.add(:base,
           I18n.t("txt.controllers.collections.circular_error", :label => subcollection.pref_label))
       end

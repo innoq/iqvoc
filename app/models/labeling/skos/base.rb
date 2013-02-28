@@ -54,10 +54,10 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Unordered.where(:origin => params[:collection_origin]).last
+      collection = Collection::Base.where(:origin => params[:collection_origin]).last
       if collection
         scope = scope.includes(:owner => :collection_members)
-        scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection)
+        scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
       else
         raise "Collection with Origin #{params[:collection_origin]} not found!"
       end
@@ -89,8 +89,8 @@ class Labeling::SKOS::Base < Labeling::Base
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
     predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |label|
-      rdf_subject.send(predicate_class.name.to_relation_name) << label
+    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |labeling|
+      rdf_subject.send(predicate_class.name.to_relation_name) << labeling
     end
   end
 

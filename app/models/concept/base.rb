@@ -128,7 +128,7 @@ class Concept::Base < ActiveRecord::Base
   has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base", :dependent => :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Concept", :dependent => :destroy
+  has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Base", :dependent => :destroy
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
