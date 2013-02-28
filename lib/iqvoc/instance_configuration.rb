@@ -95,6 +95,7 @@ module Iqvoc
     # populate settings caches
     # (subsequent updates will happen automatically via the respective setters)
     def initialize_cache
+      return if @settings
       # cache customized settings
       db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
       db_settings.each do |setting|
