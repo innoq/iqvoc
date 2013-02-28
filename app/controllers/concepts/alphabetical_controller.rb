@@ -39,7 +39,7 @@ class Concepts::AlphabeticalController < ConceptsController
   def find_labelings
     Iqvoc::Concept.pref_labeling_class.
       concept_published.
-      expired_ones(false).
+      concept_not_expired.
       label_begins_with(params[:prefix]).
       by_label_language(I18n.locale).
       includes(:target).
