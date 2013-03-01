@@ -23,9 +23,10 @@ class HierarchyController < ApplicationController
     direction = params[:dir] == "up" ? "up" : "down"
     depth = params[:depth].blank? ? 3 : (Float(params[:depth]).to_i rescue nil)
     include_siblings = params[:siblings] || false
+    include_unpublished = params[:published] == "0" # FIXME: requires additional AuthZ check
 
     scope = Iqvoc::Concept.base_class
-    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
+    scope = include_unpublished ? scope.editor_selectable : scope.published
 
     # validate depth parameter
     error = "invalid depth parameter" unless depth # TODO: i18n
@@ -42,6 +43,12 @@ class HierarchyController < ApplicationController
       render :status => (status || 400)
       return
     end
+
+    # caching -- NB: invalidated on any in-scope concept modifications
+    latest = scope.order("updated_at DESC").first
+    response.cache_control[:public] = !include_unpublished # XXX: this should not be necessary!?
+    stale = stale?(:etag => [latest, params], :public => !include_unpublished)
+    return unless stale
 
     # NB: order matters due to the `where` clause below
     if direction == "up"

@@ -39,6 +39,61 @@ root:
     @concepts["root"].update_attribute("top_term", true)
   end
 
+  test "caching" do
+    params = { :lang => "en", :format => "ttl", :root => "root" }
+
+    # ETag generation & cache control
+
+    get :show, params
+    etag = @response.headers["ETag"]
+    assert_response 200
+    assert etag
+    assert @response.headers["Cache-Control"].include?("public")
+
+    get :show, params
+    assert_response 200
+    assert_equal etag, @response.headers["ETag"]
+
+    get :show, params.merge(:published => "0")
+    assert_response 200
+    assert @response.headers["Cache-Control"].include?("private")
+
+    # ETag keyed on params
+
+    get :show, params.merge(:depth => 4)
+    assert_response 200
+    assert_not_equal etag, @response.headers["ETag"]
+
+    get :show, params.merge(:published => 0)
+    assert_response 200
+    assert_not_equal etag, @response.headers["ETag"]
+
+    # ETag keyed on (any in-scope) concept modification
+
+    dummy = create_concept("dummy", "Dummy", "en", false)
+    dummy.update_attribute("updated_at", Time.now + 3)
+    get :show, params
+    assert_response 200
+    assert_equal etag, @response.headers["ETag"]
+
+    dummy.update_attribute("published_at", Time.now)
+    get :show, params
+    assert_response 200
+    new_etag = @response.headers["ETag"]
+    assert_not_equal etag, new_etag
+
+    # conditional caching
+
+    @request.env["HTTP_IF_NONE_MATCH"] = new_etag
+    get :show, params
+    assert_response 304
+    assert_equal 0, @response.body.strip.length
+
+    @request.env["HTTP_IF_NONE_MATCH"] = nil
+    get :show, params
+    assert_response 200
+  end
+
   test "unsupported content type" do
     get :show, :lang => "en", :format => "N/A", :root => "root"
     assert_response 406
