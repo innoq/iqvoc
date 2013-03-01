@@ -89,7 +89,6 @@ root:
     get :show, :lang => "en", :format => "ttl", :root => "lorem", :dir => "up"
     assert_response 200
     assert_equal @response.content_type, "text/turtle"
-    puts @response.body
     assert @response.body.include?(<<-EOS)
 :lorem a skos:Concept;
        skos:prefLabel "Lorem"@en;
@@ -128,8 +127,8 @@ root:
     end
 
     get :show, :lang => "en", :format => "html", :root => "N/A"
-    assert_response 400
-    assert_equal flash[:error], "invalid root parameter"
+    assert_response 404
+    assert_equal flash[:error], "no concept matching root parameter"
     entries = css_select("ul.concept-hierarchy li")
     assert_equal entries.length, 0
 

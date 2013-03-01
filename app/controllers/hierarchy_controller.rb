@@ -33,12 +33,13 @@ class HierarchyController < ApplicationController
     error = "missing root parameter" unless root_origin # TODO: i18n
     unless error
       root_concept = scope.where(:origin => root_origin).first
-      error = "invalid root parameter" unless root_concept # TODO: i18n
+      error = [404, "no concept matching root parameter"] unless root_concept # TODO: i18n
     end
     # error handling
     if error
+      status, error = error if error.is_a? Array
       flash.now[:error] = error
-      render :status => 400
+      render :status => (status || 400)
       return
     end
 
