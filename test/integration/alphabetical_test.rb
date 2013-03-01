@@ -19,33 +19,31 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    [ {:en => "Xen1", :de => "Xde1"},
-      {:en => "Xen2"}
-    ].map do |hsh|
-      labelings = []
-      hsh.each do |lang, val|
-        labelings << FactoryGirl.create(:pref_labeling,
-            :target => FactoryGirl.create(:pref_label, :language => lang, :value => val))
-      end
-      FactoryGirl.create(:concept, :pref_labelings => labelings)
-    end
+     Iqvoc::RDFAPI.parse_triples <<-EOT
+      :c1 rdf:type skos:Concept
+      :c1 skos:prefLabel "Xen1"@en
+      :c1 skos:prefLabel "Xde1"@de
+
+      :c2 rdf:type skos:Concept
+      :c2 skos:prefLabel "Xen2"@en
+    EOT
   end
 
-  test "showing only concepts with a pref label in respective language" do
-    visit alphabetical_concepts_path(:lang => :en, :prefix => "x", :format => :html)
-    concepts = page.all("ol.concepts li")
+  test 'should only show concepts with a pref label in respective language' do
+    visit alphabetical_concepts_path(:lang => :en, :prefix => 'x', :format => :html)
+    concepts = page.all('ol.concepts li')
 
     assert_equal :en, I18n.locale
     assert_equal 2, concepts.length
-    assert_equal "Xen1", concepts[0].find("p.term").text.strip
-    assert_equal "Xen2", concepts[1].find("p.term").text.strip
+    assert_equal 'Xen1', concepts[0].find('p.term').text.strip
+    assert_equal 'Xen2', concepts[1].find('p.term').text.strip
 
-    visit alphabetical_concepts_path(:lang => :de, :prefix => "x", :format => :html)
-    concepts = page.all("ol.concepts li")
+    visit alphabetical_concepts_path(:lang => :de, :prefix => 'x', :format => :html)
+    concepts = page.all('ol.concepts li')
 
     assert_equal :de, I18n.locale
     assert_equal 1, concepts.length
-    assert_equal "Xde1", concepts[0].find("p.term").text.strip
+    assert_equal 'Xde1', concepts[0].find('p.term').text.strip
   end
 
 end

@@ -18,15 +18,18 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class TreeTest < ActionDispatch::IntegrationTest
 
-  test "browse hierarchical concepts tree" do
-    concept = FactoryGirl.create(:concept, :broader_relations => [])
-    narrower_concept = concept.relations.skos_narrower.first.target
+  test 'browse hierarchical concepts tree' do
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :foo rdf:type skos:Concept
+      :foo skos:prefLabel "Foo"@en
+      :bar rdf:type skos:Concept
+      :bar skos:prefLabel "Bar"@en
+      :foo skos:narrower :bar
+    EOT
 
     visit hierarchical_concepts_path(:lang => :de, :format => :html)
-    assert page.has_link?(concept.pref_label.to_s),
-      "Concept #{concept.pref_label} isn't visible in the hierarchical concepts list"
-    assert !page.has_content?(narrower_concept.pref_label.to_s),
-      "Narrower relation (#{narrower_concept.pref_label}) shouldn't be visible in the hierarchical concepts list"
+    assert page.has_link?('Foo'), 'Concept Foo is not visible in the hierarchical concepts list'
+    assert !page.has_content?('Bar'), 'Narrower relation (Bar) should not be visible in the hierarchical concepts list'
   end
 
 end

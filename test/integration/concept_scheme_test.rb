@@ -19,20 +19,25 @@ require 'integration_test_helper'
 class ConceptSchemeTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept = FactoryGirl.create(:concept, :broader_relations => [])
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :_0815 rdf:type skos:Concept
+      :_0815 skos:prefLabel "Xen1"@en
+      :_0815 skos:prefLabel "Xde1"@de
+      :_0815 skos:topConceptOf :scheme
+    EOT
   end
 
-  test "list top concepts in rdf scheme" do
-    visit "/scheme.ttl"
+  test 'list top concepts in rdf scheme' do
+    visit '/scheme.ttl'
 
-    assert page.has_content? ":scheme a skos:ConceptScheme"
-    assert page.has_content? "skos:hasTopConcept :#{@concept.origin}"
+    assert page.has_content? ':scheme a skos:ConceptScheme'
+    assert page.has_content? 'skos:hasTopConcept :_0815'
   end
 
-  test "top terms rdf" do
-    visit "/#{@concept.origin}.ttl"
+  test 'top terms rdf' do
+    visit '/_0815.ttl'
 
-    assert page.has_content? "skos:topConceptOf :scheme"
+    assert page.has_content? 'skos:topConceptOf :scheme'
   end
 
 end

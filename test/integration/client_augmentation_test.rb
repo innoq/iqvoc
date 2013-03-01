@@ -24,8 +24,15 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
-    @concept = FactoryGirl.create(:concept, :published_at => nil)
-    FactoryGirl.create(:concept, :published_at => nil)
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :c11880 rdf:type skos:Concept
+      :c11880 skos:prefLabel "Lorem Ypsem"@en
+
+      :c11881 rdf:type skos:Concept
+      :c11881 skos:prefLabel "Lorem Ypsem"@en
+    EOT
+
+    @concept = Iqvoc::RDFAPI.cached(:c11880)
 
     Capybara.current_driver = Capybara.javascript_driver
     DatabaseCleaner.start
@@ -36,22 +43,22 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
     Capybara.use_default_driver
   end
 
-  test "dashboard concept overview" do
-    login("administrator")
+  test 'dashboard concept overview' do
+    login 'administrator'
     visit dashboard_path(:lang => :de)
 
-    table = page.find("#content table")
+    table = page.find('#content table')
 
-    assert table.has_css?("tr", :count => 3)
-    assert table.has_css?("tr.highlightable", :count => 2)
-    assert table.has_no_css?("tr.hover")
+    assert table.has_css?('tr', :count => 3)
+    assert table.has_css?('tr.highlightable', :count => 2)
+    assert table.has_no_css?('tr.hover')
 
-    concept_row = table.all("tr")[1]
+    concept_row = table.all('tr')[1]
 
     # click row to visit concept page
     concept_row.click
     uri = URI.parse(current_url)
-    uri = "%s?%s" % [uri.path, uri.query]
+    uri = '%s?%s' % [uri.path, uri.query]
     assert_equal concept_path(@concept, :published => 0, :lang => 'de', :format => 'html'), uri
   end
 

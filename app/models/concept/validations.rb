@@ -40,7 +40,7 @@ module Concept
     # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
     def rooted_top_terms
       if @full_validation
-        if narrower_relations.includes(:target). # XXX: inefficient?
+        if narrower_relations. #.includes(:target). # XXX: inefficient?
             select { |rel| rel.target && rel.target.top_term? }.any?
           errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
         end
@@ -60,6 +60,7 @@ module Concept
 
     def unique_pref_label_language
       # We have many sources a prefLabel can be defined in
+      # XXX: why? reduce this to a single possible collection and be done with it.
       pls = pref_labelings.map(&:target) +
         send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
         labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)

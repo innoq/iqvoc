@@ -37,12 +37,15 @@ class RDFSyncTest < ActiveSupport::TestCase
 
     @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username, :view_context => @view_context)
 
-    15.times do |i|
+    Concept::Base.delete_all
+    Labeling::Base.delete_all
+    1.upto 15 do |i|
       origin = '_%05d' % i
       Iqvoc::RDFAPI.parse_triples <<-EOT
         :#{origin} rdf:type skos:Concept
         :#{origin} skos:prefLabel "Concept no. #{i}"@en
         :#{origin} skos:prefLabel "Konzept nr. #{i}"@de
+        :#{origin} skos:topConceptOf :scheme
         :#{origin} iqvoc:publishedAt "#{DateTime.now}"^^<DateTime>
       EOT
     end
@@ -51,7 +54,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     # HTTP request mocking
     @observers = [] # one per request
     WebMock.disable_net_connect!
-    WebMock.stub_request(:any, /.*example.org.*/).with do |req|
+    WebMock.stub_request(:any, /.*example\.org.*/).with do |req|
       # not using WebMock's custom assertions as those didn't seem to provide
       # sufficient flexibility
       fn = @observers.shift
@@ -66,7 +69,7 @@ class RDFSyncTest < ActiveSupport::TestCase
   teardown do
     WebMock.reset!
     WebMock.allow_net_connect!
-    raise TypeError, "unhandled request observer" unless @observers.length == 0
+    raise TypeError, 'unhandled request observer' unless @observers.length == 0
   end
 
   test 'serialization' do

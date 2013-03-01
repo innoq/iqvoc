@@ -38,4 +38,15 @@ class Concept::SKOS::Scheme
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)
   end
 
+  def self.build_from_parsed_tokens(tokens)
+    # FIXME: this is still a bit hacky....
+    if tokens[:PredicateOrigin] == 'topConceptOf'
+      Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin]).tap do |subject|
+        subject.top_term = true
+      end
+    else
+      nil
+    end
+  end
+
 end

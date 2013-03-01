@@ -55,10 +55,10 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'published concept must have a pref_label of the first pref_label language configured (the main language)' do
-    Iqvoc::RDFAPI.parse_triples <<-EOS
+    Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0820 rdf:type skos:Concept
       :c0820 skos:prefLabel "foo-en"@en
-    EOS
+    EOT
     concept = Iqvoc::RDFAPI.cached('c0820').reload
     assert_equal 1, concept.pref_labels.count
     assert concept.valid_with_full_validation?
@@ -68,11 +68,11 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concept shouldn not have more than one pref label of the same language' do
-    Iqvoc::RDFAPI.parse_triples <<-EOS
+    Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0817 rdf:type skos:Concept
       :c0817 skos:prefLabel "foo-en"@en
       :c0817 skos:prefLabel "foo-en the second"@en
-    EOS
+    EOT
     concept = Iqvoc::RDFAPI.cached('c0817')
     concept.reload
     assert_equal 2, concept.pref_labelings.count
@@ -81,37 +81,29 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concepts can have multiple preferred labels in different languages' do
-    Iqvoc::RDFAPI.parse_triples <<-EOS
+    Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0816 rdf:type skos:Concept
       :c0816 skos:prefLabel "foo-en"@en
       :c0816 skos:prefLabel "foo-de"@de
-    EOS
-    concept = Iqvoc::RDFAPI.cached('c0816')
-    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
-    concept2.pref_labels << label
-    concept2.save!
-    assert concept2.invalid_with_full_validation?
+    EOT
+    concept  = Iqvoc::RDFAPI.cached('c0816')
+    assert concept.invalid_with_full_validation?
   end
 
-  test "unique pref label" do
-    label = Label::SKOS::Base.create(:value => "foo", :language => "en")
-
-    concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
-    concept1.pref_labels << label
-    concept1.save!
+  test 'unique pref label' do
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :c0818 rdf:type skos:Concept
+      :c0818 skos:prefLabel "c0818"@en
+    EOT
+    concept1 = Iqvoc::RDFAPI.cached('c0818')
     assert concept1.valid_with_full_validation?
 
-    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
-    concept2.pref_labels << label
-    concept2.save!
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :c0819 rdf:type skos:Concept
+      :c0819 skos:prefLabel "c0819"@en
+    EOT
+    concept2 = Iqvoc::RDFAPI.cached('c0819')
     assert concept2.invalid_with_full_validation?
-  end
-
-    concept.reload
-    assert concept.valid_with_full_validation?, concept.errors.inspect
-
-    assert_equal 2, concept.pref_labels.count
-    assert_not_equal concept.pref_labels.first.language, concept.pref_labels.second.language
   end
 
   xtest 'labelings_by_text setter' do
@@ -133,55 +125,56 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'assigning labeling subtypes' do
-    Iqvoc::RDFAPI.parse_triples <<-EOS
+    Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0815 rdf:type skos:Concept
       :c0815 skos:prefLabel "foo-en"@en
       :c0815 skos:prefLabel "foo-de"@de
       :c0815 skos:altLabel "foo-bar"@en
       :c0815 skos:altLabel "foo-baz"@en
-    EOS
+    EOT
     concept = Iqvoc::RDFAPI.cached('c0815')
 
     assert_equal 4, concept.labelings.count
     assert_equal 2, concept.labelings.skos_pref_label.size
     assert_equal 2, concept.labelings.skos_alt_label.size
+  end
 
-  test "labels including commas" do
+  test 'labels including commas' do
     labels_for = lambda do |concept, type|
         type.includes(:target).where(:owner_id => concept.id).
             map { |ln| ln.target.value }
     end
 
     form_data = {
-      "labelings_by_text" => {
-        "labeling_skos_pref_labels" => { "en" => "lipsum" },
-        "labeling_skos_alt_labels" => { "en" => "foo, bar" }
+      'labelings_by_text' => {
+        'labeling_skos_pref_labels' => { 'en' => 'lipsum' },
+        'labeling_skos_alt_labels' => { 'en' => 'foo, bar' }
       }
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
-    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
-    assert_equal "lipsum",
-        concept.labelings_by_text("labeling_skos_pref_labels", "en")
-    assert_equal ["foo", "bar"],
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal 'lipsum',
+        concept.labelings_by_text('labeling_skos_pref_labels', 'en')
+    assert_equal ['foo', 'bar'],
         labels_for.call(concept, Labeling::SKOS::AltLabel)
-    assert_equal "foo, bar",
-        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+    assert_equal 'foo, bar',
+        concept.labelings_by_text('labeling_skos_alt_labels', 'en')
 
     form_data = {
-      "labelings_by_text" => {
-        "labeling_skos_pref_labels" => { "en" => "lipsum" },
-        "labeling_skos_alt_labels" => { "en" => 'lorem, "foo, bar", ipsum' }
+      'labelings_by_text' => {
+        'labeling_skos_pref_labels' => { 'en' => 'lipsum' },
+        'labeling_skos_alt_labels' => { 'en' => 'lorem, "foo, bar", ipsum' }
       }
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
 
-    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
-    assert_equal "lipsum",
-        concept.labelings_by_text("labeling_skos_pref_labels", "en")
-    assert_equal ["lorem", "foo, bar", "ipsum"],
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal 'lipsum',
+        concept.labelings_by_text('labeling_skos_pref_labels', 'en')
+    assert_equal ['lorem', 'foo, bar', 'ipsum'],
         labels_for.call(concept, Labeling::SKOS::AltLabel)
     assert_equal 'lorem, "foo, bar", ipsum',
-        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+        concept.labelings_by_text('labeling_skos_alt_labels', 'en')
   end
 
 end

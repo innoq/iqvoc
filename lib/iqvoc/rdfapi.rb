@@ -84,7 +84,8 @@ module Iqvoc
     # Ex: 'skos:prefLabel' => Labeling::SKOS::PrefLabel
     internal_mapping = {
       'rdf:type'          => ObjectInstanceBuilder,
-      'iqvoc:publishedAt' => ObjectPublisher
+      'iqvoc:publishedAt' => ObjectPublisher,
+      'skos:topConceptOf' => ::Concept::SKOS::Scheme
     }
     PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject(internal_mapping) do |hash, klass|
       hash[klass.rdf_internal_name] = klass
@@ -102,7 +103,7 @@ module Iqvoc
       if target
         target.build_from_parsed_tokens(parsed_triple_data)
       else
-        puts "ERR: #{parsed_triple_data[:Predicate]} maps to no target"
+        Rails.logger.warn "ERR: #{parsed_triple_data[:Predicate]} maps to no target"
       end
     end
 
@@ -122,7 +123,11 @@ module Iqvoc
           yield triple
         else
           result = self.eat(line)
-          result.save or puts "ERROR saving triple: #{result.errors.inspect}"
+          if result.respond_to? :save
+            result.save or raise "ERROR saving triple: #{result.errors.inspect}"
+          else
+            raise "result must respond to save. Was: #{result}; Triple: #{line}"
+          end
         end
       end
     end
@@ -132,7 +137,7 @@ module Iqvoc
       if result
         self.eat(result)
       else
-        puts "#{str.inspect} is not a valid triple line."
+        Rails.logger.warn "#{str.inspect} is not a valid triple line."
         nil
       end
     end
