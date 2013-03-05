@@ -70,13 +70,17 @@ root:
 
     # ETag keyed on (any in-scope) concept modification
 
+    t0 = Time.now
+    t1 = Time.now + 30
+
     dummy = create_concept("dummy", "Dummy", "en", false)
-    dummy.update_attribute("updated_at", Time.now + 3)
+    dummy.update_attribute("updated_at", t1)
     get :show, params
     assert_response 200
     assert_equal etag, @response.headers["ETag"]
 
-    dummy.update_attribute("published_at", Time.now)
+    dummy.update_attribute("published_at", t0)
+    dummy.update_attribute("updated_at", t1)
     get :show, params
     assert_response 200
     new_etag = @response.headers["ETag"]
