@@ -42,19 +42,22 @@ class Concept::Base < ActiveRecord::Base
     # for use with widgets etc.
 
     # Inline assigned SKOS::Labels
-    # @labelings_by_text # => {'relation_name' => {'lang' => 'label1, label2, ...'}}
-    (@labelings_by_text ||= {}).each do |relation_name, lang_values|
-      relation_name = relation_name.to_s
-      reflection = self.class.reflections.stringify_keys[relation_name]
-      labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
-      if labeling_class && labeling_class < Labeling::Base
-        self.send(relation_name).all.map(&:destroy)
-        lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
-        lang_values.each do |lang, inline_values|
-          lang = nil if lang.to_s == 'none'
-          Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
-            value.squish!
-            self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+    # @labelings_by_text # => {'skos:altLabel' => {'lang' => 'label1, label2, ...'}}
+    (@labelings_by_text ||= {}).each do |rdf_name, lang_values|
+      labeling_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_name]
+      self.labelings.for_class(labeling_class).each do |lbl|
+        self.labelings.delete(lbl.destroy)
+      end
+
+      lang_values.each do |lang, inline_values|
+        lang = nil if lang.to_s == 'none'
+        Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
+          value.squish!
+          unless value.blank?
+            label = labeling_class.label_class.new(:value => value, :language => lang)
+            labeling_class.new(:owner => self, :target => label).tap do |labeling|
+              self.labelings << labeling
+            end
           end
         end
       end
@@ -138,7 +141,7 @@ class Concept::Base < ActiveRecord::Base
   # Broader -- NOTE: read-only!
   def broader_relations
     ActiveSupport::Deprecation.warn 'this function will be removed'
-    self.relations.skos_broader
+    self.relations.for_class(Iqvoc::Concept.broader_relation_class)
   end
 
   def broader_relations=(foo)
@@ -149,7 +152,7 @@ class Concept::Base < ActiveRecord::Base
   # Narrower -- NOTE: read-only!
   def narrower_relations
     ActiveSupport::Deprecation.warn 'this function will be removed'
-    self.relations.skos_narrower
+    self.relations.for_class(Iqvoc::Concept.broader_relation_class)
   end
 
   def narrower_relations=(foo)
@@ -159,29 +162,20 @@ class Concept::Base < ActiveRecord::Base
 
   # *** Labels/Labelings
 
-  has_many :pref_labelings,
-    :foreign_key => 'owner_id',
-    :class_name  => Iqvoc::Concept.pref_labeling_class_name
+  def pref_labelings
+    self.labelings.for_class(Iqvoc::Concept.pref_labeling_class_name)
+  end
 
-  has_many :pref_labels,
-    :through => :pref_labelings,
-    :source  => :target
+  def pref_labelings=(*args)
+    raise NotImplementedError
+  end
 
-  Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
-    has_many labeling_class_name.to_relation_name,
-      :foreign_key => 'owner_id',
-      :class_name  => labeling_class_name
+  def pref_labels
+    self.pref_labelings.map(&:target)
+  end
 
-    # Only clone superclass relations
-    unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
-      # When a Label has only one labeling (the "no skosxl" case) we'll have to
-      # clone the label too.
-      if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
-        include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
-      else
-        include_to_deep_cloning(labeling_class_name.to_relation_name)
-      end
-    end
+  def pref_labels=(*args)
+    raise NotImplementedError
   end
 
   # *** Matches (pointing to an other thesaurus)
@@ -241,7 +235,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def self.broader_tops
-    includes(:narrower_relations, :pref_labels).
+    includes(:relations, :labels).
     where(:concept_relations => { :id => nil },
       :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
     order("LOWER(#{Label::Base.table_name}.value)")
@@ -254,7 +248,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def self.with_pref_labels
-    includes(:pref_labels).
+    includes(:labels).
     order("LOWER(#{Label::Base.table_name}.value)").
     where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
   end
@@ -322,7 +316,7 @@ class Concept::Base < ActiveRecord::Base
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
     lang = I18n.locale.to_s == "none" ? nil : I18n.locale.to_s
-    @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
+    @cached_pref_labels ||= self.pref_labels.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
       end
@@ -330,9 +324,9 @@ class Concept::Base < ActiveRecord::Base
     end
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
-      @cached_pref_labels[lang] = pref_labels.select{ |l|
+      @cached_pref_labels[lang] = self.pref_labels.find do |l|
           l.language.to_s == Iqvoc::Concept.pref_labeling_languages.first.to_s
-      }.first
+      end
     end
     @cached_pref_labels[lang]
   end
@@ -340,7 +334,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
-    if lang == "none"
+    if lang == 'none'
       lang = nil
     elsif lang
       lang = lang.to_s

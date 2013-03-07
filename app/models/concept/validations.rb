@@ -30,8 +30,8 @@ module Concept
     # top term and broader relations are mutually exclusive
     def exclusive_top_term
       if @full_validation
-        if top_term && broader_relations.any?
-          errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
+        if top_term and broader_relations.any?
+          errors.add :base, I18n.t('txt.models.concept.top_term_exclusive_error')
         end
       end
     end
@@ -40,36 +40,31 @@ module Concept
     # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
     def rooted_top_terms
       if @full_validation
-        if narrower_relations. #.includes(:target). # XXX: inefficient?
-            select { |rel| rel.target && rel.target.top_term? }.any?
-          errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
+        if self.narrower_relations.map(&:target).compact.any?(&:top_term?)
+          errors.add :base, I18n.t('txt.models.concept.top_term_rooted_error')
         end
       end
     end
 
     def pref_label_in_primary_thesaurus_language
       if @full_validation
-        labels = pref_labels.select{|l| l.published?}
-        if labels.count == 0
-          errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
-        elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-          errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
+        labels = pref_labels.select(&:published?)
+        primary_language = Iqvoc::Concept.pref_labeling_languages.first.to_s
+        if labels.empty?
+          errors.add :base, I18n.t('txt.models.concept.no_pref_label_error')
+        elsif not labels.find {|l| l.language.to_s == primary_language }
+          errors.add :base, I18n.t('txt.models.concept.main_pref_label_language_missing_error')
         end
       end
     end
 
     def unique_pref_label_language
-      # We have many sources a prefLabel can be defined in
-      # XXX: why? reduce this to a single possible collection and be done with it.
-      pls = pref_labelings.map(&:target) +
-        send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
-        labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
       languages = {}
-      pls.compact.each do |pref_label|
-        lang = pref_label.language.to_s
+      self.pref_labels.each do |pref_label|
+        lang   = pref_label.language.to_s
         origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
-        if (languages.keys.include?(lang) && languages[lang] != origin)
-          errors.add :pref_labelings, I18n.t("txt.models.concept.pref_labels_with_same_languages_error")
+        if languages.keys.include?(lang) and languages[lang] != origin
+          errors.add :pref_labelings, I18n.t('txt.models.concept.pref_labels_with_same_languages_error')
         end
         languages[lang] = origin
       end

@@ -4,8 +4,15 @@ module Concept
       if proxy_association.target.empty?
         proxy_association.target = proxy_association.owner.labelings.all
       end
-      proxy_association.target.select{|assoc| assoc.is_a? labeling_class}
+      proxy_association.target.select{|assoc| assoc.type.to_s == labeling_class.to_s}
     end
+
+#     def for_rdf_class(rdf_class)
+#       if proxy_association.target.empty?
+#         proxy_association.target = proxy_association.owner.labelings.all
+#       end
+#       proxy_association.target.select{|assoc| assoc.implements_rdf? rdf_class}
+#     end
 
     def available_names
       ['skos_pref_label'] + Iqvoc::Concept.labeling_class_names.map{|name, rest| name.constantize.relation_name}
@@ -26,7 +33,6 @@ module Concept
       end
 
       define_method "#{relation_name}=" do |labelings|
-#         assign_for_class labeling_class, labelings
         raise "don't do this!"
       end
     end
