@@ -28,7 +28,7 @@ class HygieneTest < ActiveSupport::TestCase
 
   def assert_no_occurrence(pattern, error_message, extended=false)
     extra_options = extended ? "E" : ""
-    lines = `git grep -In#{extra_options} '#{pattern}' | grep -v '^vendor/'`
+    lines = `git grep -In#{extra_options} '#{pattern}' | grep -v \^vendor --exclude=\test/files`
     assert_not_equal 0, $?.to_i, "#{error_message}:\n#{lines}"
   end
 
