@@ -58,15 +58,15 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
         "'#{@concepts[1].origin} a skos:Concept' missing in turtle view"
   end
 
-  test "showing concept expired view" do
-    #prepare database with expired concept
-    concepts = [
-        [:en, "Method"],
-        [:de, "Methode"]
-    ].map { |lang, text|
-      FactoryGirl.create(:concept, :expired_at => Time.now - 2.days, :pref_labelings => [FactoryGirl.create(:pref_labeling,
-                                                                          :target => FactoryGirl.create(:pref_label, :language => lang, :value => text))])
-    }
+  test "showing expired concepts" do
+    # prepare database with expired concept
+    concepts = [[:en, "Method"], [:de, "Methode"]].map do |lang, text|
+      FactoryGirl.create(:concept,
+        :expired_at => 2.days.ago,
+        :pref_labelings => [
+          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label, :language => lang, :value => text))
+        ])
+    end
 
     visit hierarchical_concepts_path(:lang => 'en')
     click_link_or_button('Expired')
