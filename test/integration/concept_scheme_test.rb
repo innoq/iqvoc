@@ -19,11 +19,13 @@ require 'integration_test_helper'
 class ConceptSchemeTest < ActionDispatch::IntegrationTest
 
   setup do
+    DatabaseCleaner.start
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :_0815 rdf:type skos:Concept
       :_0815 skos:prefLabel "Xen1"@en
       :_0815 skos:prefLabel "Xde1"@de
       :_0815 skos:topConceptOf :scheme
+      :_0815 iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
     EOT
   end
 

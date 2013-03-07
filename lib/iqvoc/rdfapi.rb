@@ -30,6 +30,10 @@ module Iqvoc
       # FIXME: yepp, this is not thread safe -- fix this later.
       @@lookup_by_origin = {}
 
+      def self.clear_cache!
+        @@lookup_by_origin = {}
+      end
+
       def self.by_origin(origin, klass = nil)
         @@lookup_by_origin[origin.to_s] ||= begin
           thing = (klass || ::Concept::Base).find_by_origin(origin)
@@ -87,6 +91,7 @@ module Iqvoc
       'iqvoc:publishedAt' => ObjectPublisher,
       'skos:topConceptOf' => ::Concept::SKOS::Scheme
     }
+
     PREDICATE_DICTIONARY = SECOND_LEVEL_OBJECT_CLASSES.inject(internal_mapping) do |hash, klass|
       hash[klass.rdf_internal_name] = klass
       hash
@@ -94,6 +99,10 @@ module Iqvoc
 
     def self.cached(origin)
       ObjectInstanceBuilder.by_origin(origin)
+    end
+
+    def self.clear_cache!
+      ObjectInstanceBuilder.clear_cache!
     end
 
     # take an internal canonical triple and devour it
@@ -117,6 +126,7 @@ module Iqvoc
     # If you want to import generic N-Triples (With complete URIs instead of just namesoaces),
     # use RDFAPI.parse_nt.
     def self.parse_triples(io_or_string)
+      ObjectInstanceBuilder.clear_cache!
       parser = CanonicalTripleParser.new(io_or_string)
       parser.each_valid_triple do |line|
         if block_given?

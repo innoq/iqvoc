@@ -20,6 +20,7 @@ API = Iqvoc::RDFAPI
 
 class CollectionCircularityTest < ActionDispatch::IntegrationTest
   setup do
+    DatabaseCleaner.start
     API.parse_triples <<-EOT
       :coll1 rdf:type skos:Collection
       :coll1 skos:prefLabel "Collection 1"@en

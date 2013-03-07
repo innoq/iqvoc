@@ -23,24 +23,39 @@ module ActionController
 
     Capybara.javascript_driver = :webkit
 
+    setup do
+      DatabaseCleaner.start
+    end
+
+    teardown do
+      DatabaseCleaner.clean
+    end
+
     def login(role = nil)
       logout
       user(role)
       visit new_user_session_path(:lang => :de)
-      fill_in "E-Mail", :with => user.email
-      fill_in "Passwort", :with => user.password
-      click_button "Anmelden"
+      fill_in 'E-Mail', :with => user.email
+      fill_in 'Passwort', :with => user.password
+      click_button 'Anmelden'
     end
 
     def logout
       visit dashboard_path(:lang => :de)
-      click_link_or_button "Abmelden" if page.has_link?("Abmelden")
+      click_link_or_button 'Abmelden' if page.has_link?('Abmelden')
       @user.try(:destroy)
       @user = nil
     end
 
     def user(role = nil)
-      @user ||= FactoryGirl.create(:user, :role => (role || User.default_role))
+      @user ||= User.create \
+          :role      => (role || User.default_role),
+          :forename  => 'Test',
+          :surname   => 'User',
+          :email     => 'testuser@iqvoc.local',
+          :active    => true,
+          :password  => 'omgomgomg',
+          :password_confirmation => 'omgomgomg'
     end
 
   end

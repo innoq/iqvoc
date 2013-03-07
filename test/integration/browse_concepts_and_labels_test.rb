@@ -19,25 +19,27 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   setup do
-    Labeling::Base.delete_all
-    Concept::Base.delete_all
-
+    DatabaseCleaner.start
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :tree rdf:type skos:Concept
       :tree skos:prefLabel "Tree"@en
       :tree skos:topConceptOf :scheme
+      :tree iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :baum rdf:type skos:Concept
       :baum skos:prefLabel "Baum"@de
       :baum skos:topConceptOf :scheme
+      :baum iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :forest rdf:type skos:Concept
       :forest skos:prefLabel "Forest"@en
       :forest skos:topConceptOf :scheme
+      :forest iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :forst rdf:type skos:Concept
-      :forst skos:prefLabel "Forst"@en
+      :forst skos:prefLabel "Forst"@de
       :forst skos:topConceptOf :scheme
+      :forst iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
     EOT
   end
 
@@ -52,10 +54,10 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
     letter = 'F' # => Only the "Forest" should show up in the english version
     visit alphabetical_concepts_path(:lang => 'en', :prefix => letter, :format => :html)
-    assert page.has_link?('Forest')
-    assert !page.has_link?('Forst')
-    assert !page.has_link?('Tree')
-    assert !page.has_link?('Baum')
+    assert page.has_link?('Forest'), 'page should have Forest'
+    assert !page.has_link?('Forst'), 'page should not have Forst'
+    assert !page.has_link?('Tree'), 'page should not have Tree'
+    assert !page.has_link?('Baum'), 'page should not have Baum'
   end
 
   test 'showing a concept page' do

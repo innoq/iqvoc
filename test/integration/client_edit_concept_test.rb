@@ -15,35 +15,34 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'database_cleaner'
-
-DatabaseCleaner.strategy = :truncation
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
-  self.use_transactional_fixtures = false
-
   setup do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :concept1 rdf:type skos:Concept
       :concept1 skos:prefLabel "Concept 1"@en
       :concept1 skos:prefLabel "Konzept 1"@de
+      :concept1 iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
     EOT
 
     Capybara.current_driver = Capybara.javascript_driver
-    DatabaseCleaner.start
   end
 
   teardown do
     DatabaseCleaner.clean
+    DatabaseCleaner.strategy = :transaction
     Capybara.use_default_driver
   end
 
-  test "dynamic addition of notes" do
-    login("administrator")
+  test 'dynamic addition of notes' do
+    login('administrator')
 
     # concept edit view
-    visit concept_path('concept1', :lang => 'de', :format => "html")
+    visit concept_path('concept1', :lang => 'de', :format => 'html')
     click_link_or_button('Neue Version erstellen')
     assert page.has_css?('#edit_concept')
 

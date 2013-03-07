@@ -19,41 +19,56 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ConceptTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept1 = FactoryGirl.create(:concept, :narrower_relations => [])
-    @concept2 = FactoryGirl.create(:concept, :narrower_relations => [])
-    @concept3 = FactoryGirl.create(:concept, :narrower_relations => [])
+    DatabaseCleaner.start
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :foo rdf:type skos:Concept
+      :foo skos:prefLabel "Foo"@en
+      :foo iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
+
+      :bar rdf:type skos:Concept
+      :bar skos:prefLabel "Bar"@en
+      :bar iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
+
+      :baz rdf:type skos:Concept
+      :baz skos:prefLabel "Baz"@en
+      :baz iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
+    EOT
+
+    @concept1 = Iqvoc::RDFAPI.cached(:foo)
+    @concept2 = Iqvoc::RDFAPI.cached(:bar)
+    @concept3 = Iqvoc::RDFAPI.cached(:baz)
   end
 
-  test "showing published concept" do
-    visit "/en/concepts/#{@concept1.origin}.html"
+  test 'showing published concept' do
+    visit '/en/concepts/foo.html'
     assert page.has_content?("#{@concept1.pref_label}")
   end
 
-  test "persisting inline relations" do
-    login "administrator"
+  test 'persisting inline relations' do
+    login 'administrator'
 
-    visit new_concept_path(:lang => "en", :format => "html", :published => 0)
-    fill_in "concept_relation_skos_relateds",
+    visit new_concept_path(:lang => 'en', :format => 'html', :published => 0)
+    fill_in 'concept_relation_skos_relateds',
         :with => "#{@concept1.origin},#{@concept2.origin},"
-    click_button "Save"
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
-    assert page.has_css?("#concept_relation_skos_relateds a", :count => 2)
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
+    assert page.has_css?('#concept_relation_skos_relateds a', :count => 2)
 
-    click_link_or_button I18n.t("txt.views.versioning.to_edit_mode")
-    fill_in "concept_relation_skos_relateds", :with => ""
-    click_button "Save"
+    click_link_or_button I18n.t('txt.views.versioning.to_edit_mode')
+    fill_in 'concept_relation_skos_relateds', :with => ''
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
-    assert page.has_no_css?("#concept_relation_skos_relateds a")
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.update_success')
+    assert page.has_no_css?('#concept_relation_skos_relateds a')
 
-    click_link_or_button I18n.t("txt.views.versioning.edit_mode")
-    fill_in "concept_relation_skos_relateds",
+    click_link_or_button I18n.t('txt.views.versioning.edit_mode')
+    fill_in 'concept_relation_skos_relateds',
         :with => "#{@concept1.origin}, #{@concept2.origin}, #{@concept3.origin}"
-    click_button "Save"
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
-    assert page.has_css?("#concept_relation_skos_relateds a", :count => 3)
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.update_success')
+    assert page.has_css?('#concept_relation_skos_relateds a', :count => 3)
   end
 
 end

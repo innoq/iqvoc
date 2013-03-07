@@ -22,8 +22,13 @@ class TreeTest < ActionDispatch::IntegrationTest
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :foo rdf:type skos:Concept
       :foo skos:prefLabel "Foo"@en
+      :foo skos:topConceptOf :scheme
+      :foo iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
+
       :bar rdf:type skos:Concept
       :bar skos:prefLabel "Bar"@en
+      :bar iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
+
       :foo skos:narrower :bar
     EOT
 

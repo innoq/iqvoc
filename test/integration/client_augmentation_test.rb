@@ -15,31 +15,27 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'database_cleaner'
-
-DatabaseCleaner.strategy = :truncation
 
 class ClientAugmentationTest < ActionDispatch::IntegrationTest
 
-  self.use_transactional_fixtures = false
-
   setup do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c11880 rdf:type skos:Concept
-      :c11880 skos:prefLabel "Lorem Ypsem"@en
+      :c11880 skos:prefLabel "Lorem Ypsem"@de
 
       :c11881 rdf:type skos:Concept
-      :c11881 skos:prefLabel "Lorem Ypsem"@en
+      :c11881 skos:prefLabel "Lorem Ypsem"@de
     EOT
 
-    @concept = Iqvoc::RDFAPI.cached(:c11880)
-
     Capybara.current_driver = Capybara.javascript_driver
-    DatabaseCleaner.start
   end
 
   teardown do
     DatabaseCleaner.clean
+    DatabaseCleaner.strategy = :transaction
     Capybara.use_default_driver
   end
 
@@ -59,7 +55,7 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
     concept_row.click
     uri = URI.parse(current_url)
     uri = '%s?%s' % [uri.path, uri.query]
-    assert_equal concept_path(@concept, :published => 0, :lang => 'de', :format => 'html'), uri
+    assert_equal concept_path('c11880', :published => 0, :lang => 'de', :format => 'html'), uri
   end
 
 end

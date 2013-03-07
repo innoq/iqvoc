@@ -67,7 +67,6 @@ group :test do
   gem 'capybara-screenshot'
   gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'spork'
   gem 'spork-testunit'
   gem 'turn'

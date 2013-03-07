@@ -19,20 +19,22 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class SearchTest < ActionDispatch::IntegrationTest
 
   setup do
+    DatabaseCleaner.start
     @pagination_setting = Kaminari.config.default_per_page
     Kaminari.config.default_per_page = 5
-    Labeling::Base.delete_all
-    Concept::Base.delete_all
 
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :tree rdf:type skos:Concept
       :tree skos:prefLabel "Tree"@en
+      :tree iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :forest rdf:type skos:Concept
       :forest skos:prefLabel "Forest"@en
+      :forest iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :alpha rdf:type skos:Collection
       :alpha skos:prefLabel "Alpha"@en
+      :alpha iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
       :alpha skos:member :tree
       :alpha skos:member :forest
     EOT
@@ -41,6 +43,7 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   teardown do
+    DatabaseCleaner.clean
     Kaminari.config.default_per_page = @pagination_setting
   end
 
@@ -75,7 +78,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     find('#t').select 'Labels'
     find('#qt').select 'contains'
     fill_in 'Search term(s)', :with => 'Alpha'
-    click_button("Search")
+    click_button('Search')
     assert page.has_css?('#search_results dt', :count => 1)
 
     choose 'Concepts'
@@ -87,7 +90,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?('#search_results dt')
   end
 
-  test "searching within collections" do
+  test 'searching within collections' do
     visit search_path(:lang => 'en', :format => 'html')
 
     find('#t').select 'Labels'
@@ -118,7 +121,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     visit xml_uri
     assert page.source.include?('forest')
-    assert page.source.include?("<skos:prefLabel xml:lang=\"en\">#{@concepts[1].to_s}</skos:prefLabel>")
+    assert page.source.include?('<skos:prefLabel xml:lang="en">Forest</skos:prefLabel>')
   end
 
   test 'searching specific classes within collections' do
@@ -126,6 +129,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       :lorem rdf:type skos:Concept
       :lorem skos:prefLabel "Lorem of the Ipsum"@en
       :lorem skos:example "lorem ipsum"@en
+      :lorem iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
     EOT
 
     visit search_path(:lang => 'en', :format => 'html')
@@ -170,8 +174,9 @@ class SearchTest < ActionDispatch::IntegrationTest
     # create a "large" number of concepts
     12.times do |i|
       Iqvoc::RDFAPI.parse_triples <<-EOT
-        :monkey rdf:type skos:Concept
-        :monkey skos:prefLabel "sample_#{sprintf('_%04d', i + 1)}"@en
+        :_#{i} rdf:type skos:Concept
+        :_#{i} skos:prefLabel "sample_#{sprintf('_%04d', i + 1)}"@en
+        :_#{i} iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
       EOT
     end
 

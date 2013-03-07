@@ -19,8 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    Labeling::Base.delete_all
-    Concept::Base.delete_all
+    DatabaseCleaner.start
 
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c1 rdf:type skos:Concept

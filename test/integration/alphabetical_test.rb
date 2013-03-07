@@ -19,13 +19,16 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-     Iqvoc::RDFAPI.parse_triples <<-EOT
+    DatabaseCleaner.start
+    Iqvoc::RDFAPI.parse_triples <<-EOT
       :c1 rdf:type skos:Concept
       :c1 skos:prefLabel "Xen1"@en
       :c1 skos:prefLabel "Xde1"@de
+      :c1 iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
 
       :c2 rdf:type skos:Concept
       :c2 skos:prefLabel "Xen2"@en
+      :c2 iqvoc:publishedAt "#{2.days.ago}"^^<DateTime>
     EOT
   end
 

@@ -16,9 +16,10 @@
 
 require 'rubygems'
 require 'spork'
+require 'database_cleaner'
 
 Spork.prefork do
-  ENV["RAILS_ENV"] = "test"
+  ENV['RAILS_ENV'] = 'test'
   require File.expand_path('../../config/environment', __FILE__)
   require 'rails/test_help'
   require 'webmock'
@@ -28,8 +29,19 @@ end
 Spork.each_run do
 end
 
+DatabaseCleaner.strategy = :transaction
+
 class ActiveSupport::TestCase
   def self.xtest(name)
     puts "not running #{name}: is deliberately commented out"
   end
+
+  setup do
+    DatabaseCleaner.start
+  end
+
+  teardown do
+    DatabaseCleaner.clean
+  end
 end
+
