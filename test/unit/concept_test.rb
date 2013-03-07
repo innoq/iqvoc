@@ -83,8 +83,6 @@ class ConceptTest < ActiveSupport::TestCase
   test 'concepts can have multiple preferred labels in different languages' do
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0816 rdf:type skos:Concept
-      :c0816 skos:prefLabel "foo-en"@en
-      :c0816 skos:prefLabel "foo-de"@de
     EOT
     concept  = Iqvoc::RDFAPI.cached('c0816')
     assert concept.invalid_with_full_validation?
@@ -100,7 +98,7 @@ class ConceptTest < ActiveSupport::TestCase
 
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0819 rdf:type skos:Concept
-      :c0819 skos:prefLabel "c0819"@en
+      :c0819 skos:prefLabel "c0818"@en
     EOT
     concept2 = Iqvoc::RDFAPI.cached('c0819')
     assert concept2.invalid_with_full_validation?

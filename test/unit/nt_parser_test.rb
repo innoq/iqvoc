@@ -20,7 +20,7 @@ require 'iqvoc/rdfapi/nt_parser'
 class NTParserTest < ActiveSupport::TestCase
 
   test 'should parse W3C test cases without error' do
-    test_triples = File.open('test/test.nt')
+    test_triples = File.open('test/files/test.nt')
     parser = Iqvoc::RDFAPI::NTParser.new(test_triples, 'http://example.org/')
     parser.each_valid_line do |matchdata|
       assert matchdata
