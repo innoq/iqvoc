@@ -68,7 +68,7 @@ class APITest < ActiveSupport::TestCase
     assert_equal 'en', labeling.target.language
     assert_equal 'Foo Bar', labeling.target.value
     assert labeling.save
-    assert_equal 'Foo Bar', foobar.pref_labels.find_by_language('en').value
+    assert_equal 'Foo Bar', foobar.pref_labels.find{|l| l.language == 'en'}.value
   end
 
   test 'should set pref label using multiline string' do
@@ -84,8 +84,8 @@ class APITest < ActiveSupport::TestCase
     assert_not_nil concept
 
     assert concept.pref_labels
-    assert_equal 'Foo Bar', concept.pref_labels.find_by_language('en').value
-    assert_equal 'Föö Bär', concept.pref_labels.find_by_language('de').value
+    assert_equal 'Foo Bar', concept.pref_labels.find{|l| l.language == 'en'}.value
+    assert_equal 'Föö Bär', concept.pref_labels.find{|l| l.language == 'de'}.value
   end
 
   test 'should set alt label using string' do

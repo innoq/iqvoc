@@ -5,7 +5,7 @@ module WidgetHelper
   end
 
   def widget_values_ranked(concept, relation_class)
-    concepts_with_ranks = concept.concept_relations_by_id_and_rank(relation_class.name.to_relation_name)
+    concepts_with_ranks = concept.relations.by_id_and_rank(relation_class)
     concepts_with_ranks.map { |concept, rank| "#{concept.origin}:#{rank}" }.join(Iqvoc::InlineDataHelper::JOINER)
   end
 
@@ -30,7 +30,7 @@ module WidgetHelper
       editor_selectable.
       by_origin(origins)
 
-    concepts_with_ranks = concept.concept_relations_by_id_and_rank(relation_class.name.to_relation_name)
+    concepts_with_ranks = concept.relations.by_id_and_rank(relation_class)
 
     concepts = concepts_with_ranks.reject { |k, v| !allowed_concepts.include?(k) }
     concepts.map { |c, r| concept_widget_data(c, r) }.to_json

@@ -80,7 +80,7 @@ class Concept::Base < ActiveRecord::Base
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
       new_origins = new_origins.each_with_object({}) do |e, hsh|
-        key, value = e.split(":") # NB: defaults to nil if no rank is provided
+        key, value = e.split(':') # NB: defaults to nil if no rank is provided
         hsh[key] = value
       end
 
@@ -105,7 +105,7 @@ class Concept::Base < ActiveRecord::Base
     if concept.origin.blank?
       raise "Concept::Base#after_save (generate origin): Unable to set the origin by id!" unless concept.id
       concept.reload
-      concept.origin = sprintf("_%08d", concept.id)
+      concept.origin = sprintf('_%08d', concept.id)
       concept.save! # On exception the complete save transaction will be rolled back
     end
   end
@@ -299,14 +299,15 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def concept_relations_by_id(relation_name)
+    ActiveSupport::Deprecation.warn 'please call concept.relations.by_id(relation_name) in the future'
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
       self.send(relation_name).map { |l| l.target.origin }.
       join(Iqvoc::InlineDataHelper::JOINER)
   end
 
-  def concept_relations_by_id_and_rank(relation_name)
-    self.send(relation_name).each_with_object({}) { |rel, hsh| hsh[rel.target] = rel.rank }
-    # self.send(relation_name).map { |l| "#{l.target.origin}:#{l.rank}" }
+  def concept_relations_by_id_and_rank(class_name)
+    ActiveSupport::Deprecation.warn 'please call concept.relations.by_id_and_rank(relation_name) in the future'
+    self.relations.by_id_and_rank(class_name)
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
