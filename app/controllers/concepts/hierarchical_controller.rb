@@ -25,6 +25,9 @@ class Concepts::HierarchicalController < ConceptsController
       Iqvoc::Concept.base_class.published
     end
 
+    #collect only the not expired concepts
+    scope = scope.not_expired
+
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]
     if root_id && root_id =~ /\d+/
