@@ -69,7 +69,7 @@ module Iqvoc
 
     # retrieve individual setting, using default value as fallback
     def [](key)
-      initialize_cache # relying on ActiveRecord query cache -- XXX: inefficient (caching doesn't include processing/indexing)
+      initialize_cache if @settings.blank?
       return @settings[key]
     end
 
