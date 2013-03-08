@@ -93,7 +93,7 @@ root:
     assert_response 304
     assert_equal 0, @response.body.strip.length
 
-    @request.env["HTTP_IF_NONE_MATCH"] = nil
+    @request.env["HTTP_IF_NONE_MATCH"] = "dummy"
     get :show, params
     assert_response 200
   end

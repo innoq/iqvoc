@@ -47,9 +47,8 @@ class HierarchyController < ApplicationController
     # caching -- NB: invalidated on any in-scope concept modifications
     latest = scope.maximum(:updated_at)
     response.cache_control[:public] = !include_unpublished # XXX: this should not be necessary!?
-    stale = stale?(:etag => [latest, params], :last_modified => latest,
+    return unless stale?(:etag => [latest, params], :last_modified => latest,
         :public => !include_unpublished)
-    return unless stale
 
     # NB: order matters due to the `where` clause below
     if direction == "up"
