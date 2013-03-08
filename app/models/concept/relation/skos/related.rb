@@ -16,6 +16,6 @@
 
 class Concept::Relation::SKOS::Related < Concept::Relation::SKOS::Base
 
-  self.rdf_predicate = 'related'
+  acts_as_rdf_predicate 'skos:related'
 
 end
