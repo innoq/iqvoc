@@ -14,10 +14,10 @@ module Iqvoc
           :first_level_class_configuration_modules,
           :ability_class_name,
           :navigation_items,
-          :lang_routes,
+          :localized_routes,
           :core_assets
 
-        self.lang_routes = [] # extensibility hook for language-dependent routes
+        self.localized_routes = [] # routing extensibility hook
 
         self.navigation_items = [
           {

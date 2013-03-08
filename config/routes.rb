@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     return params[:lang].to_s =~ /^#{langs}$/
   } do
 
-    Iqvoc.lang_routes.each { |hook| hook.call(self) }
+    Iqvoc.localized_routes.each { |hook| hook.call(self) }
 
     resource  :user_session, :only => [:new, :create, :destroy]
     resources :users, :except => [:show]
