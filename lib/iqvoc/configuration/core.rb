@@ -14,7 +14,10 @@ module Iqvoc
           :first_level_class_configuration_modules,
           :ability_class_name,
           :navigation_items,
+          :lang_routes,
           :core_assets
+
+        self.lang_routes = [] # extensibility hook for language-dependent routes
 
         self.navigation_items = [
           {
