@@ -81,21 +81,18 @@ class HierarchyController < ApplicationController
   def populate_hierarchy(root_concept, scope, max_depth, current_depth=0,
       include_siblings=false)
     current_depth += 1
-    data = {}
-
-    return data if current_depth > max_depth
+    return {} if current_depth > max_depth
 
     rels = scope.where(Concept::Relation::Base.arel_table[:target_id].
         eq(root_concept.id))
-    rels.each do |concept|
+    return rels.inject({}) do |memo, concept|
       if include_siblings
-        determine_siblings(concept).each { |sib| data[sib] = {} }
+        determine_siblings(concept).each { |sib| memo[sib] = {} }
       end
-      data[concept] = populate_hierarchy(concept, scope, max_depth,
+      memo[concept] = populate_hierarchy(concept, scope, max_depth,
           current_depth, include_siblings)
+      memo
     end
-
-    return data
   end
 
   # NB: includes support for poly-hierarchies -- XXX: untested
