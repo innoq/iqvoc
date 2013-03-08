@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     match 'alphabetical_concepts(/:prefix)(.:format)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'untranslated_concepts/:prefix(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
+    match 'expired_concepts(.:format)' => 'concepts/expired#index', :as => 'expired_concepts'
 
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
