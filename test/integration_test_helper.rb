@@ -19,21 +19,9 @@ require 'capybara/rails'
 
 module ActionController
   class IntegrationTest
-    include Capybara::DSL
-
-    Capybara.javascript_driver = :webkit
-
-    setup do
-      DatabaseCleaner.start
-    end
-
-    teardown do
-      DatabaseCleaner.clean
-    end
-
-    def login(role = nil)
+    def login(role=nil)
       logout
-      user(role)
+      user = user(role)
       visit new_user_session_path(:lang => :de)
       fill_in 'E-Mail', :with => user.email
       fill_in 'Passwort', :with => user.password
@@ -47,16 +35,16 @@ module ActionController
       @user = nil
     end
 
-    def user(role = nil)
+    def user(role=nil)
+      role = role || User.default_role
       @user ||= User.create \
-          :role      => (role || User.default_role),
+          :role      => role,
           :forename  => 'Test',
           :surname   => 'User',
-          :email     => 'testuser@iqvoc.local',
+          :email     => ("#{role}@example.local"),
           :active    => true,
-          :password  => 'omgomgomg',
-          :password_confirmation => 'omgomgomg'
+          :password  => 'test',
+          :password_confirmation => 'test'
     end
-
   end
 end

@@ -19,9 +19,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ClientAugmentationTest < ActionDispatch::IntegrationTest
 
   setup do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.start
-
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c11880 rdf:type skos:Concept
       :c11880 skos:prefLabel "Lorem Ypsem"@de
@@ -29,13 +26,11 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
       :c11881 rdf:type skos:Concept
       :c11881 skos:prefLabel "Lorem Ypsem"@de
     EOT
-
     Capybara.current_driver = Capybara.javascript_driver
   end
 
   teardown do
     DatabaseCleaner.clean
-    DatabaseCleaner.strategy = :transaction
     Capybara.use_default_driver
   end
 
