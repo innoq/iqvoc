@@ -370,4 +370,6 @@ pt:
        association_broader_unpublished: "Termos gerais precisam ser publicados."
        association_narrower_unpublished: "Termo específicos precisam ser publicados."
        association_related_unpublished: "Termos relacionados precisam ser publicados."
-       no_pref_label: "-- sem rótulo principal --"
+       no_pref_label: "-- sem rótulo preferencial --"
+       pref_label_not_unique: "O rótulo preferencial '%{label}' já está em uso."
+       pref_labels_not_unique: "Os rótulos preferenciais '%{label}' já estão em uso."
