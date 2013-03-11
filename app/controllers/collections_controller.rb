@@ -48,9 +48,9 @@ class CollectionsController < ApplicationController
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection,
-      [:pref_labels,
-      {:subcollections => [:pref_labels, :subcollections]},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+      [:labels,
+      {:subcollections => [:labels, :subcollections]},
+      {:concepts => [:labels] + Iqvoc::Concept.base_class.default_includes}]).run
   end
 
   def new
@@ -83,9 +83,9 @@ class CollectionsController < ApplicationController
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection, [
-      :pref_labels,
-      {:subcollections => :pref_labels},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+      :labels,
+      {:subcollections => :labels},
+      {:concepts => [:labels] + Iqvoc::Concept.base_class.default_includes}]).run
 
     build_note_relations
   end

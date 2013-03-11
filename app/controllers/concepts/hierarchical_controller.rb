@@ -29,24 +29,19 @@ class Concepts::HierarchicalController < ConceptsController
     root_id = params[:root]
     if root_id && root_id =~ /\d+/
       # NB: order matters; see the following `where`
-      if params[:broader]
-        scope = scope.includes(:narrower_relations, :broader_relations)
-      else
-        scope = scope.includes(:broader_relations, :narrower_relations)
-      end
-      @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
+      @concepts = scope.includes(:relations).where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
     else
       if params[:broader]
-        @concepts = scope.broader_tops.includes(:broader_relations)
+        @concepts = scope.broader_tops.includes(:relations)
       else
-        @concepts = scope.tops.includes(:narrower_relations)
+        @concepts = scope.tops.includes(:relations)
       end
     end
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new(@concepts,
-        Iqvoc::Concept.base_class.default_includes + [:pref_labels]).run
+#     ActiveRecord::Associations::Preloader.new(@concepts,
+#         Iqvoc::Concept.base_class.default_includes + [:pref_labels]).run
 
     @concepts.sort! do |a, b|
       a.pref_label.to_s <=> b.pref_label.to_s

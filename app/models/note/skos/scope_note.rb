@@ -16,6 +16,6 @@
 
 class Note::SKOS::ScopeNote < Note::SKOS::Base
 
-  self.rdf_predicate = 'scopeNote'
+  acts_as_rdf_predicate 'skos:scopeNote'
 
 end

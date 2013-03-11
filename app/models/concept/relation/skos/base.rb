@@ -41,7 +41,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
   def self.build_from_parsed_tokens(tokens)
     rdf_subject    = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
     rdf_object     = Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])
-    relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[t okens[:Predicate]] || self
+    relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
 
     relation_instance = rdf_subject.relations.find_by_target_and_class(rdf_object, relation_class)
     unless relation_instance

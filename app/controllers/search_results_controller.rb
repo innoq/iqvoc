@@ -32,8 +32,8 @@ class SearchResultsController < ApplicationController
 
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
-    request.query_parameters.delete("commit")
-    request.query_parameters.delete("utf8")
+    request.query_parameters.delete('commit')
+    request.query_parameters.delete('utf8')
 
     if params[:query]
       if params[:query].blank? && params[:collection_origin].blank?
@@ -88,12 +88,12 @@ class SearchResultsController < ApplicationController
 
   def self.prepare_basic_variables(controller)
     langs = Iqvoc.all_languages.each_with_object({}) do |lang, hsh|
-      lang ||= "none"
+      lang ||= 'none'
       hsh[lang] = I18n.t("languages.#{lang}", :default => lang)
     end
     controller.instance_variable_set(:@available_languages, langs)
 
-    collections = Iqvoc::Collection.base_class.includes(:pref_labels).all
+    collections = Iqvoc::Collection.base_class.includes(:labelings).all
     controller.instance_variable_set(:@collections, collections)
   end
 

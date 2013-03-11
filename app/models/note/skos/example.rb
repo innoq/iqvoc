@@ -16,6 +16,6 @@
 
 class Note::SKOS::Example < Note::SKOS::Base
 
-  self.rdf_predicate = 'example'
+  acts_as_rdf_predicate 'skos:example'
 
 end
