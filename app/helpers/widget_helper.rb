@@ -1,18 +1,16 @@
 module WidgetHelper
 
   def widget_values(concept, relation_class)
-    concept.concept_relations_by_id(relation_class.name.to_relation_name)
+    concept.relations.by_id(relation_class)
   end
 
   def widget_values_ranked(concept, relation_class)
     concepts_with_ranks = concept.relations.by_id_and_rank(relation_class)
-    concepts_with_ranks.map { |concept, rank| "#{concept.origin}:#{rank}" }.join(Iqvoc::InlineDataHelper::JOINER)
+    concepts_with_ranks.map {|concept, rank| "#{concept.origin}:#{rank}" }.join(Iqvoc::InlineDataHelper::JOINER)
   end
 
   def widget_entities(concept, relation_class)
-    origins = concept.
-      concept_relations_by_id(relation_class.name.to_relation_name).
-      split(Iqvoc::InlineDataHelper::SPLITTER)
+    origins = concept.relations.by_id(relation_class).split(Iqvoc::InlineDataHelper::SPLITTER)
 
     Iqvoc::Concept.base_class.
       editor_selectable.
@@ -22,9 +20,7 @@ module WidgetHelper
   end
 
   def widget_entities_ranked(concept, relation_class)
-    origins = concept.
-      concept_relations_by_id(relation_class.name.to_relation_name).
-      split(Iqvoc::InlineDataHelper::SPLITTER)
+    origins = concept.relations.by_id(relation_class).split(Iqvoc::InlineDataHelper::SPLITTER)
 
     allowed_concepts = Iqvoc::Concept.base_class.
       editor_selectable.
@@ -32,7 +28,7 @@ module WidgetHelper
 
     concepts_with_ranks = concept.relations.by_id_and_rank(relation_class)
 
-    concepts = concepts_with_ranks.reject { |k, v| !allowed_concepts.include?(k) }
+    concepts = concepts_with_ranks.reject { |k, v| allowed_concepts.exclude?(k) }
     concepts.map { |c, r| concept_widget_data(c, r) }.to_json
   end
 

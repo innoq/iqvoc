@@ -21,6 +21,10 @@ module Concept
       self.for_class(class_name).each_with_object({}) { |rel, hsh| hsh[rel.target] = rel.rank }
     end
 
+    def by_id(class_name)
+      self.for_class(class_name).map {|l| l.target.origin }.join(Iqvoc::InlineDataHelper::JOINER)
+    end
+
     protected
 
     base_assocs = {

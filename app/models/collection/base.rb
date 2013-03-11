@@ -88,7 +88,7 @@ class Collection::Base < Concept::Base
   end
 
   def build_rdf_subject(&block)
-    IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
+    IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri('Collection'), &block)
   end
 
   def inline_member_concept_origins=(origins)
@@ -157,17 +157,18 @@ class Collection::Base < Concept::Base
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).each do |subcollection|
       if subcollection.subcollections.all.include?(self)
         errors.add(:base,
-          I18n.t("txt.controllers.collections.circular_error", :label => subcollection.pref_label))
+          I18n.t('txt.controllers.collections.circular_error', :label => subcollection.pref_label))
       end
     end
   end
 
   def pref_label_in_primary_thesaurus_language
-    labels = self.send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target).select{|l| l.published?}
-    if labels.count == 0
-      errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
+    labels = self.pref_labels.select(&:published?)
+
+    if labels.empty?
+      errors.add :base, I18n.t('txt.models.concept.no_pref_label_error')
     elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-      errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
+      errors.add :base, I18n.t('txt.models.concept.main_pref_label_language_missing_error')
     end
   end
 

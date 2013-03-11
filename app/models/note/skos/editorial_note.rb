@@ -16,6 +16,6 @@
 
 class Note::SKOS::EditorialNote < Note::SKOS::Base
 
-  self.rdf_predicate = 'editorialNote'
+  acts_as_rdf_predicate 'skos:editorialNote'
 
 end

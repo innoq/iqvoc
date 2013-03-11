@@ -16,6 +16,6 @@
 
 class Note::SKOS::HistoryNote < Note::SKOS::Base
 
-  self.rdf_predicate = 'historyNote'
+  acts_as_rdf_predicate 'skos:historyNote'
 
 end

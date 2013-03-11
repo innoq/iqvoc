@@ -16,7 +16,7 @@
 
 class Note::SKOS::Definition < Note::SKOS::Base
 
-  self.rdf_predicate = 'definition'
+  acts_as_rdf_predicate 'skos:definition'
 
   def self.view_section(obj)
     "main"

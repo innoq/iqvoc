@@ -140,7 +140,6 @@ class Concept::Base < ActiveRecord::Base
 
   # Broader -- NOTE: read-only!
   def broader_relations
-    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.for_class(Iqvoc::Concept.broader_relation_class)
   end
 
@@ -151,7 +150,6 @@ class Concept::Base < ActiveRecord::Base
 
   # Narrower -- NOTE: read-only!
   def narrower_relations
-    ActiveSupport::Deprecation.warn 'this function will be removed'
     self.relations.for_class(Iqvoc::Concept.broader_relation_class)
   end
 
@@ -242,9 +240,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def self.with_associations
-    includes([
-      { :labelings => :target }, :relations, :matches, :notes
-    ])
+    includes [{ :labelings => :target }, :relations, :matches, :notes]
   end
 
   def self.with_pref_labels
@@ -254,7 +250,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def self.for_dashboard
-    unpublished_or_follow_up.includes(:pref_labels, :locking_user)
+    unpublished_or_follow_up.includes(:labelings, :locking_user)
   end
 
   # ********** Class methods
@@ -283,15 +279,14 @@ class Concept::Base < ActiveRecord::Base
         @labelings_by_text[relation_name] = { nil => labels_by_lang.first }
       end
     end
-
     @labelings_by_text
   end
 
   def labelings_by_text(relation_name, language)
     (@labelings_by_text && @labelings_by_text[relation_name] &&
         @labelings_by_text[relation_name][language]) ||
-        Iqvoc::InlineDataHelper.generate_inline_values(self.send(relation_name).
-            by_label_language(language).map { |l| l.target.value })
+        Iqvoc::InlineDataHelper.generate_inline_values(self.labelings.for_rdf_class(relation_name).
+                                                       select{|assoc| assoc.target.to_s == language.to_s}.map { |l| l.target.value })
   end
 
   def concept_relations_by_id=(hash)
@@ -316,30 +311,27 @@ class Concept::Base < ActiveRecord::Base
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale.to_s == "none" ? nil : I18n.locale.to_s
+    lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
     @cached_pref_labels ||= self.pref_labels.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
       end
       hash[label.language] = label
     end
+
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
       @cached_pref_labels[lang] = self.pref_labels.find do |l|
-          l.language.to_s == Iqvoc::Concept.pref_labeling_languages.first.to_s
+        l.language.to_s == Iqvoc::Concept.pref_labeling_languages.first.to_s
       end
     end
     @cached_pref_labels[lang]
   end
 
-  def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
+  def labels_for_labeling_class_and_language(labeling_class, lang = 'en', only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
-    if lang == 'none'
-      lang = nil
-    elsif lang
-      lang = lang.to_s
-    end
+    lang = lang == 'none' ? nil : lang.to_s
     labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target

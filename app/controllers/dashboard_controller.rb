@@ -24,7 +24,7 @@ class DashboardController < ApplicationController
       @items += klass.for_dashboard.all
     end
 
-    factor = params[:order] == "desc" ? -1 : 1
+    factor = params[:order] == 'desc' ? -1 : 1
 
     if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
       @items.sort! do |x, y|
