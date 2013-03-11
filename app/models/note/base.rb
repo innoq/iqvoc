@@ -97,11 +97,11 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/note/base"
+    'partials/note/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/note/edit_base"
+    'partials/note/edit_base'
   end
 
   def self.single_query(params = {})

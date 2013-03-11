@@ -109,10 +109,14 @@ module Iqvoc
     def self.eat(parsed_triple_data)
       target = PREDICATE_DICTIONARY[parsed_triple_data[:Predicate]]
 
-      if target
-        target.build_from_parsed_tokens(parsed_triple_data)
-      else
+      if target.nil?
         Rails.logger.warn "ERR: #{parsed_triple_data[:Predicate]} maps to no target"
+        nil
+      elsif not target.respond_to? :build_from_parsed_tokens
+        Rails.logger.warn "ERR: #{parsed_triple_data[:Predicate]} does not respond to build_from_parsed_tokens!"
+        nil
+      else
+        target.build_from_parsed_tokens(parsed_triple_data)
       end
     end
 

@@ -132,8 +132,8 @@ class ConceptTest < ActiveSupport::TestCase
     concept = Iqvoc::RDFAPI.cached('c0815')
 
     assert_equal 4, concept.labelings.count
-    assert_equal 2, concept.labelings.skos_pref_label.size
-    assert_equal 2, concept.labelings.skos_alt_label.size
+    assert_equal 2, concept.labelings.for_rdf_class('skos:prefLabel').size
+    assert_equal 2, concept.labelings.for_rdf_class('skos:altLabel').size
   end
 
   test 'labels including commas' do

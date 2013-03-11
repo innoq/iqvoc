@@ -46,33 +46,15 @@ class Note::SKOS::Base < Note::Base
     end
   end
 
-  def build_fromparsed_tokens(tokens)
-    rdf_subject = Iqvoc::RDFAPI.cached(togens[:SubjectOrigin])
-    unless rdf_subject.class.reflections.include?(self.class.relation_name)
-      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.relation_name})."
+  def self.build_from_parsed_tokens(tokens)
+    rdf_subject = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    unless Iqvoc::Concept.note_class_names.include? self.name.to_s
+      raise "#{self.name}#build_from_rdf: #{self.name} is not an allowed note type. Allowed: #{Iqvoc::Concept.note_class_names}"
     end
 
-    target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
-    case tokens[:Object]
-    when String # Literal
-      unless rdf_object =~ /^"(.*)"(@(.+))$/
-        raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
-      end
-      lang = $3
-      value = JSON.parse(%Q{["#{$1}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
-      target_class.new(:value => value, :language => lang).tap do |new_instance|
-        rdf_subject.send(target_class.relation_name) << new_instance
-      end
-    when Array # Blank node
-      note = target_class.create!(:owner => rdf_subject)
-      rdf_object.each do |annotation|
-        ns, pred = *annotation.first.split(":", 2)
-        note.annotations.create! do |a|
-          a.namespace = ns
-          a.predicate = pred
-          a.value = annotation.last.match(/^"(.+)"$/)[1]
-        end
-      end
+    value = JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
+    self.new(:value => value, :language => tokens[:ObjectLangstringLanguage]).tap do |new_instance|
+      rdf_subject.notes << new_instance
     end
   end
 
