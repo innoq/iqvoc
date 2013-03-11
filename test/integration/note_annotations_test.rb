@@ -18,42 +18,42 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
-  test "creating and retrieving change notes" do
-    login "administrator"
+  test 'creating and retrieving change notes' do
+    login 'administrator'
 
-    visit new_concept_path(:lang => "en", :format => "html", :published => 0)
-    fill_in "concept_labelings_by_text_labeling_skos_pref_labels_en",
-        :with => "Foo"
-    fill_in "concept_note_skos_change_notes_attributes_0_value",
-        :with => "lorem ipsum"
-    click_button "Save"
+    visit new_concept_path(:lang => 'en', :format => 'html', :published => 0)
+    fill_in 'concept_labelings_by_text_skos:prefLabel_de',
+        :with => 'Foo'
+    fill_in 'concept_note_skos_change_notes_attributes_0_value',
+        :with => 'lorem ipsum'
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
 
-    click_link_or_button I18n.t("txt.views.versioning.publishing")
-    assert page.has_content? I18n.t("txt.controllers.versioning.published")
+    click_link_or_button I18n.t('txt.views.versioning.publishing')
+    assert page.has_content? I18n.t('txt.controllers.versioning.published')
 
-    click_link_or_button I18n.t("txt.views.versioning.versioning_mode")
-    fill_in "concept_note_skos_change_notes_attributes_1_value",
-        :with => "dolor sit amet"
-    click_button "Save"
+    click_link_or_button I18n.t('txt.views.versioning.versioning_mode')
+    fill_in 'concept_note_skos_change_notes_attributes_1_value',
+        :with => 'dolor sit amet'
+    click_button 'Save'
 
-    assert page.has_css?("dl.note_annotations", :count => 1)
+    assert page.has_css?('dl.note_annotations', :count => 1)
 
-    click_link_or_button I18n.t("txt.views.versioning.publishing")
-    assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 1)
+    click_link_or_button I18n.t('txt.views.versioning.publishing')
+    assert page.has_content? I18n.t('txt.controllers.versioning.published')
+    assert page.has_css?('dl.note_annotations', :count => 1)
 
     # TTL & RDF/XML
 
-    ttl_uri = page.find("#rdf_link_ttl")[:href]
-    xml_uri = page.find("#rdf_link_xml")[:href]
+    ttl_uri = page.find('#rdf_link_ttl')[:href]
+    xml_uri = page.find('#rdf_link_xml')[:href]
 
     visit ttl_uri
     ttl = page.source.
-        gsub(/^ *| *$/, ""). # ignore indentation
-        gsub(/\d/, "#").     # neutralize timestamps
-        gsub(/#\+#/, "#-#")  # neutralize eventually positive timezone shifts (server time)
+        gsub(/^ *| *$/, ''). # ignore indentation
+        gsub(/\d/, '#').     # neutralize timestamps
+        gsub(/#\+#/, '#-#')  # neutralize eventually positive timezone shifts (server time)
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"lorem ipsum\"@en\n" +
         "]")
@@ -65,9 +65,9 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     visit xml_uri
     xml = page.source.
-        gsub(/^ *| *$/, ""). # ignore indentation
-        gsub(/\d/, "#").     # neutralize timestamps
-        gsub(/#\+#/, "#-#")  # neutralize eventually positive timezone shifts (server time)
+        gsub(/^ *| *$/, ''). # ignore indentation
+        gsub(/\d/, '#').     # neutralize timestamps
+        gsub(/#\+#/, '#-#')  # neutralize eventually positive timezone shifts (server time)
     assert xml.include?("<skos:changeNote>\n" +
         "<rdf:Description>\n" +
         "<rdfs:comment xml:lang=\"en\">lorem ipsum</rdfs:comment>\n" +

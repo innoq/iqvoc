@@ -140,22 +140,20 @@ class Concept::Base < ActiveRecord::Base
 
   # Broader -- NOTE: read-only!
   def broader_relations
-    self.relations.for_class(Iqvoc::Concept.broader_relation_class)
+    self.relations.for_class(Iqvoc::Concept.broader_relation_class_name)
   end
 
   def broader_relations=(foo)
-    ActiveSupport::Deprecation.warn 'this function will be removed'
-    self.relations.skos_broader = foo
+    raise NotImplementedError
   end
 
   # Narrower -- NOTE: read-only!
   def narrower_relations
-    self.relations.for_class(Iqvoc::Concept.broader_relation_class)
+    self.relations.for_class(Iqvoc::Concept.broader_relation_class.reverse_relation_class)
   end
 
-  def narrower_relations=(foo)
-    ActiveSupport::Deprecation.warn 'this function will be removed'
-    self.relations.skos_narrower = foo
+  def narrower_relations=(foo)  
+    raise NotImplementedError
   end
 
   # *** Labels/Labelings
@@ -286,23 +284,21 @@ class Concept::Base < ActiveRecord::Base
     (@labelings_by_text && @labelings_by_text[relation_name] &&
         @labelings_by_text[relation_name][language]) ||
         Iqvoc::InlineDataHelper.generate_inline_values(self.labelings.for_rdf_class(relation_name).
-                                                       select{|assoc| assoc.target.to_s == language.to_s}.map { |l| l.target.value })
+                                                       select{|assoc| assoc.target.language.to_s == language.to_s}.map { |l| l.target.value })
   end
 
   def concept_relations_by_id=(hash)
     @concept_relations_by_id = hash
   end
 
-  def concept_relations_by_id(relation_name)
+  def concept_relations_by_id(relation_skos_type)
     ActiveSupport::Deprecation.warn 'please call concept.relations.by_id(relation_name) in the future'
-    (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
-      self.send(relation_name).map { |l| l.target.origin }.
-      join(Iqvoc::InlineDataHelper::JOINER)
+    @concept_relations_by_id[relation_skos_type] || self.relations.by_id(relation_skos_type)
   end
 
-  def concept_relations_by_id_and_rank(class_name)
+  def concept_relations_by_id_and_rank(relation_skos_type)
     ActiveSupport::Deprecation.warn 'please call concept.relations.by_id_and_rank(relation_name) in the future'
-    self.relations.by_id_and_rank(class_name)
+    self.relations.by_id_and_rank(relation_skos_type)
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
