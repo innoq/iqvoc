@@ -110,6 +110,9 @@ de:
       collection/member/base:
         one:   "Zugewiesene Kollektion"
         other: "Zugewiesene Kollektionen"
+      notation/base:
+        one:   "Notation"
+        other: "Notationen"
 
     attributes:
       concept/base:
@@ -122,6 +125,9 @@ de:
         language: "Sprache"
       note/base:
         value: "Wert"
+      notation/base:
+        value: "Wert"
+        data_type: "Datentyp (URL)"
       user:
         forename: "Vorname"
         surname: "Nachname"

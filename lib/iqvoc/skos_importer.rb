@@ -8,6 +8,7 @@ module Iqvoc
         Iqvoc::Concept.note_classes +
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
+        Iqvoc::Concept.notation_classes +
         [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
