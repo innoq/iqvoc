@@ -1,3 +1,14 @@
+## [4.0.9]
+
+  * Speed improvements in SKOS importer
+  * Preferred labels are now required to be unique
+  * Improved handling of a potential "none" language
+  * Bugfixes in application template
+  * Improved handling of complex comma separated values
+  * New view for expired concepts
+  * Internal overhaul for collections
+  * Lots of bugfixes and improvements throughout
+
 ## [4.0.8]
 
   * Portugese and spanish UI translations (@nitaibezerra)
