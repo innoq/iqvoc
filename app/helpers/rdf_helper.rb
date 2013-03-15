@@ -54,6 +54,10 @@ module RdfHelper
         match.build_rdf(document, c)
       end
 
+      concept.notations.each do |notation|
+        notation.build_rdf(document, c)
+      end
+
       Iqvoc::Concept.additional_association_class_names.keys.each do |class_name|
         concept.send(class_name.to_relation_name).each do |additional_object|
           additional_object.build_rdf(document, c)

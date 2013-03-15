@@ -1,0 +1,18 @@
+<fieldset class="note_relation" id="notations_data">
+  <legend><%= Notation::Base.model_name.human(:count => 2) %></legend>
+  <ol>
+    <% owner_klass.notations.each do |notation| %>
+      <%= content_tag(:li, :class => "inline_note #{" new" if notation.new_record?}") do %>
+        <%= f.simple_fields_for :notations, notation do |note_form| %>
+          <%= note_form.input :value, :input_html => { :class => 'span4' } %>
+          <%= note_form.input :data_type, :input_html => { :class => 'span4' } %>
+
+          <% unless notation.new_record? %>
+            <%= note_form.input :"_destroy", :as => :boolean, :label => t("txt.common.delete") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ol>
+  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn pull-right">
+</fieldset>
