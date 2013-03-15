@@ -60,6 +60,10 @@ module ConceptsHelper
       render_concept_association(res, concept, note_class)
     end
 
+    Iqvoc::Concept.notation_classes.each do |notation_class|
+      render_concept_association(res, concept, notation_class)
+    end
+
     Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class|
       render_concept_association(res, concept, assoc_class)
     end

@@ -57,12 +57,20 @@
   </fieldset>
   <!-- / Concept relations -->
 
+  <!-- Matches -->
   <fieldset>
     <legend><%= Match::Base.model_name.human(:count => 2) %></legend>
     <% Iqvoc::Concept.match_classes.each do |match_class| %>
       <%= render match_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => match_class, :f => f %>
     <% end %>
   </fieldset>
+  <!-- / Matches -->
+
+  <!-- Notations -->
+  <% Iqvoc::Concept.notation_classes.each do |notation_class| %>
+    <%= render notation_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => notation_class, :f => f %>
+  <% end %>
+  <!-- / Notations -->
 
   <div class="form-actions">
     <%= f.submit t("txt.common.save"), :class => "btn-primary" %>

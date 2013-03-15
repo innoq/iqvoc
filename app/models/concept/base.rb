@@ -132,6 +132,10 @@ class Concept::Base < ActiveRecord::Base
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
+  has_many :notations, :class_name => 'Notation::Base', :foreign_key => 'concept_id', :dependent => :destroy
+  include_to_deep_cloning :notations
+  @nested_relations << :notations
+
   # ************** "Dynamic"/configureable relations
 
   # *** Concept2Concept relations
@@ -373,6 +377,11 @@ class Concept::Base < ActiveRecord::Base
   def notes_for_class(note_class)
     note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
     notes.select{ |note| note.class.name == note_class }
+  end
+
+  def notations_for_class(notation_class)
+    notation_class = notation_class.name if notation_class < ActiveRecord::Base # Use the class name string
+    notations.select{ |notation| notation.class.name == notation_class }
   end
 
   # This shows up (in brackets) to the right of a concept link if it doesn't
