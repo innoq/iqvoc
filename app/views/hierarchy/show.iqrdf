@@ -1,0 +1,24 @@
+hierarchy2rdf = lambda do |hash|
+  hash.each do |concept, rels|
+    document << concept.build_rdf_subject do |sbj|
+      sbj.Skos::topConceptOf IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin) if concept.top_term?
+
+      concept.pref_labelings.each do |labeling|
+        labeling.build_rdf(document, sbj)
+      end
+
+      rels.each do |relation, _|
+        @relation_class.new(:owner => concept, :target => relation). # XXX: hacky!?
+            build_rdf(document, sbj)
+      end
+
+      hierarchy2rdf.call(rels)
+    end
+  end
+end
+
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+hierarchy2rdf.call(@concepts)
