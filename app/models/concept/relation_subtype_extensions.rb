@@ -1,13 +1,9 @@
+# encoding: UTF-8
+
 module Concept
   module RelationSubtypeExtensions
     extend Concept::Relation::ReverseRelationExtension
-
-    def for_class(relation_class)
-      if proxy_association.target.empty?
-        proxy_association.target = proxy_association.owner.relations.all
-      end
-      proxy_association.target.select{|assoc| assoc.type.to_s == relation_class.to_s }
-    end
+#     extend Concept::TypedHasManyExtension
 
     def find_by_target_and_class(target_obj, target_class)
       self.for_class(target_class).find{|rel| rel.target == target_obj || rel.target_id == target_obj.id }

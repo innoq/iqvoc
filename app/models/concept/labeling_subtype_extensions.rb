@@ -1,14 +1,8 @@
+# encoding: UTF-8
+
 module Concept
   module LabelingSubtypeExtensions
-    def for_class(labeling_class)
-      load_association_if_empty
-      proxy_association.target.select{|assoc| assoc.type.to_s == labeling_class.to_s}
-    end
-
-    def for_rdf_class(rdf_class)
-      load_association_if_empty
-      proxy_association.target.select{|assoc| assoc.implements_rdf? rdf_class}
-    end
+#     extend Concept::TypedHasManyExtension
 
     protected
 

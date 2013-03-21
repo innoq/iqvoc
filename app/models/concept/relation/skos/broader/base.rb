@@ -16,7 +16,7 @@
 
 class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
 
-  self.rdf_predicate = 'broader'
+  acts_as_rdf_predicate 'skos:broader'
 
   def self.narrower_class
     Concept::Relation::SKOS::Narrower::Base

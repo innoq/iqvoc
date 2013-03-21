@@ -43,6 +43,7 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
     # concept edit view
     visit concept_path('concept1', :lang => 'de', :format => 'html')
+
     click_link_or_button('Neue Version erstellen')
     assert page.has_css?('#edit_concept')
 
