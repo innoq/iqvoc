@@ -45,10 +45,9 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
   end
 
   test 'modify and persist configuration' do
-    assert page.find('a.brand').has_content? 'iQvoc'
-
     login 'administrator'
     visit '/en/config'
+    assert page.find('a.brand').has_content? 'iQvoc'
 
     fill_in 'config_title', :with => 'lorem ipsum'
     click_button 'Save'

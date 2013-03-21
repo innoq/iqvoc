@@ -22,7 +22,7 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     login 'administrator'
 
     visit new_concept_path(:lang => 'en', :format => 'html', :published => 0)
-    fill_in 'concept_labelings_by_text_skos:prefLabel_de',
+    fill_in 'concept_labelings_by_text_skos:prefLabel_en',
         :with => 'Foo'
     fill_in 'concept_note_skos_change_notes_attributes_0_value',
         :with => 'lorem ipsum'

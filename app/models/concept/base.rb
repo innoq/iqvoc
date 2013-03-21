@@ -55,7 +55,7 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :labelings, :foreign_key => 'owner_id', :class_name => 'Labeling::Base', :dependent => :destroy, :extend => [Concept::TypedHasManyExtension, LabelingSubtypeExtensions]
   has_many :labels, :through => :labelings, :source => :target
-  # Deep cloning has to be done in specific relations. S. pref_labels etc
+  include_to_deep_cloning(:labelings => :target)
 
   has_many :notes, :class_name => 'Note::Base', :as => :owner, :dependent => :destroy
   include_to_deep_cloning(:notes => :annotations)
@@ -63,7 +63,7 @@ class Concept::Base < ActiveRecord::Base
   has_many :matches, :foreign_key => 'concept_id', :class_name => 'Match::Base', :dependent => :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, :foreign_key => 'target_id', :class_name => 'Collection::Member::Concept', :dependent => :destroy
+  has_many :collection_members, :foreign_key => 'target_id', :class_name => 'Collection::Member::Base', :dependent => :destroy
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
@@ -85,7 +85,7 @@ class Concept::Base < ActiveRecord::Base
     self.relations.for_class(Iqvoc::Concept.broader_relation_class.reverse_relation_class)
   end
 
-  def narrower_relations=(foo)  
+  def narrower_relations=(foo)
     raise NotImplementedError
   end
 
@@ -338,14 +338,12 @@ class Concept::Base < ActiveRecord::Base
 
   protected
 
-  # Handle save or destruction of inline relations (relations or labelings)
-  # for use with widgets etc.
+  # Handle save or destruction of inline labelings for use with widgets etc.
   def process_labelings_by_text
     # Inline assigned SKOS::Labels
     # @labelings_by_text # => {'skos:altLabel' => {'lang' => 'label1, label2, ...'}}
     (@labelings_by_text ||= {}).each do |rdf_name, lang_values|
-      labeling_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_name]
-      self.labelings.for_class(labeling_class).each do |lbl|
+      self.labelings.for_rdf_class(rdf_name).each do |lbl|
         self.labelings.delete(lbl.destroy)
       end
 
@@ -354,10 +352,8 @@ class Concept::Base < ActiveRecord::Base
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
           value.squish!
           unless value.blank?
-            label = labeling_class.label_class.new(:value => value, :language => lang)
-            labeling_class.new(:owner => self, :target => label).tap do |labeling|
-              self.labelings << labeling
-            end
+            tokens = {:ObjectLangstringLanguage => lang, :ObjectLangstringString => value, :Predicate => rdf_name}
+            self.labelings.build_from_parsed_tokens(tokens, :subject_instance => self)
           end
         end
       end
@@ -389,8 +385,7 @@ class Concept::Base < ActiveRecord::Base
         # TODO: move into own method
         ActiveRecord::Base.transaction do
           rel.class.reverse_relation_class.where(:owner_id => rel.target_id, :target_id => rel.owner_id).each &:destroy
-          rel.destroy
-          relations.delete(rel)
+          self.relations.delete(rel.destroy)
         end
       end
 

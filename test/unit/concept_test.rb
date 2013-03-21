@@ -108,7 +108,7 @@ class ConceptTest < ActiveSupport::TestCase
     concept = Iqvoc::RDFAPI.parse_triple ':c0899 rdf:type skos:Concept'
 
     concept.labelings_by_text = {
-      Iqvoc::Concept.pref_labeling_class.rdf_internal_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
+      'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
     }
     assert concept.save
     concept.reload
@@ -116,7 +116,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal Iqvoc::Concept.pref_labeling_languages.first, concept.pref_label.language.to_s
 
     concept.labelings_by_text = {
-      Iqvoc::Concept.pref_labeling_class.rdf_internal_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
+      'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
     }
     assert !concept.save
   end

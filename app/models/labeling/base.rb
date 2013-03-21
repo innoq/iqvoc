@@ -88,12 +88,14 @@ class Labeling::Base < ActiveRecord::Base
     end
   end
 
-  def self.build_from_parsed_tokens(tokens)
-    rdf_subject = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+  def self.build_from_parsed_tokens(tokens, options = {})
+    rdf_subject = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
 
-    lang, value = tokens[:ObjectLangstringLanguage], JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
-    label = self.label_class.new :value => value, :language => lang
-    self.new(:owner => rdf_subject, :target => label).tap do |labeling|
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
+    value = JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
+
+    label = predicate_class.label_class.new :value => value, :language => tokens[:ObjectLangstringLanguage]
+    predicate_class.new(:owner => rdf_subject, :target => label).tap do |labeling|
       rdf_subject.labelings << labeling
     end
   end
