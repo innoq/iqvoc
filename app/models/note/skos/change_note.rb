@@ -19,7 +19,7 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
   acts_as_rdf_predicate 'skos:changeNote'
 
   def self.edit_partial_name(obj)
-    "partials/note/skos/edit_change_note"
+    'partials/note/skos/edit_change_note'
   end
 
   def self.search_result_partial_name

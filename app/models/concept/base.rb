@@ -65,7 +65,11 @@ class Concept::Base < ActiveRecord::Base
   has_many :labels, :through => :labelings, :source => :target
   include_to_deep_cloning(:labelings => :target)
 
-  has_many :notes, :class_name => 'Note::Base', :as => :owner, :dependent => :destroy
+  has_many :notes,
+      :class_name => 'Note::Base',
+      :as         => :owner,
+      :dependent  => :destroy,
+      :extend     => [Concept::TypedHasManyExtension]
   include_to_deep_cloning(:notes => :annotations)
 
   has_many :matches, :foreign_key => 'concept_id', :class_name => 'Match::Base', :dependent => :destroy
@@ -147,15 +151,6 @@ class Concept::Base < ActiveRecord::Base
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(:value => url)
       end
     end
-
-  end
-
-  # *** Notes
-
-  Iqvoc::Concept.note_class_names.each do |class_name|
-    relation_name = class_name.to_relation_name
-    has_many relation_name, :class_name => class_name, :as => :owner
-    @nested_relations << relation_name
   end
 
   # *** Further association classes (could be ranks or stuff like that)
@@ -295,8 +290,8 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def notes_for_class(note_class)
-    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
-    notes.select{ |note| note.class.name == note_class }
+    ActiveSupport::Deprecation.warn "use notes.for_class(klass) instead of notes_for_class(klass)"
+    notes.for_class(note_class)
   end
 
   def notations_for_class(notation_class)

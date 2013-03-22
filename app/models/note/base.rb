@@ -89,7 +89,7 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    "notes"
+    'notes'
   end
 
   def self.view_section_sort_key(obj)
@@ -107,8 +107,7 @@ class Note::Base < ActiveRecord::Base
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
-    by_query_value(query_str).
-      by_language(params[:languages].to_a)
+    by_query_value(query_str).by_language(params[:languages].to_a)
   end
 
   def self.search_result_partial_name
