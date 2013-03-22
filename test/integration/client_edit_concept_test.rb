@@ -46,9 +46,9 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
     click_link_or_button('Neue Version erstellen')
     assert page.has_css?('#edit_concept')
+    assert page.has_css?(".note_relation", :count => Iqvoc::Concept.note_class_names.length + Iqvoc::Concept.notation_class_names.length)
 
     section = page.find('#note_skos_definitions_data')
-    assert page.has_css?('.note_relation', :count => Iqvoc::Concept.note_class_names.length)
     assert page.has_css?('#note_skos_definitions_data', :count => 1)
     assert section.has_css?('li', :count => 1)
 

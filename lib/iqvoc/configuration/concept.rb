@@ -13,6 +13,7 @@ module Iqvoc
             :pref_labeling_class_name,
             :match_class_names,
             :note_class_names,
+            :notation_class_names,
             :additional_association_class_names,
             :view_sections,
             :include_module_names
@@ -42,9 +43,13 @@ module Iqvoc
           'Match::SKOS::NarrowMatch',
         ]
 
+        self.notation_class_names         = [
+          'Notation::Base'
+        ]
+
         self.additional_association_class_names = {}
 
-        self.view_sections = ["main", "labels", "relations", "notes", "matches"]
+        self.view_sections = ["main", "labels", "relations", "notes", "notations", "matches"]
 
         self.include_module_names = []
       end
@@ -120,6 +125,10 @@ module Iqvoc
 
         def match_classes
           match_class_names.map(&:constantize)
+        end
+
+        def notation_classes
+          notation_class_names.map(&:constantize)
         end
 
         def additional_association_classes

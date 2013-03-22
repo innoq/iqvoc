@@ -6,11 +6,11 @@ module Iqvoc
       extend ActiveSupport::Concern
 
       included do
-        mattr_accessor :base_class_name, :member_class_names
+        mattr_accessor :base_class_name, :member_class_name
 
-        self.base_class_name = 'Collection::Unordered'
+        self.base_class_name = 'Collection::SKOS::Unordered'
 
-        self.member_class_names  = ['Collection::Member::SKOS::Base']
+        self.member_class_name  = 'Collection::Member::SKOS::Base'
       end
 
       module ClassMethods
@@ -18,8 +18,8 @@ module Iqvoc
           base_class_name.constantize
         end
 
-        def member_classes
-          member_class_names.map(&:constantize)
+        def member_class
+          member_class_name.constantize
         end
       end
 

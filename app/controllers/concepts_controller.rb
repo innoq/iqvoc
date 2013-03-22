@@ -98,6 +98,8 @@ class ConceptsController < ApplicationController
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
+
+    @concept.notations.build if @concept.notations.none?
   end
 
   def create

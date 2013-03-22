@@ -18,15 +18,19 @@ Rails.application.routes.draw do
   match 'schema(.:format)' => 'pages#schema', :as => 'schema'
 
   scope ':lang', :constraints => lambda { |params, req|
-    lang = params[:lang]
-    return lang.to_s =~ /^#{Iqvoc::Concept.pref_labeling_languages.join("|").presence || "en"}$/
+    langs = Iqvoc::Concept.pref_labeling_languages.join("|").presence || "en"
+    return params[:lang].to_s =~ /^#{langs}$/
   } do
+
+    Iqvoc.localized_routes.each { |hook| hook.call(self) }
 
     resource  :user_session, :only => [:new, :create, :destroy]
     resources :users, :except => [:show]
 
     resources :concepts
     resources :collections
+
+    get "hierarchy/:root" => "hierarchy#show"
 
     get "triplestore_sync" => "triplestore_sync#index"
     post "triplestore_sync" => "triplestore_sync#sync"
@@ -43,8 +47,7 @@ Rails.application.routes.draw do
     match 'alphabetical_concepts(/:prefix)(.:format)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     match 'untranslated_concepts/:prefix(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
     match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
-
-    match 'hierarchical_collections(.:format)' => 'collections/hierarchical#index', :as => 'hierarchical_collections'
+    match 'expired_concepts(.:format)' => 'concepts/expired#index', :as => 'expired_concepts'
 
     match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
 
@@ -67,7 +70,7 @@ Rails.application.routes.draw do
   get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
   get '/:id(.:format)' => 'rdf#show', :as => 'rdf'
   get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
-  get '/collectionss', :as => "rdf_collections", :to => "collections#index"
+  get '/collections', :as => "rdf_collections", :to => "collections#index"
 
 
   root :to => 'frontpage#index', :format => nil

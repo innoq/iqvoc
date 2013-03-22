@@ -8,9 +8,8 @@ module Iqvoc
         Iqvoc::Concept.note_classes +
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
-        Iqvoc::Collection.member_classes
-
-    TABLES = (FIRST_LEVEL_OBJECT_CLASSES + SECOND_LEVEL_OBJECT_CLASSES + [Iqvoc::Label.base_class]).map(&:table_name).uniq
+        Iqvoc::Concept.notation_classes +
+        [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
       @logger = logger
@@ -56,14 +55,8 @@ module Iqvoc
 
     private
 
-    def before
-    end
-
-    def after
-    end
-
     def import(file)
-      before
+      ActiveSupport.run_load_hooks(:skos_importer_before_import, self)
 
       start = Time.now
 
@@ -107,7 +100,7 @@ module Iqvoc
       puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
       puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
-      after
+      ActiveSupport.run_load_hooks(:skos_importer_after_import, self)
     end
 
     def identify_blank_nodes(subject, predicate, object)
@@ -226,5 +219,6 @@ module Iqvoc
       triple
     end
 
+    ActiveSupport.run_load_hooks(:skos_importer, self)
   end
 end

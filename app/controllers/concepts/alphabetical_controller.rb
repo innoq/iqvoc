@@ -23,15 +23,7 @@ class Concepts::AlphabeticalController < ConceptsController
 
     redirect_to(url_for :prefix => "a") unless params[:prefix]
 
-    @pref_labelings = Iqvoc::Concept.pref_labeling_class.
-      concept_published.
-      label_begins_with(params[:prefix]).
-      by_label_language(I18n.locale).
-      includes(:target).
-      order("LOWER(#{Label::Base.table_name}.value)").
-      joins(:owner).
-      where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
-      page(params[:page])
+    @pref_labelings = find_labelings
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
@@ -42,4 +34,18 @@ class Concepts::AlphabeticalController < ConceptsController
     ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => includes).run
   end
 
+  protected
+
+  def find_labelings
+    Iqvoc::Concept.pref_labeling_class.
+      concept_published.
+      concept_not_expired.
+      label_begins_with(params[:prefix]).
+      by_label_language(I18n.locale).
+      includes(:target).
+      order("LOWER(#{Label::Base.table_name}.value)").
+      joins(:owner).
+      where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
+      page(params[:page])
+  end
 end

@@ -23,7 +23,6 @@ require 'iqvoc/deep_cloning'
 require 'iqvoc/rankable'
 require 'iqvoc/ability'
 require 'iqvoc/rdfapi'
-require 'iqvoc/skos_importer'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 

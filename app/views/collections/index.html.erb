@@ -1,6 +1,6 @@
 <%= page_header :title => Iqvoc::Collection.base_class.model_name.human(:count => 2) %>
 
-<ul class="hybrid-treeview" data-url="<%= hierarchical_collections_path(:format => :json) %>">
+<ul class="hybrid-treeview" data-url="<%= collections_path(:format => :json) %>">
   <%= render :partial => 'collection', :collection => @top_collections %>
 </ul>
 

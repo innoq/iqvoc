@@ -98,7 +98,6 @@ class APITest < ActiveSupport::TestCase
     assert_equal 'Foo Bar', labeling.target.value
     assert labeling.save
   end
-
   test 'should allow publishing a concept' do
     origin = "_#{rand 10000}"
     API.parse_triples <<-EOS
@@ -110,5 +109,4 @@ class APITest < ActiveSupport::TestCase
     API.parse_triple %Q(:#{origin} iqvoc:publishedAt "#{3.days.ago}"^^<DateTime>)
     assert API.cached(origin).published?
   end
-
 end

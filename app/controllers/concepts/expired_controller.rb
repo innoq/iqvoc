@@ -14,20 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Collection::Member::Collection < Collection::Member::Base
+class Concepts::ExpiredController < Concepts::AlphabeticalController
+  protected
 
-  belongs_to :subcollection, :class_name => 'Collection::Base', :foreign_key => 'target_id'
-
-  def self.view_section(obj)
-    "main"
+  def find_labelings
+    Iqvoc::Concept.pref_labeling_class.
+      concept_expired.
+      label_begins_with(params[:prefix]).
+      by_label_language(I18n.locale).
+      includes(:target).
+      order("LOWER(#{Label::Base.table_name}.value)").
+      joins(:owner).
+      where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
+      page(params[:page])
   end
-
-  def self.view_section_sort_key(obj)
-    100
-  end
-
-  def self.partial_name(obj)
-    "partials/collection/member"
-  end
-
 end

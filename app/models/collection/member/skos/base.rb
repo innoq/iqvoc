@@ -28,10 +28,6 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
       predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
       member_instance = predicate_class.new(:target => rdf_object)
       rdf_subject.members << member_instance
-
-      if rdf_object.is_a?(Collection::Base)
-        rdf_subject.subcollections << rdf_object
-      end
     end
 
     if rdf_object.collections.select{|coll| coll.id == rdf_subject.id}.empty?

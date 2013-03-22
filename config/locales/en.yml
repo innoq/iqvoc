@@ -155,6 +155,7 @@ en:
        instance_configuration: "Configuration"
        hierarchical: "Hierarchical"
        alphabetical: "Alphabetical"
+       expired: "Expired"
        search: "Search"
        about: "About"
        users: "Users"
@@ -337,8 +338,8 @@ en:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
      collections:
        save:
-         success: "The collection has been successfully created."
-         error: "The collection could not be created."
+         success: "The collection has been successfully saved."
+         error: "The collection could not be saved."
        destroy:
          success: "The collection has been successfully deleted."
          error: "The collection could not be deleted."

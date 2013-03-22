@@ -26,6 +26,14 @@ class Labeling::SKOS::Base < Labeling::Base
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
   end
 
+  def self.concept_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.expired)
+  end
+
+  def self.concept_not_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.not_expired)
+  end
+
   # ********** Methods
 
   def self.label_class
@@ -52,10 +60,10 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Unordered.where(:origin => params[:collection_origin]).last
+      collection = Collection::Base.where(:origin => params[:collection_origin]).last
       if collection
         scope = scope.includes(:owner => :collection_members)
-        scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection)
+        scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
       else
         raise "Collection with Origin #{params[:collection_origin]} not found!"
       end
