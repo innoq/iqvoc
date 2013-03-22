@@ -18,24 +18,6 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
 
   acts_as_rdf_predicate 'skos:member'
 
-  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object) # <<collection>>, <<member>>, <<concept|collection>>
-    ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
-    rdf_subject     = Collection::Base.from_origin_or_instance(rdf_subject)
-    rdf_object      = Concept::Base.from_origin_or_instance(rdf_object)
-    member_instance = rdf_subject.members.to_a.find {|rel| rel.target == rdf_object || rel.target_id == rdf_object.id}
-
-    if member_instance.nil?
-      predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-      member_instance = predicate_class.new(:target => rdf_object)
-      rdf_subject.members << member_instance
-    end
-
-    if rdf_object.collections.select{|coll| coll.id == rdf_subject.id}.empty?
-      rdf_object.collections << rdf_subject
-    end
-    member_instance
-  end
-
   def self.build_from_parsed_tokens(tokens, options = {}) # <<collection>>, <<member>>, <<concept|collection>>
     rdf_subject     = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
     rdf_object      = options[:object_instance]  || Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])

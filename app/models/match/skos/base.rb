@@ -16,20 +16,6 @@
 
 class Match::SKOS::Base < Match::Base
 
-  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
-    rdf_subject = Concept::Base.from_origin_or_instance(rdf_subject)
-    match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-
-    raise "#{self.class}#build_from_rdf: Subject (#{rdf_subject}) must be able to recieve this kind of match (#{self.name} => #{match_class.relation_name})." unless rdf_subject.class.reflections.include?(match_class.relation_name)
-    raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right? # FIXME: use CanonicalTrripleGrammar for this
-    uri = $1
-
-    match_class.new(:value => uri).tap do |match|
-      rdf_subject.send(match_class.relation_name) << match
-    end
-  end
-
   def build_rdf(document, subject)
     raise "#{self.class}#build_rdf: Class #{self.name} needs to call acts_as_rdf_predicate 'ns:type'." unless self.implements_rdf?
 

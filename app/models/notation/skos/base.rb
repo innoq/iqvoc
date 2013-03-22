@@ -18,14 +18,6 @@ class Notation::SKOS::Base < Notation::Base
 
   acts_as_rdf_predicate 'skos:notation'
 
-  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    # TODO: Adopt this to RDFAPI
-    data = rdf_object.match /"(?<value>.+)"\^\^<(?<data_type>.+)>/
-    create! :concept_id => rdf_subject.id,
-      :value => data[:value],
-      :data_type => data[:data_type]
-  end
-
   def self.build_from_parsed_tokens(tokens, options = {})
     rdf_subject   = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
     rdf_predicate = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self

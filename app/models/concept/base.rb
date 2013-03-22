@@ -285,9 +285,8 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
-    relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
-    relations.select { |rel| rel.class.name == relation_class }.map(&:target).
-        select { |c| c.published? || !only_published }
+    res = relations.for_class(relation_class).map(&:target)
+    only_published ? res.select(&:published?) : res
   end
 
   def matches_for_class(match_class)
@@ -319,13 +318,13 @@ class Concept::Base < ActiveRecord::Base
     pref_label.to_s
   end
 
-  # TODO: rename to "publish!"
+  # TODO: rename to "publish!" # better: use proper workflow implementation
   def save_with_full_validation!
     @full_validation = true
     save!
   end
 
-  # TODO: rename to "publishable?"
+  # TODO: rename to "publishable?" # better: use proper workflow implementation
   def valid_with_full_validation?
     @full_validation = true
     valid?
@@ -339,21 +338,6 @@ class Concept::Base < ActiveRecord::Base
 
   def associated_objects_in_editing_mode
     { :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode }
-  end
-
-  def self.from_origin_or_instance(origin, no_raise = false)
-    case origin
-    when self
-      origin
-    when String, Symbol
-      if thing = self.find_by_origin(origin) # find all subclasses of this class
-        thing.becomes(thing.type.constantize)     # cast object to its actual type
-      else
-        raise "no #{self} with origin #{origin} was found" unless no_raise
-      end
-    else
-      raise "origin must be a #{self} or a String (=origin) but #{origin.inspect} was given"
-    end
   end
 
   protected
