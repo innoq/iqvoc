@@ -88,6 +88,7 @@ class Labeling::Base < ActiveRecord::Base
     end
   end
 
+  # FIXME: this method is not idempotent: existing value/language combinations should probably not be re-created.
   def self.build_from_parsed_tokens(tokens, options = {})
     rdf_subject = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
 

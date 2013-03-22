@@ -25,7 +25,7 @@ module Iqvoc
       end
 
       def [](key)
-        @internal_data[key.to_sym]
+        @internal_data[key.to_sym] || @m[key.to_sym]
       end
 
       def ok?
@@ -37,9 +37,10 @@ module Iqvoc
       def subject
         @internal_data[:Subject] ||= begin
           if @m[:SubjectNodeName] # blank node
-            @parser.named_nodes[@m[:SubjectNodeName]] ||= Iqvoc::Origin.new(@m[:SubjectNodeName])
+            @parser.named_nodes[@m[:SubjectNodeName]] ||= Iqvoc::Origin.new(@m[:SubjectNodeName]).to_s
           elsif @parser.prefixes[@m[:SubjectUriPrefix]] == '' # subject we want to import
-            ":#{Iqvoc::Origin.new(@m[:SubjectUriOrigin])}"
+            @internal_data[:SubjectOrigin] = Iqvoc::Origin.new(@m[:SubjectUriOrigin]).to_s
+            nil
           else
             puts "ignoring unknown prefix #{@m[:SubjectUriPrefix]}."
             :skip
@@ -60,9 +61,11 @@ module Iqvoc
       def object
         @internal_data[:Object] ||= begin
           if @m[:ObjectNodeName] # blank node
-            @parser.named_nodes[@m[:ObjectNodeName]] ||= Iqvoc::Origin.new(@m[:ObjectNodeName])
+            @internal_data[:ObjectOrigin] = @parser.named_nodes[@m[:ObjectNodeName]] ||= Iqvoc::Origin.new(@m[:ObjectNodeName]).to_s
+            ":#{@internal_data[:ObjectOrigin]}"
           elsif prefix = @parser.prefixes[@m[:ObjectUriPrefix]]
-            "#{prefix}:#{Iqvoc::Origin.new(@m[:ObjectUriOrigin])}"
+            @internal_data[:ObjectOrigin] = Iqvoc::Origin.new(@m[:ObjectUriOrigin]).to_s
+            "#{prefix}:#{@internal_data[:ObjectOrigin]}"
           elsif @m[:ObjectLangstringString] # string literal
             @m[:ObjectLangstring]
           else

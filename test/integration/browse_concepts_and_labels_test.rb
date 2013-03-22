@@ -68,20 +68,22 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     assert page.has_content?(':baum a skos:Concept'), "':baum a skos:Concept' missing in turtle view"
   end
 
-  test "showing expired concepts" do
+  test 'should show showing expired concepts' do
     # prepare database with expired concept
-    concepts = [[:en, "Method"], [:de, "Methode"]].map do |lang, text|
-      FactoryGirl.create(:concept,
-        :expired_at => 2.days.ago,
-        :pref_labelings => [
-          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label, :language => lang, :value => text))
-        ])
+    Iqvoc::RDFAPI.parse_triples <<-EOT
+      :tree rdf:type skos:Concept
+      :tree skos:prefLabel "Method"@en
+      :tree skos:prefLabel "Methode"@de
+      :tree skos:topConceptOf :scheme
+      :tree iqvoc:publishedAt "#{3.days.ago}"^^<DateTime>
+      :tree iqvoc:expiredAt "#{2.days.ago}"^^<DateTime>
+      EOT
     end
 
     visit hierarchical_concepts_path(:lang => 'en')
     click_link_or_button('Expired')
     click_link_or_button('M')
-    assert page.has_content?(concepts.first.pref_label.to_s), 'should have one expired concept'
+    assert page.has_content?('Method'), 'should have one expired concept'
   end
 
 end

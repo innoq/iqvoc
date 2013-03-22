@@ -14,29 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Notation::Base < ActiveRecord::Base
-  include ActsAsRdfPredicate
+class Notation::SKOS::Base < Notation::Base
 
-  self.table_name = 'notations'
+  acts_as_rdf_predicate 'skos:notation'
 
-  def self.view_section(obj)
-    'main'
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    # TODO: Adopt this to RDFAPI
+    data = rdf_object.match /"(?<value>.+)"\^\^<(?<data_type>.+)>/
+    create! :concept_id => rdf_subject.id,
+      :value => data[:value],
+      :data_type => data[:data_type]
   end
 
-  def self.view_section_sort_key(obj)
-    500
-  end
+  def self.build_from_parsed_tokens(tokens, options = {})
+    rdf_subject   = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    rdf_predicate = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
 
-  def self.partial_name(obj)
-    'partials/notation/base'
-  end
-
-  def self.edit_partial_name(obj)
-    'partials/notation/edit_base'
+    notation = rdf_predicate.new :concept => rdf_subject, :value => tokens[:ObjectDatatypeString], :data_type => tokens[:ObjectDatatypeUri]
+    rdf_subject.notations << notation
+    notation
   end
 
   def build_rdf(document, subject)
-    raise "Notation::Base#build_rdf: Class #{self.name} needs to acts_as_rdf_predicate." unless self.implements_rdf?
+    raise "Notation::Base#build_rdf: Class #{self.name} needs acts_as_rdf_predicate." unless self.implements_rdf?
 
     if IqRdf::Namespace.find_namespace_class(self.rdf_namespace.camelcase)
       subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, IqRdf::Literal.new(value, :none, URI.parse(data_type)))

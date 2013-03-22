@@ -2,13 +2,13 @@
   <h2><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h2>
   <div class="relation-body block">
     <% if concept.top_term? %>
-      <strong><%= concept.class.human_attribute_name("top_term") %></strong>
+      <strong><%= concept.class.human_attribute_name('top_term') %></strong>
     <% end %>
 
     <% if concept.related_concepts_for_relation_class(
-        Iqvoc::Concept.broader_relation_class, params[:published] != "0").any? %>
+        Iqvoc::Concept.broader_relation_class, params[:published] != '0').any? %>
       <div class="selector">
-        <%= treeview(@concept.broader_relations.map { |rel| rel.target }, true) %>
+        <%= treeview @concept.broader_relations.map(&:target), true %>
       </div>
     <% end %>
   </div>

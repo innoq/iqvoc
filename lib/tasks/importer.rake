@@ -13,7 +13,8 @@ namespace :iqvoc do
 
       stdout_logger = Logger.new(STDOUT)
       stdout_logger.level = Logger::INFO
-      Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s, MultiLogger.new(stdout_logger, Rails.logger))
+#       Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s, MultiLogger.new(stdout_logger, Rails.logger))
+      Iqvoc::RDFAPI.parse_nt open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s
     end
 
   end

@@ -2,7 +2,7 @@
 
 module Concept
   module RelationSubtypeExtensions
-    extend Concept::Relation::ReverseRelationExtension
+#     extend Concept::Relation::ReverseRelationExtension
 #     extend Concept::TypedHasManyExtension
 
     def find_by_target_and_class(target_obj, target_class)

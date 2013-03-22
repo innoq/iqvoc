@@ -36,25 +36,25 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
     member_instance
   end
 
-  def self.build_from_parsed_tokens(tokens) # <<collection>>, <<member>>, <<concept|collection>>
-#     rdf_subject     = Collection::Base.from_origin_or_instance(tokens[:SubjectOrigin])
-#     rdf_object      = Concept::Base.from_origin_or_instance(tokens[:ObjectOrigin])
+  def self.build_from_parsed_tokens(tokens, options = {}) # <<collection>>, <<member>>, <<concept|collection>>
+    rdf_subject     = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    rdf_object      = options[:object_instance]  || Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])
 
-    rdf_subject     = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
-    rdf_object      = Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])
-    member_instance = rdf_subject.members.to_a.find {|rel| rel.target == rdf_object}
+    # FIXME: something fishy is going on here. probably first have to refactor member association
+    member_instance = rdf_subject.members.to_a.find {|rel| rel.target == rdf_object || rel.target_id == rdf_object.id }
 
     if member_instance.nil?
       predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
-      member_instance = predicate_class.new(:target => rdf_object)
+      member_instance = predicate_class.new(:collection => rdf_subject, :target => rdf_object)
       rdf_subject.members << member_instance
 
       if rdf_object.is_a?(Collection::Base)
+#         raise "should not happen"
         rdf_subject.subcollections << rdf_object
       end
     end
 
-    if rdf_object.collections.select{|coll| coll.id == rdf_subject.id}.empty?
+    if rdf_object.collections.select{|coll| coll.id == rdf_subject.id || coll == rdf_subject}.empty?
       rdf_object.collections << rdf_subject
     end
     member_instance

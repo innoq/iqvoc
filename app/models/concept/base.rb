@@ -47,13 +47,21 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, :foreign_key => 'owner_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy, :extend => [Concept::TypedHasManyExtension, RelationSubtypeExtensions]
+  has_many :relations,
+      :foreign_key => 'owner_id',
+      :class_name  => 'Concept::Relation::Base',
+      :dependent   => :destroy,
+      :extend      => [Concept::TypedHasManyExtension, RelationSubtypeExtensions]
 
   has_many :related_concepts, :through => :relations, :source => :target
   has_many :referenced_relations, :foreign_key => 'target_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => 'Labeling::Base', :dependent => :destroy, :extend => [Concept::TypedHasManyExtension, LabelingSubtypeExtensions]
+  has_many :labelings,
+      :foreign_key => 'owner_id',
+      :class_name  => 'Labeling::Base',
+      :dependent   => :destroy,
+      :extend      => [Concept::TypedHasManyExtension, LabelingSubtypeExtensions]
   has_many :labels, :through => :labelings, :source => :target
   include_to_deep_cloning(:labelings => :target)
 
@@ -63,7 +71,10 @@ class Concept::Base < ActiveRecord::Base
   has_many :matches, :foreign_key => 'concept_id', :class_name => 'Match::Base', :dependent => :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, :foreign_key => 'target_id', :class_name => 'Collection::Member::Base', :dependent => :destroy
+  has_many :collection_members,
+      :foreign_key => 'target_id',
+      :class_name  => 'Collection::Member::Base',
+      :dependent   => :destroy
   has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
@@ -104,7 +115,7 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def pref_labels
-    self.pref_labelings.map(&:target)
+    self.pref_labelings.map(&:target).compact
   end
 
   def pref_labels=(*args)

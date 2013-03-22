@@ -51,16 +51,16 @@ module Iqvoc
         origin = tokens[:SubjectOrigin]
         thing  = self.by_origin(origin, klass)
         if thing.nil?
-          thing = @@lookup_by_origin[origin.to_s] = klass.new(:origin => origin)
+          thing = @@lookup_by_origin[origin] = klass.new(:origin => origin)
         end
         thing
       end
     end
 
-    class ObjectPublisher
+    class ObjectAttributeSetter
       def self.build_from_parsed_tokens(tokens)
         if rdf_subject = RDFAPI.cached(tokens[:SubjectOrigin])
-          rdf_subject.published_at = tokens[:ObjectDatatypeString]
+          rdf_subject.send "#{tokens[:PredicateOrigin].underscore}=", tokens[:ObjectDatatypeString]
         end
         rdf_subject
       end
@@ -89,7 +89,8 @@ module Iqvoc
     # Ex: 'skos:prefLabel' => Labeling::SKOS::PrefLabel
     internal_mapping = {
       'rdf:type'          => ObjectInstanceBuilder,
-      'iqvoc:publishedAt' => ObjectPublisher,
+      'iqvoc:publishedAt' => ObjectAttributeSetter,
+      'iqvoc:expiredAt'   => ObjectAttributeSetter,
       'skos:topConceptOf' => ::Concept::SKOS::Scheme
     }
 
@@ -170,13 +171,24 @@ module Iqvoc
         str_or_io = StringIO.new(str_or_io)
       end
       parser = NTParser.new str_or_io, default_namespace_url
-
+      save_later = []
       parser.each_valid_triple do |triple|
         if block_given?
           yield triple
         else
-          self.eat(triple).save
+          result = self.eat(triple)
+          if result.respond_to? :save
+            save_later << result
+          end
         end
+      end
+
+      save_later.each do |result|
+        if result.respond_to? :published_at
+          result.published_at = Time.now
+        end
+        puts result.class.to_s
+        result.save or puts "!!! #{result.errors.full_messages.inspect}"
       end
     end
 

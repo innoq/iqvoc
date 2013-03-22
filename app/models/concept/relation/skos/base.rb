@@ -16,7 +16,7 @@
 
 class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
-  after_save :save_reverse_instance
+  before_save :save_reverse_instance
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     ActiveSupport::Deprecation.warn "build_from_rdf will be removed. Please use build_from_parsed_tokens in the future."
@@ -31,9 +31,9 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     end
 
     if relation_class.bidirectional?
-      reverse_class       = relation_class.reverse_relation_class
-      @reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
-      @reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
+      reverse_class      = relation_class.reverse_relation_class
+      reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
+      reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
     end
     relation_instance
   end
@@ -43,16 +43,14 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     rdf_object     = options[:object_instance]  || Iqvoc::RDFAPI.cached(tokens[:ObjectOrigin])
     relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
 
-    relation_instance = rdf_subject.relations.find_by_target_and_class(rdf_object, relation_class)
-    unless relation_instance
-      relation_instance = relation_class.new(:target => rdf_object, :owner => rdf_subject)
-      relation_instance.rank = options[:object_rank] if options[:object_rank]
-    end
+    relation_instance   = rdf_subject.relations.find_by_target_and_class(rdf_object, relation_class)
+    relation_instance ||= relation_class.new(:target => rdf_object, :owner => rdf_subject)
+    relation_instance.rank = options[:object_rank] if options[:object_rank]
 
     if relation_class.bidirectional?
-      reverse_class       = relation_class.reverse_relation_class
-      @reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
-      @reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
+      reverse_class      = relation_class.reverse_relation_class
+      reverse_instance   = rdf_object.relations.find_by_target_and_class(rdf_subject, reverse_class)
+      reverse_instance ||= reverse_class.new(:target => rdf_subject, :owner => rdf_object)
     end
 
     # NOTE: this is not really clean: We create two object instances for a single
@@ -60,6 +58,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     # 'save' on the return value of this method to persist a statement (e.g. in RDFAPI.eat)
     # We should seriously consider building and persisting the reverse association in a
     # before_save callback instead.
+    relation_instance.instance_variable_set '@reverse_instance', reverse_instance
     relation_instance
   end
 

@@ -50,19 +50,11 @@ class HierarchyController < ApplicationController
     return unless stale?(:etag => [latest, params], :last_modified => latest,
         :public => !include_unpublished)
 
-    # NB: order matters due to the `where` clause below
-    if direction == "up"
-      scope = scope.includes(:narrower_relations, :broader_relations)
-    else
-      scope = scope.includes(:broader_relations, :narrower_relations)
-    end
-
     @concepts = {}
     if include_siblings
       determine_siblings(root_concept).each { |sib| @concepts[sib] = {} }
     end
-    @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth, 0,
-        include_siblings)
+    @concepts[root_concept] = populate_hierarchy(root_concept, scope.includes(:relations), depth, 0, include_siblings)
 
     @relation_class = Iqvoc::Concept.broader_relation_class
     @relation_class = @relation_class.narrower_class unless direction == "up"
@@ -98,7 +90,7 @@ class HierarchyController < ApplicationController
   # NB: includes support for poly-hierarchies -- XXX: untested
   def determine_siblings(concept)
     return concept.broader_relations.map do |rel|
-      rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
+      rel.target.narrower_relations.map(&:target) # XXX: expensive
     end.flatten.uniq
   end
 
