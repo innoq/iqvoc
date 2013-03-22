@@ -289,11 +289,6 @@ class Concept::Base < ActiveRecord::Base
     matches.select{ |match| match.class.name == match_class }
   end
 
-  def notes_for_class(note_class)
-    ActiveSupport::Deprecation.warn "use notes.for_class(klass) instead of notes_for_class(klass)"
-    notes.for_class(note_class)
-  end
-
   def notations_for_class(notation_class)
     notation_class = notation_class.name if notation_class < ActiveRecord::Base # Use the class name string
     notations.select{ |notation| notation.class.name == notation_class }

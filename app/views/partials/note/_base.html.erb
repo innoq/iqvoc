@@ -1,11 +1,11 @@
-<div class="<%= html_classes("relation", "panel", (class_name rescue nil)) %>">
+<div class="<%= html_classes('relation', 'panel', (class_name rescue nil)) %>">
   <%# Provide support for iqvoc_skosxl %>
   <% object = if defined?(concept)
                 concept
               elsif defined?(label)
                 label
               end %>
-  <% notes = object.notes_for_class(klass) %>
+  <% notes = object.notes.for_class(klass) %>
   <h2><%= klass.model_name.human(:count => notes.count) %></h2>
   <div class="relation-body">
     <%= render :partial => 'partials/note/note', :collection => notes %>
