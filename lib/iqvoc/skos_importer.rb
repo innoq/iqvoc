@@ -206,7 +206,7 @@ module Iqvoc
 
       triple.each do |e| # Do some fun with the uris and literals
         @prefixes.keys.each do |uri_prefix| # Use prefixes instead of full uris
-          e.gsub! /<#{uri_prefix}([^>]*)>/ do |matches|
+          e.gsub! /^<#{uri_prefix}([^>]*)>/ do |matches|
             @prefixes[uri_prefix] + $1.gsub(".", "_")
           end
         end

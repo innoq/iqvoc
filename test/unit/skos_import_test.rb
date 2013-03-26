@@ -120,11 +120,12 @@ class SkosImportTest < ActiveSupport::TestCase
   test "notations" do
     test_data = (<<-DATA
       <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
-      <http://www.example.com/car> <http://www.w3.org/2008/05/skos#notation> "ME-IQ 1234"^^<http://notations.example.com/licensePlate> .
+      <http://www.example.com/car> <http://www.w3.org/2008/05/skos#notation> "ME-IQ 1234"^^<http://www.example.com/licensePlate> .
+      <http://www.example.com/car> <http://www.w3.org/2008/05/skos#notation> "12345"^^<http://notations.example.com/exampleNotation> .
       DATA
     ).split("\n")
 
-    assert_difference('Notation::Base.count', 1) do
+    assert_difference('Notation::Base.count', 2) do
       Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
     end
   end
