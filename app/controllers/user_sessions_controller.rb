@@ -31,7 +31,11 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       @current_ability = nil
       flash[:success] = I18n.t("txt.controllers.user_sessions.login_success")
-      redirect_to params[:back_to].presence || (can?(:use, :dashboard) ? dashboard_path : root_path)
+      if params[:back_to]
+        redirect_to URI.parse(params[:back_to]).path
+      else
+        redirect_to can?(:use, :dashboard) ? dashboard_path : root_path
+      end
     else
       flash[:error] = I18n.t("txt.views.user_sessions.error")
       render :action => :new
