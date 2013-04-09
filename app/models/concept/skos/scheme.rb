@@ -14,27 +14,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'singleton'
-
-# virtual root node
-# NB:
-# * does not inherit from Concept::Base to avoid being included in all
-#   queries based on that class, including indirect ones (e.g. relations)
-# * persistence (i.e. a database record) is not required since this is a
-#   singleton and merely a static, virtual node
-class Concept::SKOS::Scheme
-  include Singleton
-
+class Concept::SKOS::Scheme < Concept::Base
   def self.rdf_class
-    :ConceptScheme
+    'ConceptScheme'
   end
 
   def self.rdf_namespace
-    :skos
+    'skos'
   end
 
-  def origin
-    :scheme
+  def self.instance
+    first_or_create!(:origin => 'scheme', :published_at => Time.now)
+  end
+
+  def self.create(attributes = nil, options = {}, &block)
+    raise NotImplementedError if first
+    super
+  end
+
+  def self.create!(attributes = nil, options = {}, &block)
+    raise NotImplementedError if first
+    super
+  end
+
+  def save(*)
+    raise NotImplementedError if self.class.first
+    super
+  end
+
+  def save!(*)
+    raise NotImplementedError if self.class.first
+    super
   end
 
   def build_rdf_subject(&block)
@@ -42,5 +52,4 @@ class Concept::SKOS::Scheme
     raise "Namespace '#{rdf_namespace}' is not defined in IqRdf document." unless ns
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)
   end
-
 end

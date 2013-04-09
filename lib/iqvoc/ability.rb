@@ -31,7 +31,7 @@ module Iqvoc
           can :merge, [::Concept::Base, ::Label::Base], :published_at => nil
         end
 
-        if user.owns_role?(:administrator) # Admins ...
+        if user.owns_role?(:administrator)
           can [:update, :destroy, :unlock], [::Concept::Base, ::Label::Base], :published_at => nil # Mustn't be locked by myself
 
           can :manage, User
@@ -39,6 +39,8 @@ module Iqvoc
 
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
+
+          can :update, Iqvoc::Concept.root_class.instance
         end
       else # no user
         can :create, UserSession

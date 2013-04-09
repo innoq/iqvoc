@@ -1,0 +1,7 @@
+<%= sidebar do %>
+  <%= sidebar_header 'Links' %>
+  <%= sidebar_item :icon => :edit, :text => t('txt.common.edit'),
+    :path => edit_scheme_path,
+    :perms => [:update, scheme],
+    :active => params[:action] == 'edit' %>
+<% end %>
