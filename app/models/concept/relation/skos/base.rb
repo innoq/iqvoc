@@ -42,6 +42,13 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
   def build_rdf(document, subject)
     subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, IqRdf.build_uri(target.origin))
+
+    # Auto-include preferred labels for referenced concepts
+    document << IqRdf::build_uri(target.origin) do |subject|
+      target.pref_labelings.each do |labeling|
+        subject.skos.send(labeling.rdf_predicate, labeling.target.value.to_s, :lang => labeling.target.language)
+      end
+    end
   end
 
 end
