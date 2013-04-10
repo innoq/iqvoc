@@ -4,6 +4,7 @@
 <http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "outdoors"@en .
 <http://hobbies.com#achievement_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#achievement_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Achievement hobbies"@en .
+<http://hobbies.com#achievement_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
 <http://hobbies.com#gardening> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#gardening> <http://www.w3.org/2004/02/skos/core#prefLabel> "Gardening"@en .
 <http://hobbies.com#gardening> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
@@ -96,6 +97,7 @@
 <http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#snowmobiling> .
 <http://hobbies.com#collection_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#collection_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Collection hobbies"@en .
+<http://hobbies.com#collection_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
 <http://hobbies.com#coin_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#coin_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Coin collecting"@en .
 <http://hobbies.com#coin_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
@@ -126,6 +128,7 @@
 <http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#mineral_collecting> .
 <http://hobbies.com#competition_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#competition_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Competition hobbies"@en .
+<http://hobbies.com#competition_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
 <http://hobbies.com#billiards> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <http://hobbies.com#billiards> <http://www.w3.org/2004/02/skos/core#prefLabel> "Billiards"@en .
 <http://hobbies.com#billiards> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .

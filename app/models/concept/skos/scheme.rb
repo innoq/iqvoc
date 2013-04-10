@@ -19,6 +19,10 @@ class Concept::SKOS::Scheme < Concept::Base
     'ConceptScheme'
   end
 
+  def self.rdf_predicate
+    'topConceptOf'
+  end
+
   def self.rdf_namespace
     'skos'
   end
@@ -37,6 +41,10 @@ class Concept::SKOS::Scheme < Concept::Base
     super
   end
 
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    rdf_subject.update_attribute :top_term, true
+  end
+
   def save(*)
     raise NotImplementedError if self.class.first
     super
@@ -52,4 +60,5 @@ class Concept::SKOS::Scheme < Concept::Base
     raise "Namespace '#{rdf_namespace}' is not defined in IqRdf document." unless ns
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)
   end
+
 end

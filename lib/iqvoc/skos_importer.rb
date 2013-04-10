@@ -9,6 +9,7 @@ module Iqvoc
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
         Iqvoc::Concept.notation_classes +
+        [Iqvoc::Concept.root_class] +
         [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
@@ -31,6 +32,11 @@ module Iqvoc
       end
 
       @seen_first_level_objects = {} # Concept cache (don't load any concept twice from db)
+
+      # Assign the default concept scheme singleton instance as a seen first level object upfront
+      # in order to handle a missing scheme definition in ntriple data
+      @seen_first_level_objects[Iqvoc::Concept.root_class.instance.origin] = Iqvoc::Concept.root_class.instance
+
       @new_subjects = [] # Concepts to be published later
 
       # Triples the importer doesn't understand immediately. Example:
