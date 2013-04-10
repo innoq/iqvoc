@@ -163,7 +163,7 @@ module Iqvoc
         object = load_first_level_object(object_origin)
         unless object
           if final
-            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}'. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
           else
             @unknown_second_level_tripes << initial_triple
           end
