@@ -44,7 +44,7 @@ module Iqvoc
       #     :a skos:prefLabel "foo". # => What is :a? Remember this and try again later
       #     ....
       #     :a rdf:type skos:Concept # => Now I know :a, good I remebered it's prefLabel...
-      @unknown_second_level_tripes = []
+      @unknown_second_level_triples = []
 
       # Hash of arrays of arrays: { "_:n123" => [["pred1", "obj1"], ["pred2", "obj2"]] }
       @blank_nodes = {}
@@ -82,7 +82,7 @@ module Iqvoc
       end
 
       @logger.debug("Computing 'forward' defined triples...")
-      @unknown_second_level_tripes.each do |s, p, o|
+      @unknown_second_level_triples.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
@@ -152,7 +152,7 @@ module Iqvoc
         if final
           @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
         else
-          @unknown_second_level_tripes << initial_triple
+          @unknown_second_level_triples << initial_triple
         end
         return false
       end
@@ -165,7 +165,7 @@ module Iqvoc
           if final
             @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}'. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
           else
-            @unknown_second_level_tripes << initial_triple
+            @unknown_second_level_triples << initial_triple
           end
           return false
         end
@@ -181,7 +181,7 @@ module Iqvoc
         if final
           object = @blank_nodes[object]
         else
-          @unknown_second_level_tripes << initial_triple
+          @unknown_second_level_triples << initial_triple
           return false
         end
       end
