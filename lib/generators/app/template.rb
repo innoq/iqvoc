@@ -11,6 +11,9 @@ gem 'iqvoc'
   gsub_file file, app_const_base, namespaced_app_name
 end
 
+gsub_file "config/application.rb", /filter_parameters .*:password\b/,
+    '\0, :password_confirmation'
+
 gsub_file "config/routes.rb", "#{app_const_base}::Application", "Rails.application"
 
 %w(development test production).each do |env|
