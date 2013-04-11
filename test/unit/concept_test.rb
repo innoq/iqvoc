@@ -104,10 +104,10 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept2.invalid_with_full_validation?, "concept invalid: #{concept2.errors.full_messages.join(', ')}"
   end
 
-  test 'labelings_by_text setter' do
+  test 'inline_labelings setter' do
     concept = Iqvoc::RDFAPI.parse_triple ':c0899 rdf:type skos:Concept'
 
-    concept.labelings_by_text = {
+    concept.inline_labelings = {
       'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
     }
     assert concept.save
@@ -115,7 +115,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 'A new label', concept.pref_label.value
     assert_equal Iqvoc::Concept.pref_labeling_languages.first, concept.pref_label.language.to_s
 
-    concept.labelings_by_text = {
+    concept.inline_labelings = {
       'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
     }
     assert !concept.save
@@ -138,7 +138,7 @@ class ConceptTest < ActiveSupport::TestCase
 
   test 'labels including commas' do
     form_data = {
-      'labelings_by_text' => {
+      'inline_labelings' => {
         'skos:prefLabel' => { 'en' => 'lipsum' },
         'skos:altLabel'  => { 'en' => 'foo, bar' }
       }
@@ -147,14 +147,14 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ['lipsum'],
         concept.labelings.for_class(Labeling::SKOS::PrefLabel).map(&:target).map(&:to_s)
     assert_equal 'lipsum',
-        concept.labelings_by_text('skos:prefLabel', 'en')
+        concept.inline_labelings('skos:prefLabel', 'en')
     assert_equal ['foo', 'bar'],
         concept.labelings.for_class(Labeling::SKOS::AltLabel).map(&:target).map(&:to_s)
     assert_equal 'foo, bar',
-        concept.labelings_by_text('skos:altLabel', 'en')
+        concept.inline_labelings('skos:altLabel', 'en')
 
     form_data = {
-      'labelings_by_text' => {
+      'inline_labelings' => {
         'skos:prefLabel' => { 'en' => 'lipsum' },
         'skos:altLabel'  => { 'en' => 'lorem, "foo, bar", ipsum' }
       }
@@ -164,11 +164,11 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ['lipsum'],
         concept.labelings.for_class(Labeling::SKOS::PrefLabel).map(&:target).map(&:to_s)
     assert_equal 'lipsum',
-        concept.labelings_by_text('skos:prefLabel', 'en')
+        concept.inline_labelings('skos:prefLabel', 'en')
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
         concept.labelings.for_class(Labeling::SKOS::AltLabel).map(&:target).map(&:to_s)
     assert_equal 'lorem, "foo, bar", ipsum',
-        concept.labelings_by_text('skos:altLabel', 'en')
+        concept.inline_labelings('skos:altLabel', 'en')
   end
 
 end

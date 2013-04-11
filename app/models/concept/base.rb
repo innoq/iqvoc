@@ -31,15 +31,15 @@ class Concept::Base < ActiveRecord::Base
     include mod
   end
 
+  include InlineNotesHandling
+  include InlineRelationsHandling
+  include InlineLabelingsHandling
+
   # ********** Hooks
 
   after_initialize do
     @full_validation = false
   end
-
-  before_validation :process_labelings_by_text
-
-  after_save :process_inline_relations
 
   after_save :generate_origin_if_blank
 
@@ -210,26 +210,6 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Methods
 
-  def labelings_by_text=(hash)
-    @labelings_by_text = hash
-
-    @labelings_by_text.each do |relation_name, labels_by_lang|
-      # if `language` is `nil`, the respective HTML form field returns an array
-      # instead of a hash (`<input name=bla[labeling_class][]>`)
-      if labels_by_lang.is_a?(Array)
-        @labelings_by_text[relation_name] = { nil => labels_by_lang.first }
-      end
-    end
-    @labelings_by_text
-  end
-
-  def labelings_by_text(relation_name, language)
-    (@labelings_by_text && @labelings_by_text[relation_name] &&
-        @labelings_by_text[relation_name][language]) ||
-        Iqvoc::InlineDataHelper.generate_inline_values(self.labelings.for_rdf_class(relation_name).
-                                                       select{|assoc| assoc.target.language.to_s == language.to_s}.map { |l| l.target.value })
-  end
-
   def labels_for_class_and_language(rdf_labeling_class, lang = 'en', only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
@@ -242,16 +222,7 @@ class Concept::Base < ActiveRecord::Base
     ((@labels && @labels[rdf_labeling_class] && @labels[rdf_labeling_class][lang]) || []).select{|l| l.published? || !only_published}
   end
 
-  def concept_relations_by_id=(hash)
-    @concept_relations_by_id = hash
-  end
-
-  def concept_relations_by_id(relation_rdf_type)
-    ActiveSupport::Deprecation.warn 'please call concept.relations.by_id(relation_name) in the future'
-    @concept_relations_by_id[relation_rdf_type] || self.relations.by_id(relation_rdf_type)
-  end
-
-  def concept_relations_by_id_and_rank(relation_rdf_type)
+  def relations_by_id_and_rank(relation_rdf_type)
     ActiveSupport::Deprecation.warn 'please call concept.relations.by_id_and_rank(relation_name) in the future'
     self.relations.by_id_and_rank(relation_rdf_type)
   end
@@ -331,70 +302,6 @@ class Concept::Base < ActiveRecord::Base
   end
 
   protected
-
-  # Handle save or destruction of inline labelings for use with widgets etc.
-  def process_labelings_by_text
-    # Inline assigned SKOS::Labels
-    # @labelings_by_text # => {'skos:altLabel' => {'lang' => 'label1, label2, ...'}}
-    (@labelings_by_text ||= {}).each do |rdf_name, lang_values|
-      self.labelings.for_rdf_class(rdf_name).each do |lbl|
-        self.labelings.delete(lbl.destroy)
-      end
-
-      lang_values.each do |lang, inline_values|
-        lang = nil if lang.to_s == 'none'
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
-          value.squish!
-          unless value.blank?
-            tokens = {:ObjectLangstringLanguage => lang, :ObjectLangstringString => value, :Predicate => rdf_name}
-            self.labelings.build_from_parsed_tokens(tokens, :subject_instance => self)
-          end
-        end
-      end
-    end
-  end
-
-  # Process inline relations
-  #
-  # NB: rankable relations' target origins may include an embedded rank,
-  # delimited by a colon
-  #
-  # Examples:
-  # regular:  {'relation_name' => ['origin1', 'origin2']}
-  # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
-  def process_inline_relations
-    (@concept_relations_by_id ||= {}).each do |relation_rdf_type, new_origins|
-      # Split comma-separated origins and clean up parameter strings
-      new_origins = new_origins.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:squish)
-
-      # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
-      # => { 'origin1' => nil, 'origin2' => 90 }
-      new_origins = new_origins.each_with_object({}) do |e, hsh|
-        key, value = e.split(':') # NB: defaults to nil if no rank is provided
-        hsh[key] = value
-      end
-
-      # Destroy elements of the given concept relation
-      self.relations.for_rdf_class(relation_rdf_type).each do |rel|
-        # TODO: move into own method
-        ActiveRecord::Base.transaction do
-          rel.class.reverse_relation_class.where(:owner_id => rel.target_id, :target_id => rel.owner_id).each &:destroy
-          self.relations.delete(rel.destroy)
-        end
-      end
-
-      # Rebuild concept relations
-      # This is necessary because changing the rank of an already assigned relation
-      # would otherwise be ignored.
-      new_origins.each_pair do |origin, rank|
-        ActiveRecord::Base.transaction do
-          tokens = {:ObjectOrigin => origin, :Predicate => relation_rdf_type}
-          Concept::Relation::SKOS::Base.build_from_parsed_tokens(tokens, :subject_instance => self, :object_rank => rank).save
-        end
-      end
-
-    end
-  end
 
   # Generate a new origin if none was given yet
   def generate_origin_if_blank

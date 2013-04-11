@@ -31,53 +31,53 @@ module Iqvoc
       # ********* Scopes
 
       def by_origin(origin)
-         where(:origin => origin)
-       end
+        where(:origin => origin)
+      end
 
-       def published
-         where(arel_table[:published_at].not_eq(nil))
-       end
+      def published
+        where(arel_table[:published_at].not_eq(nil))
+      end
 
-       def unpublished
-         where(:published_at => nil)
-       end
+      def unpublished
+        where(:published_at => nil)
+      end
 
-       # The following method returns all objects which should be selectable by the editor
-       def editor_selectable
-         where(
-           arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
-             arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
-           )
-         )
-       end
+      # The following method returns all objects which should be selectable by the editor
+      def editor_selectable
+        where(
+          arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
+            arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
+          )
+        )
+      end
 
-       def in_edit_mode
-         where(arel_table[:locked_by].not_eq(nil))
-       end
+      def in_edit_mode
+        where(arel_table[:locked_by].not_eq(nil))
+      end
 
-       def unpublished_or_follow_up
-         where(
-           arel_table[:published_at].eq(nil).or(
-             arel_table[:follow_up].not_eq(nil)
-           )
-         )
-       end
+      def unpublished_or_follow_up
+        where(
+          arel_table[:published_at].eq(nil).or(
+            arel_table[:follow_up].not_eq(nil)
+          )
+        )
+      end
 
-       def unsynced
-         where(:rdf_updated_at => nil)
-       end
+      def unsynced
+        where(:rdf_updated_at => nil)
+      end
 
-       def include_to_deep_cloning(*association_names)
-         (@@include_to_deep_cloning ||= {})[self] ||= []
-         association_names.each do |association_name|
-           @@include_to_deep_cloning[self] << association_name
-         end
-       end
+      def include_to_deep_cloning(*association_names)
+        (@@include_to_deep_cloning ||= {})[self] ||= []
+        association_names.each do |association_name|
+          @@include_to_deep_cloning[self] << association_name
+        end
+      end
 
-       def includes_to_deep_cloning
-         (@@include_to_deep_cloning ||= {})[self] ||= []
-         (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
-       end
+      def includes_to_deep_cloning
+        (@@include_to_deep_cloning ||= {})[self] ||= []
+        (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
+      end
     end
 
     # ********* Instance methods
@@ -88,11 +88,11 @@ module Iqvoc
       new_version.increment(:rev)
       new_version.published_version_id = self.id
       new_version.unpublish
-      new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
+      new_version.notes << Iqvoc.change_note_class.new(
         :language => I18n.locale.to_s,
         :annotations_attributes => [
-          { :namespace => "dct", :predicate => "creator", :value => user.name },
-          { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
+          { :namespace => 'dct', :predicate => 'creator', :value => user.name },
+          { :namespace => 'dct', :predicate => 'modified', :value => DateTime.now.to_s }
         ])
       new_version
     end
@@ -127,11 +127,11 @@ module Iqvoc
 
     def state
       if published?
-        I18n.t("txt.common.state.published")
+        I18n.t('txt.common.state.published')
       elsif !published? && in_review?
-        I18n.t("txt.common.state.in_review")
+        I18n.t('txt.common.state.in_review')
       elsif !published? && !in_review?
-        I18n.t("txt.common.state.checked_out")
+        I18n.t('txt.common.state.checked_out')
       end
     end
 

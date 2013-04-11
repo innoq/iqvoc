@@ -127,7 +127,7 @@ class ConceptsController < ApplicationController
     end
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
-      @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
+      @concept.notes.build(:type => note_class_name) if @concept.notes.for_class(note_class_name).empty?
     end
   end
 

@@ -1,18 +1,18 @@
 <fieldset class="note_relation" id="<%= assoc_klass.name.to_relation_name %>_data">
   <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
   <ol>
-    <% owner_klass.send(assoc_klass.name.to_relation_name).select{|n| n.class == assoc_klass}.each do |note| %>
-      <%= content_tag("li", :class => "inline_note translation #{" new" if note.new_record?}", :lang => note.language || nil) do %>
+    <% owner_klass.notes.for_class(assoc_klass).each do |note| %>
+      <%= content_tag('li', :class => "inline_note translation #{" new" if note.new_record?}", :lang => note.language || nil) do %>
         <%= f.simple_fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
           <%= note_form.input :value, :as => :text, :input_html => { :rows => 4, :class => 'span4' } %>
-          <%= note_form.input :language, :collection => Iqvoc.note_languages.map { |l| [l, l]}, :label => t("txt.common.language"), :input_html => { :class => 'span1' } %>
+          <%= note_form.input :language, :collection => Iqvoc.note_languages.map { |l| [l, l]}, :label => t('txt.common.language'), :input_html => { :class => 'span1' } %>
 
           <% unless note.new_record? %>
-            <%= note_form.input :"_destroy", :as => :boolean, :label => t("txt.common.delete") %>
+            <%= note_form.input :_destroy, :as => :boolean, :label => t('txt.common.delete') %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
   </ol>
-  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn pull-right">
+  <input type="button" value="<%= t('txt.common.add_note') %>" class="btn pull-right">
 </fieldset>
