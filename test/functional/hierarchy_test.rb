@@ -177,7 +177,7 @@ root:
 
     get :show, :lang => "en", :format => "rdf", :root => "root"
     assert_response 200
-    assert_equal @response.content_type, "application/xml+rdf"
+    assert_equal @response.content_type, "application/rdf+xml"
   end
 
   test "root parameter handling" do
