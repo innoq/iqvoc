@@ -1,3 +1,10 @@
+## [4.1.0]
+
+  * added concepts hierarchy API (/hierarchy)
+  * added support for SKOS notations
+  * adjusted RDF serializations to always include concepts' pref. labels
+  * fixed MIME type for RDF/XML
+
 ## [4.0.9]
 
   * Speed improvements in SKOS importer
