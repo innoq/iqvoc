@@ -41,6 +41,14 @@ class Labeling::Base < ActiveRecord::Base
     includes(:owner).merge(Concept::Base.published)
   end
 
+  def self.concept_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.expired)
+  end
+
+  def self.concept_not_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.not_expired)
+  end
+
   def self.label_published
     includes(:target).merge(Label::Base.published)
   end
