@@ -260,7 +260,7 @@ class Concept::Base < ActiveRecord::Base
 
   def self.with_associations
     includes([
-      { :labelings => :target }, :relations, :matches, :notes
+      { :labelings => :target }, :relations, :matches, :notes, :notations
     ])
   end
 
