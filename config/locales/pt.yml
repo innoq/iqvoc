@@ -356,7 +356,7 @@ pt:
      concept:
        uri: "URI do conceito"
        origin_error: "Origem inválida."
-       version_error: "Nova versão de Rótulo já existe."
+       version_error: "Nova versão de Rótulo já existe: %{origin}"
        no_pref_label_error: "No mínimo um Rótulo preferencial precisa ser especificado."
        orphan_error: "Faltando termo geral ou atribuição de Termo Principal."
        top_term_exclusive_error: "Um Termo Principal não pode ter nenhum termo geral."
