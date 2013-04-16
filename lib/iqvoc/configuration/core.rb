@@ -25,6 +25,10 @@ module Iqvoc
             :controller => "dashboard",
             :authorized? => proc { can? :use, :dashboard }
           }, {
+            :content => proc { link_to "Scheme", scheme_path },
+            :controller => "concepts/scheme",
+            :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
+          }, {
             :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
                 hierarchical_concepts_path },
             :controller => "concepts/hierarchical",
