@@ -41,7 +41,7 @@
     <legend><%= Concept::Relation::Base.model_name.human(:count => 2) %></legend>
     <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
       <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(concept),
-        :concept => concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class %>
+        :concept => concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class, :f => f %>
     <%- end -%>
 
     <%= f.input :top_term, :as => :boolean, :input_html =>
