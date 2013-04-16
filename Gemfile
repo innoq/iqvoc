@@ -47,19 +47,17 @@ end
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'pry'
-  gem 'pry-rails'
-  gem 'pry-debugger'
-  gem 'hirb-unicode'
-  gem 'zeus'
-  gem 'cane'
 
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
+
     gem 'pry'
+    gem 'pry-rails'
+    gem 'pry-debugger'
     gem 'pry-remote'
-    gem 'pry-nav'
+    gem 'hirb-unicode'
+    gem 'cane'
   end
 
   platforms :jruby do
