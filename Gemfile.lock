@@ -51,6 +51,8 @@ GEM
     bouncy-castle-java (1.5.0146.1)
     builder (3.0.4)
     cancan (1.6.8)
+    cane (2.5.2)
+      parallel
     capybara (2.0.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -66,9 +68,16 @@ GEM
     childprocess (0.3.8)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.0.8)
+    columnize (0.3.6)
     crack (0.3.1)
     database_cleaner (0.8.0)
     debug_inspector (0.0.2)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     erubis (2.7.0)
     excon (0.16.2)
     execjs (1.4.0)
@@ -90,6 +99,10 @@ GEM
     heroku-api (0.3.5)
       excon (~> 0.16.1)
     hike (1.2.1)
+    hirb (0.7.1)
+    hirb-unicode (0.0.5)
+      hirb (~> 0.5)
+      unicode-display_width (~> 0.1.1)
     i18n (0.6.1)
     iq_rdf (0.1.8)
       builder
@@ -124,14 +137,25 @@ GEM
     netrc (0.7.7)
     nokogiri (1.5.6)
     nokogiri (1.5.6-java)
+    parallel (0.6.4)
     pg (0.14.1)
     polyglot (0.3.3)
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    pry (0.9.10-java)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.3.1)
+      spoon (~> 0.0)
+    pry-debugger (0.2.2)
+      debugger (~> 1.3)
+      pry (~> 0.9.10)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
+    pry-rails (0.2.2)
+      pry (>= 0.9.10)
     pry-remote (0.1.6)
       pry (~> 0.9)
       slop (~> 3.0)
@@ -202,6 +226,7 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    unicode-display_width (0.1.1)
     view_marker (1.0.0)
       rails
     webmock (1.8.11)
@@ -210,6 +235,8 @@ GEM
     websocket (1.0.7)
     xpath (1.0.0)
       nokogiri (~> 1.3)
+    zeus (0.13.3)
+      method_source (>= 0.6.7)
 
 PLATFORMS
   java
@@ -224,6 +251,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   cancan
+  cane
   capybara
   capybara-screenshot
   capybara-webkit (~> 0.14.2)
@@ -231,6 +259,7 @@ DEPENDENCIES
   factory_girl_rails
   fastercsv
   heroku
+  hirb-unicode
   iq_rdf
   iq_triplestorage
   jruby-openssl
@@ -241,7 +270,9 @@ DEPENDENCIES
   nokogiri (~> 1.5.0)
   pg
   pry
+  pry-debugger
   pry-nav
+  pry-rails
   pry-remote
   rails (= 3.2.13)
   rails_autolink
@@ -255,3 +286,4 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   view_marker
   webmock
+  zeus
