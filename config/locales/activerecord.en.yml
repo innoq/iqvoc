@@ -41,6 +41,8 @@ en:
       concept/relation/skos/related:
         one:   "Related term"
         other: "Related terms"
+      concept/skos/scheme:
+        one:   "Concept Scheme"
       label/skos/base:
         one:   "Label"
         other: "Labels"

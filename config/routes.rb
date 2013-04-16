@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
     get "scheme" => "concepts/scheme#show", :as => "scheme"
     get "scheme/edit" => "concepts/scheme#edit", :as => "edit_scheme"
-    put "scheme" => "concepts/scheme#update", :as => "scheme"
+    put "scheme" => "concepts/scheme#update"
 
     get "hierarchy/:root" => "hierarchy#show"
 
@@ -65,15 +65,15 @@ Rails.application.routes.draw do
     root :to => 'frontpage#index', :format => nil
   end
 
+
   get 'schema(.:format)' => 'pages#schema', :as => 'schema'
-  get 'scheme(.:format)' => 'concepts/scheme#show', :as => 'scheme'
+  get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
   get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
 
   get ':id(.:format)' => 'rdf#show', :as => 'rdf'
 
   get 'collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
   get 'collections', :as => "rdf_collections", :to => "collections#index"
-
 
   root :to => 'frontpage#index', :format => nil
 end

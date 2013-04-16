@@ -41,6 +41,8 @@ pt:
       concept/relation/skos/related:
         one:   "Termo relacionado"
         other: "Termos relacionados"
+      concept/skos/scheme:
+        one:   "esquema de conceito"
       label/skos/base:
         one:   "Rótulo"
         other: "Rótulos"

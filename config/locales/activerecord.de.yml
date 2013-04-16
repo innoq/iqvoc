@@ -41,6 +41,8 @@ de:
       concept/relation/skos/related:
         one:   "Verwandter Begriff"
         other: "Verwandte Begriffe"
+      concept/skos/scheme:
+        one:   "Konzept-Schema"
       label/skos/base:
         one:   "Label"
         other: "Labels"

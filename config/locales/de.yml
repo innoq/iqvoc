@@ -343,6 +343,10 @@ de:
        config_info: "Synchronisierung mit Triplestore: %{target_info}"
        config_warning: "Bisher wurde kein Triplestore konfiguriert."
        batch_hint: "Für große Datenmengen sollte vom Systemadministrator `rake sync:all[%{host}]` ausgeführt werden."
+     concept_scheme:
+       save:
+         success: "Das Konzept-Schema wurde erfolgreich gespeichert."
+         error: "Das Konzept-Schema konnte nicht gespeichert werden."
 
    models:
      label:

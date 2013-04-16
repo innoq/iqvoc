@@ -348,6 +348,10 @@ pt:
        config_info: "Sincronizando com o repositório de triplas: %{target_info}"
        config_warning: "Repositório de triplas ainda não foi configurado."
        batch_hint: "Para um conjunto de dados grande por favor oriente seu administrador de sistema a executar `rake sync:all[%{host}]`."
+     concept_scheme:
+       save:
+         success: "A esquema de conceito foi salva."
+         error: "Não foi possível salvar a esquema de conceito."
 
    models:
      label:

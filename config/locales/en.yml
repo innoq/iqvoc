@@ -350,6 +350,10 @@ en:
        config_info: "Synchronizing with triplestore: %{target_info}"
        config_warning: "Triplestore has not been configured yet."
        batch_hint: "For a large data sets please advise your sysadmin to execute `rake sync:all[%{host}]`."
+     concept_scheme:
+       save:
+         success: "Concept scheme has been saved."
+         error: "Concept scheme could not be saved."
 
    models:
      label:
