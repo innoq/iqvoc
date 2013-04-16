@@ -31,21 +31,17 @@ To run iQvoc on heroku do the following:
 
 ```
 bundle install
-bundle exec heroku create --stack bamboo
+bundle exec heroku create
 bundle exec rake heroku:config
 git push heroku master
-bundle exec heroku rake db:migrate
-bundle exec heroku rake db:seed
+bundle exec heroku run rake db:migrate
+bundle exec heroku run rake db:seed
 bundle exec heroku restart
 ```
 
 `heroku open` opens your app in the browser.
 
 Remember to visit the Users section and change the default passwords!
-
-**Remarks:**
-For now iQvoc only supports the standard Bamboo stack. Cedar is not supported as we have `sqlite3` as a dependency
-in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like Bamboo at the moment.
 
 ### Custom
 
