@@ -8,7 +8,7 @@ env:
   - DB=mysql
 
 script: "./script/ci/travis-build"
-before_script: "ruby ./script/ci/travis-before-build.rb"
+before_script: "./script/ci/travis-before-build"
 
 branches:
   only:
