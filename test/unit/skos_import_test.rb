@@ -60,7 +60,7 @@ class SkosImportTest < ActiveSupport::TestCase
   end
 
   test "basic_importer_functionality" do
-    assert_difference('Concept::Base.count', 4) do
+    assert_difference('Concept::SKOS::Base.count', 4) do
       Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
     end
 
@@ -91,7 +91,7 @@ class SkosImportTest < ActiveSupport::TestCase
   end
 
   test "incorrect origin" do
-    assert_difference('Concept::Base.count', 1) do
+    assert_difference('Concept::SKOS::Base.count', 1) do
       Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/")
     end
     assert_nil Iqvoc::Concept.base_class.by_origin("1").last
@@ -126,6 +126,20 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Notation::Base.count', 2) do
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+    end
+  end
+
+  test "top concepts for concept scheme" do
+    test_data = (<<-DATA
+      <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+      <http://www.example.com/car> <http://www.w3.org/2008/05/skos#topConceptOf> <http://www.example.com/scheme> .
+      <http://www.example.com/pedal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+      <http://www.example.com/steering_wheel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
+      DATA
+    ).split("\n")
+
+    assert_difference('Concept::SKOS::Base.tops.count', 1) do
       Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
     end
   end

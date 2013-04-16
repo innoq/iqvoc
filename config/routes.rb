@@ -15,8 +15,6 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
-  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
-
   scope ':lang', :constraints => lambda { |params, req|
     langs = Iqvoc::Concept.pref_labeling_languages.join("|").presence || "en"
     return params[:lang].to_s =~ /^#{langs}$/
@@ -26,9 +24,12 @@ Rails.application.routes.draw do
 
     resource  :user_session, :only => [:new, :create, :destroy]
     resources :users, :except => [:show]
-
     resources :concepts
     resources :collections
+
+    get "scheme" => "concepts/scheme#show", :as => "scheme"
+    get "scheme/edit" => "concepts/scheme#edit", :as => "edit_scheme"
+    put "scheme" => "concepts/scheme#update", :as => "scheme"
 
     get "hierarchy/:root" => "hierarchy#show"
 
@@ -64,13 +65,14 @@ Rails.application.routes.draw do
     root :to => 'frontpage#index', :format => nil
   end
 
-  match 'schema(.:format)' => 'pages#schema', :as => 'schema'
-  match '/scheme(.:format)' => 'rdf#scheme', :as => 'scheme'
-
+  get 'schema(.:format)' => 'pages#schema', :as => 'schema'
+  get 'scheme(.:format)' => 'concepts/scheme#show', :as => 'scheme'
   get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
-  get '/:id(.:format)' => 'rdf#show', :as => 'rdf'
-  get '/collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
-  get '/collections', :as => "rdf_collections", :to => "collections#index"
+
+  get ':id(.:format)' => 'rdf#show', :as => 'rdf'
+
+  get 'collections/:id(.:format)', :as => "rdf_collection", :to => "collections#show"
+  get 'collections', :as => "rdf_collections", :to => "collections#index"
 
 
   root :to => 'frontpage#index', :format => nil

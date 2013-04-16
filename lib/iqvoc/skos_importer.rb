@@ -9,6 +9,7 @@ module Iqvoc
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
         Iqvoc::Concept.notation_classes +
+        [Iqvoc::Concept.root_class] +
         [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger)
@@ -31,6 +32,11 @@ module Iqvoc
       end
 
       @seen_first_level_objects = {} # Concept cache (don't load any concept twice from db)
+
+      # Assign the default concept scheme singleton instance as a seen first level object upfront
+      # in order to handle a missing scheme definition in ntriple data
+      @seen_first_level_objects[Iqvoc::Concept.root_class.instance.origin] = Iqvoc::Concept.root_class.instance
+
       @new_subjects = [] # Concepts to be published later
 
       # Triples the importer doesn't understand immediately. Example:
@@ -38,7 +44,7 @@ module Iqvoc
       #     :a skos:prefLabel "foo". # => What is :a? Remember this and try again later
       #     ....
       #     :a rdf:type skos:Concept # => Now I know :a, good I remebered it's prefLabel...
-      @unknown_second_level_tripes = []
+      @unknown_second_level_triples = []
 
       # Hash of arrays of arrays: { "_:n123" => [["pred1", "obj1"], ["pred2", "obj2"]] }
       @blank_nodes = {}
@@ -76,7 +82,7 @@ module Iqvoc
       end
 
       @logger.debug("Computing 'forward' defined triples...")
-      @unknown_second_level_tripes.each do |s, p, o|
+      @unknown_second_level_triples.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
@@ -146,7 +152,7 @@ module Iqvoc
         if final
           @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
         else
-          @unknown_second_level_tripes << initial_triple
+          @unknown_second_level_triples << initial_triple
         end
         return false
       end
@@ -157,9 +163,9 @@ module Iqvoc
         object = load_first_level_object(object_origin)
         unless object
           if final
-            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}'. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
           else
-            @unknown_second_level_tripes << initial_triple
+            @unknown_second_level_triples << initial_triple
           end
           return false
         end
@@ -175,7 +181,7 @@ module Iqvoc
         if final
           object = @blank_nodes[object]
         else
-          @unknown_second_level_tripes << initial_triple
+          @unknown_second_level_triples << initial_triple
           return false
         end
       end
