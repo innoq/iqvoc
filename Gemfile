@@ -81,8 +81,6 @@ group :test do
 end
 
 group :production do
-  gem 'sqlite3', :platforms => :ruby
-  gem 'activerecord-oracle_enhanced-adapter', :platforms => :jruby
 end
 
 group :heroku do

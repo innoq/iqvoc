@@ -29,7 +29,6 @@ GEM
     activerecord-jdbcsqlite3-adapter (1.2.2)
       activerecord-jdbc-adapter (~> 1.2.2)
       jdbc-sqlite3 (~> 3.7.2)
-    activerecord-oracle_enhanced-adapter (1.4.1)
     activeresource (3.2.13)
       activemodel (= 3.2.13)
       activesupport (= 3.2.13)
@@ -236,7 +235,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
   activerecord-jdbcsqlite3-adapter
-  activerecord-oracle_enhanced-adapter
   authlogic
   awesome_print
   better_errors
