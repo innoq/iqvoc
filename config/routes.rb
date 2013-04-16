@@ -36,43 +36,42 @@ Rails.application.routes.draw do
     get 'triplestore_sync' => 'triplestore_sync#index'
     post 'triplestore_sync' => 'triplestore_sync#sync'
 
-    match '/' => 'frontpage#index'
+    post 'concepts/:origin/branch'      => 'concepts/versions#branch',    :as => 'concept_versions_branch'
+    post 'concepts/:origin/merge'       => 'concepts/versions#merge',     :as => 'concept_versions_merge'
+    post 'concepts/:origin/lock'        => 'concepts/versions#lock',      :as => 'concept_versions_lock'
+    post 'concepts/:origin/unlock'      => 'concepts/versions#unlock',    :as => 'concept_versions_unlock'
+    post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', :as => 'concept_versions_to_review'
+    post 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', :as => 'concept_versions_consistency_check'
 
-    match 'concepts/:origin/branch(.:format)'      => 'concepts/versions#branch',    :as => 'concept_versions_branch'
-    match 'concepts/:origin/merge(.:format)'       => 'concepts/versions#merge',     :as => 'concept_versions_merge'
-    match 'concepts/:origin/lock(.:format)'        => 'concepts/versions#lock',      :as => 'concept_versions_lock'
-    match 'concepts/:origin/unlock(.:format)'      => 'concepts/versions#unlock',    :as => 'concept_versions_unlock'
-    match 'concepts/:origin/to_review(.:format)'   => 'concepts/versions#to_review', :as => 'concept_versions_to_review'
-    match 'concepts/:origin/consistency_check(.:format)' => 'concepts/versions#consistency_check', :as => 'concept_versions_consistency_check'
+    get 'alphabetical_concepts(/:prefix)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
+    get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
+    get 'hierarchical_concepts' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
+    get 'expired_concepts' => 'concepts/expired#index', :as => 'expired_concepts'
 
-    match 'alphabetical_concepts(/:prefix)(.:format)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
-    match 'untranslated_concepts/:prefix(.:format)'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
-    match 'hierarchical_concepts(.:format)' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
-    match 'expired_concepts(.:format)' => 'concepts/expired#index', :as => 'expired_concepts'
+    get 'dashboard' => 'dashboard#index', :as => 'dashboard'
 
-    match 'dashboard(.:format)' => 'dashboard#index',      :as => 'dashboard'
-
-    get 'config(.:format)' => 'instance_configuration#index', :as => 'instance_configuration'
-    put 'config(.:format)' => 'instance_configuration#update'
+    get 'config' => 'instance_configuration#index', :as => 'instance_configuration'
+    put 'config' => 'instance_configuration#update'
 
     get 'import' => 'import#index', :as => 'import'
     post 'import' => 'import#import'
 
-    match 'search(.:format)' => 'search_results#index', :as => 'search'
+    get 'search' => 'search_results#index', :as => 'search'
 
     get 'help' => 'pages#help', :as => 'help'
 
+    get '/' => 'frontpage#index'
     root :to => 'frontpage#index', :format => nil
   end
 
+  get 'schema' => redirect('/'), :as => 'schema'
 
-  get 'schema(.:format)' => 'pages#schema', :as => 'schema'
   get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
-  get 'search(.:format)' => 'search_results#index', :as => 'rdf_search'
+  get 'search' => 'search_results#index', :as => 'rdf_search'
 
-  get ':id(.:format)' => 'rdf#show', :as => 'rdf'
+  get ':id' => 'rdf#show', :as => 'rdf'
 
-  get 'collections/:id(.:format)', :as => 'rdf_collection', :to => 'collections#show'
+  get 'collections/:id', :as => 'rdf_collection', :to => 'collections#show'
   get 'collections', :as => 'rdf_collections', :to => 'collections#index'
 
   root :to => 'frontpage#index', :format => nil
