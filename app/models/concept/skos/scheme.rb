@@ -17,7 +17,7 @@
 class Concept::SKOS::Scheme < Concept::Base
   private_class_method :new
 
-  after_save :redeclare_top_concepts
+  after_update :redeclare_top_concepts
 
   def self.rdf_class
     'ConceptScheme'
