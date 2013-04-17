@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf', '~> 0.1.2'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'fastercsv'
   s.add_dependency 'simple_form'
   s.add_dependency 'sass-rails', '~> 3.2.5'
   s.add_dependency 'iq_triplestorage'

@@ -36,7 +36,6 @@ gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
-gem 'fastercsv', :platforms => :ruby_18
 
 group :development do
   gem 'heroku'

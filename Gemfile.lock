@@ -86,7 +86,6 @@ GEM
     factory_girl_rails (4.1.0)
       factory_girl (~> 4.1.0)
       railties (>= 3.0.0)
-    fastercsv (1.5.5)
     ffi (1.1.5)
     ffi (1.1.5-java)
     heroku (2.31.2)
@@ -246,7 +245,6 @@ DEPENDENCIES
   capybara-webkit (~> 0.14.2)
   database_cleaner
   factory_girl_rails
-  fastercsv
   heroku
   hirb-unicode
   iq_rdf
