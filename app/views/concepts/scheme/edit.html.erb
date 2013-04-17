@@ -1,35 +1,30 @@
 <%= page_header :title => @scheme.class.model_name.human %>
-
 <%= error_messages_for @scheme %>
-
 <%= simple_form_for @scheme, :as => :concept, :url => scheme_path, :html => { :class => 'form-horizontal' } do |f| %>
-<fieldset>
-  <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
-  <% if not Iqvoc.const_defined?(:SKOSXL) %>
-    <p><%= t 'txt.common.hint_csv_input' %></p>
-  <% end %>
+  <fieldset>
+    <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
+    <% if not Iqvoc.const_defined?(:SKOSXL) %>
+      <p><%= t 'txt.common.hint_csv_input' %></p>
+    <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
       <%- languages.each do |language| -%>
         <%= render labeling_class.edit_partial_name(@scheme), :f => f,
           :concept => @scheme, :klass => labeling_class, :language => language %>
       <%- end -%>
     <%- end -%>
-</fieldset>
-
-<fieldset>
-  <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
-  <%= f.input "concept[inline_top_concept_origins]", :label => t('txt.common.type_to_search') do %>
-    <%= text_field_tag "concept[inline_top_concept_origins]", @scheme.inline_top_concept_origins.join(Iqvoc::InlineDataHelper::JOINER),
+  </fieldset>
+  <fieldset>
+    <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
+    <%= f.input "concept[inline_top_concept_origins]", :label => t('txt.common.type_to_search') do %>
+      <%= text_field_tag "concept[inline_top_concept_origins]", @scheme.inline_top_concept_origins.join(Iqvoc::InlineDataHelper::JOINER),
       :class => "entity_select",
       :"data-query-url" => concepts_path(:format => :json),
       :"data-entity-uri" => concept_path(:id => "{id}"),
       :"data-entities" => @scheme.inline_top_concepts.
       map { |c| concept_widget_data(c) }.to_json %>
-  <% end %>
-</fieldset>
-
-<div class="form-actions">
-  <%= f.submit t("txt.common.save"), :class => "btn-primary" %>
-</div>
-
+    <% end %>
+  </fieldset>
+  <div class="form-actions">
+    <%= f.submit t("txt.common.save"), :class => "btn-primary" %>
+  </div>
 <% end %>
