@@ -1,9 +1,14 @@
 ## [4.1.0]
 
-  * added concepts hierarchy API (/hierarchy)
-  * added support for SKOS notations
-  * adjusted RDF serializations to always include concepts' pref. labels
-  * fixed MIME type for RDF/XML
+  * Concepts hierarchy API (/hierarchy)
+  * Support for SKOS notations
+  * Adjusted RDF serializations to always include related concepts' pref. labels
+  * Fixed MIME type for RDF/XML
+  * Editable concept scheme
+  * Ruby 2.0 compatibility
+  * Dropped support for Ruby 1.8
+  * Heroku Cedar support
+  * Bugfixes
 
 ## [4.0.9]
 
