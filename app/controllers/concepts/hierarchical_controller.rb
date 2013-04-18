@@ -22,7 +22,7 @@ class Concepts::HierarchicalController < ConceptsController
     scope = Iqvoc::Concept.base_class
     scope = params[:published] == "0" ? scope.editor_selectable : scope.published
 
-    #collect only the not expired concepts
+    # only select unexpired concepts
     scope = scope.not_expired
 
     # if params[:broader] is given, the action is handling the reversed tree
