@@ -34,6 +34,8 @@ module Iqvoc
       hash
     end
 
+    URI_REGEXP = /^https?:\/\/[^\s]+$/
+
     def self.devour(rdf_subject, rdf_predicate, rdf_object)
       case rdf_predicate
       when 'a', 'rdf:type'

@@ -48,19 +48,20 @@ class Note::SKOS::Base < Note::Base
   end
 
   def build_rdf(document, subject)
-    ns, id = '', ''
-    if self.rdf_namespace and self.rdf_predicate
-      ns, id = self.rdf_namespace, self.rdf_predicate
-    elsif self.class == Note::SKOS::Base # This could be done by setting self.rdf_predicate to 'note'. But all subclasses would inherit this value.
-      ns, id = 'Skos', 'note'
+    if annotations.any?
+      subject.send(rdf_namespace).build_predicate(rdf_predicate) do |blank_node|
+        blank_node.Rdfs::comment(value, :lang => language || nil) if value
+        annotations.each do |annotation|
+          if IqRdf::Namespace.find_namespace_class(annotation.namespace)
+            val = annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP ? URI.parse(annotation.value) : annotation.value
+            blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, val, :lang => annotation.language || nil)
+          else
+            raise "#{self.class}#build_rdf: can't find namespace '#{annotation.namespace}' for note annotation '#{annotation.id}'."
+          end
+        end
+      end
     else
-      raise "#{self.class.name}#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
-    end
-
-    if (IqRdf::Namespace.find_namespace_class(ns))
-      subject.send(ns).send(id, value, :lang => language)
-    else
-      raise "#{self.class.name}#build_rdf: couldn't find Namespace '#{ns}'."
+      subject.send(rdf_namespace).send(rdf_predicate, value, :lang => language)
     end
   end
 

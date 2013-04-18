@@ -82,4 +82,30 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         "</skos:changeNote>\n")
   end
 
+  test "rdf for localized note annotations" do
+    rdfapi = Iqvoc::RDFAPI
+
+    concept = rdfapi.devour *%w(foobar a skos:Concept)
+    concept.publish
+    concept.save
+
+    rdfapi.devour concept, 'skos:prefLabel', '"foo"@en'
+
+    note = Note::RDFS::SeeAlso.create :owner => concept, :value => 'foo', :language => 'en'
+    note.annotations.create :namespace => 'dct', :predicate => 'title', :value => 'Foo Bar', :language => 'en'
+    note.annotations.create :namespace => 'foaf', :predicate => 'page', :value => 'http://google.de/'
+
+    visit "/#{concept.origin}.ttl"
+
+    ttl = <<RDF
+    rdfs:seeAlso [
+    rdfs:comment "foo"@en;
+    dct:title "Foo Bar"@en;
+    foaf:page <http://google.de/>
+].
+RDF
+
+    assert page.body.include?(ttl)
+  end
+
 end
