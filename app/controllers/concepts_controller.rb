@@ -16,13 +16,16 @@
 
 class ConceptsController < ApplicationController
 
+  before_filter :load_concept,
+      :only => [:edit, :update, :destroy]
+
   def index
     authorize! :read, Concept::Base
 
     respond_to do |format|
       format.json do # Search for widget
-        scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
-            merge(Label::Base.by_query_value("#{params[:query]}%"))
+        scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels
+        scope = scope.merge(Label::Base.by_query_value("#{params[:query]}%"))
         scope = scope.where(:top_term => false) if params[:exclude_top_terms]
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render :json => @concepts
@@ -33,10 +36,8 @@ class ConceptsController < ApplicationController
   end
 
   def show
-    scope = Iqvoc::Concept.base_class.
-      by_origin(params[:id]).
-      with_associations
-    published = params[:published] == '1' || !params[:published]
+    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations
+    published = [nil, '1'].include? params[:published]
     if published
       scope = scope.published
       @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
@@ -95,7 +96,7 @@ class ConceptsController < ApplicationController
     @concept = Iqvoc::Concept.base_class.new
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
-      @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
+      @concept.notes << note_class_name.constantize.new if @concept.send(note_class_name.to_relation_name).empty?
     end
 
     @concept.notations.build if @concept.notations.none?
@@ -106,18 +107,15 @@ class ConceptsController < ApplicationController
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.save
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
+      flash[:success] = I18n.t('txt.controllers.versioned_concept.success')
       redirect_to concept_path(:published => 0, :id => @concept.origin)
     else
-      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
+      flash.now[:error] = I18n.t('txt.controllers.versioned_concept.error')
       render :new
     end
   end
 
   def edit
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
-
     authorize! :update, @concept
 
     @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
@@ -127,36 +125,31 @@ class ConceptsController < ApplicationController
     end
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
-      @concept.notes.build(:type => note_class_name) if @concept.notes.for_class(note_class_name).empty?
+      @concept.notes << note_class_name.constantize.new if @concept.notes.for_class(note_class_name).empty?
     end
   end
 
   def update
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
-
     authorize! :update, @concept
 
     if @concept.update_attributes(params[:concept])
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
+      flash[:success] = I18n.t('txt.controllers.versioned_concept.update_success')
       redirect_to concept_path(:published => 0, :id => @concept)
     else
-      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
+      flash.now[:error] = I18n.t('txt.controllers.versioned_concept.update_error')
       render :action => :edit
     end
   end
 
   def destroy
-    @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @new_concept
-
-    authorize! :destroy, @new_concept
+    authorize! :destroy, @concept
+    @new_concept = @concept
 
     if @new_concept.destroy
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete")
+      flash[:success] = I18n.t('txt.controllers.concept_versions.delete')
       redirect_to dashboard_path
     else
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete_error")
+      flash[:success] = I18n.t('txt.controllers.concept_versions.delete_error')
       redirect_to concept_path(:published => 0, :id => @new_concept)
     end
   end
@@ -173,6 +166,11 @@ class ConceptsController < ApplicationController
       :lang => label.language
       # TODO: relations (XL only)
     }
+  end
+
+  def load_concept
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    raise ActiveRecord::RecordNotFound unless @concept
   end
 
 end

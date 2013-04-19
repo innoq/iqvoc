@@ -32,6 +32,8 @@ class Note::Base < ActiveRecord::Base
 
   accepts_nested_attributes_for :annotations
 
+  default_scope includes(:annotations)
+
   # ********** Scopes
 
   def self.by_language(lang_code)
@@ -69,6 +71,20 @@ class Note::Base < ActiveRecord::Base
   end
 
   # ********** Methods
+
+  def self.build_from_parsed_tokens(tokens, options = {})
+    rdf_subject     = options[:subject_instance] || Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
+    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[tokens[:Predicate]] || self
+
+    unless Iqvoc::Concept.note_class_names.include? predicate_class.name.to_s
+      raise "#{predicate_class.name}#build_from_parsed_tokens: #{predicate_class.name} is not an allowed note type. Allowed: #{Iqvoc::Concept.note_class_names}"
+    end
+
+    value = JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
+    predicate_class.new(:value => value, :language => tokens[:ObjectLangstringLanguage]).tap do |new_instance|
+      rdf_subject.notes << new_instance
+    end
+  end
 
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase

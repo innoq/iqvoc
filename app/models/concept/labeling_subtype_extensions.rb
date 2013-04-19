@@ -2,15 +2,11 @@
 
 module Concept
   module LabelingSubtypeExtensions
-#     extend Concept::TypedHasManyExtension
+    extend ActiveSupport::Concern
 
-    protected
-
-    def load_association_if_empty
-      if proxy_association.target.empty?
-        proxy_association.target = proxy_association.owner.labelings.includes(:target).all
-      end
-    end
+#     included do
+#       Iqvoc::
+#     end
 
   end
 end

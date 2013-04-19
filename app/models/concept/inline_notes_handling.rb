@@ -19,35 +19,53 @@ module Concept
     extend ActiveSupport::Concern
 
     included do
-      after_save :process_inline_notes
+      before_validation :process_inline_notes
+      after_save :persist_notes
 
       attr_writer :inline_notes
     end
 
-    def inline_notes
-      @inline_notes ||= {}
+    # returns a hash of hashes, first-level key being the rdf type, second level key being the note ID
+    # ex: inline_notes = {'skos:scopeNote' => {'1' => {'language' => 'en', 'value' => 'Foo', '_delete' => '0'}, ...}, ...}
+    def inline_notes(reload = false)
+      if reload
+        @inline_notes = load_inline_notes
+      else
+        @inline_notes ||= load_inline_notes
+      end
     end
 
     protected
 
+    def persist_notes
+      self.notes.each &:save
+    end
+
+    def load_inline_notes
+      Hash.new.with_indifferent_access.tap do |n|
+        self.notes.each do |note|
+          n[note.rdf_internal_name] ||= Hash.new.with_indifferent_access
+          n[note.rdf_internal_name][note.id.to_s] = note.attributes.with_indifferent_access
+        end
+      end
+    end
+
     def process_inline_notes
-      self.inline_notes.each do |rdf_type, lang_values|
-        self.notes.for_rdf_type(rdf_type).each do |note|
-          self.notes.delete(note.destroy)
+      self.inline_notes.each do |rdf_type, notes_attrs|
+        self.notes.for_rdf_class(rdf_type).each do |note|
+          self.notes.destroy_later(note)
         end
 
-        lang_values.each do |lang, inline_values|
-          lang = nil if lang.to_s == 'none'
-          Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
-            value.squish!
-            unless value.blank?
-              tokens = {:ObjectLangstringLanguage => lang, :ObjectLangstringString => value, :Predicate => rdf_name}
-              self.notes.build_from_parsed_tokens(tokens, :subject_instance => self)
-            end
+        notes_attrs.each_pair do |id, attrs|
+          lang = attrs[:language].to_s == 'none' ? nil : attrs[:language]
+          unless attrs[:value].blank? or attrs[:_destroy].to_s == '1'
+            tokens = {:ObjectLangstringLanguage => lang, :ObjectLangstringString => attrs[:value], :Predicate => rdf_type}
+            self.notes.build_from_parsed_tokens(tokens, :subject_instance => self)
+            # TODO: handle annotations and other attributes
           end
         end
       end
-
     end
+
   end
 end

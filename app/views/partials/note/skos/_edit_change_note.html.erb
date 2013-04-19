@@ -5,7 +5,7 @@
     <% change_notes.each do |note| %>
       <li class="inline_note <%= 'new' if note.new_record? %>">
         <%= f.simple_fields_for 'inline_notes' do |notes_form| %>
-          <%= notes_form.simple_fields_for assoc_klass.rdf_internal_name, note do |note_form| %>
+          <%= notes_form.simple_fields_for "#{assoc_klass.rdf_internal_name}[]", note do |note_form| %>
             <%# if note == change_notes.last %>
               <%- css = note == change_notes.last ? '' : 'uneditable-input' -%>
               <%= note_form.input :value do %>

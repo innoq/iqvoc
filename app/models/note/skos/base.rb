@@ -16,18 +16,6 @@
 
 class Note::SKOS::Base < Note::Base
 
-  def self.build_from_parsed_tokens(tokens)
-    rdf_subject = Iqvoc::RDFAPI.cached(tokens[:SubjectOrigin])
-    unless Iqvoc::Concept.note_class_names.include? self.name.to_s
-      raise "#{self.name}#build_from_parsed_tokens: #{self.name} is not an allowed note type. Allowed: #{Iqvoc::Concept.note_class_names}"
-    end
-
-    value = JSON.parse(%Q{["#{tokens[:ObjectLangstringString]}"]})[0].gsub('\n', "\n") # Trick to decode \uHHHHH chars
-    self.new(:value => value, :language => tokens[:ObjectLangstringLanguage]).tap do |new_instance|
-      rdf_subject.notes << new_instance
-    end
-  end
-
   def build_rdf(document, subject)
     ns, id = '', ''
     if self.implements_rdf?

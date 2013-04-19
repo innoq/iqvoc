@@ -25,20 +25,20 @@ module Concept
     def inline_labelings=(hash)
       @inline_labelings = hash
 
-      @inline_labelings.each do |relation_name, labels_by_lang|
+      @inline_labelings.each do |rdf_type, labels_by_lang|
         # if `language` is `nil`, the respective HTML form field returns an array
         # instead of a hash (`<input name=bla[labeling_class][]>`)
         if labels_by_lang.is_a?(Array)
-          @inline_labelings[relation_name] = { nil => labels_by_lang.first }
+          @inline_labelings[rdf_type] = { nil => labels_by_lang.first }
         end
       end
       @inline_labelings
     end
 
-    def inline_labelings(relation_name, language)
-      (@inline_labelings && @inline_labelings[relation_name] &&
-          @inline_labelings[relation_name][language]) ||
-          Iqvoc::InlineDataHelper.generate_inline_values(self.labelings.for_rdf_class(relation_name).
+    def inline_labelings(rdf_type, language)
+      (@inline_labelings && @inline_labelings[rdf_type] &&
+          @inline_labelings[rdf_type][language]) ||
+          Iqvoc::InlineDataHelper.generate_inline_values(self.labelings.for_rdf_class(rdf_type).
                                                         select{|assoc| assoc.target.language.to_s == language.to_s}.map { |l| l.target.value })
     end
 
@@ -47,10 +47,10 @@ module Concept
     # Handle save or destruction of inline labelings for use with widgets etc.
     def process_inline_labelings
       # Inline assigned SKOS::Labels
-      # @inline_labelings # => {'skos:altLabel' => {'lang' => 'label1, label2, ...'}}
+      # @inline_labelings # => {'skos:altLabel' => {'lang' => '"label1", "label2", ...'}}
       (@inline_labelings ||= {}).each do |rdf_name, lang_values|
         self.labelings.for_rdf_class(rdf_name).each do |lbl|
-          self.labelings.delete(lbl.destroy)
+          self.labelings.destroy_later(lbl)
         end
 
         lang_values.each do |lang, inline_values|

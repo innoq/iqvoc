@@ -39,9 +39,12 @@ class Concept::Base < ActiveRecord::Base
 
   after_initialize do
     @full_validation = false
+    @associated_objects_marked_for_destruction ||= []
   end
 
   after_save :generate_origin_if_blank
+
+  before_save :destroy_associated_objects_marked_for_destruction
 
   # ********** "Static"/unconfigureable relations
 
@@ -311,6 +314,15 @@ class Concept::Base < ActiveRecord::Base
       self.origin = sprintf('_%08d', self.id)
       self.save! # On exception the complete save transaction will be rolled back
     end
+  end
+
+  def mark_for_destruction(associated_object)
+    @associated_objects_marked_for_destruction << associated_object
+  end
+
+  def destroy_associated_objects_marked_for_destruction
+    @associated_objects_marked_for_destruction.each &:destroy
+    @associated_objects_marked_for_destruction = []
   end
 
 end

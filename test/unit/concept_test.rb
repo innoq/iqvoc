@@ -170,5 +170,4 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 'lorem, "foo, bar", ipsum',
         concept.inline_labelings('skos:altLabel', 'en')
   end
-
 end
