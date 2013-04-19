@@ -61,16 +61,11 @@ class InlineNotesTest < ActiveSupport::TestCase
 
   test 'inline notes marked for destruction should be destroyed' do
     first_definition = @concept.notes.for_rdf_class('skos:definition').first
-    puts "BEFORE: #{@inline_notes['skos:definition'].inspect}"
     @inline_notes['skos:definition'][first_definition.id.to_s][:_destroy] = '1'
     @concept.inline_notes = @inline_notes
     assert_equal 2, @concept.inline_notes['skos:definition'].size, @concept.inline_notes['skos:definition'].inspect
     @concept.save
     assert_equal 1, @concept.reload.notes.for_rdf_class('skos:definition').size
-  end
-
-  test 'unchanged inline notes should stay unchanged' do
-    
   end
 
   test 'omitted inline notes should be destroyed' do

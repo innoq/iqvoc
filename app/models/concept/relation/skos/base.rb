@@ -49,7 +49,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
   protected
 
   def save_reverse_instance
-    if @reverse_instance and (@reverse_instance.new_record? or @reverse_instance.dirty?)
+    if @reverse_instance and (@reverse_instance.new_record? or @reverse_instance.changed?)
       @reverse_instance.save
     end
   end

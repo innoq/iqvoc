@@ -69,6 +69,10 @@ class Concept::Relation::Base < ActiveRecord::Base
     self
   end
 
+  def reverse_relations
+    self.class.reverse_relation_class.where(:owner_id => self.target_id, :target_id => self.owner_id)
+  end
+
   def self.bidirectional?
     !!self.reverse_relation_class
   end

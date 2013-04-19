@@ -56,8 +56,16 @@ class Concept::Base < ActiveRecord::Base
       :dependent   => :destroy,
       :extend      => [Concept::TypedHasManyExtension, RelationSubtypeExtensions]
 
-  has_many :related_concepts, :through => :relations, :source => :target
-  has_many :referenced_relations, :foreign_key => 'target_id', :class_name => 'Concept::Relation::Base', :dependent => :destroy
+  has_many :related_concepts,
+      :through => :relations,
+      :source  => :target
+
+  has_many :referenced_relations,
+      :foreign_key => 'target_id',
+      :class_name  => 'Concept::Relation::Base',
+      :dependent   => :destroy,
+      :extend      => [Concept::TypedHasManyExtension]
+
   include_to_deep_cloning(:relations, :referenced_relations)
 
   has_many :labelings,
