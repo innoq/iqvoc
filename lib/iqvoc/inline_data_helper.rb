@@ -19,7 +19,7 @@ require 'csv'
 module Iqvoc
   module InlineDataHelper
 
-    # delimiters for strings representing a list of values - XXX: lacks encapsulation
+    # delimiters for strings representing a list of values
     JOINER = ", "
     SPLITTER = /[,\n] */
 
@@ -43,5 +43,12 @@ module Iqvoc
       values.to_csv(CSV_OPTIONS).strip
     end
 
+    def self.split(string)
+      string.split(SPLITTER).map &:squish
+    end
+
+    def self.join(array)
+      array.join JOINER
+    end
   end
 end

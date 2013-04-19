@@ -14,7 +14,7 @@ module Concept
     end
 
     def by_id(class_name)
-      self.for_class(class_name).map {|l| l.target.origin }.join(Iqvoc::InlineDataHelper::JOINER)
+      Iqvoc::InlineDataHelper.join(self.for_class(class_name).map {|l| l.target.origin })
     end
 
   end

@@ -91,25 +91,23 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins=(origins)
-    @member_concept_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+    @member_concept_origins = Iqvoc::InlineDataHelper.split(self.origins.to_s)
   end
 
   def inline_member_concept_origins
-    @member_concept_origins || concepts.map { |m| m.origin }.uniq
+    @member_concept_origins || self.concepts.map(&:origin).uniq
   end
 
   def inline_member_concepts
     if @member_concept_origins
       Concept::Base.editor_selectable.where(:origin => @member_concept_origins)
     else
-      concepts.select{|c| c.editor_selectable?}
+      concepts.select(&:editor_selectable?)
     end
   end
 
   def inline_member_collection_origins=(origins)
-    @member_collection_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+    @member_collection_origins = Iqvoc::InlineDataHelper.split(origins.to_s)
   end
 
   def inline_member_collection_origins
