@@ -51,6 +51,7 @@ group :development, :test do
     gem 'mysql2'
     gem 'sqlite3'
 
+    gem 'zeus'
     gem 'pry'
     gem 'pry-rails'
     gem 'pry-debugger'
@@ -72,8 +73,6 @@ group :test do
   gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'spork'
-  gem 'spork-testunit'
   gem 'turn'
   gem 'minitest'
   gem 'webmock'
