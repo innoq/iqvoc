@@ -16,7 +16,7 @@
 
 module RdfHelper
 
-  def render_concept(document, concept)
+  def render_concept(document, concept, suppress_extra_labels=false)
 
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
@@ -44,7 +44,7 @@ module RdfHelper
       end
 
       concept.relations.each do |relation|
-        relation.build_rdf(document, c)
+        relation.build_rdf(document, c, suppress_extra_labels)
       end
 
       concept.notes.each do |note|
