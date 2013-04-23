@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "authlogic/test_case"
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
+require "authlogic/test_case"
 
 class RDFTest < ActionController::TestCase
 
@@ -34,7 +34,7 @@ root:
     @concepts = create_hierarchy(concepts, rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
 
-    #@admin = FactoryGirl.create(:user, :role => "administrator") # XXX: DEBUG'd
+    @admin = FactoryGirl.create(:user, :role => "administrator")
   end
 
   test "individual concept representations" do
@@ -61,9 +61,9 @@ root:
     params = { :lang => "en", :format => "ttl" }
 
     get :index, params
-    #assert_response 401 # XXX: DEBUG'd
+    assert_response 401
 
-    #UserSession.create @admin # XXX: DEBUG'd
+    UserSession.create(@admin)
     get :index, params
     assert_response 200
     assert @response.body.include? ':foo a skos:Concept'
