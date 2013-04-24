@@ -90,8 +90,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     # add coll2 as subcollection of coll1
     visit edit_collection_path(API.cached('coll1'), :lang => 'en', :format => 'html')
-    fill_in 'concept_inline_member_collection_origins',
-        :with => 'coll2,'
+    fill_in 'concept_inline_member_collection_origins', :with => 'coll2,'
     click_button 'Save'
 
     assert page.has_no_css?('.flash_error')
@@ -101,8 +100,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     # add coll1 as subcollection of coll2
     visit edit_collection_path(API.cached('coll2'), :lang => 'en', :format => 'html')
-    fill_in 'concept_inline_member_collection_origins',
-        :with => 'coll1,'
+    fill_in 'concept_inline_member_collection_origins', :with => 'coll1,'
     click_button 'Save'
 
     assert page.has_css?('.alert-error')

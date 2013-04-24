@@ -67,23 +67,23 @@ class Collection::Base < Concept::Base
   #********** Methods
 
   def subcollections
-    members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
+    self.members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
   end
 
   def concepts
-    members.map(&:target).select { |m| !m.is_a?(::Collection::Base) }
+    self.members.map(&:target).reject { |m| m.is_a?(::Collection::Base) }
   end
 
   def additional_info
-    concepts.count
+    self.concepts.count
   end
 
   def to_param
-    origin
+    self.origin
   end
 
   def label
-    pref_label
+    self.pref_label
   end
 
   def build_rdf_subject(&block)
@@ -91,7 +91,7 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_concept_origins=(origins)
-    @member_concept_origins = Iqvoc::InlineDataHelper.split(self.origins.to_s)
+    @member_concept_origins = Iqvoc::InlineDataHelper.split(origins.to_s)
   end
 
   def inline_member_concept_origins
@@ -111,8 +111,7 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collections.
-        map { |m| m.origin }.uniq
+    @member_collection_origins || self.collections.map(&:origin).uniq
   end
 
   def inline_member_collections

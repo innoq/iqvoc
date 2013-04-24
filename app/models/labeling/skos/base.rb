@@ -22,6 +22,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
   # ********** Scopes
 
+  # XXX: is this needed anywhere?
   def self.by_label_with_language(label, language)
     includes(:target).merge(self.label_class.where(:value => label, :language => language))
   end
@@ -46,6 +47,10 @@ class Labeling::SKOS::Base < Labeling::Base
 
   def self.edit_partial_name(obj)
     'partials/labeling/skos/edit_base'
+  end
+
+  def self.search_result_partial_name
+    'partials/labeling/skos/search_result'
   end
 
   def self.single_query(params = {})
@@ -81,10 +86,6 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     scope
-  end
-
-  def self.search_result_partial_name
-    'partials/labeling/skos/search_result'
   end
 
   def build_rdf(document, subject)

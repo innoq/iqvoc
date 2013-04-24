@@ -46,7 +46,7 @@ class InlineNotesTest < ActiveSupport::TestCase
   test 'should accept inline notes' do
     @concept.inline_notes = @inline_notes.merge 'skos:historyNote' => {'123' => {:language => 'de', :value => 'trallalla'}}
     assert_equal 1, @concept.inline_notes['skos:historyNote'].size
-    assert_equal 0, @concept.notes.for_rdf_class('skos:hostoryNote').size
+    assert_equal 0, @concept.notes.for_rdf_class('skos:historyNote').size
     assert @concept.save
     assert_equal 1, @concept.notes.for_rdf_class('skos:historyNote').size
   end

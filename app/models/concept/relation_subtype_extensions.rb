@@ -17,5 +17,11 @@ module Concept
       Iqvoc::InlineDataHelper.join(self.for_class(class_name).map {|l| l.target.origin })
     end
 
+    def each_configured_class(&block)
+      Iqvoc::Concept.relation_class_names.each do |name, languages|
+        yield name.constantize
+      end
+    end
+
   end
 end

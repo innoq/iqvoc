@@ -4,7 +4,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/rdfapi'
 
 API = Iqvoc::RDFAPI
-class APITest < ActiveSupport::TestCase
+class RDFAPITest < ActiveSupport::TestCase
 
   test 'should allow passing namespaced subject, predicate and object' do
     result = API.parse_triple(':foobar rdf:type skos:Concept')
@@ -89,15 +89,18 @@ class APITest < ActiveSupport::TestCase
   end
 
   test 'should set alt label using string' do
-    origin = "_#{rand 10000}"
-    foobar   = API.parse_triple(%Q(:#{origin} rdf:type skos:Concept))
-    labeling = API.parse_triple(%Q(:#{origin} skos:altLabel "Foo Bar"@de))
+    foobar   = API.parse_triple(':_foobar0123 rdf:type skos:Concept')
+    labeling = API.parse_triple(':_foobar0123 skos:altLabel "Foo Bar"@de')
 
     assert labeling.is_a? Labeling::SKOS::AltLabel
     assert_equal 'de', labeling.target.language
     assert_equal 'Foo Bar', labeling.target.value
-    assert labeling.save
+    assert labeling.new_record?
+    assert_equal labeling.object_id, foobar.labelings.first.object_id
+    assert foobar.save
+    assert_equal 'Foo Bar', foobar.reload.labelings.for_rdf_class('skos:altLabel').first.target.value
   end
+
   test 'should allow publishing a concept' do
     origin = "_#{rand 10000}"
     API.parse_triples <<-EOS

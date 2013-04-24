@@ -77,8 +77,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
       :tree skos:topConceptOf :scheme
       :tree iqvoc:publishedAt "#{3.days.ago}"^^<DateTime>
       :tree iqvoc:expiredAt "#{2.days.ago}"^^<DateTime>
-      EOT
-    end
+    EOT
 
     visit hierarchical_concepts_path(:lang => 'en')
     click_link_or_button('Expired')

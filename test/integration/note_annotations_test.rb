@@ -22,10 +22,8 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     login 'administrator'
 
     visit new_concept_path(:lang => 'en', :format => 'html', :published => 0)
-    fill_in 'concept_inline_labelings_skos:prefLabel_en',
-        :with => 'Foo'
-    fill_in 'concept_note_skos_change_notes_attributes_0_value',
-        :with => 'lorem ipsum'
+    fill_in 'concept_inline_labelings_skos:prefLabel_en', :with => 'Foo'
+    fill_in 'concept_inline_notes_skos:changeNote__value', :with => 'lorem ipsum'
     click_button 'Save'
 
     assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
@@ -34,8 +32,8 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     assert page.has_content? I18n.t('txt.controllers.versioning.published')
 
     click_link_or_button I18n.t('txt.views.versioning.versioning_mode')
-    fill_in 'concept_note_skos_change_notes_attributes_1_value',
-        :with => 'dolor sit amet'
+    puts page.save_page
+    fill_in 'concept_inline_notes_skos:changeNote_5_value', :with => 'dolor sit amet'
     click_button 'Save'
 
     assert page.has_css?('dl.note_annotations', :count => 1)

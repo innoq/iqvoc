@@ -35,15 +35,17 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not save concept with empty preflabel' do
+  test 'should not save concept without pref_label' do
     assert_raise ActiveRecord::RecordInvalid do
       concept = Concept::Base.create(:origin => 'c0819')
       concept.save_with_full_validation!
     end
 
-    concept = Concept::Base.new(:origin => 'c0820')
-    Iqvoc::RDFAPI.parse_triple ':c0820 skos:prefLabel "something"@en'
-    concept.save_with_full_validation!
+    assert_nothing_raised do
+      concept = Iqvoc::RDFAPI.parse_triple ':c0820 rdf:type skos:Concept'
+      Iqvoc::RDFAPI.parse_triple ':c0820 skos:prefLabel "something"@en'
+      concept.save_with_full_validation!
+    end
   end
 
   test 'concepts without pref_labels should be saveable but not publishable' do
@@ -56,36 +58,36 @@ class ConceptTest < ActiveSupport::TestCase
 
   test 'published concept must have a pref_label of the first pref_label language configured (the main language)' do
     Iqvoc::RDFAPI.parse_triples <<-EOT
-      :c0820 rdf:type skos:Concept
-      :c0820 skos:prefLabel "foo-en"@en
+      :c08211 rdf:type skos:Concept
+      :c08211 skos:prefLabel "foo-en"@#{Iqvoc::Concept.pref_labeling_languages.first}
     EOT
-    concept = Iqvoc::RDFAPI.cached('c0820').reload
+    concept = Iqvoc::RDFAPI.cached(:c08211)
+    assert_equal 1, concept.labelings.count
     assert_equal 1, concept.pref_labels.count
-    assert concept.valid_with_full_validation?
+    assert concept.valid_with_full_validation?, "concept invalid: #{concept.errors.full_messages.join(', ')}"
 
     concept.pref_labels.first.language = Iqvoc::Concept.pref_labeling_languages.second
-    assert !concept.valid_with_full_validation?
+    assert concept.invalid_with_full_validation?
   end
 
-  test 'concept shouldn not have more than one pref label of the same language' do
+  test 'concept should not have more than one pref label of the same language' do
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0817 rdf:type skos:Concept
       :c0817 skos:prefLabel "foo-en"@en
       :c0817 skos:prefLabel "foo-en the second"@en
     EOT
-    concept = Iqvoc::RDFAPI.cached('c0817')
-    concept.reload
+    concept = Iqvoc::RDFAPI.cached(:c0817)
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
-    assert concept.invalid?
+    assert concept.invalid_with_full_validation?
   end
 
   test 'concepts can have multiple preferred labels in different languages' do
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0816 rdf:type skos:Concept
     EOT
-    concept  = Iqvoc::RDFAPI.cached('c0816')
-    assert concept.invalid_with_full_validation?
+    concept  = Iqvoc::RDFAPI.cached(:c0816)
+    assert concept.invalid_with_full_validation?, "concept invalid: #{concept.errors.full_messages.join(', ')}"
   end
 
   test 'unique pref label' do
@@ -93,14 +95,14 @@ class ConceptTest < ActiveSupport::TestCase
       :c0818 rdf:type skos:Concept
       :c0818 skos:prefLabel "c0818"@en
     EOT
-    concept1 = Iqvoc::RDFAPI.cached('c0818')
-    assert concept1.valid_with_full_validation?
+    concept1 = Iqvoc::RDFAPI.cached(:c0818)
+    assert concept1.valid_with_full_validation?, "concept invalid: #{concept1.errors.full_messages.join(', ')}"
 
     Iqvoc::RDFAPI.parse_triples <<-EOT
       :c0819 rdf:type skos:Concept
       :c0819 skos:prefLabel "c0818"@en
     EOT
-    concept2 = Iqvoc::RDFAPI.cached('c0819')
+    concept2 = Iqvoc::RDFAPI.cached(:c0819)
     assert concept2.invalid_with_full_validation?, "concept invalid: #{concept2.errors.full_messages.join(', ')}"
   end
 
@@ -108,7 +110,9 @@ class ConceptTest < ActiveSupport::TestCase
     concept = Iqvoc::RDFAPI.parse_triple ':c0899 rdf:type skos:Concept'
 
     concept.inline_labelings = {
-      'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
+      'skos:prefLabel' => {
+        Iqvoc::Concept.pref_labeling_languages.first => 'A new label'
+      }
     }
     assert concept.save
     concept.reload
@@ -116,7 +120,9 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal Iqvoc::Concept.pref_labeling_languages.first, concept.pref_label.language.to_s
 
     concept.inline_labelings = {
-      'skos:prefLabel' => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
+      'skos:prefLabel' => {
+        Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'
+      }
     }
     assert !concept.save
   end
@@ -147,11 +153,11 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ['lipsum'],
         concept.labelings.for_class(Labeling::SKOS::PrefLabel).map(&:target).map(&:to_s)
     assert_equal 'lipsum',
-        concept.inline_labelings('skos:prefLabel', 'en')
+        concept.inline_labelings['skos:prefLabel']['en']
     assert_equal ['foo', 'bar'],
         concept.labelings.for_class(Labeling::SKOS::AltLabel).map(&:target).map(&:to_s)
     assert_equal 'foo, bar',
-        concept.inline_labelings('skos:altLabel', 'en')
+        concept.inline_labelings['skos:altLabel']['en']
 
     form_data = {
       'inline_labelings' => {
@@ -164,10 +170,10 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ['lipsum'],
         concept.labelings.for_class(Labeling::SKOS::PrefLabel).map(&:target).map(&:to_s)
     assert_equal 'lipsum',
-        concept.inline_labelings('skos:prefLabel', 'en')
+        concept.inline_labelings['skos:prefLabel']['en']
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
         concept.labelings.for_class(Labeling::SKOS::AltLabel).map(&:target).map(&:to_s)
     assert_equal 'lorem, "foo, bar", ipsum',
-        concept.inline_labelings('skos:altLabel', 'en')
+        concept.inline_labelings['skos:altLabel']['en']
   end
 end

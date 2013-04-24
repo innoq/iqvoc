@@ -5,7 +5,7 @@
     <%= f.label label %>
     <%= f.input fieldname, :wrapper => :prepend, :label => false do %>
       <span class="add-on"><%= language %></span><%= text_field_tag fieldname,
-          concept.inline_labelings(klass.rdf_internal_name, language),
+          concept.inline_labelings[klass.rdf_internal_name][language],
           :class => 'span4' %>
     <% end %>
 <% end %>

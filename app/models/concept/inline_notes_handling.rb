@@ -33,6 +33,11 @@ module Concept
       else
         @inline_notes ||= load_inline_notes
       end
+      @inline_notes.each do |key, values|
+        if values.is_a? Array
+          @inline_notes[key] = {'0' => values.first} # HACK
+        end
+      end
     end
 
     protected

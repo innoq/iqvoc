@@ -64,7 +64,7 @@ class Concept::Base < ActiveRecord::Base
       :foreign_key => 'target_id',
       :class_name  => 'Concept::Relation::Base',
       :dependent   => :destroy,
-      :extend      => [Concept::TypedHasManyExtension]
+      :extend      => [Concept::TypedHasManyExtension, Concept::NoteSubtypeExtensions]
 
   include_to_deep_cloning(:relations, :referenced_relations)
 
@@ -80,7 +80,7 @@ class Concept::Base < ActiveRecord::Base
       :class_name => 'Note::Base',
       :as         => :owner,
       :dependent  => :destroy,
-      :extend     => [Concept::TypedHasManyExtension]
+      :extend     => [Concept::TypedHasManyExtension, Concept::NoteSubtypeExtensions]
   include_to_deep_cloning(:notes => :annotations)
 
   has_many :matches, :foreign_key => 'concept_id', :class_name => 'Match::Base', :dependent => :destroy

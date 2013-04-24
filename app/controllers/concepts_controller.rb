@@ -72,13 +72,13 @@ class ConceptsController < ApplicationController
           concept.relations.includes(:target).merge(Iqvoc::Concept.base_class.published)
         end
         concept_data = {
-          :origin => @concept.origin,
-          :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
+          :origin    => @concept.origin,
+          :labels    => @concept.labelings.map { |ln| labeling_as_json(ln) },
           :relations => published_relations.call(@concept).map { |relation|
             concept = relation.target
             {
-              :origin => concept.origin,
-              :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
+              :origin    => concept.origin,
+              :labels    => concept.labelings.map { |ln| labeling_as_json(ln) },
               :relations => published_relations.call(concept).count
             }
           }
@@ -94,11 +94,7 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new
-
-    Iqvoc::Concept.note_class_names.each do |note_class_name|
-      @concept.notes << note_class_name.constantize.new if @concept.send(note_class_name.to_relation_name).empty?
-    end
-
+    @concept.notes.build_new_instance_for_empty_note_classes!
     @concept.notations.build if @concept.notations.none?
   end
 
