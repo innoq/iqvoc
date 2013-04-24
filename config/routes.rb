@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     post 'concepts/:origin/lock'        => 'concepts/versions#lock',      :as => 'concept_versions_lock'
     post 'concepts/:origin/unlock'      => 'concepts/versions#unlock',    :as => 'concept_versions_unlock'
     post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', :as => 'concept_versions_to_review'
-    post 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', :as => 'concept_versions_consistency_check'
+    get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', :as => 'concept_versions_consistency_check'
 
     get 'alphabetical_concepts(/:prefix)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
     get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
