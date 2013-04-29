@@ -295,7 +295,7 @@ en:
        published: "Instance has been successfully released."
        published_with_warning: "Instance has been successfully released, but it has no relations!"
        merged_delete_error: "Label could not be deleted!"
-       merged_publishing_error: "Instance could not be released!"
+       merged_publishing_error: "Instance could not be released - please consult the consistency check."
        branched: "Instance copy has been created and locked."
        locked: "Instance has been locked."
        lock_error: "Instance has been locked already!"
