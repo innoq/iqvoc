@@ -60,7 +60,7 @@ Running the cloned source code is possible but any modifications would require a
 
 ## Compatibility
 
-iQvoc is fully compatible with Ruby 1.9 and JRuby 1.6.
+iQvoc is fully compatible with Ruby 1.9, 2.0 and JRuby 1.7.
 
 ## Customization
 
