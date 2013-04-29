@@ -22,7 +22,6 @@ class HierarchyTest < ActionController::TestCase
     @controller = HierarchyController.new
 
     # create a concept hierarchy
-
     concepts = YAML.load <<-EOS
 root:
   foo:
