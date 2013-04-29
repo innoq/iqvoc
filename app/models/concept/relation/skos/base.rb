@@ -40,7 +40,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     end
   end
 
-  def build_rdf(document, subject, suppress_extra_labels=false)
+  def build_rdf(document, subject, suppress_extra_labels = false)
     subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, IqRdf.build_uri(target.origin))
 
     # Auto-include preferred labels for referenced concepts
