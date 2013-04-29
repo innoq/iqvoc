@@ -69,7 +69,7 @@ module Iqvoc
 
     # retrieve individual setting, using default value as fallback
     def [](key)
-      initialize_cache if @settings.blank?
+      initialize_cache unless @initialized
       return @settings[key]
     end
 
@@ -96,16 +96,17 @@ module Iqvoc
     # (subsequent updates will happen automatically via the respective setters)
     def initialize_cache
       # cache customized settings
-      db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
-      db_settings.each do |setting|
+      ConfigurationSetting.all.each do |setting|
         @records[setting.key] = JSON.load("[#{setting.value}]")[0] # temporary array wrapper ensures valid JSON text
       end
 
       # cache current settings
-      @defaults.each_with_object({}) do |(key, default_value), hsh|
+      @defaults.each do |key, default_value|
         value = @records[key]
         @settings[key] = value.nil? ? default_value : value
       end
+
+      @initialized = true
     end
 
     # checks whether value type is supported

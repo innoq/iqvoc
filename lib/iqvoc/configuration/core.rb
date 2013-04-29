@@ -101,7 +101,6 @@ module Iqvoc
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
           "note_languages" => ["en", "de"]
         })
-        self.config.initialize_cache
       end
 
       module ClassMethods
