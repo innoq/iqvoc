@@ -26,7 +26,7 @@ class HygieneTest < ActiveSupport::TestCase
     assert_no_occurrence "#{space}#{tab}\|#{tab}#{space}", "mixed whitespace", true
   end
 
-  def assert_no_occurrence(pattern, error_message, extended=false)
+  def assert_no_occurrence(pattern, error_message, extended = false)
     extra_options = extended ? "E" : ""
     lines = `git grep -In#{extra_options} '#{pattern}' | grep -v '^vendor/'`
     assert_not_equal 0, $?.to_i, "#{error_message}:\n#{lines}"
