@@ -20,7 +20,7 @@ while true
       {:relations => :target, :labelings => :target, :notes => :annotations}]).run
 
   concepts.each do |concept|
-    render_concept(document, concept)
+    render_concept(document, concept, true)
   end
 
   offset+= concepts.size # Size is important!
