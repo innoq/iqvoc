@@ -19,11 +19,11 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.2.13'
+gem 'rails', '4.0.0.rc1'
 
 group :assets do
-  gem 'uglifier',   '>= 1.0.3'
-  gem 'sass-rails', '~> 3.2.5'
+  gem 'uglifier'
+  gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
   gem 'therubyracer', :platforms => :ruby
 end
 
@@ -33,7 +33,7 @@ gem 'cancan'
 gem 'iq_rdf'
 gem 'iq_triplestorage'
 gem 'json'
-gem 'rails_autolink'
+gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
 
