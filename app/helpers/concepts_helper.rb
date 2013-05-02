@@ -18,8 +18,7 @@ module ConceptsHelper
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
-    render :partial => "concepts/hierarchical/treeview",
-      :locals => { :concepts => concepts, :broader => broader }
+    render "concepts/hierarchical/treeview", :concepts => concepts, :broader => broader
   end
 
   # turns a hash of concept/relations pairs of arbitrary nesting depth into the
