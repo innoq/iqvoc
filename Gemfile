@@ -21,12 +21,7 @@ source 'http://rubygems.org'
 # group (:development by default). This is not what we need.
 gem 'rails', '4.0.0.rc1'
 
-group :assets do
-  gem 'uglifier'
-  gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
-  gem 'therubyracer', :platforms => :ruby
-end
-
+gem 'protected_attributes'
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
@@ -35,7 +30,9 @@ gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
 gem 'jruby-openssl', :platforms => :jruby
-gem 'simple_form'
+gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
+gem 'uglifier'
+gem 'sass-rails', '~> 4.0.0.rc1'
 
 group :development do
   gem 'heroku'
