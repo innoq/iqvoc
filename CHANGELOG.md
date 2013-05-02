@@ -1,3 +1,7 @@
+## [4.1.2]
+
+  * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in hierarchical views
+
 ## [4.1.1]
 
   * Removed duplicate triples from RDF export
