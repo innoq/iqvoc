@@ -1,3 +1,9 @@
+## [4.1.1]
+
+  * Removed duplicate triples from RDF export
+  * Preliminary support for localized note annotations and rdfs:seeAlso
+  * Bugfixes
+
 ## [4.1.0]
 
   * Concepts hierarchy API (/hierarchy)
