@@ -97,9 +97,6 @@ GEM
       builder
       bundler
     iq_triplestorage (0.2.2)
-    jbuilder (1.3.0)
-      activesupport (>= 3.0.0)
-      multi_json (>= 1.2.0)
     jdbc-mysql (5.1.13)
     jdbc-sqlite3 (3.7.2)
     journey (1.0.4)
@@ -231,7 +228,6 @@ DEPENDENCIES
   hirb-unicode
   iq_rdf
   iq_triplestorage
-  jbuilder
   jruby-openssl
   json
   kaminari
