@@ -91,6 +91,10 @@ en:
          matches: Concept mappings
      instance_configuration:
        caption: "Instance Configuration"
+       groups:
+         common: common
+         languages: languages
+         triplestore: triplestore
        settings:
          title: site title
          note_languages: languages for notes

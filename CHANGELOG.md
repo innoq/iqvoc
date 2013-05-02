@@ -1,3 +1,7 @@
+## [TBD]
+
+  * Improved instance configuration UI
+
 ## [4.1.0]
 
   * Concepts hierarchy API (/hierarchy)

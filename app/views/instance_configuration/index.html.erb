@@ -1,12 +1,17 @@
 <%= page_header :title => t("txt.views.instance_configuration.caption").titleize %>
 
 <%= form_tag(instance_configuration_path, :method => :put, :class => "") do %>
-  <% @settings.each do |key, value| %>
-    <label>
-      <%= t("txt.views.instance_configuration.settings.#{key.gsub(".", "_")}") %>
-      (<code><%= key %></code>)
-    </label>
-    <%= text_field_tag "config[#{key}]", value %>
+  <% @settings_by_namespace.each do |namespace, settings| %>
+    <fieldset>
+      <legend><%= t("txt.views.instance_configuration.groups.#{namespace}").titleize %></legend>
+      <% settings.each do |key, value| %>
+        <label>
+          <%= t("txt.views.instance_configuration.settings.#{key.gsub(".", "_")}") %>
+          (<code><%= key %></code>)
+        </label>
+        <%= text_field_tag "config[#{key}]", value %>
+      <% end %>
+    </fieldset>
   <% end %>
   <div class="form-actions">
     <%= submit_tag t("txt.common.save"), :class => "btn btn-primary" %>
