@@ -19,10 +19,9 @@ end
 
 # inject partial name
 class ActionView::PartialRenderer
-
   def render_with_source_comment(context, options, block)
     res = render_without_source_comment(context, options, block)
-    template = find_template
+    template = @template
     if template.formats.include?(:html)
       "<!-- Partial: #{template.inspect} -->\n".html_safe << res <<
         "<!-- /Partial -->\n".html_safe
@@ -31,7 +30,6 @@ class ActionView::PartialRenderer
     end
   end
   alias_method_chain :render, :source_comment
-
 end
 
 module Iqvoc::Environments
