@@ -39,7 +39,6 @@ gem 'simple_form'
 gem 'jbuilder'
 
 group :development do
-  gem 'heroku'
   gem 'view_marker'
   gem 'better_errors'
   gem 'binding_of_caller', :platform => :ruby

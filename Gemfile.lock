@@ -78,7 +78,6 @@ GEM
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.0)
     erubis (2.7.0)
-    excon (0.16.2)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.1.0)
@@ -88,14 +87,6 @@ GEM
       railties (>= 3.0.0)
     ffi (1.1.5)
     ffi (1.1.5-java)
-    heroku (2.31.2)
-      heroku-api (~> 0.3.4)
-      launchy (>= 0.3.2)
-      netrc (~> 0.7.7)
-      rest-client (~> 1.6.1)
-      rubyzip
-    heroku-api (0.3.5)
-      excon (~> 0.16.1)
     hike (1.2.1)
     hirb (0.7.1)
     hirb-unicode (0.0.5)
@@ -119,12 +110,6 @@ GEM
     kaminari (0.13.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    launchy (2.1.2)
-      addressable (~> 2.3)
-    launchy (2.1.2-java)
-      addressable (~> 2.3)
-      ffi (~> 1.1.1)
-      spoon (~> 0.0.1)
     libv8 (3.3.10.4)
     mail (2.5.3)
       i18n (>= 0.4.0)
@@ -135,7 +120,6 @@ GEM
     minitest (3.4.0)
     multi_json (1.7.2)
     mysql2 (0.3.11)
-    netrc (0.7.7)
     nokogiri (1.5.6)
     nokogiri (1.5.6-java)
     parallel (0.6.4)
@@ -180,8 +164,6 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
     rubyzip (0.9.9)
     sass (3.2.1)
     sass-rails (3.2.5)
@@ -197,7 +179,6 @@ GEM
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     slop (3.3.3)
-    spoon (0.0.1)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -247,7 +228,6 @@ DEPENDENCIES
   capybara-webkit (~> 0.14.2)
   database_cleaner
   factory_girl_rails
-  heroku
   hirb-unicode
   iq_rdf
   iq_triplestorage

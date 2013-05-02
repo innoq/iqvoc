@@ -26,17 +26,16 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 ### Heroku
 
 You can easily setup your iQvoc instance in under 5 minutes, we wanted to make this process really easy.
-
-To run iQvoc on heroku do the following:
+In order to deploy to heroku you need to have an account and [heroku toolbelt](https://toolbelt.heroku.com) installed.
 
 ```
-bundle install
-bundle exec heroku create
-bundle exec rake heroku:config
-git push heroku master
-bundle exec heroku run rake db:migrate
-bundle exec heroku run rake db:seed
-bundle exec heroku restart
+$ bundle install
+$ heroku create
+$ bundle exec rake heroku:config
+$ git push heroku master
+$ heroku run rake db:migrate
+$ heroku run rake db:seed
+$ heroku restart
 ```
 
 `heroku open` opens your app in the browser.
