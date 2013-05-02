@@ -29,8 +29,8 @@ class InstanceConfigurationController < ApplicationController
     @settings_by_namespace = settings.inject({}) do |memo, (key, value)|
       namespace, setting = key.split(".", 2)
       namespace = setting ? namespace : "common"
-      memo[namespace] ||= []
-      memo[namespace] << [key, value]
+      memo[namespace] ||= {}
+      memo[namespace][key] = value
       memo
     end
   end
