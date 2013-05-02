@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     get 'help' => 'pages#help', :as => 'help'
 
     get '/' => 'frontpage#index'
-    root :to => 'frontpage#index', :format => nil
+    # root :to => 'frontpage#index', :format => nil
   end
 
   get 'schema' => redirect('/'), :as => 'schema'
