@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails_autolink'
   s.add_dependency 'simple_form'
   s.add_dependency 'sass-rails', '~> 3.2.5'
+  s.add_dependency 'bootstrap-sass'
   s.add_dependency 'iq_triplestorage'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
