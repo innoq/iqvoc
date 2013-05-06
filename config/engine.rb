@@ -11,6 +11,7 @@ require 'rails_autolink'
 require 'simple_form'
 require 'sass'
 require 'sass-rails'
+require 'navigasmic'
 
 require 'iqvoc/controller_extensions'
 
