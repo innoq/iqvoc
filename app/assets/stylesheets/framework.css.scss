@@ -1,10 +1,8 @@
-/*
-*= require jquery.treeview
-*= require jquery-ui-1.8.23.custom
-*/
+@import 'jquery.treeview';
+@import 'jquery-ui-1.8.23.custom';
 
-@import "bootstrap";
+@import 'bootstrap';
 body {
   padding-top: 60px;
 }
-@import "bootstrap-responsive";
+@import 'bootstrap-responsive';
