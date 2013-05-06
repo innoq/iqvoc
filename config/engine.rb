@@ -12,6 +12,7 @@ require 'simple_form'
 require 'sass'
 require 'sass-rails'
 require 'navigasmic'
+require 'bootstrap-sass'
 
 require 'iqvoc/controller_extensions'
 
