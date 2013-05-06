@@ -17,13 +17,13 @@
         <%= render "layouts/controls" %>
 
         <% unless @suppress_quicksearch %>
-        <%= form_tag alphabetical_concepts_path(:prefix => nil), :method => :get,
+<!--         <%= form_tag alphabetical_concepts_path(:prefix => nil), :method => :get,
                 :class => "navbar-search pull-right" do %>
           <%= search_field_tag "prefix", nil, :id => nil,
                   :class => "quicksearch search-query span2",
                   :autofocus => (autofocus rescue nil),
                   :placeholder => t("txt.views.navigation.quick_search") %>
-          <% end %>
+          <% end %> -->
         <% end %>
       </div>
 
