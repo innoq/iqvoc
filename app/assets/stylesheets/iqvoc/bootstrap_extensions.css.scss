@@ -1,11 +1,3 @@
-[class^="icon-"], [class*=" icon-"] {
-  background-image: asset-data-url('bootstrap/glyphicons-halflings.png');
-}
-
-.icon-white {
-  background-image: asset-data-url('bootstrap/glyphicons-halflings-white.png');
-}
-
 .dropdown-menu {
   h3 {
     margin: 0 10px;
@@ -29,33 +21,6 @@
       padding-left: 0;
       display: inline;
     }
-  }
-}
-
-.navbar {
-  .brand {
-    color: #fff;
-  }
-
-  .navbar-inner {
-    padding: 0 5px;
-
-    background: -moz-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-    background: -o-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-    background: -ms-linear-gradient(top,#373737 0,#343434 50%,#242424 100%);
-    background: -webkit-gradient(linear,left top,left bottom,from(#373737),color-stop(0.5,#343434),to(#242424));
-    background: -webkit-gradient(linear,left bottom,left top,color-stop(1,rgba(55, 55, 55, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0.5,rgba(52, 52, 52, 1)),color-stop(0,rgba(36, 36, 36, 1)));
-    border-top: 1px solid #2A2A2A;
-    border-bottom: 1px solid black;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-}
-
-// Unify topbar margin on all viewports
-@media (min-width: 980px) {
-  .navbar-fixed-top {
-    position: static;
-    margin-bottom: 18px;
   }
 }
 
