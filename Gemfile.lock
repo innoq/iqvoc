@@ -47,6 +47,8 @@ GEM
       erubis (>= 2.7.0)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (2.3.1.0)
+      sass (~> 3.2)
     bouncy-castle-java (1.5.0146.1)
     builder (3.0.4)
     cancan (1.6.8)
@@ -218,6 +220,7 @@ DEPENDENCIES
   awesome_print
   better_errors
   binding_of_caller
+  bootstrap-sass (~> 2.3.1.0)
   cancan
   cane
   capybara
