@@ -1,4 +1,44 @@
+# encoding: UTF-8
+
+# Copyright 2011-2013 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 module NavigationHelper
+  # expects an array of hashes with the following members:
+  # :content - usually a navigation link
+  # :active? - an optional function determining whether the respective item is
+  #     currently active
+  # :controller - an optional string, used instead of `active?` to check for a
+  #     specific controller
+  # :authorized? - an optional function determining whether the respective item
+  #     is available to the current user (defaults to true)
+  def nav_items(items)
+    items.map do |item|
+      if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
+        if item[:items]
+          content_tag :li, :class => "dropdown" do
+            raw(
+              link_to(element_value(item[:text]).html_safe + content_tag(:b, nil, :class => "caret"), "#", :class => "dropdown-toggle", :data => { :toggle => "dropdown" }) +
+              content_tag(:ul, item[:items].map{|i| nav_item(i)}.join.html_safe, :class => "dropdown-menu")
+            )
+          end
+        else
+          nav_item(item)
+        end
+      end
+    end.join.html_safe
+  end
 
   def sidebar(&block)
     content_for :sidebar do
@@ -34,6 +74,21 @@ module NavigationHelper
     end
 
     content_tag :li, content, :class => css_class
+  end
+
+  private
+  def nav_item(item)
+    active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
+    css = active ? "active" : nil
+    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href])), :class => css
+  end
+
+  def nav_item_authorized?(item)
+    !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
+  end
+
+  def element_value(e)
+    e.is_a?(Proc) ? instance_eval(&e) : e
   end
 
 end

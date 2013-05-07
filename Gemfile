@@ -37,7 +37,6 @@ gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
-gem 'navigasmic'
 
 group :development do
   gem 'view_marker'

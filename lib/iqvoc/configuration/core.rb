@@ -12,6 +12,7 @@ module Iqvoc
           :rdf_namespaces,
           :change_note_class_name,
           :first_level_class_configuration_modules,
+          :navigation_items,
           :ability_class_name,
           :localized_routes,
           :core_assets
@@ -27,6 +28,71 @@ module Iqvoc
           bootstrap/bootstrap.js
           html5.js
         )
+
+        self.navigation_items = [
+          {
+                   :text => "Dashboard",
+                   :href => proc { dashboard_path },
+             :controller => "dashboard",
+            :authorized? => proc { can? :use, :dashboard }
+          },
+          {
+                   :text => "Scheme",
+                   :href => proc { scheme_path },
+             :controller => "concepts/scheme",
+            :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
+          },
+          {
+                  :text => proc { ::Concept::Base.model_name.human(:count => 2) },
+                  :href => proc { hierarchical_concepts_path },
+            :controller => "concepts/hierarchical",
+               :active? => proc { %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).include?(params[:controller]) }
+          },
+          {
+                  :text => proc { t("txt.views.navigation.collections") },
+                  :href => proc { collections_path },
+            :controller => "collections"
+          },
+          {
+                  :text => proc { t("txt.views.navigation.search") },
+                  :href => proc { search_path },
+            :controller => "search_results"
+          },
+          {
+                   :text => proc { t("txt.views.navigation.administration") },
+            :authorized? => proc { can? :use, :administration },
+                  :items => [
+                    {
+                      :text => proc { t("txt.views.navigation.users") },
+                      :href => proc { users_path },
+                      :controller => "users",
+                      :authorized? => proc { can? :manage, User }
+                    },
+                    {
+                      :text => proc { t("txt.views.navigation.instance_configuration") },
+                      :href => proc { instance_configuration_path },
+                      :controller => "instance_configuration",
+                      :authorized? => proc { can? :manage, Iqvoc.config }
+                    }
+                  ]
+          },
+          {
+             :text => proc { t("txt.views.navigation.help") },
+            :items => [
+              {
+                       :text => proc { t("txt.views.navigation.help") },
+                       :href => proc { help_path },
+                 :controller => "pages",
+                     :action => "help",
+                :authorized? => proc { can? :read, :help }
+              },
+              {
+                :text => proc { t("txt.views.navigation.about") },
+                :href => "http://iqvoc.net/"
+              }
+            ]
+          }
+        ]
 
         self.searchable_class_names = [
           'Labeling::SKOS::Base',
