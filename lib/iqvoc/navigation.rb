@@ -1,5 +1,8 @@
 module Iqvoc
   class Navigation
+    LEVELS = [:group, :root]
+
+    class InvalidLevel < ArgumentError; end
 
     def self.setup
       Navigasmic.setup do |config|
@@ -10,9 +13,11 @@ module Iqvoc
           n.item n.t('txt.views.navigation.concepts'), n.hierarchical_concepts_path
           n.item n.t('txt.views.navigation.collections'), n.collections_path
 
-          ActiveSupport.on_load :navigation_extended do
+          ActiveSupport.run_load_hooks :navigation_extensions_on_root_level, n
+
+          ActiveSupport.on_load :navigation_extended_on_group_level do
             n.group n.t('txt.views.navigation.extensions') do
-              ActiveSupport.run_load_hooks :navigation_extensions, n
+              ActiveSupport.run_load_hooks :navigation_extensions_on_group_level, n
             end
           end
 
@@ -66,11 +71,15 @@ module Iqvoc
       end
     end
 
-    def self.insert
-      ActiveSupport.on_load :navigation_extensions do |n|
+    def self.add_on_level(level = :group, &block)
+      unless LEVELS.include?(level)
+        raise InvalidLevel, "Navigation can only be extended on levels #{LEVELS.join(' or ')}"
+      end
+
+      ActiveSupport.on_load :"navigation_extensions_on_#{level}_level" do |n|
         yield n
       end
-      ActiveSupport.run_load_hooks :navigation_extended
+      ActiveSupport.run_load_hooks :"navigation_extended_on_#{level}_level"
     end
 
   end
