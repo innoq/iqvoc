@@ -90,7 +90,11 @@ de:
          login: "Anmelden"
          logout: "Abmelden"
      instance_configuration:
-       caption: "Instanzkonfiguration"
+       caption: "Konfiguration"
+       groups:
+         common: allgemein
+         languages: Sprachen
+         triplestore: Triplestore
        settings:
          title: Titel
          note_languages: Sprachen für Notes

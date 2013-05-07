@@ -1,3 +1,7 @@
+## [TBD]
+
+  * Improved instance configuration UI
+
 ## [4.1.2]
 
   * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in hierarchical views
