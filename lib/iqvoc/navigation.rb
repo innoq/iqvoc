@@ -8,10 +8,22 @@ module Iqvoc
       Navigasmic.setup do |config|
         config.semantic_navigation :primary do |n|
 
-          n.item n.t('txt.views.navigation.dashboard'), n.dashboard_path
-          n.item n.t('txt.views.navigation.scheme'), n.scheme_path
-          n.item n.t('txt.views.navigation.concepts'), n.hierarchical_concepts_path
-          n.item n.t('txt.views.navigation.collections'), n.collections_path
+          n.item n.t('txt.views.navigation.dashboard'),
+            n.dashboard_path,
+            :hidden_unless => n.can?(:use, :dashboard)
+          n.item n.t('txt.views.navigation.scheme'),
+            n.scheme_path,
+            :hidden_unless => n.can?(:read, Iqvoc::Concept.root_class.instance)
+          n.item n.t('txt.views.navigation.concepts'),
+            n.hierarchical_concepts_path,
+            :highlights_on => [
+              { controller: 'concepts/alphabetical' },
+              { controller: 'concepts/expired' },
+              { controller: 'concepts/untranslated' },
+            ]
+          n.item n.t('txt.views.navigation.collections'),
+            n.collections_path,
+            :highlights_on => [{ :controller => 'collections' }]
 
           ActiveSupport.run_load_hooks :navigation_extensions_on_root_level, n
 
@@ -21,10 +33,14 @@ module Iqvoc
             end
           end
 
-          n.group n.t('txt.views.navigation.administration') do
-            n.item n.t('txt.views.navigation.users'), n.users_path
+          n.group n.t('txt.views.navigation.administration'), :hidden_unless => n.can?(:use, :administration) do
+            n.item n.t('txt.views.navigation.users'),
+              n.users_path,
+              :hidden_unless => n.can?(:manage, User),
+              :highlights_on => [{ :controller => 'users'}]
             n.item n.t('txt.views.navigation.instance_configuration'),
-                n.instance_configuration_path
+              n.instance_configuration_path,
+              :highlights_on => [{ :controller => 'instance_configuration'} ]
           end
 
           n.group n.t('txt.views.navigation.help') do
