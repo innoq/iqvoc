@@ -46,11 +46,12 @@ class Labeling::SKOS::Base < Labeling::Base
     query_str = build_query_string(params)
 
     scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)")
+    languages = Array(params[:languages])
 
     if params[:query].present?
-      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published)
+      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(languages).published)
     else
-      scope = scope.merge(Label::Base.by_language(params[:languages].to_a).published)
+      scope = scope.merge(Label::Base.by_language(languages).published)
     end
 
     if params[:collection_origin].present?
