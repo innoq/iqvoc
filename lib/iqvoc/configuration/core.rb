@@ -13,51 +13,10 @@ module Iqvoc
           :change_note_class_name,
           :first_level_class_configuration_modules,
           :ability_class_name,
-          :navigation_items,
           :localized_routes,
           :core_assets
 
         self.localized_routes = [] # routing extensibility hook
-
-        self.navigation_items = [
-          {
-            :content => proc { link_to "Dashboard", dashboard_path },
-            :controller => "dashboard",
-            :authorized? => proc { can? :use, :dashboard }
-          }, {
-            :content => proc { link_to "Scheme", scheme_path },
-            :controller => "concepts/scheme",
-            :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
-          }, {
-            :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
-                hierarchical_concepts_path },
-            :controller => "concepts/hierarchical",
-            :active? => proc { %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).include?(params[:controller]) }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.collections"),
-                collections_path },
-            :controller => "collections"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.search"), search_path },
-            :controller => "search_results"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.users"), users_path },
-            :controller => "users",
-            :authorized? => proc { can? :manage, User }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.instance_configuration"),
-                instance_configuration_path },
-            :controller => "instance_configuration",
-            :authorized? => proc { can? :manage, Iqvoc.config }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.help"), help_path },
-            :controller => "pages",
-            :action => "help",
-            :authorized? => proc { can? :read, :help }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" }
-          }
-        ]
 
         self.core_assets = %w(
           manifest.css
