@@ -90,7 +90,7 @@ de:
          login: "Anmelden"
          logout: "Abmelden"
      instance_configuration:
-       caption: "Instanzkonfiguration"
+       caption: "Konfiguration"
        groups:
          common: allgemein
          languages: Sprachen

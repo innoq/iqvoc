@@ -90,7 +90,7 @@ pt:
          notes: "Notas"
          matches: "Mapeamentos conceituais"
      instance_configuration:
-       caption: "Configuração da Instância"
+       caption: "Configuração"
        settings:
          title: "título do sítio"
          languages_pref_labeling: "idiomas para os rótulos preferenciais"

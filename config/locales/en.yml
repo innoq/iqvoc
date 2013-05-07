@@ -90,7 +90,7 @@ en:
          notes: Notes
          matches: Concept mappings
      instance_configuration:
-       caption: "Instance Configuration"
+       caption: "Configuration"
        groups:
          common: common
          languages: languages
