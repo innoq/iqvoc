@@ -17,14 +17,14 @@ module Iqvoc
           end
 
           n.group n.t('txt.views.navigation.administration') do
-            n.item n.t('txt.views.navigation.users'), proc { users_path }
+            n.item n.t('txt.views.navigation.users'), n.users_path
             n.item n.t('txt.views.navigation.instance_configuration'),
-                proc { instance_configuration_path }
+                n.instance_configuration_path
           end
 
           n.group n.t('txt.views.navigation.help') do
             n.item n.t('txt.views.navigation.about'), 'http://iqvoc.net/'
-            n.item n.t('txt.views.navigation.help'), proc { help_path }
+            n.item n.t('txt.views.navigation.help'), n.help_path
           end
         end
 
