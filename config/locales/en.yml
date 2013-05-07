@@ -153,6 +153,11 @@ en:
        edit:
          header: "Edit notes"
      navigation:
+       dashboard: "Dashboard"
+       scheme: "Scheme"
+       concepts: "Concepts"
+       administration: "Administration"
+       extensions: "Extensions"
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
