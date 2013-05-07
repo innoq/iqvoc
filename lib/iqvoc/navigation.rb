@@ -4,10 +4,10 @@ module Iqvoc
       Navigasmic.setup do |config|
         config.semantic_navigation :primary do |n|
 
-          n.item n.t('txt.views.navigation.dashboard'), proc { dashboard_path }
-          n.item n.t('txt.views.navigation.scheme'), proc { scheme_path }
-          n.item n.t('txt.views.navigation.concepts'), proc { hierarchical_concepts_path }
-          n.item n.t('txt.views.navigation.collections'), proc { collections_path }
+          n.item n.t('txt.views.navigation.dashboard'), n.dashboard_path
+          n.item n.t('txt.views.navigation.scheme'), n.scheme_path
+          n.item n.t('txt.views.navigation.concepts'), n.hierarchical_concepts_path
+          n.item n.t('txt.views.navigation.collections'), n.collections_path
 
           ActiveSupport.on_load :navigation_extended do
             n.group n.t('txt.views.navigation.extensions') do
