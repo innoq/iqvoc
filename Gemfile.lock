@@ -119,6 +119,8 @@ GEM
     minitest (3.4.0)
     multi_json (1.7.2)
     mysql2 (0.3.11)
+    navigasmic (1.0.4)
+      railties (~> 3.2)
     nokogiri (1.5.6)
     nokogiri (1.5.6-java)
     parallel (0.6.4)
@@ -236,6 +238,7 @@ DEPENDENCIES
   kaminari
   minitest
   mysql2
+  navigasmic
   nokogiri (~> 1.5.0)
   pg
   pry

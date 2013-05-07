@@ -14,23 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc'
-require 'iqvoc/origin'
-require 'iqvoc/inline_data_helper'
-require 'iqvoc/version'
-require 'iqvoc/versioning'
-require 'iqvoc/deep_cloning'
-require 'iqvoc/rankable'
-require 'iqvoc/ability'
-require 'iqvoc/navigation'
+require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
-ActiveRecord::Base.send :include, Iqvoc::DeepCloning
-Iqvoc::Navigation.setup
+class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
-##### INSTANCE SETTINGS #####
+  test "extensible navigation" do
+    Iqvoc::Navigation.add_on_level :root do |n|
+      n.item "foo bar", "/"
+    end
 
-# initialize non-dynamic settings below
-# see lib/iqvoc.rb for the list of available setting
+    Iqvoc::Navigation.add_on_level :group do |n|
+      n.item "lulu", "/"
+    end
 
-unless Rails.env.test?
+    msg = "Navigation is missing a configured item"
+
+    visit "/"
+
+    assert page.first("#primary").has_link?("foo bar"), msg
+    assert page.first("#primary .dropdown-menu").has_link?("lulu"), msg
+  end
+
 end

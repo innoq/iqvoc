@@ -41,6 +41,8 @@ module Iqvoc
           can :import, ::Concept::Base
 
           can :update, Iqvoc::Concept.root_class.instance
+
+          can :use, :administration
         end
       else # no user
         can :create, UserSession
