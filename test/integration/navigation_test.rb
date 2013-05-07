@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
-class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
+class NavigationTest < ActionDispatch::IntegrationTest
 
   test "extensible navigation" do
     Iqvoc::Navigation.add_on_level :root do |n|
