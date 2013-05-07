@@ -96,7 +96,12 @@ module Iqvoc
     # (subsequent updates will happen automatically via the respective setters)
     def initialize_cache
       # cache customized settings
-      ConfigurationSetting.all.each do |setting|
+      begin
+        records = ConfigurationSetting.all
+      rescue ActiveRecord::StatementInvalid # pre-migration; table does not yet exist
+        return false
+      end
+      records.each do |setting|
         @records[setting.key] = JSON.load("[#{setting.value}]")[0] # temporary array wrapper ensures valid JSON text
       end
 
