@@ -1,6 +1,7 @@
 ## [TBD]
 
   * Improved instance configuration UI
+  * Adjusted internal name of note languages setting for consistency
 
 ## [4.1.2]
 
