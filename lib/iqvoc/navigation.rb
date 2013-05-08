@@ -20,30 +20,42 @@
 
 module Iqvoc
   module Navigation
-    EXTENSION_INDEX = -3
-
     def self.items
       Iqvoc.navigation_items
     end
 
-    def self.add(item)
-      items.insert(EXTENSION_INDEX, item)
+    def self.add(item, position = nil)
+      if position
+        items.insert(position, item)
+      else
+        items << item
+      end
     end
 
-    def self.add_grouped(item)
-      setup_extension_group
-      items[EXTENSION_INDEX][:items] << item
+    def self.add_grouped(item, position = nil)
+      index = setup_extension_group(position)
+      items[index][:items] << item
     end
 
     private
     # Setup an empty navigation group for extensions
-    def self.setup_extension_group
-      if !items[EXTENSION_INDEX][:items]
-        items.insert(EXTENSION_INDEX, {
-          :text  => proc { t("txt.views.navigation.extensions") },
-          :items => []
-        })
+    # Returns index for the new (or existing) group, so add_grouped
+    # can use the index to insert it's item under the group
+    def self.setup_extension_group(position)
+      group = {
+        :text  => proc { t("txt.views.navigation.extensions") },
+        :items => []
+      }
+
+      if position && !items[position][:items]
+        items.insert(position, group)
+      elsif position && items[position][:items]
+        return position
+      else
+        items << group
       end
+
+      items.index(group)
     end
   end
 end
