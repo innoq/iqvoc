@@ -113,7 +113,7 @@ module Iqvoc
           "title" => "iQvoc",
           "languages.pref_labeling" => ["en", "de"],
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
-          "note_languages" => ["en", "de"]
+          "languages.notes" => ["en", "de"]
         })
       end
 
@@ -169,11 +169,14 @@ module Iqvoc
         end
 
         def note_languages
-          return config["note_languages"]
+          return config["languages.notes"]
         end
 
+        # returns a list of all languages selectable for labels and/or notes
         def all_languages
-          (Iqvoc::Concept.pref_labeling_languages + Iqvoc::Concept.further_labeling_class_names.values.flatten + note_languages).compact.map(&:to_s).uniq
+          (Iqvoc::Concept.pref_labeling_languages +
+              Iqvoc::Concept.further_labeling_class_names.values.flatten +
+              note_languages).compact.map(&:to_s).uniq
         end
 
         # @deprecated

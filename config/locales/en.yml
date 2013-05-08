@@ -97,7 +97,7 @@ en:
          triplestore: triplestore
        settings:
          title: site title
-         note_languages: languages for notes
+         languages_notes: languages for notes
          languages_pref_labeling: languages for preferred labels
          languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
          triplestore_url: triplestore URL
