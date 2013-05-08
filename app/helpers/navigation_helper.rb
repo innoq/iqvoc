@@ -23,15 +23,19 @@ module NavigationHelper
   #     specific controller
   # :authorized? - an optional function determining whether the respective item
   #     is available to the current user (defaults to true)
+  # :items - a list of hashes to be used as second-level navigation items
   def nav_items(items)
     items.map do |item|
       if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
         if item[:items]
           content_tag :li, :class => "dropdown" do
-            raw(
-              link_to(element_value(item[:text]).html_safe + content_tag(:b, nil, :class => "caret"), "#", :class => "dropdown-toggle", :data => { :toggle => "dropdown" }) +
-              content_tag(:ul, item[:items].map{|i| nav_item(i)}.join.html_safe, :class => "dropdown-menu")
-            )
+            raw(link_to(element_value(item[:text]).html_safe +
+                    content_tag(:b, nil, :class => "caret"), "#",
+                    :class => "dropdown-toggle",
+                    :data => { :toggle => "dropdown" }) +
+                content_tag(:ul,
+                    item[:items].map { |i| nav_item(i) }.join.html_safe,
+                    :class => "dropdown-menu"))
           end
         else
           nav_item(item)
@@ -77,6 +81,7 @@ module NavigationHelper
   end
 
   private
+
   def nav_item(item)
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
     css = active ? "active" : nil
