@@ -17,8 +17,9 @@
 class SearchResultsController < ApplicationController
 
   def index
-    authorize! :read, Concept::Base # TODO: I think a :search right would be
-    # better here because you're able to serach more than only concepts.
+    authorize! :read, Concept::Base
+    # TODO: requires a dedicated :search permission because this covers more
+    # than just concepts
 
     self.class.prepare_basic_variables(self)
 
