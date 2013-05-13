@@ -1,5 +1,6 @@
 # iQvoc
 
+[![Gem Version](https://badge.fury.io/rb/iqvoc.png)](http://badge.fury.io/rb/iqvoc)
 [![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
 [![Code Climate](https://codeclimate.com/github/innoq/iqvoc.png)](https://codeclimate.com/github/innoq/iqvoc)
 
