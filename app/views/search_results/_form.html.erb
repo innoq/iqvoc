@@ -1,54 +1,7 @@
 <%= form_tag(search_path, :method => :get, :class => 'form-horizontal', :id => 'search') do %>
   <fieldset id="typecheck" class="">
-    <%= input_block :label => t('txt.views.search_results.for'), :id => 't' do %>
-      <select name="t" id="t" class="search_type">
-        <%= options_for_select(Iqvoc.searchable_classes.map { |c|
-            [c.model_name.human(:count => 2), c.name.parameterize]
-          }, params[:t]) %>
-      </select>
-    <% end %>
-
-    <%= input_block :label => t('txt.views.search_results.mode'), :id => 'qt' do %>
-      <%= select_tag :qt, options_for_select([
-          [t('txt.views.search_results.contains'), 'contains'],
-          [t('txt.views.search_results.exact'), 'exact'],
-          [t('txt.views.search_results.ends_with'), 'ends_with'],
-          [t('txt.views.search_results.begins_with'), 'begins_with']
-        ], params[:qt]) %>
-    <% end %>
-
-    <%= input_block :label => t('txt.views.search_results.search_term'), :id => 'q' do %>
-      <% if Iqvoc.searchable_classes.detect {|c| c.supports_multi_query? } %>
-        <%= text_area_tag :q, params[:query] %>
-      <% else %>
-        <%= text_field_tag :q, params[:query] %>
-      <% end %>
-    <% end %>
-
-    <%= input_block :label => t('txt.views.search_results.for') do %>
-      <label for="for_concept" class="radio"><%= radio_button_tag 'for', 'concept', params[:for] == "concept" %> <%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></label>
-      <label for="for_collection" class="radio"><%= radio_button_tag 'for', 'collection', params[:for] == "collection" %> <%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></label>
-      <label for="for_all" class="radio"><%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]) %> <%= t("txt.views.search_results.all") %></label>
-    <% end %>
-
-    <%= input_block :label => Iqvoc::Collection.base_class.model_name.human, :id => 'c' do %>
-      <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>
-    <% end %>
-
-    <%= input_block :label => t('txt.views.search_results.search_languages') do %>
-      <% @available_languages.sort.each do |lang_tag, label| %>
-        <label for="languages_<%= lang_tag %>" class="checkbox inline">
-          <%= check_box_tag "l[]", lang_tag, select_search_checkbox?(lang_tag), :id => "languages_#{lang_tag}", :class => 'lang_check' %><%= lang_tag %>
-        </label>
-      <% end %>
-      <div class="btn-group">
-        <button type="button" id="language_select_all" class="btn btn-mini">
-          <%= t('txt.views.search_results.all') %>
-        </button>
-        <button type="button" id="language_select_none" class="btn btn-mini">
-          <%= t('txt.views.search_results.none') %>
-        </button>
-      </div>
+    <% Iqvoc.search_sections.each do |section| %>
+      <%= render "search_results/sections/#{section}" %>
     <% end %>
     <div class="form-actions">
       <%= submit_tag t('txt.views.search_results.submit'), :class => 'btn btn-primary' %>

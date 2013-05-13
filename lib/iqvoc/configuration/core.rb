@@ -15,7 +15,8 @@ module Iqvoc
           :navigation_items,
           :ability_class_name,
           :localized_routes,
-          :core_assets
+          :core_assets,
+          :search_sections
 
         self.localized_routes = [] # routing extensibility hook
 
@@ -107,6 +108,8 @@ module Iqvoc
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
         self.ability_class_name = 'Iqvoc::Ability'
+
+        self.search_sections = ['klass', 'mode', 'terms', 'type', 'collection', 'languages']
 
         # initialize
         self.config.register_settings({

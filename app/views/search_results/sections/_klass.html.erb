@@ -1,0 +1,7 @@
+<%= input_block :label => t('txt.views.search_results.for'), :id => 't' do %>
+  <select name="t" id="t" class="search_type">
+    <%= options_for_select(Iqvoc.searchable_classes.map { |c|
+        [c.model_name.human(:count => 2), c.name.parameterize]
+      }, params[:t]) %>
+  </select>
+<% end %>
