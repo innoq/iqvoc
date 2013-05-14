@@ -168,11 +168,11 @@ module Iqvoc
         end
 
         def title
-          return config["title"]
+          config["title"]
         end
 
         def note_languages
-          return config["languages.notes"]
+          config["languages.notes"]
         end
 
         # returns a list of all languages selectable for labels and/or notes
