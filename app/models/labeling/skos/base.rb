@@ -87,7 +87,11 @@ class Labeling::SKOS::Base < Labeling::Base
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
-    value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+    value = begin
+      JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+    rescue JSON::ParserError
+      $1
+    end
 
     predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |labeling|
