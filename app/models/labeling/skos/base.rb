@@ -83,13 +83,8 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    unless rdf_subject.is_a?(Concept::Base)
-      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."
-    end
-
-    unless rdf_object.is_a?(IqRdf::Literal) || rdf_object =~ /^"(.+)"(@(.+))?$/
-      raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be either an IqRdf::Literal or a plain string literal."
-    end
+    raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."     unless rdf_subject.is_a?(Concept::Base)
+    raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
