@@ -10,11 +10,9 @@
   <dl id="search_results">
     <% @results.each do |result| %>
       <% if @klass %>
-        <%= render :partial => @klass.search_result_partial_name,
-                :locals => { :result => result } %>
+        <%= render @klass.search_result_partial_name, :result => result %>
       <% else %>
-        <%= render :partial => result.class.search_result_partial_name,
-                :locals => { :result => result } %>
+        <%= render result.class.search_result_partial_name, :result => result %>
       <% end %>
     <% end %>
   </dl>
