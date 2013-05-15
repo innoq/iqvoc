@@ -1,7 +1,17 @@
-## [TBD]
+## [4.1.3]
 
   * Improved instance configuration UI
   * Adjusted internal name of note languages setting for consistency
+  * Updated Bootstrap
+  * Introduced Navigation API<br />
+    iQvoc extensions can be injected into main navigation either grouped or on root level
+  * Removed duplicate results from search when concepts had unpublished versions
+
+**Remarks**
+
+4.1.3 will (hopefully) be the last release on minor/tiny level before we move on to 5.0.0, which will
+incorporate big internal overhauls regarding internal and external APIs as well as a beefed up RDF
+reading library.
 
 ## [4.1.2]
 
