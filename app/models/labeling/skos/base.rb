@@ -67,7 +67,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
     scope = case params[:for]
     when 'concept'
-      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
+      scope.where('concepts.type' => Iqvoc::Concept.base_class_name)
     when 'collection'
       scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
     else
@@ -75,6 +75,7 @@ class Labeling::SKOS::Base < Labeling::Base
       scope
     end
 
+    scope = scope.merge(Concept::Base.published)
     scope
   end
 
