@@ -1,3 +1,6 @@
+require 'capybara/dsl'
+require 'factory_girl'
+
 module ActionDispatch
   class IntegrationTest
     include Capybara::DSL
