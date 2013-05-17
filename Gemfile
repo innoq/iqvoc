@@ -42,6 +42,7 @@ group :development do
   gem 'view_marker'
   gem 'better_errors'
   gem 'binding_of_caller', :platform => :ruby
+  gem 'quiet_assets'
 end
 
 group :development, :test do

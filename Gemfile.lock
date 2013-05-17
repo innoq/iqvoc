@@ -136,6 +136,8 @@ GEM
     pry-remote (0.1.6)
       pry (~> 0.9)
       slop (~> 3.0)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -242,6 +244,7 @@ DEPENDENCIES
   pry-debugger
   pry-rails
   pry-remote
+  quiet_assets
   rails (= 3.2.13)
   rails_autolink
   sass-rails (~> 3.2.5)
