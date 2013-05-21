@@ -23,7 +23,6 @@ require 'iqvoc/deep_cloning'
 require 'iqvoc/rankable'
 require 'iqvoc/ability'
 require 'iqvoc/navigation'
-require 'iqvoc/rdfapi'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
