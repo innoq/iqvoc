@@ -85,9 +85,9 @@ module Iqvoc
         }]
 
         self.searchable_class_names = [
-          'Labeling::SKOS::Base',
-          'Labeling::SKOS::PrefLabel',
-          'Note::Base'
+          "Labeling::SKOS::Base",
+          "Labeling::SKOS::PrefLabel",
+          "Note::Base"
         ]
         self.unlimited_search_results = false
 
@@ -103,13 +103,13 @@ module Iqvoc
         }
 
         # The class to use for automatic generation of change notes on every save
-        self.change_note_class_name = 'Note::SKOS::ChangeNote'
+        self.change_note_class_name = "Note::SKOS::ChangeNote"
 
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
-        self.ability_class_name = 'Iqvoc::Ability'
+        self.ability_class_name = "Iqvoc::Ability"
 
-        self.search_sections = ['klass', 'mode', 'terms', 'type', 'collection', 'languages']
+        self.search_sections = ["klass", "mode", "terms", "type", "collection", "languages"]
 
         # initialize
         self.config.register_settings({
