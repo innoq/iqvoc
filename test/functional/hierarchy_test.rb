@@ -33,9 +33,30 @@ root:
         lorem:
         ipsum:
     EOS
-    rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
-    @concepts = create_hierarchy(concepts, rel_class, {})
+    @rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
+    @concepts = create_hierarchy(concepts, @rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
+  end
+
+  test "entire hierarchy" do
+    additional_concepts = YAML.load <<-EOS
+boot:
+  zoo:
+  car:
+    EOS
+    @concepts.merge! create_hierarchy(additional_concepts, @rel_class, {})
+    @concepts["boot"].update_attribute("top_term", true)
+
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 403
+
+    Iqvoc.config["performance.unbounded_hierarchy"] = true
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 200
+
+    %w(root foo bar alpha bravo uno dos lorem ipsum boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
   end
 
   test "caching" do
