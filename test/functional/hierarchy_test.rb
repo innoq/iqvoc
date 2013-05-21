@@ -59,6 +59,30 @@ boot:
     end
   end
 
+  test "permission handling" do
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo", "Bar"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries, ["Alpha", "Bravo"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Uno", "Dos"]
+    entries = css_select("ul.concept-hierarchy li li li li li")
+    assert_equal entries.length, 0 # exceeded default depth
+
+    @concepts["bar"].update_attribute("published_at", nil)
+
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries.length, 0
+  end
+
   test "caching" do
     params = { :lang => "en", :format => "ttl", :root => "root" }
 
@@ -265,6 +289,10 @@ boot:
     assert_equal entries, ["Foo", "Bar"]
     entries = css_select("ul.concept-hierarchy li li li")
     assert_equal entries.length, 0
+
+    get :show, :lang => "en", :format => "html", :root => "root", :depth => 5
+    assert_response 403
+    assert_equal flash[:error], "excessive depth"
 
     get :show, :lang => "en", :format => "html", :root => "root", :depth => "invalid"
     assert_response 400

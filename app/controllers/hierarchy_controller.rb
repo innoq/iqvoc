@@ -43,7 +43,7 @@ class HierarchyController < ApplicationController
     direction = params[:dir] == "up" ? "up" : "down"
     depth = depth.blank? ? default_depth : (Float(depth).to_i rescue nil)
     include_siblings = params[:siblings] || false
-    include_unpublished = params[:published] == "0" # FIXME: requires additional AuthZ check
+    include_unpublished = params[:published] == "0"
 
     scope = Iqvoc::Concept.base_class
     scope = include_unpublished ? scope.editor_selectable : scope.published
