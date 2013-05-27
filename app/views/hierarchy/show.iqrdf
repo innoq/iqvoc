@@ -21,4 +21,4 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces(self.send(meth))
 end
 
-hierarchy2rdf.call(@concepts)
+hierarchy2rdf.call(@concepts) if @concepts
