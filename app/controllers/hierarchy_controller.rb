@@ -19,13 +19,8 @@ class HierarchyController < ApplicationController
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
-    unless Iqvoc.config["performance.unbounded_hierarchy"]
-      flash.now[:error] = "Forbidden" # TODO: l10n
-      render "hierarchy/show", :status => 403
-      return
-    end
-
-    render_hierarchy "scheme", -1, true
+    depth = Iqvoc.config["performance.unbounded_hierarchy"] ? -1 : params[:depth]
+    render_hierarchy "scheme", depth, true
   end
 
   def show

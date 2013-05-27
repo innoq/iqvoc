@@ -48,7 +48,14 @@ boot:
     @concepts["boot"].update_attribute("top_term", true)
 
     get :index, { :lang => "en", :format => "ttl" }
-    assert_response 403
+    assert_response 200
+    %w(root foo bar alpha bravo uno dos boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
+    %w(lorem ipsum).each do |id|
+      assert (not @response.body.include?(":#{id} a skos:Concept;")),
+          "#{id} should not be present"
+    end
 
     Iqvoc.config["performance.unbounded_hierarchy"] = true
     get :index, { :lang => "en", :format => "ttl" }
