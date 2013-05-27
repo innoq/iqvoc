@@ -94,12 +94,14 @@ de:
        groups:
          common: allgemein
          languages: Sprachen
+         performance: Performance
          triplestore: Triplestore
        settings:
          title: Titel
          languages_notes: Sprachen für Notes
          languages_pref_labeling: Sprachen für bevorzugte Labels
          languages_further_labelings_Labeling::SKOS::AltLabel: Sprachen für alternative Labels
+         performance_unbounded_hierarchy: unbegrenzte Hierarchie-Tiefe
          triplestore_url: Triplestore-URL
          triplestore_username: Benutzername für Triplestore
          triplestore_password: Passwort für Triplestore

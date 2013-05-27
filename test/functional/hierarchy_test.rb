@@ -33,9 +33,61 @@ root:
         lorem:
         ipsum:
     EOS
-    rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
-    @concepts = create_hierarchy(concepts, rel_class, {})
+    @rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
+    @concepts = create_hierarchy(concepts, @rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
+  end
+
+  test "entire hierarchy" do
+    additional_concepts = YAML.load <<-EOS
+boot:
+  zoo:
+  car:
+    EOS
+    @concepts.merge! create_hierarchy(additional_concepts, @rel_class, {})
+    @concepts["boot"].update_attribute("top_term", true)
+
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 200
+    %w(root foo bar alpha bravo uno dos boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
+    %w(lorem ipsum).each do |id|
+      assert (not @response.body.include?(":#{id} a skos:Concept;")),
+          "#{id} should not be present"
+    end
+
+    Iqvoc.config["performance.unbounded_hierarchy"] = true
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 200
+
+    %w(root foo bar alpha bravo uno dos lorem ipsum boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
+  end
+
+  test "permission handling" do
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo", "Bar"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries, ["Alpha", "Bravo"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Uno", "Dos"]
+    entries = css_select("ul.concept-hierarchy li li li li li")
+    assert_equal entries.length, 0 # exceeded default depth
+
+    @concepts["bar"].update_attribute("published_at", nil)
+
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries.length, 0
   end
 
   test "caching" do
@@ -244,6 +296,10 @@ root:
     assert_equal entries, ["Foo", "Bar"]
     entries = css_select("ul.concept-hierarchy li li li")
     assert_equal entries.length, 0
+
+    get :show, :lang => "en", :format => "html", :root => "root", :depth => 5
+    assert_response 403
+    assert_equal flash[:error], "excessive depth"
 
     get :show, :lang => "en", :format => "html", :root => "root", :depth => "invalid"
     assert_response 400

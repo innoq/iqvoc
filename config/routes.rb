@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
     put 'scheme' => 'concepts/scheme#update'
 
+    get 'hierarchy' => 'hierarchy#index'
     get 'hierarchy/:root' => 'hierarchy#show'
 
     get 'triplestore_sync' => 'triplestore_sync#index'
