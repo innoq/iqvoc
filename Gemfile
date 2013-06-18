@@ -24,7 +24,7 @@ gem 'rails', '3.2.13'
 group :assets do
   gem 'uglifier',   '>= 1.0.3'
   gem 'sass-rails', '~> 3.2.5'
-  gem 'bootstrap-sass', '~> 2.3.1.0'
+  gem 'bootstrap-sass', '2.3.1.3'
   gem 'therubyracer', :platforms => :ruby
 end
 
