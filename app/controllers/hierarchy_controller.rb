@@ -39,7 +39,7 @@ class HierarchyController < ApplicationController
 
     direction = params[:dir] == "up" ? "up" : "down"
     depth = depth.blank? ? default_depth : (Float(depth).to_i rescue nil)
-    include_siblings = params[:siblings] || false
+    include_siblings = ["true", "1"].include?(params[:siblings])
     include_unpublished = params[:published] == "0"
 
     scope = Iqvoc::Concept.base_class

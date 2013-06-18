@@ -345,7 +345,7 @@ boot:
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo"]
 
-    get :show, :lang => "en", :format => "html", :root => "foo", :siblings => true
+    get :show, :lang => "en", :format => "html", :root => "foo", :siblings => "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo", "Bar"]
 
@@ -354,7 +354,7 @@ boot:
     assert_equal entries, ["Lorem"]
 
     get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => true
+        :siblings => "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 8
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo"].each do |name|
@@ -362,7 +362,7 @@ boot:
     end
 
     get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => true, :depth => 4
+        :siblings => "1", :depth => 4
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 9
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo", "Root"].each do |name|
