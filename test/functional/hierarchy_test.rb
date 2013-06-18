@@ -370,6 +370,18 @@ boot:
     end
   end
 
+  test "avoid duplication" do # in response to a bug report
+    get :show, :lang => "en", :format => "ttl", :root => "uno", :dir => "up"
+    assert_response 200
+    assert_equal @response.content_type, "text/turtle"
+    assert @response.body.include?(<<-EOS)
+:bravo a skos:Concept;
+       skos:prefLabel "Bravo"@en;
+       skos:broader :bar.
+    EOS
+    assert (not @response.body.include?(':bravo skos:prefLabel "Bravo"@en.'))
+  end
+
   def get_all_entries(selector)
     return page.all(selector).map { |node| node.native.children.first.text }
   end
