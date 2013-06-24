@@ -4,7 +4,7 @@ module Iqvoc
   module Rankable
     extend ActiveSupport::Concern
 
-    def build_rdf(document, subject)
+    def build_rdf(document, subject, suppress_extra_labels = false)
       super
       if self.class.rankable?
         predicate = "ranked#{rdf_predicate.titleize}"
