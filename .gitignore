@@ -21,3 +21,4 @@ config/deploy
 config/initializers/secret_token.rb
 public/assets
 .idea/
+db/schema.rb
