@@ -28,7 +28,9 @@ class HierarchyController < ApplicationController
   def show
     authorize! :read, Iqvoc::Concept.base_class
 
-    render_hierarchy params[:root], params[:depth]
+    unbounded = Iqvoc.config["performance.unbounded_hierarchy"]
+
+    render_hierarchy params[:root], params[:depth], unbounded
   end
 
   private
