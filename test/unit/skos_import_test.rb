@@ -224,6 +224,5 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
       end
     end
   end
-
 end
 

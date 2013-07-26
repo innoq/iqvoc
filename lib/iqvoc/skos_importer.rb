@@ -186,8 +186,11 @@ module Iqvoc
           return false
         end
       end
-
-      types[predicate].build_from_rdf(subject, predicate, object)
+      begin
+        types[predicate].build_from_rdf(subject, predicate, object)
+      rescue MustBeStringLiteralError => e
+        warn e.message
+      end
     end
 
     def load_first_level_object(origin)
@@ -228,4 +231,5 @@ module Iqvoc
 
     ActiveSupport.run_load_hooks(:skos_importer, self)
   end
+
 end
