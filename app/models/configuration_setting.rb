@@ -17,6 +17,6 @@
 # NB: not to be used directly, but only through Iqvoc::InstanceConfiguration
 class ConfigurationSetting < ActiveRecord::Base # TODO: make private, somehow?
 
-  validates_uniqueness_of :key
+  validates :key, uniqueness: true
 
 end
