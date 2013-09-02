@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/innoq/iqvoc"
   s.summary     = "iQvoc"
   s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
+  s.license     = "Apache License 2.0"
 
   s.add_dependency 'rails', '~> 3.2.1'
   s.add_dependency 'bundler'
