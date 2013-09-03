@@ -74,8 +74,8 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html
-        format.ttl { render('search_results/index.iqrdf') }
-        format.rdf { render('search_results/index.iqrdf') }
+        format.ttl { render :handlers => [:iqrdf] }
+        format.rdf { render :handlers => [:iqrdf] }
       end
 
     end
