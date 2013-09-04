@@ -23,10 +23,8 @@ class Concepts::SchemeController < ApplicationController
     @top_concepts = Iqvoc::Concept.base_class.tops.published
 
     respond_to do |format|
-      format.html do
-      end
-      format.any :rdf, :ttl do
-      end
+      format.html
+      format.any(:rdf, :ttl)
     end
   end
 
