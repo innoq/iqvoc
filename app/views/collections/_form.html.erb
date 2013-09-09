@@ -18,8 +18,7 @@
     <%- end -%>
 </fieldset>
 
-<%- # TODO: Add a Collection config for Note classes. %>
-<% [ Note::SKOS::Definition ].each do |klass| %>
+<% Iqvoc::Collection.note_classes.each do |klass| %>
   <%= render klass.edit_partial_name(@collection), :owner_klass => @collection, :assoc_klass => klass, :f => f %>
 <% end %>
 
