@@ -37,6 +37,7 @@ gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
+gem 'faraday'
 
 group :development do
   gem 'view_marker'
