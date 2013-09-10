@@ -164,25 +164,20 @@ boot:
     assert @response.body =~ /:root[^\.]+skos:prefLabel[^\.]+"Root"@en/m
     assert @response.body =~ /:root[^\.]+skos:narrower[^\.]+:bar/m
     assert @response.body =~ /:root[^\.]+skos:narrower[^\.]+:foo/m
-
     assert @response.body.include?(<<-EOS)
 :foo a skos:Concept;
      skos:prefLabel "Foo"@en.
     EOS
-
     assert @response.body =~ /:bar[^\.]+skos:prefLabel[^\.]+"Bar"@en/m
     assert @response.body =~ /:bar[^\.]+skos:narrower[^\.]+:alpha/m
     assert @response.body =~ /:bar[^\.]+skos:narrower[^\.]+:bravo/m
-
     assert @response.body.include?(<<-EOS)
 :alpha a skos:Concept;
        skos:prefLabel "Alpha"@en.
     EOS
-
     assert @response.body =~ /:bravo[^\.]+skos:prefLabel[^\.]+"Bravo"@en/m
     assert @response.body =~ /:bravo[^\.]+skos:narrower[^\.]+:uno/m
     assert @response.body =~ /:bravo[^\.]+skos:narrower[^\.]+:dos/m
-
     assert @response.body.include?(<<-EOS)
 :uno a skos:Concept;
      skos:prefLabel "Uno"@en.
