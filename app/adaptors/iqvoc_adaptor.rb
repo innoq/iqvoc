@@ -24,12 +24,13 @@ class IqvocAdaptor
     languages = Array.wrap(languages).flatten.join(",")
 
     response = conn.get do |req|
-      req.url "/search.json"
+      req.url "/search.html"
       req.params["q"]   = CGI.unescape(query)
       req.params["qt"]  = query_type
       req.params["l"]   = languages
       req.params["for"] = "concept"
       req.params["t"]   = "labeling-skos-base"
+      req.params["layout"] = 0
     end
 
     response.body
