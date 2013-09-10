@@ -79,7 +79,7 @@ class SearchResultsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html
+        format.html { render :index, :layout => with_layout? }
         format.ttl { render :handlers => [:iqrdf] }
         format.rdf { render :handlers => [:iqrdf] }
       end
