@@ -26,7 +26,7 @@ module Iqvoc
           can [:check_consistency, :send_to_review], [::Concept::Base, ::Label::Base], :published_at => nil
           can :branch, [::Concept::Base, ::Label::Base], &@@if_published
 
-          can :use, Iqvoc::Adaptors::Iqvoc
+          can :use, IqvocAdaptor
         end
 
         if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...
