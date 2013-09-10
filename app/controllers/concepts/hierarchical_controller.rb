@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
 # limitations under the License.
 
 class Concepts::HierarchicalController < ConceptsController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
-    scope = if params[:published] == '0'
-      Iqvoc::Concept.base_class.editor_selectable
-    else
-      Iqvoc::Concept.base_class.published
-    end
+    scope = Iqvoc::Concept.base_class
+    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
+
+    # only select unexpired concepts
+    scope = scope.not_expired
 
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]
@@ -56,7 +55,7 @@ class Concepts::HierarchicalController < ConceptsController
     respond_to do |format|
       format.html
       format.json do # Treeview data
-        @concepts.map! do |c|
+        concepts = @concepts.select {|c| can? :read, c }.map do |c|
           {
             :id   => c.id,
             :url  => concept_path(:id => c, :format => :html),
@@ -65,7 +64,7 @@ class Concepts::HierarchicalController < ConceptsController
             :additionalText => (" (#{c.additional_info})" if c.additional_info.present?)
           }
         end
-        render :json => @concepts.to_json
+        render :json => concepts
       end
     end
   end

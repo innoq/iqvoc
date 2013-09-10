@@ -3,45 +3,52 @@
 # too). If those two settings differ (e.g. in spez) don't forget to add
 # migrations to update existing data.
 -%>
+
+<%= simple_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection), :html => { :class => 'form-horizontal' } do |f| %>
 <fieldset>
-  <legend>Labelings</legend>
-  <ol>
+  <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
+  <% if not Iqvoc.const_defined?(:SKOSXL) %>
+    <p><%= t 'txt.common.hint_csv_input' %></p>
+  <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
       <%- languages.each do |language| -%>
         <%= render labeling_class.edit_partial_name(@collection), :f => f,
           :concept => @collection, :klass => labeling_class, :language => language %>
       <%- end -%>
     <%- end -%>
-  </ol>
 </fieldset>
 
-<%- # TODO: Add a Collection config for Note classes. %>
-<% [ Note::SKOS::Definition ].each do |klass| %>
-  <%= render :partial => klass.edit_partial_name(@collection),
-    :locals => { :owner_klass => @collection, :assoc_klass => klass, :f => f } %>
+<% Iqvoc::Collection.note_classes.each do |klass| %>
+  <%= render klass.edit_partial_name(@collection), :owner_klass => @collection, :assoc_klass => klass, :f => f %>
 <% end %>
 
 <fieldset>
   <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
-  <%= text_field_tag "concept[inline_member_concept_origins]",
-    @collection.inline_member_concept_origins.join(Iqvoc::InlineDataHelper::Joiner),
-    :class => "entity_select",
-    :"data-query-url" => concepts_path(:format => :json),
-    :"data-entity-uri" => concept_path(:id => "{id}"),
-    :"data-entities" => @collection.inline_member_concepts.
-    map { |c| concept_widget_data(c) }.to_json %>
+  <%= f.input "concept[inline_member_concept_origins]", :label => t('txt.common.type_to_search') do %>
+    <%= text_field_tag "concept[inline_member_concept_origins]", @collection.inline_member_concept_origins.join(Iqvoc::InlineDataHelper::JOINER),
+      :class => "entity_select",
+      :"data-query-url" => concepts_path(:format => :json),
+      :"data-entity-uri" => concept_path(:id => "{id}"),
+      :"data-entities" => @collection.inline_member_concepts.
+      map { |c| concept_widget_data(c) }.to_json %>
+  <% end %>
 </fieldset>
 
 <fieldset>
   <legend><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></legend>
-  <%= text_field_tag "concept[inline_member_collection_origins]",
-    @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::Joiner),
-    :class => "entity_select",
-    :"data-query-url" => collections_path(:format => :json),
-    :"data-entity-uri" => collection_path(:id => "{id}"),
-    :"data-exclude" => @collection.origin,
-    :"data-entities" => @collection.inline_member_collections.
-    map { |c| collection_widget_data(c) }.to_json %>
+  <%= f.input "concept[inline_member_concept_origins]", :label => t('txt.common.type_to_search') do %>
+    <%= text_field_tag "concept[inline_member_collection_origins]", @collection.inline_member_collection_origins.join(Iqvoc::InlineDataHelper::JOINER),
+      :class => "entity_select",
+      :"data-query-url" => collections_path(:format => :json),
+      :"data-entity-uri" => collection_path(:id => "{id}"),
+      :"data-exclude" => @collection.origin,
+      :"data-entities" => @collection.inline_member_collections.
+      map { |c| collection_widget_data(c) }.to_json %>
+  <% end %>
 </fieldset>
 
-<%= f.submit t("txt.common.save") %>
+<div class="form-actions">
+  <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+</div>
+
+<% end %>

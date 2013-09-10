@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class TreeTest < ActionDispatch::IntegrationTest
 
-  test "Browse hierarchical concepts tree" do
-    concept = Factory(:concept, :broader_relations => [])
+  test "browse hierarchical concepts tree" do
+    concept = FactoryGirl.create(:concept, :broader_relations => [])
     narrower_concept = concept.narrower_relations.first.target
 
     visit hierarchical_concepts_path(:lang => :de, :format => :html)

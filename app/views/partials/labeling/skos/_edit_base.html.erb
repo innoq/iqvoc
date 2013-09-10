@@ -1,7 +1,11 @@
-<%= content_tag("li", { :class => "translation", :lang => language || nil }, true) do %>
-  <% fieldname = "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]" %>
-  <%= label_tag fieldname, klass.model_name.human(:count => 2) +
-    (language ? " (#{t("languages.#{language}", :default => language.to_s)})" : "") %>
-  <%= text_area_tag fieldname,
-    concept.labelings_by_text(klass.name.to_relation_name, language) %>
-<%- end -%>
+<%= content_tag :div, :class => "translation", :lang => language || nil do %>
+    <%- fieldname = "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]" -%>
+    <%- label = klass.model_name.human(:count => 2) -%>
+
+    <%= f.label label %>
+    <%= f.input fieldname, :wrapper => :prepend, :label => false do %>
+      <span class="add-on"><%= language %></span><%= text_field_tag fieldname,
+          concept.labelings_by_text(klass.name.to_relation_name, language),
+          :class => 'span4' %>
+    <% end %>
+<% end %>

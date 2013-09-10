@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,20 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
 
-  setup do
-    @current_concept = FactoryGirl.create(:concept)
-  end
+  test "should not allow identical concepts" do
+    origin = "foo"
+    c1 = Concept::Base.new(:origin => origin)
+    c2 = Concept::Base.new(:origin => origin, :published_at => Time.now)
+    assert c1.save
+    assert c2.save
 
-  test "should not create more than two versions of a concept" do
-    first_new_concept  = Concept::Base.new(@current_concept.attributes)
-    second_new_concept = Concept::Base.new(@current_concept.attributes)
-    assert first_new_concept.save
-    assert_equal second_new_concept.save, false
+    origin = "bar"
+    c1 = Concept::Base.new(:origin => origin)
+    c2 = Concept::Base.new(:origin => origin)
+    assert c1.save
+    assert_raise ActiveRecord::RecordInvalid do
+      c2.save!
+    end
   end
 
   test "should not save concept with empty preflabel" do
@@ -61,9 +66,25 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.invalid?
   end
 
+  test "unique pref label" do
+    label = Label::SKOS::Base.create(:value => "foo", :language => "en")
+
+    concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept1.pref_labels << label
+    concept1.save!
+    assert concept1.valid_with_full_validation?
+
+    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept2.pref_labels << label
+    concept2.save!
+    assert concept2.invalid_with_full_validation?
+  end
+
   test "concepts can have multiple preferred labels" do
     concept = FactoryGirl.build(:concept)
-    concept.labelings << FactoryGirl.build(:pref_labeling, :target => Factory(:pref_label, :language => Iqvoc::Concept.pref_labeling_languages.second))
+    concept.labelings << FactoryGirl.build(:pref_labeling,
+        :target => FactoryGirl.create(:pref_label,
+            :language => Iqvoc::Concept.pref_labeling_languages.second))
     concept.save!
     concept.reload
 
@@ -88,6 +109,45 @@ class ConceptTest < ActiveSupport::TestCase
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
     }
     assert !concept.save
+  end
+
+  test "labels including commas" do
+    labels_for = lambda do |concept, type|
+        type.includes(:target).where(:owner_id => concept.id).
+            map { |ln| ln.target.value }
+    end
+
+    form_data = {
+      "labelings_by_text" => {
+        "labeling_skos_pref_labels" => { "en" => "lipsum" },
+        "labeling_skos_alt_labels" => { "en" => "foo, bar" }
+      }
+    }
+    concept = Iqvoc::Concept.base_class.create(form_data)
+
+    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal "lipsum",
+        concept.labelings_by_text("labeling_skos_pref_labels", "en")
+    assert_equal ["foo", "bar"],
+        labels_for.call(concept, Labeling::SKOS::AltLabel)
+    assert_equal "foo, bar",
+        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+
+    form_data = {
+      "labelings_by_text" => {
+        "labeling_skos_pref_labels" => { "en" => "lipsum" },
+        "labeling_skos_alt_labels" => { "en" => 'lorem, "foo, bar", ipsum' }
+      }
+    }
+    concept = Iqvoc::Concept.base_class.create(form_data)
+
+    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal "lipsum",
+        concept.labelings_by_text("labeling_skos_pref_labels", "en")
+    assert_equal ["lorem", "foo, bar", "ipsum"],
+        labels_for.call(concept, Labeling::SKOS::AltLabel)
+    assert_equal 'lorem, "foo, bar", ipsum',
+        concept.labelings_by_text("labeling_skos_alt_labels", "en")
   end
 
 end

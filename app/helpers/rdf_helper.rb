@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 module RdfHelper
 
-  def render_concept(document, concept)
+  def render_concept(document, concept, suppress_extra_labels = false)
 
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
@@ -25,7 +25,7 @@ module RdfHelper
       hash[c.id] = c.origin
     end
 
-    document << concept.build_rdf_subject(document, controller) do |c|
+    document << concept.build_rdf_subject do |c|
 
       concept.collection_members.each do |collection_member|
         if @rdf_helper_cached_collections[collection_member.collection_id]
@@ -33,17 +33,18 @@ module RdfHelper
         end
       end
 
-      c.Schema::expires(concept.expired_at) if concept.expired_at
+      c.Schema::expires(concept.expired_at.to_s) if concept.expired_at
       c.Owl::deprecated(true) if concept.expired_at and concept.expired_at <= Date.new
 
       c.Skos::topConceptOf IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin) if concept.top_term?
+      c.Skos::inScheme IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin)
 
       concept.labelings.each do |labeling|
         labeling.build_rdf(document, c)
       end
 
       concept.relations.each do |relation|
-        relation.build_rdf(document, c)
+        relation.build_rdf(document, c, suppress_extra_labels)
       end
 
       concept.notes.each do |note|
@@ -52,6 +53,10 @@ module RdfHelper
 
       concept.matches.each do |match|
         match.build_rdf(document, c)
+      end
+
+      concept.notations.each do |notation|
+        notation.build_rdf(document, c)
       end
 
       Iqvoc::Concept.additional_association_class_names.keys.each do |class_name|

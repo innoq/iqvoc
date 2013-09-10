@@ -1,11 +1,5 @@
+<%= render 'header', :collection => @collection %>
 <%= error_messages_for @collection %>
 
-<h3><%= Iqvoc::Collection.base_class.model_name.human %></h3>
-
-<%= form_for @collection, :as => 'concept',
-  :url => collection_path(:id => @collection),
-  :html => { :class => 'form' } do |f| %>
-
-  <%= render :partial => 'form', :locals => { :f => f } %>
-
-<% end %>
+<%= render 'form', :collection => @collection %>
+<%= render 'sidebar', :collection => @collection %>

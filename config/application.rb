@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,8 +19,11 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 if defined?(Bundler)
+  groups = {
+    :assets => %w(development test),
+  }
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(:heroku, *Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(groups))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -66,26 +69,6 @@ module Iqvoc
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # TODO This must be refactored!
-
-    # The JDBC driver url for the coinnection to the virtuoso triple store.
-    # Login crdentials have to be stored here too. See
-    # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
-    # more details.
-    # Example: "jdbc:virtuoso://localhost:1111/UID=dba/PWD=dba"
-    # Use nil to disable virtuoso triple synchronization
-    config.virtuoso_jdbc_driver_url = nil
-
-    # Set up the virtuoso synchronization (which is a triggered pull from the
-    # virtuoso server) to be run in a new thread.
-    # This is needed in environments where the webserver only runs in a single
-    # process/thread (mostly in development environments).
-    # When a synchronizaion would be triggered e.g. from a running
-    # update action in the UPB, the update would trigger virtuoso to do a HTTP GET
-    # back to the UPB to fetch the RDF data. But the only process in the UPB would be
-    # blocked by the update... => Deadlock. You can avoid this by using the threaded
-    # mode.
-    config.virtuoso_sync_threaded = false
-
+    config.assets.initialize_on_precompile = false
   end
 end

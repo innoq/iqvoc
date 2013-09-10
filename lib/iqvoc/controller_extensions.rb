@@ -1,4 +1,4 @@
-require "active_support/concern"
+require 'active_support/concern'
 
 module Iqvoc
   module ControllerExtensions
@@ -7,7 +7,6 @@ module Iqvoc
     included do
       prepend_before_filter :set_locale
       before_filter :ensure_extension
-      before_filter :require_user
 
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -20,13 +19,12 @@ module Iqvoc
 
     def default_url_options(options = nil)
       { :format => params[:format], :lang => I18n.locale }.
-        reject { |key, value| key == :lang and value.to_s.strip.blank? }. # Strip out the lang parameter if it's empty.
         merge(options || {})
     end
 
     # Force an extension to every url. (LOD)
     def ensure_extension
-      unless params[:format] || request.method != "GET"
+      unless params[:format] || !request.get?
         flash.keep
         redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html))
       end
@@ -34,15 +32,13 @@ module Iqvoc
 
     def handle_access_denied(exception)
       @exception = exception
+      @status = current_user ? 403 : 401
+      @user_session = UserSession.new if @status == 401
+      @return_url = request.fullpath
       respond_to do |format|
-        format.html { render :template => 'errors/access_denied', :status => 403 }
-        format.any  { head 404 }
+        format.html { render :template => 'errors/access_denied', :status => @status }
+        format.any  { head @status }
       end
-    end
-
-    def handle_multiple_choices(exception)
-      @exception = exception
-      render :template => 'errors/multiple_choices', :status => :multiple_choices
     end
 
     def handle_not_found(exception)
@@ -56,20 +52,20 @@ module Iqvoc
     end
 
     def set_locale
-      if Iqvoc::Concept.pref_labeling_languages.include?(nil)
-        I18n.locale = " "
-      elsif params[:lang] && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
+      if params[:lang].present? && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
         I18n.locale = params[:lang]
       else
         I18n.locale = Iqvoc::Concept.pref_labeling_languages.first
       end
     end
 
-    def concept_widget_data(concept)
-      {
+    def concept_widget_data(concept, rank = nil)
+      data = {
         :id => concept.origin,
-        :name => concept.pref_label.value.to_s + (concept.additional_info ? " (#{concept.additional_info })" : "")
+        :name => (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : "")
       }
+      data[:rank] = rank if rank
+      data
     end
 
     def collection_widget_data(collection)
@@ -92,30 +88,11 @@ module Iqvoc
     end
 
     def current_user_session
-      return @current_user_session if defined?(@current_user_session)
-      @current_user_session = UserSession.find
+      @current_user_session ||= UserSession.find
     end
 
     def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.user
-    end
-
-    # TODO: Don't require an user (this is skipped in nearly every controller).
-    # Use Abilitys instead and handle the AccessDeniedException: (#handle_access_denied)
-    # * User logged in: Exception!
-    # * User not logged in: Redirect to login path!
-    # Don't forget to delete this method and all the /.*before_filter :require_user/
-    # statements in the controllers.
-    def require_user
-      unless current_user
-        flash[:error] = I18n.t("txt.controllers.application.login_required")
-        respond_to do |format|
-          format.html { redirect_to new_user_session_url(:back_to => request.fullpath) }
-          format.any  { head 401 }
-        end
-        return false
-      end
+      @current_user ||= current_user_session && current_user_session.user
     end
 
   end

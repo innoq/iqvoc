@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,26 +15,40 @@
 # limitations under the License.
 
 class CollectionsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
     respond_to do |format|
       format.html do
-        @top_collections = Iqvoc::Collection.base_class.
-          with_pref_labels.
-          tops.
-          sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
+        @top_collections = Iqvoc::Collection.base_class.with_pref_labels
+        @top_collections = if params[:root].present?
+          @top_collections.by_parent_id(params[:root])
+        else
+          @top_collections.tops
+        end
 
-        # When in single query mode, AR handles ALL includes to be loaded by that
-        # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@collections, [:subcollections]).run
+        @top_collections.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
+
+        ActiveRecord::Associations::Preloader.new(@top_collections, {:members => :target}).run
       end
-      format.json do # For the widget
-        @collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))
-        response = []
-        @collections.each { |c| response << collection_widget_data(c) }
+      format.json do # For the widget and treeview
+        response = if params[:root].present?
+          collections = Iqvoc::Collection.base_class.with_pref_labels.by_parent_id(params[:root])
+          collections.map do |collection|
+            { :id => collection.id,
+              :url => collection_path(:id => collection, :format => :html),
+              :text => CGI.escapeHTML(collection.pref_label.to_s),
+              :hasChildren => collection.subcollections.any?,
+              :additionalText => " (#{collection.additional_info})"
+            }
+          end
+        else
+          collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))
+          collections.map do |c|
+            collection_widget_data(c)
+          end
+        end
         render :json => response
       end
     end
@@ -50,8 +64,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection,
       [:pref_labels,
-      {:subcollections => [:pref_labels, :subcollections]},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
   end
 
   def new
@@ -67,7 +80,7 @@ class CollectionsController < ApplicationController
     @collection = Iqvoc::Collection.base_class.new(params[:concept])
 
     if @collection.save
-      flash[:notice] = I18n.t("txt.controllers.collections.save.success")
+      flash[:success] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
@@ -84,9 +97,8 @@ class CollectionsController < ApplicationController
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new(@collection, [
-      :pref_labels,
-      {:subcollections => :pref_labels},
-      {:concepts => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}]).run
+        :pref_labels,
+        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
 
     build_note_relations
   end
@@ -98,7 +110,7 @@ class CollectionsController < ApplicationController
     authorize! :update, @collection
 
     if @collection.update_attributes(params[:concept])
-      flash[:notice] = I18n.t("txt.controllers.collections.save.success")
+      flash[:success] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(:id => @collection)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
@@ -113,7 +125,7 @@ class CollectionsController < ApplicationController
     authorize! :destroy, @collection
 
     if @collection.destroy
-      flash[:notice] = I18n.t("txt.controllers.collections.destroy.success")
+      flash[:success] = I18n.t("txt.controllers.collections.destroy.success")
       redirect_to collections_path
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.destroy.error")

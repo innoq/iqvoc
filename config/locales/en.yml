@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ en:
   languages:
     de: German
     en: English
-    none: Sci.
+    none: Unbekannt
     fr: French
     sl: Slovenian
     pl: Polish
@@ -31,6 +31,10 @@ en:
     it: Italian
     cs: Czech
     sk: Slovak
+    et: Estonian
+    dk: Danish
+    fi: Finnish
+    sv: Swedish
   views:
     pagination:
       first: "&laquo; First"
@@ -52,10 +56,10 @@ en:
      add_note: "Add"
      delete: "Delete"
      attributes: "Properties"
-     editor: "Editor"
-     referenced_concepts: "Referenced Concepts are currently being edited:"
+     editor: "by editor"
+     referenced_concepts: "Some referenced concepts are currently being edited."
      association_not_found: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     to_review: "To review"
+     to_review: "Send to review"
      is_in_review: "Document is in review"
      unpublished_version: Unpublished version
      consistent: "consistent"
@@ -67,6 +71,10 @@ en:
      of: of
      pending: "Loading…"
      translation_missing_for: "translation missing for"
+     type_to_search: "Type to search"
+     hint_csv_input: "Multiple values can be entered comma-separated."
+     form_errors: "Errors"
+     representations: "Representations"
 
    views:
      layouts:
@@ -82,7 +90,22 @@ en:
          notes: Notes
          matches: Concept mappings
      instance_configuration:
-       caption: "Instance Configuration"
+       caption: "Configuration"
+       groups:
+         common: common
+         languages: languages
+         performance: Performance
+         triplestore: triplestore
+       settings:
+         title: site title
+         languages_notes: languages for notes
+         languages_pref_labeling: languages for preferred labels
+         languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
+         performance_unbounded_hierarchy: unlimited hierarchy depth
+         triplestore_url: triplestore URL
+         triplestore_username: username for triplestore
+         triplestore_password: password for triplestore
+         triplestore_autosync: automatic triplestore synchronization
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
@@ -112,7 +135,7 @@ en:
        versionview: "Version display of Label"
        follow_up: "Follow up"
        endings: "Endings"
-       expired_at: "Expired at"
+       expired_at: "expired at"
        label_already_exists: "There already exists a label with the value"
        edit:
          header: "Editing of label"
@@ -132,16 +155,28 @@ en:
        edit:
          header: "Edit notes"
      navigation:
+       dashboard: "Dashboard"
+       scheme: "Scheme"
+       concepts: "Concepts"
+       administration: "Administration"
+       extensions: "Extensions"
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
-       instance_configuration: "Instance configuration"
-       hierarchical: "Hierachical listings"
-       alphabetical: "Alphabetical listings"
+       instance_configuration: "Configuration"
+       hierarchical: "Hierarchical"
+       alphabetical: "Alphabetical"
+       expired: "Expired"
        search: "Search"
        about: "About"
        users: "Users"
        collections: "Collections"
+       login: "Login"
+       sections: "Sections"
+       quick_search: "Quick search"
+       help: "Help"
+     frontpage:
+       type_to_browse: "Start typing to browse concepts"
      search_results:
        header: "Search"
        inflectionals: "inflectionals"
@@ -166,6 +201,7 @@ en:
        all: "all"
        none: "none"
        for: "For"
+       mode: "Mode"
      user_sessions:
        header: "Login"
        login: "Login"
@@ -175,7 +211,7 @@ en:
        error: "Email and/or password wrong. Please check your given credentials."
      users:
        index:
-         header: "User management"
+         header: "User Management"
        new:
          header: "New user"
        edit:
@@ -184,7 +220,7 @@ en:
        email: "Email"
        role: "Role"
        active: "activated"
-       new_link: "New"
+       new_link: "New User"
        show_link: "Show"
        edit_link: "Edit"
        destroy_link: "Delete"
@@ -197,27 +233,25 @@ en:
          message: "Your user account has insufficient permissions to display this page."
        not_found:
          header: "Not found"
-         tip: "You may want to use the search function to find content:"
+         tip: "You may want to use %{link} to find content."
      versioning:
        edit_mode: "Continue editing"
        to_edit_mode: "Start editing"
-       publishing: "Release"
+       publishing: "Publish"
        delete: "Delete copy"
        delete_confirm: "Do you really want to delete this copy?"
        versioning_mode: "Create new version"
        unlock: "Unlock"
        preview_new_version: "Preview of the version in editing"
-       consistency_check: "Consistency check"
-       current_revision: "Current revision"
-       in_ongoing_editing_by: "currently being edited by"
-       to_review_success: "Wurde in den Freigabeprozess aufgenommen"
-       to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
+       consistency_check: "Check consistency"
+       current_revision: "Current revision %{rev}"
+       in_ongoing_editing_by: "is being edited by %{user}."
      labelings:
        edit:
          header: "Edit labeling"
          submit: "Save"
      lang_widget:
-       caption: "Language selection"
+       caption: "Language"
        primary: "Primary"
        secondary: "Secondary"
      dashboard:
@@ -235,6 +269,9 @@ en:
        import: Import
      collections:
        new: "New collection"
+     triplestore_sync:
+       caption: "Sync with Triplestore"
+       start: "Start synchronization"
 
    partials:
      note:
@@ -251,16 +288,13 @@ en:
      match:
 
    controllers:
-     application:
-       login_required: "You must be logged in to access this page."
-       logout_required: "You must be logged out to access this page."
      instance_configuration:
        update_success: "Configuration updated."
        update_error: "Errors occurred while updating configuration: %{error_messages}."
        invalid_key: "unknown key: #{key}"
        invalid_value: "unsupported value: %{key} (%{error_message})"
      search_results:
-       insufficient_data: "You entered insufficient search data"
+       insufficient_data: "You gave insufficient search data."
      users:
        successfully_created: "User has been successfully created."
        successfully_updated: "User has been successfully updated."
@@ -268,22 +302,23 @@ en:
        login_success: "Login successful."
        logout_success: "Logout successful."
      versioning:
-       branch_error: "A new version already exists!"
-       published: "Instance has been successfully released."
-       published_with_warning: "Instance has been successfully released, but it has no relations!"
-       merged_delete_error: "Label could not be deleted!"
-       merged_publishing_error: "Instance could not be released!"
+       branch_error: "A new version already exists."
+       published: "Instance has been successfully published."
+       published_with_warning: "Instance has been successfully published, but it has no relations!"
+       merged_delete_error: "Label could not be deleted."
+       merged_publishing_error: "Instance could not be published - please consult the consistency check."
        branched: "Instance copy has been created and locked."
        locked: "Instance has been locked."
-       lock_error: "Instance has been locked already!"
+       lock_error: "Instance is already locked."
        unlocked: "Instance has been unlocked."
-       unlock_error: "Instance has been unlocked alraedy!"
-       new_version_blank_error: "A new version does not exist yet!"
-       delete: "Delete inctance."
+       unlock_error: "Instance has been alraedy unlocked."
+       to_review_success: "Sent to review."
+       to_review_error: "Can't send to review."
+       new_version_blank_error: "A new version does not yet exist!"
+       delete: "Delete instance."
        consistency_check_success: "Instance is consistent."
-       consistency_check_success_with_warning: "Instance is consistent but has no relations!"
-       consistency_check_error: "Instance is not consistent"
-       virtuoso_exception: "The object has been published, but could not by synced with Virtuoso. Error: "
+       consistency_check_success_with_warning: "Instance is consistent but has no relations."
+       consistency_check_error: "Instance is inconsistent."
      labelings:
        save:
          success: "The labeling has been saved."
@@ -312,28 +347,38 @@ en:
        label_error: "Invalid label assignments:\n%s"
      narrowers:
        error: "Relation not found. Probably removed from the target side. Please refresh your browser window."
-     triple_store_syncs:
-       success: "%{concept_count} published concepts and %{label_count} published labels have been synced."
      collections:
        save:
-         success: "The collection has been successfully created."
-         error: "The collection could not be created."
+         success: "The collection has been successfully saved."
+         error: "The collection could not be saved."
        destroy:
          success: "The collection has been successfully deleted."
          error: "The collection could not be deleted."
-       circular_error: "Invalid sub-collection assignments due to circular references:\n%s"
+       circular_error: "Invalid sub-collection assignments due to circular references: %{label}"
+     triplestore_sync:
+       success: "Synchronization successful."
+       error: "An error occurred during the synchronization process - some entities have not been synchronized."
+       config_info: "Synchronizing with triplestore: %{target_info}"
+       config_warning: "Triplestore has not been configured yet."
+       batch_hint: "For a large data sets please advise your sysadmin to execute `rake sync:all[%{host}]`."
+     concept_scheme:
+       save:
+         success: "Concept scheme has been saved."
+         error: "Concept scheme could not be saved."
 
    models:
      label:
        version_error: "New Label version already exists."
        value_error: "Literal form must be given."
      concept:
+       uri: "Concept URI"
        origin_error: "Invalid origin."
-       version_error: "New Concept version already exists."
+       version_error: "New Concept version already exists: %{origin}"
        no_pref_label_error: "At least one preferred label must be specified."
        orphan_error: "Missing broader term or Top Term assignment."
        top_term_exclusive_error: "A Top Term must not have any broader terms."
        top_term_rooted_error: "Top Terms must not be used as narrower terms."
+       invalid_rank_for_ranked_relations: 'Invalid rank for %{relation} "%{relation_target_label}".'
        main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."
        pref_labels_with_same_languages_error: "There must be only one preferred Label per language."
        association_pref_labels_unpublished: "The preferred Label has to be published."
@@ -343,3 +388,5 @@ en:
        association_narrower_unpublished: "Specific terms have to be published."
        association_related_unpublished: "Related terms have to be published."
        no_pref_label: "-- no PrefLabel --"
+       pref_label_not_unique: "The preferred label '%{label}' is already in use."
+       pref_labels_not_unique: "The preferred labels '%{label}' are already in use."

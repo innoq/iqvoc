@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,18 @@ module SearchResultsHelper
       text = highlight(text.to_s, q.strip)
     end
     text
+  end
+
+  def results_header(results)
+    desc = if results.any?
+      "(#{results.total_count})"
+    else
+      t('txt.views.search_results.no_results_found')
+    end
+
+    content_tag :h2 do
+      raw( t('txt.views.search_results.search_results') << " " << content_tag(:small, desc) )
+    end
   end
 
 end

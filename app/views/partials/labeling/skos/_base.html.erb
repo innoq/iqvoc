@@ -1,17 +1,17 @@
-<%= content_tag("div", { :class => "relation translation", :lang => defined?(concept) ? lang || nil : nil }, true) do %>
-  <%- if defined?(concept) -%>
-    <h4><%= klass.model_name.human(:count => 2) %><%= " (#{t("languages.#{lang}", :default => lang.to_s)})" if lang %></h4>
+<%= content_tag :div, :class => "relation translation panel", :lang => (defined?(concept) ? lang || nil : nil) do %>
+  <% if defined?(concept) %>
+    <h2><%= klass.model_name.human(:count => 2) %> <small><%= t("languages.#{lang || "-"}") %></small></h2>
     <div class="relation-body">
       <%= item_listing(concept.labels_for_labeling_class_and_language(klass, lang)) do |label|
         label.value
       end %>
     </div>
-  <%- elsif defined?(label) -%>
-    <h4><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
+  <% elsif defined?(label) %>
+    <h2><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h2>
     <div class="relation">
       <%= item_listing(label.concepts_for_labeling_class(klass)) do |c|
         link_to(c.origin, concept_path(:id => c), :alt => c.pref_label)
       end %>
     </div>
-  <%- end -%>
-<%- end -%>
+  <% end %>
+<% end %>

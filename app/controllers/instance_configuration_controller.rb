@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if RUBY_VERSION < '1.9'
-  require 'fastercsv'
-  CSV = FCSV
-else
-  require 'csv'
-end
+require 'csv'
 
 class InstanceConfigurationController < ApplicationController
 
   def index
     authorize! :show, Iqvoc.config
 
-    @settings = Iqvoc.config.defaults.each_with_object({}) { |(key, default_value), hsh|
+    settings = Iqvoc.config.defaults.
+        each_with_object({}) do |(key, default_value), hsh|
       hsh[key] = serialize(Iqvoc.config[key], default_value)
-    }
+    end
+
+    @settings_by_namespace = settings.inject({}) do |memo, (key, value)|
+      namespace, setting = key.split(".", 2)
+      namespace = setting ? namespace : "common"
+      memo[namespace] ||= {}
+      memo[namespace][key] = value
+      memo
+    end
   end
 
   def update
@@ -44,14 +48,16 @@ class InstanceConfigurationController < ApplicationController
         begin
           Iqvoc.config[key] = deserialize(value, default_value)
         rescue TypeError => exc
+          Rails.logger.error(exc)
+          Rails.logger.error(exc.backtrace.join("\n"))
           errors << t("txt.controllers.instance_configuration.invalid_value",
               :key => key, :error_message => exc.message)
         end
       end
     }
 
-    if errors.blank?
-      flash[:notice] = t("txt.controllers.instance_configuration.update_success")
+    if errors.none?
+      flash[:success] = t("txt.controllers.instance_configuration.update_success")
     else
       flash[:error] = t("txt.controllers.instance_configuration.update_error",
           :error_messages => errors.join("; "))
@@ -67,7 +73,7 @@ class InstanceConfigurationController < ApplicationController
     Iqvoc::InstanceConfiguration.validate_value(value)
     if default_value.is_a?(Array)
       return value.to_csv.strip
-    else # String, Fixnum / Float
+    else # boolean, String, Fixnum / Float
       return value.to_s
     end
   end
@@ -79,17 +85,27 @@ class InstanceConfigurationController < ApplicationController
     unless default_value.is_a? Array
       return convert_value(str, default_value.class)
     else
-      return str.blank? ? [] : str.parse_csv.map { |item|
+      return str.blank? ? [] : str.parse_csv.map do |item|
         item.strip!
         convert_value(item, default_value[0].class)
-      }
+      end
     end
   end
 
   # converts string to given (non-complex) type
   # raises TypeError on failure
   def convert_value(str, type)
-    if type == String
+    if [TrueClass, FalseClass].include?(type)
+      if str == "true"
+        return true
+      elsif str == "false"
+        return false
+      else
+        raise TypeError, "expected boolean"
+      end
+    elsif type == String
+      return str
+    elsif type == Symbol
       return str
     elsif type == Fixnum
       raise TypeError, "expected integer" unless str =~ /^[-+]?[0-9]+$/

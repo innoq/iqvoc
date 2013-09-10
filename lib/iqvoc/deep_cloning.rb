@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ module Iqvoc
             fk = association_reflection.options[:foreign_key]# || self.class.to_s.underscore
             self.send(association).collect do |obj|
               cloned_obj = obj.dup(opts)
-              cloned_obj.send("#{fk}=", kopy) unless fk.blank?
+              cloned_obj.send("#{fk}=", kopy.id) unless fk.blank?
               cloned_obj
             end
           end

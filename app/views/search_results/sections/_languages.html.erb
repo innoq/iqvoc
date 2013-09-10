@@ -1,0 +1,15 @@
+<%= input_block :label => t('txt.views.search_results.search_languages') do %>
+  <% @available_languages.sort.each do |lang_tag, label| %>
+    <label for="languages_<%= lang_tag %>" class="checkbox inline">
+      <%= check_box_tag "l[]", lang_tag, select_search_checkbox?(lang_tag), :id => "languages_#{lang_tag}", :class => 'lang_check' %><%= lang_tag %>
+    </label>
+  <% end %>
+  <div class="btn-group">
+    <button type="button" id="language_select_all" class="btn btn-mini">
+      <%= t('txt.views.search_results.all') %>
+    </button>
+    <button type="button" id="language_select_none" class="btn btn-mini">
+      <%= t('txt.views.search_results.none') %>
+    </button>
+  </div>
+<% end %>

@@ -1,98 +1,22 @@
-<%- if @results -%>
-  <%= render(:partial => 'search_results/head_contents') %>
-<%- end -%>
+<%= render 'header' %>
+<%= render 'sidebar', :results => @results %>
 
-<h2><%= t('txt.views.search_results.header') %></h2>
-<%- if @results -%>
-  <div id="abstract_uri">
-    <%= render(:partial => 'search_results/rdf_links') %>
-  </div>
-<%- end -%>
+<%= render 'form' %>
 
-<%= form_tag(search_path, :method => :get, :class => :form, :id => 'search') do %>
-  <fieldset id="typecheck">
-    <ol>
-      <li>
-        <select name="t" class="search_type">
-          <%= options_for_select(Iqvoc.searchable_classes.map { |c|
-              [c.model_name.human(:count => 2), c.name.parameterize]
-            }, params[:t]) %>
-        </select>
-      </li>
-      <li>
-        <%= select_tag :qt, options_for_select([
-            [t('txt.views.search_results.exact'), 'exact'],
-            [t('txt.views.search_results.contains'), 'contains'],
-            [t('txt.views.search_results.ends_with'), 'ends_with'],
-            [t('txt.views.search_results.begins_with'), 'begins_with']
-          ], params[:qt]) %>
-      </li>
-    </ol>
-  </fieldset>
-
-  <fieldset>
-    <ol>
-      <li>
-        <label for="q"><%= t('txt.views.search_results.search_term') %></label>
-        <% if Iqvoc.searchable_classes.detect {|c| c.supports_multi_query? } %>
-          <%= text_area_tag :q, params[:query] %>
-        <% else %>
-          <%= text_field_tag :q, params[:query] %>
-        <% end %>
-      </li>
-      <li class="result_type_filter">
-        <label><%= t('txt.views.search_results.for') %></label>
-        <%= radio_button_tag 'for', 'concept', params[:for] == "concept" %> <label for="for_concept"><%= Iqvoc::Concept.base_class.model_name.human %></label>
-        <%= radio_button_tag 'for', 'collection', params[:for] == "collection" %> <label for="for_collection"><%= Iqvoc::Collection.base_class.model_name.human %></label>
-        <%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]) %> <label for="for_all"><%= t("txt.views.search_results.all") %></label>
-      </li>
-      <li>
-        <label for"c"><%= Iqvoc::Collection.base_class.model_name.human %></label>
-        <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>
-      </li>
-      <li>
-        <label><%= t('txt.views.search_results.search_languages') %>:</label>
-        <% @available_languages.sort.each do |lang_tag, label| %>
-          <%= check_box_tag "l[]", lang_tag, select_search_checkbox?(lang_tag), :id => "languages_#{lang_tag}", :class => 'lang_check' %>
-          <label for="languages_<%= lang_tag %>"><%= label %></label>
-        <% end %>
-        <button type="button" id="language_select_all">
-          <%= t('txt.views.search_results.all') %>
-        </button>
-        <button type="button" id="language_select_none">
-          <%= t('txt.views.search_results.none') %>
-        </button>
-      </li>
-      <li>
-        <%= submit_tag t('txt.views.search_results.submit') %>
-      </li>
-    </ol>
-  </fieldset>
-<% end %>
 <% if @results %>
-  <% if @results.any? %>
-    <h3>
-      <%= t('txt.views.search_results.search_results') %> (<%= @results.total_count %>)
-    </h3>
-  <% else %>
-    <h3><%= t('txt.views.search_results.search_results') %></h3>
-    <p><%= t('txt.views.search_results.no_results_found') %></p>
-  <% end %>
+<div class="panel">
+  <%= results_header @results %>
 
   <dl id="search_results">
     <% @results.each do |result| %>
       <% if @klass %>
-        <%= render :partial => @klass.search_result_partial_name,
-                :locals => { :result => result } %>
+        <%= render @klass.search_result_partial_name, :result => result %>
       <% else %>
-        <%= render :partial => result.class.search_result_partial_name,
-                :locals => { :result => result } %>
+        <%= render result.class.search_result_partial_name, :result => result %>
       <% end %>
     <% end %>
   </dl>
 
   <%= paginate @results %>
 <% end %>
-
-<%= content_for :sub_navigation do %>
-<% end %>
+</div>

@@ -3,35 +3,22 @@ class SeparateNoteAnnotationPredicates < ActiveRecord::Migration
     rename_column :note_annotations, :identifier, :predicate
     add_column :note_annotations, :namespace, :string, :limit => 50
 
-    total = Note::Annotated::Base.count
-    i = 0
+    annotations = select_rows("SELECT id, predicate FROM note_annotations")
 
-    puts "starting #{total} note annotation conversions..."
-    reset = "\r" + "\e[0K" # adapted from http://snippets.dzone.com/posts/show/3760
-
-    Note::Annotated::Base.find_each do |annotation|
-      print "#{reset}#{i += 1} / #{total}"
-
-      old_identifier = annotation.predicate
-      namespace, predicate = old_identifier.split(":", 2)
-      annotation.predicate = predicate
-      annotation.namespace = namespace
-      annotation.save!
-
-      $stdout.flush
+    annotations.each do |annotation|
+      namespace, predicate = annotation[1].split(":", 2)
+      execute "UPDATE note_annotations SET namespace = '#{namespace}', predicate = '#{predicate}' WHERE id = #{annotation[0]}"
     end
-
-    print "#{reset}"
-    $stdout.flush
-    puts "note annotation conversion complete"
   end
 
   def self.down
-    Note::Annotated::Base.find_each do |annotation|
-      identifier = [annotation.namespace, annotation.predicate].join(":")
-      annotation.predicate = identifier
-      annotation.save!
+    annotations = select_rows("SELECT id, predicate, namespace FROM note_annotations")
+
+    annotations.each do |annotation|
+      identifier = [annotation[2], annotation[1]].join(":")
+      execute "UPDATE note_annotations SET predicate = '#{identifier}' WHERE id = #{annotation[0]}"
     end
+
     rename_column :note_annotations, :predicate, :identifier
     remove_column :note_annotations, :namespace
   end

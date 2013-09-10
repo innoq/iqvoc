@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,18 +19,23 @@ class UserSessionsController < ApplicationController
   skip_before_filter :require_user, :only => [:new, :create]
 
   def new
-    # TODO Check abilities
+    authorize! :create, UserSession
 
     @user_session = UserSession.new
   end
 
   def create
-    # TODO Check abilities
+    authorize! :create, UserSession
 
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
-      flash[:notice] = I18n.t("txt.controllers.user_sessions.login_success")
-      redirect_to params[:back_to] || (can?(:use, :dashboard) ? dashboard_url : root_path)
+      @current_ability = nil
+      flash[:success] = I18n.t("txt.controllers.user_sessions.login_success")
+      if params[:back_to].present?
+        redirect_to URI.parse(params[:back_to]).path
+      else
+        redirect_to can?(:use, :dashboard) ? dashboard_path : root_path
+      end
     else
       flash[:error] = I18n.t("txt.views.user_sessions.error")
       render :action => :new
@@ -38,10 +43,10 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    # TODO Check abilities
+    authorize! :destroy, UserSession
 
     current_user_session.destroy
-    flash[:notice] = I18n.t("txt.controllers.user_sessions.logout_success")
+    flash[:success] = I18n.t("txt.controllers.user_sessions.logout_success")
     redirect_to root_path
   end
 

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ class Label::Base < ActiveRecord::Base
   # ********* Scopes
 
   def self.by_language(lang_code)
-    if (lang_code.is_a?(Array) && lang_code.include?(nil))
+    lang_code = nil if lang_code.to_s == "none"
+    if (lang_code.is_a?(Array) && lang_code.include?("none"))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     elsif lang_code.blank?
       where(arel_table[:language].eq(nil))
@@ -42,8 +43,11 @@ class Label::Base < ActiveRecord::Base
     end
   end
 
-  def self.begins_with(letter)
-    where("LOWER(SUBSTR(#{Label::Base.table_name}.value, 1, 1)) = :letter", :letter => letter.to_s.downcase)
+  def self.begins_with(prefix)
+    prefix = prefix.to_s
+    table = Label::Base.table_name
+    where("LOWER(SUBSTR(#{table}.value, 1, :length)) = :prefix",
+        :length => prefix.length, :prefix => prefix.downcase)
   end
 
   def self.missing_translation(lang, main_lang)
@@ -90,8 +94,8 @@ class Label::Base < ActiveRecord::Base
   end
 
   def to_s
-    if language.to_s != I18n.locale.to_s.strip
-      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale.to_s.strip}']"
+    if (language.presence || "none") != I18n.locale.to_s
+      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
     else
       value.to_s
     end

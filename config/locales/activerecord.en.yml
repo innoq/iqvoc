@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 en:
   activerecord:
     models:
+      user:
+        one:   "User"
+        other: "Users"
       concept/base:
         one:   "Concept"
         other: "Concepts"
@@ -35,9 +38,11 @@ en:
       concept/relation/skos/narrower/base:
         one:   "Narrower term"
         other: "Narrower terms"
-      concept/relation/related:
+      concept/relation/skos/related:
         one:   "Related term"
         other: "Related terms"
+      concept/skos/scheme:
+        one:   "Concept Scheme"
       label/skos/base:
         one:   "Label"
         other: "Labels"
@@ -107,6 +112,9 @@ en:
       collection/member/base:
         one:   "Assigned collection"
         other: "Assigned collections"
+      notation/base:
+        one:   "Notation"
+        other: "Notations"
 
     attributes:
       concept/base:
@@ -117,6 +125,11 @@ en:
         follow_up: "Reminder"
         expired_at: "Expired at"
         language: "Language"
+      note/base:
+        value: "Value"
+      notation/base:
+        value: "Value"
+        data_type: "Data type (URL)"
       user:
         forename: "Forename"
         surname: "Surname"

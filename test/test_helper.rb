@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +15,9 @@
 # limitations under the License.
 
 require 'rubygems'
-require 'spork'
 
-Spork.prefork do
-  ENV["RAILS_ENV"] = "test"
-  require File.expand_path('../../config/environment', __FILE__)
-  require 'rails/test_help'
-end
-
-Spork.each_run do
-end
+ENV["RAILS_ENV"] = "test"
+require File.expand_path('../../config/environment', __FILE__)
+require 'rails/test_help'
+require 'webmock'
+WebMock.allow_net_connect! # required for integration tests

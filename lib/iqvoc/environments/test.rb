@@ -32,9 +32,6 @@ module Iqvoc::Environments
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    # Print deprecation notices to the stderr
-    config.active_support.deprecation = :stderr
-
     # Configure static asset server for tests with Cache-Control for performance
     config.serve_static_assets = true
     config.static_cache_control = "public, max-age=3600"
@@ -47,6 +44,12 @@ module Iqvoc::Environments
 
     # Print deprecation notices to the stderr
     config.active_support.deprecation = :stderr
+
+    # Enforce whitelist mode for mass assignment.
+    # This will create an empty whitelist of attributes available for mass-assignment for all models
+    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
+    # parameters by using an attr_accessible or attr_protected declaration.
+    config.active_record.whitelist_attributes = false
   end
 
 end

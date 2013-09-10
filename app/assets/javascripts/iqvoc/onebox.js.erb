@@ -1,0 +1,81 @@
+/*jslint vars: true, browser: true, white: true */
+/*global jQuery, IQVOC */
+
+IQVOC.onebox = (function($) {
+
+"use strict";
+
+function OneBox(form) {
+  this.form = form.jquery ? form : $(form);
+  this.input = $(".onebox-input", this.form); // TODO: document
+  this.container = this.form.removeClass("onebox").
+      wrap('<div class="onebox" />').parent(); // TODO: document
+  this.results = $('<ol class="results concepts unstyled" />');
+  this.spinner = $("<img />").
+      attr("src", "<%= asset_path('spinner_24x24.gif') %>").
+      appendTo(this.container).hide();
+
+  this.form.on("submit", $.proxy(this, "onSubmit"));
+  this.input.on("keyup", debounce($.proxy(this, "onInput"), 300));
+}
+OneBox.prototype.reset = function() {
+  this.container.children().not(this.form).not(this.spinner).remove();
+};
+OneBox.prototype.renderResults = function(html) {
+  var doc = $("<div />").append(html);
+  var items = $(".concepts > li", doc);
+  var pagination = $(".pagination", doc);
+
+  this.reset();
+  this.results.empty().append(items).appendTo(this.container);
+  pagination.appendTo(this.container);
+};
+OneBox.prototype.onSubmit = function(ev) {
+  ev.preventDefault(); // handled by #onInput
+};
+OneBox.prototype.onInput = function(ev) {
+  var val = this.input.val();
+  this.reset();
+  if(val.length > 0 && val !== this.initialValue) {
+    this.getConcepts();
+  }
+};
+OneBox.prototype.getConcepts = function() {
+  this.spinner.show();
+  $.ajax({
+    type: this.form.attr("method"),
+    url: this.form.attr("action"),
+    data: this.form.serialize(),
+    success: $.proxy(this, "onResults")
+  });
+};
+OneBox.prototype.onResults = function(html, status, xhr) {
+  // disable scripts (adapted from jQuery#load)
+  var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+  html = html.replace(rscript, "");
+
+  this.spinner.hide();
+  this.renderResults(html);
+};
+
+return function(selector) {
+  return new OneBox(selector); // XXX: returning an instance of a private class seems weird
+};
+
+function debounce(fn, delay) { // TODO: move elsewhere
+  var timer;
+  return function() {
+    var self = this;
+    var args = arguments;
+    if(timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    timer = setTimeout(function() {
+      fn.apply(self, args);
+      timer = null;
+    }, delay);
+  };
+}
+
+}(jQuery));

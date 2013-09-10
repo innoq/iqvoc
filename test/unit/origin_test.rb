@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "AeaeUeueOeoess", Iqvoc::Origin.new("ÄäÜüÖöß").to_s
   end
 
-  def test_should_camalize_string
+  def test_should_camelize_string
     assert_equal "AWeighting", Iqvoc::Origin.new("'A' Weighting").to_s
   end
 
@@ -54,7 +54,8 @@ class OriginTest < ActiveSupport::TestCase
   end
 
   def test_should_replace_brackets
-    assert_equal "--Energie-Ressource", Iqvoc::Origin.new("[Energie/Ressource]").to_s
+    assert_equal "--Energie-Ressource",
+      Iqvoc::Origin.new("[Energie/Ressource]").to_s
   end
 
   def test_should_replace_comma
@@ -62,10 +63,12 @@ class OriginTest < ActiveSupport::TestCase
   end
 
   def test_should_merge_all_together
-    assert_equal "--Energie-Ressource", Iqvoc::Origin.new("[Energie - Ressource]").to_s
-    assert_equal "--Hydrosphaere-WasserUndGewaesser", Iqvoc::Origin.new("[Hydrosphäre - Wasser und Gewässer]").to_s
+    assert_equal "--Energie-Ressource",
+      Iqvoc::Origin.new("[Energie - Ressource]").to_s
+    assert_equal "--Hydrosphaere-WasserUndGewaesser",
+      Iqvoc::Origin.new("[Hydrosphäre - Wasser und Gewässer]").to_s
   end
-  
+
   def test_register_custom_filter
     Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
     assert_equal "trololo_", Iqvoc::Origin.new("trololo_foobar").strip_foobars.to_s

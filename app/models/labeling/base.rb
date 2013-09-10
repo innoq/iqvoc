@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,12 +41,20 @@ class Labeling::Base < ActiveRecord::Base
     includes(:owner).merge(Concept::Base.published)
   end
 
+  def self.concept_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.expired)
+  end
+
+  def self.concept_not_expired
+    includes(:owner).merge(Iqvoc::Concept.base_class.not_expired)
+  end
+
   def self.label_published
     includes(:target).merge(Label::Base.published)
   end
 
-  def self.label_begins_with(letter)
-    includes(:target).merge(Label::Base.begins_with(letter))
+  def self.label_begins_with(prefix)
+    includes(:target).merge(Label::Base.begins_with(prefix))
   end
 
   def self.by_label_language(lang)

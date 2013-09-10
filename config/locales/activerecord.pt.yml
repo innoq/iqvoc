@@ -1,0 +1,141 @@
+# encoding: UTF-8
+
+# Copyright 2011-2013 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+pt:
+  activerecord:
+    models:
+      user:
+        one:   "Usuário"
+        other: "Usuários"
+      concept/base:
+        one:   "Conceito"
+        other: "Conceitos"
+      concept/relation/base:
+        one:   "Relação"
+        other: "Relações"
+      concept/relation/skos/base:
+        one:   "Relação"
+        other: "Relações"
+      concept/relation/skos/broader/mono:
+        one:   "Termo geral"
+        other: "Termos gerais"
+      concept/relation/skos/broader/poly:
+        one:   "Termo geral"
+        other: "Termos gerais"
+      concept/relation/skos/narrower/base:
+        one:   "Termo específico"
+        other: "Termos específicos"
+      concept/relation/skos/related:
+        one:   "Termo relacionado"
+        other: "Termos relacionados"
+      concept/skos/scheme:
+        one:   "esquema de conceito"
+      label/skos/base:
+        one:   "Rótulo"
+        other: "Rótulos"
+      labeling/base:
+        one:   "Rótulo"
+        other: "Rótulos"
+      labeling/skos/base:
+        one:   "Rótulo"
+        other: "Rótulos"
+      labeling/skos/pref_label:
+        one:   "Rótulo preferencial"
+        other: "Rótulos preferenciais"
+      labeling/skos/alt_label:
+        one:   "Rótulo alternativo"
+        other: "Rótulos alternativos"
+      match/base:
+        one:   "Correspondência"
+        other: "Correspondências"
+      match/skos/base:
+        one:   "Correspondência"
+        other: "Correspondências"
+      match/skos/broad_match:
+        one:   "Correspondência mais ampla"
+        other: "Correspondências mais amplas"
+      match/skos/close_match:
+        one:   "Correspondência aproximada"
+        other: "Correspondências aproximadas"
+      match/skos/exact_match:
+        one:   "Correspondência exata"
+        other: "Correspondências exatas"
+      match/skos/narrow_match:
+        one:   "Correspondência mais específica"
+        other: "Correspondências mais específicas"
+      match/skos/related_match:
+        one:   "Correspondência relacionada"
+        other: "Correspondências relacionadas"
+      note/annotated/base:
+        one:   "Anotação"
+        other: "Anotações"
+      note/base:
+        one:   "Nota"
+        other: "Notas"
+      note/skos/base:
+        one:   "Nota"
+        other: "Notas"
+      note/skos/change_note:
+        one:   "Nota de alteração"
+        other: "Notas de alterações"
+      note/skos/definition:
+        one:   "Definição"
+        other: "Definições"
+      note/skos/editorial_note:
+        one:   "Nota editorial"
+        other: "Notas editoriais"
+      note/skos/example:
+        one:   "Exemplo"
+        other: "Exemplos"
+      note/skos/history_note:
+        one:   "Nota de histórico"
+        other: "Notas de histórico"
+      note/skos/scope_note:
+        one:   "Nota de escopo"
+        other: "Notas de escopo"
+      collection/base:
+        one:   "Coleção"
+        other: "Coleções"
+      collection/member/base:
+        one:   "Coleção atribuída"
+        other: "Coleções atribuídas"
+      notation/base:
+        one:   "Notação"
+        other: "Notações"
+
+    attributes:
+      concept/base:
+        follow_up: "Lembrete"
+        expired_at: "Expirado em"
+        top_term: "Termo principal"
+      label/base:
+        follow_up: "Lembrete"
+        expired_at: "Expirado em"
+        language: "Idioma"
+      note/base:
+        value: "Valor"
+      notation/base:
+        value: "Valor"
+        data_type: "Tipo de dados (URL)"
+      user:
+        forename: "Primeiro nome"
+        surname: "Sobrenome"
+        email: "Email"
+        password: "Senha"
+        password_confirmation: "Senha (Confirmação)"
+        active: "ativo"
+        role: "Papel"
+        telephone_number: "Número de telefone"

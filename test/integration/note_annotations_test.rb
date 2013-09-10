@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,27 +29,25 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
-    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.publishing")
     assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.versioning_mode")
     fill_in "concept_note_skos_change_notes_attributes_1_value",
         :with => "dolor sit amet"
     click_button "Save"
 
-    assert page.has_css?("dl.note_annotations", :count => 2)
+    assert page.has_css?("dl.note_annotations", :count => 1)
 
     click_link_or_button I18n.t("txt.views.versioning.publishing")
     assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 2)
+    assert page.has_css?("dl.note_annotations", :count => 1)
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     ttl = page.source.
@@ -82,6 +80,32 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         "<dct:modified>####-##-##T##:##:##-##:##</dct:modified>\n" +
         "</rdf:Description>\n" +
         "</skos:changeNote>\n")
+  end
+
+  test "rdf for localized note annotations" do
+    rdfapi = Iqvoc::RDFAPI
+
+    concept = rdfapi.devour *%w(foobar a skos:Concept)
+    concept.publish
+    concept.save
+
+    rdfapi.devour concept, 'skos:prefLabel', '"foo"@en'
+
+    note = Note::RDFS::SeeAlso.create :owner => concept, :value => 'foo', :language => 'en'
+    note.annotations.create :namespace => 'dct', :predicate => 'title', :value => 'Foo Bar', :language => 'en'
+    note.annotations.create :namespace => 'foaf', :predicate => 'page', :value => 'http://google.de/'
+
+    visit "/#{concept.origin}.ttl"
+
+    ttl = <<RDF
+    rdfs:seeAlso [
+    rdfs:comment "foo"@en;
+    dct:title "Foo Bar"@en;
+    foaf:page <http://google.de/>
+].
+RDF
+
+    assert page.body.include?(ttl)
   end
 
 end

@@ -1,15 +1,13 @@
-<div class="relation">
-  <%- if defined?(concept) -%>
-    <% notes = concept.notes_for_class(klass) %>
-    <h4><%= klass.model_name.human(:count => notes.count) %></h4>
-    <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
-    </div>
-  <%- elsif defined?(label) -%>
-    <% notes = label.notes_for_class(klass) %>
-    <h4><%= klass.model_name.human(:count => notes.count) %></h4>
-    <div class="relation-body">
-      <%= notes.any? ? render(:partial => 'partials/note/note', :collection => notes) : "-" %>
-    </div>
-  <%- end -%>
+<div class="<%= html_classes("relation", "panel", (class_name rescue nil)) %>">
+  <%# Provide support for iqvoc_skosxl %>
+  <% object = if defined?(concept)
+                concept
+              elsif defined?(label)
+                label
+              end %>
+  <% notes = object.notes_for_class(klass) %>
+  <h2><%= klass.model_name.human(:count => notes.count) %></h2>
+  <div class="relation-body">
+    <%= render :partial => 'partials/note/note', :collection => notes %>
+  </div>
 </div>

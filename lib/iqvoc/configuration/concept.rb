@@ -1,4 +1,4 @@
-require "active_support/concern"
+require 'active_support/concern'
 
 module Iqvoc
   module Configuration
@@ -9,13 +9,14 @@ module Iqvoc
         Iqvoc.first_level_class_configuration_modules << self
 
         mattr_accessor :base_class_name, :root_class_name,
-        :broader_relation_class_name, :further_relation_class_names,
-        :pref_labeling_class_name,
-        :match_class_names,
-        :note_class_names,
-        :additional_association_class_names,
-        :view_sections,
-        :include_module_names
+            :broader_relation_class_name, :further_relation_class_names,
+            :pref_labeling_class_name,
+            :match_class_names,
+            :note_class_names,
+            :notation_class_names,
+            :additional_association_class_names,
+            :view_sections,
+            :include_module_names
 
         self.base_class_name              = 'Concept::SKOS::Base'
         self.root_class_name              = 'Concept::SKOS::Scheme'
@@ -42,9 +43,13 @@ module Iqvoc
           'Match::SKOS::NarrowMatch',
         ]
 
+        self.notation_class_names         = [
+          'Notation::Base'
+        ]
+
         self.additional_association_class_names = {}
 
-        self.view_sections = ["main", "labels", "relations", "notes", "matches"]
+        self.view_sections = ["main", "labels", "relations", "notes", "notations", "matches"]
 
         self.include_module_names = []
       end
@@ -120,6 +125,10 @@ module Iqvoc
 
         def match_classes
           match_class_names.map(&:constantize)
+        end
+
+        def notation_classes
+          notation_class_names.map(&:constantize)
         end
 
         def additional_association_classes

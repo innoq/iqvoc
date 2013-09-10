@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,17 @@ module Concept
   module Relation
     module ReverseRelationExtension
 
-      def create_with_reverse_relation(target_concept)
+      def create_with_reverse_relation(target_concept, attributes = {})
         relation_class = proxy_association.reflection.class_name.constantize
         ActiveRecord::Base.transaction do
           # The one direction
           scope = relation_class.where(:owner_id => proxy_association.owner.id, :target_id => target_concept.id)
-          scope.any? || scope.create!
+          attributes = attributes.except(:rank) unless relation_class.rankable?
+          scope.any? || scope.create!(attributes)
 
           # The reverse direction
           scope = relation_class.reverse_relation_class.where(:owner_id => target_concept.id, :target_id => proxy_association.owner.id)
-          scope.any? || scope.create!
+          scope.any? || scope.create!(attributes)
         end
       end
 

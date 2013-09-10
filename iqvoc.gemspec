@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/innoq/iqvoc"
   s.summary     = "iQvoc"
   s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
+  s.license     = "Apache License 2.0"
 
   s.add_dependency 'rails', '~> 3.2.1'
   s.add_dependency 'bundler'
@@ -20,8 +21,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf', '~> 0.1.2'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'fastercsv'
   s.add_dependency 'faraday'
+  s.add_dependency 'simple_form'
+  s.add_dependency 'sass-rails', '~> 3.2.5'
+  s.add_dependency 'bootstrap-sass'
+  s.add_dependency 'iq_triplestorage'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")

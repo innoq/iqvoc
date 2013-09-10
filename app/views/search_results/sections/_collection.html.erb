@@ -1,0 +1,3 @@
+<%= input_block :label => Iqvoc::Collection.base_class.model_name.human, :id => 'c' do %>
+  <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :include_blank => true %>
+<% end %>

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,18 @@
 de:
   activerecord:
     models:
+      user:
+        one:   "Benutzer"
+        other: "Benutzer"
       concept/base:
         one: "Konzept"
         other: "Konzepte"
       concept/relation/base:
-        one:   "Relation"
-        other: "Relations"
+        one:   "Beziehung"
+        other: "Beziehungen"
       concept/relation/skos/base:
-        one:   "Relation"
-        other: "Relations"
+        one:   "Beziehung"
+        other: "Beziehungen"
       concept/relation/skos/broader/mono:
         one:   "Allgemeinerer Begriff"
         other: "Allgemeinere Begriffe"
@@ -38,6 +41,8 @@ de:
       concept/relation/skos/related:
         one:   "Verwandter Begriff"
         other: "Verwandte Begriffe"
+      concept/skos/scheme:
+        one:   "Konzept-Schema"
       label/skos/base:
         one:   "Label"
         other: "Labels"
@@ -107,16 +112,24 @@ de:
       collection/member/base:
         one:   "Zugewiesene Kollektion"
         other: "Zugewiesene Kollektionen"
+      notation/base:
+        one:   "Notation"
+        other: "Notationen"
 
     attributes:
       concept/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
-        top_term: "Top Term"
+        top_term: "Begriff oberster Ebene"
       label/base:
         follow_up: "Wiedervorlage"
         expired_at: "Abgelaufen am"
         language: "Sprache"
+      note/base:
+        value: "Wert"
+      notation/base:
+        value: "Wert"
+        data_type: "Datentyp (URL)"
       user:
         forename: "Vorname"
         surname: "Nachname"

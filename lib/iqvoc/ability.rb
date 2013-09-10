@@ -9,8 +9,12 @@ module Iqvoc
       can :read, ::Collection::Base
       can :read, [::Concept::Base, ::Label::Base], &@@if_published
 
+      # static pages
+      can :read, :help
+
       if user # Every logged in user ...
         can :use, :dashboard
+        can :destroy, UserSession
 
         if user.owns_role?(:editor) || user.owns_role?(:publisher) || user.owns_role?(:administrator) # Editors and above ...
           can :manage, ::Collection::Base
@@ -29,7 +33,7 @@ module Iqvoc
           can :merge, [::Concept::Base, ::Label::Base], :published_at => nil
         end
 
-        if user.owns_role?(:administrator) # Admins ...
+        if user.owns_role?(:administrator)
           can [:update, :destroy, :unlock], [::Concept::Base, ::Label::Base], :published_at => nil # Mustn't be locked by myself
 
           can :manage, User
@@ -37,8 +41,13 @@ module Iqvoc
 
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
-        end
 
+          can :update, Iqvoc::Concept.root_class.instance
+
+          can :use, :administration
+        end
+      else # no user
+        can :create, UserSession
       end
 
     end

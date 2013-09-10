@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,33 +14,74 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'singleton'
+class Concept::SKOS::Scheme < Concept::Base
+  private_class_method :new
 
-# virtual root node
-# NB:
-# * does not inherit from Concept::Base to avoid being included in all
-#   queries based on that class, including indirect ones (e.g. relations)
-# * persistence (i.e. a database record) is not required since this is a
-#   singleton and merely a static, virtual node
-class Concept::SKOS::Scheme
-  include Singleton
+  after_update :redeclare_top_concepts
 
   def self.rdf_class
-    :ConceptScheme
+    'ConceptScheme'
+  end
+
+  def self.rdf_predicate
+    'topConceptOf'
   end
 
   def self.rdf_namespace
-    :skos
+    'skos'
   end
 
-  def origin
-    :scheme
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    rdf_subject.update_attribute :top_term, true
   end
 
-  def build_rdf_subject(document, controller, &block)
+  def self.instance
+    first_or_create!(:origin => 'scheme', :published_at => Time.now)
+  end
+
+  def self.create(attributes = nil, options = {}, &block)
+    raise TypeError, "Singleton" if first
+    super
+  end
+
+  def self.create!(attributes = nil, options = {}, &block)
+    raise TypeError, "Singleton" if first
+    super
+  end
+
+  def build_rdf_subject(&block)
     ns = IqRdf::Namespace.find_namespace_class(self.class.rdf_namespace.to_sym)
     raise "Namespace '#{rdf_namespace}' is not defined in IqRdf document." unless ns
     IqRdf.build_uri(origin, ns.build_uri(self.class.rdf_class), &block)
   end
 
+  def top_concepts
+    Iqvoc::Concept.base_class.tops
+  end
+
+  def inline_top_concept_origins=(origins)
+    @inline_top_concept_origins = origins.to_s.
+      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+  end
+
+  def inline_top_concept_origins
+    @inline_top_concept_origins || top_concepts.map { |c| c.origin }.uniq
+  end
+
+  def inline_top_concepts
+    if @inline_top_concept_origins
+      Iqvoc::Concept.base_class.editor_selectable.where(:origin => @inline_top_concept_origins)
+    else
+      top_concepts.select { |c| c.editor_selectable? }
+    end
+  end
+
+  def redeclare_top_concepts
+    return if inline_top_concept_origins.nil? # There is nothing to do
+
+    Iqvoc::Concept.base_class.transaction do
+      Iqvoc::Concept.base_class.tops.update_all :top_term => false
+      Iqvoc::Concept.base_class.where(:origin => @inline_top_concept_origins).update_all(:top_term => true)
+    end
+  end
 end

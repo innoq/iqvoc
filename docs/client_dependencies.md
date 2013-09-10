@@ -22,14 +22,17 @@ jQuery UI upgrade procedure
 
 * create [custom build](http://jqueryui.com/download), selecting only the
   required components (plus theme)
-* unzip custom build to temporary directory (`/tmp/ui/`)
-* `$ git rm public/javascripts/iqvoc/jquery-ui-*.custom*.js`
-* `$ mv /tmp/ui/js/jquery-ui-*.custom.min.js public/javascripts/iqvoc/`
-* `$ mv /tmp/ui/development-bundle/ui/jquery-ui-*.custom.js public/javascripts/iqvoc/`
-* `$ git rm public/stylesheets/iqvoc/jquery-ui-*.custom.css`
-* `$ mv /tmp/ui/css/redmond/jquery-ui-*.custom.css public/stylesheets/iqvoc/`
-* `$ git rm public/stylesheets/iqvoc/images/ui-*`
-* `$ mv /tmp/ui/css/redmond/images/* public/stylesheets/iqvoc/images`
-* `$ git add public/*ts/iqvoc/jquery-ui-*.custom*.{js,css} public/stylesheets/iqvoc/images/ui-*`
-* update `app/views/layouts/application.html.erb` to point to the new `.js` and
-  `.css` files
+* unzip custom build to temporary directory (e.g. `/tmp/ui/`)
+* execute the following commands:
+
+        git rm vendor/assets/javascripts/jquery-ui-*.custom*.js
+        mv /tmp/ui/development-bundle/ui/jquery-ui-*.custom.js vendor/assets/javascripts/
+        git rm vendor/assets/stylesheets/jquery-ui-*.custom.css
+        mv /tmp/ui/css/redmond/jquery-ui-*.custom.css vendor/assets/stylesheets/
+        git rm vendor/assets/images/jquery-ui/*
+        mkdir -p vendor/assets/images/jquery-ui
+        mv /tmp/ui/css/redmond/images/* vendor/assets/images/jquery-ui/
+        git add vendor/assets/*ts/jquery-ui-*.custom*.{js,css} vendor/assets/images/jquery-ui/
+
+* update `app/assets/javascripts/framework.js` and
+  `app/assets/stylesheets/framework.css` to reference the new version

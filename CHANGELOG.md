@@ -1,3 +1,114 @@
+## [4.1.3]
+
+This version is intended as the last minor/patch release before version 5.0.0 -
+that will incorporate significant overhauls of both internal and external APIs
+as well as more sophisticated RDF processing.
+
+  * Improved instance configuration UI
+  * Adjusted internal name of note languages setting for consistency
+  * Updated Bootstrap
+  * Introduced Navigation API<br />
+    iQvoc extensions can be injected into the main navigation either at root
+    level or in a separate group
+  * Removed duplicate results from search when concepts had unpublished versions
+
+## [4.1.2]
+
+  * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in hierarchical views
+
+## [4.1.1]
+
+  * Removed duplicate triples from RDF export
+  * Preliminary support for localized note annotations and rdfs:seeAlso
+  * Bugfixes
+
+## [4.1.0]
+
+  * Concepts hierarchy API (/hierarchy)
+  * Support for SKOS notations
+  * Adjusted RDF serializations to always include related concepts' pref. labels
+  * Fixed MIME type for RDF/XML
+  * Editable concept scheme
+  * Ruby 2.0 compatibility
+  * Dropped support for Ruby 1.8
+  * Heroku Cedar support
+  * Bugfixes
+
+## [4.0.9]
+
+  * Speed improvements in SKOS importer
+  * Preferred labels are now required to be unique
+  * Improved handling of a potential "none" language
+  * Bugfixes in application template
+  * Improved handling of complex comma separated values
+  * New view for expired concepts
+  * Internal overhaul for collections
+  * Lots of bugfixes and improvements throughout
+
+## [4.0.8]
+
+  * Portugese and spanish UI translations (@nitaibezerra)
+  * [FIX] Versioning of concepts did not work
+  * Bugfixes
+
+## 4.0.7
+
+  * Added support for Sesame as triplestore synchronization target
+  * Ditched Ruby 1.8 API compatibility; iQvoc now requires Ruby 1.9+
+  * Improved instant search on front page
+
+## 4.0.6
+
+  * Bugfixes for Triplestore Sync and configuration
+
+## 4.0.5
+
+  * Fixed a bug where triple store sync wouldn't load in engine mode
+  * More bugfixes
+
+## 4.0.4
+
+  * Triplestore Sync
+  * Bugfixes
+
+## 4.0.3
+
+  * New frontpage with quick search
+  * SKOS importer now supports blank nodes
+  * Bugfixes
+
+## 4.0.2
+
+  * Support for collections in SKOS importer (@fgimenez)
+  * Bugfixes
+
+## 4.0.1 (2012-06-20)
+
+  * Rails application template
+  * Bugfixes
+
+## 4.0.0 (2012-05-31)
+
+  * Completely redesigned UI
+  * Temporarily removed visualization graph<br>
+    Needs to be revisited in the near future
+  * Bugfixes
+
+## 3.5.7 (2012-05-24)
+
+  * Rankable (weighted) relations
+  * Counting concept members in collection hierarchy view
+  * Improved heroku support
+  * Bugfixes
+
+Please note that this is the last tiny release before we hit 4.0.0.
+
+## 3.5.6 (2012-03-07)
+
+  * Refactored origin (URI slug) generation<br>
+    Now supports custom filters to extend generation logic. See more: https://github.com/innoq/iqvoc/blob/master/lib/iqvoc/origin.rb
+  * Bugfixes
+
 ## 3.5.4 (2012-02-08)
 
   * Top concepts<br>

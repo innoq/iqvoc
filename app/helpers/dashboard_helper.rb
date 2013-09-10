@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 module DashboardHelper
 
-  def sorting_arrows_for(name)
-    content_tag :div, :class => "sorting_arrows" do
-      link_to(image_tag("arrow_down.gif", :class => "arrow_down"),
+  def sorting_controls_for(name)
+    content_tag :span, :class => "sorting-controls" do
+      link_to(image_tag("arrow_up.gif", :class => "arrow_up"),
         dashboard_path(:order => "asc", :by => name.to_s)) +
-        link_to(image_tag("arrow_up.gif", :class => "arrow_up"),
+        link_to(image_tag("arrow_down.gif", :class => "arrow_down"),
         dashboard_path(:order => "desc", :by => name.to_s))
     end
   end

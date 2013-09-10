@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.by_query_value(query)
-     where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
+    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   end
 
   def self.by_owner_type(klass)
@@ -71,12 +71,6 @@ class Note::Base < ActiveRecord::Base
   end
 
   # ********** Methods
-
-  # TODO: This should move to umt because it highly proprietary
-  def self.from_rdf(str)
-    h = Iqvoc::RdfUtility.split_literal(str)
-    self.new(:value => h[:value], :language => h[:language])
-  end
 
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase

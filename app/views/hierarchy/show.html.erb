@@ -1,0 +1,5 @@
+<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
+        :desc => t("txt.views.navigation.hierarchical") %>
+<%= render "concepts/sidebars/plural" %>
+
+<%= nested_list(@concepts, :class => "concept-hierarchy") if @concepts %>

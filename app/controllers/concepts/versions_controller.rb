@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'iqvoc/rdf_sync'
+
 class Concepts::VersionsController < ApplicationController
+  include Iqvoc::RDFSync::Helper
 
   def merge
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
@@ -25,14 +28,18 @@ class Concepts::VersionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if current_concept.blank? || current_concept.destroy
+        new_version.rdf_updated_at = nil
         new_version.publish
         new_version.unlock
         if new_version.valid_with_full_validation?
           new_version.save
-          if RdfStore.update(rdf_url(:id => new_version, :format => :ttl), concept_url(:id => new_version, :format => :ttl))
-            new_version.update_attribute(:rdf_updated_at, 1.seconds.since)
+
+          if Iqvoc.config["triplestore.autosync"]
+           synced = triplestore_syncer.sync([new_version]) # XXX: blocking
+           flash[:warning] = "triplestore synchronization failed" unless synced # TODO: i18n
           end
-          flash[:notice] = t("txt.controllers.versioning.published")
+
+          flash[:success] = t("txt.controllers.versioning.published")
           redirect_to concept_path(:id => new_version)
         else
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
@@ -48,7 +55,7 @@ class Concepts::VersionsController < ApplicationController
   def branch
     current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
     raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
-    raise "There is already an unpublished version for Concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    raise "There already is an unpublished version for concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
 
     authorize! :branch, current_concept
 
@@ -57,7 +64,7 @@ class Concepts::VersionsController < ApplicationController
       new_version = current_concept.branch(current_user)
       new_version.save!
     end
-    flash[:notice] = t("txt.controllers.versioning.branched")
+    flash[:success] = t("txt.controllers.versioning.branched")
     redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
@@ -71,7 +78,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.lock_by_user(current_user.id)
     new_version.save :validate => false
 
-    flash[:notice] = t("txt.controllers.versioning.locked")
+    flash[:success] = t("txt.controllers.versioning.locked")
     redirect_to edit_concept_path(:published => 0, :id => new_version)
   end
 
@@ -85,7 +92,8 @@ class Concepts::VersionsController < ApplicationController
     new_version.unlock
     new_version.save :validate => false
 
-    flash[:notice] = t("txt.controllers.versioning.unlocked")
+    flash[:success] = t("txt.controllers.versioning.unlocked")
+
     redirect_to concept_path(:published => 0, :id => new_version)
   end
 
@@ -96,7 +104,7 @@ class Concepts::VersionsController < ApplicationController
     authorize! :check_consistency, concept
 
     if concept.valid_with_full_validation?
-      flash[:notice] = t("txt.controllers.versioning.consistency_check_success")
+      flash[:success] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to concept_path(:published => 0, :id => concept)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
@@ -112,7 +120,7 @@ class Concepts::VersionsController < ApplicationController
 
     concept.to_review
     concept.save!
-    flash[:notice] = t("txt.controllers.versioning.to_review_success")
+    flash[:success] = t("txt.controllers.versioning.to_review_success")
     redirect_to concept_path(:published => 0, :id => concept)
   end
 

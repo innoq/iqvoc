@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ module Iqvoc
 
     # convenience wrapper for `register_setting` batch operations
     # accepts a hash of key / default value pairs
-    def register_settings(settings = {})
+    def register_settings(settings)
       settings.each do |key, default_value|
         register_setting(key, default_value)
       end
@@ -69,7 +69,7 @@ module Iqvoc
 
     # retrieve individual setting, using default value as fallback
     def [](key)
-      initialize_cache # relying on ActiveRecord query cache -- XXX: inefficient (caching doesn't include processing/indexing)
+      initialize_cache unless @initialized
       return @settings[key]
     end
 
@@ -78,7 +78,7 @@ module Iqvoc
       raise UnregisteredSetting unless @defaults.include?(key)
       self.class.validate_value(value)
 
-      json = JSON.dump(value)
+      json = JSON.dump([value])[1..-2] # temporary array wrapper ensures valid JSON text
       if setting = ConfigurationSetting.find_by_key(key)
         setting.update_attributes(:value => json)
       else
@@ -94,17 +94,21 @@ module Iqvoc
 
     # populate settings caches
     # (subsequent updates will happen automatically via the respective setters)
-    def initialize_cache(force=false)
+    def initialize_cache
+      return false unless ConfigurationSetting.table_exists? # pre-migration
+
       # cache customized settings
-      db_settings = ConfigurationSetting.all rescue [] # database table might not exist yet (pre-migration)
-      db_settings.each do |setting|
-        @records[setting.key] = JSON.load(setting.value)
+      ConfigurationSetting.all.each do |setting|
+        @records[setting.key] = JSON.load("[#{setting.value}]")[0] # temporary array wrapper ensures valid JSON text
       end
 
       # cache current settings
-      @defaults.each_with_object({}) do |(key, default_value), hsh|
-        @settings[key] = @records[key] || default_value
+      @defaults.each do |key, default_value|
+        value = @records[key]
+        @settings[key] = value.nil? ? default_value : value
       end
+
+      @initialized = true
     end
 
     # checks whether value type is supported
@@ -112,7 +116,7 @@ module Iqvoc
       if value == nil
         raise TypeError, "nil values not supported"
       end
-      unless [String, Fixnum, Float, Array, Hash].include?(value.class)
+      unless [TrueClass, FalseClass, String, Fixnum, Float, Array].include?(value.class)
         raise TypeError, "complex values not supported"
       end
     end

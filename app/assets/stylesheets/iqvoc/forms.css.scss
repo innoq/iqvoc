@@ -1,0 +1,13 @@
+form {
+  ol {
+    margin-left: 0;
+    list-style: none;
+  }
+  &.button_to {
+    display: inline-block;
+    margin-bottom: 0;
+    input {
+      margin: 0;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ require 'iqvoc/configuration/core'
 require 'iqvoc/configuration/concept'
 require 'iqvoc/configuration/collection'
 require 'iqvoc/configuration/label'
+require 'iqvoc/configuration/sync'
 
 module Iqvoc
   unless Iqvoc.const_defined?(:Application)
@@ -39,6 +40,11 @@ module Iqvoc
   module Label
     include Iqvoc::Configuration::Label
   end
+
+  module Sync
+    include Iqvoc::Configuration::Sync
+  end
+
 end
 
 # FIXME: For reasons yet unknown, the load hook is executed twice

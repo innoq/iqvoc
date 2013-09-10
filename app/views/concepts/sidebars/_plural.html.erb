@@ -1,0 +1,22 @@
+<%= sidebar do %>
+  <%= sidebar_header t('txt.views.navigation.sections') %>
+  <%= sidebar_item :text => t("txt.views.navigation.hierarchical"),
+      :icon => 'list-alt',
+      :path => hierarchical_concepts_path,
+      :active => params[:controller] == 'concepts/hierarchical' %>
+  <%= sidebar_item :text => t("txt.views.navigation.alphabetical"),
+      :icon => 'list-alt',
+      :path => alphabetical_concepts_path(:prefix => 'a'),
+      :active => params[:controller] == 'concepts/alphabetical' %>
+  <%= sidebar_item :text => t("txt.views.navigation.expired"),
+      :icon => 'list-alt',
+      :path => expired_concepts_path(:prefix => 'a'),
+      :active => params[:controller] == 'concepts/expired' %>
+  <% if I18n.locale.to_s != Iqvoc::Concept.pref_labeling_languages.first %>
+    <%= sidebar_item :icon => 'list-alt',
+      :text => t("txt.views.untranslated_concepts.caption"),
+      :path => untranslated_concepts_path(:prefix => params[:prefix] || 'a'),
+      :active => params[:controller] == 'concepts/untranslated',
+      :id => 'untranslated' %>
+  <% end %>
+<% end %>

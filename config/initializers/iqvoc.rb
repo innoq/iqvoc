@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 require 'iqvoc'
 require 'iqvoc/origin'
-require 'iqvoc/data_helper'
+require 'iqvoc/inline_data_helper'
 require 'iqvoc/version'
 require 'iqvoc/versioning'
 require 'iqvoc/deep_cloning'
-require 'iqvoc/rdf_utility'
-require 'iqvoc/adaptors/iqvoc'
+require 'iqvoc/rankable'
 require 'iqvoc/ability'
+require 'iqvoc/navigation'
 
 ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 

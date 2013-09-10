@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ require 'integration_test_helper'
 class InstanceConfigurationTest < ActionDispatch::IntegrationTest
 
   test "configuration privileges" do
-    uri = "/config"
+    uri = "/en/config"
 
     # guest
     visit uri
-    assert_equal "/en/user_session/new.html", page.current_path
+    assert page.has_content?("No permission")
 
     ["reader", "editor", "publisher"].each do |role|
       login role
@@ -36,36 +36,35 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     login "administrator"
     visit uri
     assert_equal "/en/config.html", page.current_path
-    assert page.has_css?("fieldset input", :count => 4)
     assert page.has_css?("input#config_title")
-    assert page.has_css?("input#config_available_languages")
     assert page.has_selector?(:xpath, '//input[@id="config_languages.pref_labeling"]')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.further_labelings.Labeling::SKOS::AltLabel"]')
+    assert page.has_selector?(:xpath, '//input[@id="config_languages.notes"]')
 
     # TODO: also test POST
   end
 
   test "modify and persist configuration" do
-    assert page.find("h1.header").has_content? "iQvoc"
+    assert page.find("a.brand").has_content? "iQvoc"
 
     login "administrator"
-    visit "/config"
+    visit "/en/config"
 
     fill_in "config_title", :with => "lorem ipsum"
     click_button "Save"
 
-    assert page.find("h1.header").has_content? "lorem ipsum"
+    assert page.find("a.brand").has_content? "lorem ipsum"
 
     # ensure that settings persist across sessions -- XXX: ineffective!?
     check_page = lambda { |uri|
       visit uri
-      assert page.find("h1.header").has_content? "lorem ipsum"
+      assert page.find("a.brand").has_content? "lorem ipsum"
     }
-    for role in ["reader", "editor", "publisher", "administrator"]
+    ["reader", "editor", "publisher", "administrator"].each do |role|
       login role
-      check_page.call "/config"
+      check_page.call "/en/config"
       logout
-      check_page.call "/search"
+      check_page.call "/en/search"
     end
 
     # TODO: test routes-by-language availability, post-modification

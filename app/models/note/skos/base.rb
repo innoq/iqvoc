@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,34 +18,55 @@ class Note::SKOS::Base < Note::Base
 
   self.rdf_namespace = 'skos'
 
-  def self.build_from_rdf(subject, predicate, object)
-    unless subject.class.reflections.include?(self.name.to_relation_name)
-      raise "Note::SKOS::Base#build_from_rdf: Subject (#{subject}) must be able to recieve this kind of notes (#{self.class.name} => #{self.class.name.to_relation_name})."
-    end
-    unless object =~ /^"(.+)"(@(.+))$/
-      raise "Note::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal"
+  def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
+    unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
     end
 
-    lang = $3
-    value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
-
-    subject.send(self.name.to_relation_name) << self.new(:value => value, :language => lang)
+    target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    case rdf_object
+    when String # Literal
+      unless rdf_object =~ /^"(.*)"(@(.+))$/
+        raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
+      end
+      lang = $3
+      value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+      target_class.new(:value => value, :language => lang).tap do |new_instance|
+        rdf_subject.send(target_class.name.to_relation_name) << new_instance
+      end
+    when Array # Blank node
+      note = target_class.create!(:owner => rdf_subject)
+      rdf_object.each do |annotation|
+        ns, pred = *annotation.first.split(":", 2)
+        note.annotations.create! do |a|
+          a.namespace = ns
+          a.predicate = pred
+          a.value = annotation.last.match(/^"(.+)"$/)[1]
+        end
+      end
+    end
   end
 
   def build_rdf(document, subject)
-    ns, id = "", ""
-    if (self.rdf_namespace && self.rdf_predicate)
-      ns, id = self.rdf_namespace, self.rdf_predicate
-    elsif self.class == Note::SKOS::Base # This could be done by setting self.rdf_predicate to 'note'. But all subclasses would inherit this value.
-      ns, id = "Skos", "note"
+    if annotations.any?
+      subject.send(rdf_namespace).build_predicate(rdf_predicate) do |blank_node|
+        blank_node.Rdfs::comment(value, :lang => language || nil) if value
+        annotations.each do |annotation|
+          if IqRdf::Namespace.find_namespace_class(annotation.namespace)
+            val = if annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP
+              # Fall back to plain value literal if URI is not parseable
+              URI.parse(annotation.value) rescue annotation.value
+            else
+              annotation.value
+            end
+            blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, val, :lang => annotation.language || nil)
+          else
+            raise "#{self.class}#build_rdf: can't find namespace '#{annotation.namespace}' for note annotation '#{annotation.id}'."
+          end
+        end
+      end
     else
-      raise "Note::SKOS::Base#build_rdf: Class #{self.class.name} needs to define self.rdf_namespace and self.rdf_predicate."
-    end
-
-    if (IqRdf::Namespace.find_namespace_class(ns))
-      subject.send(ns).send(id, value, :lang => language)
-    else
-      raise "Note::SKOS::Base#build_rdf: couldn't find Namespace '#{ns}'."
+      subject.send(rdf_namespace).send(rdf_predicate, value, :lang => language)
     end
   end
 

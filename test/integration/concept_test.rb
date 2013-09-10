@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ class ConceptTest < ActionDispatch::IntegrationTest
 
   test "showing published concept" do
     visit "/en/concepts/#{@concept1.origin}.html"
-    assert page.has_content?("#{@concept1.origin}")
     assert page.has_content?("#{@concept1.pref_label}")
   end
 

@@ -14,6 +14,8 @@ module Iqvoc::Environments
     # Specifies the header that your server uses for sending files
     config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
+    config.autoflush_log = true
+
     # For nginx:
     # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 
@@ -60,25 +62,11 @@ module Iqvoc::Environments
     # Send deprecation notices to registered listeners
     config.active_support.deprecation = :notify
 
-    # The JDBC driver URL for the connection to the virtuoso triple store.
-    # Login credentials have to be stored here too. See
-    # http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html#jdbcurl4mat for
-    # more details.
-    # Example: "jdbc:virtuoso://localhost:1111/UID=dba/PWD=dba"
-    # Use nil to disable virtuoso triple synchronization
-    # Rails.application.config.virtuoso_jdbc_driver_url = "jdbc:virtuoso://virtuoso.dyndns.org:1111/UID=iqvoc/PWD=vocpass!/charset=UTF-8"
-    config.virtuoso_jdbc_driver_url = nil
-
-    # Set up the virtuoso synchronization (which is a triggered pull from the
-    # virtuoso server) to be run in a new thread.
-    # This is needed in environments where the web server only runs in a single
-    # process/thread (mostly in development environments).
-    # When a synchronization would be triggered e.g. from a running
-    # update action in the UPB, the update would trigger virtuoso to do a HTTP GET
-    # back to the UPB to fetch the RDF data. But the only process in the UPB would be
-    # blocked by the update... => Deadlock. You can avoid this by using the threaded
-    # mode.
-    config.virtuoso_sync_threaded = false
+    # Enforce whitelist mode for mass assignment.
+    # This will create an empty whitelist of attributes available for mass-assignment for all models
+    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
+    # parameters by using an attr_accessible or attr_protected declaration.
+    config.active_record.whitelist_attributes = false
   end
 
 end

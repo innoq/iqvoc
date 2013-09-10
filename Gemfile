@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,27 +19,30 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.13'
 
 group :assets do
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier',   '>= 1.0.3'
+  gem 'sass-rails', '~> 3.2.5'
+  gem 'bootstrap-sass', '2.3.1.3'
   gem 'therubyracer', :platforms => :ruby
 end
 
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
-gem 'iq_rdf', '~> 0.1.2'
+gem 'iq_rdf'
+gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
-gem 'fastercsv', :platforms => :ruby_18
-gem 'faraday'
-gem 'json_builder'
+gem 'simple_form'
 
 group :development do
-  gem 'heroku'
   gem 'view_marker'
+  gem 'better_errors'
+  gem 'binding_of_caller', :platform => :ruby
+  gem 'quiet_assets'
 end
 
 group :development, :test do
@@ -48,6 +51,14 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2'
     gem 'sqlite3'
+
+    gem 'zeus'
+    gem 'pry'
+    gem 'pry-rails'
+    gem 'pry-debugger'
+    gem 'pry-remote'
+    gem 'hirb-unicode'
+    gem 'cane'
   end
 
   platforms :jruby do
@@ -57,19 +68,18 @@ group :development, :test do
 end
 
 group :test do
-  gem 'test-unit'
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'capybara-screenshot'
+  gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'spork'
-  gem 'spork-testunit'
+  gem 'turn'
+  gem 'minitest'
+  gem 'webmock'
 end
 
 group :production do
-  gem 'sqlite3', :platforms => :ruby
-  gem 'activerecord-oracle_enhanced-adapter', :platforms => :jruby
 end
 
 group :heroku do

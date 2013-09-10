@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,5 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Collection::Unordered < Collection::Base
+
+class Collection::Unordered < Collection::SKOS::Base
+
+  def initialize(*args)
+    ActiveSupport::Deprecation.warn("Collection::Unordered is deprecated. Use Collection::SKOS::Unordered instead.")
+    super
+  end
+
 end

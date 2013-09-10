@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,6 +71,10 @@ class Concept::Relation::Base < ActiveRecord::Base
     self
   end
 
+  def self.bidirectional?
+    !!self.reverse_relation_class
+  end
+
   def self.view_section(obj)
     "relations"
   end
@@ -90,6 +94,26 @@ class Concept::Relation::Base < ActiveRecord::Base
   # if `singular` is true, only a single occurrence is allowed per instance
   def self.singular?
     false
+  end
+
+  def rank
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def rank=(val)
+    unless self.class.rankable?
+      raise "Use `include Rankable` to make a concept relation rankable."
+    else
+      super
+    end
+  end
+
+  def self.rankable?
+    self.class.included_modules.include?(Iqvoc::Rankable)
   end
 
 end

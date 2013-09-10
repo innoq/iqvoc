@@ -1,0 +1,19 @@
+<%= page_header :title => 'Concept Scheme' %>
+<%= render 'sidebar', :scheme => @scheme %>
+
+<% if can? :update, @scheme %>
+  <div class="editing_versioning_toolbar well">
+    <%= link_to t('txt.common.edit'), edit_scheme_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+<% Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| %>
+  <% (languages || Iqvoc.available_languages).each do |lang| %>
+    <%= render labeling_class.partial_name(@scheme), :klass => labeling_class, :concept => @scheme, :lang => lang %>
+  <% end %>
+<% end %>
+
+<div class="relation panel">
+  <h3><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h3>
+  <%= treeview @scheme.top_concepts %>
+</div>

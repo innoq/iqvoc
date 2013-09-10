@@ -1,0 +1,75 @@
+<%= page_header :title => "The Structure of Domain Terminologies in iQvoc" %>
+
+<p>Domain terminologies are implemented based on the
+<a href="http://www.w3.org/TR/skos-reference/">Simple Knowledge Organisation System</a>
+(SKOS), a W3C recommendation.
+
+<p>SKOS distinguishes concepts from lexical labels. A <strong>concept</strong>
+is "an idea or notion; a unit of thought", represented by a globally unique
+identifier (an HTTP URI). A <strong>label</strong> is a term which is used to
+refer to a concept, technically "a string of UNICODE characters, such as
+'romantic love' or 'れんあい', in a given natural language, such as English or
+Japanese". In most cases there are multiple labels denoting the same concept in
+the same language.  One of them is the preferred label, while the others are
+alternative labels. If you have heard about "symmetrical vs. non-symmetrical
+multilingualism" (IFLA Guidelines for Multilingual Thesauri), the basic use case
+described by SKOS is symmetrical (each concept has a preferred label in each
+supported language), but the non-symmetrical approach (there is one concept per
+language with only one preferred label in this language) can be expressed as
+well.</p>
+
+<p>There may also be a formal <strong>notation</strong> identifying a concept in
+some classification system such as the Dewey Decimal Classification. While a
+notation is a string of UNICODE characters just like a label, obviously a
+notation has no specific language. It has been taken from a specific
+classification system instead. There may be multiple notations from different
+systems for a single concept, just like labels from different languages.</p>
+
+<p>Usually concepts will have a lexical <strong>definition</strong>, but this is
+not mandatory. There may also be several annotations, such as a general
+<strong>note</strong>, a change note, editorial note, history note, scope note,
+or an example.  Technically, a lexical definition is just one kind of a
+note.</p>
+
+<p>A more structural definition of a concept is given by its <strong>semantic
+relations</strong> to other concepts. Basically, we have only two types of
+relations in SKOS: hierarchical (<strong>broader<strong>,
+</strong>narrower</strong>) and non-hierarchical (<strong>related</strong>)
+relations. Both types are strictly disjoint: you will have to decide whether a
+relation is hierarchical or not, there must not be both relation types between
+the same two concepts. Some thesauri distinguish different types of hierarchy
+(as defined by Z39-19-2005): generic (a cat is a mammal), instance (Mimi is a
+cat), and whole-part (a cat has claws). SKOS does not follow this distinction,
+"broader" is defined as "more general in meaning", narrower as "more specific".
+Likewise there is no built-in assumption about transitivity of hierarchical
+relations.  Both broader and narrower are not defined to be transitive, but the
+technical vocabulary provides means "to draw inferences about the transitive
+closure of the hierarchical relation".</p>
+
+<p>The non-hierarchical relation is not further specified. This is due to the
+design goal of a simple knowledge organisation system. Any not-so-simple
+application may specialize different types of non-hierarchical relations, such
+as is-caused-by, in-contradiction-to, has-impact-on, or anything else. Doing so
+would exceed the limitations of a simple domain terminology and proceed to a
+more complex ontology. This may be a valid approach, but it is out of scope
+here.</p>
+
+<p>Any set of semantically related concepts as described before can make a
+<strong>concept scheme</strong>. Examples are "thesauri, classification schemes,
+subject heading lists, taxonomies, 'folksonomies', and other types of controlled
+vocabulary", such as different domain terminologies.</p>
+
+<p>Concepts from different concept schemes may have semantic relations as well,
+but these are called <strong>mapping relations</strong>. There are hierarchical
+(<strong>narrowerMatch</strong>, <strong>broaderMatch</strong>) and related
+(<strong>relatedMatch</strong>) mappings just like inside a single concept
+scheme, but there may as well be some equivalence (<strong>exactMatch</strong>)
+or similarity (<strong>closeMatch</strong>).</p>
+
+<p>Finally SKOS defines a second pattern of describing sets of concepts: the
+<strong>collection</strong>. There may be any kind of use case "where a group of
+concepts shares something in common, and it is convenient to group them under a
+common label", but you do not want them to make a concept scheme. In fact a
+collection may even comprise concepts from different concept schemes, and
+collections may be nested, mixing collections and concepts on each level just
+like a file system.</p>

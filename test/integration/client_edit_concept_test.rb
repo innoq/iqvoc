@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     click_link_or_button("Neue Version erstellen")
     assert page.has_css?("#edit_concept")
 
-    section = page.find("#label_note_skos_definitions_data")
-    assert page.has_css?(".note_relation", :count => Iqvoc::Concept.note_class_names.length)
-    assert page.has_css?("#label_note_skos_definitions_data", :count => 1)
+    section = page.find("#note_skos_definitions_data")
+    assert page.has_css?(".note_relation", :count => Iqvoc::Concept.note_class_names.length + Iqvoc::Concept.notation_class_names.length)
+    assert page.has_css?("#note_skos_definitions_data", :count => 1)
     assert section.has_css?("li", :count => 1)
 
     # unhide default note input
@@ -67,12 +67,12 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
 
     # save concept
     page.click_link_or_button("Speichern")
-    assert page.has_content?("Konzept wurde erfolgreich aktualisiert.")
+    assert page.has_css?(".alert.alert-success")
     # return to edit mode
     page.click_link_or_button("Bearbeitung fortsetzen")
     assert page.has_css?("#edit_concept")
 
-    section = page.find("#label_note_skos_definitions_data")
+    section = page.find("#note_skos_definitions_data")
 
     assert section.has_css?("li", :count => 2)
     assert section.has_css?("[type=checkbox]", :count => 2)

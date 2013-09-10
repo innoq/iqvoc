@@ -1,0 +1,10 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+document << Iqvoc::Concept.root_class.instance.build_rdf_subject do |scheme|
+  @top_concepts.each do |top_concept|
+    scheme.Skos::hasTopConcept IqRdf.build_uri(top_concept.origin)
+    render_concept(document, top_concept, true)
+  end
+end

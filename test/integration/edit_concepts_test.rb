@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class EditConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept = Factory(:concept)
+    @concept = FactoryGirl.create(:concept)
   end
 
-  test "Create a new concept version" do
+  test "create a new concept version" do
     login('administrator')
     visit concept_path(@concept, :lang => 'de', :format => 'html')
     assert page.has_button?("Neue Version erstellen"), "Button 'Neue Version erstellen' is missing on concepts#show"

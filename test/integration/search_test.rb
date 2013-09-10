@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,15 +25,17 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     @concepts =  ["Tree", "Forest"].map do |english_label_value|
       FactoryGirl.create(:concept, :pref_labelings => [
-          Factory(:pref_labeling, :target => Factory(:pref_label, :language => :en, :value => english_label_value))
+          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label,
+              :language => :en, :value => english_label_value))
         ])
     end
 
     # create collection
-    @collection = FactoryGirl.create(:collection, :concepts => @concepts,
+    @collection = FactoryGirl.create(:collection,
+      :members => @concepts.map { |c| Iqvoc::Collection.member_class.new(:target => c) },
         :labelings => [], :pref_labelings => [
-            Factory(:pref_labeling,
-                :target => Factory(:pref_label, :language => :en, :value => "Alpha"))
+            FactoryGirl.create(:pref_labeling,
+                :target => FactoryGirl.create(:pref_label, :language => :en, :value => "Alpha"))
         ])
   end
 
@@ -41,16 +43,16 @@ class SearchTest < ActionDispatch::IntegrationTest
     Kaminari.config.default_per_page = @pagination_setting
   end
 
-  test "Searching" do
+  test "searching" do
     visit search_path(:lang => 'en', :format => 'html')
 
     [{
         :type => 'Labels', :query => 'Forest', :query_type => 'contains',
         :amount => 1, :result => 'Forest'
       }].each { |q|
-      select q[:type], :from => "t"
-      fill_in "q", :with => q[:query]
-      select q[:query_type], :from => "qt"
+      find("#t").select q[:type]
+      fill_in "Search term(s)", :with => q[:query]
+      find("#qt").select q[:query_type]
 
       # select all languages
       page.all(:css, ".lang_check").each do |cb|
@@ -71,17 +73,17 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "collection/concept filter" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
-    fill_in "q", :with => "Alpha"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
+    fill_in "Search term(s)", :with => "Alpha"
     click_button("Search")
     assert page.has_css?("#search_results dt", :count => 1)
 
-    choose "Concept"
+    choose "Concepts"
     click_button "Search"
-    assert !page.has_css?("#search_results dt")
+    assert page.has_no_css?("#search_results dt")
 
-    choose "Collection"
+    choose "Collections"
     click_button "Search"
     assert page.has_css?("#search_results dt")
   end
@@ -89,10 +91,10 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "searching within collections" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
-    fill_in "q", :with => "res"
-    select @collection.to_s, :from => "c"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
+    fill_in "Search term(s)", :with => "res"
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -106,8 +108,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     assert page.has_content?("search:result1 a sdc:Result")
@@ -127,10 +129,10 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Notes", :from => "t"
-    select "contains", :from => "qt"
-    fill_in "q", :with => "ipsum"
-    select @collection.to_s, :from => "c"
+    find("#t").select "Notes"
+    find("#qt").select "contains"
+    fill_in "Search term(s)", :with => "ipsum"
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -146,10 +148,10 @@ class SearchTest < ActionDispatch::IntegrationTest
   test "empty query with selected collection should return all collection members" do
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "exact match", :from => "qt"
-    fill_in "q", :with => ""
-    select @collection.to_s, :from => "c"
+    find("#t").select "Labels"
+    find("#qt").select "exact match"
+    fill_in "Search term(s)", :with => ""
+    find("#c").select @collection.to_s
 
     # select all languages
     page.all(:css, ".lang_check").each do |cb|
@@ -163,34 +165,34 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.find("#search_results").has_content?("Forest")
   end
 
-  test "Pagination" do
+  test "pagination" do
     # create a large number of concepts
     12.times { |i|
       FactoryGirl.create(:concept,
-        :pref_labelings => [Factory(:pref_labeling,
-            :target => Factory(:pref_label, :language => :en,
+        :pref_labelings => [FactoryGirl.create(:pref_labeling,
+            :target => FactoryGirl.create(:pref_label, :language => :en,
               :value => "sample_#{sprintf("_%04d", i + 1)}"))])
     }
 
     visit search_path(:lang => 'en', :format => 'html')
 
-    select "Labels", :from => "t"
-    select "contains", :from => "qt"
-    fill_in "q", :with => "sample_"
+    find("#t").select "Labels"
+    find("#qt").select "contains"
+    fill_in "Search term(s)", :with => "sample_"
 
     click_button("Search")
 
     assert page.has_css?("#search_results dt", :count => 5)
     assert page.has_css?(".pagination .page", :count => 3)
 
-    click_link("3")
+    find(".pagination").all(".page").last.find("a").click
 
     assert page.has_css?("#search_results dt", :count => 2)
 
     # TTL & RDF/XML
 
-    ttl_uri = page.all("#abstract_uri a")[-2][:href]
-    xml_uri = page.all("#abstract_uri a")[-1][:href]
+    ttl_uri = page.find("#rdf_link_ttl")[:href]
+    xml_uri = page.find("#rdf_link_xml")[:href]
 
     visit ttl_uri
     assert page.has_content?("sdc:totalResults 12;")

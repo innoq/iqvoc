@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
 # limitations under the License.
 
 class PagesController < ApplicationController
-  skip_before_filter :require_user
-
-  # TODO: Some kind of authorization is missing here!
-  # (even everybody has the right in the Ability)
+  def help
+    authorize! :read, :help
+  end
 end

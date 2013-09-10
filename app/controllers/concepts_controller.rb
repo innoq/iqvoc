@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011 innoQ Deutschland GmbH
+# Copyright 2011-2013 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class ConceptsController < ApplicationController
-  skip_before_filter :require_user
 
   def index
     authorize! :read, Concept::Base
@@ -28,9 +27,8 @@ class ConceptsController < ApplicationController
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render :json => @concepts
       end
-      format.all do # RDF full export
-        authorize! :full_export, Concept::Base
-      end
+      # RDF full export
+      format.any(:rdf, :ttl) { authorize! :full_export, Concept::Base }
     end
   end
 
@@ -65,24 +63,29 @@ class ConceptsController < ApplicationController
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept,
-          [:labels,
-          { :relations => { :target => [:labelings, :relations] } }]).run
+        ActiveRecord::Associations::Preloader.new(@concept, [:labels,
+            { :relations => { :target => [:labelings, :relations] } }]).run
 
+        published_relations = lambda { |concept|
+          return concept.relations.includes(:target).
+              merge(Iqvoc::Concept.base_class.published)
+        }
         concept_data = {
           :origin => @concept.origin,
           :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
-          :relations => @concept.relations.map { |relation|
+          :relations => published_relations.call(@concept).map { |relation|
             concept = relation.target
             {
               :origin => concept.origin,
               :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
-              :relations => concept.relations.length
+              :relations => published_relations.call(concept).count
             }
           }
         }
         render :json => concept_data
       end
+      format.ttl
+      format.rdf
     end
   end
 
@@ -94,6 +97,8 @@ class ConceptsController < ApplicationController
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
+
+    @concept.notations.build if @concept.notations.none?
   end
 
   def create
@@ -101,7 +106,7 @@ class ConceptsController < ApplicationController
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
     if @concept.save
-      flash[:notice] = I18n.t("txt.controllers.versioned_concept.success")
+      flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
       redirect_to concept_path(:published => 0, :id => @concept.origin)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
@@ -133,7 +138,7 @@ class ConceptsController < ApplicationController
     authorize! :update, @concept
 
     if @concept.update_attributes(params[:concept])
-      flash[:notice] = I18n.t("txt.controllers.versioned_concept.update_success")
+      flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
       redirect_to concept_path(:published => 0, :id => @concept)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
@@ -148,10 +153,10 @@ class ConceptsController < ApplicationController
     authorize! :destroy, @new_concept
 
     if @new_concept.destroy
-      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete")
+      flash[:success] = I18n.t("txt.controllers.concept_versions.delete")
       redirect_to dashboard_path
     else
-      flash[:notice] = I18n.t("txt.controllers.concept_versions.delete_error")
+      flash[:success] = I18n.t("txt.controllers.concept_versions.delete_error")
       redirect_to concept_path(:published => 0, :id => @new_concept)
     end
   end

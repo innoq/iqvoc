@@ -122,7 +122,8 @@ module Iqvoc
       }
       attributes = defaults.merge(attributes)
 
-      label = Iqvoc::XLLabel.base_class.create!(attributes)
+      klass = Iqvoc::XLLabel rescue Iqvoc::Label # FIXME: breaks encapsulation (hard-coded iqvoc_skosxl dependency)
+      label = klass.base_class.create!(attributes)
 
       inflectionals.each { |inf|
         label.inflectionals.create!(:value => inf)

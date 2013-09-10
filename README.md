@@ -1,6 +1,8 @@
 # iQvoc
 
+[![Gem Version](https://badge.fury.io/rb/iqvoc.png)](http://badge.fury.io/rb/iqvoc)
 [![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
+[![Code Climate](https://codeclimate.com/github/innoq/iqvoc.png)](https://codeclimate.com/github/innoq/iqvoc)
 
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces with Semantic Web interoperability.
 
@@ -25,28 +27,26 @@ iQvoc is built with state-of-the-art technology and can be easily customized acc
 ### Heroku
 
 You can easily setup your iQvoc instance in under 5 minutes, we wanted to make this process really easy.
-
-To run iQvoc on heroku do the following:
+In order to deploy to heroku you need to have an account and [heroku toolbelt](https://toolbelt.heroku.com) installed.
 
 ```
-bundle install
-heroku create
-bundle exec rake heroku:config
-git push heroku master
-heroku rake db:migrate
-heroku rake db:seed
-heroku restart
+$ bundle install
+$ heroku create
+$ bundle exec rake heroku:config
+$ git push heroku master
+$ heroku run rake db:migrate
+$ heroku run rake db:seed
+$ heroku restart
 ```
 
 `heroku open` opens your app in the browser.
 
 Remember to visit the Users section and change the default passwords!
 
-**Remarks:**
-For now iQvoc only supports the standard Bamboo stack. Cedar is not supported as we have `sqlite3` as a dependency
-in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like Bamboo at the moment.
-
 ### Custom
+
+We recommend running [iQvoc as a Rails engine](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine).
+Running the cloned source code is possible but any modifications would require a fork.
 
 1. Configure your database via `config/database.template.yml`. Don't forget to rename it to `database.yml`
 2. Run `bundle install`
@@ -60,7 +60,7 @@ in the Gemfile and Cedar does not support a custom `BUNDLE_WITHOUT` config like 
 
 ## Compatibility
 
-iQvoc is fully compatible with Ruby 1.9.2, 1.8.7 and JRuby 1.6.
+iQvoc is fully compatible with Ruby 1.9, 2.0 and JRuby 1.7.
 
 ## Customization
 
@@ -94,5 +94,6 @@ iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH]
 
 ## License
 
-Copyright 2011 innoQ Deutschland GmbH
+Copyright 2013 innoQ Deutschland GmbH
+
 Licensed under the Apache License, Version 2.0
