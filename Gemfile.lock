@@ -235,7 +235,6 @@ DEPENDENCIES
   iq_triplestorage
   jruby-openssl
   json
-  json_builder
   kaminari
   minitest
   mysql2

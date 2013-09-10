@@ -1,3 +1,0 @@
-@results.each do |result|
-  key concept_url(:id => result.owner, :lang => nil, :format => nil), result.owner.pref_label.to_s
-end
