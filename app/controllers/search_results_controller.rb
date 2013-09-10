@@ -42,7 +42,7 @@ class SearchResultsController < ApplicationController
       if params[:languages].respond_to?(:each) && params[:languages].include?("none")
         # Special treatment for the "nil language"
         params[:languages] << nil
-      else
+      elsif params[:languages].respond_to?(:split)
         params[:languages] = params[:languages].split(",")
       end
 
