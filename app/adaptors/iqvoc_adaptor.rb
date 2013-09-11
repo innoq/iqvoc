@@ -2,15 +2,15 @@ require 'faraday'
 require 'json'
 
 class IqvocAdaptor
-  attr_reader :name, :conn
+  attr_reader :name, :url, :conn
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
 
-  def initialize(name, host = nil)
+  def initialize(name, url = nil)
     @name = name
-    @host = host || config(:host)
+    @url = url || config(:url)
 
-    @conn = Faraday.new(:url => @host) do |builder|
+    @conn = Faraday.new(:url => @url) do |builder|
       builder.use Faraday::Response::Logger if Rails.env.development?
       builder.use Faraday::Adapter::NetHttp
     end
