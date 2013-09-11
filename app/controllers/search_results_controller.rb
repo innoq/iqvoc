@@ -38,12 +38,13 @@ class SearchResultsController < ApplicationController
 
     if params[:query]
       # Deal with language parameter patterns
+      languages = []
       # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
       if params[:languages].respond_to?(:each) && params[:languages].include?("none")
         # Special treatment for the "nil language"
-        params[:languages] << nil
+        languages << nil
       elsif params[:languages].respond_to?(:split)
-        params[:languages] = params[:languages].split(",")
+        languages = params[:languages].split(",")
       end
 
       # Ensure a valid class was selected
@@ -56,13 +57,13 @@ class SearchResultsController < ApplicationController
 
       if klass.forces_multi_query? || (klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = klass.multi_query(params)
+        @results = klass.multi_query(params.merge({:languages => languages}))
         # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
         # each sub-query has to return 100 objects at most.
         @klass = klass
       else
         @multi_query = false
-        @results = klass.single_query(params)
+        @results = klass.single_query(params.merge({:languages => languages}))
       end
 
       if @multi_query
