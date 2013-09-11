@@ -1,8 +1,8 @@
-<dt>
+<dt vocab="<%= schema_url(:lang => nil) %>" typeof="<%= result.owner.class.rdf_class %>">
   <% if result.owner.is_a?(Concept::Base) %>
-    <%= link_to highlight_query("#{result.owner.pref_label.to_s} (#{result.owner.origin})", params[:query]), concept_path(:id => result.owner) %><br>
+    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %><br/>
   <% elsif result.owner.is_a?(Label::Base) %>
-    <%= link_to highlight_query(result.owner.value, params[:query]), label_path(:id => result.owner) %><br>
+    <%= link_to result.owner.value, label_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %><br/>
   <% end %>
 </dt>
 <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>

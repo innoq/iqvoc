@@ -1,17 +1,12 @@
-<%- if owner = result.owner -%>
-  <dt>
-    <% case owner.class.name %>
-    <% when Iqvoc::Concept.base_class_name %>
-      <%= link_to highlight_query(result.target.value, params[:query]), concept_path(:id => owner) %>
-    <% when Iqvoc::Collection.base_class_name %>
-      <%= link_to highlight_query(result.target.value, params[:query]), collection_path(:id => owner) %>
-    <% end %>
+<% if owner = result.owner %>
+  <dt vocab="<%= schema_url(:lang => nil) %>" typeof="<%= owner.class.rdf_class %>">
     <%- if owner.additional_info.present? -%>
       (<%= owner.additional_info %>)
     <%- end -%>
+    <%= link_to_object(owner, result.target.value, :property => result.rdf_predicate, :lang => result.target.language) %>
   </dt>
   <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
-  <%- if result.target.language -%>
-    <dd><%= t('txt.views.search_results.language') %>: <%= result.target.language %></dd>
-  <%- end -%>
-<%- end -%>
+  <% if result.target.language %>
+  <dd><%= t('txt.views.search_results.language') %>: <%= result.target.language %></dd>
+  <% end %>
+<% end %>

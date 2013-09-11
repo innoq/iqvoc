@@ -7,7 +7,7 @@
 <div class="panel">
   <%= results_header @results %>
 
-  <dl id="search_results">
+  <dl id="search_results" vocab="<%= schema_url(:lang => nil) %>">
     <% @results.each do |result| %>
       <% if @klass %>
         <%= render @klass.search_result_partial_name, :result => result %>
