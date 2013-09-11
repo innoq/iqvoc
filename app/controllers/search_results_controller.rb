@@ -81,8 +81,7 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html { render :index, :layout => with_layout? }
-        format.ttl { render :handlers => [:iqrdf] }
-        format.rdf { render :handlers => [:iqrdf] }
+        format.any(:ttl, :rdf)
       end
 
     end
