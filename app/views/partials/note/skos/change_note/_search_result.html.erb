@@ -1,6 +1,6 @@
-<dt vocab="<%= schema_url(:lang => nil) %>" typeof="<%= result.owner.class.rdf_class %>">
+<dt>
   <% result.annotations.each do |annotation| %>
-    <%= link_to_object(result.owner, "#{annotation.predicate}: #{annotation.value}", :property => annotation.predicate, :lang => result.language %><br/>
+    <%= link_to_object(result.owner, "#{annotation.predicate}: #{annotation.value}" %><br/>
   <% end %>
 </dt>
 <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>

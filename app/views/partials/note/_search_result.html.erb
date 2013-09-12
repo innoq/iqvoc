@@ -1,4 +1,4 @@
-<dt vocab="<%= schema_url(:lang => nil) %>" typeof="<%= result.owner.class.rdf_class %>">
+<dt>
   <% if result.owner.is_a?(Concept::Base) %>
     <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %><br/>
   <% elsif result.owner.is_a?(Label::Base) %>

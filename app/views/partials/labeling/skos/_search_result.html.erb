@@ -1,12 +1,12 @@
 <% if owner = result.owner %>
-  <dt vocab="<%= schema_url(:lang => nil) %>" typeof="<%= owner.class.rdf_class %>">
+  <dt class="search-result">
     <%- if owner.additional_info.present? -%>
       (<%= owner.additional_info %>)
     <%- end -%>
-    <%= link_to_object(owner, result.target.value, :property => result.rdf_predicate, :lang => result.target.language) %>
+    <%= link_to_object(owner, result.target.value) %>
   </dt>
-  <dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
+  <dd class="search-result-detail"><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
   <% if result.target.language %>
-  <dd><%= t('txt.views.search_results.language') %>: <%= result.target.language %></dd>
+  <dd class="search-result-detail"><%= t('txt.views.search_results.language') %>: <%= result.target.language %></dd>
   <% end %>
 <% end %>
