@@ -2,13 +2,15 @@ require 'faraday'
 require 'json'
 
 class IqvocAdaptor
-  attr_reader :name, :url, :conn
+  attr_reader :name, :url
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
 
   def initialize(name, url = nil)
     @name = name
     @url = url || config(:url)
+    @doc = nil
+    @response = nil
 
     @conn = Faraday.new(:url => @url) do |builder|
       builder.use Faraday::Response::Logger if Rails.env.development?
@@ -23,7 +25,7 @@ class IqvocAdaptor
     languages = params.delete(:languages) || [I18n.locale]
     languages = Array.wrap(languages).flatten.join(",")
 
-    response = conn.get do |req|
+    response = @conn.get do |req|
       req.url "/search.html"
       req.params["q"]   = CGI.unescape(query)
       req.params["qt"]  = query_type
@@ -33,7 +35,19 @@ class IqvocAdaptor
       req.params["layout"] = 0
     end
 
-    response.body
+    @response = response.body
+
+    extract_results
+  end
+
+  def extract_results
+    @doc = Nokogiri::HTML(@response)
+
+    @doc.css('.search-result').map do |result|
+      link = result.at_css('.search-result-link')
+      label, path = link.text, link['data-resource-path']
+      SearchResult.new(url, path, label)
+    end
   end
 
   def config(key)
