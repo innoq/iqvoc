@@ -7,7 +7,7 @@
 <div class="panel">
   <%= results_header @results %>
 
-  <dl id="search_results">
+  <ul class="search-results unstyled">
     <% @results.each do |result| %>
       <% if @klass %>
         <%= render @klass.search_result_partial_name, :result => result %>
@@ -15,7 +15,7 @@
         <%= render result.class.search_result_partial_name, :result => result %>
       <% end %>
     <% end %>
-  </dl>
+  </ul>
 
   <%= paginate @results %>
 <% end %>

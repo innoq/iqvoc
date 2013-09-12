@@ -59,12 +59,6 @@ img.spinner {
   margin-top: 2px;
 }
 
-dl {
-  dt {
-    margin-top: 10px;
-  }
-}
-
 .letter-selector {
   $active: white;
   margin: 0;
@@ -147,4 +141,30 @@ ol.concepts {
       display: inline;
     }
   }
+}
+
+.search-result {
+  margin-top: 10px;
+  a {
+    font-weight: bold;
+  }
+}
+
+.search-result-meta {
+  margin-top: 0;
+}
+
+.search-result-key {
+  float: left;
+  margin-right: 5px;
+  // font-weight: normal;
+  &:after {
+    content: ':';
+  }
+}
+
+.search-result-value {}
+
+.search-result-body {
+  margin-top: 0;
 }

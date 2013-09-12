@@ -1,6 +1,9 @@
-<dt>
+<li class="search-result">
   <% result.annotations.each do |annotation| %>
     <%= link_to_object(result.owner, "#{annotation.predicate}: #{annotation.value}" %><br/>
   <% end %>
-</dt>
-<dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
+  <dl class="search-result-meta">
+    <dt class="search-result-key"><%= t('txt.views.search_results.type') %></dt>
+    <dd class="search-result-value"><%= result.class.model_name.human %></dd>
+  </dl>
+</li>

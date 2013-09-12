@@ -1,8 +1,11 @@
-<dt>
+<li class="search-result">
   <% if result.owner.is_a?(Concept::Base) %>
-    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %><br/>
+    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner) %>
   <% elsif result.owner.is_a?(Label::Base) %>
-    <%= link_to result.owner.value, label_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %><br/>
+    <%= link_to result.owner.value, label_path(:id => result.owner), :property => result.class.rdf_predicate, :lang => result.language %>
   <% end %>
-</dt>
-<dd><%= t('txt.views.search_results.type') %>: <%= result.class.model_name.human %></dd>
+  <dl class="search-result-meta">
+    <dt class="search-result-key"><%= t('txt.views.search_results.type') %></dt>
+    <dd class="search-result-value"><%= result.class.model_name.human %></dd>
+  </dl>
+</li>
