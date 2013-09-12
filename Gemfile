@@ -84,4 +84,5 @@ end
 
 group :heroku do
   gem 'pg', :platforms => :ruby
+  gem 'passenger'
 end
