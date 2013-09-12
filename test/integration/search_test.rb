@@ -61,11 +61,11 @@ class SearchTest < ActionDispatch::IntegrationTest
 
       click_button("Search")
 
-      assert page.has_css?("#search_results dt", :count => q[:amount]),
-      "Page has #{page.all(:css, "#search_results dt").count} '#search_results dt' nodes. Should be #{q[:amount]}."
+      assert page.has_css?(".search-result", :count => q[:amount]),
+      "Page has #{page.all(:css, ".search-result").count} '.search-result' nodes. Should be #{q[:amount]}."
 
-      within("#search_results dt") do
-        assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '#search_results dt'."
+      within(".search-result") do
+        assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '.search-result'."
       end
     }
   end
@@ -77,15 +77,15 @@ class SearchTest < ActionDispatch::IntegrationTest
     find("#qt").select "contains"
     fill_in "Search term(s)", :with => "Alpha"
     click_button("Search")
-    assert page.has_css?("#search_results dt", :count => 1)
+    assert page.has_css?(".search-result", :count => 1)
 
     choose "Concepts"
     click_button "Search"
-    assert page.has_no_css?("#search_results dt")
+    assert page.has_no_css?(".search-result")
 
     choose "Collections"
     click_button "Search"
-    assert page.has_css?("#search_results dt")
+    assert page.has_css?(".search-result")
   end
 
   test "searching within collections" do
@@ -103,8 +103,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?("#search_results dt", :count => 1)
-    assert page.find("#search_results").has_content?("Forest")
+    assert page.has_css?(".search-result", :count => 1)
+    assert page.find(".search-results").has_content?("Forest")
 
     # TTL & RDF/XML
 
@@ -141,8 +141,8 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?("#search_results dt", :count => 1)
-    assert page.find("#search_results").has_content?(concept.origin)
+    assert page.has_css?(".search-result", :count => 1)
+    assert page.find(".search-results").has_content?(concept.origin)
   end
 
   test "empty query with selected collection should return all collection members" do
@@ -160,9 +160,9 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?("#search_results dt", :count => 2)
-    assert page.find("#search_results").has_content?("Tree")
-    assert page.find("#search_results").has_content?("Forest")
+    assert page.has_css?(".search-result", :count => 2)
+    assert page.find(".search-results").has_content?("Tree")
+    assert page.find(".search-results").has_content?("Forest")
   end
 
   test "pagination" do
@@ -182,12 +182,12 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?("#search_results dt", :count => 5)
+    assert page.has_css?(".search-result", :count => 5)
     assert page.has_css?(".pagination .page", :count => 3)
 
     find(".pagination").all(".page").last.find("a").click
 
-    assert page.has_css?("#search_results dt", :count => 2)
+    assert page.has_css?(".search-result", :count => 2)
 
     # TTL & RDF/XML
 
