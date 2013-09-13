@@ -31,6 +31,7 @@ class IqvocAdaptor
       req.params["l"]   = languages
       req.params["for"] = params[:for]
       req.params["t"]   = params[:t]
+      req.params["c"]   = params[:c]
       req.params["layout"] = 0
     end
 
