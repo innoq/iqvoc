@@ -184,6 +184,7 @@ de:
        no_results: "Keine Ergebnisse"
        search_languages: "Sprachen"
        search_results: "Suchergebnisse"
+       search_results_on: "Suchergebnisse auf %{url}"
        results_found:
          one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
          other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."

@@ -192,6 +192,7 @@ en:
        no_results: "No results"
        search_languages: "Languages"
        search_results: "Search results"
+       search_results_on: "Search results on %{url}"
        results_found:
          one: "Your search for <strong>%{query}</strong> yielded the following %{count} result."
          other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
