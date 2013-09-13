@@ -118,7 +118,8 @@ module Iqvoc
           "languages.pref_labeling" => ["en", "de"],
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
           "languages.notes" => ["en", "de"],
-          "performance.unbounded_hierarchy" => false
+          "performance.unbounded_hierarchy" => false,
+          "adaptors.iqvoc" => [""]
         })
       end
 

@@ -1,9 +1,6 @@
 <% if owner = result.owner %>
 <li class="search-result">
-  <% if owner.additional_info.present? %>
-    (<%= owner.additional_info %>)
-  <% end %>
-  <%= link_to_object(owner, result.target.value, :class => 'search-result-link', :data => { 'resource-path' => rdf_path(owner.origin, :lang => nil, :format => nil) }) %>
+  <%= link_to_object(owner, result.target.value, :class => 'search-result-link', :data => { 'resource-path' => rdf_path(owner.origin, :lang => nil, :format => nil) }) %> <% if owner.additional_info.present? %>(<%= owner.additional_info %>)<% end %>
   <dl class="search-result-meta">
     <dt class="search-result-key"><%= t('txt.views.search_results.type') %></dt>
     <dd class="search-result-value"><%= result.class.model_name.human %></dd>

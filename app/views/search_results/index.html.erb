@@ -17,6 +17,15 @@
     <% end %>
   </ul>
 
+  <% @remote_result_collections.each do |collection| %>
+    <h2><%= t('txt.views.search_results.search_results') %> <%= collection.adaptor.url %> <small>(<%= collection.size %>)</small></h2>
+    <ul class="search-results unstyled">
+      <% collection.each do |result| %>
+        <%= render 'partials/labeling/skos/search_result_remote', :result => result %>
+      <% end %>
+    </ul>
+  <% end %>
+
   <%= paginate @results %>
 <% end %>
 </div>

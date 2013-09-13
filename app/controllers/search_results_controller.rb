@@ -79,6 +79,16 @@ class SearchResultsController < ApplicationController
         @results = @results.per(params[:limit].to_i)
       end
 
+      @remote_result_collections = []
+
+      if params[:host] && adaptors = Iqvoc.config['adaptors.iqvoc']
+        adaptors.each do |adaptor|
+          adaptor = IqvocAdaptor.new('http://localhost:3001')
+          results = adaptor.search(params[:query], params)
+          @remote_result_collections << SearchResultCollection.new(adaptor, results)
+        end
+      end
+
       respond_to do |format|
         format.html { render :index, :layout => with_layout? }
         format.any(:ttl, :rdf)
