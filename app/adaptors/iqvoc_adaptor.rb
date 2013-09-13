@@ -1,5 +1,5 @@
 require 'faraday'
-require 'json'
+require 'nokogiri'
 
 class IqvocAdaptor
   attr_reader :name, :url
