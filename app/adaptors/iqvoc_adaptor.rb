@@ -29,8 +29,8 @@ class IqvocAdaptor
       req.params["q"]   = CGI.unescape(query)
       req.params["qt"]  = query_type
       req.params["l"]   = languages
-      req.params["for"] = "concept"
-      req.params["t"]   = "labeling-skos-base"
+      req.params["for"] = params[:for]
+      req.params["t"]   = params[:t]
       req.params["layout"] = 0
     end
 
