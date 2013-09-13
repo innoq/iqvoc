@@ -1,4 +1,10 @@
 <li class="search-result">
   <%= link_to(result.label, result.url, :class => 'search-result-link') %>
   <span class="search-result-uri"><%= result.url %></span>
+  <dl class="search-result-meta">
+    <% result.meta.each do |meta_information| %>
+    <dt class="search-result-key"><%= meta_information.key %></dt>
+    <dd class="search-result-value" data-key="<%= meta_information.key %>"><%= meta_information.value %></dd>
+    <% end %>
+  </dl>
 </li>

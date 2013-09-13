@@ -42,10 +42,18 @@ class IqvocAdaptor
   def extract_results
     @doc = Nokogiri::HTML(@response)
 
-    @doc.css('.search-result').map do |result|
-      link = result.at_css('.search-result-link')
+    @doc.css('.search-result').map do |element|
+      link = element.at_css('.search-result-link')
       label, path = link.text, link['data-resource-path']
-      SearchResult.new(url, path, label)
+      result = SearchResult.new(url, path, label)
+
+      if (meta = element.css('.search-result-meta > .search-result-value')) && meta.any?
+        meta.each do |element|
+          result.add_meta_information(element['data-key'], element.text)
+        end
+      end
+
+      result
     end
   end
 end
