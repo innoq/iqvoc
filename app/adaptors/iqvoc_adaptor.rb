@@ -18,10 +18,10 @@ class IqvocAdaptor
   end
 
   def search(query, params = {})
-    query_type = params.delete(:query_type)
+    query_type = params.fetch(:query_type, "begins_with")
     query_type = "begins_with" unless QUERY_TYPES.include?(query_type)
 
-    languages = params.delete(:languages) || [I18n.locale]
+    languages = params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
     response = @conn.get do |req|
