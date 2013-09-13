@@ -2,13 +2,12 @@ require 'faraday'
 require 'nokogiri'
 
 class IqvocAdaptor
-  attr_reader :name, :url
+  attr_reader :url
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
 
-  def initialize(name, url = nil)
-    @name = name
-    @url = url || config(:url)
+  def initialize(url)
+    @url = url
     @doc = nil
     @response = nil
 
@@ -47,16 +46,6 @@ class IqvocAdaptor
       link = result.at_css('.search-result-link')
       label, path = link.text, link['data-resource-path']
       SearchResult.new(url, path, label)
-    end
-  end
-
-  def config(key)
-    config = ::Iqvoc.config["adaptors.iqvoc"]
-    config.symbolize_keys!
-    if config.has_key?(name) && config[name]
-      return config[name][key]
-    else
-      raise "Adaptor configuration is missing '#{name}'."
     end
   end
 end
