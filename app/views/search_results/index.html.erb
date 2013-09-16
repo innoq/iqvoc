@@ -21,7 +21,7 @@
     <h2><%= t('txt.views.search_results.search_results_on', :url => collection.adaptor.name) %> <small>(<%= collection.size %>)</small></h2>
     <ul class="search-results unstyled">
       <% collection.each do |result| %>
-        <%= render 'partials/labeling/skos/search_result_remote', :result => result %>
+        <%= render 'search_result', :result => result %>
       <% end %>
     </ul>
   <% end %>
