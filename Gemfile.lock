@@ -71,6 +71,7 @@ GEM
     coderay (1.0.8)
     columnize (0.3.6)
     crack (0.3.1)
+    daemon_controller (1.1.5)
     database_cleaner (0.8.0)
     debug_inspector (0.0.2)
     debugger (1.6.1)
@@ -125,6 +126,10 @@ GEM
     nokogiri (1.5.6)
     nokogiri (1.5.6-java)
     parallel (0.6.4)
+    passenger (4.0.17)
+      daemon_controller (>= 1.1.0)
+      rack
+      rake (>= 0.8.1)
     pg (0.14.1)
     polyglot (0.3.3)
     pry (0.9.10)
@@ -165,7 +170,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.0.3)
+    rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
     rubyzip (0.9.9)
@@ -243,6 +248,7 @@ DEPENDENCIES
   minitest
   mysql2
   nokogiri (~> 1.5.0)
+  passenger
   pg
   pry
   pry-debugger

@@ -47,7 +47,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     unless suppress_extra_labels
       document << IqRdf::build_uri(target.origin) do |subject|
         target.pref_labelings.each do |labeling|
-          subject.skos.send(labeling.rdf_predicate, labeling.target.value.to_s,
+          subject.send(labeling.rdf_namespace).send(labeling.rdf_predicate, labeling.target.value.to_s,
               :lang => labeling.target.language)
         end
       end

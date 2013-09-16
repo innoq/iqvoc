@@ -109,7 +109,6 @@ class SearchResultsController < ApplicationController
         format.html { render :index, :layout => with_layout? }
         format.any(:ttl, :rdf)
       end
-
     end
   end
 
