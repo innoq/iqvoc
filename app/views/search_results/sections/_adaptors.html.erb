@@ -1,0 +1,15 @@
+<%= input_block :label => t('txt.views.search_results.adaptors') do %>
+  <% @adaptors.each do |adaptor| %>
+    <label class="checkbox inline">
+      <%= check_box_tag "a[]", adaptor.name, search_adaptor_selected?(adaptor.name) %><%= adaptor.name %>
+    </label>
+  <% end %>
+  <div class="btn-group">
+    <button type="button" id="language_select_all" class="btn btn-mini">
+      <%= t('txt.views.search_results.all') %>
+    </button>
+    <button type="button" id="language_select_none" class="btn btn-mini">
+      <%= t('txt.views.search_results.none') %>
+    </button>
+  </div>
+<% end %>

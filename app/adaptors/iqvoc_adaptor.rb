@@ -2,11 +2,12 @@ require 'faraday'
 require 'nokogiri'
 
 class IqvocAdaptor
-  attr_reader :url
+  attr_reader :name, :url
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
 
-  def initialize(url)
+  def initialize(name, url)
+    @name = name
     @url = url
     @doc = nil
     @response = nil
@@ -24,15 +25,20 @@ class IqvocAdaptor
     languages = params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
-    response = @conn.get do |req|
-      req.url "/search.html"
-      req.params["q"]   = CGI.unescape(query)
-      req.params["qt"]  = query_type
-      req.params["l"]   = languages
-      req.params["for"] = params[:for]
-      req.params["t"]   = params[:t]
-      req.params["c"]   = params[:c]
-      req.params["layout"] = 0
+    begin
+      response = @conn.get do |req|
+        req.url "/search.html"
+        req.params["q"]   = CGI.unescape(query)
+        req.params["qt"]  = query_type
+        req.params["l"]   = languages
+        req.params["for"] = params[:for]
+        req.params["t"]   = params[:t]
+        req.params["c"]   = params[:c]
+        req.params["layout"] = 0
+      end
+    rescue
+      Rails.logger.warn("HTTP error while querying remote source #{url}")
+      return nil
     end
 
     @response = response.body

@@ -24,7 +24,12 @@ class SearchResultsController < ApplicationController
     self.class.prepare_basic_variables(self)
 
     # Map short params to their log representation
-    {:t => :type, :q => :query, :l => :languages, :qt => :query_type, :c => :collection_origin}.each do |short, long|
+    { :t  => :type,
+      :q  => :query,
+      :l  => :languages,
+      :qt => :query_type,
+      :c  => :collection_origin,
+      :a  => :adaptors }.each do |short, long|
       params[long] ||= params[short]
     end
 
@@ -35,6 +40,13 @@ class SearchResultsController < ApplicationController
     # in rdf views)
     request.query_parameters.delete("commit")
     request.query_parameters.delete("utf8")
+
+    @adaptors = []
+    configured_adaptors = Iqvoc.config['adaptors.iqvoc']
+    configured_adaptors.each do |config|
+      adaptor = IqvocAdaptor.new(*config.split(/:(?=http)/))
+      @adaptors << adaptor
+    end
 
     if params[:query]
       # Deal with language parameter patterns
@@ -81,11 +93,15 @@ class SearchResultsController < ApplicationController
 
       @remote_result_collections = []
 
-      if params[:host] && adaptors = Iqvoc.config['adaptors.iqvoc']
+      if params[:a] && adaptors = @adaptors.select {|a| params[:a].include?(a.name) }
         adaptors.each do |adaptor|
-          adaptor = IqvocAdaptor.new('http://localhost:3001')
           results = adaptor.search(params[:query], params)
-          @remote_result_collections << SearchResultCollection.new(adaptor, results)
+          unless results.nil?
+            @remote_result_collections << SearchResultCollection.new(adaptor, results)
+          else
+            flash.now[:error] ||= []
+            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => adaptor.name)
+          end
         end
       end
 

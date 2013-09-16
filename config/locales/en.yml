@@ -205,6 +205,7 @@ en:
        none: "none"
        for: "For"
        mode: "Mode"
+       adaptors: "External sources"
      user_sessions:
        header: "Login"
        login: "Login"
@@ -298,6 +299,7 @@ en:
        invalid_value: "unsupported value: %{key} (%{error_message})"
      search_results:
        insufficient_data: "You gave insufficient search data."
+       remote_source_error: "Remote source '%{source}' could not be queried."
      users:
        successfully_created: "User has been successfully created."
        successfully_updated: "User has been successfully updated."

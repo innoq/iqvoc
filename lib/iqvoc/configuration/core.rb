@@ -110,7 +110,15 @@ module Iqvoc
 
         self.ability_class_name = "Iqvoc::Ability"
 
-        self.search_sections = ["klass", "mode", "terms", "type", "collection", "languages"]
+        self.search_sections = [
+          "klass",
+          "mode",
+          "terms",
+          "type",
+          "collection",
+          "languages",
+          "adaptors"
+        ]
 
         # initialize
         self.config.register_settings({
