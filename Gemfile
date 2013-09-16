@@ -38,6 +38,7 @@ gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
 gem 'faraday'
+gem 'nokogiri', '~> 1.6.0'
 
 group :development do
   gem 'view_marker'
@@ -69,7 +70,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit', '~> 0.14.2'

@@ -119,12 +119,15 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.21)
+    mini_portile (0.5.1)
     minitest (3.4.0)
     multi_json (1.8.0)
     multipart-post (1.2.0)
     mysql2 (0.3.11)
-    nokogiri (1.5.6)
-    nokogiri (1.5.6-java)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
+    nokogiri (1.6.0-java)
+      mini_portile (~> 0.5.0)
     parallel (0.6.4)
     passenger (4.0.17)
       daemon_controller (>= 1.1.0)
@@ -247,7 +250,7 @@ DEPENDENCIES
   kaminari
   minitest
   mysql2
-  nokogiri (~> 1.5.0)
+  nokogiri (~> 1.6.0)
   passenger
   pg
   pry
