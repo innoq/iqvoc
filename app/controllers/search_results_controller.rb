@@ -44,8 +44,11 @@ class SearchResultsController < ApplicationController
     @adaptors = []
     configured_adaptors = Iqvoc.config['adaptors.iqvoc']
     configured_adaptors.each do |config|
-      adaptor = IqvocAdaptor.new(*config.split(/:(?=http)/))
-      @adaptors << adaptor
+      name, url = *config.split(/:(?=http)/)
+      if name && url
+        adaptor = IqvocAdaptor.new(name, url)
+        @adaptors << adaptor
+      end
     end
 
     if params[:query]
