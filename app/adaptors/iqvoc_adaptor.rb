@@ -60,6 +60,10 @@ class IqvocAdaptor
         end
       end
 
+      if body = element.at_css('.search-result-body')
+        result.body = body.text
+      end
+
       result
     end
   end

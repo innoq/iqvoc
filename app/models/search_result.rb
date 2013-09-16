@@ -9,6 +9,7 @@ class SearchResult
   end
 
   attr_reader :label, :host, :path, :meta
+  attr_accessor :body
 
   def self.search_result_partial_name
     'partials/labeling/skos/search_resulte_remote'
