@@ -96,7 +96,7 @@ de:
          languages: Sprachen
          performance: Performance
          triplestore: Triplestore
-         adaptors: Verteilte Suche
+         sources: Verteilte Suche
        settings:
          title: Titel
          languages_notes: Sprachen für Notes
@@ -107,7 +107,7 @@ de:
          triplestore_username: Benutzername für Triplestore
          triplestore_password: Passwort für Triplestore
          triplestore_autosync: automatische Synchronisation mit Triplestore
-         iqvoc: iQvoc Dataset URIs
+         sources_iqvoc: Quellen (iQvoc)
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"

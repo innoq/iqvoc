@@ -117,7 +117,7 @@ module Iqvoc
           "type",
           "collection",
           "languages",
-          "adaptors"
+          "sources"
         ]
 
         # initialize
@@ -127,7 +127,7 @@ module Iqvoc
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
           "languages.notes" => ["en", "de"],
           "performance.unbounded_hierarchy" => false,
-          "adaptors.iqvoc" => [""]
+          "sources.iqvoc" => [""]
         })
       end
 
