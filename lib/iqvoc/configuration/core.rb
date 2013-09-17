@@ -100,7 +100,8 @@ module Iqvoc
           :owl  => "http://www.w3.org/2002/07/owl#",
           :skos => "http://www.w3.org/2004/02/skos/core#",
           :dct  => "http://purl.org/dc/terms/",
-          :foaf => "http://xmlns.com/foaf/spec/"
+          :foaf => "http://xmlns.com/foaf/spec/",
+          :void => "http://rdfs.org/ns/void#"
         }
 
         # The class to use for automatic generation of change notes on every save
