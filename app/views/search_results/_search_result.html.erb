@@ -1,5 +1,5 @@
 <li class="search-result">
-  <%= link_to(result.label, result.url, :class => 'search-result-link') %>
+  <%= link_to(result.label, result.url.to_s, :class => 'search-result-link') %>
   <span class="search-result-uri"><%= result.url %></span>
   <% if result.body.present? %>
   <p class="search-result-body"><%= result.body %></p>

@@ -42,13 +42,10 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("utf8")
 
     @adaptors = []
-    configured_adaptors = Iqvoc.config['sources.iqvoc']
-    configured_adaptors.each do |config|
-      name, url = *config.split(/:(?=http)/)
-      if name && url
-        adaptor = IqvocAdaptor.new(url)
-        @adaptors << adaptor
-      end
+    sources = Iqvoc.config['sources.iqvoc']
+    sources.each do |url|
+      adaptor = IqvocAdaptor.new(url)
+      @adaptors << adaptor
     end
 
     if params[:query]

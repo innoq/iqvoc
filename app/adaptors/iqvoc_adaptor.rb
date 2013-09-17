@@ -79,6 +79,6 @@ class IqvocAdaptor
     results = query.execute(@repository)
 
     return 'unknown' if results.empty?
-    results.map { |solution| solution.title }.first
+    results.map { |solution| solution.title.to_s }.first
   end
 end
