@@ -19,7 +19,7 @@ module Adaptors
     end
 
     test 'fetch remote search results' do
-      remote = IqvocAdaptor.new(:one, 'http://one.iqvoc.local')
+      remote = IqvocAdaptor.new('http://one.iqvoc.local')
       results = remote.search('a')
 
       assert results.respond_to?(:each)

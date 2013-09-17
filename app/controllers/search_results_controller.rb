@@ -46,7 +46,7 @@ class SearchResultsController < ApplicationController
     configured_adaptors.each do |config|
       name, url = *config.split(/:(?=http)/)
       if name && url
-        adaptor = IqvocAdaptor.new(name, url)
+        adaptor = IqvocAdaptor.new(url)
         @adaptors << adaptor
       end
     end

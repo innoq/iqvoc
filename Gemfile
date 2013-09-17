@@ -39,6 +39,7 @@ gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
 gem 'faraday'
 gem 'nokogiri', '~> 1.6.0'
+gem 'linkeddata'
 
 group :development do
   gem 'view_marker'

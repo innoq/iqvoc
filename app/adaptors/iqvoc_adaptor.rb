@@ -1,21 +1,24 @@
 require 'faraday'
 require 'nokogiri'
+require 'linkeddata'
 
 class IqvocAdaptor
   attr_reader :name, :url
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
 
-  def initialize(name, url)
-    @name = name
-    @url = url
+  def initialize(url)
+    @url = URI.parse(url)
     @doc = nil
     @response = nil
+    @repository = RDF::Repository.load(URI.join(url, 'void.rdf')) rescue nil
 
     @conn = Faraday.new(:url => @url) do |builder|
       builder.use Faraday::Response::Logger if Rails.env.development?
       builder.use Faraday::Adapter::NetHttp
     end
+
+    @name = fetch_name
   end
 
   def search(query, params = {})
@@ -66,5 +69,16 @@ class IqvocAdaptor
 
       result
     end
+  end
+
+  def fetch_name
+    return 'unknown' if @repository.nil?
+
+    void = RDF::Vocabulary.new('http://rdfs.org/ns/void#')
+    query = RDF::Query.new({:dataset => {RDF.type => void.Dataset, RDF::DC.title => :title}})
+    results = query.execute(@repository)
+
+    return 'unknown' if results.empty?
+    results.map { |solution| solution.title }.first
   end
 end
