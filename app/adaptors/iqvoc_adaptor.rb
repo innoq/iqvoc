@@ -9,9 +9,8 @@ class IqvocAdaptor
 
   def initialize(url)
     @url = URI.parse(url)
-    @doc = nil
-    @response = nil
     @repository = RDF::Repository.load(URI.join(url, 'void.rdf')) rescue nil
+    @results = []
 
     @conn = Faraday.new(:url => @url) do |builder|
       builder.use Faraday::Response::Logger if Rails.env.development?
@@ -28,29 +27,37 @@ class IqvocAdaptor
     languages = params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
-    begin
-      response = @conn.get do |req|
-        req.url "/search.html"
-        req.params["q"]   = CGI.unescape(query)
-        req.params["qt"]  = query_type
-        req.params["l"]   = languages
-        req.params["for"] = params[:for]
-        req.params["t"]   = params[:t]
-        req.params["c"]   = params[:c]
-        req.params["layout"] = 0
-      end
-    rescue
-      Rails.logger.warn("HTTP error while querying remote source #{url}")
-      return nil
-    end
+    params = {
+      :q   => CGI.unescape(query),
+      :qt  => query_type,
+      :l   => languages,
+      :for => params[:for],
+      :t   => params[:t],
+      :c   => params[:c],
+      :layout => 0
+    }
 
-    @response = response.body
-
-    extract_results
+    fetch_results('/search.html', params)
+    @results
   end
 
-  def extract_results
-    @doc = Nokogiri::HTML(@response)
+  def fetch_results(url, params = {})
+    begin
+      response = @conn.get(url, params)
+      @results += extract_results(response.body)
+      while more = @doc.at_css('a[rel=next]')
+        fetch_results(more[:href], {})
+      end
+    rescue Faraday::Error::ConnectionFailed,
+      Faraday::Error::ResourceNotFound,
+      Faraday::Error::TimeoutError => e
+        Rails.logger.warn("HTTP error while querying remote source #{url}: #{e.message}")
+        return nil
+    end
+  end
+
+  def extract_results(html)
+    @doc = Nokogiri::HTML(html)
 
     @doc.css('.search-result').map do |element|
       link = element.at_css('.search-result-link')
