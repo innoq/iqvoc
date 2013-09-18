@@ -58,7 +58,7 @@ group :development, :test do
     gem 'zeus'
     gem 'pry'
     gem 'pry-rails'
-    gem 'pry-debugger'
+    gem 'pry-byebug'
     gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
