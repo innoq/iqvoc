@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
+  s.add_dependency 'linkeddata'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")
