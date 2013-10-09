@@ -47,7 +47,7 @@ class RdfController < ApplicationController
     end
   end
 
-  def void
+  def dataset
     respond_to do |format|
       format.any(:rdf, :ttl)
     end

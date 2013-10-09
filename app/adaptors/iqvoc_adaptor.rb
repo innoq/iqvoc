@@ -9,7 +9,7 @@ class IqvocAdaptor
 
   def initialize(url)
     @url = URI.parse(url)
-    @repository = RDF::Repository.load(URI.join(url, 'void.rdf')) rescue nil
+    @repository = RDF::Repository.load(URI.join(url, 'dataset.rdf')) rescue nil
     @results = []
 
     @conn = Faraday.new(:url => @url) do |builder|
