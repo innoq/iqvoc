@@ -24,7 +24,7 @@ class IqvocAdaptor
     languages = params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
-    params.merge!(:q => CGI.unescape(query), :l => languages, :layout => 0)
+    params = params.merge(:q => CGI.unescape(query), :l => languages, :layout => 0)
 
     fetch_results('/search.html', params)
     @results
