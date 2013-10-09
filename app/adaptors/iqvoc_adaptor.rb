@@ -21,20 +21,10 @@ class IqvocAdaptor
   end
 
   def search(query, params = {})
-    query_type = "begins_with" unless QUERY_TYPES.include?(query_type)
-
     languages = params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
-    params = {
-      :q   => CGI.unescape(query),
-      :qt  => query_type,
-      :l   => languages,
-      :for => params[:for],
-      :t   => params[:t],
-      :c   => params[:c],
-      :layout => 0
-    }
+    params.merge!(:q => CGI.unescape(query), :l => languages, :layout => 0)
 
     fetch_results('/search.html', params)
     @results
