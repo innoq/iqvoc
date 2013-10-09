@@ -65,7 +65,6 @@ Rails.application.routes.draw do
     root :to => 'frontpage#index', :format => nil
   end
 
-  get 'remote_search' => 'adaptors/iqvoc#search', :as => 'remote_search'
   get 'schema' => redirect('/'), :as => 'schema'
   get 'void' => 'rdf#void', :as => 'void'
   get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
