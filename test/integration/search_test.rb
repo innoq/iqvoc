@@ -142,7 +142,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     click_button("Search")
 
     assert page.has_css?(".search-result", :count => 1)
-    assert page.find(".search-results").has_content?(concept.origin)
+    assert page.find(".search-results").has_content?(concept.pref_label.to_s)
   end
 
   test "empty query with selected collection should return all collection members" do
