@@ -48,6 +48,8 @@ class SearchResultsController < ApplicationController
       @adaptors << adaptor
     end
 
+    @remote_result_collections = []
+
     if params[:query]
       # Deal with language parameter patterns
       languages = []
@@ -90,8 +92,6 @@ class SearchResultsController < ApplicationController
       if params[:limit] and Iqvoc.unlimited_search_results
         @results = @results.per(params[:limit].to_i)
       end
-
-      @remote_result_collections = []
 
       if params[:a] && adaptors = @adaptors.select {|a| params[:a].include?(a.name) }
         adaptors.each do |adaptor|
