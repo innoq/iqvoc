@@ -100,7 +100,7 @@ class SearchResultsController < ApplicationController
             @remote_result_collections << SearchResultCollection.new(adaptor, results)
           else
             flash.now[:error] ||= []
-            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => adaptor.name)
+            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => adaptor)
           end
         end
       end

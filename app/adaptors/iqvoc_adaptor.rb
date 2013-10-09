@@ -10,7 +10,7 @@ class IqvocAdaptor
   def initialize(url)
     @url = URI.parse(url)
     @repository = RDF::Repository.load(URI.join(url, 'dataset.rdf')) rescue nil
-    @results = []
+    @results = nil
 
     @conn = Faraday.new(:url => @url) do |builder|
       builder.use Faraday::Response::Logger if Rails.env.development?
@@ -33,6 +33,7 @@ class IqvocAdaptor
   def fetch_results(url, params = {})
     begin
       response = @conn.get(url, params)
+      @results ||= []
       @results += extract_results(response.body)
       while more = @doc.at_css('a[rel=next]')
         fetch_results(more[:href], {})
@@ -76,5 +77,9 @@ class IqvocAdaptor
 
     return 'unknown' if results.empty?
     results.map { |solution| solution.title.to_s }.first
+  end
+
+  def to_s
+    "#{name} (#{url})"
   end
 end
