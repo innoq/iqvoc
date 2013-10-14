@@ -58,7 +58,7 @@ group :development, :test do
     gem 'zeus'
     gem 'pry'
     gem 'pry-rails'
-    gem 'pry-byebug'
+    gem 'pry-debugger'
     gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
@@ -71,13 +71,13 @@ group :development, :test do
 end
 
 group :test do
+  gem 'minitest'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit', '~> 0.14.2'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'turn'
-  gem 'minitest'
   gem 'webmock'
 end
 
