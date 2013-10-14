@@ -2,8 +2,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../../test_helper')
 require 'iqvoc/rdfapi'
 require 'webmock/test_unit'
 
-module Adaptors
-  class IqvocAdaptorTest < ActiveSupport::TestCase
+module SearchAdaptors
+  class IqvocSearchAdaptorTest < ActiveSupport::TestCase
     RDFAPI = Iqvoc::RDFAPI
 
     setup do
@@ -19,7 +19,7 @@ module Adaptors
     end
 
     test 'fetch remote search results' do
-      remote = IqvocAdaptor.new('http://one.iqvoc.local')
+      remote = IqvocSearchAdaptor.new('http://one.iqvoc.local')
       results = remote.search('a')
 
       assert results.respond_to?(:each)

@@ -44,7 +44,7 @@ class SearchResultsController < ApplicationController
     @adaptors = []
     sources = Iqvoc.config['sources.iqvoc']
     sources.each do |url|
-      adaptor = IqvocAdaptor.new(url)
+      adaptor = IqvocSearchAdaptor.new(url)
       @adaptors << adaptor
     end
 

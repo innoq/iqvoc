@@ -2,7 +2,7 @@ require 'faraday'
 require 'nokogiri'
 require 'linkeddata'
 
-class IqvocAdaptor
+class IqvocSearchAdaptor
   attr_reader :name, :url
 
   QUERY_TYPES = %w(exact contains ends_with begins_with)
