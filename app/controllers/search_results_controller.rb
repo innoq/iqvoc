@@ -34,7 +34,7 @@ class SearchResultsController < ApplicationController
     end
 
     # Select first type by default
-    params[:type] = Iqvoc.searchable_class_names.first.parameterize unless params[:type]
+    params[:type] = Iqvoc.searchable_classes.first.name.parameterize unless params[:type]
 
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
@@ -42,7 +42,7 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("utf8")
 
     @adaptors = []
-    sources = Iqvoc.config['sources.iqvoc']
+    sources = Iqvoc.config['sources.iqvoc'].reject {|s| s.blank? }
     sources.each do |url|
       adaptor = IqvocSearchAdaptor.new(url)
       @adaptors << adaptor
@@ -62,10 +62,10 @@ class SearchResultsController < ApplicationController
       end
 
       # Ensure a valid class was selected
-      unless type_class_index = Iqvoc.searchable_class_names.map(&:parameterize).index(params[:type].parameterize)
-        raise "'#{params[:type]}' is not a valid / configured searchable class! Must be one of " + Iqvoc.searchable_class_names.join(', ')
+      unless klass = Iqvoc.searchable_class_names.detect {|key, value| value == params[:type] }.try(:first)
+        raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
       end
-      klass = Iqvoc.searchable_class_names[type_class_index].constantize
+      klass = klass.constantize
 
       query_size = params[:query].split(/\r\n/).size
 
@@ -89,7 +89,7 @@ class SearchResultsController < ApplicationController
 
       @results = @results.page(params[:page])
 
-      if params[:limit] and Iqvoc.unlimited_search_results
+      if params[:limit] && Iqvoc.unlimited_search_results
         @results = @results.per(params[:limit].to_i)
       end
 

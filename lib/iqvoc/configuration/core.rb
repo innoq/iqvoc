@@ -84,11 +84,11 @@ module Iqvoc
           }]
         }]
 
-        self.searchable_class_names = [
-          "Labeling::SKOS::Base",
-          "Labeling::SKOS::PrefLabel",
-          "Note::Base"
-        ]
+        self.searchable_class_names = {
+          "Labeling::SKOS::Base" => "labels",
+          "Labeling::SKOS::PrefLabel" => "pref_labels",
+          "Note::Base" => "notes"
+        }
 
         self.unlimited_search_results = false
 
@@ -168,7 +168,7 @@ module Iqvoc
         end
 
         def searchable_classes
-          searchable_class_names.map(&:constantize)
+          searchable_class_names.keys.map(&:constantize)
         end
 
         def first_level_classes
