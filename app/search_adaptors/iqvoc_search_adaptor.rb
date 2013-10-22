@@ -5,8 +5,6 @@ require 'linkeddata'
 class IqvocSearchAdaptor
   attr_reader :name, :url
 
-  QUERY_TYPES = %w(exact contains ends_with begins_with)
-
   def initialize(url)
     @url = URI.parse(url)
     @repository = RDF::Repository.load(URI.join(url, 'dataset.rdf')) rescue nil
@@ -20,11 +18,18 @@ class IqvocSearchAdaptor
     @name = fetch_name
   end
 
-  def search(query, params = {})
-    languages = params.fetch(:languages, I18n.locale)
+  def search(raw_params = {})
+    languages = raw_params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
 
-    params = params.merge(:q => CGI.unescape(query), :l => languages, :layout => 0)
+    params = {
+      :q => raw_params[:q],
+      :t => raw_params[:t],
+      :l => languages,
+      :c => raw_params[:c],
+      :qt => raw_params[:qt],
+      :page => 1 # hard code the first page as we need to follow pagination links
+    }
 
     fetch_results('/search.html', params)
     @results

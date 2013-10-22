@@ -95,7 +95,7 @@ class SearchResultsController < ApplicationController
 
       if params[:a] && adaptors = @adaptors.select {|a| params[:a].include?(a.name) }
         adaptors.each do |adaptor|
-          results = adaptor.search(params[:query], params)
+          results = adaptor.search(params)
           unless results.nil?
             @remote_result_collections << SearchResultCollection.new(adaptor, results)
           else
