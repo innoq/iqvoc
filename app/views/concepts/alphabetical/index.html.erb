@@ -8,7 +8,7 @@
       <% alphabetical_concepts_path(:prefix => letter.to_s.downcase) %>
     <% end %>
   </div>
-  <ol class="concepts unstyled">
+  <ol class="concept-items unstyled">
     <%= render :partial => 'pref_labeling', :collection => @pref_labelings %>
   </ol>
 </div>

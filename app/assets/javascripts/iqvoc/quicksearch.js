@@ -38,7 +38,7 @@ function extractConcepts(html) {
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
   var html = html.replace(rscript, "");
 
-  var concepts = $("<div />").append(html).find("ol.concepts li");
+  var concepts = $("<div />").append(html).find(".concept-items .concept-item");
   concepts = concepts.map(function(i, node) {
     var el = $("a", node);
     return {

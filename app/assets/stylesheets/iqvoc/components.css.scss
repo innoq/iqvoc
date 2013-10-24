@@ -101,18 +101,18 @@ img.spinner {
   }
 }
 
-ol.concepts {
-  li {
+.concept-items {
+  .concept-item {
     margin-bottom: 15px;
     p {
       margin: 0;
     }
-    p.term {
+    .concept-item-term {
       a {
         font-weight: bold;
       }
     }
-    p.uri {
+    .concept-item-uri {
       color: green;
     }
   }

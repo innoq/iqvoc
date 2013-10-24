@@ -33,19 +33,19 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   test "showing only concepts with a pref label in respective language" do
     visit alphabetical_concepts_path(:lang => :en, :prefix => "x", :format => :html)
-    concepts = page.all("ol.concepts li")
+    concepts = page.all(".concept-items .concept-item")
 
     assert_equal :en, I18n.locale
     assert_equal 2, concepts.length
-    assert_equal "Xen1", concepts[0].find("p.term").text.strip
-    assert_equal "Xen2", concepts[1].find("p.term").text.strip
+    assert_equal "Xen1", concepts[0].find(".concept-item-term").text.strip
+    assert_equal "Xen2", concepts[1].find(".concept-item-term").text.strip
 
     visit alphabetical_concepts_path(:lang => :de, :prefix => "x", :format => :html)
-    concepts = page.all("ol.concepts li")
+    concepts = page.all(".concept-items .concept-item")
 
     assert_equal :de, I18n.locale
     assert_equal 1, concepts.length
-    assert_equal "Xde1", concepts[0].find("p.term").text.strip
+    assert_equal "Xde1", concepts[0].find(".concept-item-term").text.strip
   end
 
 end
