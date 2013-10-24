@@ -13,8 +13,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require 'concerns/adaptor_initialization'
 
 class SearchResultsController < ApplicationController
+  include AdaptorInitialization
 
   def index
     authorize! :read, Concept::Base
@@ -41,12 +43,7 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("commit")
     request.query_parameters.delete("utf8")
 
-    @adaptors = []
-    sources = Iqvoc.config['sources.iqvoc'].reject {|s| s.blank? }
-    sources.each do |url|
-      adaptor = IqvocSearchAdaptor.new(url)
-      @adaptors << adaptor
-    end
+    @adaptors = init_adaptors(IqvocSearchAdaptor)
 
     @remote_result_collections = []
 
