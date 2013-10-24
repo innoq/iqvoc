@@ -47,6 +47,10 @@ var EntitySelector = function(node) {
     select: this.onSelect
   });
 
+  // jQuery UI does not add a type attribute
+  // Bootstrap expects it to be there
+  this.input.attr('type', 'text');
+
   this.container.append(this.input).append(img).append(selection).
     insertAfter(node).prepend(node);
 
