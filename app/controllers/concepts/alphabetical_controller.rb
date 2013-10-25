@@ -32,6 +32,10 @@ class Concepts::AlphabeticalController < ConceptsController
       includes << Note::SKOS::Definition.name.to_relation_name
     end
     ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => includes).run
+
+    respond_to do |format|
+      format.html { render :index, :layout => with_layout? }
+    end
   end
 
   protected
