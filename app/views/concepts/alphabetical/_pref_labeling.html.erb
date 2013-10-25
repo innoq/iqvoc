@@ -1,8 +1,8 @@
 <li class="concept-item">
-  <p class="concept-item-link">
+  <p>
   <%= link_to pref_labeling.target.to_s, concept_path(:id => pref_labeling.owner),
     :alt => pref_labeling.owner.origin, :data => { 'resource-path' => rdf_path(pref_labeling.owner.origin,
-      :lang => nil, :format => nil) } %>
+      :lang => nil, :format => nil) }, :class => 'concept-item-link' %>
   <% if pref_labeling.owner.additional_info.present? %>
   (<%= pref_labeling.owner.additional_info %>)
   <% end %>
