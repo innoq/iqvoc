@@ -14,7 +14,7 @@ class SearchResult
   def initialize(host, path, label)
     @host = host
     @path = path
-    @label = label
+    @label = label.to_s.squish
     @meta = []
   end
 
