@@ -13,25 +13,34 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require 'concerns/adaptor_initialization'
 
 class Concepts::AlphabeticalController < ConceptsController
+  include AdaptorInitialization
 
   def index
     authorize! :read, Concept::Base
 
-    params[:prefix] = params[:letter] if params[:prefix].nil? # legacy compatibility -- XXX: unnecessary!?
-
     redirect_to(url_for :prefix => "a") unless params[:prefix]
 
-    @pref_labelings = find_labelings
+    adaptors = init_adaptors(IqvocAlphabeticalSearchAdaptor)
 
-    # When in single query mode, AR handles ALL includes to be loaded by that
-    # one query. We don't want that! So let's do it manually :-)
-    includes = Iqvoc::Concept.base_class.default_includes
-    if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
-      includes << Note::SKOS::Definition.name.to_relation_name
+    if adaptor = adaptors.detect {|a| a.name == params[:source] }
+      @search_results = adaptor.search(I18n.locale, params[:prefix])
+      @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
+    else
+      @search_results = find_labelings
+
+      # When in single query mode, AR handles ALL includes to be loaded by that
+      # one query. We don't want that! So let's do it manually :-)
+      includes = Iqvoc::Concept.base_class.default_includes
+      if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
+        includes << Note::SKOS::Definition.name.to_relation_name
+      end
+      ActiveRecord::Associations::Preloader.new(@search_results, :owner => includes).run
+
+      @search_results.map! { |pl| AlphabeticalSearchResult.new(pl) }
     end
-    ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => includes).run
 
     respond_to do |format|
       format.html { render :index, :layout => with_layout? }

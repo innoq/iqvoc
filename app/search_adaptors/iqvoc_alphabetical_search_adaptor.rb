@@ -29,8 +29,14 @@ class IqvocAlphabeticalSearchAdaptor < SearchAdaptor
 
     @doc.css('.concept-item').map do |element|
       link = element.at_css('.concept-item-link')
-      label, path = link.text, link['data-resource-path']
-      result = SearchResult.new(url, path, label)
+      label, path = link.text, link['data-resource-path'] # href
+
+      options = {
+        :definition => element.at_css('.concept-item-definition').try(:content),
+        :definition_language => element.at_css('.concept-item-definition').try(:[], :lang)
+      }
+
+      result = AlphabeticalSearchResultRemote.new(url, path, label, options)
     end
   end
 end
