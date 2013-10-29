@@ -204,11 +204,11 @@ class Concept::Base < ActiveRecord::Base
 
     # Serialized setters and getters (\r\n or , separated) -- TODO: use Iqvoc::InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
-      self.send(match_class_name.to_relation_name).map(&:value).join("\r\n")
+      self.send(match_class_name.to_relation_name).map(&:value).join(Iqvoc::InlineDataHelper::JOINER)
     end
 
     define_method("inline_#{match_class_name.to_relation_name}=".to_sym) do |value|
-      urls = value.split(/\r\n|,/).map(&:strip).reject(&:blank?)
+      urls = value.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip).reject(&:blank?)
       self.send(match_class_name.to_relation_name).each do |match|
         if (urls.include?(match.value))
           urls.delete(match.value) # We're done with that one
