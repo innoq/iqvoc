@@ -56,15 +56,34 @@ EntitySelector.preprocessors = {
     });
   }
 };
+EntitySelector.sourceSelectors = {
+  "default": function(callback) {
+    var uri = this.el.data("query-url");
+    callback(uri);
+  },
+  "dummy-prompt": function(callback) {
+    var uri = this.el.data("query-url");
+    var sources = { iQvoc: "hello", GEMET: "world" };
+    var params = $.map(sources, function(id, name) {
+      return confirm("include " + name) ? 'source=' + id : null;
+    }).join("&");
+    callback(uri + "?" + params);
+  }
+};
 $.extend(EntitySelector.prototype, {
   onInput: function(req, callback) {
-    var uri = this.el.data("query-url");
     var self = this;
-    $.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
+
+    var responder = function(data, status, xhr) { // TODO: rename, move elsewhere
       data = self.processResponse(data);
       self.input.autocomplete("option", "autoFocus", data.length === 1);
       callback(data);
       self.indicator.addClass("hidden");
+    };
+
+    var sourceSelector = this.el.data("source-selector") || "default";
+    EntitySelector.sourceSelectors[sourceSelector].call(this, function(uri) { // XXX: direct `EntitySelector` reference limits subclassing
+      $.getJSON(uri, { query: req.term }, responder); // TODO: error handling
     });
   },
   onSelect: function(ev, ui) {
