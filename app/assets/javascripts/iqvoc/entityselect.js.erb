@@ -11,6 +11,8 @@ var EntitySelector = function(node) {
   }
   this.el = $(node).hide(); // XXX: rename
   this.container = $('<div class="entity_select" />').data("widget", this);
+  this.indicator = $('<img class="spinner hidden" />').
+      attr("src", "<%= asset_path('spinner_16x16.gif') %>");
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();
@@ -23,24 +25,10 @@ var EntitySelector = function(node) {
   });
   selection = $('<ul class="entity_list" />').append(selection);
 
-  var exclude = this.el.data("exclude") || null,
-    img = $('<img class="spinner hidden" />').
-      attr("src", "<%= asset_path('spinner_16x16.gif') %>");
   this.input = $("<input />").autocomplete({
     minLength: 3,
-    source: function(req, callback) {
-      var uri = self.el.data("query-url"),
-        preprocessor = self.el.data("preprocessor") || "default";
-      $.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
-        var excludes = self.getSelection().
-            concat(exclude ? [exclude] : []);
-        data = self.preprocessors[preprocessor](data, excludes);
-        self.input.autocomplete("option", "autoFocus", data.length === 1);
-        callback(data);
-        img.addClass("hidden");
-      });
-    },
-    search: function(ev, ui) { img.removeClass("hidden"); },
+    source: $.proxy(this, "onInput"), // XXX: discards original `this` context
+    search: function(ev, ui) { self.indicator.removeClass("hidden"); },
     focus: function(ev, ui) { return false; },
     select: this.onSelect
   });
@@ -49,7 +37,7 @@ var EntitySelector = function(node) {
   // Bootstrap expects it to be there
   this.input.attr('type', 'text');
 
-  this.container.append(this.input).append(img).append(selection).
+  this.container.append(this.input).append(this.indicator).append(selection).
     insertAfter(node).prepend(node);
 
   if(this.singular && this.entities.length) {
@@ -69,6 +57,16 @@ EntitySelector.preprocessors = {
   }
 };
 $.extend(EntitySelector.prototype, {
+  onInput: function(req, callback) {
+    var uri = this.el.data("query-url");
+    var self = this;
+    $.getJSON(uri, { query: req.term }, function(data, status, xhr) { // TODO: error handling
+      data = self.processResponse(data);
+      self.input.autocomplete("option", "autoFocus", data.length === 1);
+      callback(data);
+      self.indicator.addClass("hidden");
+    });
+  },
   onSelect: function(ev, ui) {
     var el = $(this).val(""),
       widget = el.closest(".entity_select").data("widget");
@@ -92,6 +90,12 @@ $.extend(EntitySelector.prototype, {
       widget.input.show();
     }
     ev.preventDefault();
+  },
+  processResponse: function(data) { // TODO: rename
+    var preprocessor = this.el.data("preprocessor") || "default";
+    var exclude = this.el.data("exclude") || null;
+    var excludes = this.getSelection().concat(exclude ? [exclude] : []);
+    return EntitySelector.preprocessors[preprocessor](data, excludes); // XXX: direct `EntitySelector` reference limits subclassing
   },
   createEntity: function(entity) {
     var el;
