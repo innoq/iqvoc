@@ -62,13 +62,13 @@ var EntitySelector = function(node) {
 // `value` and `label`
 // optional second argument `excludes` is an array of item IDs to exclude
 EntitySelector.preprocessors = {
-	// converts an array of objects with members `id` and `name`
-	"default": function(data, excludes) {
-		return $.map(data, function(entity, i) {
-			return $.inArray(entity.id, excludes) !== -1 ? null :
-					{ value: entity.id, label: entity.name };
-		});
-	}
+  // converts an array of objects with members `id` and `name`
+  "default": function(data, excludes) {
+    return $.map(data, function(entity, i) {
+      return $.inArray(entity.id, excludes) !== -1 ? null :
+          { value: entity.id, label: entity.name };
+    });
+  }
 };
 $.extend(EntitySelector.prototype, {
   onSelect: function(ev, ui) {
