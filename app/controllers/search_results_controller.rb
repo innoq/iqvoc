@@ -86,7 +86,7 @@ class SearchResultsController < ApplicationController
     end
     controller.instance_variable_set(:@available_languages, langs)
 
-    collections = Iqvoc::Collection.base_class.includes(:pref_labels).all
+    collections = Iqvoc::Collection.base_class.includes(:pref_labels).load
     controller.instance_variable_set(:@collections, collections)
   end
 
