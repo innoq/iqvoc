@@ -19,9 +19,8 @@ source 'http://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '4.0.0.rc1'
-
-gem 'protected_attributes'
+gem 'rails', '4.0.1'
+gem 'protected_attributes', '>= 1.0.5'
 gem 'kaminari'
 gem 'authlogic'
 gem 'cancan'
@@ -32,13 +31,14 @@ gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
 gem 'uglifier'
-gem 'sass-rails', '~> 4.0.0.rc1'
+gem 'sass-rails', '~> 4.0.0'
+gem 'bootstrap-sass', '2.3.1.3'
 
 group :development do
-  gem 'heroku'
   gem 'view_marker'
   gem 'better_errors'
   gem 'binding_of_caller', :platform => :ruby
+  gem 'quiet_assets'
 end
 
 group :development, :test do
@@ -80,4 +80,5 @@ end
 
 group :heroku do
   gem 'pg', :platforms => :ruby
+  gem 'passenger'
 end

@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
   var locale = document.documentElement.getAttribute("lang");
 
   // language selection
-  $("#language_selection .dropdown-toggle").click(function(ev) { // use Bootstrap's Dropwdown, but without the side-effects
+  $(".dropdown-toggle").click(function(ev) { // use Bootstrap's Dropwdown, but without the side-effects
     $(this).closest(".dropdown").toggleClass("open");
   });
   var langWidget = $("ul.lang-widget")[0];

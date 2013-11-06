@@ -53,7 +53,12 @@ class Note::SKOS::Base < Note::Base
         blank_node.Rdfs::comment(value, :lang => language || nil) if value
         annotations.each do |annotation|
           if IqRdf::Namespace.find_namespace_class(annotation.namespace)
-            val = annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP ? URI.parse(annotation.value) : annotation.value
+            val = if annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP
+              # Fall back to plain value literal if URI is not parseable
+              URI.parse(annotation.value) rescue annotation.value
+            else
+              annotation.value
+            end
             blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, val, :lang => annotation.language || nil)
           else
             raise "#{self.class}#build_rdf: can't find namespace '#{annotation.namespace}' for note annotation '#{annotation.id}'."

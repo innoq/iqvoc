@@ -90,7 +90,7 @@ pt:
          notes: "Notas"
          matches: "Mapeamentos conceituais"
      instance_configuration:
-       caption: "Configuração da Instância"
+       caption: "Configuração"
        settings:
          title: "título do sítio"
          languages_pref_labeling: "idiomas para os rótulos preferenciais"
@@ -148,6 +148,11 @@ pt:
        edit:
          header: "Alterar notas"
      navigation:
+       dashboard: "Dashboard"
+       scheme: "Esquema"
+       concepts: "Conceitos"
+       administration: "Administração"
+       extensions: "Extensões"
        back_to_edit_versioned_object: "Retornar para edição"
        back_to_show: "Retornar para edição original"
        back_to_preview: "Retornar para a versão de pré-visualização"

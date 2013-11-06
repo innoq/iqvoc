@@ -1,0 +1,5 @@
+<%= input_block :label => t('txt.views.search_results.for') do %>
+  <label for="for_concept" class="radio"><%= radio_button_tag 'for', 'concept', params[:for] == "concept" %> <%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></label>
+  <label for="for_collection" class="radio"><%= radio_button_tag 'for', 'collection', params[:for] == "collection" %> <%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></label>
+  <label for="for_all" class="radio"><%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]) %> <%= t("txt.views.search_results.all") %></label>
+<% end %>

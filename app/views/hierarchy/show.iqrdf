@@ -9,7 +9,7 @@ hierarchy2rdf = lambda do |hash|
 
       rels.each do |relation, _|
         @relation_class.new(:owner => concept, :target => relation). # XXX: hacky!?
-            build_rdf(document, sbj)
+            build_rdf(document, sbj, true)
       end
 
       hierarchy2rdf.call(rels)
@@ -21,4 +21,4 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces(self.send(meth))
 end
 
-hierarchy2rdf.call(@concepts)
+hierarchy2rdf.call(@concepts) if @concepts

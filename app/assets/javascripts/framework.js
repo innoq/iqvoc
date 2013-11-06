@@ -5,4 +5,6 @@
 //= require jquery.treeview
 //= require jquery.treeview.async
 //= require storage
-//= require bootstrap/bootstrap
+//= require bootstrap-transition
+//= require bootstrap-collapse
+//= require bootstrap-tab

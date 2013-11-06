@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
     put 'scheme' => 'concepts/scheme#update'
 
+    get 'hierarchy' => 'hierarchy#index'
     get 'hierarchy/:root' => 'hierarchy#show'
 
     get 'triplestore_sync' => 'triplestore_sync#index'
@@ -71,7 +72,6 @@ Rails.application.routes.draw do
 
   get ':id' => 'rdf#show', :as => 'rdf'
 
-  get 'collections/:id', :as => 'rdf_collection', :to => 'collections#show'
   get 'collections', :as => 'rdf_collections', :to => 'collections#index'
 
   root :to => 'frontpage#index', :format => nil

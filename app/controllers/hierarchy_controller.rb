@@ -16,31 +16,58 @@
 
 class HierarchyController < ApplicationController
 
+  def index
+    authorize! :read, Iqvoc::Concept.base_class
+
+    unbounded = Iqvoc.config["performance.unbounded_hierarchy"]
+    depth = params[:depth] || (unbounded ? -1 : nil)
+
+    render_hierarchy "scheme", depth, unbounded
+  end
+
   def show
     authorize! :read, Iqvoc::Concept.base_class
 
-    root_origin = params[:root]
+    unbounded = Iqvoc.config["performance.unbounded_hierarchy"]
+
+    render_hierarchy params[:root], params[:depth], unbounded
+  end
+
+  private
+
+  def render_hierarchy(root_origin, depth, unbounded = false)
+    default_depth = 3
+    max_depth = 4 # XXX: arbitrary
+
     direction = params[:dir] == "up" ? "up" : "down"
-    depth = params[:depth].blank? ? 3 : (Float(params[:depth]).to_i rescue nil)
-    include_siblings = params[:siblings] || false
-    include_unpublished = params[:published] == "0" # FIXME: requires additional AuthZ check
+    depth = depth.blank? ? default_depth : (Float(depth).to_i rescue nil)
+    include_siblings = ["true", "1"].include?(params[:siblings])
+    include_unpublished = params[:published] == "0"
 
     scope = Iqvoc::Concept.base_class
     scope = include_unpublished ? scope.editor_selectable : scope.published
 
     # validate depth parameter
-    error = "invalid depth parameter" unless depth # TODO: i18n
+    if not depth
+      error = "invalid depth parameter" # TODO: i18n
+    elsif depth > max_depth and not unbounded
+      error = [403, "excessive depth"] # TODO: i18n
+    end
     # validate root parameter
     error = "missing root parameter" unless root_origin # TODO: i18n
     unless error
-      root_concept = scope.where(:origin => root_origin).first
-      error = [404, "no concept matching root parameter"] unless root_concept # TODO: i18n
+      root_concepts = root_origin == "scheme" ? scope.tops : # XXX: special-casing
+          scope.where(:origin => root_origin)
+      root_concepts = root_concepts.all
+      unless root_concepts.length > 0
+        error = [404, "no concept matching root parameter"] # TODO: i18n
+      end
     end
     # error handling
     if error
       status, error = error if error.is_a? Array
       flash.now[:error] = error
-      render :status => (status || 400)
+      render "hierarchy/show", :status => (status || 400)
       return
     end
 
@@ -58,30 +85,28 @@ class HierarchyController < ApplicationController
     end
 
     @concepts = {}
-    if include_siblings
-      determine_siblings(root_concept).each { |sib| @concepts[sib] = {} }
+    root_concepts.each do |root_concept|
+      if include_siblings
+        determine_siblings(root_concept).each { |sib| @concepts[sib] = {} }
+      end
+      @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth,
+          0, include_siblings)
     end
-    @concepts[root_concept] = populate_hierarchy(root_concept, scope, depth, 0,
-        include_siblings)
 
     @relation_class = Iqvoc::Concept.broader_relation_class
     @relation_class = @relation_class.narrower_class unless direction == "up"
 
     respond_to do |format|
-      format.html
-      format.ttl
-      format.rdf
+      format.any(:html, :rdf, :ttl) { render "hierarchy/show" }
     end
   end
-
-  private
 
   # returns a hash of concept/relations pairs of arbitrary nesting depth
   # NB: recursive, triggering one database query per iteration
   def populate_hierarchy(root_concept, scope, max_depth, current_depth = 0,
-      include_siblings = false)
+        include_siblings = false)
     current_depth += 1
-    return {} if current_depth > max_depth
+    return {} if max_depth != -1 and current_depth > max_depth
 
     rels = scope.where(Concept::Relation::Base.arel_table[:target_id].
         eq(root_concept.id))

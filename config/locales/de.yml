@@ -90,12 +90,18 @@ de:
          login: "Anmelden"
          logout: "Abmelden"
      instance_configuration:
-       caption: "Instanzkonfiguration"
+       caption: "Konfiguration"
+       groups:
+         common: allgemein
+         languages: Sprachen
+         performance: Performance
+         triplestore: Triplestore
        settings:
          title: Titel
-         note_languages: Sprachen für Notes
+         languages_notes: Sprachen für Notes
          languages_pref_labeling: Sprachen für bevorzugte Labels
          languages_further_labelings_Labeling::SKOS::AltLabel: Sprachen für alternative Labels
+         performance_unbounded_hierarchy: unbegrenzte Hierarchie-Tiefe
          triplestore_url: Triplestore-URL
          triplestore_username: Benutzername für Triplestore
          triplestore_password: Passwort für Triplestore
@@ -141,6 +147,11 @@ de:
        edit:
          header: "Notiz bearbeiten"
      navigation:
+       dashboard: "Dashboard"
+       scheme: "Schema"
+       concepts: "Konzepte"
+       administration: "Verwaltung"
+       extensions: "Erweiterungen"
        back_to_edit_versioned_object: "Zurück zur Bearbeitung"
        back_to_show: "Zurück zur Originalversion"
        back_to_preview: "Zurück zur Versionsvorschau"

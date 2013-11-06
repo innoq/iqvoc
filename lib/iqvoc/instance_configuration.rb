@@ -95,6 +95,8 @@ module Iqvoc
     # populate settings caches
     # (subsequent updates will happen automatically via the respective setters)
     def initialize_cache
+      return false unless ConfigurationSetting.table_exists? # pre-migration
+
       # cache customized settings
       ConfigurationSetting.all.each do |setting|
         @records[setting.key] = JSON.load("[#{setting.value}]")[0] # temporary array wrapper ensures valid JSON text

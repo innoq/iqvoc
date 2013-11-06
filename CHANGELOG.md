@@ -1,3 +1,27 @@
+## [4.1.3]
+
+This version is intended as the last minor/patch release before version 5.0.0 -
+that will incorporate significant overhauls of both internal and external APIs
+as well as more sophisticated RDF processing.
+
+  * Improved instance configuration UI
+  * Adjusted internal name of note languages setting for consistency
+  * Updated Bootstrap
+  * Introduced Navigation API<br />
+    iQvoc extensions can be injected into the main navigation either at root
+    level or in a separate group
+  * Removed duplicate results from search when concepts had unpublished versions
+
+## [4.1.2]
+
+  * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in hierarchical views
+
+## [4.1.1]
+
+  * Removed duplicate triples from RDF export
+  * Preliminary support for localized note annotations and rdfs:seeAlso
+  * Bugfixes
+
 ## [4.1.0]
 
   * Concepts hierarchy API (/hierarchy)

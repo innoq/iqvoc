@@ -21,9 +21,18 @@ class InstanceConfigurationController < ApplicationController
   def index
     authorize! :show, Iqvoc.config
 
-    @settings = Iqvoc.config.defaults.each_with_object({}) { |(key, default_value), hsh|
+    settings = Iqvoc.config.defaults.
+        each_with_object({}) do |(key, default_value), hsh|
       hsh[key] = serialize(Iqvoc.config[key], default_value)
-    }
+    end
+
+    @settings_by_namespace = settings.inject({}) do |memo, (key, value)|
+      namespace, setting = key.split(".", 2)
+      namespace = setting ? namespace : "common"
+      memo[namespace] ||= {}
+      memo[namespace][key] = value
+      memo
+    end
   end
 
   def update

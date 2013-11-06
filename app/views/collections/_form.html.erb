@@ -18,8 +18,7 @@
     <%- end -%>
 </fieldset>
 
-<%- # TODO: Add a Collection config for Note classes. %>
-<% [ Note::SKOS::Definition ].each do |klass| %>
+<% Iqvoc::Collection.note_classes.each do |klass| %>
   <%= render klass.edit_partial_name(@collection), :owner_klass => @collection, :assoc_klass => klass, :f => f %>
 <% end %>
 
@@ -49,7 +48,7 @@
 </fieldset>
 
 <div class="form-actions">
-  <%= f.submit t("txt.common.save"), :class => "btn-primary" %>
+  <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
 </div>
 
 <% end %>

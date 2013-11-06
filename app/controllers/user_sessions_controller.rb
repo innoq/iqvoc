@@ -31,7 +31,7 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       @current_ability = nil
       flash[:success] = I18n.t("txt.controllers.user_sessions.login_success")
-      if params[:back_to]
+      if params[:back_to].present?
         redirect_to URI.parse(params[:back_to]).path
       else
         redirect_to can?(:use, :dashboard) ? dashboard_path : root_path

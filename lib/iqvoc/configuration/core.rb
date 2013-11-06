@@ -12,52 +12,13 @@ module Iqvoc
           :rdf_namespaces,
           :change_note_class_name,
           :first_level_class_configuration_modules,
-          :ability_class_name,
           :navigation_items,
+          :ability_class_name,
           :localized_routes,
-          :core_assets
+          :core_assets,
+          :search_sections
 
         self.localized_routes = [] # routing extensibility hook
-
-        self.navigation_items = [
-          {
-            :content => proc { link_to "Dashboard", dashboard_path },
-            :controller => "dashboard",
-            :authorized? => proc { can? :use, :dashboard }
-          }, {
-            :content => proc { link_to "Scheme", scheme_path },
-            :controller => "concepts/scheme",
-            :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
-          }, {
-            :content => proc { link_to ::Concept::Base.model_name.human(:count => 2),
-                hierarchical_concepts_path },
-            :controller => "concepts/hierarchical",
-            :active? => proc { %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).include?(params[:controller]) }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.collections"),
-                collections_path },
-            :controller => "collections"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.search"), search_path },
-            :controller => "search_results"
-          }, {
-            :content => proc { link_to t("txt.views.navigation.users"), users_path },
-            :controller => "users",
-            :authorized? => proc { can? :manage, User }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.instance_configuration"),
-                instance_configuration_path },
-            :controller => "instance_configuration",
-            :authorized? => proc { can? :manage, Iqvoc.config }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.help"), help_path },
-            :controller => "pages",
-            :action => "help",
-            :authorized? => proc { can? :read, :help }
-          }, {
-            :content => proc { link_to t("txt.views.navigation.about"), "http://iqvoc.net/" }
-          }
-        ]
 
         self.core_assets = %w(
           manifest.css
@@ -69,10 +30,64 @@ module Iqvoc
           html5.js
         )
 
+        self.navigation_items = [{
+          :text => "Dashboard",
+          :href => proc { dashboard_path },
+          :controller => "dashboard",
+          :authorized? => proc { can? :use, :dashboard }
+        }, {
+          :text => "Scheme",
+          :href => proc { scheme_path },
+          :controller => "concepts/scheme",
+          :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
+        }, {
+          :text => proc { ::Concept::Base.model_name.human(:count => 2) },
+          :href => proc { hierarchical_concepts_path },
+          :controller => "concepts/hierarchical",
+          :active? => proc {
+            %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).
+                include?(params[:controller])
+          }
+        }, {
+          :text => proc { t("txt.views.navigation.collections") },
+          :href => proc { collections_path },
+          :controller => "collections"
+        }, {
+          :text => proc { t("txt.views.navigation.search") },
+          :href => proc { search_path },
+          :controller => "search_results"
+        }, {
+          :text => proc { t("txt.views.navigation.administration") },
+          :authorized? => proc { can? :use, :administration },
+          :items => [{
+            :text => proc { t("txt.views.navigation.users") },
+            :href => proc { users_path },
+            :controller => "users",
+            :authorized? => proc { can? :manage, User }
+          }, {
+            :text => proc { t("txt.views.navigation.instance_configuration") },
+            :href => proc { instance_configuration_path },
+            :controller => "instance_configuration",
+            :authorized? => proc { can? :manage, Iqvoc.config }
+          }]
+        }, {
+          :text => proc { t("txt.views.navigation.help") },
+          :items => [{
+            :text => proc { t("txt.views.navigation.help") },
+            :href => proc { help_path },
+            :controller => "pages",
+            :action => "help",
+            :authorized? => proc { can? :read, :help }
+          }, {
+            :text => proc { t("txt.views.navigation.about") },
+            :href => "http://iqvoc.net/"
+          }]
+        }]
+
         self.searchable_class_names = [
-          'Labeling::SKOS::Base',
-          'Labeling::SKOS::PrefLabel',
-          'Note::Base'
+          "Labeling::SKOS::Base",
+          "Labeling::SKOS::PrefLabel",
+          "Note::Base"
         ]
         self.unlimited_search_results = false
 
@@ -88,18 +103,21 @@ module Iqvoc
         }
 
         # The class to use for automatic generation of change notes on every save
-        self.change_note_class_name = 'Note::SKOS::ChangeNote'
+        self.change_note_class_name = "Note::SKOS::ChangeNote"
 
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
-        self.ability_class_name = 'Iqvoc::Ability'
+        self.ability_class_name = "Iqvoc::Ability"
+
+        self.search_sections = ["klass", "mode", "terms", "type", "collection", "languages"]
 
         # initialize
         self.config.register_settings({
           "title" => "iQvoc",
           "languages.pref_labeling" => ["en", "de"],
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
-          "note_languages" => ["en", "de"]
+          "languages.notes" => ["en", "de"],
+          "performance.unbounded_hierarchy" => false
         })
       end
 
@@ -151,15 +169,18 @@ module Iqvoc
         end
 
         def title
-          return config["title"]
+          config["title"]
         end
 
         def note_languages
-          return config["note_languages"]
+          config["languages.notes"]
         end
 
+        # returns a list of all languages selectable for labels and/or notes
         def all_languages
-          (Iqvoc::Concept.pref_labeling_languages + Iqvoc::Concept.further_labeling_class_names.values.flatten + note_languages).compact.map(&:to_s).uniq
+          (Iqvoc::Concept.pref_labeling_languages +
+              Iqvoc::Concept.further_labeling_class_names.values.flatten +
+              note_languages).compact.map(&:to_s).uniq
         end
 
         # @deprecated

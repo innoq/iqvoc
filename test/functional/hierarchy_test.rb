@@ -33,9 +33,61 @@ root:
         lorem:
         ipsum:
     EOS
-    rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
-    @concepts = create_hierarchy(concepts, rel_class, {})
+    @rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
+    @concepts = create_hierarchy(concepts, @rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
+  end
+
+  test "entire hierarchy" do
+    additional_concepts = YAML.load <<-EOS
+boot:
+  zoo:
+  car:
+    EOS
+    @concepts.merge! create_hierarchy(additional_concepts, @rel_class, {})
+    @concepts["boot"].update_attribute("top_term", true)
+
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 200
+    %w(root foo bar alpha bravo uno dos boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
+    %w(lorem ipsum).each do |id|
+      assert (not @response.body.include?(":#{id} a skos:Concept;")),
+          "#{id} should not be present"
+    end
+
+    Iqvoc.config["performance.unbounded_hierarchy"] = true
+    get :index, { :lang => "en", :format => "ttl" }
+    assert_response 200
+
+    %w(root foo bar alpha bravo uno dos lorem ipsum boot zoo car).each do |id|
+      assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
+    end
+  end
+
+  test "permission handling" do
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo", "Bar"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries, ["Alpha", "Bravo"]
+    entries = get_entries("ul.concept-hierarchy li li li li")
+    assert_equal entries, ["Uno", "Dos"]
+    entries = css_select("ul.concept-hierarchy li li li li li")
+    assert_equal entries.length, 0 # exceeded default depth
+
+    @concepts["bar"].update_attribute("published_at", nil)
+
+    get :show, :lang => "en", :format => "html", :root => "root"
+    entries = get_entries("ul.concept-hierarchy li")
+    assert_equal entries, ["Root"]
+    entries = get_entries("ul.concept-hierarchy li li")
+    assert_equal entries, ["Foo"]
+    entries = get_entries("ul.concept-hierarchy li li li")
+    assert_equal entries.length, 0
   end
 
   test "caching" do
@@ -108,33 +160,24 @@ root:
     get :show, :lang => "en", :format => "ttl", :root => "root"
     assert_response 200
     assert_equal @response.content_type, "text/turtle"
-    assert @response.body.include?(<<-EOS)
-:root a skos:Concept;
-      skos:topConceptOf :scheme;
-      skos:prefLabel "Root"@en;
-      skos:narrower :foo;
-      skos:narrower :bar.
-    EOS
+    assert @response.body =~ /:root[^\.]+skos:topConceptOf[^\.]+:scheme/m
+    assert @response.body =~ /:root[^\.]+skos:prefLabel[^\.]+"Root"@en/m
+    assert @response.body =~ /:root[^\.]+skos:narrower[^\.]+:bar/m
+    assert @response.body =~ /:root[^\.]+skos:narrower[^\.]+:foo/m
     assert @response.body.include?(<<-EOS)
 :foo a skos:Concept;
      skos:prefLabel "Foo"@en.
     EOS
-    assert @response.body.include?(<<-EOS)
-:bar a skos:Concept;
-     skos:prefLabel "Bar"@en;
-     skos:narrower :alpha;
-     skos:narrower :bravo.
-    EOS
+    assert @response.body =~ /:bar[^\.]+skos:prefLabel[^\.]+"Bar"@en/m
+    assert @response.body =~ /:bar[^\.]+skos:narrower[^\.]+:alpha/m
+    assert @response.body =~ /:bar[^\.]+skos:narrower[^\.]+:bravo/m
     assert @response.body.include?(<<-EOS)
 :alpha a skos:Concept;
        skos:prefLabel "Alpha"@en.
     EOS
-    assert @response.body.include?(<<-EOS)
-:bravo a skos:Concept;
-       skos:prefLabel "Bravo"@en;
-       skos:narrower :uno;
-       skos:narrower :dos.
-    EOS
+    assert @response.body =~ /:bravo[^\.]+skos:prefLabel[^\.]+"Bravo"@en/m
+    assert @response.body =~ /:bravo[^\.]+skos:narrower[^\.]+:uno/m
+    assert @response.body =~ /:bravo[^\.]+skos:narrower[^\.]+:dos/m
     assert @response.body.include?(<<-EOS)
 :uno a skos:Concept;
      skos:prefLabel "Uno"@en.
@@ -245,6 +288,10 @@ root:
     entries = css_select("ul.concept-hierarchy li li li")
     assert_equal entries.length, 0
 
+    get :show, :lang => "en", :format => "html", :root => "root", :depth => 5
+    assert_response 403
+    assert_equal flash[:error], "excessive depth"
+
     get :show, :lang => "en", :format => "html", :root => "root", :depth => "invalid"
     assert_response 400
     assert_equal flash[:error], "invalid depth parameter"
@@ -289,7 +336,7 @@ root:
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo"]
 
-    get :show, :lang => "en", :format => "html", :root => "foo", :siblings => true
+    get :show, :lang => "en", :format => "html", :root => "foo", :siblings => "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo", "Bar"]
 
@@ -298,7 +345,7 @@ root:
     assert_equal entries, ["Lorem"]
 
     get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => true
+        :siblings => "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 8
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo"].each do |name|
@@ -306,12 +353,24 @@ root:
     end
 
     get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => true, :depth => 4
+        :siblings => "1", :depth => 4
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 9
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo", "Root"].each do |name|
       assert entries.include?(name), "missing entry: #{name}"
     end
+  end
+
+  test "avoid duplication" do # in response to a bug report
+    get :show, :lang => "en", :format => "ttl", :root => "uno", :dir => "up"
+    assert_response 200
+    assert_equal @response.content_type, "text/turtle"
+    assert @response.body.include?(<<-EOS)
+:bravo a skos:Concept;
+       skos:prefLabel "Bravo"@en;
+       skos:broader :bar.
+    EOS
+    assert (not @response.body.include?(':bravo skos:prefLabel "Bravo"@en.'))
   end
 
   def get_all_entries(selector)

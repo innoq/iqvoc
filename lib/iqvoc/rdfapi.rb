@@ -22,6 +22,7 @@ module Iqvoc
                                   Iqvoc::Concept.relation_classes +
                                   Iqvoc::Concept.match_classes +
                                   Iqvoc::Concept.notation_classes +
+                                  Iqvoc::Concept.additional_association_classes.keys +
                                   [Iqvoc::Collection.member_class]
 
     OBJECT_DICTIONARY = FIRST_LEVEL_OBJECT_CLASSES.inject({}) do |hash, klass|

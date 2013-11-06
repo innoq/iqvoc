@@ -1,0 +1,10 @@
+<%= form_tag(search_path, :method => :get, :class => 'form-horizontal', :id => 'search') do %>
+  <fieldset id="typecheck" class="">
+    <% Iqvoc.search_sections.each do |section| %>
+      <%= render "search_results/sections/#{section}" %>
+    <% end %>
+    <div class="form-actions">
+      <%= submit_tag t('txt.views.search_results.submit'), :class => 'btn btn-primary' %>
+    </div>
+  </fieldset>
+<% end %>

@@ -17,8 +17,9 @@
 class SearchResultsController < ApplicationController
 
   def index
-    authorize! :read, Concept::Base # TODO: I think a :search right would be
-    # better here because you're able to serach more than only concepts.
+    authorize! :read, Concept::Base
+    # TODO: requires a dedicated :search permission because this covers more
+    # than just concepts
 
     self.class.prepare_basic_variables(self)
 
@@ -36,12 +37,6 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("utf8")
 
     if params[:query]
-      if params[:query].blank? && params[:collection_origin].blank?
-        flash.now[:error] = I18n.t('txt.controllers.search_results.insufficient_data')
-        render :action => 'index', :status => 422
-        return
-      end
-
       # Special treatment for the "nil language"
       params[:languages] << nil if params[:languages].is_a?(Array) && params[:languages].include?("none")
 
@@ -79,10 +74,8 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html
-        format.ttl { render('search_results/index.iqrdf') }
-        format.rdf { render('search_results/index.iqrdf') }
+        format.any(:ttl, :rdf)
       end
-
     end
   end
 

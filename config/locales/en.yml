@@ -90,12 +90,18 @@ en:
          notes: Notes
          matches: Concept mappings
      instance_configuration:
-       caption: "Instance Configuration"
+       caption: "Configuration"
+       groups:
+         common: common
+         languages: languages
+         performance: Performance
+         triplestore: triplestore
        settings:
          title: site title
-         note_languages: languages for notes
+         languages_notes: languages for notes
          languages_pref_labeling: languages for preferred labels
          languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
+         performance_unbounded_hierarchy: unlimited hierarchy depth
          triplestore_url: triplestore URL
          triplestore_username: username for triplestore
          triplestore_password: password for triplestore
@@ -149,6 +155,11 @@ en:
        edit:
          header: "Edit notes"
      navigation:
+       dashboard: "Dashboard"
+       scheme: "Scheme"
+       concepts: "Concepts"
+       administration: "Administration"
+       extensions: "Extensions"
        back_to_edit_versioned_object: "Back to editing"
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"

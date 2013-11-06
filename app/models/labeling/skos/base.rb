@@ -46,11 +46,12 @@ class Labeling::SKOS::Base < Labeling::Base
     query_str = build_query_string(params)
 
     scope = includes(:target).order("LOWER(#{Label::Base.table_name}.value)")
+    languages = Array(params[:languages])
 
     if params[:query].present?
-      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(params[:languages].to_a).published)
+      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(languages).published)
     else
-      scope = scope.merge(Label::Base.by_language(params[:languages].to_a).published)
+      scope = scope.merge(Label::Base.by_language(languages).published)
     end
 
     if params[:collection_origin].present?
@@ -66,7 +67,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
     scope = case params[:for]
     when 'concept'
-      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
+      scope.where('concepts.type' => Iqvoc::Concept.base_class_name)
     when 'collection'
       scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
     else
@@ -74,7 +75,7 @@ class Labeling::SKOS::Base < Labeling::Base
       scope
     end
 
-    scope
+    scope.merge(Concept::Base.published)
   end
 
   def self.search_result_partial_name
@@ -86,7 +87,11 @@ class Labeling::SKOS::Base < Labeling::Base
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
 
     lang = $3
-    value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+    value = begin
+      JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+    rescue JSON::ParserError
+      $1
+    end
 
     predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |labeling|
