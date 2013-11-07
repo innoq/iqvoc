@@ -71,7 +71,7 @@ group :test do
   gem 'nokogiri', '~> 1.5.0'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit', '~> 0.14.2'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'turn'
