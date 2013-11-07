@@ -149,11 +149,6 @@ boot:
     assert_response 200
   end
 
-  test "unsupported content type" do
-    get :show, :lang => "en", :format => "N/A", :root => "root"
-    assert_response 406
-  end
-
   test "RDF representations" do
     # Turtle
 
