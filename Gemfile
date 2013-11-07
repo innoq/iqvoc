@@ -21,7 +21,7 @@ source 'http://rubygems.org'
 # group (:development by default). This is not what we need.
 gem 'rails', '4.0.1'
 gem 'protected_attributes', '>= 1.0.5'
-gem 'kaminari'
+gem 'kaminari', '0.13.0'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf'

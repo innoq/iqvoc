@@ -50,13 +50,15 @@ class Concept::Base < ActiveRecord::Base
       reflection = self.class.reflections.stringify_keys[relation_name]
       labeling_class = reflection && reflection.class_name && reflection.class_name.constantize
       if labeling_class && labeling_class < Labeling::Base
-        self.send(relation_name).all.map(&:destroy)
+        self.send(relation_name).destroy_all
         lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
         lang_values.each do |lang, inline_values|
           lang = nil if lang.to_s == 'none'
           Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
             value.squish!
-            self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang)) unless value.blank?
+            unless value.blank?
+              self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang))
+            end
           end
         end
       end

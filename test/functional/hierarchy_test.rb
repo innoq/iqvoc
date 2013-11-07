@@ -218,7 +218,7 @@ boot:
   end
 
   test "root parameter handling" do
-    assert_raises(ActionController::RoutingError) do
+    assert_raises ActionController::UrlGenerationError do
       get :show, :format => "html"
     end
 

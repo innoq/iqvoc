@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
     get 'scheme' => 'concepts/scheme#show', :as => 'scheme'
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
-    put 'scheme' => 'concepts/scheme#update'
+    patch 'scheme' => 'concepts/scheme#update'
 
     get 'hierarchy' => 'hierarchy#index'
     get 'hierarchy/:root' => 'hierarchy#show'
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     get 'dashboard' => 'dashboard#index', :as => 'dashboard'
 
     get 'config' => 'instance_configuration#index', :as => 'instance_configuration'
-    put 'config' => 'instance_configuration#update'
+    patch 'config' => 'instance_configuration#update'
 
     get 'import' => 'import#index', :as => 'import'
     post 'import' => 'import#import'
