@@ -91,7 +91,8 @@ GEM
       hirb (~> 0.5)
       unicode-display_width (~> 0.1.1)
     i18n (0.6.1)
-    iq_rdf (0.1.8)
+    iq_rdf (0.1.10)
+      activesupport
       builder
       bundler
     iq_triplestorage (0.2.2)
