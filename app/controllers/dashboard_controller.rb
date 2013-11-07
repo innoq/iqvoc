@@ -21,7 +21,7 @@ class DashboardController < ApplicationController
 
     @items = []
     Iqvoc.first_level_classes.each do |klass|
-      @items += klass.for_dashboard.all
+      @items += klass.for_dashboard.load
     end
 
     factor = params[:order] == "desc" ? -1 : 1

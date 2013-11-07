@@ -50,7 +50,9 @@ class Concept::Relation::Base < ActiveRecord::Base
   end
 
   def self.by_target_origin(target_origin)
-    includes(:target).merge(Concept::Base.by_origin(target_origin))
+    includes(:target).
+    merge(Concept::Base.by_origin(target_origin)).
+    references(:concepts)
   end
 
   def self.target_editor_selectable

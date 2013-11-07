@@ -6,7 +6,7 @@
     <%= link_to t('txt.common.edit'), edit_collection_path(:id => @collection), :class => 'btn' %>
     <%= button_to I18n.t('txt.common.delete'), collection_path(:id => @collection),
       :method => :delete,
-      :confirm => t('txt.views.users.sure', :default => 'Sure?'),
+      :data => { :confirm => t('txt.views.users.sure', :default => 'Sure?') },
       :class => 'btn btn-danger' %>
   </div>
 <% end %>

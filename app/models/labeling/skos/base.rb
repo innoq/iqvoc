@@ -49,9 +49,12 @@ class Labeling::SKOS::Base < Labeling::Base
     languages = Array(params[:languages])
 
     if params[:query].present?
-      scope = scope.merge(Label::Base.by_query_value(query_str).by_language(languages).published)
+      scope = scope.
+        merge(Label::Base.by_query_value(query_str).by_language(languages).published).
+        references(:labels)
     else
-      scope = scope.merge(Label::Base.by_language(languages).published)
+      scope = scope.merge(Label::Base.by_language(languages).published).
+        references(:labels)
     end
 
     if params[:collection_origin].present?
@@ -59,6 +62,7 @@ class Labeling::SKOS::Base < Labeling::Base
       if collection
         scope = scope.includes(:owner => :collection_members)
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
+        scope = scope.references(:collection_members)
       else
         raise "Collection with Origin #{params[:collection_origin]} not found!"
       end
@@ -67,9 +71,11 @@ class Labeling::SKOS::Base < Labeling::Base
 
     scope = case params[:for]
     when 'concept'
-      scope.where('concepts.type' => Iqvoc::Concept.base_class_name)
+      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).
+        references(:concepts)
     when 'collection'
-      scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
+      scope.where('concepts.type' => Iqvoc::Collection.base_class_name).
+        references(:concepts)
     else
       # no additional conditions
       scope
