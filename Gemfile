@@ -28,7 +28,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 end
 
-gem 'kaminari'
+gem 'kaminari', '0.13.0'
 gem 'authlogic'
 gem 'cancan'
 gem 'iq_rdf'
@@ -49,7 +49,7 @@ group :development, :test do
   gem 'awesome_print'
 
   platforms :ruby do
-    gem 'mysql2'
+    gem 'mysql2', '0.3.13'
     gem 'sqlite3'
 
     gem 'zeus'
@@ -68,14 +68,13 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '~> 1.5.0'
+  gem 'nokogiri'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'turn'
-  gem 'minitest'
   gem 'webmock'
 end
 
