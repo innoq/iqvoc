@@ -45,7 +45,7 @@ group :development, :test do
   gem 'awesome_print'
 
   platforms :ruby do
-    gem 'mysql2'
+    gem 'mysql2', '0.3.13'
     gem 'sqlite3'
 
     gem 'zeus'
@@ -64,14 +64,13 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri', '~> 1.5.0'
+  gem 'nokogiri'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit', '~> 0.14.2'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'turn'
-  gem 'minitest'
   gem 'webmock'
 end
 
