@@ -33,7 +33,7 @@ module Iqvoc
 
     initializer "iqvoc.load_migrations" do |app|
       # Pull in all the migrations to the application embedding iqvoc
-      app.config.paths['db/migrate'] += Iqvoc::Engine.paths['db/migrate'].existent
+      app.config.paths['db/migrate'].concat(Iqvoc::Engine.paths['db/migrate'].existent)
     end
   end
 
