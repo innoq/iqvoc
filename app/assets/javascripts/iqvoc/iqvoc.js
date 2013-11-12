@@ -198,4 +198,5 @@ jQuery(document).ready(function($) {
   });
 
   IQVOC.onebox(".onebox");
+  IQVOC.matchAppender(".matches");
 });

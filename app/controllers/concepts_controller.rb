@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'concerns/adaptor_initialization'
+
 class ConceptsController < ApplicationController
+  include AdaptorInitialization
 
   def index
     authorize! :read, Concept::Base
@@ -99,6 +102,8 @@ class ConceptsController < ApplicationController
     end
 
     @concept.notations.build if @concept.notations.none?
+
+    @adaptors = adaptors_as_json
   end
 
   def create
@@ -129,6 +134,8 @@ class ConceptsController < ApplicationController
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
+
+    @adaptors = adaptors_as_json
   end
 
   def update
@@ -173,6 +180,14 @@ class ConceptsController < ApplicationController
       :lang => label.language
       # TODO: relations (XL only)
     }
+  end
+
+  def adaptors_as_json
+    return init_adaptors(IqvocAlphabeticalSearchAdaptor).
+        inject({}) do |memo, adaptor|
+      memo[adaptor.url.to_s] = adaptor.name
+      memo
+    end.to_json
   end
 
 end
