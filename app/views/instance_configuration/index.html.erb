@@ -1,6 +1,6 @@
 <%= page_header :title => t("txt.views.instance_configuration.caption").titleize %>
 
-<%= form_tag(instance_configuration_path, :method => :put, :class => "form-horizontal") do %>
+<%= form_tag(instance_configuration_path, :method => :patch, :class => "form-horizontal") do %>
   <% @settings_by_namespace.each do |namespace, settings| %>
     <fieldset>
       <legend><%= t("txt.views.instance_configuration.groups.#{namespace}").titleize %></legend>

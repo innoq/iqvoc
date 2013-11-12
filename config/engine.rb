@@ -12,6 +12,7 @@ require 'simple_form'
 require 'sass'
 require 'sass-rails'
 require 'bootstrap-sass'
+require 'protected_attributes'
 
 require 'iqvoc/controller_extensions'
 
@@ -32,7 +33,7 @@ module Iqvoc
 
     initializer "iqvoc.load_migrations" do |app|
       # Pull in all the migrations to the application embedding iqvoc
-      app.config.paths['db/migrate'] += Iqvoc::Engine.paths['db/migrate'].existent
+      app.config.paths['db/migrate'].concat(Iqvoc::Engine.paths['db/migrate'].existent)
     end
   end
 
