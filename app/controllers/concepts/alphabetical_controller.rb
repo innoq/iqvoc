@@ -59,6 +59,7 @@ class Concepts::AlphabeticalController < ConceptsController
       order("LOWER(#{Label::Base.table_name}.value)").
       joins(:owner).
       where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
+      references(:concepts, :labels, :labelings).
       page(params[:page])
   end
 end

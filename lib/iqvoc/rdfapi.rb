@@ -46,7 +46,7 @@ module Iqvoc
         else
           target = rdf_object
         end
-        target.find_or_initialize_by_origin(rdf_subject)
+        target.find_or_initialize_by(:origin => rdf_subject)
       when String
         # dictionary lookup
         target = PREDICATE_DICTIONARY[rdf_predicate] || rdf_predicate.constantize

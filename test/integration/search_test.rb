@@ -22,7 +22,6 @@ class SearchTest < ActionDispatch::IntegrationTest
     @pagination_setting = Kaminari.config.default_per_page
     Kaminari.config.default_per_page = 5
 
-
     @concepts =  ["Tree", "Forest"].map do |english_label_value|
       FactoryGirl.create(:concept, :pref_labelings => [
           FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label,

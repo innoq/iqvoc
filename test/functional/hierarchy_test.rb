@@ -149,11 +149,6 @@ boot:
     assert_response 200
   end
 
-  test "unsupported content type" do
-    get :show, :lang => "en", :format => "N/A", :root => "root"
-    assert_response 406
-  end
-
   test "RDF representations" do
     # Turtle
 
@@ -223,7 +218,7 @@ boot:
   end
 
   test "root parameter handling" do
-    assert_raises(ActionController::RoutingError) do
+    assert_raises ActionController::UrlGenerationError do
       get :show, :format => "html"
     end
 

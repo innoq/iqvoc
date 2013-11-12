@@ -58,7 +58,7 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.by_label_language(lang)
-    includes(:target).merge(Label::Base.by_language(lang.to_s))
+    includes(:target).merge(Label::Base.by_language(lang.to_s)).references(:labels)
   end
 
   # ********** Methods
