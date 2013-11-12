@@ -16,7 +16,7 @@ class AlphabeticalSearchResultRemote < AlphabeticalSearchResult
   end
 
   def url
-    @host + @path
+    URI.join(@host, @path).to_s
   end
 
   def definition?
