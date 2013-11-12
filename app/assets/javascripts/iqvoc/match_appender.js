@@ -9,22 +9,44 @@ function MatchAppender(selector) {
   this.root = selector.jquery ? selector : $(selector);
   var remotes = this.root.data("remotes");
   remotes[null] = "Sonstiges"; // XXX: i18n
+  var self = this;
 
-  var categories = $.map(this.extractCategories(), function(category) {
-    return $("<option />").val(category).text(category)[0];
+  var categories = $.map(this.extractCategories(), function(desc, id) {
+    return $("<option />").val(id).text(desc)[0];
   });
 
-  var input = $("<input />").prependTo(this.root);
+  this.input = $("<input />").prependTo(this.root);
   var sources = $.map(remotes, function(name, url) {
     return $("<option />").val(url).text(name)[0];
   });
-  $("<select />").append(sources).insertBefore(input);
-  $("<button />").text("✓").insertAfter(input).click(onSubmit);
-  $("<select />").append(categories).insertAfter(input);
+  var source = $("<select />").append(sources).insertBefore(this.input);
+  $("<button />").text("✓").insertAfter(this.input).
+      click($.proxy(this, "onConfirm"));
+  this.category = $("<select />").append(categories).insertAfter(this.input);
 }
 MatchAppender.prototype.extractCategories = function() {
   var labels = $("label", this.root);
-  return $.map(labels, function(node) { return $(node).text(); });
+  var data = {};
+
+  $.each(labels, function(i, node) {
+    var el = $(node);
+    data[el.attr("for")] = el.text();
+  });
+
+  return data;
+};
+MatchAppender.prototype.onConfirm = function(ev) {
+    ev.preventDefault();
+  var textAreaName = this.category.val();
+
+  // Work around faulty simple form generated field prefixes
+  var index = textAreaName.indexOf('_') + 1;
+  textAreaName = textAreaName.substr(index);
+
+  var textArea = $(document.getElementsByName(textAreaName)[0]);
+  var newValue = textArea.val() + "\n" + this.input.val();
+
+  textArea.val($.trim(newValue));
 };
 
 function onSubmit(ev) {
