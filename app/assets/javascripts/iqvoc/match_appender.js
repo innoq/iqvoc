@@ -57,7 +57,6 @@ MatchAppender.prototype.onConfirm = function(ev) {
   this.input.val("");
 };
 MatchAppender.prototype.onChange = function(req, callback) {
-  // callback([ { label: "feinstaub", value: "http://russenschlampen.de" } ]);
   var self = this;
   $.ajax({
     type: "GET",
