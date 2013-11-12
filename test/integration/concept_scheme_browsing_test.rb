@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
-class ConceptSchemeTest < ActionDispatch::IntegrationTest
+class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
 
   test "list top concepts in rdf scheme" do
     @concept = FactoryGirl.create(:concept, :broader_relations => [])

@@ -1,4 +1,4 @@
-<div class="relation panel" id="<%= klass.model_name.to_relation_name %>">
+<div class="relation panel" id="<%= klass.model_name.to_s.to_relation_name %>">
   <h2><%= klass.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
     <%= item_listing(concept.related_concepts_for_relation_class(klass, params[:published] != "0")) do |c|

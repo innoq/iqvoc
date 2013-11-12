@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class InstanceConfigurationTest < ActiveSupport::TestCase
+class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
 
   setup do
     @config = Iqvoc::InstanceConfiguration.instance

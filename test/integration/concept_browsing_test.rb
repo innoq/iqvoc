@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
-class ConceptTest < ActionDispatch::IntegrationTest
+class ConceptBrowsingTest < ActionDispatch::IntegrationTest
 
   setup do
     @concept1 = FactoryGirl.create(:concept, :narrower_relations => [])

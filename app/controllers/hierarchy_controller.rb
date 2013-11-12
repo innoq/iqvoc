@@ -56,9 +56,8 @@ class HierarchyController < ApplicationController
     # validate root parameter
     error = "missing root parameter" unless root_origin # TODO: i18n
     unless error
-      root_concepts = root_origin == "scheme" ? scope.tops : # XXX: special-casing
-          scope.where(:origin => root_origin)
-      root_concepts = root_concepts.all
+      root_concepts = root_origin == "scheme" ? scope.tops.load : # XXX: special-casing
+          scope.where(:origin => root_origin).load
       unless root_concepts.length > 0
         error = [404, "no concept matching root parameter"] # TODO: i18n
       end
@@ -109,7 +108,7 @@ class HierarchyController < ApplicationController
     return {} if max_depth != -1 and current_depth > max_depth
 
     rels = scope.where(Concept::Relation::Base.arel_table[:target_id].
-        eq(root_concept.id))
+        eq(root_concept.id)).references(:concept_relations)
     return rels.inject({}) do |memo, concept|
       if include_siblings
         determine_siblings(concept).each { |sib| memo[sib] = {} }

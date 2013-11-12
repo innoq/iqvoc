@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
+require 'iqvoc/rdfapi'
 
 class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
