@@ -1,11 +1,5 @@
 <%- fieldname = "concept[inline_#{assoc_klass.name.to_relation_name}]" -%>
 
 <%= f.input fieldname, :label => assoc_klass.model_name.human(:count => 2) do %>
-  <%= text_field_tag fieldname, owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"),
-    :class => "entity_select",
-    :'data-query_url' => alphabetical_concepts_path,
-    :'data-source-selector' => 'dummy-prompt',
-    :'data-entity-uri' => nil,
-    :'data-singular' => false,
-    :'data-entities' => '[]' %>
+  <%= text_area_tag fieldname, owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"), :class => "span4", :rows => 4 %>
 <% end %>
