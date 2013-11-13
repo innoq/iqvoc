@@ -4,4 +4,4 @@
 //= require iqvoc/langselect
 //= require iqvoc/entityselect
 //= require iqvoc/entityselect_qualified
-//= require iqvoc/match_appender
+//= require iqvoc/concept_mapper
