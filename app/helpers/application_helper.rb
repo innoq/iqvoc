@@ -64,10 +64,14 @@ module ApplicationHelper
   end
 
   def page_header(args = {})
+    if title = args[:title]
+      content_for(:title, title)
+    end
+
     content_for :page_header do
       content_tag :div, :class => "page-header" do
         content_tag :h1 do
-          ("#{args.delete(:title)} #{content_tag(:small, args.delete(:desc))}").html_safe
+          ("#{title} #{content_tag(:small, args[:desc])}").html_safe
         end
       end
     end
@@ -106,6 +110,14 @@ module ApplicationHelper
 
   def html_classes(*args)
     args.compact.join(" ")
+  end
+
+  def page_title
+    if content_for?(:title)
+      "#{content_for(:title)} — #{Iqvoc.title}"
+    else
+      Iqvoc.title
+    end
   end
 
 end
