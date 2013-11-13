@@ -31,5 +31,11 @@ ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 # initialize non-dynamic settings below
 # see lib/iqvoc.rb for the list of available setting
 
+Rails.configuration.after_initialize do
+  if Iqvoc::Concept.note_class_names.empty?
+    raise(TypeError, "note_class_names misconfiguration: must not be empty")
+  end
+end
+
 unless Rails.env.test?
 end
