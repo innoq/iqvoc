@@ -70,3 +70,6 @@ remove_file "public/index.html"
 remove_file "app/controllers/application_controller.rb"
 remove_file "app/helpers/application_helper.rb"
 remove_file "app/views/layouts/application.html.erb"
+
+remove_file "Gemfile"
+create_file "Gemfile", "source 'http://rubygems.org'\n\ngem 'iqvoc'"
