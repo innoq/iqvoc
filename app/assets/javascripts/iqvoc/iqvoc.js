@@ -197,5 +197,8 @@ jQuery(document).ready(function($) {
     });
   });
 
+  // unotrusive tabs
+  $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
+
   IQVOC.onebox(".onebox");
 });
