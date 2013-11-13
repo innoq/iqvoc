@@ -210,5 +210,19 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
     assert_not_nil collection_with_subcollections
     assert_not_nil collection_with_subcollections.subcollections.first
   end
+
+  test "empty string import"  do
+    test_data = (<<-DATA
+      <http://www.example.com/water-animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Collection> .
+      <http://www.example.com/water-animal> <http://www.w3.org/2008/05/skos#prefLabel> ""@de .
+    DATA
+    ).split("\n")
+
+    assert_nothing_raised do
+    assert_difference('Collection::Base.count', 1) do
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      end
+    end
+  end
 end
 
