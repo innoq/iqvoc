@@ -19,4 +19,8 @@
       :active => params[:controller] == 'concepts/untranslated',
       :id => 'untranslated' %>
   <% end %>
+  <% if can?(:create, Iqvoc::Concept.base_class) %>
+    <%= sidebar_header 'Links'%>
+    <%= sidebar_item :icon => :edit, :text => t('txt.views.concepts.new', :concept_class_name => Iqvoc::Concept.base_class.model_name.human), :path => new_concept_path, :perms => [:create, Iqvoc::Concept.base_class], :active => params[:action] == 'new' %>
+  <% end %>
 <% end %>
