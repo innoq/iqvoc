@@ -89,8 +89,13 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."     unless rdf_subject.is_a?(Concept::Base)
-    raise MustBeStringLiteralError, "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal" unless rdf_object =~ /^"(.+)"(@(.+))?$/
+    unless rdf_subject.is_a?(Concept::Base)
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."
+    end
+
+    unless rdf_object =~ /^"(.+)"(@(.+))?$/
+      raise InvalidStringLiteralError, "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
+    end
 
     lang = $3
     value = begin
@@ -116,7 +121,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
 end
 
-class MustBeStringLiteralError < StandardError
+class InvalidStringLiteralError < StandardError
   attr_reader :original
   def initialize(msg, original = $!)
     super(msg)
