@@ -40,15 +40,6 @@ function ConceptMapper(selector) {
   });
 }
 ConceptMapper.prototype.delimiter = ", ";
-ConceptMapper.prototype.determineMatchTypes = function() {
-  var data = {};
-  $("label", this.root).each(function(i, node) {
-    var el = $(node);
-    var fieldName = el.attr("for");
-    data[fieldName] = el.text();
-  });
-  return data;
-};
 ConceptMapper.prototype.onConfirm = function(ev) {
   ev.preventDefault();
 
@@ -93,6 +84,15 @@ ConceptMapper.prototype.onResults = function(html, status, xhr, callback) {
     return { label: el.text(), value: el.data("resource-url") };
   });
   callback(items);
+};
+ConceptMapper.prototype.determineMatchTypes = function() {
+  var data = {};
+  $("label", this.root).each(function(i, node) {
+    var el = $(node);
+    var fieldName = el.attr("for");
+    data[fieldName] = el.text();
+  });
+  return data;
 };
 
 return function(selector) {
