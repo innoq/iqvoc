@@ -59,9 +59,7 @@ ConceptMappingManager.prototype.populateConceptMappings = function() {
   return urisByLabel;
 };
 ConceptMappingManager.prototype.onUpdate = function(ev, data) {
-  console.log("onUpdate", this, arguments);
   this.conceptMappings[data.matchType].values.push(data.uri);
-  console.dir(this.conceptMappings);
   this.render();
 };
 
