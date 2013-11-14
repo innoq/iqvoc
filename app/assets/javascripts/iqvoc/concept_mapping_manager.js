@@ -7,12 +7,11 @@ IQVOC.conceptMappingManager = (function($) {
 
 function ConceptMappingManager(selector) {
   this.root = selector.jquery ? selector : $(selector);
-  this.conceptMappings = this.populateConceptMappings();
+  this.conceptMappings = this.determineConceptMappings();
 
   this.list = $("<ul />").prependTo(this.root);
   this.render();
 
-  var self = this;
   this.root.on("concept-mapped", $.proxy(this, "onUpdate"));
 }
 ConceptMappingManager.prototype.render = function() {
@@ -34,7 +33,7 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
-ConceptMappingManager.prototype.populateConceptMappings = function() {
+ConceptMappingManager.prototype.determineConceptMappings = function() {
   var textAreas = this.root.find('textarea');
 
   var labels = {};
