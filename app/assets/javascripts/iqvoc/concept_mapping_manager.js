@@ -49,7 +49,7 @@ ConceptMappingManager.prototype.populateConceptMappings = function() {
     var label = labels[el.attr("name")];
     var values = $.map($(node).val().split(","), function(item, i) {
       item = $.trim(item);
-      return item ? { uri: item, source: "dummySource" } || null;
+      return item ? { uri: item, source: "dummy" } : null;
     });
 
     // TODO: values zu Objekten machen, Source pro Value annotieren
