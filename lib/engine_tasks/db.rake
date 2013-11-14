@@ -9,8 +9,8 @@ namespace :iqvoc do
     desc "Load seeds from all engines (db/seed tasks should be idempotent)"
     task :seed_all => :environment do
       engines = Rails.application.railties.engines.select { |e|
-        e.config.paths["db/seeds"] &&
-          e.config.paths["db/seeds"].existent.any?
+        e.config.paths["db/seeds.rb"] &&
+          e.config.paths["db/seeds.rb"].existent.any?
       }
 
       engines.select{|e| e.engine_name !~ /^iqvoc_/}.each do |engine|
@@ -32,8 +32,8 @@ namespace :iqvoc do
         end
       end
 
-      files = Rails.application.config.paths["db/seeds"].existent +
-        engines.map { |e| e.config.paths["db/seeds"].existent }.flatten.compact
+      files = Rails.application.config.paths["db/seeds.rb"].existent +
+        engines.map { |e| e.config.paths["db/seeds.rb"].existent }.flatten.compact
 
       puts "Loading seeds from: " + files.join(", ")
       files.each do |file|
