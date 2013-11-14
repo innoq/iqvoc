@@ -5,3 +5,4 @@
 //= require iqvoc/entityselect
 //= require iqvoc/entityselect_qualified
 //= require iqvoc/concept_mapper
+//= require iqvoc/concept_mapping_manager

@@ -1,7 +1,7 @@
 /*jslint vars: true, white: true */
 /*global jQuery, IQVOC */
 
-IQVOC.conceptMapper = (function($) { // TODO: rename to concept mapper
+IQVOC.conceptMapper = (function($) {
 
 "use strict";
 
@@ -22,7 +22,7 @@ function ConceptMapper(selector) {
   this.source = $("<select />").append(sources).insertBefore(this.input);
   $("<button />").text("✓").insertAfter(this.input).
       click($.proxy(this, "onConfirm"));
-  this.category = $("<select />").append(categories).insertAfter(this.input);
+  this.matchType = $("<select />").append(categories).insertAfter(this.input);
 
   this.input.autocomplete({
     source: $.proxy(this, "onChange"),
@@ -44,14 +44,16 @@ ConceptMapper.prototype.extractCategories = function() {
 };
 ConceptMapper.prototype.onConfirm = function(ev) {
   ev.preventDefault();
-  var textAreaName = this.category.val();
+  var textAreaInputName = this.matchType.val();
 
-
-  var textArea = $(document.getElementsByName(textAreaName)[0]);
-  var newValue = textArea.val() + "\n" + this.input.val();
+  var textArea = $(document.getElementsByName(textAreaInputName)[0]);
+  var newItem = this.input.val();
+  var newValue = textArea.val() + ", " + newItem;
 
   textArea.val($.trim(newValue));
   this.input.val("");
+  var matchType = this.extractCategories()[textAreaInputName]; // XXX: inefficient
+  this.root.trigger("concept-mapped", {uri: newItem, matchType: matchType });
 };
 ConceptMapper.prototype.onChange = function(req, callback) {
   var self = this;

@@ -202,4 +202,5 @@ jQuery(document).ready(function($) {
 
   IQVOC.onebox(".onebox");
   IQVOC.conceptMapper(".matches");
+  IQVOC.conceptMappingManager(".matches");
 });
