@@ -17,14 +17,15 @@ function ConceptMappingManager(selector) {
 ConceptMappingManager.prototype.render = function() {
   var self = this;
 
-  this.list.empty();
-
-  var self = this;
+  var items = [];
   $.each(this.conceptMappings, function(label, category) {
     $.each(category.values, function(i, item) {
-      self.renderBubble(item, label).appendTo(self.list); // XXX: inefficient DOM updating
+      var item = self.renderBubble(item, label);
+      items.push(item);
     });
   });
+
+  this.list.empty().append(items);
 };
 ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   var category = $("<span />").text(categoryLabel);
