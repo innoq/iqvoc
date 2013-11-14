@@ -1,11 +1,11 @@
 /*jslint vars: true, white: true */
 /*global jQuery, IQVOC */
 
-IQVOC.matchAppender = (function($) { // TODO: rename to concept mapper
+IQVOC.conceptMapper = (function($) { // TODO: rename to concept mapper
 
 "use strict";
 
-function MatchAppender(selector) {
+function ConceptMapper(selector) {
   this.root = selector.jquery ? selector : $(selector);
   var remotes = this.root.data("remotes");
   remotes[""] = "Sonstiges"; // XXX: i18n
@@ -31,7 +31,7 @@ function MatchAppender(selector) {
     }
   });
 }
-MatchAppender.prototype.extractCategories = function() {
+ConceptMapper.prototype.extractCategories = function() {
   var labels = $("label", this.root);
   var data = {};
 
@@ -42,7 +42,7 @@ MatchAppender.prototype.extractCategories = function() {
 
   return data;
 };
-MatchAppender.prototype.onConfirm = function(ev) {
+ConceptMapper.prototype.onConfirm = function(ev) {
   ev.preventDefault();
   var textAreaName = this.category.val();
 
@@ -56,7 +56,7 @@ MatchAppender.prototype.onConfirm = function(ev) {
   textArea.val($.trim(newValue));
   this.input.val("");
 };
-MatchAppender.prototype.onChange = function(req, callback) {
+ConceptMapper.prototype.onChange = function(req, callback) {
   var self = this;
   $.ajax({
     type: "GET",
@@ -73,7 +73,7 @@ MatchAppender.prototype.onChange = function(req, callback) {
     }
   });
 };
-MatchAppender.prototype.onResults = function(html, status, xhr, callback) {
+ConceptMapper.prototype.onResults = function(html, status, xhr, callback) {
   // this.spinner.hide();
   var doc = $("<div />").append(html);
   var items = $.map(doc.find(".concept-item-link"), function(node, i) {
@@ -84,7 +84,7 @@ MatchAppender.prototype.onResults = function(html, status, xhr, callback) {
 };
 
 return function(selector) {
-  return new MatchAppender(selector);
+  return new ConceptMapper(selector);
 };
 
 }(jQuery));
