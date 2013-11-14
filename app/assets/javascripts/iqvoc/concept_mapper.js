@@ -46,9 +46,6 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   ev.preventDefault();
   var textAreaName = this.category.val();
 
-  // Work around wrongly generated field prefixes by simple_form
-  var index = textAreaName.indexOf('_') + 1;
-  textAreaName = textAreaName.substr(index);
 
   var textArea = $(document.getElementsByName(textAreaName)[0]);
   var newValue = textArea.val() + "\n" + this.input.val();
