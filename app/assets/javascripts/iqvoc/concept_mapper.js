@@ -5,55 +5,66 @@ IQVOC.conceptMapper = (function($) {
 
 "use strict";
 
+// `selector` is either a jQuery object, a DOM node or a string
 function ConceptMapper(selector) {
   this.root = selector.jquery ? selector : $(selector);
-  var remotes = this.root.data("remotes");
-  remotes[""] = "Sonstiges"; // XXX: i18n
-  var self = this;
 
-  var categories = $.map(this.extractCategories(), function(desc, id) {
+  var matchTypes = $.map(this.determineMatchTypes(), function(desc, id) {
     return $("<option />").val(id).text(desc)[0];
   });
 
+  var sources = this.root.data("remotes"); // TODO: rename data attribute?
+  sources["_custom"] = "Sonstiges"; // FIXME: i18n
+
+  // spawn UI elements
+
   this.input = $("<input />").prependTo(this.root);
-  var sources = $.map(remotes, function(name, url) {
+  $("<button />").text("✓").insertAfter(this.input).
+      click($.proxy(this, "onConfirm"));
+  this.matchType = $("<select />").append(matchTypes).insertAfter(this.input);
+
+  sources = $.map(sources, function(name, url) {
     return $("<option />").val(url).text(name)[0];
   });
   this.source = $("<select />").append(sources).insertBefore(this.input);
-  $("<button />").text("✓").insertAfter(this.input).
-      click($.proxy(this, "onConfirm"));
-  this.matchType = $("<select />").append(categories).insertAfter(this.input);
 
-  this.input.autocomplete({
+  var self = this;
+  this.input.autocomplete({ // TODO: extract autocomplete extension into subclass
     source: $.proxy(this, "onChange"),
     search: function(ev, ui) {
-      if (self.source.val() === "") { return false; }
+      if(self.source.val() === "_custom") {
+        return false;
+      }
     }
   });
 }
-ConceptMapper.prototype.extractCategories = function() {
-  var labels = $("label", this.root);
+ConceptMapper.prototype.delimiter = ", ";
+ConceptMapper.prototype.determineMatchTypes = function() {
   var data = {};
-
-  $.each(labels, function(i, node) {
+  $("label", this.root).each(function(i, node) {
     var el = $(node);
-    data[el.attr("for")] = el.text();
+    var fieldName = el.attr("for");
+    data[fieldName] = el.text();
   });
-
   return data;
 };
 ConceptMapper.prototype.onConfirm = function(ev) {
   ev.preventDefault();
-  var textAreaInputName = this.matchType.val();
 
-  var textArea = $(document.getElementsByName(textAreaInputName)[0]);
-  var newItem = this.input.val();
-  var newValue = textArea.val() + ", " + newItem;
+  var textAreaName = this.matchType.val();
+  var textArea = document.getElementsByName(textAreaName)[0];
+  textArea = $(textArea);
 
-  textArea.val($.trim(newValue));
+  var newURI = this.input.val();
+  var newValue = $.trim(textArea.val() + this.delimiter + newURI);
+
+  textArea.val(newValue);
   this.input.val("");
-  var matchType = this.extractCategories()[textAreaInputName]; // XXX: inefficient
-  this.root.trigger("concept-mapped", {uri: newItem, matchType: matchType, source: "foo" });
+  this.root.trigger("concept-mapped", {
+    uri: newURI,
+    matchType: this.determineMatchTypes()[textAreaName], // XXX: inefficient
+    source: "foo" // TODO
+  });
 };
 ConceptMapper.prototype.onChange = function(req, callback) {
   var self = this;
@@ -61,11 +72,12 @@ ConceptMapper.prototype.onChange = function(req, callback) {
     type: "GET",
     url: this.root.data("remote-proxy-url"),
     data: {
-      prefix: encodeURIComponent(req.term), // Internet is scheiße
+      prefix: encodeURIComponent(req.term), // FIXME: (double-)encoding should not be necessary
       source: this.source.find("option:selected").text(),
       layout: 0
     },
     success: function() {
+      // inject callback
       var args = Array.prototype.slice.apply(arguments);
       args.push(callback);
       return self.onResults.apply(self, args);
@@ -73,9 +85,9 @@ ConceptMapper.prototype.onChange = function(req, callback) {
   });
 };
 ConceptMapper.prototype.onResults = function(html, status, xhr, callback) {
-  // this.spinner.hide();
   var doc = $("<div />").append(html);
-  var items = $.map(doc.find(".concept-item-link"), function(node, i) {
+  var concepts = doc.find(".concept-item-link");
+  var items = $.map(concepts, function(node, i) {
     var el = $(node);
     return { label: el.text(), value: el.data("resource-url") };
   });
