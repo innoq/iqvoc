@@ -21,15 +21,16 @@ ConceptMappingManager.prototype.render = function() {
   this.list.empty();
 
   var self = this;
-  $.each(this.conceptMappings, function(i, category) {
+  $.each(this.conceptMappings, function(label, category) {
     $.each(category.values, function(i, uri) {
-      self.renderBubble(uri, category.label).appendTo(self.list); // XXX: inefficient
+      self.renderBubble(uri, label, category.source).appendTo(self.list); // XXX: inefficient
     });
   });
 };
-ConceptMappingManager.prototype.renderBubble = function(uri, categoryLabel) {
+ConceptMappingManager.prototype.renderBubble = function(uri, categoryLabel, sourceLabel) {
   var category = $("<span />").text(categoryLabel);
-  return $("<li />").text(uri).append(category);
+  var source = $("<span />").text(sourceLabel);
+  return $("<li />").text(uri).append(category).prepend(source);
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
@@ -45,14 +46,14 @@ ConceptMappingManager.prototype.populateConceptMappings = function() {
   var urisByLabel = {};
   textAreas.each(function(i, node) {
     var el = $(node);
+    var label = labels[el.attr("name")];
     var values = $.map($(node).val().split(","), function(item, i) {
       item = $.trim(item);
-      return item || null;
+      return item ? { uri: item, source: "dummySource" } || null;
     });
-    // console.log(labels);
-    var label = labels[el.attr("name")];
 
-    urisByLabel[label] = { el: el, values: values };
+    // TODO: values zu Objekten machen, Source pro Value annotieren
+    urisByLabel[label] = { el: el, values: values, source: "bar" };
   });
 
   return urisByLabel;
@@ -60,6 +61,7 @@ ConceptMappingManager.prototype.populateConceptMappings = function() {
 ConceptMappingManager.prototype.onUpdate = function(ev, data) {
   console.log("onUpdate", this, arguments);
   this.conceptMappings[data.matchType].values.push(data.uri);
+  console.dir(this.conceptMappings);
   this.render();
 };
 

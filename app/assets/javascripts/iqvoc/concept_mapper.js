@@ -53,7 +53,7 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   textArea.val($.trim(newValue));
   this.input.val("");
   var matchType = this.extractCategories()[textAreaInputName]; // XXX: inefficient
-  this.root.trigger("concept-mapped", {uri: newItem, matchType: matchType });
+  this.root.trigger("concept-mapped", {uri: newItem, matchType: matchType, source: "foo" });
 };
 ConceptMapper.prototype.onChange = function(req, callback) {
   var self = this;
