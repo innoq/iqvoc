@@ -201,6 +201,6 @@ jQuery(document).ready(function($) {
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
   IQVOC.onebox(".onebox");
-  IQVOC.conceptMapper(".matches");
+  new IQVOC.FederatedConceptMapper(".matches");
   IQVOC.conceptMappingManager(".matches");
 });
