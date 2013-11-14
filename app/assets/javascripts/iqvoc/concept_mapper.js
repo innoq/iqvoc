@@ -8,8 +8,9 @@ IQVOC.conceptMapper = (function($) {
 // `selector` is either a jQuery object, a DOM node or a string
 function ConceptMapper(selector) {
   this.root = selector.jquery ? selector : $(selector);
+  this.matchTypes = this.determineMatchTypes();
 
-  var matchTypes = $.map(this.determineMatchTypes(), function(desc, id) {
+  var matchOptions = $.map(this.matchTypes, function(desc, id) {
     return $("<option />").val(id).text(desc)[0];
   });
 
@@ -21,7 +22,7 @@ function ConceptMapper(selector) {
   this.input = $("<input />").prependTo(this.root);
   $("<button />").text("✓").insertAfter(this.input).
       click($.proxy(this, "onConfirm"));
-  this.matchType = $("<select />").append(matchTypes).insertAfter(this.input);
+  this.matchType = $("<select />").append(matchOptions).insertAfter(this.input);
 
   sources = $.map(sources, function(name, url) {
     return $("<option />").val(url).text(name)[0];
@@ -62,7 +63,7 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   this.input.val("");
   this.root.trigger("concept-mapped", {
     uri: newURI,
-    matchType: this.determineMatchTypes()[textAreaName], // XXX: inefficient
+    matchType: this.matchTypes[textAreaName],
     source: "foo" // TODO
   });
 };
