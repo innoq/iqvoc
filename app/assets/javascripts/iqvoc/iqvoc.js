@@ -197,6 +197,9 @@ jQuery(document).ready(function($) {
     });
   });
 
+  // unobtrusive tabs
+  $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
+
   IQVOC.onebox(".onebox");
   IQVOC.matchAppender(".matches");
 });

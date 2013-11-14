@@ -8,21 +8,20 @@
 
     <ul class="lang-widget dropdown-menu">
       <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
-        <li><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
+        <li class="lang-widget-header"><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
-        <nobr>
-          <li>
+          <li class="lang-widget-item">
           <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), params.merge(:lang => lang || "none"),
               :class => ("current" if lang == I18n.locale.to_s) %>
-          </li></nobr>
+          </li>
     <% end %>
   <% end %>
 
   <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
   <% if secondary_languages.any? %>
-    <li><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
+    <li class="lang-widget-header"><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
     <% secondary_languages.each do |lang| %>
-      <li>
+      <li class="lang-widget-item">
         <label>
           <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang.presence || "-"}", :default => lang.presence || "-") %>
         </label>
