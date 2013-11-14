@@ -22,15 +22,15 @@ ConceptMappingManager.prototype.render = function() {
 
   var self = this;
   $.each(this.conceptMappings, function(label, category) {
-    $.each(category.values, function(i, uri) {
-      self.renderBubble(uri, label, category.source).appendTo(self.list); // XXX: inefficient
+    $.each(category.values, function(i, item) {
+      self.renderBubble(item, label).appendTo(self.list); // XXX: inefficient DOM updating
     });
   });
 };
-ConceptMappingManager.prototype.renderBubble = function(uri, categoryLabel, sourceLabel) {
+ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   var category = $("<span />").text(categoryLabel);
-  var source = $("<span />").text(sourceLabel);
-  return $("<li />").text(uri).append(category).prepend(source);
+  var source = $("<span />").text(item.source);
+  return $("<li />").text(item.uri).append(category).prepend(source);
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
@@ -59,7 +59,8 @@ ConceptMappingManager.prototype.populateConceptMappings = function() {
   return urisByLabel;
 };
 ConceptMappingManager.prototype.onUpdate = function(ev, data) {
-  this.conceptMappings[data.matchType].values.push(data.uri);
+  this.conceptMappings[data.matchType].values.
+      push({ uri: data.uri, source: data.source });
   this.render();
 };
 
