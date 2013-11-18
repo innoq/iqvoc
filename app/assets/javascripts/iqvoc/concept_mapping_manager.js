@@ -1,26 +1,47 @@
 /*jslint vars: true, white: true */
 /*global jQuery, IQVOC */
 
-IQVOC.conceptMappingManager = (function($) {
+IQVOC.ConceptMappingManager = (function($) {
 
 "use strict";
 
-function ConceptMappingManager(selector) {
+function ConceptMappingManager(selector, editable) {
   this.root = selector.jquery ? selector : $(selector);
+  this.editable = editable === true;
   this.conceptMappings = this.determineConceptMappings();
 
-  this.list = $("<ul />").prependTo(this.root);
+  this.list = $('<ul class="concept-mappings" />').prependTo(this.root);
   this.render();
 
   this.root.on("concept-mapped", $.proxy(this, "onUpdate"));
 }
+ConceptMappingManager.prototype.onDelete = function(ev, instance) {
+  var btn = $(this);
+  var item = btn.closest("li");
+
+  var matchType = $(".concept-mapping-match-type", item).text();
+  var source = $(".concept-mapping-source", item).text();
+  var uri = $(".concept-mapping-link", item).attr("href");
+  var values = instance.conceptMappings[matchType].values;
+  // XXX: hacky
+  var hits = $.map(values, function(value, i) {
+    if(value.uri === uri) {
+      item.slideUp(function() {
+        item.remove();
+      });
+      return i;
+    }
+    return null;
+  });
+  values.splice(hits[0], 1);
+};
 ConceptMappingManager.prototype.render = function() {
   var self = this;
 
   var items = [];
   $.each(this.conceptMappings, function(label, category) {
     $.each(category.values, function(i, item) {
-      var item = self.renderBubble(item, label);
+      item = self.renderBubble(item, label);
       items.push(item[0]);
     });
   });
@@ -28,9 +49,22 @@ ConceptMappingManager.prototype.render = function() {
   this.list.empty().append(items);
 };
 ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
-  var category = $("<span />").text(categoryLabel);
-  var source = $("<span />").text(item.source);
-  return $("<li />").text(item.uri).append(category).prepend(source);
+  var category = $('<span class="concept-mapping-match-type">').
+      text(categoryLabel);
+  var source = $('<span class="concept-mapping-source">').text(item.source);
+  if(this.editable) {
+    var self = this;
+    var btn = $("<span />").text("DELETE").click(function() {
+      // inject instance
+      var args = Array.prototype.slice.apply(arguments);
+      args.push(self);
+      return self.onDelete.apply(this, args);
+    });
+  }
+  var link = $('<a class="concept-mapping-link" />').attr("href", item.uri).
+      text(item.uri);
+  return $('<li class="concept-mapping" />').append(link).append(category).
+      prepend(source).append(btn);
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
@@ -64,8 +98,6 @@ ConceptMappingManager.prototype.onUpdate = function(ev, data) {
   this.render();
 };
 
-return function(selector) {
-  return new ConceptMappingManager(selector);
-};
+return ConceptMappingManager;
 
 }(jQuery));

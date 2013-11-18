@@ -202,5 +202,5 @@ jQuery(document).ready(function($) {
 
   IQVOC.onebox(".onebox");
   new IQVOC.FederatedConceptMapper(".matches");
-  IQVOC.conceptMappingManager(".matches");
+  new IQVOC.ConceptMappingManager(".matches", true);
 });
