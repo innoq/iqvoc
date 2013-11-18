@@ -21,7 +21,7 @@ ConceptMappingManager.prototype.render = function() {
   $.each(this.conceptMappings, function(label, category) {
     $.each(category.values, function(i, item) {
       var item = self.renderBubble(item, label);
-      items.push(item);
+      items.push(item[0]);
     });
   });
 
@@ -35,7 +35,7 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
 ConceptMappingManager.prototype.determineConceptMappings = function() {
-  var textAreas = this.root.find('textarea');
+  var textAreas = this.root.find("textarea");
 
   var labels = {};
   this.root.find("label").each(function(i, node) {
