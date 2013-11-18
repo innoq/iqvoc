@@ -34,7 +34,7 @@ function FederatedConceptMapper(selector) {
   });
 }
 FederatedConceptMapper.prototype = new baseClass();
-ConceptMapper.prototype.onChange = function(req, callback) {
+FederatedConceptMapper.prototype.onChange = function(req, callback) {
   console.log("SEARCH", this, arguments);
   var self = this;
   $.ajax({
@@ -53,7 +53,7 @@ ConceptMapper.prototype.onChange = function(req, callback) {
     }
   });
 };
-ConceptMapper.prototype.onResults = function(html, status, xhr, callback) {
+FederatedConceptMapper.prototype.onResults = function(html, status, xhr, callback) {
   var doc = $("<div />").append(html);
   var concepts = doc.find(".concept-item-link");
   var items = $.map(concepts, function(node, i) {
