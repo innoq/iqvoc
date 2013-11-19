@@ -17,8 +17,8 @@ class Dataset::IqvocDataset
     Dataset::Adaptors::Iqvoc::SearchAdaptor.new(url).search(params)
   end
 
-  def alphabetical_search(locale, prefix)
-    Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor.new(url).search(locale, prefix)
+  def alphabetical_search(prefix, locale)
+    Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor.new(url).search(prefix, locale)
   end
 
   def find_label(params)
