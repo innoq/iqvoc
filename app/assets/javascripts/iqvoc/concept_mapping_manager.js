@@ -22,7 +22,9 @@ ConceptMappingManager.prototype.onDelete = function(ev, instance) {
   var matchType = $(".concept-mapping-match-type", item).text();
   var source = $(".concept-mapping-source", item).text();
   var uri = $(".concept-mapping-link", item).attr("href");
-  var values = instance.conceptMappings[matchType].values;
+
+  var data = instance.conceptMappings[matchType];
+  var values = data.values;
   // XXX: hacky
   var hits = $.map(values, function(value, i) {
     if(value.uri === uri) {
@@ -34,6 +36,9 @@ ConceptMappingManager.prototype.onDelete = function(ev, instance) {
     return null;
   });
   values.splice(hits[0], 1);
+
+  var uris = $.map(data.values, function(value) { return value.uri; });
+  data.el.val(uris.join(", "));
 };
 ConceptMappingManager.prototype.render = function() {
   var self = this;
