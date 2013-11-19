@@ -66,7 +66,7 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
       return self.onDelete.apply(this, args);
     });
   }
-  var link = $('<a class="concept-mapping-link" />').attr("href", item.uri).
+  var link = $('<a class="concept-mapping-link unlabeled" />').attr("href", item.uri).
       text(item.uri);
   return $('<li class="concept-mapping" />').append(link).append(category).
       prepend(source).append(btn);
@@ -101,6 +101,8 @@ ConceptMappingManager.prototype.onUpdate = function(ev, data) {
   this.conceptMappings[data.matchType].values.
       push({ uri: data.uri, source: data.source });
   this.render();
+
+  $(document.body).trigger("concept-label", this.list);
 };
 
 return ConceptMappingManager;

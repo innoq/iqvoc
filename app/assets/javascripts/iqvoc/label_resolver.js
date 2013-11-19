@@ -1,4 +1,4 @@
-var labelResolver = (function($) {
+IQVOC.labelResolver = (function($) {
 
 "use strict";
 

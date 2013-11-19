@@ -203,4 +203,9 @@ jQuery(document).ready(function($) {
   IQVOC.onebox(".onebox");
   new IQVOC.FederatedConceptMapper(".matches");
   new IQVOC.ConceptMappingManager(".matches", true);
+
+  IQVOC.labelResolver();
+  $(document.body).on("concept-label", function(ev, container) {
+    IQVOC.labelResolver(container);
+  })
 });
