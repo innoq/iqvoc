@@ -40,7 +40,7 @@ FederatedConceptMapper.prototype.onChange = function(req, callback) {
     url: this.root.data("remote-proxy-url"),
     data: {
       prefix: encodeURIComponent(req.term), // FIXME: (double-)encoding should not be necessary
-      source: this.source.find("option:selected").text(),
+      dataset: this.source.find("option:selected").text(),
       layout: 0
     },
     success: function() {
