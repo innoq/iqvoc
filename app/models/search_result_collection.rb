@@ -2,10 +2,10 @@ class SearchResultCollection
   extend Forwardable
   def_delegators :@results, :size, :each, :[]
 
-  attr_reader :adaptor
+  attr_reader :dataset
 
-  def initialize(adaptor, results)
-    @adaptor = adaptor
+  def initialize(dataset, results)
+    @dataset = dataset
     @results = results
   end
 end

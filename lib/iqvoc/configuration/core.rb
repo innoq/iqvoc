@@ -118,7 +118,7 @@ module Iqvoc
           "type",
           "collection",
           "languages",
-          "sources"
+          "datasets"
         ]
 
         # initialize

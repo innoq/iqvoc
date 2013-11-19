@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concerns/adaptor_initialization'
+require 'concerns/dataset_initialization'
 
 class SearchResultsController < ApplicationController
-  include AdaptorInitialization
+  include DatasetInitialization
 
   def index
     authorize! :read, Concept::Base
@@ -32,7 +32,7 @@ class SearchResultsController < ApplicationController
       :l  => :languages,
       :qt => :query_type,
       :c  => :collection_origin,
-      :a  => :adaptors }.each do |short, long|
+      :ds  => :datasets }.each do |short, long|
       params[long] ||= params[short]
     end
 
@@ -44,7 +44,7 @@ class SearchResultsController < ApplicationController
     request.query_parameters.delete("commit")
     request.query_parameters.delete("utf8")
 
-    @adaptors = init_adaptors(IqvocSearchAdaptor)
+    @datasets = init_datasets
 
     @remote_result_collections = []
 
@@ -91,14 +91,14 @@ class SearchResultsController < ApplicationController
         @results = @results.per(params[:limit].to_i)
       end
 
-      if params[:a] && adaptors = @adaptors.select {|a| params[:a].include?(a.name) }
-        adaptors.each do |adaptor|
-          results = adaptor.search(params)
+      if params[:datasets] && datasets = @datasets.select {|a| params[:datasets].include?(a.name) }
+        datasets.each do |dataset|
+          results = dataset.search(params)
           unless results.nil?
-            @remote_result_collections << SearchResultCollection.new(adaptor, results)
+            @remote_result_collections << SearchResultCollection.new(dataset, results)
           else
             flash.now[:error] ||= []
-            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => adaptor)
+            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => dataset)
           end
         end
       end

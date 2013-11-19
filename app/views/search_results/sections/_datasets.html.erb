@@ -1,8 +1,8 @@
-<% if @adaptors.any? %>
-  <%= input_block :label => t('txt.views.search_results.adaptors') do %>
-    <% @adaptors.each do |adaptor| %>
+<% if @datasets.any? %>
+  <%= input_block :label => t('txt.views.search_results.datasets') do %>
+    <% @datasets.each do |dataset| %>
       <label class="checkbox inline">
-        <%= check_box_tag "a[]", adaptor.name, search_adaptor_selected?(adaptor.name) %><%= adaptor.name %>
+        <%= check_box_tag "ds[]", dataset.name, search_dataset_selected?(dataset.name) %><%= dataset.name %>
       </label>
     <% end %>
     <div class="btn-group">

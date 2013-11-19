@@ -1,8 +1,4 @@
-require 'faraday'
-require 'nokogiri'
-require 'linkeddata'
-
-class IqvocSearchAdaptor < SearchAdaptor
+class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HTTPAdaptor
   def search(raw_params = {})
     languages = raw_params.fetch(:languages, I18n.locale)
     languages = Array.wrap(languages).flatten.join(",")
@@ -20,9 +16,9 @@ class IqvocSearchAdaptor < SearchAdaptor
     @results
   end
 
-  def fetch_results(url, params = {})
+  def fetch_results(path, params = {})
     begin
-      response = @conn.get(url, params)
+      response = @conn.get(path, params)
       @results ||= []
       @results += extract_results(response.body)
       while more = @doc.at_css('a[rel=next]')
@@ -31,7 +27,7 @@ class IqvocSearchAdaptor < SearchAdaptor
     rescue Faraday::Error::ConnectionFailed,
       Faraday::Error::ResourceNotFound,
       Faraday::Error::TimeoutError => e
-        Rails.logger.warn("HTTP error while querying remote source #{url}: #{e.message}")
+        Rails.logger.warn("HTTP error while querying remote source #{path}: #{e.message}")
         return nil
     end
   end

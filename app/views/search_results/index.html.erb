@@ -23,7 +23,7 @@
 
 <% @remote_result_collections.each do |collection| %>
 <div class="panel">
-  <h2><%= t('txt.views.search_results.search_results_on', :url => collection.adaptor.name) %> <small>(<%= collection.size %>)</small></h2>
+  <h2><%= t('txt.views.search_results.search_results_on', :dataset => collection.dataset.name) %> <small>(<%= collection.size %>)</small></h2>
   <ul class="search-results unstyled">
     <% collection.each do |result| %>
       <%= render 'search_result', :result => result %>

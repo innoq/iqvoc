@@ -14,20 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concerns/adaptor_initialization'
+require 'concerns/dataset_initialization'
 
 class Concepts::AlphabeticalController < ConceptsController
-  include AdaptorInitialization
+  include DatasetInitialization
 
   def index
     authorize! :read, Concept::Base
 
     redirect_to(url_for :prefix => "a") unless params[:prefix]
 
-    adaptors = init_adaptors(IqvocAlphabeticalSearchAdaptor)
+    datasets = init_datasets
 
-    if adaptor = adaptors.detect {|a| a.name == params[:source] }
-      @search_results = adaptor.search(I18n.locale, params[:prefix])
+    if dataset = datasets.detect {|dataset| dataset.name == params[:dataset] }
+      @search_results = dataset.alphabetical_search(I18n.locale, params[:prefix])
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else
       @search_results = find_labelings

@@ -184,7 +184,7 @@ de:
        no_results: "Keine Ergebnisse"
        search_languages: "Sprachen"
        search_results: "Suchergebnisse"
-       search_results_on: "Suchergebnisse auf %{url}"
+       search_results_on: "Suchergebnisse auf %{dataset}"
        results_found:
          one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
          other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
@@ -197,7 +197,7 @@ de:
        none: "keine"
        for: "Nach"
        mode: "Modus"
-       adaptors: "Externe Quellen"
+       datasets: "Externe Quellen"
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"

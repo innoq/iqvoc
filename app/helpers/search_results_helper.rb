@@ -21,8 +21,8 @@ module SearchResultsHelper
       (!params[:query] && I18n.locale.to_s == lang.to_s)
   end
 
-  def search_adaptor_selected?(adaptor)
-    params[:adaptors] && params[:adaptors].include?(adaptor.to_s)
+  def search_dataset_selected?(adaptor)
+    params[:datasets] && params[:datasets].include?(adaptor.to_s)
   end
 
   def highlight_query(text, query)

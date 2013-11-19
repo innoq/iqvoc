@@ -1,8 +1,4 @@
-require 'faraday'
-require 'nokogiri'
-require 'linkeddata'
-
-class IqvocAlphabeticalSearchAdaptor < SearchAdaptor
+class Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor < Dataset::Adaptors::Iqvoc::SearchAdaptor
   def search(locale, prefix)
     fetch_results("/#{locale}/alphabetical_concepts/#{prefix}.html")
     @results

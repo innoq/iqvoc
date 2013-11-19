@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concerns/adaptor_initialization'
+require 'concerns/dataset_initialization'
 
 class ConceptsController < ApplicationController
-  include AdaptorInitialization
+  include DatasetInitialization
 
   def index
     authorize! :read, Concept::Base
@@ -103,7 +103,7 @@ class ConceptsController < ApplicationController
 
     @concept.notations.build if @concept.notations.none?
 
-    @adaptors = adaptors_as_json
+    @datasets = datasets_as_json
   end
 
   def create
@@ -135,7 +135,7 @@ class ConceptsController < ApplicationController
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
 
-    @adaptors = adaptors_as_json
+    @datasets = datasets_as_json
   end
 
   def update
@@ -182,10 +182,9 @@ class ConceptsController < ApplicationController
     }
   end
 
-  def adaptors_as_json
-    return init_adaptors(IqvocAlphabeticalSearchAdaptor).
-        inject({}) do |memo, adaptor|
-      memo[adaptor.url.to_s] = adaptor.name
+  def datasets_as_json
+    init_datasets.inject({}) do |memo, dataset|
+      memo[dataset.url.to_s] = dataset.name
       memo
     end.to_json
   end
