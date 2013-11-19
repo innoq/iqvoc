@@ -21,8 +21,8 @@ class Dataset::IqvocDataset
     Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor.new(url).search(prefix, locale)
   end
 
-  def find_label(params)
-    # Dataset::Adaptors::Iqvoc::LabelAdaptor.new.search(params)
+  def find_label(concept_url)
+    Dataset::Adaptors::Iqvoc::LabelAdaptor.new(url).find(concept_url)
   end
 
   private
