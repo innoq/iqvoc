@@ -50,15 +50,13 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.3.13'
     gem 'sqlite3'
-
     gem 'zeus'
-    gem 'pry'
     gem 'pry-rails'
-    gem 'pry-debugger'
-    gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
   end
+
+  gem 'pry-byebug', '~> 1.1.2', :platforms => :ruby_20
 
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
