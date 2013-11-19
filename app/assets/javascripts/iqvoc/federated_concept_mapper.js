@@ -26,7 +26,6 @@ function FederatedConceptMapper(selector) {
   this.input.autocomplete({ // TODO: extract autocomplete extension into subclass
     source: $.proxy(this, "onChange"),
     search: function(ev, ui) {
-      console.log("SEARCH", this, arguments);
       if(self.source.val() === "_custom") {
         return false;
       }
@@ -35,7 +34,6 @@ function FederatedConceptMapper(selector) {
 }
 FederatedConceptMapper.prototype = new baseClass();
 FederatedConceptMapper.prototype.onChange = function(req, callback) {
-  console.log("SEARCH", this, arguments);
   var self = this;
   $.ajax({
     type: "GET",
