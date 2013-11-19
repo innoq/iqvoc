@@ -14,7 +14,7 @@
 <![endif]-->
 <%= yield :head %>
 </head>
-<body>
+<body data-remote-label-path="<%= remote_label_path(:lang => nil, :format => :json) %>">
 <%= render 'layouts/navigation' %>
 
 <div class="container">
