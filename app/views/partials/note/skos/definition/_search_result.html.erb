@@ -1,8 +1,8 @@
-<dt>
+<li class="search-result">
   <% if result.owner.is_a?(Concept::Base) %>
-    <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner) %><br>
+    <%= link_to result.owner.pref_label.to_s, concept_path(:id => result.owner), :class => 'search-result-link', :data => { 'resource-path' => rdf_path(result.owner.origin, :lang => nil, :format => nil) } %>
   <% elsif result.owner.is_a?(Label::Base) %>
-    <%= link_to result.owner.value, label_path(:id => result.owner) %><br>
+    <%= link_to result.owner.value, label_path(:id => result.owner), :class => 'search-result-link', :data => { 'resource-path' => rdf_path(result.owner.origin, :lang => nil, :format => nil) } %>
   <% end %>
-</dt>
-<dd><%= highlight_query(excerpt(result.value, params[:query]), params[:query]) %></dd>
+  <p class="search-result-body"><%= highlight_query(excerpt(result.value, params[:query]), params[:query]) %></p>
+</li>

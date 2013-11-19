@@ -66,7 +66,7 @@ Rails.application.routes.draw do
   end
 
   get 'schema' => redirect('/'), :as => 'schema'
-
+  get 'dataset' => 'rdf#dataset', :as => 'rdf_dataset'
   get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
   get 'search' => 'search_results#index', :as => 'rdf_search'
 

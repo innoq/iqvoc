@@ -25,6 +25,8 @@ module Iqvoc
           can :lock, [::Concept::Base, ::Label::Base], :locked_by => nil, :published_at => nil
           can [:check_consistency, :send_to_review], [::Concept::Base, ::Label::Base], :published_at => nil
           can :branch, [::Concept::Base, ::Label::Base], &@@if_published
+
+          can :use, IqvocSearchAdaptor
         end
 
         if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...

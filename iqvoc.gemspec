@@ -21,10 +21,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf', '~> 0.1.2'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
+  s.add_dependency 'faraday'
   s.add_dependency 'simple_form'
   s.add_dependency 'sass-rails', '~> 4.0.0'
   s.add_dependency 'bootstrap-sass', '~> 2.3.1.3'
   s.add_dependency 'iq_triplestorage'
+  s.add_dependency 'nokogiri'
+  s.add_dependency 'linkeddata'
   s.add_dependency 'protected_attributes', '>= 1.0.5'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +

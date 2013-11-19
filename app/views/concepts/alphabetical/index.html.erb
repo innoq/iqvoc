@@ -8,9 +8,11 @@
       <% alphabetical_concepts_path(:prefix => letter.to_s.downcase) %>
     <% end %>
   </div>
-  <ol class="concepts unstyled">
-    <%= render :partial => 'pref_labeling', :collection => @pref_labelings %>
+  <ol class="concept-items unstyled">
+    <% @search_results.each do |result| %>
+      <%= render :partial => result.partial_name, :locals => { :result => result } %>
+    <% end %>
   </ol>
 </div>
 
-<%= paginate @pref_labelings %>
+<%= paginate @search_results %>

@@ -16,9 +16,13 @@
 
 module SearchResultsHelper
 
-  def select_search_checkbox?(lang)
+  def search_language_selected?(lang)
     (params[:languages] && params[:languages].include?(lang.to_s)) ||
       (!params[:query] && I18n.locale.to_s == lang.to_s)
+  end
+
+  def search_adaptor_selected?(adaptor)
+    params[:adaptors] && params[:adaptors].include?(adaptor.to_s)
   end
 
   def highlight_query(text, query)

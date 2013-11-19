@@ -84,11 +84,12 @@ module Iqvoc
           }]
         }]
 
-        self.searchable_class_names = [
-          "Labeling::SKOS::Base",
-          "Labeling::SKOS::PrefLabel",
-          "Note::Base"
-        ]
+        self.searchable_class_names = {
+          "Labeling::SKOS::Base" => "labels",
+          "Labeling::SKOS::PrefLabel" => "pref_labels",
+          "Note::Base" => "notes"
+        }
+
         self.unlimited_search_results = false
 
         self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
@@ -99,7 +100,8 @@ module Iqvoc
           :owl  => "http://www.w3.org/2002/07/owl#",
           :skos => "http://www.w3.org/2004/02/skos/core#",
           :dct  => "http://purl.org/dc/terms/",
-          :foaf => "http://xmlns.com/foaf/spec/"
+          :foaf => "http://xmlns.com/foaf/spec/",
+          :void => "http://rdfs.org/ns/void#"
         }
 
         # The class to use for automatic generation of change notes on every save
@@ -109,7 +111,15 @@ module Iqvoc
 
         self.ability_class_name = "Iqvoc::Ability"
 
-        self.search_sections = ["klass", "mode", "terms", "type", "collection", "languages"]
+        self.search_sections = [
+          "klass",
+          "mode",
+          "terms",
+          "type",
+          "collection",
+          "languages",
+          "sources"
+        ]
 
         # initialize
         self.config.register_settings({
@@ -117,7 +127,8 @@ module Iqvoc
           "languages.pref_labeling" => ["en", "de"],
           "languages.further_labelings.Labeling::SKOS::AltLabel" => ["en", "de"],
           "languages.notes" => ["en", "de"],
-          "performance.unbounded_hierarchy" => false
+          "performance.unbounded_hierarchy" => false,
+          "sources.iqvoc" => [""]
         })
       end
 
@@ -157,7 +168,7 @@ module Iqvoc
         end
 
         def searchable_classes
-          searchable_class_names.map(&:constantize)
+          searchable_class_names.keys.map(&:constantize)
         end
 
         def first_level_classes

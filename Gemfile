@@ -29,7 +29,10 @@ gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
 gem 'jruby-openssl', :platforms => :jruby
-gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
+gem 'simple_form'
+gem 'faraday'
+gem 'nokogiri', '~> 1.6.0'
+gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '2.3.1.3'
@@ -64,7 +67,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'

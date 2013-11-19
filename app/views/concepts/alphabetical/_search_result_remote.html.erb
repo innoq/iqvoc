@@ -1,0 +1,14 @@
+<li class="concept-item">
+  <p>
+    <%= link_to result.label, result.path,
+      :data => { 'resource-path' => result.path },
+      :class => 'concept-item-link' %>
+  </p>
+
+  <p class="concept-item-uri"><%= result.url %></p>
+  <% if result.definition? %>
+    <p class="concept-item-definition" lang="<%= result.definition_language %>">
+      <%= result.definition %>
+    </p>
+  <% end %>
+</li>

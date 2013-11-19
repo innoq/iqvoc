@@ -7,7 +7,7 @@
 <div class="panel">
   <%= results_header @results %>
 
-  <dl id="search_results">
+  <ul class="search-results unstyled">
     <% @results.each do |result| %>
       <% if @klass %>
         <%= render @klass.search_result_partial_name, :result => result %>
@@ -15,8 +15,19 @@
         <%= render result.class.search_result_partial_name, :result => result %>
       <% end %>
     <% end %>
-  </dl>
+  </ul>
 
   <%= paginate @results %>
-<% end %>
 </div>
+<% end %>
+
+<% @remote_result_collections.each do |collection| %>
+<div class="panel">
+  <h2><%= t('txt.views.search_results.search_results_on', :url => collection.adaptor.name) %> <small>(<%= collection.size %>)</small></h2>
+  <ul class="search-results unstyled">
+    <% collection.each do |result| %>
+      <%= render 'search_result', :result => result %>
+    <% end %>
+  </ul>
+</div>
+<% end %>

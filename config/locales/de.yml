@@ -96,6 +96,7 @@ de:
          languages: Sprachen
          performance: Performance
          triplestore: Triplestore
+         sources: Verteilte Suche
        settings:
          title: Titel
          languages_notes: Sprachen für Notes
@@ -106,6 +107,7 @@ de:
          triplestore_username: Benutzername für Triplestore
          triplestore_password: Passwort für Triplestore
          triplestore_autosync: automatische Synchronisation mit Triplestore
+         sources_iqvoc: Quellen (iQvoc)
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"
@@ -182,6 +184,7 @@ de:
        no_results: "Keine Ergebnisse"
        search_languages: "Sprachen"
        search_results: "Suchergebnisse"
+       search_results_on: "Suchergebnisse auf %{url}"
        results_found:
          one: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnis."
          other: "Ihre Suche nach <strong>%{query}</strong> lieferte %{count} Ergebnisse."
@@ -194,6 +197,7 @@ de:
        none: "keine"
        for: "Nach"
        mode: "Modus"
+       adaptors: "Externe Quellen"
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"
@@ -288,6 +292,7 @@ de:
        invalid_value: "fehlerhafter Wert: %{key} (%{error_message})"
      search_results:
        insufficient_data: "Bitte geben Sie mehr Suchkriterien an."
+       remote_source_error: "Externe Quelle '%{source}' konnte nicht durchsucht werden."
      users:
        successfully_created: "Benutzer wurde erfolgreich erstellt."
        successfully_updated: "Der Benutzer wurde erfolgreich geändert."

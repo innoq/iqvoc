@@ -95,5 +95,9 @@ module Iqvoc
       @current_user ||= current_user_session && current_user_session.user
     end
 
+    def with_layout?
+      !params[:layout]
+    end
+
   end
 end

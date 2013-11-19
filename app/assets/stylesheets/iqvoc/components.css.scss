@@ -59,12 +59,6 @@ img.spinner {
   margin-top: 2px;
 }
 
-dl {
-  dt {
-    margin-top: 10px;
-  }
-}
-
 .letter-selector {
   $active: white;
   margin: 0;
@@ -107,18 +101,16 @@ dl {
   }
 }
 
-ol.concepts {
-  li {
+.concept-items {
+  .concept-item {
     margin-bottom: 15px;
     p {
       margin: 0;
     }
-    p.term {
-      a {
-        font-weight: bold;
-      }
+    .concept-item-link {
+      font-weight: bold;
     }
-    p.uri {
+    .concept-item-uri {
       color: green;
     }
   }
@@ -152,4 +144,37 @@ ol.concepts {
     margin-bottom: 0;
     font-size: 18px;
   }
+}
+
+.search-result {
+  margin-top: 10px;
+  a {
+    font-weight: bold;
+  }
+}
+
+.search-result-meta {
+  margin-top: 0;
+}
+
+.search-result-key {
+  float: left;
+  margin-right: 5px;
+  // font-weight: normal;
+  &:after {
+    content: ':';
+  }
+}
+
+.search-result-link {}
+
+.search-result-uri {
+  display: block;
+  color: green;
+}
+
+.search-result-value {}
+
+.search-result-body {
+  margin-top: 0;
 }
