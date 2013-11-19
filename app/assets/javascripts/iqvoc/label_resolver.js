@@ -2,17 +2,13 @@ var labelResolver = (function($) {
 
 "use strict";
 
-// XXX: DEBUG
-$.get = function(uri, callback) {
-	callback({ label: "Hello World" });
-}
-
 return function(context) {
 	$("a.unlabeled", context).each(processNode);
 };
 
-function retrieveLabel(uri, el, callback) {
-	$.get(uri, function(data, status, xhr) {
+function retrieveLabel(conceptURL, el, callback) {
+  var proxy = $("body").data("remote-label-path");
+	$.get(proxy, { concept_url: conceptURL }, function(data, status, xhr) {
 		el.text(data.label);
 		el.removeClass("unlabeled");
 	});
