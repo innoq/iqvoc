@@ -178,3 +178,22 @@ img.spinner {
 .search-result-body {
   margin-top: 0;
 }
+
+.concept-mapping {
+  @include border-radius($border-radius-default);
+
+  display: inline-block;
+  overflow: hidden;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  padding: 5px 0;
+
+  border: 1px solid $widget-border-color-dark;
+  background-color: $widget-background-color-dark;
+
+  .concept-mapping-link {
+    background-color: $background-color;
+  }
+
+  > * { padding: 7px 10px; }
+}
