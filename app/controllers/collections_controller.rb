@@ -55,9 +55,7 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
-    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
-
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :read, @collection
 
     # When in single query mode, AR handles ALL includes to be loaded by that
@@ -89,9 +87,7 @@ class CollectionsController < ApplicationController
   end
 
   def edit
-    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
-    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
-
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :update, @collection
 
     # When in single query mode, AR handles ALL includes to be loaded by that
@@ -104,9 +100,7 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
-    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
-
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :update, @collection
 
     if @collection.update_attributes(params[:concept])
@@ -119,9 +113,7 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
-    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last
-    raise ActiveRecord::RecordNotFound.new("Could not find Collection for id '#{params[:id]}'") unless @collection
-
+    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :destroy, @collection
 
     if @collection.destroy
