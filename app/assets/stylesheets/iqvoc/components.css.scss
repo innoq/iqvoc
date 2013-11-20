@@ -188,13 +188,23 @@ img.spinner {
   margin-bottom: 5px;
   padding: 5px 0;
 
-  border: 1px solid $widget-border-color-dark;
   background-color: $widget-background-color-dark;
 
   .concept-mapping-link {
-    border-left: 1px solid $widget-border-color-dark;
-    border-right: 1px solid $widget-border-color-dark;
-    background-color: $background-color;
+    background-color: $widget-highlight-color;
+    color: $widget-highlight-background-color;
+  }
+
+  .concept-mapping-dataset, .concept-mapping-match-type {
+    color: $muted-color;
+  }
+
+  .concept-mapping-dataset {
+    background-color: $widget-border-color-dark;
+  }
+
+  .concept-mapping-match-type {
+    font-style: italic;
   }
 
   > * { padding: 7px 10px; }

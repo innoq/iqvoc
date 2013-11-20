@@ -69,8 +69,8 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   }
   var link = $('<a class="concept-mapping-link unlabeled" />').attr("href", item.uri).
       text(item.uri);
-  return $('<li class="concept-mapping" />').append(link).append(category).
-      prepend(dataset).append(btn);
+  return $('<li class="concept-mapping" />').append(link).append(dataset).
+      append(category).append(btn);
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
