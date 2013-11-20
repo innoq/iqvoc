@@ -112,6 +112,8 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
+    @datasets = datasets_as_json
+
     if @concept.save
       flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
       redirect_to concept_path(:published => 0, :id => @concept.origin)
@@ -145,6 +147,8 @@ class ConceptsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @concept
 
     authorize! :update, @concept
+
+    @datasets = datasets_as_json
 
     if @concept.update_attributes(params[:concept])
       flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
@@ -183,12 +187,4 @@ class ConceptsController < ApplicationController
       # TODO: relations (XL only)
     }
   end
-
-  def datasets_as_json
-    init_datasets.inject({}) do |memo, dataset|
-      memo[dataset.url.to_s] = dataset.name
-      memo
-    end.to_json
-  end
-
 end
