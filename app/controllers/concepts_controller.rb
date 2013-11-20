@@ -52,6 +52,8 @@ class ConceptsController < ApplicationController
 
     authorize! :read, @concept
 
+    @datasets = datasets_as_json
+
     respond_to do |format|
       format.html do
         # When in single query mode, AR handles ALL includes to be loaded by that

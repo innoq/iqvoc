@@ -9,6 +9,7 @@ function ConceptMappingManager(selector, editable) {
   this.root = selector.jquery ? selector : $(selector);
   this.editable = editable === true;
   this.conceptMappings = this.determineConceptMappings();
+  this.datasets = $(document.body).data("datasets");
 
   this.list = $('<ul class="concept-mappings" />').prependTo(this.root);
   this.render();
@@ -20,7 +21,6 @@ ConceptMappingManager.prototype.onDelete = function(ev, instance) {
   var item = btn.closest("li");
 
   var matchType = $(".concept-mapping-match-type", item).text();
-  var source = $(".concept-mapping-source", item).text();
   var uri = $(".concept-mapping-link", item).attr("href");
 
   var data = instance.conceptMappings[matchType];
@@ -56,7 +56,8 @@ ConceptMappingManager.prototype.render = function() {
 ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   var category = $('<span class="concept-mapping-match-type">').
       text(categoryLabel);
-  var source = $('<span class="concept-mapping-source">').text(item.source);
+  var dataset = this.determineDataset(item.uri) || "";
+  dataset = $('<span class="concept-mapping-dataset" />').text(dataset.name);
   if(this.editable) {
     var self = this;
     var btn = $("<span />").text("DELETE").click(function() {
@@ -69,11 +70,28 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   var link = $('<a class="concept-mapping-link unlabeled" />').attr("href", item.uri).
       text(item.uri);
   return $('<li class="concept-mapping" />').append(link).append(category).
-      prepend(source).append(btn);
+      prepend(dataset).append(btn);
 };
 
 // [{ el: jQuery Element, values: ["http://uri.de"], label: "Foo" }]
 ConceptMappingManager.prototype.determineConceptMappings = function() {
+  return this.editable ? this.readFromTextArea() : this.readFromLinks();
+};
+ConceptMappingManager.prototype.readFromLinks = function() { // TODO: rename
+  var urisByMatchType = {};
+  $(".relation.panel", this.root).each(function(i, node) { // match-type panels
+    var container = $(node);
+    var matchType = container.find("h2").text();
+    var mappings = container.find(".entity_list a");
+    urisByMatchType[matchType] = {
+      values: $.map(mappings, function(node) {
+        return { uri: $(node).attr("href") };
+      })
+    };
+  });
+  return urisByMatchType;
+};
+ConceptMappingManager.prototype.readFromTextArea = function() { // TODO: rename
   var textAreas = this.root.find("textarea");
 
   var labels = {};
@@ -88,21 +106,29 @@ ConceptMappingManager.prototype.determineConceptMappings = function() {
     var label = labels[el.attr("name")];
     var values = $.map($(node).val().split(","), function(item, i) {
       item = $.trim(item);
-      return item ? { uri: item, source: "dummy" } : null;
+      return item ? { uri: item } : null;
     });
 
-    // TODO: values zu Objekten machen, Source pro Value annotieren
-    urisByLabel[label] = { el: el, values: values, source: "bar" };
+    urisByLabel[label] = { el: el, values: values };
   });
 
   return urisByLabel;
 };
 ConceptMappingManager.prototype.onUpdate = function(ev, data) {
-  this.conceptMappings[data.matchType].values.
-      push({ uri: data.uri, source: data.source });
+  this.conceptMappings[data.matchType].values.push({ uri: data.uri });
   this.render();
 
   $(document.body).trigger("concept-label", this.list);
+};
+ConceptMappingManager.prototype.determineDataset = function(uri) {
+  var result = null;
+  $.each(this.datasets, function(url, name) {
+    if(uri.indexOf(url) === 0) {
+      result = { name: name, url: url };
+      return false;
+    }
+  });
+  return result;
 };
 
 return ConceptMappingManager;

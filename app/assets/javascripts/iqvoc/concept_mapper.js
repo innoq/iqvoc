@@ -40,8 +40,7 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   this.input.val("");
   this.root.trigger("concept-mapped", {
     uri: newURI,
-    matchType: this.matchTypes[textAreaName],
-    source: "foo" // TODO
+    matchType: this.matchTypes[textAreaName]
   });
 };
 ConceptMapper.prototype.determineMatchTypes = function() {

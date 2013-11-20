@@ -202,7 +202,12 @@ jQuery(document).ready(function($) {
 
   IQVOC.onebox(".onebox");
   new IQVOC.FederatedConceptMapper(".matches");
-  new IQVOC.ConceptMappingManager(".matches", true);
+  // XXX: inelegant
+  if($("textarea:first").length) { // edit mode
+    new IQVOC.ConceptMappingManager(".matches", true);
+  } else { // view mode
+    new IQVOC.ConceptMappingManager("#matches", false);
+  }
 
   IQVOC.labelResolver();
   $(document.body).on("concept-label", function(ev, container) {

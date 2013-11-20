@@ -11,7 +11,7 @@ var baseClass = IQVOC.ConceptMapper;
 function FederatedConceptMapper(selector) {
   baseClass.apply(this, arguments);
 
-  var sources = this.root.data("remotes"); // TODO: rename data attribute?
+  var sources = this.root.data("datasets");
   if(!sources) { // fall back to non-federated base class only
     return;
   }
