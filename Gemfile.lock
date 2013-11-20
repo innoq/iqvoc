@@ -66,8 +66,15 @@ GEM
     capybara-webkit (1.0.0)
       capybara (~> 2.0, >= 2.0.2)
       json
+    chunky_png (1.2.8)
     coderay (1.1.0)
     columnize (0.3.6)
+    compass (0.12.2)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    compass-rails (2.0.alpha.0)
+      compass (>= 0.12.2, < 0.14)
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
     daemon_controller (1.1.7)
@@ -86,6 +93,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    fssm (0.2.10)
     haml (4.0.4)
       tilt
     hike (1.2.3)
@@ -268,6 +276,7 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   capybara-webkit
+  compass-rails (= 2.0.alpha.0)
   database_cleaner
   factory_girl_rails
   faraday
