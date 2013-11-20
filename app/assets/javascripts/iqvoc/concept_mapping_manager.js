@@ -88,7 +88,7 @@ ConceptMappingManager.prototype.readFromLinks = function() { // TODO: rename
         return { uri: $(node).attr("href") };
       })
     };
-  });
+  }).remove(); // XXX: does not belong here
   return urisByMatchType;
 };
 ConceptMappingManager.prototype.readFromTextArea = function() { // TODO: rename
@@ -110,7 +110,7 @@ ConceptMappingManager.prototype.readFromTextArea = function() { // TODO: rename
     });
 
     urisByLabel[label] = { el: el, values: values };
-  });
+  }).closest("div:has(label)").hide(); // XXX: does not belong here
 
   return urisByLabel;
 };
