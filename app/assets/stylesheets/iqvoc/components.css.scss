@@ -192,6 +192,8 @@ img.spinner {
   background-color: $widget-background-color-dark;
 
   .concept-mapping-link {
+    border-left: 1px solid $widget-border-color-dark;
+    border-right: 1px solid $widget-border-color-dark;
     background-color: $background-color;
   }
 
