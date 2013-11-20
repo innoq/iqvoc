@@ -7,7 +7,13 @@ class RemoteLabelsController < ApplicationController
     @datasets = init_datasets
 
     concept_url = params[:concept_url]
-    ensure_known_dataset(concept_url)
+
+    # ensure known dataset
+    @dataset = @datasets.detect {|d| concept_url.to_s.start_with?(d.url.to_s) }
+    unless @dataset
+      head 422
+      return
+    end
 
     label = @dataset.find_label(concept_url)
     unless label
@@ -19,15 +25,6 @@ class RemoteLabelsController < ApplicationController
       format.json do
         render :json => { :label => label }
       end
-    end
-  end
-
-  private
-  def ensure_known_dataset(concept_url)
-    @dataset = @datasets.detect {|d| concept_url.to_s.start_with?(d.url.to_s) }
-    unless @dataset
-      head 422
-      return
     end
   end
 
