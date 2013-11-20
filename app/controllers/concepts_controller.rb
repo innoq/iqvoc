@@ -44,8 +44,7 @@ class ConceptsController < ApplicationController
       scope = scope.unpublished
     end
 
-    @concept = scope.last
-    raise ActiveRecord::RecordNotFound unless @concept
+    @concept = scope.last!
 
     authorize! :read, @concept
 
@@ -115,8 +114,7 @@ class ConceptsController < ApplicationController
   end
 
   def edit
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
 
     authorize! :update, @concept
 
@@ -132,8 +130,7 @@ class ConceptsController < ApplicationController
   end
 
   def update
-    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @concept
+    @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
 
     authorize! :update, @concept
 
@@ -147,8 +144,7 @@ class ConceptsController < ApplicationController
   end
 
   def destroy
-    @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless @new_concept
+    @new_concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
 
     authorize! :destroy, @new_concept
 

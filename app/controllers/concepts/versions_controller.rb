@@ -20,9 +20,15 @@ class Concepts::VersionsController < ApplicationController
   include Iqvoc::RDFSync::Helper
 
   def merge
-    current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
-    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
+    concept_scope = Iqvoc::Concept.base_class.by_origin(params[:origin])
+
+    current_concept = concept_scope.published.last
+    new_version = concept_scope.unpublished.last
+
+    unless new_version
+      raise ActiveRecord::RecordNotFound,
+          "Can't find draft concept with origin '#{params[:origin]}'"
+    end
 
     authorize! :merge, new_version
 
@@ -53,9 +59,12 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def branch
-    current_concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).published.last
-    raise ActiveRecord::RecordNotFound.new("Couldn't find published concept with origin '#{params[:origin]}'") unless current_concept
-    raise "There already is an unpublished version for concept '#{params[:origin]}'" if Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
+    concept_scope = Iqvoc::Concept.base_class.by_origin(params[:origin])
+    current_concept = concept_scope.published.last!
+
+    if draft_concept = concept_scope.unpublished.last
+      raise "There already is an unpublished version for concept '#{draft_concept.origin}'"
+    end
 
     authorize! :branch, current_concept
 
@@ -69,9 +78,14 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def lock
-    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
-    raise "Concept with origin '#{params[:origin]}' has already been locked." if new_version.locked?
+    new_version = Iqvoc::Concept.base_class.
+        by_origin(params[:origin]).
+        unpublished.
+        last!
+
+    if new_version.locked?
+      raise "Concept with origin '#{new_version.origin}' is already locked."
+    end
 
     authorize! :lock, new_version
 
@@ -83,9 +97,14 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def unlock
-    new_version = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound.new("Couldn't find unpublished concept with origin '#{params[:origin]}'") unless new_version
-    raise "Concept with origin '#{params[:origin]}' wasn't locked." unless new_version.locked?
+    new_version = Iqvoc::Concept.base_class.
+        by_origin(params[:origin]).
+        unpublished.
+        last!
+
+    unless new_version.locked?
+      raise "Concept with origin '#{new_version.origin}' is not locked."
+    end
 
     authorize! :unlock, new_version
 
@@ -98,8 +117,10 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def consistency_check
-    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless concept
+    concept = Iqvoc::Concept.base_class.
+        by_origin(params[:origin]).
+        unpublished.
+        last!
 
     authorize! :check_consistency, concept
 
@@ -113,8 +134,10 @@ class Concepts::VersionsController < ApplicationController
   end
 
   def to_review
-    concept = Iqvoc::Concept.base_class.by_origin(params[:origin]).unpublished.last
-    raise ActiveRecord::RecordNotFound unless concept
+    concept = Iqvoc::Concept.base_class.
+        by_origin(params[:origin]).
+        unpublished.
+        last!
 
     authorize! :send_to_review, concept
 
