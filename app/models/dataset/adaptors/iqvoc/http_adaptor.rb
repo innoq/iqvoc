@@ -10,9 +10,6 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
   end
 
   def http_get(path, redirect_count = 0)
-    Rails.logger.ap path
-    Rails.logger.ap redirect_count
-
     begin
       response = @conn.get(path)
     rescue Faraday::Error::ConnectionFailed,
