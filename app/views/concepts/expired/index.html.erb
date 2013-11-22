@@ -9,8 +9,11 @@
     <% end %>
   </div>
   <ol class="concepts unstyled">
-    <%= render :partial => 'concepts/alphabetical/pref_labeling', :collection => @pref_labelings %>
+    <% @search_results.each do |result| %>
+    <%= render :partial => 'concepts/alphabetical/search_result',
+        :locals => { :result => result } %>
+    <% end %>
   </ol>
 </div>
 
-<%= paginate @pref_labelings %>
+<%= paginate @search_results %>
