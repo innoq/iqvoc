@@ -1,10 +1,10 @@
 .panel {
-  @include border-radius($border-radius-default);
   min-height: 20px;
   padding: 0 19px 19px 19px;
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid $widget-border-color-dark;
+  border-radius: $border-radius-default;
   h1, h2, h3, h4, h5, .panel-header {
     border-bottom: 1px solid #eee;
     margin: 0 -19px 0 -19px;

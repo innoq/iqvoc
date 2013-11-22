@@ -36,7 +36,6 @@ gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '2.3.1.3'
-gem 'compass-rails', '2.0.alpha.0'
 
 group :development do
   gem 'view_marker'

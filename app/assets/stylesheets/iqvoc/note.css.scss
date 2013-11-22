@@ -5,10 +5,6 @@
   padding: 5px 10px 5px 10px;
   background-color: #f5f5f5;
   border: 1px solid #eee;
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
-  -moz-border-radius-bottomleft: 4px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   border-right: 0;
@@ -34,12 +30,8 @@
   background-image: -ms-linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
   background-image: linear-gradient(-90deg , rgb(255,255,255) 0%, rgb(251,251,251) 100%);
 
-  -webkit-border-bottom-left-radius: 4px;
-     -moz-border-radius-bottomleft: 4px;
-          border-bottom-left-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-     -moz-border-radius-bottomright: 4px;
-          border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 
   p {
     margin: 0 0 20px 0;
