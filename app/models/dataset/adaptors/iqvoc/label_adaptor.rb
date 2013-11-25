@@ -1,8 +1,9 @@
 class Dataset::Adaptors::Iqvoc::LabelAdaptor < Dataset::Adaptors::Iqvoc::HTTPAdaptor
   def find(concept_url)
     path = URI.parse(concept_url).path
-    response = http_get(path)
-    extract_label(response.body)
+    if response = http_get(path)
+      extract_label(response.body)
+    end
   end
 
   def extract_label(html)

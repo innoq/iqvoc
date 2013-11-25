@@ -15,8 +15,11 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
     rescue Faraday::Error::ConnectionFailed,
         Faraday::Error::ResourceNotFound,
         Faraday::Error::TimeoutError => e
-      Rails.logger.warn("HTTP error while querying remote source #{path}: #{e.message}")
-      return nil
+      return failed_request(path)
+    end
+
+    if response.status == 404
+      return failed_request(path)
     end
 
     if response.status == 302 && redirect_count < 3
@@ -24,5 +27,11 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
     end
 
     response
+  end
+
+  private
+  def failed_request(path)
+    Rails.logger.warn "HTTP error while querying remote source #{path}"
+    return nil
   end
 end
