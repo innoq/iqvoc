@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'
   s.add_dependency 'protected_attributes', '>= 1.0.5'
+  s.add_dependency 'font-awesome-rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")

@@ -11,7 +11,7 @@ function ConceptMappingManager(selector, editable) {
   this.conceptMappings = this.determineConceptMappings();
   this.datasets = $(document.body).data("datasets");
 
-  this.list = $('<ul class="concept-mappings" />').prependTo(this.root);
+  this.list = $('<ul class="concept-mappings" />').appendTo(this.root);
   this.render();
 
   this.root.on("concept-mapped", $.proxy(this, "onUpdate"));
@@ -28,7 +28,7 @@ ConceptMappingManager.prototype.onDelete = function(ev, instance) {
   // XXX: hacky
   var hits = $.map(values, function(value, i) {
     if(value.uri === uri) {
-      item.slideUp(function() {
+      item.fadeOut(function() {
         item.remove();
       });
       return i;
@@ -60,10 +60,11 @@ ConceptMappingManager.prototype.renderBubble = function(item, categoryLabel) {
   dataset = $('<span class="concept-mapping-dataset" />').text(dataset.name);
   if(this.editable) {
     var self = this;
-    var btn = $("<span />").text("DELETE").click(function() {
+    var btn = $("<i class='fa fa-times concept-mapping-remove' />").click(function(ev) {
       // inject instance
       var args = Array.prototype.slice.apply(arguments);
       args.push(self);
+      // ev.preventDefault();
       return self.onDelete.apply(this, args);
     });
   }

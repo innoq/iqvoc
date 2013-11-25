@@ -20,10 +20,14 @@ function ConceptMapper(selector) {
 
   // spawn UI elements
 
-  this.input = $("<input />").prependTo(this.root);
-  $("<button />").text("✓").insertAfter(this.input).
+  this.container = $("<div />").addClass("concept-mapper control-group");
+
+  this.input = $("<input />").attr("type", "text").prependTo(this.container);
+  $("<i />").addClass("btn fa fa-plus").insertAfter(this.input).
       click($.proxy(this, "onConfirm"));
   this.matchType = $("<select />").append(matchOptions).insertAfter(this.input);
+
+  this.container.prependTo(this.root);
 }
 ConceptMapper.prototype.delimiter = ", ";
 ConceptMapper.prototype.onConfirm = function(ev) {

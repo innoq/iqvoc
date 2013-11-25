@@ -177,8 +177,20 @@ img.spinner {
   margin-top: 0;
 }
 
+.concept-mapper {
+  > * { margin-right: 10px; }
+}
+
+.concept-mappings {
+  margin: 25px 0;
+}
+
 .concept-mapping {
+  %padded { padding: 7px 10px; }
+
   display: inline-block;
+  float: left;
+  clear: left;
   overflow: hidden;
   margin-right: 10px;
   margin-bottom: 5px;
@@ -188,21 +200,29 @@ img.spinner {
   background-color: $widget-background-color-dark;
 
   .concept-mapping-link {
+    @extend %padded;
     background-color: $widget-highlight-color;
     color: $widget-highlight-background-color;
   }
 
   .concept-mapping-dataset, .concept-mapping-match-type {
+    @extend %padded;
     color: $muted-color;
   }
 
   .concept-mapping-dataset {
+    @extend %padded;
     background-color: $widget-border-color-dark;
   }
 
   .concept-mapping-match-type {
+    @extend %padded;
     font-style: italic;
   }
 
-  > * { padding: 7px 10px; }
+  .concept-mapping-remove {
+    padding-right: 10px;
+    cursor: pointer;
+    color: $muted-color;
+  }
 }

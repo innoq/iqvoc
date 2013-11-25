@@ -36,6 +36,7 @@ gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '2.3.1.3'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'view_marker'

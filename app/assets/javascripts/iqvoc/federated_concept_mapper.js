@@ -15,7 +15,7 @@ function FederatedConceptMapper(selector) {
   if(!sources) { // fall back to non-federated base class only
     return;
   }
-  sources["_custom"] = "Sonstiges"; // FIXME: i18n
+  sources["_custom"] = this.root.data("translation-other");
 
   sources = $.map(sources, function(name, url) {
     return $("<option />").val(url).text(name)[0];
