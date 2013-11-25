@@ -27,7 +27,7 @@ class Concepts::AlphabeticalController < ConceptsController
     datasets = init_datasets
 
     if dataset = datasets.detect {|dataset| dataset.name == params[:dataset] }
-      @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale)
+      @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else
       @search_results = find_labelings
