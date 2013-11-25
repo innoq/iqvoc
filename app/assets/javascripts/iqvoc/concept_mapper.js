@@ -23,7 +23,7 @@ function ConceptMapper(selector) {
   this.container = $("<div />").addClass("concept-mapper control-group");
 
   this.input = $("<input />").attr("type", "text").prependTo(this.container);
-  $("<i />").addClass("btn fa fa-plus").insertAfter(this.input).
+  $("<button />").addClass("btn fa fa-plus").insertAfter(this.input).
       click($.proxy(this, "onConfirm"));
   this.matchType = $("<select />").append(matchOptions).insertAfter(this.input);
 
