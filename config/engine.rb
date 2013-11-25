@@ -13,6 +13,7 @@ require 'sass'
 require 'sass-rails'
 require 'bootstrap-sass'
 require 'protected_attributes'
+require 'font-awesome-rails'
 
 require 'iqvoc/controller_extensions'
 
