@@ -178,12 +178,11 @@ img.spinner {
 }
 
 .concept-mapper {
+  margin-bottom: 25px;
   > * { margin-right: 10px; }
 }
 
-.concept-mappings {
-  margin: 25px 0;
-}
+.concept-mappings { margin-left: 0; }
 
 .concept-mapping {
   %padded { padding: 7px 10px; }
