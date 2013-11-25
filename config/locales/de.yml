@@ -75,6 +75,7 @@ de:
      hint_csv_input: "Mehrere Werte können kommagetrennt eingeben werden."
      form_errors: "Fehler"
      representations: "Repräsentationen"
+     other: "Sonstige"
 
    views:
      layouts:
