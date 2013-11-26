@@ -35,7 +35,7 @@ function FederatedConceptMapper(selector) {
         return false;
       }
     },
-    open: function(ev, ui) {
+    response: function(ev, ui) {
       self.indicator.addClass("hidden");
     },
     minLength: 2
