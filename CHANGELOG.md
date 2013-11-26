@@ -1,3 +1,13 @@
+## [4.2.0]
+
+As 5.0.0 has been postponed, 4.2.0 comes as another 4.x release.
+
+* Rails 4
+* Unbounded hierarchy API depth (853883668977a85d29b30b4e2654f2f53094cae6)
+* Collection notes are now configurable
+* HTML titles throughout the app
+* Bugfixes
+
 ## [4.1.3]
 
 This version is intended as the last minor/patch release before version 5.0.0 -
@@ -14,7 +24,8 @@ as well as more sophisticated RDF processing.
 
 ## [4.1.2]
 
-  * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in hierarchical views
+  * Dumped Jbuilder (introduced in 4.1.1) to fix endless recursions happening in
+    hierarchical views
 
 ## [4.1.1]
 
