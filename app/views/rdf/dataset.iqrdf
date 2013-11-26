@@ -1,0 +1,9 @@
+Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+  document.namespaces(self.send(meth))
+end
+
+ns = IqRdf::Namespace.find_namespace_class(:void)
+
+document << IqRdf.build_uri(Iqvoc.config['title'].parameterize, ns.build_uri('Dataset')) do |dataset|
+  dataset.dct.title Iqvoc.config['title']
+end

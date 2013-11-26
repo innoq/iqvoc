@@ -164,11 +164,11 @@ jQuery(document).ready(function($) {
     });
 
   // Search
-  $("button#language_select_all").click(function() {
-    $("input[type=checkbox].lang_check").attr("checked", true);
+  $(".checkbox-select-all").click(function() {
+    $(this).closest('.controls').find("input:checkbox").attr("checked", true);
   });
-  $("button#language_select_none").click(function() {
-    $("input[type=checkbox].lang_check").attr("checked", false);
+  $(".checkbox-select-none").click(function() {
+    $(this).closest('.controls').find("input:checkbox").attr("checked", false);
   });
   $("select.search_type").change(function() {
     var result_type_filter = $(".result_type_filter");
@@ -201,4 +201,16 @@ jQuery(document).ready(function($) {
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
   IQVOC.onebox(".onebox");
+  new IQVOC.FederatedConceptMapper(".matches");
+  // XXX: inelegant
+  if($("textarea:first").length) { // edit mode
+    new IQVOC.ConceptMappingManager(".matches", true);
+  } else { // view mode
+    new IQVOC.ConceptMappingManager("#matches", false);
+  }
+
+  IQVOC.labelResolver();
+  $(document.body).on("concept-label", function(ev, container) {
+    IQVOC.labelResolver(container);
+  })
 });

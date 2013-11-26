@@ -23,7 +23,7 @@ OneBox.prototype.reset = function() {
 };
 OneBox.prototype.renderResults = function(html) {
   var doc = $("<div />").append(html);
-  var items = $(".concepts > li", doc);
+  var items = $(".concept-items > li", doc);
   var pagination = $(".pagination", doc);
 
   this.reset();
@@ -50,6 +50,7 @@ OneBox.prototype.getConcepts = function() {
   });
 };
 OneBox.prototype.onResults = function(html, status, xhr) {
+  // TODO request resource with layout=0
   // disable scripts (adapted from jQuery#load)
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
   html = html.replace(rscript, "");

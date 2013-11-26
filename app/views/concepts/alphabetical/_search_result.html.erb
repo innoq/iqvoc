@@ -1,0 +1,16 @@
+<li class="concept-item">
+  <p>
+  <%= link_to result.label.to_s, result.path,
+    :alt => result.concept.origin, :data => { 'resource-path' => result.path }, :class => 'concept-item-link' %>
+  <% if result.concept.additional_info.present? %>
+  (<%= result.concept.additional_info %>)
+  <% end %>
+  </p>
+
+  <p class="concept-item-uri"><%= rdf_url(:id => result.concept.origin, :lang => nil, :format => nil) %></p>
+  <% if result.definition? %>
+    <p class="concept-item-definition" lang="<%= result.definition.language %>">
+      <%= result.definition.value %>
+    </p>
+  <% end %>
+</li>

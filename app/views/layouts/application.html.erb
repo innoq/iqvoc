@@ -14,7 +14,13 @@
 <![endif]-->
 <%= yield :head %>
 </head>
+
+<% if @datasets %> <%# XXX: special-casing matches federation %>
+<body data-datasets="<%= @datasets %>"
+    data-remote-label-path="<%= remote_label_path(:lang => nil, :format => :json) %>">
+<% else %>
 <body>
+<% end %>
 <%= render 'layouts/navigation' %>
 
 <div class="container">
@@ -22,7 +28,7 @@
     <div class="<%= content_for?(:sidebar) ? "span9" : "span12" %>" id="content">
       <%= yield :page_header %>
       <% flash.each do |type, messages| %>
-        <% (messages.is_a?(Array) ? messages : [messages]).each do |msg| %>
+        <% Array.wrap(messages).each do |msg| %>
           <%= alert(type) { msg } %>
         <% end %>
       <% end %>

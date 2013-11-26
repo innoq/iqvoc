@@ -58,7 +58,7 @@
   <!-- / Concept relations -->
 
   <!-- Matches -->
-  <fieldset>
+  <fieldset class="matches" data-datasets="<%= @datasets %>" data-remote-proxy-url="<%= alphabetical_concepts_path %>" data-translation-other="<%= t('txt.common.other') %>">
     <legend><%= Match::Base.model_name.human(:count => 2) %></legend>
     <% Iqvoc::Concept.match_classes.each do |match_class| %>
       <%= render match_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => match_class, :f => f %>

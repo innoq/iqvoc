@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class RDFTest < ActionController::TestCase
+class RdfRenderingTest < ActionController::TestCase
 
   setup do
     @controller = ConceptsController.new

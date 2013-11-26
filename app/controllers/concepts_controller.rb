@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'concerns/dataset_initialization'
+
 class ConceptsController < ApplicationController
+  include DatasetInitialization
 
   def index
     authorize! :read, Concept::Base
@@ -47,6 +50,8 @@ class ConceptsController < ApplicationController
     @concept = scope.last!
 
     authorize! :read, @concept
+
+    @datasets = datasets_as_json
 
     respond_to do |format|
       format.html do
@@ -98,12 +103,16 @@ class ConceptsController < ApplicationController
     end
 
     @concept.notations.build if @concept.notations.none?
+
+    @datasets = datasets_as_json
   end
 
   def create
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new(params[:concept])
+    @datasets = datasets_as_json
+
     if @concept.save
       flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
       redirect_to concept_path(:published => 0, :id => @concept.origin)
@@ -127,12 +136,16 @@ class ConceptsController < ApplicationController
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
+
+    @datasets = datasets_as_json
   end
 
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
 
     authorize! :update, @concept
+
+    @datasets = datasets_as_json
 
     if @concept.update_attributes(params[:concept])
       flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
@@ -170,5 +183,4 @@ class ConceptsController < ApplicationController
       # TODO: relations (XL only)
     }
   end
-
 end

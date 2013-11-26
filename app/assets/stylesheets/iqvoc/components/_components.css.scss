@@ -59,12 +59,6 @@ img.spinner {
   margin-top: 2px;
 }
 
-dl {
-  dt {
-    margin-top: 10px;
-  }
-}
-
 .letter-selector {
   $active: white;
   margin: 0;
@@ -73,9 +67,7 @@ dl {
       color: #BFBFBF;
       font-weight: bold;
     }
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
-            border-radius: 4px;
+    border-radius: 4px;
     display: inline-block;
     margin-right: 2px;
     padding: 2px 6px;
@@ -107,18 +99,16 @@ dl {
   }
 }
 
-ol.concepts {
-  li {
+.concept-items {
+  .concept-item {
     margin-bottom: 15px;
     p {
       margin: 0;
     }
-    p.term {
-      a {
-        font-weight: bold;
-      }
+    .concept-item-link {
+      font-weight: bold;
     }
-    p.uri {
+    .concept-item-uri {
       color: green;
     }
   }
@@ -151,5 +141,92 @@ ol.concepts {
     margin-top: 10px;
     margin-bottom: 0;
     font-size: 18px;
+  }
+}
+
+.search-result {
+  margin-top: 10px;
+  a {
+    font-weight: bold;
+  }
+}
+
+.search-result-meta {
+  margin-top: 0;
+}
+
+.search-result-key {
+  float: left;
+  margin-right: 5px;
+  // font-weight: normal;
+  &:after {
+    content: ':';
+  }
+}
+
+.search-result-link {}
+
+.search-result-uri {
+  display: block;
+  color: green;
+}
+
+.search-result-value {}
+
+.search-result-body {
+  margin-top: 0;
+}
+
+.concept-mapper {
+  margin-bottom: 25px;
+  > * { margin-right: 10px; }
+}
+
+.concept-mapper-indicator {
+  position: absolute;
+  margin: 8px 0 0 -30px;
+}
+
+.concept-mappings { margin-left: 0; }
+
+.concept-mapping {
+  %padded { padding: 7px 10px; }
+
+  display: inline-block;
+  float: left;
+  clear: left;
+  overflow: hidden;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  padding: 5px 0;
+
+  border-radius: $border-radius-default;
+  background-color: $widget-background-color-dark;
+
+  .concept-mapping-link {
+    @extend %padded;
+    background-color: $widget-highlight-color;
+    color: $widget-highlight-background-color;
+  }
+
+  .concept-mapping-dataset, .concept-mapping-match-type {
+    @extend %padded;
+    color: $muted-color;
+  }
+
+  .concept-mapping-dataset {
+    @extend %padded;
+    background-color: $widget-border-color-dark;
+  }
+
+  .concept-mapping-match-type {
+    @extend %padded;
+    font-style: italic;
+  }
+
+  .concept-mapping-remove {
+    padding-right: 10px;
+    cursor: pointer;
+    color: $muted-color;
   }
 }

@@ -14,24 +14,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'concerns/dataset_initialization'
+
 class Concepts::AlphabeticalController < ConceptsController
+  include DatasetInitialization
 
   def index
     authorize! :read, Concept::Base
 
-    params[:prefix] = params[:letter] if params[:prefix].nil? # legacy compatibility -- XXX: unnecessary!?
-
     redirect_to(url_for :prefix => "a") unless params[:prefix]
 
-    @pref_labelings = find_labelings
+    datasets = init_datasets
 
-    # When in single query mode, AR handles ALL includes to be loaded by that
-    # one query. We don't want that! So let's do it manually :-)
-    includes = Iqvoc::Concept.base_class.default_includes
-    if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
-      includes << Note::SKOS::Definition.name.to_relation_name
+    if dataset = datasets.detect {|dataset| dataset.name == params[:dataset] }
+      @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
+      @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
+    else
+      @search_results = find_labelings
+
+      # When in single query mode, AR handles ALL includes to be loaded by that
+      # one query. We don't want that! So let's do it manually :-)
+      includes = Iqvoc::Concept.base_class.default_includes
+      if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
+        includes << Note::SKOS::Definition.name.to_relation_name
+      end
+      ActiveRecord::Associations::Preloader.new(@search_results, :owner => includes).run
+
+      @search_results.map! { |pl| AlphabeticalSearchResult.new(pl) }
     end
-    ActiveRecord::Associations::Preloader.new(@pref_labelings, :owner => includes).run
+
+    respond_to do |format|
+      format.html { render :index, :layout => with_layout? }
+    end
   end
 
   protected

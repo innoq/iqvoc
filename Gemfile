@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
@@ -29,10 +29,14 @@ gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
 gem 'jruby-openssl', :platforms => :jruby
-gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
+gem 'simple_form'
+gem 'faraday'
+gem 'nokogiri', '~> 1.6.0'
+gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '2.3.1.3'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'view_marker'
@@ -47,15 +51,13 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.3.13'
     gem 'sqlite3'
-
     gem 'zeus'
-    gem 'pry'
     gem 'pry-rails'
-    gem 'pry-debugger'
-    gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
   end
+
+  gem 'pry-byebug', '~> 1.1.2', :platforms => :ruby_20
 
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
@@ -64,7 +66,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'nokogiri'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
@@ -79,5 +80,4 @@ end
 
 group :heroku do
   gem 'pg', :platforms => :ruby
-  gem 'passenger'
 end

@@ -75,6 +75,7 @@ en:
      hint_csv_input: "Multiple values can be entered comma-separated."
      form_errors: "Errors"
      representations: "Representations"
+     other: "Other"
 
    views:
      layouts:
@@ -96,6 +97,7 @@ en:
          languages: languages
          performance: Performance
          triplestore: triplestore
+         sources: Distributed search
        settings:
          title: site title
          languages_notes: languages for notes
@@ -106,6 +108,7 @@ en:
          triplestore_username: username for triplestore
          triplestore_password: password for triplestore
          triplestore_autosync: automatic triplestore synchronization
+         sources_iqvoc: Sources (iQvoc)
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Missing Translations"
@@ -190,6 +193,7 @@ en:
        no_results: "No results"
        search_languages: "Languages"
        search_results: "Search results"
+       search_results_on: "Search results on %{dataset}"
        results_found:
          one: "Your search for <strong>%{query}</strong> yielded the following %{count} result."
          other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
@@ -202,6 +206,7 @@ en:
        none: "none"
        for: "For"
        mode: "Mode"
+       datasets: "External sources"
      user_sessions:
        header: "Login"
        login: "Login"
@@ -295,6 +300,7 @@ en:
        invalid_value: "unsupported value: %{key} (%{error_message})"
      search_results:
        insufficient_data: "You gave insufficient search data."
+       remote_source_error: "Remote source '%{source}' could not be queried."
      users:
        successfully_created: "User has been successfully created."
        successfully_updated: "User has been successfully updated."
