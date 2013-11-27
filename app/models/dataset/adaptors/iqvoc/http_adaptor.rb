@@ -1,3 +1,5 @@
+require 'faraday'
+
 class Dataset::Adaptors::Iqvoc::HTTPAdaptor
   attr_reader :url
 
