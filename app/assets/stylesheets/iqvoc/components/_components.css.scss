@@ -51,8 +51,9 @@ tr.highlightable {
   }
 }
 
-img.spinner {
-  margin-left: -25px;
+.spinner {
+  position: absolute;
+  margin: 8px 0 0 -20px;
 }
 
 .arrow_down {

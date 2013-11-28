@@ -11,8 +11,7 @@ var EntitySelector = function(node) {
   }
   this.el = $(node).hide(); // XXX: rename
   this.container = $('<div class="entity_select" />').data("widget", this);
-  this.indicator = $('<img class="spinner hidden" />').
-      attr("src", "<%= asset_path('spinner_16x16.gif') %>");
+  this.indicator = $('<i class="spinner fa fa-refresh fa-spin hidden" />');
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();

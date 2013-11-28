@@ -11,8 +11,7 @@ function OneBox(form) {
   this.container = this.form.removeClass("onebox").
       wrap('<div class="onebox" />').parent(); // TODO: document
   this.results = $('<ol class="results concepts unstyled" />');
-  this.spinner = $("<img />").
-      attr("src", "<%= asset_path('spinner_24x24.gif') %>").
+  this.spinner = $('<i class="fa fa-refresh fa-spin fa-3x" />').
       appendTo(this.container).hide();
 
   this.form.on("submit", $.proxy(this, "onSubmit"));
