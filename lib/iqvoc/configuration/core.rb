@@ -28,6 +28,10 @@ module Iqvoc
           iqvoc/ie_fixes.css
           bootstrap/bootstrap.js
           html5.js
+          *.png
+          *.jpg
+          *.jpeg
+          *.gif
         )
 
         self.navigation_items = [{
