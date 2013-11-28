@@ -44,7 +44,11 @@ tr.highlightable {
 }
 
 .sorting-controls {
-  margin-left: 2px;
+  margin-left: 5px;
+  > * {
+    margin-right: 2px;
+    color: inherit;
+  }
 }
 
 img.spinner {

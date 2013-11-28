@@ -26,7 +26,7 @@
         <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <td><%= l(item.follow_up) if item.follow_up.present? %></td>
         <td><%= l(item.updated_at, :format => :short) %></td>
-        <td><%= item.state %></td>
+        <td><span class="label"><%= item.state %></span></td>
         <td>
         <%- if params[:check_consistency] == "1" -%>
           <%= consistency_status(item) %>

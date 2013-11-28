@@ -1,6 +1,6 @@
 <%= sidebar do %>
   <%= sidebar_header t('txt.common.representations') %>
-  <%= sidebar_item :icon => 'share', :text => 'HTML', :path => scheme_path(:format => :html) %>
-  <%= sidebar_item :icon => 'share', :text => 'RDF/XML', :path => rdf_scheme_url(:format => :rdf, :lang => nil), :id => 'rdf_link_xml' %>
-  <%= sidebar_item :icon => 'share', :text => 'RDF/Turtle', :path => rdf_scheme_url(:format => :ttl, :lang => nil), :id => 'rdf_link_ttl' %>
+  <%= sidebar_item :icon => 'link', :text => 'HTML', :path => scheme_path(:format => :html) %>
+  <%= sidebar_item :icon => 'link', :text => 'RDF/XML', :path => rdf_scheme_url(:format => :rdf, :lang => nil), :id => 'rdf_link_xml' %>
+  <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => rdf_scheme_url(:format => :ttl, :lang => nil), :id => 'rdf_link_ttl' %>
 <% end %>

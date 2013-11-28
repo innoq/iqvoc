@@ -97,11 +97,13 @@ module ApplicationHelper
     end
   end
 
-  def icon(name, white = nil)
-    css_class = "icon-#{name}"
-    css_class << " icon-white" if white
+  def icon(name, additional_css = "")
+    css_classes = %W(fa fa-#{name})
+    if additional_css.respond_to?(:split)
+      css_classes << additional_css.split(" ")
+    end
 
-    content_tag :i, "", :class => css_class
+    content_tag :i, "", :class => css_classes.join(" ")
   end
 
   def glyph(name)
