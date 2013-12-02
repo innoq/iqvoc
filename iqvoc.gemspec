@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari', '0.13.0'
   s.add_dependency 'authlogic'
   s.add_dependency 'cancan'
-  s.add_dependency 'iq_rdf', '~> 0.1.2'
+  s.add_dependency 'iq_rdf', '>= 0.1.13'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
   s.add_dependency 'faraday'

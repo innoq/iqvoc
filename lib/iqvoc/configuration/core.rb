@@ -105,7 +105,8 @@ module Iqvoc
           :skos => "http://www.w3.org/2004/02/skos/core#",
           :dct  => "http://purl.org/dc/terms/",
           :foaf => "http://xmlns.com/foaf/spec/",
-          :void => "http://rdfs.org/ns/void#"
+          :void => "http://rdfs.org/ns/void#",
+          :iqvoc => "http://try.iqvoc.net/schema#"
         }
 
         # The class to use for automatic generation of change notes on every save
