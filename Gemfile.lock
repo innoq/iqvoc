@@ -96,7 +96,7 @@ GEM
       unicode-display_width (~> 0.1.1)
     htmlentities (4.3.1)
     i18n (0.6.5)
-    iq_rdf (0.1.10)
+    iq_rdf (0.1.12)
       activesupport
       builder
       bundler
