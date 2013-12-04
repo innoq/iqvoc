@@ -109,8 +109,8 @@ class Note::Base < ActiveRecord::Base
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
-    by_query_value(query_str).
-      by_language(params[:languages].to_a)
+    scope = by_query_value(query_str).by_language(params[:languages].to_a)
+    scope.map { |result| SearchResult.new(result) }
   end
 
   def self.search_result_partial_name

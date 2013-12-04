@@ -81,7 +81,8 @@ class Labeling::SKOS::Base < Labeling::Base
       scope
     end
 
-    scope.merge(Concept::Base.published)
+    scope = scope.merge(Concept::Base.published)
+    scope.map { |result| SearchResult.new(result) }
   end
 
   def self.search_result_partial_name

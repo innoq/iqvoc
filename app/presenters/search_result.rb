@@ -1,29 +1,41 @@
 class SearchResult
-  class MetaInformation
-    attr_reader :key, :value
+  extend Forwardable
+  def_delegators :@result_object, :build_search_result_rdf, :owner, :target,
+      :value
 
-    def initialize(key, value)
-      @key = key
-      @value = value
+  def initialize(result_object)
+    @result_object = result_object
+  end
+
+  def model_name
+    @result_object.class.model_name
+  end
+
+  def search_result_partial_name
+    @result_object.class.search_result_partial_name
+  end
+
+  def rdf_namespace
+    @result_object.class.rdf_namespace
+  end
+
+  def rdf_predicate
+    @result_object.class.rdf_predicate
+  end
+
+  def language
+    if @result_object.is_a?(Labeling::Base)
+      @result_object.target.try(:language)
+    else
+      @result_object.try(:language)
     end
   end
 
-  attr_reader :label, :host, :path, :meta
-  attr_accessor :body
-
-  def initialize(host, path, label)
-    @host = host
-    @path = path
-    @label = label.to_s.squish
-    @meta = []
+  def to_s
+    if @result_object.is_a?(Labeling::Base)
+      @result_object.target.value
+    else
+      @result_object.try(:owner).try(:pref_label).to_s
+    end
   end
-
-  def add_meta_information(key, value)
-    @meta << MetaInformation.new(key, value)
-  end
-
-  def url
-    host + path
-  end
-
 end

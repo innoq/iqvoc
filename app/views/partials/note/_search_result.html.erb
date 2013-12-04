@@ -1,4 +1,4 @@
-<li class="search-result">
+<li class="search-result" data-rdf-namespace="<%= result.rdf_namespace %>" data-rdf-predicate="<%= result.rdf_predicate %>" data-rdf-value="<%= result.to_s %>" data-rdf-language="<%= result.language %>">
   <% if result.owner.is_a?(Concept::Base) %>
     <%= link_to "#{result.owner.pref_label.to_s} (#{result.owner.origin})", concept_path(:id => result.owner) %>
   <% elsif result.owner.is_a?(Label::Base) %>

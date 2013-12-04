@@ -38,7 +38,7 @@ class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HTTPAd
     @doc.css('.search-result').map do |element|
       link = element.at_css('.search-result-link')
       label, path = link.text, link['data-resource-path']
-      result = SearchResult.new(url, path, label)
+      result = SearchResultRemote.new(url, path, label)
 
       if (meta = element.css('.search-result-meta > .search-result-value')) && meta.any?
         meta.each do |element|
@@ -49,6 +49,10 @@ class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HTTPAd
       if body = element.at_css('.search-result-body')
         result.body = body.text
       end
+
+      result.rdf_namespace = element['data-rdf-namespace']
+      result.rdf_predicate = element['data-rdf-predicate']
+      result.language = element['data-rdf-language']
 
       result
     end

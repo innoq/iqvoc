@@ -85,17 +85,17 @@ class SearchResultsController < ApplicationController
         logger.debug("Using single query mode")
       end
 
-      @results = @results.page(params[:page])
-
       if params[:limit] && Iqvoc.unlimited_search_results
         @results = @results.per(params[:limit].to_i)
       end
 
+      @results = SearchResultCollection.new(@results)
+
       if params[:datasets] && datasets = @datasets.select {|a| params[:datasets].include?(a.name) }
         datasets.each do |dataset|
           results = dataset.search(params)
-          unless results.nil?
-            @remote_result_collections << SearchResultCollection.new(dataset, results)
+          if results
+            @results = @results + results
           else
             flash.now[:error] ||= []
             flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => dataset)
@@ -103,9 +103,15 @@ class SearchResultsController < ApplicationController
         end
       end
 
+      @results = @results.sort {|x, y| x.to_s <=> y.to_s }
+      @results = Kaminari.paginate_array(@results)
+      @results = @results.page(params[:page])
+
       respond_to do |format|
         format.html { render :index, :layout => with_layout? }
-        format.any(:ttl, :rdf)
+        format.any(:ttl, :rdf) do
+          # binding.pry
+        end
       end
     end
   end

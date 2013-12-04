@@ -1,4 +1,4 @@
-<li class="search-result">
+<li class="search-result" data-rdf-namespace="<%= result.rdf_namespace %>" data-rdf-predicate="<%= result.rdf_predicate %>" data-rdf-value="<%= result.to_s %>" data-rdf-language="<%= result.language %>">
   <% result.annotations.each do |annotation| %>
     <%= link_to_object(result.owner, "#{annotation.predicate}: #{annotation.value}" %><br/>
   <% end %>
