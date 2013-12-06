@@ -1,7 +1,7 @@
 class SearchResult
   extend Forwardable
   def_delegators :@result_object, :build_search_result_rdf, :owner, :target,
-      :value
+      :value, :label
 
   def initialize(result_object)
     @result_object = result_object
