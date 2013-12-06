@@ -1,7 +1,7 @@
 class SearchResult
   extend Forwardable
   def_delegators :@result_object, :build_search_result_rdf, :owner, :target,
-      :value, :label
+      :value, :label, :rdf_namespace, :rdf_predicate
 
   def initialize(result_object)
     @result_object = result_object
@@ -13,14 +13,6 @@ class SearchResult
 
   def search_result_partial_name
     @result_object.class.search_result_partial_name
-  end
-
-  def rdf_namespace
-    @result_object.class.rdf_namespace
-  end
-
-  def rdf_predicate
-    @result_object.class.rdf_predicate
   end
 
   def language
