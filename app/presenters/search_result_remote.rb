@@ -30,8 +30,15 @@ class SearchResultRemote
     'search_results/search_result_remote'
   end
 
+  def rdf_predicate_uri
+    rdf_namespace.try(:+, rdf_predicate)
+  end
+
   def build_rdf(document, subject)
-    subject.send(rdf_namespace).send(rdf_predicate, body || label, :lang => language)
+    predicate = URI.parse(rdf_predicate_uri)
+    value = body || label
+
+    subject.build_full_uri_predicate(predicate, value, :lang => language)
   end
 
   def build_search_result_rdf(document, result)
