@@ -32,6 +32,10 @@ module Iqvoc
           *.jpg
           *.jpeg
           *.gif
+          *.svg
+          *.ttf
+          *.woff
+          *.eof
         )
 
         self.navigation_items = [{
