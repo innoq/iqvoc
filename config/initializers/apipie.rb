@@ -7,6 +7,7 @@ Apipie.configure do |config|
   config.doc_base_url            = "/apidoc"
   config.api_controllers_matcher = "#{Rails.root}/app/controllers/*.rb"
   config.markup                  = Apipie::Markup::Markdown.new
+  config.validate                = false
   config.validate_value          = false
   config.validate_presence       = false
   config.app_info                = <<-EOF
