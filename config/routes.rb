@@ -15,6 +15,7 @@
 # limitations under the License.
 
 Rails.application.routes.draw do
+  apipie
   scope ':lang', :constraints => lambda { |params, req|
     langs = Iqvoc::Concept.pref_labeling_languages.join('|').presence || 'en'
     return params[:lang].to_s =~ /^#{langs}$/

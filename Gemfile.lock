@@ -34,6 +34,8 @@ GEM
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
     ansi (1.4.3)
+    apipie-rails (0.0.24)
+      rails (>= 3.0.10)
     arel (4.0.1)
     atomic (1.1.14)
     authlogic (3.3.0)
@@ -127,6 +129,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    maruku (0.7.0)
     method_source (0.8.2)
     mime-types (1.25)
     mini_portile (0.5.2)
@@ -255,6 +258,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
   activerecord-jdbcsqlite3-adapter
+  apipie-rails
   authlogic
   awesome_print
   better_errors
@@ -276,6 +280,7 @@ DEPENDENCIES
   json
   kaminari (= 0.13.0)
   linkeddata
+  maruku
   mysql2 (= 0.3.13)
   nokogiri (~> 1.6.0)
   pg

@@ -15,6 +15,7 @@ require 'bootstrap-sass'
 require 'protected_attributes'
 require 'font-awesome-rails'
 require 'uglifier'
+require 'apipie-rails'
 
 require 'iqvoc/controller_extensions'
 
