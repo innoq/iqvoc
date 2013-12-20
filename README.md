@@ -58,6 +58,21 @@ Running the cloned source code is possible but any modifications would require a
 8. Log in with "admin@iqvoc" / "admin" or "demo@iqvoc" / "cooluri" (cf. step #5)
 9. Visit the Users section and change the default passwords
 
+## Background Jobs
+
+Note that some features like "Import" exposed in the Web UI store their workload
+as jobs. You can either issue a job worker that watches for new jobs via
+
+```bash
+$ rake jobs:work
+```
+
+or process jobs in a one-off way (in development or via cron):
+
+```bash
+$ rake jobs:workoff
+```
+
 ## Compatibility
 
 iQvoc is fully compatible with Ruby 1.9, 2.0 and JRuby 1.7.
