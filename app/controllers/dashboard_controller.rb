@@ -45,7 +45,9 @@ class DashboardController < ApplicationController
 
     if request.post?
       DatabaseCleaner.strategy = :truncation, {
-        :except => %w(configuration_settings users)
+        :only => ['collection_members', 'concept_relations', 'concepts',
+          'labelings', 'labels', 'matches', 'notations', 'note_annotations',
+          'notes']
       }
       DatabaseCleaner.clean
 
