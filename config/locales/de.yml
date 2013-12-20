@@ -265,6 +265,9 @@ de:
        state: "Status"
        full_rdf_export: Vollständiger RDF Export
        import: Import
+       reset: Thesaurus löschen
+       reset_warning: "Alle Konzepte, Kollektionen und Labels im Thesaurus werden gelöscht."
+       reset_success: "Der Thesaurus wurde gelöscht."
      collections:
        new: "Neue Kollektion"
      triplestore_sync:

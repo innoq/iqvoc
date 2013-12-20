@@ -43,6 +43,8 @@ module Iqvoc
           can :update, Iqvoc::Concept.root_class.instance
 
           can :use, :administration
+
+          can :reset, :thesaurus
         end
       else # no user
         can :create, UserSession

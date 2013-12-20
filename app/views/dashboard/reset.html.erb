@@ -1,0 +1,6 @@
+<%= page_header :title => t("txt.views.dashboard.reset") %>
+<%= render "dashboard/sidebar" %>
+
+<%= form_tag reset_path, :method => :post do %>
+  <%= submit_tag t("txt.views.dashboard.reset"), :class => "btn btn-danger" %>
+<% end %>

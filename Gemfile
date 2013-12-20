@@ -39,6 +39,7 @@ gem 'bootstrap-sass', '2.3.1.3'
 gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', :require => false
+gem 'database_cleaner'
 
 group :development do
   gem 'view_marker'
@@ -71,7 +72,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
-  gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'turn'
   gem 'webmock'

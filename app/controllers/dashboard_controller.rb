@@ -40,4 +40,19 @@ class DashboardController < ApplicationController
     @items = Kaminari.paginate_array(@items).page(params[:page])
   end
 
+  def reset
+    authorize! :reset, :thesaurus
+
+    if request.post?
+      DatabaseCleaner.strategy = :truncation, {
+        :except => %w(configuration_settings users)
+      }
+      DatabaseCleaner.clean
+
+      flash.now[:success] = t("txt.views.dashboard.reset_success")
+    else
+      flash.now[:danger] = t("txt.views.dashboard.reset_warning")
+    end
+  end
+
 end

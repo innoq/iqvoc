@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get 'expired_concepts' => 'concepts/expired#index', :as => 'expired_concepts'
 
     get 'dashboard' => 'dashboard#index', :as => 'dashboard'
+    match 'dashboard/reset' => 'dashboard#reset', :as => 'reset', :via => [:get, :post]
 
     get 'config' => 'instance_configuration#index', :as => 'instance_configuration'
     patch 'config' => 'instance_configuration#update'
