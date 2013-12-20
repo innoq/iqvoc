@@ -35,6 +35,7 @@ class ImportsController < ApplicationController
     job = ImportJob.new(import, content, current_user, params[:default_namespace], params[:publish])
     Delayed::Job.enqueue(job)
 
+    flash[:success] = t('txt.views.import.success')
     redirect_to imports_path
   end
 

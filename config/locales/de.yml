@@ -277,6 +277,7 @@ de:
        title: "Import"
        file: "NTriples-Datei"
        namespace: "Standard Namespace"
+       success: "Import-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
 
    partials:
      note:
