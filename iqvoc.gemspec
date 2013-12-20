@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'uglifier', '>= 1.3.0'
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
+  s.add_dependency 'database_cleaner'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")
