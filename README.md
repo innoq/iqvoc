@@ -61,15 +61,16 @@ Running the cloned source code is possible but any modifications would require a
 ## Background Jobs
 
 Note that some features like "Import" exposed in the Web UI store their workload
-as jobs. You can either issue a job worker that watches for new jobs via
+as jobs. You can either issue a job worker that runs continuously and watches
+for new jobs via
 
-```bash
+```
 $ rake jobs:work
 ```
 
 or process jobs in a one-off way (in development or via cron):
 
-```bash
+```
 $ rake jobs:workoff
 ```
 
