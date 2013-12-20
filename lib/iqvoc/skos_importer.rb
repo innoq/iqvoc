@@ -13,7 +13,9 @@ module Iqvoc
         [Iqvoc::Concept.root_class] +
         [Iqvoc::Collection.member_class]
 
-    def initialize(file, default_namespace_url, logger = Rails.logger)
+    def initialize(file, default_namespace_url, logger = Rails.logger, publish = true)
+      @publish = publish
+
       @logger = logger
 
       unless file.is_a?(File) || file.is_a?(Array)
@@ -82,32 +84,39 @@ module Iqvoc
             import_second_level_objects(second_level_types, false, *extract_triple(line))
       end
 
-      @logger.debug("Computing 'forward' defined triples...")
+      @logger.debug "Computing 'forward' defined triples..."
       @unknown_second_level_triples.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
       first_import_step_done = Time.now
-      @logger.debug("Basic import done (took #{(first_import_step_done - start).to_i} seconds).")
+      @logger.debug "Basic import done (took #{(first_import_step_done - start).to_i} seconds)."
 
-      @logger.debug("Publishing #{@new_subjects.count} new subjects...")
-      published = 0
-      @new_subjects.each do |subject|
-        if subject.valid_with_full_validation?
-          subject.publish
-          subject.save!
-          published += 1
-        else
-          @logger.warn "WARNING: Publishing failed! Subject ('#{subject.origin}') invalid: #{subject.errors.to_hash.inspect}"
-        end
-      end
+      published = publish
 
       done = Time.now
-      @logger.debug("Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} where invalid.")
-      puts "Imported #{published} valid and #{@new_subjects.count - published} invalid subjects in #{(done - start).to_i} seconds."
-      puts "  First step took  #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
+      @logger.debug "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
+      puts "Imported #{published} published and #{@new_subjects.count - published} draft subjects in #{(done - start).to_i} seconds."
+      puts "  First step took #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
       ActiveSupport.run_load_hooks(:skos_importer_after_import, self)
+    end
+
+    def publish
+      published = 0
+      if @publish
+        @logger.debug "Publishing #{@new_subjects.count} new subjects..."
+        @new_subjects.each do |subject|
+          if subject.valid_with_full_validation?
+            subject.publish
+            subject.save!
+            published += 1
+          else
+            @logger.warn "WARNING: Publishing failed! Subject ('#{subject.origin}') invalid: #{subject.errors.to_hash.inspect}"
+          end
+        end
+      end
+      published
     end
 
     def identify_blank_nodes(subject, predicate, object)

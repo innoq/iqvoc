@@ -1,14 +1,18 @@
-<%= page_header :title => 'Import' %>
+<%= page_header :title => t('txt.views.import.title') %>
 <%= render 'dashboard/sidebar' %>
 
 <%= form_tag import_url, :method => :post, :multipart => true , :class => "form-horizontal" do %>
-  <%= input_block :label => 'NTriples File' do %>
+  <%= input_block :label => t('txt.views.import.file') do %>
     <%= file_field_tag 'ntriples_file' %>
   <% end %>
 
-  <%= input_block :label => 'Default namespace' do %>
+  <%= input_block :label => t('txt.views.import.namespace') do %>
     <%= text_field_tag 'default_namespace',
       root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/")  %>
+  <% end %>
+
+  <%= input_block :label => t('txt.views.import.publish') do %>
+    <%= check_box_tag 'publish', '1', true %>
   <% end %>
 
   <div class="form-actions">

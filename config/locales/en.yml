@@ -280,6 +280,10 @@ en:
      triplestore_sync:
        caption: "Sync with Triplestore"
        start: "Start synchronization"
+     import:
+       title: "Import"
+       file: "NTriples file"
+       namespace: "Default namespace"
 
    partials:
      note:

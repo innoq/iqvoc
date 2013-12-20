@@ -29,7 +29,7 @@ class ImportController < ApplicationController
     content = params[:ntriples_file] && params[:ntriples_file].read
     strio = StringIO.new
     begin
-      Iqvoc::SkosImporter.new(content.to_s.split("\n"), params[:default_namespace], Logger.new(strio))
+      Iqvoc::SkosImporter.new(content.to_s.split("\n"), params[:default_namespace], Logger.new(strio), params[:publish])
       @messages = strio.string
     rescue Exception => e
       @messages = e.to_s + "\n\n" + e.backtrace.join("\n")

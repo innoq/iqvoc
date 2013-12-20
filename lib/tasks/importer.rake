@@ -13,7 +13,14 @@ namespace :iqvoc do
 
       stdout_logger = Logger.new(STDOUT)
       stdout_logger.level = Logger::INFO
-      Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s, MultiLogger.new(stdout_logger, Rails.logger))
+
+      publish = if ENV['PUBLISH'].nil? || ENV['PUBLISH'] == "true"
+        true
+      else
+        false
+      end
+
+      Iqvoc::SkosImporter.new(open(URI.parse(ENV['URL']).to_s), URI.parse(ENV['NAMESPACE']).to_s, MultiLogger.new(stdout_logger, Rails.logger), publish)
     end
 
   end

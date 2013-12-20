@@ -273,6 +273,10 @@ de:
      triplestore_sync:
        caption: "Sync mit Triplestore"
        start: "Synchronisierung starten"
+     import:
+       title: "Import"
+       file: "NTriples-Datei"
+       namespace: "Standard Namespace"
 
    partials:
      note:
