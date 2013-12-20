@@ -14,11 +14,12 @@ module Iqvoc
         [Iqvoc::Collection.member_class]
 
     def initialize(file, default_namespace_url, logger = Rails.logger, publish = true)
+      @file = file
       @publish = publish
 
       @logger = logger
 
-      unless file.is_a?(File) || file.is_a?(Array)
+      unless @file.is_a?(File) || @file.is_a?(Array)
         raise "Iqvoc::SkosImporter#import: Parameter 'file' should be a File or an Array."
       end
 
@@ -58,8 +59,10 @@ module Iqvoc
           @existing_origins[thing.origin] = klass
         end
       end
+    end
 
-      import file
+    def run
+      import @file
     end
 
     private

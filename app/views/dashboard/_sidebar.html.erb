@@ -10,7 +10,7 @@
     :perms => [:full_export, Concept::Base]) %>
   <%= sidebar_header 'Extras' %>
   <%= sidebar_item(:icon => :upload, :text => t('txt.views.dashboard.import'),
-    :path => import_url, :active => params[:controller] == 'import', :perms => [:import, Concept::Base]) %>
+    :path => imports_path, :active => params[:controller] == 'imports', :perms => [:import, Concept::Base]) %>
   <%= sidebar_item(:icon => :eraser, :text => t('txt.views.dashboard.reset'),
     :path => reset_path, :active => params[:action] == "reset",
     :perms => [:reset, :thesaurus]) %>

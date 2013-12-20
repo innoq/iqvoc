@@ -75,6 +75,11 @@ GEM
     database_cleaner (1.2.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
+    delayed_job (4.0.0)
+      activesupport (>= 3.0, < 4.1)
+    delayed_job_active_record (4.0.0)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
     ebnf (0.3.1)
       rdf
       sxp
@@ -270,6 +275,7 @@ DEPENDENCIES
   capybara-screenshot
   capybara-webkit
   database_cleaner
+  delayed_job_active_record (~> 4.0.0)
   factory_girl_rails
   faraday
   font-awesome-rails

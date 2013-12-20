@@ -61,7 +61,7 @@ class SkosImportTest < ActiveSupport::TestCase
 
   test "basic_importer_functionality" do
     assert_difference('Concept::SKOS::Base.count', 4) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
     end
 
     concepts = {}
@@ -92,7 +92,7 @@ class SkosImportTest < ActiveSupport::TestCase
 
   test "incorrect origin" do
     assert_difference('Concept::SKOS::Base.count', 1) do
-      Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/")
+      Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/").run
     end
     assert_nil Iqvoc::Concept.base_class.by_origin("1").last
     assert_not_nil Iqvoc::Concept.base_class.by_origin("_1").last
@@ -109,11 +109,11 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Note::SKOS::ChangeNote.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
     end
 
     assert_difference('Note::Annotated::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
     end
   end
 
@@ -126,7 +126,7 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Notation::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
     end
   end
 
@@ -140,7 +140,7 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Concept::SKOS::Base.tops.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
     end
   end
 end
@@ -178,7 +178,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
   test "basic importer functionality" do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
     end
     concepts = {}
     ["cow", "donkey", "snake"].each do |origin|
@@ -203,7 +203,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
   test "subcollections importer functionality" do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
     end
 
     collection_with_subcollections = Iqvoc::Collection.base_class.by_origin("land-animal").last
@@ -220,7 +220,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
     assert_nothing_raised do
     assert_difference('Collection::Base.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/")
+      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
       end
     end
   end

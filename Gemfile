@@ -40,6 +40,7 @@ gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', :require => false
 gem 'database_cleaner'
+gem 'delayed_job_active_record', '~> 4.0.0'
 
 group :development do
   gem 'view_marker'

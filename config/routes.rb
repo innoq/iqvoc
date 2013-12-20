@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :users, :except => [:show]
     resources :concepts
     resources :collections
+    resources :imports, :only => [:index, :show, :create]
 
     get 'scheme' => 'concepts/scheme#show', :as => 'scheme'
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
@@ -55,9 +56,6 @@ Rails.application.routes.draw do
 
     get 'config' => 'instance_configuration#index', :as => 'instance_configuration'
     patch 'config' => 'instance_configuration#update'
-
-    get 'import' => 'import#index', :as => 'import'
-    post 'import' => 'import#import'
 
     get 'search' => 'search_results#index', :as => 'search'
 

@@ -1,0 +1,7 @@
+<%= page_header :title => "#{t('txt.views.import.title')} #{@import.id}" %>
+<%= render 'dashboard/sidebar' %>
+
+<div class="panel">
+  <h2><%= t('txt.views.import.output') %></h2>
+  <pre><%= @import.output %></pre>
+</div>

@@ -139,3 +139,8 @@ en:
         active: "active"
         role: "Role"
         telephone_number: "Phone number"
+      import:
+        user: "User"
+        created_at: "Created at"
+        finished_at: "Finished at"
+        success: "Success"

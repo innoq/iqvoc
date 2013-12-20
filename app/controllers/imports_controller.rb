@@ -14,26 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/skos_importer'
-
-class ImportController < ApplicationController
+class ImportsController < ApplicationController
 
   before_filter do
     authorize! :import, Concept::Base
   end
 
   def index
+    @imports = Import.order('id DESC')
   end
 
-  def import
+  def show
+    @import = Import.find(params[:id])
+  end
+
+  def create
     content = params[:ntriples_file] && params[:ntriples_file].read
-    strio = StringIO.new
-    begin
-      Iqvoc::SkosImporter.new(content.to_s.split("\n"), params[:default_namespace], Logger.new(strio), params[:publish])
-      @messages = strio.string
-    rescue Exception => e
-      @messages = e.to_s + "\n\n" + e.backtrace.join("\n")
-    end
+    import = Import.create!(:user => current_user)
+
+    job = ImportJob.new(import, content, current_user, params[:default_namespace], params[:publish])
+    Delayed::Job.enqueue(job)
+
+    redirect_to imports_path
   end
 
 end
