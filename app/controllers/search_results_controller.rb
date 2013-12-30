@@ -27,19 +27,26 @@ class SearchResultsController < ApplicationController
   formats [:html, :ttl, :rdf]
   description 'Search for concepts or collections based on various criteria.'
   param :q, String, :required => true,
-      :desc => 'Query term (URL-encoded, if necessary). Wild cards are not supported, see the `qt` parameter below.'
-  param :qt, ['exact', 'contains', 'begins_with', 'ends_with'], :required => true,
+      :desc => 'Query term (URL-encoded, if necessary). Wild cards are not '\
+               'supported, see the `qt` parameter below.'
+  param :qt, ['exact', 'contains', 'begins_with', 'ends_with'],
+      :required => true,
       :desc => 'Query type'
-  param :t, %w(labels pref_labels notes), :required => true,
+  param :t, %w(labels pref_labels notes),
+      :required => true,
       :desc => 'Specifies the properties to be searched.'
-  param :for, %w(concept collection all), :required => true,
+  param :for, %w(concept collection all),
+      :required => true,
       :desc => 'The result type you are searching for.'
-  param 'l[]', Iqvoc.all_languages, :required => true,
-      :desc => 'One or more languages of the labels or notes to be queried. Use 2-letter language codes from ISO 639.1.'
+  param 'l[]', Iqvoc.all_languages,
+      :required => true,
+      :desc => 'One or more languages of the labels or notes to be queried. '\
+               'Use 2-letter language codes from ISO 639.1.'
   param :c, String,
       :desc => 'Constrains results to members of the given collection ID.'
   param 'ds[]', String ,
-      :desc => 'Specifies one or more external data sets (connected thesauri) to include in search.'
+      :desc => 'Specifies one or more external data sets (connected thesauri)'\
+               'to include in search.'
 
   def index
     authorize! :read, Concept::Base
