@@ -20,23 +20,23 @@ class SearchResultsController < ApplicationController
   include DatasetInitialization
 
   resource_description do
-    name "Search"
+    name 'Search'
   end
 
-  api :GET, 'search'
+  api :GET, 'search', 'Search for concepts or collections based on various criteria.'
   formats [:html, :ttl, :rdf]
-  description 'Search for concepts or collections based on various criteria.'
+  example <<-EOF
+    curl http://try.iqvoc.net/search.ttl?q=dance&t=labels&l[]=en
+  EOF
   param :q, String, :required => true,
       :desc => 'Query term (URL-encoded, if necessary). Wild cards are not '\
                'supported, see the `qt` parameter below.'
   param :qt, ['exact', 'contains', 'begins_with', 'ends_with'],
-      :required => true,
       :desc => 'Query type'
   param :t, %w(labels pref_labels notes),
       :required => true,
       :desc => 'Specifies the properties to be searched.'
   param :for, %w(concept collection all),
-      :required => true,
       :desc => 'The result type you are searching for.'
   param 'l[]', Iqvoc.all_languages,
       :required => true,
