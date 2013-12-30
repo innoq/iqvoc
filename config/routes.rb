@@ -70,6 +70,8 @@ Rails.application.routes.draw do
   get 'dataset' => 'rdf#dataset', :as => 'rdf_dataset'
   get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
   get 'search' => 'search_results#index', :as => 'rdf_search'
+  get 'hierarchy' => 'hierarchy#index'
+  get 'hierarchy/:root' => 'hierarchy#show'
 
   get ':id' => 'rdf#show', :as => 'rdf'
 
