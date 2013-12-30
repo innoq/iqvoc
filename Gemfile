@@ -27,7 +27,7 @@ gem 'cancan'
 gem 'iq_rdf', '>= 0.1.13'
 gem 'iq_triplestorage'
 gem 'json'
-gem 'rails_autolink', :git => 'git://github.com/tenderlove/rails_autolink.git'
+gem 'rails_autolink'
 gem 'jruby-openssl', :platforms => :jruby
 gem 'simple_form'
 gem 'faraday'
