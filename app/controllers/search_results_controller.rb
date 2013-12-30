@@ -25,9 +25,6 @@ class SearchResultsController < ApplicationController
 
   api :GET, 'search', 'Search for concepts or collections based on various criteria.'
   formats [:html, :ttl, :rdf]
-  example <<-EOF
-    curl http://try.iqvoc.net/search.ttl?q=dance&t=labels&l[]=en
-  EOF
   param :q, String, :required => true,
       :desc => 'Query term (URL-encoded, if necessary). Wild cards are not '\
                'supported, see the `qt` parameter below.'

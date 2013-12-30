@@ -15,7 +15,12 @@
 # limitations under the License.
 
 class Concepts::SchemeController < ApplicationController
+  resource_description do
+    name 'Concept scheme'
+  end
 
+  api :GET, 'scheme', "The concept scheme lists the vocabulary's top concepts."
+  formats [:html, :ttl, :rdf]
   def show
     @scheme = Iqvoc::Concept.root_class.instance
     authorize! :read, @scheme

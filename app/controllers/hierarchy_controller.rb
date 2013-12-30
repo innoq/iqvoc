@@ -15,7 +15,13 @@
 # limitations under the License.
 
 class HierarchyController < ApplicationController
+  resource_description do
+    name 'Hierarchy'
+  end
 
+  api :GET, 'hierarchy', "Retrieve the downwards concepts hierarchy starting "\
+                         "at top concepts."
+  formats [:html, :ttl, :rdf]
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
@@ -24,6 +30,22 @@ class HierarchyController < ApplicationController
     render_hierarchy "scheme", depth, unbounded?
   end
 
+  api :GET, 'hierarchy/:root', "Retrieve a concept's up- or downwards "\
+                               "hierarchy with optional siblings."
+  formats [:html, :ttl, :rdf]
+  param :dir, ['down', 'up'],
+      :desc => <<-EOF
+      Direction of the hierarchy.
+
+      *down* follow narrower from root to its leaf nodes.
+
+      *up* follow broader from root to its top term(s).
+      EOF
+  param :depth, [1, 2, 3, 4],
+      "Number of levels of hierarchy to be included in the response"
+  param :siblings, ['1', 'true'],
+      "Siblings of each node will be included even if they are not part of "\
+      "the hierarchy."
   def show
     authorize! :read, Iqvoc::Concept.base_class
 
