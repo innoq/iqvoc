@@ -19,21 +19,22 @@ class HierarchyController < ApplicationController
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
-    unbounded = Iqvoc.config["performance.unbounded_hierarchy"]
-    depth = params[:depth] || (unbounded ? -1 : nil)
+    depth = params[:depth] || (unbounded? ? -1 : nil)
 
-    render_hierarchy "scheme", depth, unbounded
+    render_hierarchy "scheme", depth, unbounded?
   end
 
   def show
     authorize! :read, Iqvoc::Concept.base_class
 
-    unbounded = Iqvoc.config["performance.unbounded_hierarchy"]
-
-    render_hierarchy params[:root], params[:depth], unbounded
+    render_hierarchy params[:root], params[:depth], unbounded?
   end
 
   private
+
+  def unbounded?
+    Iqvoc.config["performance.unbounded_hierarchy"]
+  end
 
   def render_hierarchy(root_origin, depth, unbounded = false)
     default_depth = 3
