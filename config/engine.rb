@@ -48,6 +48,12 @@ module Iqvoc
           "#{Iqvoc::Engine.root}/app/controllers/concepts/*.rb"
         ]
       end
+
+      Apipie.class_eval do
+        def self.recorded_examples
+          YAML.load_file(Iqvoc.root.join('doc', 'apipie_examples.yml'))
+        end
+      end
     end
   end
 
