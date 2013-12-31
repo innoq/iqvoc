@@ -21,6 +21,20 @@ class Concepts::SchemeController < ApplicationController
 
   api :GET, 'scheme', "The concept scheme lists the vocabulary's top concepts."
   formats [:html, :ttl, :rdf]
+  example <<-DOC
+    GET /scheme.ttl
+    200
+
+    # omitted namespace definitions
+    :achievement_hobbies a skos:Concept;
+                         skos:topConceptOf :scheme;
+                         skos:inScheme :scheme;
+                         skos:prefLabel "Achievement hobbies"@en;
+                         skos:narrower :gardening.
+    :scheme a skos:ConceptScheme;
+            skos:hasTopConcept :achievement_hobbies.
+  DOC
+
   def show
     @scheme = Iqvoc::Concept.root_class.instance
     authorize! :read, @scheme

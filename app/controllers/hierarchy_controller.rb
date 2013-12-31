@@ -22,6 +22,25 @@ class HierarchyController < ApplicationController
   api :GET, 'hierarchy', "Retrieve the downwards concepts hierarchy starting "\
                          "at top concepts."
   formats [:html, :ttl, :rdf]
+  example <<-DOC
+    GET /hierarchy.ttl
+    200
+
+    # omitted namespace definitions
+    :achievement_hobbies a skos:Concept;
+                         skos:topConceptOf :scheme;
+                         skos:prefLabel "Achievement hobbies"@en;
+                         skos:narrower :model_building;
+                         skos:narrower :gardening.
+    :model_building a skos:Concept;
+                    skos:prefLabel "Model building"@en;
+                    skos:narrower :model_rocketry;
+    :model_rocketry a skos:Concept;
+                    skos:prefLabel "Model rocketry"@en.
+    :gardening a skos:Concept;
+               skos:prefLabel "Gardening"@en.
+  DOC
+
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
@@ -34,18 +53,35 @@ class HierarchyController < ApplicationController
                                "hierarchy with optional siblings."
   formats [:html, :ttl, :rdf]
   param :dir, ['down', 'up'],
-      :desc => <<-EOF
+      :desc => <<-DOC
       Direction of the hierarchy.
 
       *down* follow narrower from root to its leaf nodes.
 
       *up* follow broader from root to its top term(s).
-      EOF
+      DOC
   param :depth, [1, 2, 3, 4],
       "Number of levels of hierarchy to be included in the response"
   param :siblings, ['1', 'true'],
       "Siblings of each node will be included even if they are not part of "\
       "the hierarchy."
+  example <<-DOC
+    GET /hierarchy/model_building.ttl?dir=down&depth=1
+
+    # omitted namespace definitions
+    :model_rocketry a skos:Concept;
+                    skos:prefLabel "Model rocketry"@en.
+    :radio-controlled_modeling a skos:Concept;
+                               skos:prefLabel "Radio-controlled modeling"@en.
+    :scale_modeling a skos:Concept;
+                    skos:prefLabel "Scale modeling"@en.
+    :model_building a skos:Concept;
+                    skos:prefLabel "Model building"@en;
+                    skos:narrower :model_rocketry;
+                    skos:narrower :radio-controlled_modeling;
+                    skos:narrower :scale_modeling.
+  DOC
+
   def show
     authorize! :read, Iqvoc::Concept.base_class
 

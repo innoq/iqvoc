@@ -44,6 +44,24 @@ class SearchResultsController < ApplicationController
   param 'ds[]', String ,
       :desc => 'Specifies one or more external data sets (connected thesauri)'\
                'to include in search.'
+  example <<-DOC
+    GET /search.ttl
+    200
+
+    # omitted namespace definitions
+    <http://try.iqvoc.net/search.ttl?l=en&q=dance&t=labels> a sdc:Query;
+                                                            sdc:totalResults 1;
+                                                            sdc:itemsPerPage 40;
+                                                            sdc:searchTerms "dance";
+                                                            sdc:first <http://try.iqvoc.net/search.ttl?l=en&page=1&q=dance&t=labels>;
+                                                            sdc:last <http://try.iqvoc.net/search.ttl?l=en&page=1&q=dance&t=labels>;
+                                                            sdc:result search:result1.
+    <http://try.iqvoc.net/search.ttl?l=en&page=1&q=dance&t=labels> a sdc:Page;
+                                                                   sdc:startIndex 1.
+    search:result1 a sdc:Result;
+                   sdc:link :dance;
+                   skos:prefLabel "Dance"@en.
+  DOC
 
   def index
     authorize! :read, Concept::Base
