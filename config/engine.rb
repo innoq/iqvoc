@@ -40,6 +40,15 @@ module Iqvoc
       # Pull in all the migrations to the application embedding iqvoc
       app.config.paths['db/migrate'].concat(Iqvoc::Engine.paths['db/migrate'].existent)
     end
+
+    initializer "iqvoc.configure_apipie" do |app|
+      Apipie.configure do |config|
+        config.api_controllers_matcher = [
+          "#{Iqvoc::Engine.root}/app/controllers/*.rb",
+          "#{Iqvoc::Engine.root}/app/controllers/concepts/*.rb"
+        ]
+      end
+    end
   end
 
 end
