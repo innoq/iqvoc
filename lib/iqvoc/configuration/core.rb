@@ -209,6 +209,13 @@ module Iqvoc
           self.config.register_setting("title", value)
         end
 
+        def root
+          if Iqvoc.const_defined?(:Engine)
+            Iqvoc::Engine.root
+          else
+            Rails.root
+          end
+        end
       end
 
     end
