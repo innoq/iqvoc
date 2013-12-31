@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-# Needed when on Ruby 2.1.0, shouldn't be necessary for long
-system "gem install bundler -v 1.5.1"
-
 # Start virtual X frame buffer
 system "sh -e /etc/init.d/xvfb start"
 sleep 3
