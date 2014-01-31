@@ -5,8 +5,8 @@ Apipie.configure do |config|
   config.app_name                = "iQvoc"
   config.api_base_url            = "/"
   config.doc_base_url            = "/apidoc"
-  config.api_controllers_matcher = ["#{Rails.root}/app/controllers/*.rb",
-                                    "#{Rails.root}/app/controllers/concepts/*.rb"]
+  config.api_controllers_matcher = ["#{Iqvoc.root}/app/controllers/*.rb",
+                                    "#{Iqvoc.root}/app/controllers/concepts/*.rb"]
   config.markup                  = Apipie::Markup::Markdown.new
   config.validate                = false
   config.validate_value          = false
