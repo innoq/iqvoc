@@ -9,7 +9,7 @@ namespace :release do
   task :push => :environment do
     Rake::Task['release:build'].invoke
     system %(git tag `grep VERSION lib/iqvoc/version.rb | sed -e 's/.*= /v/' -e 's/"//g'`)
-    system 'git push --tags'
+    system 'git push origin master --tags'
     system 'gem push iqvoc-*.gem'
   end
 end
