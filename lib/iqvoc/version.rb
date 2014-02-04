@@ -15,5 +15,5 @@
 # limitations under the License.
 
 module Iqvoc
-  VERSION = "4.2.0"
+  VERSION = "4.3.0"
 end
