@@ -1,3 +1,18 @@
+## [4.3.0]
+
+4.3.0 brings federation capabilities as a big new feature! You can search
+through connected iQvoc instances as well as get search-as-you-type suggestions
+for matches to concepts in connected theusauri. Find out more in the
+[wiki](https://github.com/innoq/iqvoc/wiki/Interconnecting-iQvoc).
+
+  * Federated search
+  * Federated matches
+  * REST API documentation available under [/apidoc](http://try.iqvoc.net/apidoc)
+  * Web based ntriples importer now runs
+    [asynchronously](https://github.com/innoq/iqvoc#background-jobs) and
+    allows for optional publishing
+  * Hi-Res UI graphics throughout
+
 ## [4.2.0]
 
 As 5.0.0 has been postponed, 4.2.0 comes as another 4.x release.
