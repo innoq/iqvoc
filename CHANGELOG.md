@@ -2,7 +2,7 @@
 
 4.3.0 brings federation capabilities as a big new feature! You can search
 through connected iQvoc instances as well as get search-as-you-type suggestions
-for matches to concepts in connected theusauri. Find out more in the
+for matches to concepts in connected thesauri. Find out more in the
 [wiki](https://github.com/innoq/iqvoc/wiki/Interconnecting-iQvoc).
 
   * Federated search
