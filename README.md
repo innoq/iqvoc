@@ -76,7 +76,7 @@ $ rake jobs:workoff
 
 ## Compatibility
 
-iQvoc is fully compatible with Ruby 1.9, 2.0 and JRuby 1.7.
+iQvoc is fully compatible with Ruby 1.9, 2.0, 2.1 and JRuby 1.7.
 
 ## Customization
 
