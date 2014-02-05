@@ -1,3 +1,4 @@
+require "iqvoc"
 require "iqvoc/version"
 
 Apipie.configure do |config|
