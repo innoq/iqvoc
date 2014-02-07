@@ -1,3 +1,7 @@
+## [4.3.1]
+
+  * Fix for 4.3.0 not booting on heroku
+
 ## [4.3.0]
 
 4.3.0 brings federation capabilities as a big new feature! You can search
