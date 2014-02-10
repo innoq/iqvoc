@@ -47,7 +47,7 @@ class CreateSchema < ActiveRecord::Migration
 
     create_table "concepts", :force => true do |t|
       t.string   "type"
-      t.string   "origin"
+      t.string   "origin", :limit => 4000
       t.integer  "rev",                               :default => 1
       t.date     "published_at"
       t.integer  "published_version_id"
@@ -60,7 +60,7 @@ class CreateSchema < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    add_index "concepts", ["origin"], :name => "ix_concepts_on_origin"
+    add_index "concepts", ["origin"], :name => "ix_concepts_on_origin", :length => 255
     add_index "concepts", ["published_version_id"], :name => "ix_concepts_publ_version_id"
 
     create_table "label_relations", :force => true do |t|
@@ -87,7 +87,7 @@ class CreateSchema < ActiveRecord::Migration
 
     create_table "labels", :force => true do |t|
       t.string   "type"
-      t.string   "origin"
+      t.string   "origin", :limit => 4000
       t.string   "language"
       t.string   "value",                :limit => 1024
       t.integer  "rev",                  :default => 1
@@ -103,8 +103,7 @@ class CreateSchema < ActiveRecord::Migration
     end
 
     add_index "labels", ["language"], :name => "ix_labels_on_language"
-    add_index "labels", ["origin"], :name => "ix_labels_on_origin"
-    add_index "labels", ["value"], :name => "ix_labels_on_value"
+    add_index "labels", ["origin"], :name => "ix_labels_on_origin", :length => 255
     add_index "labels", ["published_version_id"], :name => "ix_labels_published_version_id"
 
     create_table "matches", :force => true do |t|
