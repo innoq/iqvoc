@@ -96,7 +96,7 @@ GEM
       unicode-display_width (~> 0.1.1)
     htmlentities (4.3.1)
     i18n (0.6.9)
-    iq_rdf (0.1.13)
+    iq_rdf (0.1.14)
       activesupport
       builder
       bundler
@@ -132,7 +132,7 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     multipart-post (1.2.0)
     mysql2 (0.3.13)
     nokogiri (1.6.0)
