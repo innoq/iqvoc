@@ -1,3 +1,8 @@
+## [4.3.2]
+
+  * Fix non-working migrations on MySQL >= 5.6
+  * Fix RDF/XML representation for federated search results
+
 ## [4.3.1]
 
   * Fix for 4.3.0 not booting on heroku
