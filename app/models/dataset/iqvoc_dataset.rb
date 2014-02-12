@@ -5,7 +5,7 @@ class Dataset::IqvocDataset
 
   def initialize(url)
     @url = URI.parse(url)
-    @repository = RDF::Repository.load(URI.join(url, 'dataset.rdf')) rescue nil
+    @repository = RDF::Repository.load(URI.join(url, 'dataset.rdf').to_s) rescue nil
     @name = fetch_name
   end
 
