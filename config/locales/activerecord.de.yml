@@ -139,6 +139,7 @@ de:
         active: "aktiviert"
         role: "Rolle"
         telephone_number: "Telefonnummer"
+        active: "Aktiv"
       import:
         user: "Benutzer"
         created_at: "erstellt"

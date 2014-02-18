@@ -1,7 +1,7 @@
 <%= form_tag alphabetical_concepts_path(:prefix => nil), :method => :get,
         :class => "onebox" do %>
   <%= search_field_tag "prefix", nil, :id => nil,
-          :class => "onebox-input",
+          :class => "form-control onebox-input",
           :autofocus => true,
           :placeholder => t("txt.views.frontpage.type_to_browse") %>
 <% end %>

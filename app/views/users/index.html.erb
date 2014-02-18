@@ -1,29 +1,32 @@
 <%= page_header :title => t('txt.views.users.index.header') %>
-<table class="table">
-  <thead>
-    <tr>
-      <th><%= t('txt.views.users.name') %></th>
-      <th><%= t('txt.views.users.email') %></th>
-      <th><%= t('txt.views.users.telephone_number') %></th>
-      <th><%= t('txt.views.users.role') %></th>
-      <th><%= t('txt.views.users.active') %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= user.name %></td>
-        <td><%= user.email %></td>
-        <td><%= user.telephone_number %></td>
-        <td><%= user.role.humanize %></td>
-        <td><%= user.active? ? glyph(:yes) : glyph(:no) %></td>
-        <td>
-          <%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => "btn" %>
-          <%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
-        </td>
+        <th><%= t('txt.views.users.name') %></th>
+        <th><%= t('txt.views.users.email') %></th>
+        <th><%= t('txt.views.users.telephone_number') %></th>
+        <th><%= t('txt.views.users.role') %></th>
+        <th><%= t('txt.views.users.active') %></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.telephone_number %></td>
+          <td><%= user.role.humanize %></td>
+          <td><%= icon(:check) if user.active? %></td>
+          <td>
+            <%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => 'btn btn-default' %>
+            <%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <%= render 'sidebar' %>

@@ -1,12 +1,14 @@
-<%= simple_form_for user, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :forename %>
-  <%= f.input :surname %>
-  <%= f.input :email %>
-  <%= f.input :telephone_number %>
-  <%= f.input :password %>
-  <%= f.input :password_confirmation %>
-  <%= f.input :role, :collection => User::ROLES.map { |r| [r.humanize, r] } %>
-  <%= f.input :active %>
+<%= bootstrap_form_for user, :style => :horizontal, :left => 'col-sm-3', :right => 'col-sm-9' do |f| %>
+  <%= f.text_field :forename %>
+  <%= f.text_field :surname %>
+  <%= f.email_field :email %>
+  <%= f.text_field :telephone_number %>
+  <%= f.password_field :password %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.select :role, User::ROLES.map { |r| [r.humanize, r] } %>
+  <%= f.form_group do %>
+    <%= f.check_box :active, :label => User.human_attribute_name(:active) %>
+  <% end %>
 
   <div class="form-actions">
     <%= submit_tag t('txt.common.save'), :class => 'btn btn-primary' %>

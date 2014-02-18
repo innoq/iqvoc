@@ -34,7 +34,7 @@ var EntitySelector = function(node) {
 
   // jQuery UI does not add a type attribute
   // Bootstrap expects it to be there
-  this.input.attr('type', 'text');
+  this.input.attr('type', 'text').addClass('form-control');
 
   this.container.append(this.input).append(this.indicator).append(selection).
     insertAfter(node).prepend(node);
@@ -77,7 +77,7 @@ $.extend(EntitySelector.prototype, {
       data = self.processResponse(data);
       self.input.autocomplete("option", "autoFocus", data.length === 1);
       callback(data);
-      self.indicator.addClass("hidden");
+      //self.indicator.addClass("hidden");
     };
 
     var sourceSelector = this.el.data("source-selector") || "default";

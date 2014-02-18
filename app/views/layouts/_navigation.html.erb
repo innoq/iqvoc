@@ -1,32 +1,21 @@
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">+</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </a>
-      <%= link_to Iqvoc.config["title"], root_path, :class => "brand" %>
+      </button>
+      <%= link_to Iqvoc.config["title"], root_path, :class => "navbar-brand" %>
+    </div>
 
-      <div class="nav-collapse">
-        <ul class="nav">
-          <%= nav_items Iqvoc.navigation_items %>
-        </ul>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <%= nav_items Iqvoc.navigation_items %>
+      </ul>
 
-        <%= render "layouts/controls" %>
-
-        <% unless @suppress_quicksearch %>
-<!--         <%= form_tag alphabetical_concepts_path(:prefix => nil), :method => :get,
-                :class => "navbar-search pull-right" do %>
-          <%= search_field_tag "prefix", nil, :id => nil,
-                  :class => "quicksearch search-query span2",
-                  :autofocus => (autofocus rescue nil),
-                  :placeholder => t("txt.views.navigation.quick_search") %>
-          <% end %> -->
-        <% end %>
-      </div>
-
+      <%= render "layouts/controls" %>
     </div>
   </div>
 </div>

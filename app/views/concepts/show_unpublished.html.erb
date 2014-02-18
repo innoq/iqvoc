@@ -11,30 +11,30 @@
 <div class="editing_versioning_toolbar well">
   <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.views.versioning.publishing"),
-      concept_versions_merge_path(:origin => @concept.origin), :class => "btn btn-primary" %>
+      concept_versions_merge_path(:origin => @concept.origin), :class => 'btn btn-primary' %>
   <% end %>
   <%= button_to t("txt.views.versioning.consistency_check"),
-    concept_versions_consistency_check_path(:origin => @concept.origin), :class => :btn, :method => :get %>
+    concept_versions_consistency_check_path(:origin => @concept.origin), :class => 'btn btn-default', :method => :get %>
 
   <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.common.to_review"),
-      concept_versions_to_review_path(:origin => @concept.origin), :class => :btn %>
+      concept_versions_to_review_path(:origin => @concept.origin), :class => 'btn btn-default' %>
   <% end %>
 
   <% unless @concept.locked? %>
     <%= button_to t("txt.views.versioning.to_edit_mode"),
-      concept_versions_lock_path(:origin => @concept.origin), :class => :btn %>
+      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' %>
     <%= button_to t("txt.views.versioning.delete"),
       concept_path(:published => 0, :id => @concept.origin),
       :method => :delete,
-      :class => :btn,
+      :class => 'btn btn-danger',
       :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @concept) %>
   <% else %>
     <%= button_to t("txt.views.versioning.unlock"),
       concept_versions_unlock_path(:origin => @concept.origin), :class => :btn if can?(:unlock, @concept) %>
     <%= link_to t("txt.views.versioning.edit_mode"),
       edit_concept_path(:published => 0, :id => @concept.origin),
-      :class => :btn if can?(:update, @concept) %>
+      :class => 'btn btn-default' if can?(:update, @concept) %>
   <% end %>
 </div>
 
