@@ -7,12 +7,10 @@
         <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
           <%# if note == change_notes.last %>
             <%- css = note == change_notes.last ? '' : 'uneditable-input' -%>
-            <%= note_form.form_group :value do %>
-              <% if note == change_notes.last %>
-                <%= note_form.text_area :value, :rows => 4 %>
-              <% else %>
-                <p><%= note.value %></p>
-              <% end %>
+            <% if note == change_notes.last %>
+              <%= note_form.text_area :value, :rows => 4 %>
+            <% else %>
+              <p><%= note.value %></p>
             <% end %>
             <%= note_form.select :language,
               Iqvoc.note_languages.map { |l| [l, l]},
