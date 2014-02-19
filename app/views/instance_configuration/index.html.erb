@@ -5,18 +5,22 @@
     <fieldset>
       <legend><%= t("txt.views.instance_configuration.groups.#{namespace}").titleize %></legend>
       <% settings.each do |key, value| %>
-        <div class="control-group">
-          <label class="control-label">
-            <%= t("txt.views.instance_configuration.settings.#{key.gsub(".", "_")}") %>
-          </label>
-          <div class="controls">
-            <%= text_field_tag "config[#{key}]", value %>
-          </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">
+              <%= t("txt.views.instance_configuration.settings.#{key.gsub(".", "_")}") %>
+            </label>
+            <div class="col-sm-8">
+              <%= text_field_tag "config[#{key}]", value, :class => 'form-control' %>
+            </div>
         </div>
       <% end %>
     </fieldset>
   <% end %>
-  <div class="form-actions">
-    <%= submit_tag t("txt.common.save"), :class => "btn btn-primary" %>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <div class="well">
+        <%= submit_tag t("txt.common.save"), :class => "btn btn-primary" %>
+      </div>
+    </div>
   </div>
 <% end %>
