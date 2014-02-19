@@ -186,6 +186,11 @@ tr.highlightable {
 .concept-mapper {
   margin-bottom: 25px;
   > * { margin-right: 10px; }
+
+  .form-control {
+    width: auto;
+    display: inline-block;
+  }
 }
 
 .concept-mapper-indicator {
