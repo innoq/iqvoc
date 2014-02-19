@@ -31,9 +31,10 @@ function FederatedConceptMapper(selector) {
   this.input.autocomplete({ // TODO: extract autocomplete extension into subclass
     source: $.proxy(this, "onChange"),
     search: function(ev, ui) {
-      self.indicator.removeClass("hidden");
       if(self.source.val() === "_custom") {
         return false;
+      } else {
+        self.indicator.removeClass("hidden");
       }
     },
     response: function(ev, ui) {
