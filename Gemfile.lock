@@ -107,10 +107,12 @@ GEM
       json (>= 1.7.5)
       rdf (>= 1.0.8)
     json_pure (1.8.1)
-    kaminari (0.13.0)
+    kaminari (0.15.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
     launchy (2.3.0)
       addressable (~> 2.3)
     linkeddata (1.0.9)
@@ -278,7 +280,8 @@ DEPENDENCIES
   iq_triplestorage
   jruby-openssl
   json
-  kaminari (= 0.13.0)
+  kaminari
+  kaminari-bootstrap (~> 3.0.1)
   linkeddata
   maruku
   mysql2 (= 0.3.13)
