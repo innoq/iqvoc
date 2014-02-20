@@ -36,11 +36,7 @@ module ConceptsHelper
     end
   end
 
-  def letter_selector(&block)
-    letters = ('A'..'Z').to_a +
-      (0..9).to_a +
-      ['[']
-
+  def letter_selector(letters = ('A'..'Z').to_a, &block)
     content_tag :ul, :class => 'letter-selector list-unstyled' do
       letters.map do |letter|
         content_tag :li, link_to(letter, yield(letter)),
