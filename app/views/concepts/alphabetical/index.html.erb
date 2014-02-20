@@ -8,7 +8,7 @@
       <% alphabetical_concepts_path(:prefix => letter.to_s.downcase) %>
     <% end %>
   </div>
-  <ol class="concept-items unstyled">
+  <ol class="concept-items list-unstyled">
     <% @search_results.each do |result| %>
       <%= render :partial => result.partial_name, :locals => { :result => result } %>
     <% end %>

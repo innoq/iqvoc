@@ -10,7 +10,7 @@ function OneBox(form) {
   this.input = $(".onebox-input", this.form); // TODO: document
   this.container = this.form.removeClass("onebox").
       wrap('<div class="onebox" />').parent(); // TODO: document
-  this.results = $('<ol class="results concept-items unstyled" />');
+  this.results = $('<ol class="results concept-items list-unstyled" />');
   this.spinner = $('<i class="fa fa-refresh fa-spin fa-3x" />').
       appendTo(this.container).hide();
 
