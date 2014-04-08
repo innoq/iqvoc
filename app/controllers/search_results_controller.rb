@@ -133,9 +133,8 @@ class SearchResultsController < ApplicationController
         @results = @results.per(params[:limit].to_i)
       end
 
-      @results = SearchResultCollection.new(@results)
-
       if params[:datasets] && datasets = @datasets.select {|a| params[:datasets].include?(a.name) }
+        @results = SearchResultCollection.new(@results)  
         datasets.each do |dataset|
           results = dataset.search(params)
           if results
@@ -145,9 +144,9 @@ class SearchResultsController < ApplicationController
             flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => dataset)
           end
         end
+        @results = @results.sort {|x, y| x.to_s <=> y.to_s }  
       end
 
-      @results = @results.sort {|x, y| x.to_s <=> y.to_s }
       @results = Kaminari.paginate_array(@results)
       @results = @results.page(params[:page])
 
