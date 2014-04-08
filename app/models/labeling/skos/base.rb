@@ -82,7 +82,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     scope = scope.merge(Concept::Base.published)
-    yield(scope) if block_given?
+    scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end
 
