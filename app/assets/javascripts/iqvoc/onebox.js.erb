@@ -11,14 +11,14 @@ function OneBox(form) {
   this.container = this.form.removeClass("onebox").
       wrap('<div class="onebox" />').parent(); // TODO: document
   this.results = $('<ol class="results concept-items list-unstyled" />');
-  this.spinner = $('<i class="fa fa-refresh fa-spin fa-3x" />').
+  this.indicator = $('<i class="fa fa-refresh fa-spin fa-3x onebox-indicator" />').
       appendTo(this.container).hide();
 
   this.form.on("submit", $.proxy(this, "onSubmit"));
   this.input.on("keyup", debounce($.proxy(this, "onInput"), 300));
 }
 OneBox.prototype.reset = function() {
-  this.container.children().not(this.form).not(this.spinner).remove();
+  this.container.children().not(this.form).not(this.indicator).remove();
 };
 OneBox.prototype.renderResults = function(html) {
   var doc = $("<div />").append(html);
@@ -40,7 +40,7 @@ OneBox.prototype.onInput = function(ev) {
   }
 };
 OneBox.prototype.getConcepts = function() {
-  this.spinner.show();
+  this.indicator.show();
   $.ajax({
     type: this.form.attr("method"),
     url: this.form.attr("action"),
@@ -54,7 +54,7 @@ OneBox.prototype.onResults = function(html, status, xhr) {
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
   html = html.replace(rscript, "");
 
-  this.spinner.hide();
+  this.indicator.hide();
   this.renderResults(html);
 };
 
