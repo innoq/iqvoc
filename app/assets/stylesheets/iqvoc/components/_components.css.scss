@@ -19,6 +19,11 @@
     // width: 80%;
   }
 
+  .onebox-indicator {
+    margin-top: 1em;
+    color: lighten($muted-color, 20%);
+  }
+
   ol {
     margin-left: 0;
     list-style: none;
