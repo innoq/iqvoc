@@ -7,7 +7,7 @@
 <div class="panel">
   <%= results_header @results %>
 
-  <ul class="search-results unstyled">
+  <ul class="search-results list-unstyled">
     <% @results.each do |result| %>
       <% if @klass %>
         <%= render @klass.search_result_partial_name, :result => result %>

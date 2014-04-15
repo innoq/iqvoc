@@ -46,8 +46,8 @@ module NavigationHelper
 
   def sidebar(&block)
     content_for :sidebar do
-      content_tag :div, :class => 'well sidebar' do
-        content_tag :ul, :class => 'nav nav-list' do
+      content_tag :div, :class => 'sidebar' do
+        content_tag :div, :class => 'list-group' do
           capture(&block)
         end
       end
@@ -55,7 +55,7 @@ module NavigationHelper
   end
 
   def sidebar_header(text)
-    content_tag :li, text, :class => 'nav-header'
+    content_tag :h4, text, :class => 'sidebar-header'
   end
 
   def sidebar_item(opts = {}, &block)
@@ -63,8 +63,9 @@ module NavigationHelper
       return nil if cannot?(*perms)
     end
 
-    css_class = ''
-    css_class << 'active' if opts.delete(:active)
+    opts[:class] = '' if opts[:class].blank?
+    opts[:class] += ' list-group-item'
+    opts[:class] += ' active' if opts.delete(:active)
 
     content = if block_given?
       capture(&block)
@@ -77,7 +78,7 @@ module NavigationHelper
       link_to(desc.html_safe, opts.delete(:path), opts)
     end
 
-    content_tag :li, content, :class => css_class
+    content
   end
 
   private

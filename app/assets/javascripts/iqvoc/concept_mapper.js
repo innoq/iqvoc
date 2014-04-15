@@ -22,10 +22,12 @@ function ConceptMapper(selector) {
 
   this.container = $("<div />").addClass("concept-mapper control-group");
 
-  this.input = $("<input />").attr("type", "text").prependTo(this.container);
-  $("<button />").addClass("btn fa fa-plus").insertAfter(this.input).
-      click($.proxy(this, "onConfirm"));
-  this.matchType = $("<select />").append(matchOptions).insertAfter(this.input);
+  this.input = $("<input />").attr("type", "text").addClass("form-control").
+      prependTo(this.container);
+  $("<button />").addClass("btn btn-default fa fa-plus").
+      insertAfter(this.input).click($.proxy(this, "onConfirm"));
+  this.matchType = $("<select />").addClass("form-control").
+      append(matchOptions).insertAfter(this.input);
 
   this.container.prependTo(this.root);
 }

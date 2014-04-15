@@ -1,15 +1,18 @@
-<%= input_block :label => t('txt.views.search_results.search_languages') do %>
-  <% @available_languages.sort.each do |lang_tag, label| %>
-    <label for="languages_<%= lang_tag %>" class="checkbox inline">
-      <%= check_box_tag "l[]", lang_tag, search_language_selected?(lang_tag) %><%= lang_tag %>
-    </label>
-  <% end %>
-  <div class="btn-group">
-    <button type="button" class="btn btn-mini checkbox-select-all">
-      <%= t('txt.views.search_results.all') %>
-    </button>
-    <button type="button" class="btn btn-mini checkbox-select-none">
-      <%= t('txt.views.search_results.none') %>
-    </button>
+<div class="form-group">
+  <%= label_tag 'ds', t('txt.views.search_results.language'), :class => 'col-sm-2 control-label' %>
+  <div class="col-sm-4">
+    <% @available_languages.sort.each do |lang_tag, label| %>
+      <label for="languages_<%= lang_tag %>" class="checkbox-inline">
+        <%= check_box_tag "l[]", lang_tag, search_language_selected?(lang_tag) %><%= lang_tag %>
+      </label>
+    <% end %>
+    <div class="btn-group btn-group-xs">
+      <button type="button" class="btn btn-default checkbox-select-all">
+        <%= t('txt.views.search_results.all') %>
+      </button>
+      <button type="button" class="btn btn-default checkbox-select-none">
+        <%= t('txt.views.search_results.none') %>
+      </button>
+    </div>
   </div>
-<% end %>
+</div>
