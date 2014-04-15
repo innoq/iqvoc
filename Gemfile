@@ -36,7 +36,7 @@ gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '~> 3.1.1.0'
-gem 'bootstrap_form'
+gem 'bootstrap_form', '~> 2.1.0'
 gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', :require => false
