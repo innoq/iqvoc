@@ -39,8 +39,9 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (2.3.1.3)
+    bootstrap-sass (3.1.1.0)
       sass (~> 3.2)
+    bootstrap_form (2.1.0)
     builder (3.1.4)
     byebug (1.8.2)
       columnize (~> 0.3.6)
@@ -105,10 +106,12 @@ GEM
       json (>= 1.7.5)
       rdf (>= 1.0.8)
     json_pure (1.8.1)
-    kaminari (0.13.0)
+    kaminari (0.15.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
     launchy (2.3.0)
       addressable (~> 2.3)
     linkeddata (1.0.9)
@@ -206,14 +209,11 @@ GEM
       nokogiri (>= 1.5.0)
       rdf (>= 0.3.4)
     safe_yaml (0.9.7)
-    sass (3.2.12)
+    sass (3.2.14)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
-    simple_form (3.0.0)
-      actionpack (>= 4.0.0, < 4.1)
-      activemodel (>= 4.0.0, < 4.1)
     slop (3.4.7)
     sprockets (2.10.1)
       hike (~> 1.2)
@@ -261,7 +261,8 @@ DEPENDENCIES
   awesome_print
   better_errors
   binding_of_caller
-  bootstrap-sass (= 2.3.1.3)
+  bootstrap-sass (~> 3.1.1.0)
+  bootstrap_form (~> 2.1.0)
   cancan
   cane
   capybara
@@ -277,7 +278,8 @@ DEPENDENCIES
   iq_triplestorage
   jruby-openssl
   json
-  kaminari (= 0.13.0)
+  kaminari
+  kaminari-bootstrap (~> 3.0.1)
   linkeddata
   maruku
   mysql2 (= 0.3.13)
@@ -290,7 +292,6 @@ DEPENDENCIES
   rails (= 4.0.2)
   rails_autolink
   sass-rails (~> 4.0.0)
-  simple_form
   sqlite3
   turn
   uglifier

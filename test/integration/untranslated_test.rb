@@ -56,7 +56,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
     visit untranslated_concepts_path(:lang => :en, :prefix => "x", :format => :html)
 
     assert_equal :en, I18n.locale
-    assert_equal 1, page.all("#content .alert-error").length
+    assert_equal 1, page.all(".alert-danger").length
   end
 
 end

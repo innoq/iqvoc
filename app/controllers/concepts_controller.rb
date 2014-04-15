@@ -135,6 +135,8 @@ class ConceptsController < ApplicationController
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
 
+    @concept.notations.build if @concept.notations.none?
+
     @datasets = datasets_as_json
   end
 

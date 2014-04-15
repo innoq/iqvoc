@@ -14,8 +14,14 @@
     margin: 2em 0 1em 0;
   }
 
-  input {
+  .onebox-input {
     min-width: 60%;
+    // width: 80%;
+  }
+
+  .onebox-indicator {
+    margin-top: 1em;
+    color: lighten($muted-color, 20%);
   }
 
   ol {
@@ -49,11 +55,6 @@ tr.highlightable {
     margin-right: 2px;
     color: inherit;
   }
-}
-
-.spinner {
-  position: absolute;
-  margin: 8px 0 0 -20px;
 }
 
 .arrow_down {
@@ -185,6 +186,11 @@ tr.highlightable {
 .concept-mapper {
   margin-bottom: 25px;
   > * { margin-right: 10px; }
+
+  .form-control {
+    width: auto;
+    display: inline-block;
+  }
 }
 
 .concept-mapper-indicator {
