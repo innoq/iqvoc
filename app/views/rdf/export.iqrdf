@@ -16,8 +16,7 @@ while true
     render_collection(document, collection)
   end
 
-  offset+= collections.size # Size is important!
-
+  offset += collections.size # Size is important!
 end
 
 offset = 0
@@ -38,6 +37,5 @@ while true
     render_concept(document, concept, true)
   end
 
-  offset+= concepts.size # Size is important!
-
+  offset += concepts.size # Size is important!
 end
