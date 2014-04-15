@@ -45,7 +45,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
   end
 
   test "modify and persist configuration" do
-    assert page.find("a.brand").has_content? "iQvoc"
+    assert page.find(".navbar-brand").has_content? "iQvoc"
 
     login "administrator"
     visit "/en/config"
@@ -53,12 +53,12 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     fill_in "config_title", :with => "lorem ipsum"
     click_button "Save"
 
-    assert page.find("a.brand").has_content? "lorem ipsum"
+    assert page.find(".navbar-brand").has_content? "lorem ipsum"
 
     # ensure that settings persist across sessions -- XXX: ineffective!?
     check_page = lambda { |uri|
       visit uri
-      assert page.find("a.brand").has_content? "lorem ipsum"
+      assert page.find(".navbar-brand").has_content? "lorem ipsum"
     }
     ["reader", "editor", "publisher", "administrator"].each do |role|
       login role
