@@ -1,7 +1,7 @@
 <%= page_header :title => @scheme.class.model_name.human %>
 <%= error_messages_for @scheme %>
 
-<%= bootstrap_form_for @scheme, :as => :concept, :url => scheme_path, :style => :horizontal do |f| %>
+<%= bootstrap_form_for @scheme, :as => :concept, :url => scheme_path, :layout => :horizontal do |f| %>
   <fieldset>
     <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
     <% unless Iqvoc.const_defined?(:SKOSXL) %>

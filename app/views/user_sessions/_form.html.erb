@@ -1,4 +1,4 @@
-<%= bootstrap_form_for user_session, :url => user_session_path, :style => :horizontal, :left => 'col-sm-2', :right => 'col-sm-6' do |f| %>
+<%= bootstrap_form_for user_session, :url => user_session_path, :layout => :horizontal, :label_col => 'col-sm-2', :control_col => 'col-sm-6' do |f| %>
   <%= hidden_field_tag :back_to, params[:back_to].presence || @return_url %>
   <%= f.email_field :email %>
   <%= f.password_field :password %>

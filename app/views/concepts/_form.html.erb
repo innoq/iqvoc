@@ -1,7 +1,7 @@
 <%= bootstrap_form_for concept,
     :as => :concept,
     :url => concept.new_record? ? concepts_path : concept_path(:published => 0, :id => concept),
-    :style => :horizontal do |f| %>
+    :layout => :horizontal do |f| %>
 
   <!-- Base data -->
   <fieldset>

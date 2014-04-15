@@ -1,4 +1,4 @@
-<%= bootstrap_form_for user, :style => :horizontal, :left => 'col-sm-3', :right => 'col-sm-9' do |f| %>
+<%= bootstrap_form_for user, :layout => :horizontal, :label_col => 'col-sm-3', :control_col => 'col-sm-9' do |f| %>
   <%= f.text_field :forename %>
   <%= f.text_field :surname %>
   <%= f.email_field :email %>
