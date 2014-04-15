@@ -67,4 +67,33 @@ module RdfHelper
     end
   end
 
+  def render_collection(document, collection)
+    # You can not eager load polymorphic associations. That's why we're loading
+    # the collections _one_ time and remember them for further _render_concept_
+    # calls in the future.
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").load.each_with_object({}) do |c, hash|
+      hash[c.id] = c.origin
+    end
+
+    document << collection.build_rdf_subject do |c|
+
+      collection.labelings.each do |labeling|
+        labeling.build_rdf(document, c)
+      end
+
+      collection.note_skos_definitions.each do |note|
+        note.build_rdf(document, c)
+      end
+
+      collection.concepts.each do |concept|
+        c.Skos::member(IqRdf.build_uri(concept.origin))
+      end
+
+      collection.subcollections.each do |subcollection|
+        c.Skos::member(IqRdf::Coll.build_uri(subcollection.origin))
+      end
+
+    end
+  end
+
 end

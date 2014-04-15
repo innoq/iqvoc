@@ -2,12 +2,26 @@ Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
   document.namespaces(self.send(meth))
 end
 
+# The following code doesn't have much to do with MVC programming. Due to the
+# fact you can't render a view from a controller multiple times we had to
+# move the logic to the view.
+
 offset = 0
 while true
-  # The following code doesn't have much to do with MVC programming. Due to the
-  # fact you can't render a view from a controller multiple times we had to
-  # move the logic to the view.
+  collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset).all
+  break if collections.size == 0
 
+  # Todo: Preloading???
+  collections.each do |collection|
+    render_collection(document, collection)
+  end
+
+  offset+= collections.size # Size is important!
+
+end
+
+offset = 0
+while true
   concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset).all
   break if concepts.size == 0
 
@@ -17,7 +31,8 @@ while true
     Iqvoc::Concept.base_class.default_includes + [
       :matches,
       :collection_members,
-      {:relations => :target, :labelings => :target, :notes => :annotations}]).run
+      {:relations => :target, :labelings => :target, :notes => :annotations}
+    ]).run
 
   concepts.each do |concept|
     render_concept(document, concept, true)
