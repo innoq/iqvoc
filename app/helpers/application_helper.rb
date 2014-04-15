@@ -92,6 +92,8 @@ module ApplicationHelper
     html << content_tag(:strong, header) if header
     html << capture(&block)
 
+    type = :danger if type == :error
+
     content_tag(:div, :class => "alert alert-#{type}") do
       html
     end

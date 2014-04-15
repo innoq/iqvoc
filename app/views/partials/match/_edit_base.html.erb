@@ -1,5 +1,10 @@
 <%- fieldname = "concept[inline_#{assoc_klass.name.to_relation_name}]" -%>
 
-<%= f.input fieldname, :label => assoc_klass.model_name.human(:count => 2), :label_html => { :for => fieldname } do %>
-  <%= text_area_tag fieldname, owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"), :class => "span4", :rows => 4 %>
-<% end %>
+<div class="form-group">
+  <label class="col-sm-2 control-label" for="<%= fieldname %>"><%= assoc_klass.model_name.human(:count => 2) %></label>
+  <div class="col-sm-10">
+  <%= text_area_tag fieldname, owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"),
+        :class => "form-control",
+        :rows => 4 %>
+  </div>
+</div>

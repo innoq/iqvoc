@@ -17,7 +17,6 @@
 module FormHelper
 
   ## Generates verbose bootstrap wrapper HTML for generic forms
-  ## Use simple_form_for and it's helpers for forms focused on records
   #
   ## Accepts a hash of arguments with the following keys:
   ## id: id attribute of the input element (necessary for accessible labels)

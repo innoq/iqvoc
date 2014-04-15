@@ -1,5 +1,5 @@
 <%- fieldname = "concept[concept_relations_by_id][#{klass.name.to_relation_name}]" -%>
-<%= f.input fieldname, :label => klass.model_name.human(:count => klass.singular? ? 1 : 2) do %>
+<%= f.form_group nil, :label => { :text => klass.model_name.human(:count => klass.singular? ? 1 : 2) } do %>
   <%= text_field_tag fieldname, widget_values(concept, klass),
     :id => klass.name.to_relation_name,
     :class => "entity_select",

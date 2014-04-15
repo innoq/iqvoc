@@ -20,7 +20,8 @@ function FederatedConceptMapper(selector) {
   sources = $.map(sources, function(name, url) {
     return $("<option />").val(url).text(name)[0];
   });
-  this.source = $("<select />").append(sources).insertBefore(this.input);
+  this.source = $("<select />").addClass("form-control").append(sources).
+      insertBefore(this.input);
 
   this.indicator = $("<i />").
       addClass("concept-mapper-indicator hidden fa fa-refresh fa-spin").

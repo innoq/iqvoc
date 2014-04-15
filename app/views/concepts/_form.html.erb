@@ -1,12 +1,13 @@
-<%= simple_form_for concept, :as => :concept,
+<%= bootstrap_form_for concept,
+    :as => :concept,
     :url => concept.new_record? ? concepts_path : concept_path(:published => 0, :id => concept),
-    :html => { :class => 'form-horizontal' } do |f| %>
+    :layout => :horizontal do |f| %>
 
   <!-- Base data -->
   <fieldset>
     <legend><%= t('txt.common.attributes') %></legend>
-    <%= f.input :follow_up, :as => :string, :input_html => { :class => 'datepicker' } %>
-    <%= f.input :expired_at, :as => :string, :input_html => { :class => 'datepicker' } %>
+    <%= f.text_field :follow_up, :class => 'datepicker' %>
+    <%= f.text_field :expired_at, :class => 'datepicker' %>
 
     <%- Iqvoc::Concept.additional_association_classes.keys.each do |assoc_class| -%>
       <%= render assoc_class.edit_partial_name(concept),
@@ -18,7 +19,7 @@
   <!-- Labelings -->
   <fieldset>
     <legend><%= Labeling::Base.model_name.human(:count => 2) %></legend>
-    <% if not Iqvoc.const_defined?(:SKOSXL) %>
+    <% unless Iqvoc.const_defined?(:SKOSXL) %>
       <p><%= t 'txt.common.hint_csv_input' %></p>
     <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
@@ -44,8 +45,10 @@
         :concept => concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class, :f => f %>
     <%- end -%>
 
-    <%= f.input :top_term, :as => :boolean, :input_html =>
-      { :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) } %>
+    <%= f.form_group :top_term do %>
+      <%= f.check_box :top_term,
+        :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) %>
+    <% end %>
 
     <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(concept),
       :concept => concept, :klass => Iqvoc::Concept.broader_relation_class, :f => f %>
@@ -72,7 +75,9 @@
   <% end %>
   <!-- / Notations -->
 
-  <div class="form-actions">
+  <hr />
+
+  <div class="well">
     <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
   </div>
 
