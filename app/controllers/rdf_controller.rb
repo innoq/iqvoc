@@ -53,4 +53,10 @@ class RdfController < ApplicationController
     end
   end
 
+  def export
+    respond_to do |format|
+      # RDF full export
+      format.any(:rdf, :ttl, :nt) { authorize! :full_export, Concept::Base }
+    end
+  end
 end

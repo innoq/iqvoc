@@ -19,8 +19,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 class RdfRenderingTest < ActionController::TestCase
 
   setup do
-    @controller = ConceptsController.new
-
     # create a concept hierarchy
     concepts = YAML.load <<-EOS
 root:
@@ -33,6 +31,8 @@ root:
   end
 
   test "individual concept representations" do
+    @controller = ConceptsController.new
+
     params = { :lang => "en", :format => "ttl" }
 
     get :show, params.merge(:id => "root")
@@ -53,9 +53,11 @@ root:
   end
 
   test "full export" do
-    params = { :lang => "en", :format => "ttl" }
+    @controller = RdfController.new
 
-    get :index, params
+    params = {:format => "ttl", :lang => nil}
+
+    get :export, params
     assert_response 401
 
     # XXX: disabled because authentication fails
