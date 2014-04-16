@@ -30,16 +30,16 @@ class Concepts::HierarchicalController < ConceptsController
     if root_id && root_id =~ /\d+/
       # NB: order matters; see the following `where`
       if params[:broader]
-        scope = scope.includes(:narrower_relations, :broader_relations)
+        scope = scope.includes(:narrower_relations, :broader_relations).references(:relations)
       else
-        scope = scope.includes(:broader_relations, :narrower_relations)
+        scope = scope.includes(:broader_relations, :narrower_relations).references(:relations)
       end
       @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
     else
       if params[:broader]
-        @concepts = scope.broader_tops.includes(:broader_relations)
+        @concepts = scope.broader_tops.includes(:broader_relations).references(:concepts)
       else
-        @concepts = scope.tops.includes(:narrower_relations)
+        @concepts = scope.tops.includes(:narrower_relations).references(:concepts)
       end
     end
 
