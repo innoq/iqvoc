@@ -46,9 +46,9 @@ class Concepts::AlphabeticalController < ConceptsController
       if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
         includes << Note::SKOS::Definition.name.to_relation_name
       end
-      ActiveRecord::Associations::Preloader.new(@search_results, :owner => includes).run
+      ActiveRecord::Associations::Preloader.new.preload(@search_results, :owner => includes)
 
-      @search_results.map! { |pl| AlphabeticalSearchResult.new(pl) }
+      @search_results.to_a.map! { |pl| AlphabeticalSearchResult.new(pl) }
     end
 
     respond_to do |format|

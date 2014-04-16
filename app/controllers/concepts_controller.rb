@@ -57,10 +57,10 @@ class ConceptsController < ApplicationController
       format.html do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept,
+        ActiveRecord::Associations::Preloader.new.preload(@concept,
           Iqvoc::Concept.base_class.default_includes + [:collection_members => {:collection => :labels},
           :broader_relations => {:target => [:pref_labels, :broader_relations]},
-          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}]).run
+          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
 
         published ? render('show_published') : render('show_unpublished')
       end

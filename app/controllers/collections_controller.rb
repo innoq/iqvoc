@@ -28,9 +28,9 @@ class CollectionsController < ApplicationController
           @top_collections.tops
         end
 
-        @top_collections.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
+        @top_collections.to_a.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
-        ActiveRecord::Associations::Preloader.new(@top_collections, {:members => :target}).run
+        ActiveRecord::Associations::Preloader.new.preload(@top_collections, {:members => :target})
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
@@ -60,9 +60,9 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new(@collection,
+    ActiveRecord::Associations::Preloader.new.preload(@collection,
       [:pref_labels,
-        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
+        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}])
   end
 
   def new
@@ -92,9 +92,9 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new(@collection, [
+    ActiveRecord::Associations::Preloader.new.preload(@collection, [
         :pref_labels,
-        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}]).run
+        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}])
 
     build_note_relations
   end
