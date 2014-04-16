@@ -28,7 +28,6 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.5)
-    ansi (1.4.3)
     apipie-rails (0.0.24)
       rails (>= 3.0.10)
     arel (5.0.1.20140414130214)
@@ -240,8 +239,6 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.9.6)
-      ansi
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
     uglifier (2.3.1)
@@ -301,7 +298,6 @@ DEPENDENCIES
   rails_autolink
   sass-rails (~> 4.0.3)
   sqlite3
-  turn
   uglifier
   view_marker
   webmock

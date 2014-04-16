@@ -75,7 +75,7 @@ group :test do
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
   gem 'factory_girl_rails'
-  gem 'turn'
+  # gem 'turn'
   gem 'webmock'
 end
 
