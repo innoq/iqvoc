@@ -30,6 +30,7 @@ while true
     Iqvoc::Concept.base_class.default_includes + [
       :matches,
       :collection_members,
+      :notations,
       {:relations => :target, :labelings => :target, :notes => :annotations}
     ]).run
 
