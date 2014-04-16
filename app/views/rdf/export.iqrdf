@@ -8,7 +8,7 @@ end
 
 offset = 0
 while true
-  collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset).all
+  collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset)
   break if collections.size == 0
 
   # Todo: Preloading???
@@ -21,7 +21,7 @@ end
 
 offset = 0
 while true
-  concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset).all
+  concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset)
   break if concepts.size == 0
 
   # When in single query mode, AR handles ALL includes to be loaded by that
