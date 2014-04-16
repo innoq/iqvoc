@@ -67,8 +67,8 @@ class ConceptsController < ApplicationController
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept, [:labels,
-            { :relations => { :target => [:labelings, :relations] } }]).run
+        ActiveRecord::Associations::Preloader.new.preload(@concept, [:labels,
+            { :relations => { :target => [:labelings, :relations] } }])
 
         published_relations = lambda { |concept|
           return concept.relations.includes(:target).
