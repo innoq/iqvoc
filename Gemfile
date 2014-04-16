@@ -19,11 +19,11 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '4.0.2'
-gem 'protected_attributes', '>= 1.0.5'
+gem 'rails', '4.1.0'
+gem 'protected_attributes', '>= 1.0.7'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
-gem 'authlogic', '< 3.3.0'
+gem 'authlogic', '~> 3.4.0'
 gem 'cancan'
 gem 'iq_rdf', '>= 0.1.13'
 gem 'iq_triplestorage'
@@ -34,14 +34,14 @@ gem 'faraday'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'bootstrap_form', '~> 2.1.0'
 gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', :require => false
 gem 'database_cleaner'
-gem 'delayed_job_active_record', '~> 4.0.0'
+gem 'delayed_job_active_record', '~> 4.0.1'
 
 group :development do
   gem 'view_marker'
