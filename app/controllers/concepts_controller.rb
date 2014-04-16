@@ -72,7 +72,7 @@ class ConceptsController < ApplicationController
 
         published_relations = lambda { |concept|
           return concept.relations.includes(:target).
-              merge(Iqvoc::Concept.base_class.published)
+            merge(Iqvoc::Concept.base_class.published).references(:concepts)
         }
         concept_data = {
           :origin => @concept.origin,
