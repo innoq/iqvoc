@@ -1,6 +1,6 @@
 <div class="form-group">
   <%= label_tag 'c', Iqvoc::Collection.base_class.model_name.human, :class => 'col-sm-2 control-label' %>
   <div class="col-sm-4">
-    <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :class => 'form-control', :include_blank => true %>
+    <%= select_tag 'c', options_for_select(@collections.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }.map { |c| [c.pref_label.to_s, c.origin] }, params[:c]), :class => 'form-control', :promt => t('txt.views.search_results.all') %>
   </div>
 </div>
