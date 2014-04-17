@@ -240,6 +240,7 @@ GEM
       json (>= 1.8)
       net-http-persistent (>= 1.4)
       rdf (>= 1.1)
+    spring (1.1.2)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -270,8 +271,6 @@ GEM
       crack (>= 0.3.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
-    zeus (0.13.3)
-      method_source (>= 0.6.7)
 
 PLATFORMS
   ruby
@@ -315,8 +314,8 @@ DEPENDENCIES
   rails (= 4.1.0)
   rails_autolink
   sass-rails (~> 4.0.3)
+  spring
   sqlite3
   uglifier
   view_marker
   webmock
-  zeus

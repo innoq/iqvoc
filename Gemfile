@@ -56,7 +56,7 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2', '0.3.13'
     gem 'sqlite3'
-    gem 'zeus'
+    gem 'spring'
     gem 'pry-rails'
     gem 'hirb-unicode'
     gem 'cane'
