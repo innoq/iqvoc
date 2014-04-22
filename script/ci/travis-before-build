@@ -3,10 +3,6 @@
 set -e
 set -x
 
-# Start virtual X frame buffer
-sh /etc/init.d/xvfb start
-sleep 3
-
 # Create a database.yml for the current database env
 echo "INFO: Setting up database.yml for $DB"
 cp config/database.yml.$DB config/database.yml
