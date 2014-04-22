@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require File.expand_path('test_helper', File.dirname(__FILE__))
 require 'capybara/rails'
 require File.join(File.expand_path(File.dirname(__FILE__)), 'capybara_helper')
 require 'webmock'

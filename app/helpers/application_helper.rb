@@ -52,7 +52,7 @@ module ApplicationHelper
 
   def error_messages_for(object)
     if object.errors.any?
-      content_tag :div, :class => 'alert alert-error' do
+      content_tag :div, :class => 'alert alert-danger' do
         content_tag(:p, content_tag(:strong, t('txt.common.form_errors'))) <<
         content_tag(:ul) do
           object.errors.full_messages.each do |msg|
@@ -92,7 +92,7 @@ module ApplicationHelper
     html << content_tag(:strong, header) if header
     html << capture(&block)
 
-    type = :danger if type == :error
+    type = :danger if type == 'error'
 
     content_tag(:div, :class => "alert alert-#{type}") do
       html
