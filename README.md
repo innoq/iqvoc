@@ -32,7 +32,7 @@ In order to deploy to heroku you need to have an account and [heroku toolbelt](h
 ```
 $ bundle install
 $ heroku create
-$ bundle exec rake heroku:config
+$ bin/rake heroku:config
 $ git push heroku master
 $ heroku run rake db:migrate
 $ heroku run rake db:seed
