@@ -81,7 +81,6 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     # mark note for deletion
     checkbox_id = "concept_note_skos_definitions_attributes_1__destroy"
     section.check(checkbox_id)
-    section.find("##{checkbox_id}").trigger("change") # apparently `check` doesn't do this automatically
     assert section.has_css?("li.deleted", :count => 1)
   end
 
