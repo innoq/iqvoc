@@ -71,11 +71,9 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara'
-  gem 'capybara-screenshot'
-  gem 'capybara-webkit'
+  gem 'capybara', '~> 2.2.1'
+  gem 'poltergeist', '~> 1.5.0'
   gem 'factory_girl_rails'
-  # gem 'turn'
   gem 'webmock'
 end
 

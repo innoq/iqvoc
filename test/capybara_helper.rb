@@ -1,11 +1,12 @@
 require 'capybara/dsl'
+require 'capybara/poltergeist'
 require 'factory_girl'
 
 module ActionDispatch
   class IntegrationTest
     include Capybara::DSL
 
-    Capybara.javascript_driver = :webkit
+    Capybara.javascript_driver = :poltergeist
 
     def login(role = nil)
       logout
