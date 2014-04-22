@@ -53,7 +53,7 @@ Running the cloned source code is possible but any modifications would require a
 3. Run `bundle exec rake db:create` to create the database
 4. Create the necessary tables by running `rake db:migrate`
 5. Load some base data by running `rake db:seed`
-6. Run `bundle exec rake setup:generate_secret_token`
+6. Make sure you have got `config/secrets.yml` in place
 7. Boot up the app using `bundle exec rails s` (or `passenger start` if you use passenger)
 8. Log in with "admin@iqvoc" / "admin" or "demo@iqvoc" / "cooluri" (cf. step #5)
 9. Visit the Users section and change the default passwords
