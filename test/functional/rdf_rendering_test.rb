@@ -17,10 +17,10 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class RdfRenderingTest < ActionController::TestCase
+  require "authlogic/test_case"
 
   setup do
-    @controller = ConceptsController.new
-
+    activate_authlogic
     # create a concept hierarchy
     concepts = YAML.load <<-EOS
 root:
@@ -30,9 +30,13 @@ root:
     rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
     @concepts = create_hierarchy(concepts, rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
+
+    @admin = FactoryGirl.create(:user, :role => 'administrator')
   end
 
   test "individual concept representations" do
+    @controller = ConceptsController.new
+
     params = { :lang => "en", :format => "ttl" }
 
     get :show, params.merge(:id => "root")
@@ -52,22 +56,29 @@ root:
     assert @response.body.include? ':root skos:prefLabel "Root"@en.'
   end
 
-  test "full export" do
-    params = { :lang => "en", :format => "ttl" }
+  test 'full export without logged in user' do
+    @controller = RdfController.new
+    params = {:format => "ttl", :lang => nil}
 
-    get :index, params
+    get :export, params
     assert_response 401
+  end
 
-    # XXX: disabled because authentication fails
-    #get :index, params
-    #assert_response 200
-    #assert @response.body.include? ':foo a skos:Concept'
-    #assert @response.body.include? ':bar a skos:Concept'
-    #assert @response.body.include? 'skos:prefLabel "Foo"@en'
-    #assert @response.body.include? 'skos:prefLabel "Bar"@en'
+  test 'full export with logged in user' do
+    @controller = RdfController.new
+    UserSession.create(@admin)
+
+    params = {:format => "ttl", :lang => nil}
+
+    get :export, params
+    assert_response 200
+    assert @response.body.include? ':foo a skos:Concept'
+    assert @response.body.include? ':bar a skos:Concept'
+    assert @response.body.include? 'skos:prefLabel "Foo"@en'
+    assert @response.body.include? 'skos:prefLabel "Bar"@en'
     # don't duplicate pref. labels
-    #assert !@response.body.include?(':foo skos:prefLabel "Foo"@en.')
-    #assert !@response.body.include?(':bar skos:prefLabel "Bar"@en.')
+    assert !@response.body.include?(':foo skos:prefLabel "Foo"@en.')
+    assert !@response.body.include?(':bar skos:prefLabel "Bar"@en.')
   end
 
   def create_hierarchy(hash, rel_class, memo=nil, parent=nil)
