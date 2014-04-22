@@ -14,9 +14,13 @@
     margin: 2em 0 1em 0;
   }
 
-  .onebox-input {
-    min-width: 60%;
-    // width: 80%;
+  .onebox-form {
+    @include make-row;
+  }
+
+  .onebox-input-wrapper {
+    @include make-md-column(8);
+    @include make-md-column-offset(2);
   }
 
   .onebox-indicator {
