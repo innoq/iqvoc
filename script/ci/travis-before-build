@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 set -x
 
 # Start virtual X frame buffer
-/etc/init.d/xvfb start
+sh /etc/init.d/xvfb start
 sleep 3
 
 # Create a database.yml for the current database env
