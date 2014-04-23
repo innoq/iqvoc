@@ -144,3 +144,8 @@ en:
         created_at: "Created at"
         finished_at: "Finished at"
         success: "Success"
+      export:
+        user: "User"
+        created_at: "Created at"
+        finished_at: "Finished at"
+        success: "Success"

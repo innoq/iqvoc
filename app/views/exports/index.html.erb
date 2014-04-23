@@ -1,3 +1,31 @@
 <%= page_header :title => t('txt.views.export.title') %>
 <%= render 'dashboard/sidebar' %>
 
+<%= form_tag exports_path, :method => :post, :multipart => true, :class => "form-horizontal" do %>
+    <div class="form-actions">
+      <%= submit_tag t('txt.views.export.title'), :class => 'btn btn-primary' %>
+    </div>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th><%= Export.human_attribute_name(:user) %></th>
+      <th><%= Export.human_attribute_name(:created_at) %></th>
+      <th><%= Export.human_attribute_name(:finished_at) %></th>
+      <th><%= Export.human_attribute_name(:success) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exports.each do |export| %>
+      <tr>
+        <td><%= link_to export.id, export_path(:id => export) %></td>
+        <td><%= export.user %></td>
+        <td><%= l(export.created_at, :format => :short) %></td>
+        <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+        <td><%= icon('thumbs-o-up') if export.success? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

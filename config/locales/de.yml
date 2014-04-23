@@ -280,6 +280,7 @@ de:
        success: "Import-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
      export:
        title: "Export"
+       success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
    partials:
      note:
      collection:

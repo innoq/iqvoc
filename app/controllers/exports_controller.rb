@@ -21,22 +21,21 @@ class ExportsController < ApplicationController
   end
 
   def index
-    @imports = Export.order('id DESC')
+    @exports = Export.order('id DESC')
   end
 
   def show
-    @import = Export.find(params[:id])
+    @export = Export.find(params[:id])
   end
 
   def create
-    # content = params[:ntriples_file] && params[:ntriples_file].read
-    # import = Import.create!(:user => current_user)
+    export = Export.create!(:user => current_user)
     #
     # job = ImportJob.new(import, content, current_user, params[:default_namespace], params[:publish])
     # Delayed::Job.enqueue(job)
     #
-    # flash[:success] = t('txt.views.import.success')
-    # redirect_to imports_path
+    flash[:success] = t('txt.views.export.success')
+    redirect_to exports_path
   end
 
 end
