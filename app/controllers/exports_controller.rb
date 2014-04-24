@@ -21,6 +21,7 @@ class ExportsController < ApplicationController
   end
 
   def index
+    @export = Export.new
     @exports = Export.order('id DESC')
   end
 
@@ -31,7 +32,7 @@ class ExportsController < ApplicationController
   def create
     export = Export.create!(
         :user => current_user,
-        :file_type => params[:file_type],
+        :file_type => params[:export][:file_type],
         :token => srand
     )
 

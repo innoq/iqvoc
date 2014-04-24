@@ -150,3 +150,4 @@ de:
         created_at: "erstellt"
         finished_at: "beendet"
         success: "erfolgreich"
+        file_type: "Typ"

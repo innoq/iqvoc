@@ -76,6 +76,10 @@ de:
      form_errors: "Fehler"
      representations: "Repräsentationen"
      other: "Sonstige"
+     rdf_serialization:
+       ttl: "RDF/Turtle"
+       nt: "RDF/N-Triples"
+       xml: "RDF/XML"
 
    views:
      layouts:
@@ -280,6 +284,7 @@ de:
        success: "Import-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
      export:
        title: "Export"
+       request_export: "Export anfordern"
        success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
    partials:
      note:
