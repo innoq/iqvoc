@@ -67,8 +67,7 @@ module Iqvoc
 
     def save_file(file_path, type, content)
       begin
-        create_directory(file_path)
-        file = File.open(file_path, "w")
+        file = File.open(Rails.root.join(file_path).to_s, "w")
         content = serialize_rdf(content, type)
         file.write(content)
       rescue IOError => e
@@ -77,14 +76,6 @@ module Iqvoc
       ensure
         file.close unless file == nil
       end
-    end
-
-    def create_directory(file_path)
-      dirname = File.dirname(file_path)
-      unless File.directory?(dirname)
-        FileUtils.mkdir_p(dirname)
-      end
-
     end
 
     def serialize_rdf(document, type=:nt)
