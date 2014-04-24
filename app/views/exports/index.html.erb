@@ -2,6 +2,8 @@
 <%= render 'dashboard/sidebar' %>
 
 <%= form_tag exports_path, :method => :post, :multipart => true, :class => "form-horizontal" do %>
+    <%= select_tag :file_type, options_for_select({ "RDF/Turtle" => :ttl, "RDF/N-Triples" => :nt, "RDF/XML" => :xml }), class: 'form-control' %>
+
     <div class="form-actions">
       <%= submit_tag t('txt.views.export.title'), :class => 'btn btn-primary' %>
     </div>
@@ -24,7 +26,7 @@
         <td><%= export.user %></td>
         <td><%= l(export.created_at, :format => :short) %></td>
         <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
-        <td><%= icon('thumbs-o-up') if export.success? %></td>
+        <td><%= link_to('Download', export_download_url(export), :class => 'btn btn-primary btn-xs') if export.success? %></td>
       </tr>
     <% end %>
   </tbody>

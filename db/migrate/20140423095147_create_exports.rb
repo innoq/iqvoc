@@ -4,7 +4,8 @@ class CreateExports < ActiveRecord::Migration
       t.references :user
       t.text :output
       t.boolean :success, :default => false
-      t.string :file
+      t.integer :file_type
+      t.string :token
       t.timestamps
       t.timestamp :finished_at
     end

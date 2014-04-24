@@ -28,7 +28,9 @@ Rails.application.routes.draw do
     resources :concepts
     resources :collections
     resources :imports, :only => [:index, :show, :create]
-    resources :exports, :only => [:index, :show, :create]
+    resources :exports, :only => [:index, :show, :create] do
+      get 'download'
+    end
 
     get 'scheme' => 'concepts/scheme#show', :as => 'scheme'
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'

@@ -29,13 +29,25 @@ class ExportsController < ApplicationController
   end
 
   def create
-    export = Export.create!(:user => current_user)
-    #
-    # job = ImportJob.new(import, content, current_user, params[:default_namespace], params[:publish])
-    # Delayed::Job.enqueue(job)
-    #
+    export = Export.create!(
+        :user => current_user,
+        :file_type => params[:file_type],
+        :token => srand
+    )
+
+    filename = export.build_filename
+    job = ExportJob.new(export, filename, export.file_type)
+    Delayed::Job.enqueue(job)
+
     flash[:success] = t('txt.views.export.success')
     redirect_to exports_path
+  end
+
+  def download
+    export = Export.find(params[:export_id])
+    time = export.finished_at.strftime("%Y-%m-%d_%H-%M")
+    send_file export.build_filename,
+              filename: "export-#{time}.#{export.file_type}"
   end
 
 end
