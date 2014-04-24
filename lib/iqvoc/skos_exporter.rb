@@ -5,12 +5,12 @@ require 'pry'
 module Iqvoc
   class SkosExporter
     include RdfHelper
-    # include ApplicationHelper
-    #
-    # include Rails.application.routes.url_helpers
-    # default_url_options[:host] = 'example.com'
+    include ApplicationHelper # necessary to use render_concept helper
+    include Rails.application.routes.url_helpers
 
-    def initialize(file_path, type, logger = Rails.logger)
+    def initialize(file_path, type, base_uri, logger = Rails.logger)
+      default_url_options[:host] = base_uri
+
       @file_path = file_path
       @type = type
 
@@ -30,24 +30,11 @@ module Iqvoc
     def export
       ActiveSupport.run_load_hooks(:skos_exporter_before_export, self)
 
-      document = IqRdf::Document.new('http://0.0.0.0:3000/')
-
-      # Todo: register namespaces dynamically
-      # Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-      #   document.namespaces(send(meth))
-      # end
-
-
-      document.namespaces :skos => 'http://www.w3.org/2008/05/skos#',
-        :dct => 'http://purl.org/dc/terms/',
-        :foaf => 'http://xmlns.com/foaf/spec/',
-        :iqvoc => 'http://try.iqvoc.net/schema#',
-        :owl => 'http://www.w3.org/2002/07/owl#',
-        :rdf => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        :rdfs => 'http://www.w3.org/2000/01/rdf-schema#',
-        :schema => 'http://0.0.0.0:3000/schema#',
-        :void => 'http://rdfs.org/ns/void#',
-        :coll => 'http://0.0.0.0:3000/collections/'
+      # namespaces
+      document = IqRdf::Document.new
+      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+        document.namespaces(send(meth))
+      end
 
       # load colections
       collections = Iqvoc::Collection.base_class.order("id")

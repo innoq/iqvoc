@@ -37,7 +37,7 @@ class ExportsController < ApplicationController
     )
 
     filename = export.build_filename
-    job = ExportJob.new(export, filename, export.file_type)
+    job = ExportJob.new(export, filename,export.file_type, request.host_with_port)
     Delayed::Job.enqueue(job)
 
     flash[:success] = t('txt.views.export.success')
