@@ -1,12 +1,14 @@
 require 'iq_rdf'
 require 'fileutils'
+require 'pry'
 
 module Iqvoc
   class SkosExporter
     include RdfHelper
-    include ApplicationHelper
-    include Rails.application.routes.url_helpers
-    default_url_options[:host] = ::Rails.application.routes.default_url_options[:host]
+    # include ApplicationHelper
+    #
+    # include Rails.application.routes.url_helpers
+    # default_url_options[:host] = 'example.com'
 
     def initialize(file_path, type, logger = Rails.logger)
       @file_path = file_path
@@ -28,12 +30,14 @@ module Iqvoc
     def export
       ActiveSupport.run_load_hooks(:skos_exporter_before_export, self)
 
+      document = IqRdf::Document.new('http://0.0.0.0:3000/')
+
       # Todo: register namespaces dynamically
       # Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
       #   document.namespaces(send(meth))
       # end
 
-      document = IqRdf::Document.new('http://0.0.0.0:3000/')
+
       document.namespaces :skos => 'http://www.w3.org/2008/05/skos#',
         :dct => 'http://purl.org/dc/terms/',
         :foaf => 'http://xmlns.com/foaf/spec/',
@@ -78,10 +82,10 @@ module Iqvoc
       end
     end
 
-    def serialize_rdf(document, type=:nt)
-      if type.to_sym == :xml
+    def serialize_rdf(document, type)
+      if type == 'xml'
         document.to_xml
-      elsif type == :ttl
+      elsif type == 'ttl'
         document.to_turtle
       else
         document.to_ntriples

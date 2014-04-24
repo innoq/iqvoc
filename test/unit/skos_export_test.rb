@@ -64,7 +64,7 @@ class SkosExportTest < ActiveSupport::TestCase
   test "basic_exporter_functionality" do
     testfile = Rails.root.join('public/export/skos_export_test.ttl').to_s
 
-    Iqvoc::SkosExporter.new(testfile, 'ttl').run
+    Iqvoc::SkosExporter.new(testfile, 'nt').run
 
     generated_export = File.read(testfile)
 
