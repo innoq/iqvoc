@@ -31,8 +31,8 @@ class ExportsController < ApplicationController
 
   def create
     export = Export.create! do |e|
-      e.user = current_user,
-      e.file_type = params[:export][:file_type],
+      e.user = current_user
+      e.file_type = params[:export][:file_type]
       e.token = srand
     end
 
