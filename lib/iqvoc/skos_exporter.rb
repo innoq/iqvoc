@@ -41,7 +41,6 @@ module Iqvoc
       load_and_export_concepts(document)
 
       # saving export to disk
-      @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
       save_file(@file_path, @type, document)
 
       done = Time.now
@@ -63,9 +62,17 @@ module Iqvoc
     def load_and_export_collections(document)
       @logger.info 'Exporting collections...'
 
-      collections = Iqvoc::Collection.base_class.order("id")
-      collections.each do |collection|
-        render_collection(document, collection)
+      offset = 0
+      while true
+        collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset)
+        break if collections.size == 0
+
+        # Todo: Preloading???
+        collections.each do |collection|
+          render_collection(document, collection)
+        end
+
+        offset += collections.size # Size is important!
       end
 
       @logger.info "Finished exporting collections (#{collections.size} collections exported)."
@@ -74,9 +81,25 @@ module Iqvoc
     def load_and_export_concepts(document)
       @logger.info "Exporting concepts..."
 
-      concepts = Iqvoc::Concept.base_class.published.order("id")
-      concepts.each do |concept|
-        render_concept(document, concept, true)
+      offset = 0
+      while true
+        concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset)
+        break if concepts.size == 0
+
+        # When in single query mode, AR handles ALL includes to be loaded by that
+        # one query. We don't want that! So let's do it manually :-)
+        ActiveRecord::Associations::Preloader.new.preload(concepts,
+          Iqvoc::Concept.base_class.default_includes + [
+              :matches,
+              :collection_members,
+              :notations,
+              {:relations => :target, :labelings => :target, :notes => :annotations}])
+
+        concepts.each do |concept|
+          render_concept(document, concept, true)
+        end
+
+        offset += concepts.size # Size is important!
       end
 
       @logger.info "Finished exporting concepts (#{concepts.size} concepts exported)."
@@ -84,6 +107,7 @@ module Iqvoc
 
     def save_file(file_path, type, content)
       begin
+        @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
         file = File.open(Rails.root.join(file_path).to_s, "w")
         content = serialize_rdf(content, type)
         file.write(content)
