@@ -15,9 +15,14 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
+require 'iqvoc/skos_importer'
 
 class ExportTest < ActionDispatch::IntegrationTest
 
+  setup do
+    @testdata = File.read(Rails.root.join('test','unit', 'testdata.nt')).split("\n")
+    Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
+  end
 
   test 'export privileges' do
     # guest
@@ -45,6 +50,13 @@ class ExportTest < ActionDispatch::IntegrationTest
     select('RDF/N-Triples', :from => 'Type')
     click_link_or_button 'Request Export'
     assert page.has_content? 'Export job was created. Reload page to see current processing status.'
+
+    Delayed::Worker.new.work_off
+
+    visit exports_path(:lang => 'en')
+    click_link_or_button 'Download'
+
+    assert_equal 'application/n-triples', page.response_headers['Content-Type']
   end
 
 end
