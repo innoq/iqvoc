@@ -6,7 +6,7 @@ namespace :heroku do
       HEROKU=true
       RACK_ENV=heroku
       RAILS_ENV=heroku
-      SECRET_TOKEN=#{SecureRandom.hex(64)}
+      SECRET_KEY_BASE=#{SecureRandom.hex(64)}
     )
 
     system "heroku config:add #{HEROKU_CONFIG.join(' ')}"
