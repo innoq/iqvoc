@@ -1,6 +1,4 @@
 require 'iq_rdf'
-require 'fileutils'
-require 'pry'
 
 module Iqvoc
   class SkosExporter
@@ -8,8 +6,8 @@ module Iqvoc
     include ApplicationHelper # necessary to use render_concept helper
     include Rails.application.routes.url_helpers
 
-    def initialize(file_path, type, base_uri, logger = Rails.logger)
-      default_url_options[:host] = base_uri
+    def initialize(file_path, type, default_namespace_url, logger = Rails.logger)
+      default_url_options[:host] = default_namespace_url
 
       @file_path = file_path
       @type = type
@@ -30,27 +28,42 @@ module Iqvoc
     def export
       ActiveSupport.run_load_hooks(:skos_exporter_before_export, self)
 
+      start = Time.now
+      @logger.info 'Starting export...'
+      @logger.info "file_path = #{@file_path}"
+      @logger.info "type = #{@type}"
+
       # namespaces
+      @logger.info 'Exporting namespaces...'
       document = IqRdf::Document.new
       Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
         document.namespaces(send(meth))
       end
+      @logger.info 'Finished exporting namespaces.'
 
-      # load colections
+
+      # colections
+      @logger.info 'Exporting collections...'
       collections = Iqvoc::Collection.base_class.order("id")
       collections.each do |collection|
         render_collection(document, collection)
       end
-      @logger.debug "Added collections (#{collections.size})"
+      @logger.info "Finished exporting collections (#{collections.size} collections exported)."
 
-      # load concepts
+      # concepts
+      @logger.info "Exporting concepts..."
       concepts = Iqvoc::Concept.base_class.published.order("id")
       concepts.each do |concept|
         render_concept(document, concept, true)
       end
-      @logger.debug "Added concepts (#{concepts.size})"
+      @logger.info "Finished exporting concepts (#{concepts.size} concepts exported)."
 
+      # saving export to disk
+      @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
       save_file(@file_path, @type, document)
+
+      done = Time.now
+      @logger.info "Export Job finished in #{(done - start).to_i} seconds."
 
       ActiveSupport.run_load_hooks(:skos_exporter_after_export, self)
     end
