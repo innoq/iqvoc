@@ -10,8 +10,7 @@ rvm:
 env:
   - DB=sqlite
   - DB=mysql
-before_install:cp config/database.yml.$DB config/database.yml
-# script: "./script/ci/travis-build"
+before_install: cp config/database.yml.$DB config/database.yml
 before_script:
   - bundle exec rake db:drop RAILS_ENV=test
   - bundle exec rake db:create RAILS_ENV=test
