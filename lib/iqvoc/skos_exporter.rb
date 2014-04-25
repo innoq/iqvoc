@@ -33,30 +33,12 @@ module Iqvoc
       @logger.info "file_path = #{@file_path}"
       @logger.info "type = #{@type}"
 
-      # namespaces
-      @logger.info 'Exporting namespaces...'
       document = IqRdf::Document.new
-      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-        document.namespaces(send(meth))
-      end
-      @logger.info 'Finished exporting namespaces.'
 
-
-      # colections
-      @logger.info 'Exporting collections...'
-      collections = Iqvoc::Collection.base_class.order("id")
-      collections.each do |collection|
-        render_collection(document, collection)
-      end
-      @logger.info "Finished exporting collections (#{collections.size} collections exported)."
-
-      # concepts
-      @logger.info "Exporting concepts..."
-      concepts = Iqvoc::Concept.base_class.published.order("id")
-      concepts.each do |concept|
-        render_concept(document, concept, true)
-      end
-      @logger.info "Finished exporting concepts (#{concepts.size} concepts exported)."
+      # add eport data
+      load_and_export_namespaces(document)
+      load_and_export_collections(document)
+      load_and_export_concepts(document)
 
       # saving export to disk
       @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
@@ -68,6 +50,37 @@ module Iqvoc
       ActiveSupport.run_load_hooks(:skos_exporter_after_export, self)
     end
 
+    def load_and_export_namespaces(document)
+      @logger.info 'Exporting namespaces...'
+
+      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
+        document.namespaces(send(meth))
+      end
+
+      @logger.info 'Finished exporting namespaces.'
+    end
+
+    def load_and_export_collections(document)
+      @logger.info 'Exporting collections...'
+
+      collections = Iqvoc::Collection.base_class.order("id")
+      collections.each do |collection|
+        render_collection(document, collection)
+      end
+
+      @logger.info "Finished exporting collections (#{collections.size} collections exported)."
+    end
+
+    def load_and_export_concepts(document)
+      @logger.info "Exporting concepts..."
+
+      concepts = Iqvoc::Concept.base_class.published.order("id")
+      concepts.each do |concept|
+        render_concept(document, concept, true)
+      end
+
+      @logger.info "Finished exporting concepts (#{concepts.size} concepts exported)."
+    end
 
     def save_file(file_path, type, content)
       begin
