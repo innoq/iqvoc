@@ -16,7 +16,7 @@
 
 class ExportsController < ApplicationController
 
-  before_filter do
+  before_action do
     authorize! :export, Concept::Base
   end
 

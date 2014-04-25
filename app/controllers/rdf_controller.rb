@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class RdfController < ApplicationController
-  skip_before_filter :set_locale
+  skip_before_action :set_locale
 
   def show
     scope = if params[:published] == "0"

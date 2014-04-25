@@ -16,7 +16,7 @@
 
 class ImportsController < ApplicationController
 
-  before_filter do
+  before_action do
     authorize! :import, Concept::Base
   end
 
