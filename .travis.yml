@@ -1,19 +1,23 @@
+language: ruby
+cache: bundler
+bundler_args: --without production heroku
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
-
+  - 2.1.1
+  - jruby-19mode
 env:
   - DB=sqlite
   - DB=mysql
-
-script: "./script/ci/travis-build"
-before_script: "./script/ci/travis-before-build"
-
+before_install: cp config/database.yml.$DB config/database.yml
+before_script:
+  - bundle exec rake db:drop RAILS_ENV=test
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test
 branches:
   only:
     - master
-
 notifications:
   recipients:
     - iqvoc@innoq.com

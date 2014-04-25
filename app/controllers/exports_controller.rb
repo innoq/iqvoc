@@ -16,7 +16,7 @@
 
 class ExportsController < ApplicationController
 
-  before_filter do
+  before_action do
     authorize! :export, Concept::Base
   end
 
@@ -30,11 +30,11 @@ class ExportsController < ApplicationController
   end
 
   def create
-    export = Export.create!(
-        :user => current_user,
-        :file_type => params[:export][:file_type],
-        :token => srand
-    )
+    export = Export.create! do |e|
+      e.user = current_user
+      e.file_type = params[:export][:file_type]
+      e.token = srand
+    end
 
     filename = export.build_filename
     job = ExportJob.new(export, filename,export.file_type, request.host_with_port)
