@@ -3,8 +3,8 @@ require 'fileutils'
 
 module Iqvoc
   class SkosExporter
-    include RdfHelper
-    include ApplicationHelper # necessary to use render_concept helper
+    include RdfHelper # necessary to use render_concept helper
+    include RdfNamespacesHelper
     include Rails.application.routes.url_helpers
 
     def initialize(file_path, type, default_namespace_url, logger = Rails.logger)
@@ -53,8 +53,9 @@ module Iqvoc
     def load_and_export_namespaces(document)
       @logger.info 'Exporting namespaces...'
 
-      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-        document.namespaces(send(meth))
+      RdfNamespacesHelper.instance_methods.each do |meth|
+        namespaces = send(meth)
+        document.namespaces(namespaces) if namespaces.is_a?(Hash)
       end
 
       @logger.info 'Finished exporting namespaces.'

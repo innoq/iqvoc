@@ -17,8 +17,9 @@ hierarchy2rdf = lambda do |hash|
   end
 end
 
-Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-  document.namespaces(self.send(meth))
+RdfNamespacesHelper.instance_methods.each do |meth|
+  namespaces = send(meth)
+  document.namespaces(namespaces) if namespaces.is_a?(Hash)
 end
 
 hierarchy2rdf.call(@concepts) if @concepts
