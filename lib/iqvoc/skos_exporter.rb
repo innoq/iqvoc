@@ -36,7 +36,7 @@ module Iqvoc
 
       document = IqRdf::Document.new
 
-      # add eport data
+      # add export data
       load_and_export_namespaces(document)
       load_and_export_collections(document)
       load_and_export_concepts(document)
