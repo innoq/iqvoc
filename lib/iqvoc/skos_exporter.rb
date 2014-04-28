@@ -1,4 +1,5 @@
 require 'iq_rdf'
+require 'fileutils'
 
 module Iqvoc
   class SkosExporter
@@ -89,11 +90,11 @@ module Iqvoc
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(concepts,
-          Iqvoc::Concept.base_class.default_includes + [
-              :matches,
-              :collection_members,
-              :notations,
-              {:relations => :target, :labelings => :target, :notes => :annotations}])
+                                                          Iqvoc::Concept.base_class.default_includes + [
+                                                              :matches,
+                                                              :collection_members,
+                                                              :notations,
+                                                              {:relations => :target, :labelings => :target, :notes => :annotations}])
 
         concepts.each do |concept|
           render_concept(document, concept, true)
@@ -107,8 +108,11 @@ module Iqvoc
 
     def save_file(file_path, type, content)
       begin
+        full_path = Rails.root.join(file_path).to_s
+
         @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
-        file = File.open(Rails.root.join(file_path).to_s, "w")
+        create_directory(full_path)
+        file = File.open(full_path, "w")
         content = serialize_rdf(content, type)
         file.write(content)
       rescue IOError => e
@@ -117,6 +121,15 @@ module Iqvoc
       ensure
         file.close unless file == nil
       end
+    end
+
+
+    def create_directory(file_path)
+      dirname = File.dirname(file_path)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+
     end
 
     def serialize_rdf(document, type)
