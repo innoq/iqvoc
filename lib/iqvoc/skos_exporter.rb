@@ -27,7 +27,7 @@ module Iqvoc
     private
 
     def export
-      ActiveSupport.run_load_hooks(:skos_exporter_before_export, self)
+      ActiveSupport.run_load_hooks(:rdf_export_before, self)
 
       start = Time.now
       @logger.info 'Starting export...'
@@ -41,13 +41,15 @@ module Iqvoc
       load_and_export_collections(document)
       load_and_export_concepts(document)
 
+      ActiveSupport.run_load_hooks(:rdf_export, self)
+
       # saving export to disk
       save_file(@file_path, @type, document)
 
       done = Time.now
       @logger.info "Export Job finished in #{(done - start).to_i} seconds."
 
-      ActiveSupport.run_load_hooks(:skos_exporter_after_export, self)
+      ActiveSupport.run_load_hooks(:rdf_export_after, self)
     end
 
     def load_and_export_namespaces(document)
