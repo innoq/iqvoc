@@ -12,8 +12,9 @@
     <% records.each do |record| %>
     <% # XXX: does not belong here -- also heavily over-engineered
       doc = IqRdf::Document.new(root_url(:lang => nil))
-      Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-        doc.namespaces(self.send(meth))
+      RdfNamespacesHelper.instance_methods.each do |meth|
+        namespaces = send(meth)
+        doc.namespaces(namespaces) if namespaces.is_a?(Hash)
       end
       uri = record.build_rdf_subject.full_uri # XXX: we actually just want path, plus HTML format
     %>

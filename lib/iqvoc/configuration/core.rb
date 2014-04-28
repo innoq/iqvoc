@@ -8,6 +8,7 @@ module Iqvoc
       included do
         mattr_accessor :searchable_class_names,
           :unlimited_search_results,
+          :default_rdf_namespace_helper_modules,
           :default_rdf_namespace_helper_methods,
           :rdf_namespaces,
           :change_note_class_name,
@@ -100,6 +101,7 @@ module Iqvoc
 
         self.unlimited_search_results = false
 
+        self.default_rdf_namespace_helper_modules = []
         self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
         self.rdf_namespaces = {
