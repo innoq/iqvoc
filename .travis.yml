@@ -19,5 +19,5 @@ branches:
   only:
     - master
 notifications:
-  recipients:
+  email:
     - iqvoc@innoq.com
