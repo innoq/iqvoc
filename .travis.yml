@@ -21,3 +21,11 @@ branches:
 notifications:
   email:
   - iqvoc@innoq.com
+deploy:
+  provider: rubygems
+  api_key:
+    secure: oT43pqyfKRtGEXDNj+yypRtUyzf88LA2JPR+fGwZEUfi/CNRWraAhK4BHfs0XaZlMLQlsLSf6iBGX5W49dZSrPzS4C7fFCjZX8/3KYXe7CEquaN6zkV+ll/L7ekuzXPuewFRHJmobbTGMhHQWQJMnqzjJLGaUfG43YpRt0PC6Ag=
+  gem: iqvoc
+  on:
+    tags: true
+    repo: innoq/iqvoc
