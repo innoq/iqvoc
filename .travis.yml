@@ -1,23 +1,23 @@
 language: ruby
 cache: bundler
-bundler_args: --without production heroku
+bundler_args: "--without production heroku"
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - 2.1.1
-  - jruby-19mode
+- 1.9.3
+- 2.0.0
+- 2.1.0
+- 2.1.1
+- jruby-19mode
 env:
-  - DB=sqlite
-  - DB=mysql
+- DB=sqlite
+- DB=mysql
 before_install: cp config/database.yml.$DB config/database.yml
 before_script:
-  - bundle exec rake db:drop RAILS_ENV=test
-  - bundle exec rake db:create RAILS_ENV=test
-  - bundle exec rake db:migrate RAILS_ENV=test
+- bundle exec rake db:drop RAILS_ENV=test
+- bundle exec rake db:create RAILS_ENV=test
+- bundle exec rake db:migrate RAILS_ENV=test
 branches:
   only:
-    - master
+  - master
 notifications:
   email:
-    - iqvoc@innoq.com
+  - iqvoc@innoq.com
