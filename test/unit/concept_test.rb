@@ -48,13 +48,19 @@ class ConceptTest < ActiveSupport::TestCase
     assert !concept.valid_with_full_validation?
   end
 
-  test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
+  test "published concept must have a pref_label of at least one of the pref_label languages configured" do
     concept = FactoryGirl.create(:concept)
     assert_equal 1, concept.pref_labels.count
     assert concept.valid_with_full_validation?
 
+    # Should validate if the only prefLabel language is in a non-primary pref_label language
     concept.pref_labels.first.language = Iqvoc::Concept.pref_labeling_languages.second
-    assert !concept.valid_with_full_validation?
+    assert concept.valid_with_full_validation?
+
+    # Should not validate if the only prefLabel language isn't any of the pref_label languages
+    refute Iqvoc::Concept.pref_labeling_languages.include? 'foo'
+    concept.pref_labels.first.language = 'foo'
+    refute concept.valid_with_full_validation?
   end
 
   test "concept shouldn't have more then one pref label of the same language" do

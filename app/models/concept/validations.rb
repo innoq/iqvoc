@@ -6,7 +6,7 @@ module Concept
       validates :origin, :presence => true, :on => :update
 
       validate :distinct_versions, :on => :create
-      validate :pref_label_in_primary_thesaurus_language, :on => :update
+      validate :pref_label_in_any_thesaurus_language, :on => :update
       validate :unique_pref_label_language
       validate :exclusive_top_term
       validate :rooted_top_terms
@@ -47,12 +47,13 @@ module Concept
       end
     end
 
-    def pref_label_in_primary_thesaurus_language
+    def pref_label_in_any_thesaurus_language
       if @full_validation
         labels = pref_labels.select{|l| l.published?}
+        label_languages = labels.map(&:language).map(&:to_s)
         if labels.count == 0
           errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
-        elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
+        elsif not Iqvoc::Concept.pref_labeling_languages.any?{|l| label_languages.include?(l)}
           errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
         end
       end
