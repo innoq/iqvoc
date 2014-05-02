@@ -3,9 +3,8 @@ cache: bundler
 bundler_args: "--without production heroku"
 rvm:
 - 1.9.3
-- 2.0.0
-- 2.1.0
-- 2.1.1
+- 2.0
+- 2.1
 - jruby-19mode
 env:
 - DB=sqlite
