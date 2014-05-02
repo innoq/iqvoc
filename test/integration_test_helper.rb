@@ -14,13 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require 'capybara/rails'
+require 'capybara/dsl'
+require 'capybara/poltergeist'
 require 'webmock'
-require File.expand_path('test_helper', File.dirname(__FILE__))
-require File.expand_path('capybara_helper', File.dirname(__FILE__))
-require File.expand_path('authentication', File.dirname(__FILE__))
+require 'test_helper'
+require 'authentication'
+
+Capybara.javascript_driver = :poltergeist
 
 WebMock.allow_net_connect! # required for integration tests
 
 class ActionDispatch::IntegrationTest
+  include Capybara::DSL
   include Authentication
 end
