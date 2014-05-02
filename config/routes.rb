@@ -16,12 +16,15 @@
 
 Rails.application.routes.draw do
   apipie
-  scope ':lang', :constraints => lambda { |params, req|
-    langs = Iqvoc::Concept.pref_labeling_languages.join('|').presence || 'en'
-    return params[:lang].to_s =~ /^#{langs}$/
-  } do
 
-    Iqvoc.localized_routes.each { |hook| hook.call(self) }
+  scope ':lang', :constraints => Iqvoc.routing_constraint do
+    Iqvoc.localized_routes.each do |hook|
+      hook.call(self)
+      ActiveSupport::Deprecation.warn <<-EOF
+        Adding routes via `Iqvoc.localized_routes` is deprecated and will
+        be removed in iQvoc 4.5.
+      EOF
+    end
 
     resource  :user_session, :only => [:new, :create, :destroy]
     resources :users, :except => [:show]
