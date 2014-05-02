@@ -15,6 +15,9 @@ module Iqvoc
 
       @logger = logger
 
+      @document = IqRdf::Document.new
+      load_and_export_namespaces(@document)
+
       unless @file_path.is_a?(String)
         raise "Iqvoc::SkosExporter#export: Parameter 'file' should be a String."
       end
@@ -34,17 +37,14 @@ module Iqvoc
       @logger.info "file_path = #{@file_path}"
       @logger.info "type = #{@type}"
 
-      document = IqRdf::Document.new
-
       # add export data
-      load_and_export_namespaces(document)
-      load_and_export_collections(document)
-      load_and_export_concepts(document)
+      load_and_export_collections(@document)
+      load_and_export_concepts(@document)
 
       ActiveSupport.run_load_hooks(:rdf_export, self)
 
       # saving export to disk
-      save_file(@file_path, @type, document)
+      save_file(@file_path, @type, @document)
 
       done = Time.now
       @logger.info "Export Job finished in #{(done - start).to_i} seconds."
@@ -55,7 +55,7 @@ module Iqvoc
     def load_and_export_namespaces(document)
       @logger.info 'Exporting namespaces...'
 
-      RdfNamespacesHelper.instance_methods.each do |meth|
+      RdfNamespacesHelper.instance_methods.each do |meth| 
         namespaces = send(meth)
         document.namespaces(namespaces) if namespaces.is_a?(Hash)
       end
@@ -146,6 +146,5 @@ module Iqvoc
       end
     end
 
-    ActiveSupport.run_load_hooks(:skos_exporter, self)
   end
 end
