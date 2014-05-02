@@ -72,6 +72,7 @@ module Iqvoc
       offset = 0
       while true
         collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset)
+        limit = collections.size < 100 ? collections.size : 100
         break if collections.size == 0
 
         # Todo: Preloading???
@@ -79,10 +80,11 @@ module Iqvoc
           render_collection(document, collection)
         end
 
+        @logger.info "Collections #{offset+1}-#{offset+limit} exported."
         offset += collections.size # Size is important!
       end
 
-      @logger.info "Finished exporting collections (#{collections.size} collections exported)."
+      @logger.info "Finished exporting collections (#{offset} collections exported)."
     end
 
     def load_and_export_concepts(document)
@@ -91,6 +93,7 @@ module Iqvoc
       offset = 0
       while true
         concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset)
+        limit = concepts.size < 100 ? concepts.size : 100
         break if concepts.size == 0
 
         # When in single query mode, AR handles ALL includes to be loaded by that
@@ -107,10 +110,11 @@ module Iqvoc
           render_concept(document, concept, true)
         end
 
+        @logger.info "Concepts #{offset+1}-#{limit} exported."
         offset += concepts.size # Size is important!
       end
 
-      @logger.info "Finished exporting concepts (#{concepts.size} concepts exported)."
+      @logger.info "Finished exporting concepts (#{offset} concepts exported)."
     end
 
     def save_file(file_path, type, content)
