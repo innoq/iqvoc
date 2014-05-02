@@ -23,7 +23,6 @@ module Iqvoc
         raise "Iqvoc::SkosExporter#export: Parameter 'file' should be a String."
       end
 
-      load_and_export_namespaces(@document)
     end
 
     def run
@@ -41,13 +40,14 @@ module Iqvoc
       @logger.info "type = #{@type}"
 
       # add export data
-      load_and_export_collections(@document)
-      load_and_export_concepts(@document)
+      add_namespaces(@document)
+      add_collections(@document)
+      add_concepts(@document)
 
-      ActiveSupport.run_load_hooks(:rdf_export, self)
+      ActiveSupport.run_load_hooks(:rdf_export_before_save, self)
 
       # saving export to disk
-      save_file(@file_path, @type, @document)
+      save_file(@file_path, @type, document)
 
       done = Time.now
       @logger.info "Export Job finished in #{(done - start).to_i} seconds."
@@ -55,7 +55,7 @@ module Iqvoc
       ActiveSupport.run_load_hooks(:rdf_export_after, self)
     end
 
-    def load_and_export_namespaces(document)
+    def add_namespaces(document)
       @logger.info 'Exporting namespaces...'
 
       RdfNamespacesHelper.instance_methods.each do |meth|
@@ -66,7 +66,7 @@ module Iqvoc
       @logger.info 'Finished exporting namespaces.'
     end
 
-    def load_and_export_collections(document)
+    def add_collections(document)
       @logger.info 'Exporting collections...'
 
       offset = 0
@@ -87,7 +87,7 @@ module Iqvoc
       @logger.info "Finished exporting collections (#{offset} collections exported)."
     end
 
-    def load_and_export_concepts(document)
+    def add_concepts(document)
       @logger.info "Exporting concepts..."
 
       offset = 0
@@ -110,7 +110,7 @@ module Iqvoc
           render_concept(document, concept, true)
         end
 
-        @logger.info "Concepts #{offset+1}-#{limit} exported."
+        @logger.info "Concepts #{offset+1}-#{offset+limit} exported."
         offset += concepts.size # Size is important!
       end
 
