@@ -37,7 +37,7 @@ class SkosExportTest < ActiveSupport::TestCase
   end
 
   test "basic_exporter_functionality" do
-    testfile = Rails.root.join('public/export/skos_export_test.ttl').to_s
+    testfile = Rails.root.join('public/export/skos_export_test.nt').to_s
 
     Iqvoc::SkosExporter.new(testfile, 'nt', 'http://www.example.com/').run
 
@@ -49,6 +49,15 @@ class SkosExportTest < ActiveSupport::TestCase
 
     # delete export
     File.delete(testfile)
+  end
+
+  test 'skos exporter with an unknown export type' do
+    testfile = Rails.root.join('public/export/skos_export_test.nt').to_s
+
+    assert_raise RuntimeError do
+      exporter = Iqvoc::SkosExporter.new(testfile, 'txt', 'http://www.example.com/')
+    end
+
   end
 
 end

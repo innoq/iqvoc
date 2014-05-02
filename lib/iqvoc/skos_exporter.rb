@@ -12,15 +12,18 @@ module Iqvoc
 
       @file_path = file_path
       @type = type
-
       @logger = logger
-
       @document = IqRdf::Document.new
-      load_and_export_namespaces(@document)
+
+      unless ['ttl', 'nt', 'xml'].include? @type
+        raise "Iqvoc::SkosExporter: Unknown rdf serialization. Parameter 'type' should be 'ttl' (Turtle), 'nt' (N-Triples) or 'xml' (RDF-XML)."
+      end
 
       unless @file_path.is_a?(String)
         raise "Iqvoc::SkosExporter#export: Parameter 'file' should be a String."
       end
+
+      load_and_export_namespaces(@document)
     end
 
     def run
@@ -55,7 +58,7 @@ module Iqvoc
     def load_and_export_namespaces(document)
       @logger.info 'Exporting namespaces...'
 
-      RdfNamespacesHelper.instance_methods.each do |meth| 
+      RdfNamespacesHelper.instance_methods.each do |meth|
         namespaces = send(meth)
         document.namespaces(namespaces) if namespaces.is_a?(Hash)
       end
