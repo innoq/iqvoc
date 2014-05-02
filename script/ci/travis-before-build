@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-set -x
-
-# Create a database.yml for the current database env
-echo "INFO: Setting up database.yml for $DB"
-cp config/database.yml.$DB config/database.yml
