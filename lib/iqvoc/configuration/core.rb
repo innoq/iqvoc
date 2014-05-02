@@ -199,6 +199,13 @@ module Iqvoc
             Rails.root
           end
         end
+
+        def routing_constraint
+          lambda do |params, req|
+            langs = Iqvoc::Concept.pref_labeling_languages.join('|').presence || 'en'
+            return params[:lang].to_s =~ /^#{langs}$/
+          end
+        end
       end
 
     end
