@@ -1,23 +1,30 @@
 language: ruby
 cache: bundler
-bundler_args: --without production heroku
+bundler_args: "--without production heroku"
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - 2.1.1
-  - jruby-19mode
+- 1.9.3
+- 2.0
+- 2.1
+- jruby-19mode
 env:
-  - DB=sqlite
-  - DB=mysql
+- DB=sqlite
+- DB=mysql
 before_install: cp config/database.yml.$DB config/database.yml
 before_script:
-  - bundle exec rake db:drop RAILS_ENV=test
-  - bundle exec rake db:create RAILS_ENV=test
-  - bundle exec rake db:migrate RAILS_ENV=test
+- bundle exec rake db:drop RAILS_ENV=test
+- bundle exec rake db:create RAILS_ENV=test
+- bundle exec rake db:migrate RAILS_ENV=test
 branches:
   only:
-    - master
+  - master
 notifications:
-  recipients:
-    - iqvoc@innoq.com
+  email:
+  - iqvoc@innoq.com
+deploy:
+  provider: rubygems
+  api_key:
+    secure: oT43pqyfKRtGEXDNj+yypRtUyzf88LA2JPR+fGwZEUfi/CNRWraAhK4BHfs0XaZlMLQlsLSf6iBGX5W49dZSrPzS4C7fFCjZX8/3KYXe7CEquaN6zkV+ll/L7ekuzXPuewFRHJmobbTGMhHQWQJMnqzjJLGaUfG43YpRt0PC6Ag=
+  gem: iqvoc
+  on:
+    tags: true
+    repo: innoq/iqvoc
