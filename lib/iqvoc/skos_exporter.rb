@@ -47,7 +47,7 @@ module Iqvoc
       ActiveSupport.run_load_hooks(:rdf_export_before_save, self)
 
       # saving export to disk
-      save_file(@file_path, @type, document)
+      save_file(@file_path, @type, @document)
 
       done = Time.now
       @logger.info "Export Job finished in #{(done - start).to_i} seconds."
