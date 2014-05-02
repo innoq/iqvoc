@@ -13,11 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-require File.expand_path('test_helper', File.dirname(__FILE__))
 require 'capybara/rails'
-require File.join(File.expand_path(File.dirname(__FILE__)), 'capybara_helper')
 require 'webmock'
+require File.expand_path('test_helper', File.dirname(__FILE__))
+require File.expand_path('capybara_helper', File.dirname(__FILE__))
+require File.expand_path('authentication', File.dirname(__FILE__))
 
 WebMock.allow_net_connect! # required for integration tests
 
+class ActionDispatch::IntegrationTest
+  include Authentication
+end
