@@ -142,8 +142,6 @@ module Iqvoc
           "performance.unbounded_hierarchy" => false,
           "sources.iqvoc" => [""]
         })
-
-        self.export_path = Rails.root.join('public/export')
       end
 
       module ClassMethods
