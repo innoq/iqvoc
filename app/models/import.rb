@@ -1,5 +1,6 @@
 class Import < ActiveRecord::Base
   belongs_to :user
+  mount_uploader :import_file, RdfUploader
 
   def finish!(messages)
     self.output = messages

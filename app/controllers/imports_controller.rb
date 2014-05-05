@@ -21,6 +21,7 @@ class ImportsController < ApplicationController
   end
 
   def index
+    @import = Import.new
     @imports = Import.order('id DESC')
   end
 
@@ -29,10 +30,13 @@ class ImportsController < ApplicationController
   end
 
   def create
-    content = params[:ntriples_file] && params[:ntriples_file].read
-    import = Import.create!(:user => current_user)
+    # content = params[:ntriples_file] && params[:ntriples_file].read
+    import = Import.create!(
+        :user => current_user,
+        :import_file => params[:import_file]
+    )
 
-    job = ImportJob.new(import, content, current_user, params[:default_namespace], params[:publish])
+    job = ImportJob.new(import, 'content', current_user, params[:default_namespace], params[:publish])
     Delayed::Job.enqueue(job)
 
     flash[:success] = t('txt.views.import.success')

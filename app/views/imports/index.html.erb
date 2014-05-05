@@ -1,9 +1,9 @@
 <%= page_header :title => t('txt.views.import.title') %>
 <%= render 'dashboard/sidebar' %>
 
-<%= form_tag imports_path, :method => :post, :multipart => true , :class => "form-horizontal" do %>
+<%= form_for @import, :multipart => true , :class => "form-horizontal" do |f| %>
   <%= input_block :label => t('txt.views.import.file') do %>
-    <%= file_field_tag 'ntriples_file' %>
+    <%= f.file_field :import_file %>
   <% end %>
 
   <%= input_block :label => t('txt.views.import.namespace') do %>
