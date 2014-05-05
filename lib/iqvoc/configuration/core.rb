@@ -17,7 +17,8 @@ module Iqvoc
           :ability_class_name,
           :localized_routes,
           :core_assets,
-          :search_sections
+          :search_sections,
+          :export_path
 
         self.localized_routes = [] # routing extensibility hook
 
@@ -141,6 +142,8 @@ module Iqvoc
           "performance.unbounded_hierarchy" => false,
           "sources.iqvoc" => [""]
         })
+
+        self.export_path = Rails.root.join('public/export')
       end
 
       module ClassMethods

@@ -119,11 +119,9 @@ module Iqvoc
 
     def save_file(file_path, type, content)
       begin
-        full_path = Rails.root.join(file_path).to_s
-
-        @logger.info "Saving export to '#{Rails.root.join(@file_path).to_s}'"
-        create_directory(full_path)
-        file = File.open(full_path, "w")
+        @logger.info "Saving export to '#{@file_path}'"
+        create_directory(@file_path)
+        file = File.open(@file_path, "w")
         content = serialize_rdf(content, type)
         file.write(content)
       rescue IOError => e

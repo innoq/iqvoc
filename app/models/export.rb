@@ -17,7 +17,7 @@ class Export < ActiveRecord::Base
   end
 
   def build_filename
-    File.join("public/export", "#{self.token.to_s}.#{self.file_type}")
+    File.join(Iqvoc.export_path, "#{self.token.to_s}.#{self.file_type}")
   end
 
 end
