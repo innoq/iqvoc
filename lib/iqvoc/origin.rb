@@ -77,7 +77,7 @@ module Iqvoc
         def call(obj, str)
           str = str.gsub(/[(\[:]/, "--").
             gsub(/[)\]'""]/, "").
-            gsub(/[,\.\/&;]/, '-')
+            gsub(/[,\.\/&;<>]/, '-')
 
           run(obj, str)
         end

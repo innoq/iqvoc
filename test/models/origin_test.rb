@@ -62,6 +62,11 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal "-", Iqvoc::Origin.new(",").to_s
   end
 
+  def test_should_replace_less_and_greater_chars
+    assert_equal "Test-123", Iqvoc::Origin.new("Test<123").to_s
+    assert_equal "Test-123", Iqvoc::Origin.new("Test>123").to_s
+  end
+
   def test_should_merge_all_together
     assert_equal "--Energie-Ressource",
       Iqvoc::Origin.new("[Energie - Ressource]").to_s
