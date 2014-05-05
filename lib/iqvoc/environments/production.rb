@@ -86,5 +86,7 @@ module Iqvoc::Environments
 
     # Do not dump schema after migrations.
     config.active_record.dump_schema_after_migration = false
+
+    config.i18n.enforce_available_locales = true
   end
 end
