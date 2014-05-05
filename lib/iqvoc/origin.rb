@@ -60,7 +60,7 @@ module Iqvoc
           run(obj, str)
         end
       end
-      @filters = ActiveSupport::OrderedHash.new
+      @filters = {}
       @filters[:uri_conformance_filter] = UriConformanceFilter
 
       def self.register(name, klass)
