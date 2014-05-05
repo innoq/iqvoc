@@ -73,8 +73,9 @@ class Iqvoc::RDFSync
     # view in order to get to the RDF serialization
 
     doc = IqRdf::Document.new(@base_url)
-    Iqvoc.default_rdf_namespace_helper_methods.each do |meth|
-      doc.namespaces(@view_context.send(meth))
+    RdfNamespacesHelper.instance_methods.each do |meth|
+      namespaces = @view_context.send(meth)
+      doc.namespaces(namespaces) if namespaces.is_a?(Hash)
     end
 
     rdf_helper = Object.new.extend(RdfHelper)

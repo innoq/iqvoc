@@ -32,7 +32,7 @@ In order to deploy to heroku you need to have an account and [heroku toolbelt](h
 ```
 $ bundle install
 $ heroku create
-$ bundle exec rake heroku:config
+$ bin/rake heroku:config
 $ git push heroku master
 $ heroku run rake db:migrate
 $ heroku run rake db:seed
@@ -53,7 +53,7 @@ Running the cloned source code is possible but any modifications would require a
 3. Run `bundle exec rake db:create` to create the database
 4. Create the necessary tables by running `rake db:migrate`
 5. Load some base data by running `rake db:seed`
-6. Run `bundle exec rake setup:generate_secret_token`
+6. Make sure you have got `config/secrets.yml` in place
 7. Boot up the app using `bundle exec rails s` (or `passenger start` if you use passenger)
 8. Log in with "admin@iqvoc" / "admin" or "demo@iqvoc" / "cooluri" (cf. step #5)
 9. Visit the Users section and change the default passwords
@@ -110,6 +110,6 @@ iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH]
 
 ## License
 
-Copyright 2013 innoQ Deutschland GmbH
+Copyright 2014 innoQ Deutschland GmbH
 
 Licensed under the Apache License, Version 2.0

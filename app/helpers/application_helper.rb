@@ -21,14 +21,6 @@ module ApplicationHelper
     :no  => "&#x2717;"
   }
 
-  def iqvoc_default_rdf_namespaces
-    Iqvoc.rdf_namespaces.merge({
-      :default => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/"), # gsub because of a Rails bug :-(
-      :coll => rdf_collections_url(:trailing_slash => true, :lang => nil, :format => nil),
-      :schema => controller.schema_url(:format => nil, :anchor => "", :lang => nil)
-    })
-  end
-
   def user_details(user)
     details = mail_to(user.email, user.name)
     if user.telephone_number?
@@ -52,7 +44,7 @@ module ApplicationHelper
 
   def error_messages_for(object)
     if object.errors.any?
-      content_tag :div, :class => 'alert alert-error' do
+      content_tag :div, :class => 'alert alert-danger' do
         content_tag(:p, content_tag(:strong, t('txt.common.form_errors'))) <<
         content_tag(:ul) do
           object.errors.full_messages.each do |msg|
@@ -92,7 +84,7 @@ module ApplicationHelper
     html << content_tag(:strong, header) if header
     html << capture(&block)
 
-    type = :danger if type == :error
+    type = :danger if type == 'error'
 
     content_tag(:div, :class => "alert alert-#{type}") do
       html

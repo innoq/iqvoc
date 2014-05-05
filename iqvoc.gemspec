@@ -13,11 +13,11 @@ Gem::Specification.new do |s|
   s.description = "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web"
   s.license     = "Apache License 2.0"
 
-  s.add_dependency 'rails', '~> 4.0.0'
+  s.add_dependency 'rails', '~> 4.1.0'
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari'
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
-  s.add_dependency 'authlogic', '3.4.0'
+  s.add_dependency 'authlogic', '~> 3.4.2'
   s.add_dependency 'cancan'
   s.add_dependency 'iq_rdf', '>= 0.1.13'
   s.add_dependency 'json'
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday'
   s.add_dependency 'sass-rails', '~> 4.0.2'
   s.add_dependency 'bootstrap-sass', '~> 3.1.1.0'
-  s.add_dependency 'bootstrap_form', '~> 2.1.0'
+  s.add_dependency 'bootstrap_form', '~> 2.1.1'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
   s.add_dependency 'database_cleaner'
-  s.add_dependency 'delayed_job_active_record', '~> 4.0.0'
+  s.add_dependency 'delayed_job_active_record', '~> 4.0.1'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob("{app,config,db,public,lib,test,vendor}/**/*")

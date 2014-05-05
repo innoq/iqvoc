@@ -5,11 +5,10 @@ IQVOC.onebox = (function($) {
 
 "use strict";
 
-function OneBox(form) {
-  this.form = form.jquery ? form : $(form);
+function OneBox(container) {
+  this.container = container.jquery ? container : $(container);
+  this.form = this.container.find('form');
   this.input = $(".onebox-input", this.form); // TODO: document
-  this.container = this.form.removeClass("onebox").
-      wrap('<div class="onebox" />').parent(); // TODO: document
   this.results = $('<ol class="results concept-items list-unstyled" />');
   this.indicator = $('<i class="fa fa-refresh fa-spin fa-3x onebox-indicator" />').
       appendTo(this.container).hide();

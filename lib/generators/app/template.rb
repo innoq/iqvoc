@@ -4,7 +4,6 @@ gem 'iqvoc'
 
 ["config/application.rb",
  "config/environment.rb",
- "config/initializers/secret_token.rb",
  "config/initializers/session_store.rb",
  "config.ru",
  "Rakefile"].each do |file|

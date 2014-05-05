@@ -13,10 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 require 'capybara/rails'
-require File.join(File.expand_path(File.dirname(__FILE__)), 'capybara_helper')
+require 'capybara/dsl'
+require 'capybara/poltergeist'
 require 'webmock'
+require 'test_helper'
+require 'authentication'
+
+Capybara.javascript_driver = :poltergeist
 
 WebMock.allow_net_connect! # required for integration tests
 
+class ActionDispatch::IntegrationTest
+  include Capybara::DSL
+  include Authentication
+end

@@ -8,6 +8,7 @@ module Iqvoc
       included do
         mattr_accessor :searchable_class_names,
           :unlimited_search_results,
+          :default_rdf_namespace_helper_modules,
           :default_rdf_namespace_helper_methods,
           :rdf_namespaces,
           :change_note_class_name,
@@ -100,6 +101,7 @@ module Iqvoc
 
         self.unlimited_search_results = false
 
+        self.default_rdf_namespace_helper_modules = []
         self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
         self.rdf_namespaces = {
@@ -142,25 +144,6 @@ module Iqvoc
       end
 
       module ClassMethods
-        def generate_secret_token
-          require 'securerandom'
-
-          template = Rails.root.join("config", "initializers", "secret_token.rb.template")
-          raise "File not found: #{template}" unless File.exist?(template)
-
-          file_name = "config/initializers/secret_token.rb"
-
-          token = SecureRandom.hex(64)
-          txt = File.read(template)
-          txt.gsub!("S-E-C-R-E-T", token)
-
-          File.open(file_name, "w") do |f|
-            f.write txt
-          end
-
-          puts "Secret token configuration has been created in #{file_name}."
-        end
-
         # ************** instance configuration **************
 
         def config(&block)
@@ -214,6 +197,13 @@ module Iqvoc
             Iqvoc::Engine.root
           else
             Rails.root
+          end
+        end
+
+        def routing_constraint
+          lambda do |params, req|
+            langs = Iqvoc::Concept.pref_labeling_languages.join('|').presence || 'en'
+            return params[:lang].to_s =~ /^#{langs}$/
           end
         end
       end

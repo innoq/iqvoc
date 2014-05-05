@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
+
 class HygieneTest < ActiveSupport::TestCase
 
   test "trailing whitespace" do

@@ -30,8 +30,6 @@ class ConceptsController < ApplicationController
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render :json => @concepts
       end
-      # RDF full export
-      format.any(:rdf, :ttl) { authorize! :full_export, Concept::Base }
     end
   end
 
@@ -57,22 +55,22 @@ class ConceptsController < ApplicationController
       format.html do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept,
+        ActiveRecord::Associations::Preloader.new.preload(@concept,
           Iqvoc::Concept.base_class.default_includes + [:collection_members => {:collection => :labels},
           :broader_relations => {:target => [:pref_labels, :broader_relations]},
-          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}]).run
+          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
 
         published ? render('show_published') : render('show_unpublished')
       end
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
-        ActiveRecord::Associations::Preloader.new(@concept, [:labels,
-            { :relations => { :target => [:labelings, :relations] } }]).run
+        ActiveRecord::Associations::Preloader.new.preload(@concept, [:labels,
+            { :relations => { :target => [:labelings, :relations] } }])
 
         published_relations = lambda { |concept|
           return concept.relations.includes(:target).
-              merge(Iqvoc::Concept.base_class.published)
+            merge(Iqvoc::Concept.base_class.published).references(:concepts)
         }
         concept_data = {
           :origin => @concept.origin,

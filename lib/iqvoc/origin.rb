@@ -49,55 +49,19 @@ module Iqvoc
         end
       end
 
-      class UmlautReplacer < GenericFilter
+      class UriConformanceFilter < GenericFilter
         def call(obj, str)
-          str = str.gsub(/Ö/, 'Oe').
-            gsub(/Ä/, 'Ae').
-            gsub(/Ü/, 'Ue').
-            gsub(/ö/, 'oe').
-            gsub(/ä/, 'ae').
-            gsub(/ü/, 'ue').
-            gsub(/ß/, 'ss')
+          str = str.parameterize # basic url conformance
 
-          run(obj, str)
-        end
-      end
-
-      class WhitespaceReplacer < GenericFilter
-        def call(obj, str)
-          str = str.gsub(/\s([a-zA-Z])?/) do
-            $1.to_s.upcase
-          end
-
-          run(obj, str)
-        end
-      end
-
-      class SpecialCharReplacer < GenericFilter
-        def call(obj, str)
-          str = str.gsub(/[(\[:]/, "--").
-            gsub(/[)\]'""]/, "").
-            gsub(/[,\.\/&;]/, '-')
-
-          run(obj, str)
-        end
-      end
-
-      class LeadingNumberHandler < GenericFilter
-        def call(obj, str)
+          # prefix with '_' if origin starts with digit
           str = str.gsub(/^[0-9].*$/) do |match|
             "_#{match}"
           end
-
           run(obj, str)
         end
       end
-
-      @filters = ActiveSupport::OrderedHash.new
-      @filters[:replace_umlauts]        = UmlautReplacer
-      @filters[:replace_whitespace]     = WhitespaceReplacer
-      @filters[:replace_special_chars]  = SpecialCharReplacer
-      @filters[:handle_leading_numbers] = LeadingNumberHandler
+      @filters = {}
+      @filters[:uri_conformance_filter] = UriConformanceFilter
 
       def self.register(name, klass)
         @filters[name.to_sym] = klass

@@ -61,10 +61,6 @@ module Iqvoc::Environments
     # Enable serving of images, stylesheets, and JavaScripts from an asset server.
     # config.action_controller.asset_host = "http://assets.example.com"
 
-    # Precompile additional assets.
-    # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-    config.assets.precompile += Iqvoc.core_assets
-
     # Ignore bad email addresses and do not raise email delivery errors.
     # Set this to true and configure the email server for immediate delivery to raise delivery errors.
     # config.action_mailer.raise_delivery_errors = false
@@ -87,6 +83,10 @@ module Iqvoc::Environments
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
     config.active_record.whitelist_attributes = false
-  end
 
+    # Do not dump schema after migrations.
+    config.active_record.dump_schema_after_migration = false
+
+    config.i18n.enforce_available_locales = true
+  end
 end
