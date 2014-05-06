@@ -5,7 +5,7 @@ class Base < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir
-    'public/uploads'
+    'uploads'
   end
 
   def filename

@@ -30,16 +30,18 @@ class ImportsController < ApplicationController
   end
 
   def create
-    # content = params[:ntriples_file] && params[:ntriples_file].read
-    import = Import.create!(
-        :user => current_user,
-        :import_file => params[:import_file]
-    )
+    import = Import.new(params[:import])
+    import.user = current_user
 
-    job = ImportJob.new(import, 'content', current_user, params[:default_namespace], params[:publish])
-    Delayed::Job.enqueue(job)
+    if import.save
+      job = ImportJob.new(import, open(URI.parse(import.import_file.current_path).to_s), current_user,
+                          params[:default_namespace], params[:publish])
 
-    flash[:success] = t('txt.views.import.success')
+      Delayed::Job.enqueue(job)
+      flash[:success] = t('txt.views.import.success')
+    else
+      flash[:error] = t('txt.views.import.error')
+    end
     redirect_to imports_path
   end
 
