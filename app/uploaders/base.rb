@@ -5,7 +5,7 @@ class Base < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir
-    'uploads'
+    Iqvoc.upload_path.join(model.class.to_s.downcase)
   end
 
   def filename
