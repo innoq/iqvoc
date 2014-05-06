@@ -41,3 +41,4 @@ unless Rails.env.test?
 end
 
 Iqvoc.export_path = Rails.root.join('public/export')
+Iqvoc.upload_path = Rails.root.join('public/uploads')
