@@ -1,44 +1,37 @@
 <%= page_header :title => t('txt.views.import.title') %>
 <%= render 'dashboard/sidebar' %>
 
-<%= form_tag imports_path, :method => :post, :multipart => true , :class => "form-horizontal" do %>
-  <%= input_block :label => t('txt.views.import.file') do %>
-    <%= file_field_tag 'ntriples_file' %>
-  <% end %>
+<%= bootstrap_form_for @import, :multipart => true, :layout => :horizontal, label_col: "col-sm-3", control_col: "col-sm-9" do |f| %>
+  <%= f.file_field :import_file, :label => t('txt.views.import.file') %>
+  <%= f.text_field :default_namespace, :label => t('txt.views.import.namespace'), :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
 
-  <%= input_block :label => t('txt.views.import.namespace') do %>
-    <%= text_field_tag 'default_namespace',
-      root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/")  %>
+  <%= f.form_group do %>
+    <%= f.check_box 'publish', :value => 1, :checked => true, :label => t('txt.views.import.publish') %>
   <% end %>
-
-  <%= input_block :label => t('txt.views.import.publish') do %>
-    <%= check_box_tag 'publish', '1', true %>
+  <%= f.form_group do %>
+    <%= f.submit t('txt.views.import.title'), :class => 'btn btn-primary' %>
   <% end %>
-
-  <div class="form-actions">
-    <%= submit_tag t('txt.views.import.title'), :class => 'btn btn-primary' %>
-  </div>
 <% end %>
 
 <table class="table">
   <thead>
-    <tr>
-      <th>ID</th>
-      <th><%= Import.human_attribute_name(:user) %></th>
-      <th><%= Import.human_attribute_name(:created_at) %></th>
-      <th><%= Import.human_attribute_name(:finished_at) %></th>
-      <th><%= Import.human_attribute_name(:success) %></th>
-    </tr>
+  <tr>
+    <th>ID</th>
+    <th><%= Import.human_attribute_name(:user) %></th>
+    <th><%= Import.human_attribute_name(:created_at) %></th>
+    <th><%= Import.human_attribute_name(:finished_at) %></th>
+    <th><%= Import.human_attribute_name(:success) %></th>
+  </tr>
   </thead>
   <tbody>
-    <% @imports.each do |import| %>
-      <tr>
-        <td><%= link_to import.id, import_path(:id => import) %></td>
-        <td><%= import.user %></td>
-        <td><%= l(import.created_at, :format => :short) %></td>
-        <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
-        <td><%= icon('thumbs-o-up') if import.success? %></td>
-      </tr>
-    <% end %>
+  <% @imports.each do |import| %>
+    <tr>
+      <td><%= link_to import.id, import_path(:id => import) %></td>
+      <td><%= import.user %></td>
+      <td><%= l(import.created_at, :format => :short) %></td>
+      <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+      <td><%= icon('thumbs-o-up') if import.success? %></td>
+    </tr>
+  <% end %>
   </tbody>
 </table>

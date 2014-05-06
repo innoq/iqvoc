@@ -1,10 +1,10 @@
 require 'iqvoc/skos_importer'
 
-class ImportJob < Struct.new(:import, :content, :user, :namespace, :publish)
+class ImportJob < Struct.new(:import, :filename, :user, :namespace, :publish)
   def perform
     strio = StringIO.new
 
-    importer = Iqvoc::SkosImporter.new(content.to_s.split("\n"), namespace, Logger.new(strio), publish)
+    importer = Iqvoc::SkosImporter.new(filename, namespace, Logger.new(strio), publish)
     importer.run
     @messages = strio.string
   end
