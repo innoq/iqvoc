@@ -9,7 +9,8 @@ namespace :iqvoc do
     desc "Load seeds from all engines (db/seed tasks should be idempotent)"
     task :seed_all => :environment do
       engines = Rails.application.railties.select do |e|
-        e.config.paths["db/seeds.rb"] &&
+        e.config.respond_to?(:paths) &&
+          e.config.paths["db/seeds.rb"] &&
           e.config.paths["db/seeds.rb"].existent.any?
       end
 
