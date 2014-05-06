@@ -13,8 +13,16 @@ module Iqvoc
         [Iqvoc::Concept.root_class] +
         [Iqvoc::Collection.member_class]
 
-    def initialize(file, default_namespace_url, logger = Rails.logger, publish = true)
-      @file = file
+    def initialize(object, default_namespace_url, logger = Rails.logger, publish = true)
+      @file = case object
+                when File
+                  File.open(object)
+                when Array
+                  object
+                else
+                  open(object)
+              end
+
       @publish = publish
 
       @logger = logger

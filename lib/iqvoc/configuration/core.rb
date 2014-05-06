@@ -19,6 +19,7 @@ module Iqvoc
           :core_assets,
           :search_sections,
           :export_path
+          :upload_path
 
         self.localized_routes = [] # routing extensibility hook
 
