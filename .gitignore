@@ -22,3 +22,4 @@ public/assets
 .idea/
 db/schema.rb
 public/export
+public/uploads
