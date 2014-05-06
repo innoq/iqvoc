@@ -8,10 +8,10 @@ namespace :iqvoc do
 
     desc "Load seeds from all engines (db/seed tasks should be idempotent)"
     task :seed_all => :environment do
-      engines = Rails.application.railties.engines.select { |e|
+      engines = Rails.application.railties.select do |e|
         e.config.paths["db/seeds.rb"] &&
           e.config.paths["db/seeds.rb"].existent.any?
-      }
+      end
 
       engines.select{|e| e.engine_name !~ /^iqvoc_/}.each do |engine|
         puts "There is a non-iQvoc engine (#{engine.engine_name}) having seeds. These seeds are not necessarily idempotent."
