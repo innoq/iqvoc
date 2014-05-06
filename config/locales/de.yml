@@ -288,6 +288,7 @@ de:
        title: "Export"
        request_export: "Export anfordern"
        success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
+       error: "Es ist ein Fehler aufgetreten. Export-Job konnte nicht erstellt werden."
 
    partials:
      note:

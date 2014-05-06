@@ -30,17 +30,19 @@ class ExportsController < ApplicationController
   end
 
   def create
-    export = Export.create! do |e|
-      e.user = current_user
-      e.file_type = params[:export][:file_type]
-      e.token = srand
+    export = Export.new(params[:export])
+    export.user = current_user
+    export.token = srand
+
+    if export.save
+      filename = export.build_filename
+      job = ExportJob.new(export, filename,export.file_type, export.default_namespace)
+      Delayed::Job.enqueue(job)
+
+      flash[:success] = t('txt.views.export.success')
+    else
+      flash[:error] = t('txt.views.export.error')
     end
-
-    filename = export.build_filename
-    job = ExportJob.new(export, filename,export.file_type, request.host_with_port)
-    Delayed::Job.enqueue(job)
-
-    flash[:success] = t('txt.views.export.success')
     redirect_to exports_path
   end
 

@@ -3,6 +3,8 @@ class Export < ActiveRecord::Base
 
   enum file_type: [:ttl, :nt, :xml]
 
+  validates_presence_of :default_namespace
+
   def finish!(messages)
     self.output = messages
     self.success = true

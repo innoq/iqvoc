@@ -150,3 +150,5 @@ en:
         finished_at: "Finished at"
         success: "Success"
         file_type: "Type"
+        default_namespace: "Default namespace"
+

@@ -1,15 +1,16 @@
 <%= page_header :title => t('txt.views.export.title') %>
 <%= render 'dashboard/sidebar' %>
 
-<%= bootstrap_form_for(@export, :layout => :inline) do |f| %>
-    <%= f.select :file_type, options_for_select({
-        t("txt.common.rdf_serialization.ttl") => :ttl,
-        t("txt.common.rdf_serialization.nt") => :nt,
-        t("txt.common.rdf_serialization.xml") => :xml})
-    %>
-    <%= f.form_group do %>
-        <%= f.submit t('txt.views.export.request_export'), :class => 'btn btn-primary' %>
-    <% end %>
+<%= bootstrap_form_for @export, :multipart => true, :layout => :horizontal, label_col: "col-sm-3", control_col: "col-sm-9" do |f| %>
+  <%= f.select :file_type, options_for_select({
+    t("txt.common.rdf_serialization.ttl") => :ttl,
+    t("txt.common.rdf_serialization.nt") => :nt,
+    t("txt.common.rdf_serialization.xml") => :xml})
+  %>
+  <%= f.text_field :default_namespace, :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
+  <%= f.form_group do %>
+    <%= f.submit t('txt.views.export.request_export'), :class => 'btn btn-primary' %>
+  <% end %>
 <% end %>
 
 <table class="table">
@@ -25,14 +26,14 @@
   </thead>
   <tbody>
   <% @exports.each do |export| %>
-      <tr>
-        <td><%= link_to export.id, export_path(:id => export) %></td>
-        <td><%= export.user %></td>
-        <td><%= t("txt.common.rdf_serialization.#{export.file_type}") %></td>
-        <td><%= l(export.created_at, :format => :short) %></td>
-        <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
-        <td><%= link_to('Download', export_download_url(export), :class => 'btn btn-primary btn-xs') if export.success? %></td>
-      </tr>
+    <tr>
+      <td><%= link_to export.id, export_path(:id => export) %></td>
+      <td><%= export.user %></td>
+      <td><%= t("txt.common.rdf_serialization.#{export.file_type}") %></td>
+      <td><%= l(export.created_at, :format => :short) %></td>
+      <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+      <td><%= link_to('Download', export_download_url(export), :class => 'btn btn-primary btn-xs') if export.success? %></td>
+    </tr>
   <% end %>
   </tbody>
 </table>

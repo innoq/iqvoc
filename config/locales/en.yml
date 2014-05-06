@@ -295,6 +295,7 @@ en:
        title: "Export"
        request_export: "Request Export"
        success: "Export job was created. Reload page to see current processing status."
+       error: "Error occurred while creating Export job."
 
    partials:
      note:

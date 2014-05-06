@@ -151,3 +151,6 @@ de:
         finished_at: "beendet"
         success: "erfolgreich"
         file_type: "Typ"
+        default_namespace: "Standard Namespace"
+
+

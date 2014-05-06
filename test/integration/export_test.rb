@@ -48,6 +48,7 @@ class ExportTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'Export'
 
     select('RDF/N-Triples', :from => 'Type')
+    fill_in 'Default namespace', :with => 'http://www.example.com/'
     click_link_or_button 'Request Export'
     assert page.has_content? 'Export job was created. Reload page to see current processing status.'
 
@@ -58,5 +59,18 @@ class ExportTest < ActionDispatch::IntegrationTest
 
     assert_equal 'application/n-triples', page.response_headers['Content-Type']
   end
+
+  test 'invalid export form submission' do
+    login('administrator')
+
+    visit exports_path(:lang => 'en')
+    assert page.has_content? 'Export'
+
+    select('RDF/N-Triples', :from => 'Type')
+    fill_in 'Default namespace', :with => ''
+    click_link_or_button 'Request Export'
+    assert page.has_content? 'Error occurred while creating Export job.'
+  end
+
 
 end
