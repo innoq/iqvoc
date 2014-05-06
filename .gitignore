@@ -22,4 +22,5 @@ public/assets
 .idea/
 db/schema.rb
 public/export
+public/uploads
 data/iqvoc_dump*
