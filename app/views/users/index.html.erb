@@ -1,6 +1,6 @@
 <%= page_header :title => t('txt.views.users.index.header') %>
 <div class="table-responsive">
-  <table class="table">
+  <table class="table users-table">
     <thead>
       <tr>
         <th><%= t('txt.views.users.name') %></th>
@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <% @users.each do |user| %>
-        <tr>
+        <tr class="users-table-row">
           <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td><%= user.telephone_number %></td>
