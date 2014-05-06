@@ -284,6 +284,7 @@ en:
        title: "Import"
        file: "NTriples file"
        namespace: "Default namespace"
+       output: "Output"
        success: "Import job was created. Reload page to see current processing status."
        error: "Error occurred while creating Import job."
 
