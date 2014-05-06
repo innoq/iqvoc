@@ -16,7 +16,7 @@
 
 class ImportsController < ApplicationController
 
-  before_filter do
+  before_action do
     authorize! :import, Concept::Base
   end
 
@@ -34,8 +34,8 @@ class ImportsController < ApplicationController
     import.user = current_user
 
     if import.save
-      job = ImportJob.new(import, open(URI.parse(import.import_file.current_path).to_s), current_user,
-                          params[:default_namespace], params[:publish])
+      job = ImportJob.new(import, import.import_file.current_path, current_user,
+                          import.default_namespace, import.publish)
 
       Delayed::Job.enqueue(job)
       flash[:success] = t('txt.views.import.success')
