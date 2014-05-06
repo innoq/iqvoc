@@ -19,6 +19,7 @@ require 'uglifier'
 require 'apipie-rails'
 require 'database_cleaner'
 require 'delayed_job_active_record'
+require 'carrierwave'
 
 require 'iqvoc/controller_extensions'
 
