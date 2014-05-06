@@ -283,11 +283,11 @@ de:
        namespace: "Standard Namespace"
        output: "Ausgabe"
        success: "Import-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
+       error: "Es ist ein Fehler aufgetreten. Import-Job konnte nicht erstellt werden."
      export:
        title: "Export"
        request_export: "Export anfordern"
        success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
-       error: "Es ist ein Fehler aufgetreten. Import-Job konnte nicht erstellt werden."
 
    partials:
      note:
