@@ -2,11 +2,11 @@
 <%= render 'dashboard/sidebar' %>
 
 <%= bootstrap_form_for @import, :multipart => true, :layout => :horizontal, label_col: "col-sm-3", control_col: "col-sm-9" do |f| %>
-  <%= f.file_field :import_file, :label => t('txt.views.import.file') %>
-  <%= f.text_field :default_namespace, :label => t('txt.views.import.namespace'), :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
+  <%= f.file_field :import_file %>
+  <%= f.text_field :default_namespace, :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
 
   <%= f.form_group do %>
-    <%= f.check_box 'publish', :value => 1, :checked => true, :label => t('txt.views.import.publish') %>
+    <%= f.check_box :publish, :value => 1, :checked => true %>
   <% end %>
   <%= f.form_group do %>
     <%= f.submit t('txt.views.import.title'), :class => 'btn btn-primary' %>
