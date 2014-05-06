@@ -1,3 +1,10 @@
+## [4.4.0]
+
+  * [Asynchronous](https://github.com/innoq/iqvoc#background-jobs) SKOS exporter
+  * Web-based SKOS importer should now deal with large uploads
+  * Rails 4.1
+  * Bootstrap 3
+
 ## [4.3.2]
 
   * Fix non-working migrations on MySQL >= 5.6
