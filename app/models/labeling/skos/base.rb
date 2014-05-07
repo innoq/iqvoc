@@ -122,11 +122,3 @@ class Labeling::SKOS::Base < Labeling::Base
   end
 
 end
-
-class InvalidStringLiteralError < StandardError
-  attr_reader :original
-  def initialize(msg, original = $!)
-    super(msg)
-    @original = original;
-  end
-end
