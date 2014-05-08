@@ -29,7 +29,7 @@ module Concept
 
     # top term and broader relations are mutually exclusive
     def exclusive_top_term
-      if @full_validation
+      if validatable_for_publishing?
         if top_term && broader_relations.any?
           errors.add :base, I18n.t("txt.models.concept.top_term_exclusive_error")
         end
@@ -39,7 +39,7 @@ module Concept
     # top terms must never be used as descendants (narrower relation targets)
     # NB: for top terms themselves, this is covered by `ensure_exclusive_top_term`
     def rooted_top_terms
-      if @full_validation
+      if validatable_for_publishing?
         if narrower_relations.includes(:target). # XXX: inefficient?
             select { |rel| rel.target && rel.target.top_term? }.any?
           errors.add :base, I18n.t("txt.models.concept.top_term_rooted_error")
@@ -48,7 +48,7 @@ module Concept
     end
 
     def pref_label_in_primary_thesaurus_language
-      if @full_validation
+      if validatable_for_publishing?
         labels = pref_labels.select{|l| l.published?}
         if labels.count == 0
           errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
@@ -75,7 +75,7 @@ module Concept
     end
 
     def unique_pref_label
-      if @full_validation
+      if validatable_for_publishing?
         # checks if there are any existing pref labels with the same
         # language and value
         conflicting_pref_labels = pref_labels.select do |l|
@@ -102,7 +102,7 @@ module Concept
     end
 
     def valid_rank_for_ranked_relations
-      if @full_validation
+      if validatable_for_publishing?
         relations.each do |relation|
           if relation.class.rankable? && !(0..100).include?(relation.rank)
             errors.add :base, I18n.t("txt.models.concept.invalid_rank_for_ranked_relations",

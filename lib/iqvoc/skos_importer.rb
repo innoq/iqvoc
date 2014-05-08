@@ -118,7 +118,7 @@ module Iqvoc
       if @publish
         @logger.info "Publishing #{@new_subjects.count} new subjects..."
         @new_subjects.each do |subject|
-          if subject.valid_with_full_validation?
+          if subject.publishable?
             subject.publish
             subject.save!
             published += 1

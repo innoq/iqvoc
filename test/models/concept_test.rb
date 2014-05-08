@@ -35,9 +35,9 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "should not save concept with empty preflabel" do
-    FactoryGirl.create(:concept).save_with_full_validation! # Is the factory working as expected?
+    FactoryGirl.create(:concept).publish! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
-      FactoryGirl.create(:concept, :pref_labelings => []).save_with_full_validation!
+      FactoryGirl.create(:concept, :pref_labelings => []).publish!
     end
   end
 
@@ -45,16 +45,16 @@ class ConceptTest < ActiveSupport::TestCase
     concept =  FactoryGirl.create(:concept, :pref_labelings => [])
     assert_equal [], concept.pref_labels
     assert concept.valid?
-    assert !concept.valid_with_full_validation?
+    assert !concept.publishable?
   end
 
   test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
     concept = FactoryGirl.create(:concept)
     assert_equal 1, concept.pref_labels.count
-    assert concept.valid_with_full_validation?
+    assert concept.publishable?
 
     concept.pref_labels.first.language = Iqvoc::Concept.pref_labeling_languages.second
-    assert !concept.valid_with_full_validation?
+    assert !concept.publishable?
   end
 
   test "concept shouldn't have more then one pref label of the same language" do
@@ -72,12 +72,12 @@ class ConceptTest < ActiveSupport::TestCase
     concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
     concept1.pref_labels << label
     concept1.save!
-    assert concept1.valid_with_full_validation?
+    assert concept1.publishable?
 
     concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
     concept2.pref_labels << label
     concept2.save!
-    assert concept2.invalid_with_full_validation?
+    refute concept2.publishable?
   end
 
   test "concepts can have multiple preferred labels" do
@@ -90,7 +90,7 @@ class ConceptTest < ActiveSupport::TestCase
 
     assert_equal 2, concept.pref_labels.count
     assert_not_equal concept.pref_labels.first.language, concept.pref_labels.second.language
-    assert concept.valid_with_full_validation?
+    assert concept.publishable?
   end
 
   test "labelings_by_text setter" do

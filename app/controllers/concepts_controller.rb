@@ -128,7 +128,7 @@ class ConceptsController < ApplicationController
     @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
 
     if params[:full_consistency_check]
-      @concept.valid_with_full_validation?
+      @concept.publishable?
     end
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
