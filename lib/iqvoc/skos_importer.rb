@@ -152,7 +152,9 @@ module Iqvoc
             @logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
-          @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
+          @seen_first_level_objects[origin] = types[object].create! do |klass|
+            klass.origin = origin
+          end
           @new_subjects << @seen_first_level_objects[origin]
         end
         true
