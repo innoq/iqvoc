@@ -18,6 +18,8 @@ class Label::SKOS::Base < Label::Base
 
   after_initialize :publish
 
+  validates :value, :presence => {:message => I18n.t("txt.models.label.value_error")}
+
   # ********** Methods
 
   def publish
