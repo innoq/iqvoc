@@ -95,7 +95,7 @@ class Labeling::SKOS::Base < Labeling::Base
       raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."
     end
 
-    unless rdf_object =~ /^"(.+)"(@(.+))?$/
+    unless rdf_object =~ Iqvoc::RDFAPI::LITERAL_REGEXP
       raise InvalidStringLiteralError, "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
     end
 
