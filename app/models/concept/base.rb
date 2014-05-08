@@ -19,7 +19,7 @@ class Concept::Base < ActiveRecord::Base
   self.table_name = 'concepts'
 
   include Publishable
-  include Iqvoc::Versioning
+  include Versioning
 
   class_attribute :default_includes
   self.default_includes = []
