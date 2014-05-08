@@ -62,7 +62,7 @@ module Iqvoc
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
-      Iqvoc::RDFAPI::FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
         klass.select('origin').load.each do |thing|
           @existing_origins[thing.origin] = klass
         end
