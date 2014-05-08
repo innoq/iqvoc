@@ -95,18 +95,18 @@ module Iqvoc
             import_second_level_objects(second_level_types, false, *extract_triple(line))
       end
 
-      @logger.debug "Computing 'forward' defined triples..."
+      @logger.info "Computing 'forward' defined triples..."
       @unknown_second_level_triples.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
       first_import_step_done = Time.now
-      @logger.debug "Basic import done (took #{(first_import_step_done - start).to_i} seconds)."
+      @logger.info "Basic import done (took #{(first_import_step_done - start).to_i} seconds)."
 
       published = publish
 
       done = Time.now
-      @logger.debug "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
+      @logger.info "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
       puts "Imported #{published} published and #{@new_subjects.count - published} draft subjects in #{(done - start).to_i} seconds."
       puts "  First step took #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
@@ -116,7 +116,7 @@ module Iqvoc
     def publish
       published = 0
       if @publish
-        @logger.debug "Publishing #{@new_subjects.count} new subjects..."
+        @logger.info "Publishing #{@new_subjects.count} new subjects..."
         @new_subjects.each do |subject|
           if subject.valid_with_full_validation?
             subject.publish
