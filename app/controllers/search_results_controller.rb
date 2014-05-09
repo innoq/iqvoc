@@ -152,9 +152,7 @@ class SearchResultsController < ApplicationController
 
       respond_to do |format|
         format.html { render :index, :layout => with_layout? }
-        format.any(:ttl, :rdf) do
-          # binding.pry
-        end
+        format.any(:ttl, :rdf, :nt)
       end
     end
   end

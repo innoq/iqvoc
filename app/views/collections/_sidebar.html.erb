@@ -7,5 +7,6 @@
   <%= sidebar_item :icon => 'link', :text => 'HTML', :path => collection_url(collection.origin, :format => :html) %>
   <%= sidebar_item :icon => 'link', :text => 'RDF/XML', :path => rdf_url(collection.origin, :format => :rdf, :lang => nil), :id => 'rdf_link_xml' %>
   <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => rdf_url(collection.origin, :format => :ttl, :lang => nil), :id => 'rdf_link_ttl' %>
+  <%= sidebar_item :icon => 'link', :text => 'RDF/NTriples', :path => rdf_url(collection.origin, :format => :nt, :lang => nil), :id => 'rdf_link_nt' %>
   <% end %>
 <% end %>

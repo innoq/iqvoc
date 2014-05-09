@@ -49,7 +49,7 @@ class RdfController < ApplicationController
 
   def dataset
     respond_to do |format|
-      format.any(:rdf, :ttl)
+      format.any(:rdf, :ttl, :nt)
     end
   end
 end
