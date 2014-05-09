@@ -18,10 +18,6 @@ class Label::Base < ActiveRecord::Base
 
   self.table_name = 'labels'
 
-  # ********** Validations
-
-  validates :value, :presence => {:message => I18n.t("txt.models.label.value_error")}
-
   # ********** Associations
 
   has_many :labelings, :foreign_key => 'target_id', :class_name => "Labeling::Base"

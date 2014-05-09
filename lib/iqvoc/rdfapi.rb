@@ -36,6 +36,7 @@ module Iqvoc
     end
 
     URI_REGEXP = /^https?:\/\/[^\s]+$/
+    LITERAL_REGEXP = /^"(.+)"(@(.+))?$/
 
     def self.devour(rdf_subject, rdf_predicate, rdf_object)
       case rdf_predicate

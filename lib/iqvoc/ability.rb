@@ -39,6 +39,7 @@ module Iqvoc
 
           can :full_export, ::Concept::Base
           can :import, ::Concept::Base
+          can :export, ::Concept::Base
 
           can :update, Iqvoc::Concept.root_class.instance
 

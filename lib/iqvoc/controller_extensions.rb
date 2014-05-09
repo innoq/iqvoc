@@ -5,8 +5,8 @@ module Iqvoc
     extend ActiveSupport::Concern
 
     included do
-      prepend_before_filter :set_locale
-      before_filter :ensure_extension
+      prepend_before_action :set_locale
+      before_action :ensure_extension
 
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data

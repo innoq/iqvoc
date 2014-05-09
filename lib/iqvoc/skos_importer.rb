@@ -55,14 +55,14 @@ module Iqvoc
       #
       #     :a skos:prefLabel "foo". # => What is :a? Remember this and try again later
       #     ....
-      #     :a rdf:type skos:Concept # => Now I know :a, good I remebered it's prefLabel...
+      #     :a rdf:type skos:Concept # => Now I know :a, good I remembered it's prefLabel...
       @unknown_second_level_triples = []
 
       # Hash of arrays of arrays: { "_:n123" => [["pred1", "obj1"], ["pred2", "obj2"]] }
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
-      Iqvoc::RDFAPI::FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
         klass.select('origin').load.each do |thing|
           @existing_origins[thing.origin] = klass
         end
@@ -95,18 +95,18 @@ module Iqvoc
             import_second_level_objects(second_level_types, false, *extract_triple(line))
       end
 
-      @logger.debug "Computing 'forward' defined triples..."
+      @logger.info "Computing 'forward' defined triples..."
       @unknown_second_level_triples.each do |s, p, o|
         import_second_level_objects(second_level_types, true, s, p, o)
       end
 
       first_import_step_done = Time.now
-      @logger.debug "Basic import done (took #{(first_import_step_done - start).to_i} seconds)."
+      @logger.info "Basic import done (took #{(first_import_step_done - start).to_i} seconds)."
 
       published = publish
 
       done = Time.now
-      @logger.debug "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
+      @logger.info "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
       puts "Imported #{published} published and #{@new_subjects.count - published} draft subjects in #{(done - start).to_i} seconds."
       puts "  First step took #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
@@ -116,9 +116,9 @@ module Iqvoc
     def publish
       published = 0
       if @publish
-        @logger.debug "Publishing #{@new_subjects.count} new subjects..."
+        @logger.info "Publishing #{@new_subjects.count} new subjects..."
         @new_subjects.each do |subject|
-          if subject.valid_with_full_validation?
+          if subject.publishable?
             subject.publish
             subject.save!
             published += 1
@@ -152,7 +152,9 @@ module Iqvoc
             @logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
-          @seen_first_level_objects[origin] = types[object].create!(:origin => origin)
+          @seen_first_level_objects[origin] = types[object].create! do |klass|
+            klass.origin = origin
+          end
           @new_subjects << @seen_first_level_objects[origin]
         end
         true

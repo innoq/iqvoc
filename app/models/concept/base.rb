@@ -18,7 +18,8 @@ class Concept::Base < ActiveRecord::Base
 
   self.table_name = 'concepts'
 
-  include Iqvoc::Versioning
+  include Publishable
+  include Versioning
 
   class_attribute :default_includes
   self.default_includes = []
@@ -34,10 +35,6 @@ class Concept::Base < ActiveRecord::Base
   end
 
   # ********** Hooks
-
-  after_initialize do
-    @full_validation = false
-  end
 
   before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
@@ -398,24 +395,6 @@ class Concept::Base < ActiveRecord::Base
 
   def to_s
     pref_label.to_s
-  end
-
-  # TODO: rename to "publish!"
-  def save_with_full_validation!
-    @full_validation = true
-    save!
-  end
-
-  # TODO: rename to "publishable?"
-  def valid_with_full_validation?
-    @full_validation = true
-    valid?
-  end
-
-  # TODO: remove
-  def invalid_with_full_validation?
-    @full_validation = true
-    invalid?
   end
 
   def associated_objects_in_editing_mode

@@ -26,7 +26,7 @@ module DashboardHelper
   end
 
   def consistency_status(item)
-    css, msg = if item.valid_with_full_validation?
+    css, msg = if item.publishable?
       ["valid", "&#x2713;"]
     else
       ["invalid", "&#x2717;"]
