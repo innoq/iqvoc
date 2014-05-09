@@ -1,4 +1,5 @@
 require 'iq_rdf'
+require 'uri'
 require 'fileutils'
 
 module Iqvoc
@@ -8,7 +9,8 @@ module Iqvoc
     include Rails.application.routes.url_helpers
 
     def initialize(file_path, type, default_namespace_url, logger = Rails.logger)
-      default_url_options[:host] = default_namespace_url
+      default_url_options[:port] = URI.parse(default_namespace_url).port
+      default_url_options[:host] = URI.parse(default_namespace_url).to_s
 
       @file_path = file_path
       @type = type
