@@ -43,7 +43,7 @@ class Concepts::SchemeController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.any(:rdf, :ttl)
+      format.any(:rdf, :ttl, :nt)
     end
   end
 

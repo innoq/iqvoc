@@ -144,3 +144,14 @@ en:
         created_at: "Created at"
         finished_at: "Finished at"
         success: "Success"
+        publish: "Publish"
+        import_file: "NTriples file"
+        default_namespace: "Default namespace"
+      export:
+        user: "User"
+        created_at: "Created at"
+        finished_at: "Finished at"
+        success: "Success"
+        file_type: "Type"
+        default_namespace: "Default namespace"
+

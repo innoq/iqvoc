@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     resources :concepts
     resources :collections
     resources :imports, :only => [:index, :show, :create]
+    resources :exports, :only => [:index, :show, :create] do
+      get 'download'
+    end
 
     get 'scheme' => 'concepts/scheme#show', :as => 'scheme'
     get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
@@ -71,7 +74,6 @@ Rails.application.routes.draw do
   get 'remote_labels' => 'remote_labels#show', :as => 'remote_label'
   get 'schema' => redirect('/'), :as => 'schema'
   get 'dataset' => 'rdf#dataset', :as => 'rdf_dataset'
-  get 'export' => 'rdf#export', :as => 'rdf_export'
   get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
   get 'search' => 'search_results#index', :as => 'rdf_search'
   get 'hierarchy' => 'hierarchy#index'

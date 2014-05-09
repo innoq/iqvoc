@@ -76,6 +76,10 @@ en:
      form_errors: "Errors"
      representations: "Representations"
      other: "Other"
+     rdf_serialization:
+       ttl: "RDF/Turtle"
+       nt: "RDF/N-Triples"
+       xml: "RDF/XML"
 
    views:
      layouts:
@@ -282,11 +286,14 @@ en:
        start: "Start synchronization"
      import:
        title: "Import"
-       file: "NTriples file"
-       namespace: "Default namespace"
        output: "Output"
        success: "Import job was created. Reload page to see current processing status."
        error: "Error occurred while creating Import job."
+     export:
+       title: "Export"
+       request_export: "Request Export"
+       success: "Export job was created. Reload page to see current processing status."
+       error: "Error occurred while creating Export job."
 
    partials:
      note:

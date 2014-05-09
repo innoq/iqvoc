@@ -1,7 +1,8 @@
 ## [4.4.0]
 
   * [Asynchronous](https://github.com/innoq/iqvoc#background-jobs) SKOS exporter
-  * Web-based SKOS importer should now deal with large uploads
+  * Improved web based SKOS importer
+  * Concepts, collections and concept scheme can be requested as NTriples
   * Rails 4.1
   * Bootstrap 3
 

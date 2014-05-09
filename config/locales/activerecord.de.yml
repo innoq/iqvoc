@@ -145,3 +145,15 @@ de:
         created_at: "erstellt"
         finished_at: "beendet"
         success: "erfolgreich"
+        publish: "Nach Import veröffentlichen?"
+        import_file: "NTriples Datei"
+        default_namespace: "Standard Namespace"
+      export:
+        user: "Benutzer"
+        created_at: "erstellt"
+        finished_at: "beendet"
+        success: "erfolgreich"
+        file_type: "Typ"
+        default_namespace: "Standard Namespace"
+
+

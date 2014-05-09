@@ -37,7 +37,7 @@ class Concepts::VersionsController < ApplicationController
         new_version.rdf_updated_at = nil
         new_version.publish
         new_version.unlock
-        if new_version.valid_with_full_validation?
+        if new_version.publishable?
           new_version.save
 
           if Iqvoc.config["triplestore.autosync"]
@@ -124,7 +124,7 @@ class Concepts::VersionsController < ApplicationController
 
     authorize! :check_consistency, concept
 
-    if concept.valid_with_full_validation?
+    if concept.publishable?
       flash[:success] = t("txt.controllers.versioning.consistency_check_success")
       redirect_to concept_path(:published => 0, :id => concept)
     else
