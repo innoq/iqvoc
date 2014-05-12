@@ -49,8 +49,15 @@ class ExportsController < ApplicationController
   def download
     export = Export.find(params[:export_id])
     time = export.finished_at.strftime("%Y-%m-%d_%H-%M")
-    send_file export.build_filename,
-              filename: "export-#{time}.#{export.file_type}"
+
+    begin
+      send_file export.build_filename,
+                filename: "export-#{time}.#{export.file_type}"
+    rescue ::ActionController::MissingFile => e
+      flash[:error] = t('txt.views.export.missing_file')
+      redirect_to exports_path
+    end
+
   end
 
 end

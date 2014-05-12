@@ -287,6 +287,8 @@ de:
        request_export: "Export anfordern"
        success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
        error: "Es ist ein Fehler aufgetreten. Export-Job konnte nicht erstellt werden."
+       missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
+       missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
 
    partials:
      note:

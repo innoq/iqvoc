@@ -294,6 +294,7 @@ en:
        request_export: "Request Export"
        success: "Export job was created. Reload page to see current processing status."
        error: "Error occurred while creating Export job."
+       missing_file: "An error occurred. Export could not be found."
 
    partials:
      note:
