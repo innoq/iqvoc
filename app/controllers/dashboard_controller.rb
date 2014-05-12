@@ -34,7 +34,7 @@ class DashboardController < ApplicationController
         (xval <=> yval) * factor
       end
     else
-      @items.sort! { |x,y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
+      @items.sort! { |x, y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
     @items = Kaminari.paginate_array(@items).page(params[:page])
@@ -45,15 +45,14 @@ class DashboardController < ApplicationController
 
     if request.post?
       DatabaseCleaner.strategy = :truncation, {
-        :only => ['collection_members', 'concept_relations', 'concepts',
-          'labelings', 'labels', 'matches', 'notations', 'note_annotations',
-          'notes']
+        :except => Iqvoc.truncation_blacklist
       }
       DatabaseCleaner.clean
 
       flash.now[:success] = t("txt.views.dashboard.reset_success")
     else
       flash.now[:danger] = t("txt.views.dashboard.reset_warning")
+      flash.now[:error] = t("txt.views.dashboard.jobs_pending_warning") if Delayed::Job.any?
     end
   end
 
