@@ -45,7 +45,7 @@ class DashboardController < ApplicationController
 
     if request.post?
       DatabaseCleaner.strategy = :truncation, {
-        :except => %w[schema_migrations users exports]
+        :except => %w[schema_migrations users exports imports]
       }
       DatabaseCleaner.clean
 
