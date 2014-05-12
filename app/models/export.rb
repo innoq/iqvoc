@@ -5,6 +5,8 @@ class Export < ActiveRecord::Base
 
   validates_presence_of :default_namespace
 
+  before_destroy :delete_dump_file
+
   def finish!(messages)
     self.output = messages
     self.success = true
@@ -20,6 +22,12 @@ class Export < ActiveRecord::Base
 
   def build_filename
     File.join(Iqvoc.export_path, "#{self.token.to_s}.#{self.file_type}")
+  end
+
+  private
+
+  def delete_dump_file
+    File.delete(self.build_filename)
   end
 
 end
