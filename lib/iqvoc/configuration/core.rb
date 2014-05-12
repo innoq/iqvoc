@@ -19,7 +19,8 @@ module Iqvoc
           :core_assets,
           :search_sections,
           :export_path,
-          :upload_path
+          :upload_path,
+          :truncation_blacklist
 
         self.localized_routes = [] # routing extensibility hook
 
@@ -132,6 +133,14 @@ module Iqvoc
           "collection",
           "languages",
           "datasets"
+        ]
+
+        # ignored database tables during thesaurus truncation
+        self.truncation_blacklist = [
+          'schema_migrations',
+          'users',
+          'exports',
+          'imports'
         ]
 
         # initialize

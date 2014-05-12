@@ -45,14 +45,14 @@ class DashboardController < ApplicationController
 
     if request.post?
       DatabaseCleaner.strategy = :truncation, {
-        :except => %w[schema_migrations users exports imports]
+        :except => Iqvoc.truncation_blacklist
       }
       DatabaseCleaner.clean
 
       flash.now[:success] = t("txt.views.dashboard.reset_success")
     else
       flash.now[:danger] = t("txt.views.dashboard.reset_warning")
-      flash[:error] = t("txt.views.dashboard.jobs_pending_warning") if Delayed::Job.any?
+      flash.now[:error] = t("txt.views.dashboard.jobs_pending_warning") if Delayed::Job.any?
     end
   end
 
