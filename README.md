@@ -60,7 +60,7 @@ Running the cloned source code is possible but any modifications would require a
 
 ## Background Jobs
 
-Note that some features like "Import" exposed in the Web UI store their workload
+Note that some features like "Import" and "Export" exposed in the Web UI store their workload
 as jobs. You can either issue a job worker that runs continuously and watches
 for new jobs via
 
