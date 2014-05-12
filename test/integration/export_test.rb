@@ -20,7 +20,7 @@ require 'iqvoc/skos_importer'
 class ExportTest < ActionDispatch::IntegrationTest
 
   setup do
-    @testdata = File.read(Rails.root.join('test','unit', 'testdata.nt')).split("\n")
+    @testdata = File.read(Rails.root.join('test','models', 'testdata.nt')).split("\n")
     Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
   end
 

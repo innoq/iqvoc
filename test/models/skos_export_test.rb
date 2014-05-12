@@ -26,7 +26,7 @@ class SkosExportTest < ActiveSupport::TestCase
     Iqvoc.config['languages.pref_labeling'] = ['de', 'en']
     Iqvoc.config['languages.further_labelings.Labeling::SKOS::AltLabel'] = ['de', 'en']
 
-    @testdata = File.read(Rails.root.join('test','unit', 'testdata.nt')).split("\n")
+    @testdata = File.read(Rails.root.join('test','models', 'testdata.nt')).split("\n")
 
     Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
   end
