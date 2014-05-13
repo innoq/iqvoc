@@ -107,8 +107,8 @@ module Iqvoc
 
       done = Time.now
       @logger.info "Publishing of #{published} subjects done (took #{(done - first_import_step_done).to_i} seconds). #{@new_subjects.count - published} are in draft state."
-      puts "Imported #{published} published and #{@new_subjects.count - published} draft subjects in #{(done - start).to_i} seconds."
-      puts "  First step took #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
+      @logger.info "Imported #{published} published and #{@new_subjects.count - published} draft subjects in #{(done - start).to_i} seconds."
+      @logger.info "First step took #{(first_import_step_done - start).to_i} seconds, publishing took #{(done - first_import_step_done).to_i} seconds."
 
       ActiveSupport.run_load_hooks(:skos_importer_after_import, self)
     end
