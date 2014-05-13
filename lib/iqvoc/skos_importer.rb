@@ -3,8 +3,12 @@ require 'iqvoc/rdfapi'
 module Iqvoc
   class SkosImporter
 
-    FIRST_LEVEL_OBJECT_CLASSES = [Iqvoc::Concept.base_class, Iqvoc::Collection.base_class]
-    SECOND_LEVEL_OBJECT_CLASSES = Iqvoc::Concept.labeling_classes.keys +
+    class_attribute :first_level_object_classes, :second_level_object_classes
+    self.first_level_object_classes = [
+      Iqvoc::Concept.base_class,
+      Iqvoc::Collection.base_class
+    ]
+    self.second_level_object_classes = Iqvoc::Concept.labeling_classes.keys +
         Iqvoc::Concept.note_classes +
         Iqvoc::Concept.relation_classes +
         Iqvoc::Concept.match_classes +
@@ -12,6 +16,10 @@ module Iqvoc
         Iqvoc::Concept.additional_association_classes.keys +
         [Iqvoc::Concept.root_class] +
         [Iqvoc::Collection.member_class]
+
+    def self.prepend_first_level_object_classes(args)
+      self.first_level_object_classes.unshift(*args)
+    end
 
     def initialize(object, default_namespace_url, logger = Rails.logger, publish = true)
       @file = case object
@@ -62,7 +70,7 @@ module Iqvoc
       @blank_nodes = {}
 
       @existing_origins = {} # To prevent the creation of first level objects we already have
-      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+      first_level_object_classes.each do |klass|
         klass.select('origin').load.each do |thing|
           @existing_origins[thing.origin] = klass
         end
@@ -81,11 +89,11 @@ module Iqvoc
       start = Time.now
 
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
-      FIRST_LEVEL_OBJECT_CLASSES.each do |klass|
+      first_level_object_classes.each do |klass|
         first_level_types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
       end
       second_level_types = {}
-      SECOND_LEVEL_OBJECT_CLASSES.each do |klass|
+      second_level_object_classes.each do |klass|
         second_level_types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
       end
 
@@ -118,7 +126,7 @@ module Iqvoc
       # Respect order of first level classes configured in FIRST_LEVEL_OBJECTS
       # Example: XL labels have to be published before referencing concepts
       sorted_new_subjects = @new_subjects.sort_by do |a|
-        FIRST_LEVEL_OBJECT_CLASSES.index(a.class)
+        first_level_object_classes.index(a.class)
       end
 
       if @publish
