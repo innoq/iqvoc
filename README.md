@@ -88,6 +88,14 @@ overview of the possibilities.
 
 Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki/_pages).
 
+## Versioning
+
+Releases will follow a semantic versioning format:
+
+    <major>.<minor>.<patch>
+
+For more information on SemVer, visit http://semver.org/.
+
 ## Contributing
 
 If you want to help out there are several options:
