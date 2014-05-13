@@ -59,6 +59,10 @@ class Collection::Base < Concept::Base
     "partials/collection/edit_link_base"
   end
 
+  def self.new_link_partial_name
+    "partials/collection/new_link_base"
+  end
+
   def subcollections
     members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
   end

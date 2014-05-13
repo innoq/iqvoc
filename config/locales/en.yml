@@ -281,7 +281,7 @@ en:
        jobs_pending_warning: "Pending background jobs detected (e.g. exports). Pending Jobs will be deleted too."
        reset_success: "Thesaurus has been reset."
      collections:
-       new: "New collection"
+       new: "New Collection"
      triplestore_sync:
        caption: "Sync with Triplestore"
        start: "Start synchronization"
