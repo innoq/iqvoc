@@ -43,56 +43,56 @@ module Iqvoc
         )
 
         self.navigation_items = [{
-          :text => "Dashboard",
-          :href => proc { dashboard_path },
-          :controller => "dashboard",
+          text: "Dashboard",
+          href: proc { dashboard_path },
+          controller: "dashboard",
           :authorized? => proc { can? :use, :dashboard }
         }, {
-          :text => "Scheme",
-          :href => proc { scheme_path },
-          :controller => "concepts/scheme",
+          text: "Scheme",
+          href: proc { scheme_path },
+          controller: "concepts/scheme",
           :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
         }, {
-          :text => proc { ::Concept::Base.model_name.human(:count => 2) },
-          :href => proc { hierarchical_concepts_path },
-          :controller => "concepts/hierarchical",
+          text: proc { ::Concept::Base.model_name.human(count: 2) },
+          href: proc { hierarchical_concepts_path },
+          controller: "concepts/hierarchical",
           :active? => proc {
             %w(concepts/hierarchical concepts/alphabetical concepts/untranslated).
                 include?(params[:controller])
           }
         }, {
-          :text => proc { t("txt.views.navigation.collections") },
-          :href => proc { collections_path },
-          :controller => "collections"
+          text: proc { t("txt.views.navigation.collections") },
+          href: proc { collections_path },
+          controller: "collections"
         }, {
-          :text => proc { t("txt.views.navigation.search") },
-          :href => proc { search_path },
-          :controller => "search_results"
+          text: proc { t("txt.views.navigation.search") },
+          href: proc { search_path },
+          controller: "search_results"
         }, {
-          :text => proc { t("txt.views.navigation.administration") },
+          text: proc { t("txt.views.navigation.administration") },
           :authorized? => proc { can? :use, :administration },
-          :items => [{
-            :text => proc { t("txt.views.navigation.users") },
-            :href => proc { users_path },
-            :controller => "users",
+          items: [{
+            text: proc { t("txt.views.navigation.users") },
+            href: proc { users_path },
+            controller: "users",
             :authorized? => proc { can? :manage, User }
           }, {
-            :text => proc { t("txt.views.navigation.instance_configuration") },
-            :href => proc { instance_configuration_path },
-            :controller => "instance_configuration",
+            text: proc { t("txt.views.navigation.instance_configuration") },
+            href: proc { instance_configuration_path },
+            controller: "instance_configuration",
             :authorized? => proc { can? :manage, Iqvoc.config }
           }]
         }, {
-          :text => proc { t("txt.views.navigation.help") },
-          :items => [{
-            :text => proc { t("txt.views.navigation.help") },
-            :href => proc { help_path },
-            :controller => "pages",
-            :action => "help",
+          text: proc { t("txt.views.navigation.help") },
+          items: [{
+            text: proc { t("txt.views.navigation.help") },
+            href: proc { help_path },
+            controller: "pages",
+            action: "help",
             :authorized? => proc { can? :read, :help }
           }, {
-            :text => proc { t("txt.views.navigation.about") },
-            :href => "http://iqvoc.net/"
+            text: proc { t("txt.views.navigation.about") },
+            href: "http://iqvoc.net/"
           }]
         }]
 
@@ -108,14 +108,14 @@ module Iqvoc
         self.default_rdf_namespace_helper_methods = [:iqvoc_default_rdf_namespaces]
 
         self.rdf_namespaces = {
-          :rdf  => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-          :rdfs => "http://www.w3.org/2000/01/rdf-schema#",
-          :owl  => "http://www.w3.org/2002/07/owl#",
-          :skos => "http://www.w3.org/2004/02/skos/core#",
-          :dct  => "http://purl.org/dc/terms/",
-          :foaf => "http://xmlns.com/foaf/spec/",
-          :void => "http://rdfs.org/ns/void#",
-          :iqvoc => "http://try.iqvoc.net/schema#"
+          rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+          owl: "http://www.w3.org/2002/07/owl#",
+          skos: "http://www.w3.org/2004/02/skos/core#",
+          dct: "http://purl.org/dc/terms/",
+          foaf: "http://xmlns.com/foaf/spec/",
+          void: "http://rdfs.org/ns/void#",
+          iqvoc: "http://try.iqvoc.net/schema#"
         }
 
         # The class to use for automatic generation of change notes on every save

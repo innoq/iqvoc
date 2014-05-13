@@ -105,7 +105,7 @@ module Iqvoc
               :matches,
               :collection_members,
               :notations,
-              {:relations => :target, :labelings => :target, :notes => :annotations}
+              {relations: :target, labelings: :target, notes: :annotations}
           ])
 
         concepts.each do |concept|

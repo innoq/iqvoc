@@ -5,7 +5,7 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
 
   def initialize(url)
     @url = url
-    @conn = Faraday.new(:url => url) do |conn|
+    @conn = Faraday.new(url: url) do |conn|
       #conn.use Faraday::Response::Logger if Rails.env.development?
       conn.adapter Faraday.default_adapter
     end

@@ -28,24 +28,24 @@ module Iqvoc
     # === Usage:
     #
     # ==== Cloning a model without an attribute
-    # pirate.clone :except => :name
+    # pirate.clone except: :name
     #
     # ==== Cloning a model without multiple attributes
-    # pirate.clone :except => [:name, :nick_name]
+    # pirate.clone except: [:name, :nick_name]
     # ==== Cloning one single association
-    # pirate.clone :include => :mateys
+    # pirate.clone include: :mateys
     #
     # ==== Cloning multiple associations
-    # pirate.clone :include => [:mateys, :treasures]
+    # pirate.clone include: [:mateys, :treasures]
     #
     # ==== Cloning really deep
-    # pirate.clone :include => {:treasures => :gold_pieces}
+    # pirate.clone include: {treasures: :gold_pieces}
     #
     # ==== Cloning really deep with multiple associations
-    # pirate.clone :include => [:mateys, {:treasures => :gold_pieces}]
+    # pirate.clone include: [:mateys, {treasures: :gold_pieces}]
     #
     # ==== Cloning multiple associations - but only the join table entries without cloning the associated objects themselves
-    # pirate.clone :include_association => [:matey_ids, :treasure_ids]
+    # pirate.clone include_association: [:matey_ids, :treasure_ids]
     #
     def dup_with_deep_cloning(options = {})
       kopy = dup_without_deep_cloning
@@ -68,7 +68,7 @@ module Iqvoc
             deep_associations = association[association.keys.first]
             association = association.keys.first
           end
-          opts = deep_associations.blank? ? {} : {:include => deep_associations}
+          opts = deep_associations.blank? ? {} : {include: deep_associations}
           association_reflection = self.class.reflect_on_association(association)
           cloned_object = case association_reflection.macro
           when :belongs_to, :has_one

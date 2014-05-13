@@ -4,12 +4,12 @@ class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HTTPAd
     languages = Array.wrap(languages).flatten.join(",")
 
     params = {
-      :q => raw_params[:q],
-      :t => raw_params[:t],
-      :l => languages,
-      :c => raw_params[:c],
-      :qt => raw_params[:qt],
-      :page => 1 # hard code the first page as we need to follow pagination links
+      q: raw_params[:q],
+      t: raw_params[:t],
+      l: languages,
+      c: raw_params[:c],
+      qt: raw_params[:qt],
+      page: 1 # hard code the first page as we need to follow pagination links
     }
 
     fetch_results('/search.html', params)

@@ -26,9 +26,9 @@ class ConceptsController < ApplicationController
       format.json do # Search for widget
         scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
             merge(Label::Base.by_query_value("#{params[:query]}%"))
-        scope = scope.where(:top_term => false) if params[:exclude_top_terms]
+        scope = scope.where(top_term: false) if params[:exclude_top_terms]
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
-        render :json => @concepts
+        render json: @concepts
       end
     end
   end
@@ -56,9 +56,9 @@ class ConceptsController < ApplicationController
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept,
-          Iqvoc::Concept.base_class.default_includes + [:collection_members => {:collection => :labels},
-          :broader_relations => {:target => [:pref_labels, :broader_relations]},
-          :narrower_relations => {:target => [:pref_labels, :narrower_relations]}])
+          Iqvoc::Concept.base_class.default_includes + [collection_members: {collection: :labels},
+          broader_relations: {target: [:pref_labels, :broader_relations]},
+          narrower_relations: {target: [:pref_labels, :narrower_relations]}])
 
         published ? render('show_published') : render('show_unpublished')
       end
@@ -66,25 +66,25 @@ class ConceptsController < ApplicationController
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept, [:labels,
-            { :relations => { :target => [:labelings, :relations] } }])
+            { relations: { target: [:labelings, :relations] } }])
 
         published_relations = lambda { |concept|
           return concept.relations.includes(:target).
             merge(Iqvoc::Concept.base_class.published).references(:concepts)
         }
         concept_data = {
-          :origin => @concept.origin,
-          :labels => @concept.labelings.map { |ln| labeling_as_json(ln) },
-          :relations => published_relations.call(@concept).map { |relation|
+          origin: @concept.origin,
+          labels: @concept.labelings.map { |ln| labeling_as_json(ln) },
+          relations: published_relations.call(@concept).map { |relation|
             concept = relation.target
             {
-              :origin => concept.origin,
-              :labels => concept.labelings.map { |ln| labeling_as_json(ln) },
-              :relations => published_relations.call(concept).count
+              origin: concept.origin,
+              labels: concept.labelings.map { |ln| labeling_as_json(ln) },
+              relations: published_relations.call(concept).count
             }
           }
         }
-        render :json => concept_data
+        render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
     end
@@ -112,7 +112,7 @@ class ConceptsController < ApplicationController
 
     if @concept.save
       flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
-      redirect_to concept_path(:published => 0, :id => @concept.origin)
+      redirect_to concept_path(published: 0, id: @concept.origin)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
       render :new
@@ -148,10 +148,10 @@ class ConceptsController < ApplicationController
 
     if @concept.update_attributes(params[:concept])
       flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
-      redirect_to concept_path(:published => 0, :id => @concept)
+      redirect_to concept_path(published: 0, id: @concept)
     else
       flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
-      render :action => :edit
+      render action: :edit
     end
   end
 
@@ -165,7 +165,7 @@ class ConceptsController < ApplicationController
       redirect_to dashboard_path
     else
       flash[:success] = I18n.t("txt.controllers.concept_versions.delete_error")
-      redirect_to concept_path(:published => 0, :id => @new_concept)
+      redirect_to concept_path(published: 0, id: @new_concept)
     end
   end
 
@@ -175,10 +175,10 @@ class ConceptsController < ApplicationController
   def labeling_as_json(labeling)
     label = labeling.target
     return {
-      :origin => label.origin,
-      :reltype => labeling.type.to_relation_name,
-      :value => label.value,
-      :lang => label.language
+      origin: label.origin,
+      reltype: labeling.type.to_relation_name,
+      value: label.value,
+      lang: label.language
       # TODO: relations (XL only)
     }
   end

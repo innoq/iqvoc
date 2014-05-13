@@ -15,7 +15,7 @@
 # limitations under the License.
 
 FactoryGirl.define do
-  factory :concept, :class => Iqvoc::Concept.base_class do |c|
+  factory :concept, class: Iqvoc::Concept.base_class do |c|
     c.sequence(:origin) { |n| "_000000#{n}" }
     c.published_at 3.days.ago
     c.top_term true
@@ -23,44 +23,44 @@ FactoryGirl.define do
     c.narrower_relations { |narrower_relations| [narrower_relations.association(:narrower_relation)] }
   end
 
-  factory :collection, :class => Iqvoc::Collection.base_class do |c|
+  factory :collection, class: Iqvoc::Collection.base_class do |c|
     c.sequence(:origin) { |n| "_100000#{n}" }
     c.published_at 3.days.ago
     c.labelings { |labelings| [labelings.association(:pref_labeling)] }
   end
 
-  factory :stupid_broader_relation, :class => Iqvoc::Concept.broader_relation_class do |rel|
+  factory :stupid_broader_relation, class: Iqvoc::Concept.broader_relation_class do |rel|
   end
 
-  factory :narrower_relation, :class => Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
+  factory :narrower_relation, class: Iqvoc::Concept.broader_relation_class.narrower_class do |rel|
     rel.target {|target|
-      target.association(:concept, :top_term => false, :broader_relations => [], :narrower_relations => [], :pref_labelings => [
-          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label, :value => 'Some narrower relation'))
+      target.association(:concept, top_term: false, broader_relations: [], narrower_relations: [], pref_labelings: [
+          FactoryGirl.create(:pref_labeling, target: FactoryGirl.create(:pref_label, value: 'Some narrower relation'))
         ])
     }
-    rel.after(:create) { |new_relation| FactoryGirl.create(:stupid_broader_relation, :owner => new_relation.target, :target => new_relation.owner) }
+    rel.after(:create) { |new_relation| FactoryGirl.create(:stupid_broader_relation, owner: new_relation.target, target: new_relation.owner) }
   end
 
-  factory :pref_labeling, :class => Iqvoc::Concept.pref_labeling_class do |lab|
+  factory :pref_labeling, class: Iqvoc::Concept.pref_labeling_class do |lab|
     lab.target { |target| target.association(:pref_label) }
   end
 
-  factory :alt_labeling, :class => Iqvoc::Concept.further_labeling_classes.first.first do |lab|
+  factory :alt_labeling, class: Iqvoc::Concept.further_labeling_classes.first.first do |lab|
     lab.target { |target| target.association(:alt_label) }
   end
 
   sequence(:label_number) { |n| n + 1 }
 
-  factory :label, :class => Label::Base do |l|
+  factory :label, class: Label::Base do |l|
     l.language Iqvoc::Concept.pref_labeling_languages.first
     l.published_at 2.days.ago
     l.value "Tree #{FactoryGirl.generate(:label_number)}"
   end
 
-  factory :pref_label, :parent => :label, :class => Iqvoc::Concept.pref_labeling_class.label_class do |l|
+  factory :pref_label, parent: :label, class: Iqvoc::Concept.pref_labeling_class.label_class do |l|
   end
 
-  factory :alt_label, :parent => :label, :class => Labeling::SKOS::AltLabel.label_class do |l|
+  factory :alt_label, parent: :label, class: Labeling::SKOS::AltLabel.label_class do |l|
   end
 
   factory :user do |u|

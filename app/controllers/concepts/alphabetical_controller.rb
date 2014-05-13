@@ -22,7 +22,7 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    redirect_to(url_for :prefix => "a") unless params[:prefix]
+    redirect_to(url_for prefix: "a") unless params[:prefix]
 
     datasets = init_datasets
 
@@ -46,13 +46,13 @@ class Concepts::AlphabeticalController < ConceptsController
       if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
         includes << Note::SKOS::Definition.name.to_relation_name
       end
-      ActiveRecord::Associations::Preloader.new.preload(@search_results, :owner => includes)
+      ActiveRecord::Associations::Preloader.new.preload(@search_results, owner: includes)
 
       @search_results.to_a.map! { |pl| AlphabeticalSearchResult.new(pl) }
     end
 
     respond_to do |format|
-      format.html { render :index, :layout => with_layout? }
+      format.html { render :index, layout: with_layout? }
     end
   end
 
@@ -67,7 +67,7 @@ class Concepts::AlphabeticalController < ConceptsController
       includes(:target).
       order("LOWER(#{Label::Base.table_name}.value)").
       joins(:owner).
-      where(:concepts => { :type => Iqvoc::Concept.base_class_name }).
+      where(concepts: { type: Iqvoc::Concept.base_class_name }).
       references(:concepts, :labels, :labelings).
       page(params[:page])
   end

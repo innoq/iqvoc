@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if User.where(:email => 'admin@iqvoc').none?
+if User.where(email: 'admin@iqvoc').none?
   User.create! do |user|
     user.forename = 'Admin'
     user.surname  = 'Istrator'
@@ -26,7 +26,7 @@ if User.where(:email => 'admin@iqvoc').none?
   end
 end
 
-if User.where(:email => 'demo@iqvoc').none?
+if User.where(email: 'demo@iqvoc').none?
   User.create! do |user|
     user.forename = 'Demo'
     user.surname  = 'User'

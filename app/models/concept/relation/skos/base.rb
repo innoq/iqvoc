@@ -26,7 +26,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
     relation_instance = rdf_subject.send(self.name.to_relation_name).select{|rel| rel.target == rdf_object}
     if relation_instance.empty?
-      relation_instance = relation_class.new(:target => rdf_object)
+      relation_instance = relation_class.new(target: rdf_object)
       rdf_subject.send(self.name.to_relation_name) << relation_instance
     end
 
@@ -34,7 +34,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
       reverse_class      = relation_class.reverse_relation_class
       reverse_collection = rdf_object.send(reverse_class.name.to_relation_name)
       if reverse_collection.select{|rel| rel.target == rdf_subject}.empty?
-        reverse_instance = reverse_class.new(:target => rdf_subject)
+        reverse_instance = reverse_class.new(target: rdf_subject)
         reverse_collection << reverse_instance
       end
     end
@@ -48,7 +48,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
       document << IqRdf::build_uri(target.origin) do |subject|
         target.pref_labelings.each do |labeling|
           subject.send(labeling.rdf_namespace).send(labeling.rdf_predicate, labeling.target.value.to_s,
-              :lang => labeling.target.language)
+              lang: labeling.target.language)
         end
       end
     end

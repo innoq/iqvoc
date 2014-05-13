@@ -24,7 +24,7 @@ class Match::SKOS::Base < Match::Base
     uri = $1
 
     match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-    match_class.new(:value => uri).tap do |match|
+    match_class.new(value: uri).tap do |match|
       rdf_subject.send(self.name.to_relation_name) << match
     end
   end

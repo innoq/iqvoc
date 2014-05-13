@@ -44,11 +44,11 @@ class Collections::VersionsController < ApplicationController
           redirect_to collection_path(new_version)
         else
           flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
-          redirect_to collection_path(new_version, :published => 0)
+          redirect_to collection_path(new_version, published: 0)
         end
       else
         flash[:error] = t("txt.controllers.versioning.merged_delete_error")
-        redirect_to collection_path(new_version, :published => 0)
+        redirect_to collection_path(new_version, published: 0)
       end
     end
   end
@@ -69,7 +69,7 @@ class Collections::VersionsController < ApplicationController
       new_version.save!
     end
     flash[:success] = t("txt.controllers.versioning.branched")
-    redirect_to edit_collection_path(new_version, :published => 0)
+    redirect_to edit_collection_path(new_version, published: 0)
   end
 
   def lock
@@ -85,10 +85,10 @@ class Collections::VersionsController < ApplicationController
     authorize! :lock, new_version
 
     new_version.lock_by_user(current_user.id)
-    new_version.save :validate => false
+    new_version.save validate: false
 
     flash[:success] = t("txt.controllers.versioning.locked")
-    redirect_to edit_collection_path(new_version, :published => 0)
+    redirect_to edit_collection_path(new_version, published: 0)
   end
 
   def unlock
@@ -104,11 +104,11 @@ class Collections::VersionsController < ApplicationController
     authorize! :unlock, new_version
 
     new_version.unlock
-    new_version.save :validate => false
+    new_version.save validate: false
 
     flash[:success] = t("txt.controllers.versioning.unlocked")
 
-    redirect_to collection_path(new_version, :published => 0)
+    redirect_to collection_path(new_version, published: 0)
   end
 
   def consistency_check
@@ -121,10 +121,10 @@ class Collections::VersionsController < ApplicationController
 
     if collection.publishable?
       flash[:success] = t("txt.controllers.versioning.consistency_check_success")
-      redirect_to collection_path(collection, :published => 0)
+      redirect_to collection_path(collection, published: 0)
     else
       flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      redirect_to edit_collection_path(collection, :published => 0, :full_consistency_check => "1")
+      redirect_to edit_collection_path(collection, published: 0, full_consistency_check: "1")
     end
   end
 
@@ -139,7 +139,7 @@ class Collections::VersionsController < ApplicationController
     collection.to_review
     collection.save!
     flash[:success] = t("txt.controllers.versioning.to_review_success")
-    redirect_to collection_path(collection, :published => 0)
+    redirect_to collection_path(collection, published: 0)
   end
 
 end

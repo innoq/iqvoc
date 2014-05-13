@@ -17,11 +17,11 @@
 module DashboardHelper
 
   def sorting_controls_for(name)
-    content_tag :div, :class => "sorting-controls" do
+    content_tag :div, class: "sorting-controls" do
       link_to(icon("arrow-circle-o-up", "sorting-arrow"),
-        dashboard_path(:order => "asc", :by => name.to_s)) +
+        dashboard_path(order: "asc", by: name.to_s)) +
         link_to(icon("arrow-circle-o-down", "sorting-arrow"),
-        dashboard_path(:order => "desc", :by => name.to_s))
+        dashboard_path(order: "desc", by: name.to_s))
     end
   end
 
@@ -32,14 +32,14 @@ module DashboardHelper
       ["invalid", "&#x2717;"]
     end
 
-    content_tag :span, raw(msg), :class => css
+    content_tag :span, raw(msg), class: css
   end
 
   def link_to_dashboard_item(item)
     if item.is_a?(Label::Base)
-      item.published? ? label_path(:id => item.origin) : label_path(:published => 0, :id => item.origin)
+      item.published? ? label_path(id: item.origin) : label_path(published: 0, id: item.origin)
     else
-      item.published? ? concept_path(:id => item.origin) : concept_path(:published => 0, :id => item.origin)
+      item.published? ? concept_path(id: item.origin) : concept_path(published: 0, id: item.origin)
     end
   end
 

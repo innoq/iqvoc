@@ -26,14 +26,14 @@ module FormHelper
     id = options.delete(:id)
 
     label = if label_text
-      label_tag(id, label_text, :class => 'control-label')
+      label_tag(id, label_text, class: 'control-label')
     else
       ActiveSupport::SafeBuffer.new # empty safe string
     end
 
-    content_tag(:div, :class => 'control-group') do
+    content_tag(:div, class: 'control-group') do
       label <<
-      content_tag(:div, :class => 'controls') do
+      content_tag(:div, class: 'controls') do
         capture(&block)
       end
     end

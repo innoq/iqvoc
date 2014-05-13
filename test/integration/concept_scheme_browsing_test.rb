@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
 
   test "list top concepts in rdf scheme" do
-    @concept = FactoryGirl.create(:concept, :broader_relations => [])
+    @concept = FactoryGirl.create(:concept, broader_relations: [])
 
     visit "/scheme.ttl"
 
@@ -28,7 +28,7 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
   end
 
   test "top concepts rdf" do
-    @concept = FactoryGirl.create(:concept, :broader_relations => [])
+    @concept = FactoryGirl.create(:concept, broader_relations: [])
 
     visit "/#{@concept.origin}.ttl"
 
@@ -36,7 +36,7 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
   end
 
   test "non-top-concept in scheme" do
-    non_top_concept = FactoryGirl.create(:concept, :broader_relations => [], :top_term => false)
+    non_top_concept = FactoryGirl.create(:concept, broader_relations: [], top_term: false)
 
     visit "/#{non_top_concept.origin}.ttl"
 
@@ -45,27 +45,27 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
   end
 
   test "declare top concepts" do
-    visit hierarchical_concepts_path(:lang => :en, :format => :html)
+    visit hierarchical_concepts_path(lang: :en, format: :html)
 
-    assert !page.has_link?("Tree 2", :href => "http://www.example.com/en/concepts/foo_1.html")
-    assert !page.has_link?("Tree 2", :href => "http://www.example.com/en/concepts/foo_2.html")
+    assert !page.has_link?("Tree 2", href: "http://www.example.com/en/concepts/foo_1.html")
+    assert !page.has_link?("Tree 2", href: "http://www.example.com/en/concepts/foo_2.html")
 
-    concept1 = FactoryGirl.create(:concept, :origin => "foo_1", :top_term => false)
-    concept2 = FactoryGirl.create(:concept, :origin => "foo_2", :top_term => false)
+    concept1 = FactoryGirl.create(:concept, origin: "foo_1", top_term: false)
+    concept2 = FactoryGirl.create(:concept, origin: "foo_2", top_term: false)
 
     login "administrator"
-    visit edit_scheme_path(:lang => :en, :format => :html)
+    visit edit_scheme_path(lang: :en, format: :html)
 
     fill_in "concept_inline_top_concept_origins",
-      :with => [concept1.origin, concept2.origin].join(",")
+      with: [concept1.origin, concept2.origin].join(",")
     click_button "Save"
 
     assert page.has_content? "Concept scheme has been saved."
 
-    visit hierarchical_concepts_path(:lang => :en, :format => :html)
+    visit hierarchical_concepts_path(lang: :en, format: :html)
 
-    assert page.has_link? "Tree 2", :href => "http://www.example.com/en/concepts/foo_1.html"
-    assert page.has_link? "Tree 2", :href => "http://www.example.com/en/concepts/foo_2.html"
+    assert page.has_link? "Tree 2", href: "http://www.example.com/en/concepts/foo_1.html"
+    assert page.has_link? "Tree 2", href: "http://www.example.com/en/concepts/foo_2.html"
   end
 
 end

@@ -47,7 +47,7 @@ boot:
     @concepts.merge! create_hierarchy(additional_concepts, @rel_class, {})
     @concepts["boot"].update_attribute("top_term", true)
 
-    get :index, { :lang => "en", :format => "ttl" }
+    get :index, { lang: "en", format: "ttl" }
     assert_response 200
     %w(root foo bar alpha bravo uno dos boot zoo car).each do |id|
       assert @response.body.include?(":#{id} a skos:Concept;"), "#{id} missing"
@@ -58,7 +58,7 @@ boot:
     end
 
     Iqvoc.config["performance.unbounded_hierarchy"] = true
-    get :index, { :lang => "en", :format => "ttl" }
+    get :index, { lang: "en", format: "ttl" }
     assert_response 200
 
     %w(root foo bar alpha bravo uno dos lorem ipsum boot zoo car).each do |id|
@@ -67,7 +67,7 @@ boot:
   end
 
   test "permission handling" do
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = get_entries("ul.concept-hierarchy li li")
@@ -81,7 +81,7 @@ boot:
 
     @concepts["bar"].update_attribute("published_at", nil)
 
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = get_entries("ul.concept-hierarchy li li")
@@ -91,7 +91,7 @@ boot:
   end
 
   test "caching" do
-    params = { :lang => "en", :format => "ttl", :root => "root" }
+    params = { lang: "en", format: "ttl", root: "root" }
 
     # ETag generation & cache control
 
@@ -105,17 +105,17 @@ boot:
     assert_response 200
     assert_equal etag, @response.headers["ETag"]
 
-    get :show, params.merge(:published => "0")
+    get :show, params.merge(published: "0")
     assert_response 200
     assert @response.headers["Cache-Control"].include?("private")
 
     # ETag keyed on params
 
-    get :show, params.merge(:depth => 4)
+    get :show, params.merge(depth: 4)
     assert_response 200
     assert_not_equal etag, @response.headers["ETag"]
 
-    get :show, params.merge(:published => 0)
+    get :show, params.merge(published: 0)
     assert_response 200
     assert_not_equal etag, @response.headers["ETag"]
 
@@ -152,7 +152,7 @@ boot:
   test "RDF representations" do
     # Turtle
 
-    get :show, :lang => "en", :format => "ttl", :root => "root"
+    get :show, lang: "en", format: "ttl", root: "root"
     assert_response 200
     assert_equal @response.content_type, "text/turtle"
     assert @response.body =~ /:root[^\.]+skos:topConceptOf[^\.]+:scheme/m
@@ -182,7 +182,7 @@ boot:
      skos:prefLabel "Dos"@en.
     EOS
 
-    get :show, :lang => "en", :format => "ttl", :root => "lorem", :dir => "up"
+    get :show, lang: "en", format: "ttl", root: "lorem", dir: "up"
     assert_response 200
     assert_equal @response.content_type, "text/turtle"
     assert @response.body.include?(<<-EOS)
@@ -212,30 +212,30 @@ boot:
 
     # RDF/XML
 
-    get :show, :lang => "en", :format => "rdf", :root => "root"
+    get :show, lang: "en", format: "rdf", root: "root"
     assert_response 200
     assert_equal @response.content_type, "application/rdf+xml"
   end
 
   test "root parameter handling" do
     assert_raises ActionController::UrlGenerationError do
-      get :show, :format => "html"
+      get :show, format: "html"
     end
 
-    get :show, :lang => "en", :format => "html", :root => "N/A"
+    get :show, lang: "en", format: "html", root: "N/A"
     assert_response 404
     assert_equal flash[:error], "no concept matching root parameter"
     entries = css_select("ul.concept-hierarchy li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     assert_response 200
     assert_equal flash[:error], nil
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 1
     assert_equal entries[0], "Root"
 
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = get_entries("ul.concept-hierarchy li li")
@@ -247,7 +247,7 @@ boot:
     entries = css_select("ul.concept-hierarchy li li li li li")
     assert_equal entries.length, 0 # exceeded default depth
 
-    get :show, :lang => "en", :format => "html", :root => "bravo"
+    get :show, lang: "en", format: "html", root: "bravo"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Bravo"]
     entries = get_entries("ul.concept-hierarchy li li")
@@ -257,7 +257,7 @@ boot:
     entries = css_select("ul.concept-hierarchy li li li li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "lorem"
+    get :show, lang: "en", format: "html", root: "lorem"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Lorem"]
     entries = css_select("ul.concept-hierarchy li li")
@@ -267,15 +267,15 @@ boot:
   test "depth handling" do
     selector = "ul.concept-hierarchy li li li li li"
 
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     entries = css_select(selector)
     assert_equal entries.length, 0 # default depth is 3
 
-    get :show, :lang => "en", :format => "html", :root => "root", :depth => 4
+    get :show, lang: "en", format: "html", root: "root", depth: 4
     entries = css_select(selector)
     assert_equal entries.length, 2
 
-    get :show, :lang => "en", :format => "html", :root => "root", :depth => 1
+    get :show, lang: "en", format: "html", root: "root", depth: 1
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = get_entries("ul.concept-hierarchy li li")
@@ -283,35 +283,35 @@ boot:
     entries = css_select("ul.concept-hierarchy li li li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "root", :depth => 5
+    get :show, lang: "en", format: "html", root: "root", depth: 5
     assert_response 403
     assert_equal flash[:error], "excessive depth"
 
-    get :show, :lang => "en", :format => "html", :root => "root", :depth => "invalid"
+    get :show, lang: "en", format: "html", root: "root", depth: "invalid"
     assert_response 400
     assert_equal flash[:error], "invalid depth parameter"
   end
 
   test "direction handling" do
-    get :show, :lang => "en", :format => "html", :root => "root"
+    get :show, lang: "en", format: "html", root: "root"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = get_entries("ul.concept-hierarchy li li li li")
     assert_equal entries, ["Uno", "Dos"]
 
-    get :show, :lang => "en", :format => "html", :root => "root", :dir => "up"
+    get :show, lang: "en", format: "html", root: "root", dir: "up"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Root"]
     entries = css_select("ul.concept-hierarchy li li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "lorem"
+    get :show, lang: "en", format: "html", root: "lorem"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Lorem"]
     entries = css_select("ul.concept-hierarchy li li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up"
+    get :show, lang: "en", format: "html", root: "lorem", dir: "up"
     entries = get_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Lorem"]
     entries = get_entries("ul.concept-hierarchy li li li li")
@@ -319,7 +319,7 @@ boot:
     entries = css_select("ul.concept-hierarchy li li li li li")
     assert_equal entries.length, 0
 
-    get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up", :depth => 4
+    get :show, lang: "en", format: "html", root: "lorem", dir: "up", depth: 4
     page.all("ul.concept-hierarchy li").
         map { |node| node.native.children.first.text }
     entries = get_entries("ul.concept-hierarchy li li li li li")
@@ -327,28 +327,28 @@ boot:
   end
 
   test "siblings handling" do
-    get :show, :lang => "en", :format => "html", :root => "foo"
+    get :show, lang: "en", format: "html", root: "foo"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo"]
 
-    get :show, :lang => "en", :format => "html", :root => "foo", :siblings => "true"
+    get :show, lang: "en", format: "html", root: "foo", siblings: "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Foo", "Bar"]
 
-    get :show, :lang => "en", :format => "html", :root => "lorem"
+    get :show, lang: "en", format: "html", root: "lorem"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries, ["Lorem"]
 
-    get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => "true"
+    get :show, lang: "en", format: "html", root: "lorem", dir: "up",
+        siblings: "true"
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 8
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo"].each do |name|
       assert entries.include?(name), "missing entry: #{name}"
     end
 
-    get :show, :lang => "en", :format => "html", :root => "lorem", :dir => "up",
-        :siblings => "1", :depth => 4
+    get :show, lang: "en", format: "html", root: "lorem", dir: "up",
+        siblings: "1", depth: 4
     entries = get_all_entries("ul.concept-hierarchy li")
     assert_equal entries.length, 9
     ["Lorem", "Ipsum", "Uno", "Dos", "Alpha", "Bravo", "Bar", "Foo", "Root"].each do |name|
@@ -357,7 +357,7 @@ boot:
   end
 
   test "avoid duplication" do # in response to a bug report
-    get :show, :lang => "en", :format => "ttl", :root => "uno", :dir => "up"
+    get :show, lang: "en", format: "ttl", root: "uno", dir: "up"
     assert_response 200
     assert_equal @response.content_type, "text/turtle"
     assert @response.body.include?(<<-EOS)
@@ -396,12 +396,12 @@ boot:
   end
 
   def create_concept(origin, pref_label, label_lang, published=true)
-    concept = Iqvoc::Concept.base_class.create(:origin => origin,
-        :published_at => (published ? Time.now : nil))
-    label = Iqvoc::Label.base_class.create(:value => pref_label,
-        :language => label_lang)
-    labeling = Iqvoc::Concept.pref_labeling_class.create(:owner => concept,
-        :target => label)
+    concept = Iqvoc::Concept.base_class.create(origin: origin,
+        published_at: (published ? Time.now : nil))
+    label = Iqvoc::Label.base_class.create(value: pref_label,
+        language: label_lang)
+    labeling = Iqvoc::Concept.pref_labeling_class.create(owner: concept,
+        target: label)
     return concept
   end
 

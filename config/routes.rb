@@ -17,7 +17,7 @@
 Rails.application.routes.draw do
   apipie
 
-  scope ':lang', :constraints => Iqvoc.routing_constraint do
+  scope ':lang', constraints: Iqvoc.routing_constraint do
     Iqvoc.localized_routes.each do |hook|
       hook.call(self)
       ActiveSupport::Deprecation.warn <<-EOF
@@ -26,17 +26,17 @@ Rails.application.routes.draw do
       EOF
     end
 
-    resource  :user_session, :only => [:new, :create, :destroy]
-    resources :users, :except => [:show]
+    resource  :user_session, only: [:new, :create, :destroy]
+    resources :users, except: [:show]
     resources :concepts
     resources :collections
-    resources :imports, :only => [:index, :show, :create]
-    resources :exports, :only => [:index, :show, :create] do
+    resources :imports, only: [:index, :show, :create]
+    resources :exports, only: [:index, :show, :create] do
       get 'download'
     end
 
-    get 'scheme' => 'concepts/scheme#show', :as => 'scheme'
-    get 'scheme/edit' => 'concepts/scheme#edit', :as => 'edit_scheme'
+    get 'scheme' => 'concepts/scheme#show', as: 'scheme'
+    get 'scheme/edit' => 'concepts/scheme#edit', as: 'edit_scheme'
     patch 'scheme' => 'concepts/scheme#update'
 
     get 'hierarchy' => 'hierarchy#index'
@@ -45,50 +45,50 @@ Rails.application.routes.draw do
     get 'triplestore_sync' => 'triplestore_sync#index'
     post 'triplestore_sync' => 'triplestore_sync#sync'
 
-    post 'concepts/:origin/branch'      => 'concepts/versions#branch',    :as => 'concept_versions_branch'
-    post 'concepts/:origin/merge'       => 'concepts/versions#merge',     :as => 'concept_versions_merge'
-    post 'concepts/:origin/lock'        => 'concepts/versions#lock',      :as => 'concept_versions_lock'
-    post 'concepts/:origin/unlock'      => 'concepts/versions#unlock',    :as => 'concept_versions_unlock'
-    post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', :as => 'concept_versions_to_review'
-    get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', :as => 'concept_versions_consistency_check'
+    post 'concepts/:origin/branch'      => 'concepts/versions#branch',    as: 'concept_versions_branch'
+    post 'concepts/:origin/merge'       => 'concepts/versions#merge',     as: 'concept_versions_merge'
+    post 'concepts/:origin/lock'        => 'concepts/versions#lock',      as: 'concept_versions_lock'
+    post 'concepts/:origin/unlock'      => 'concepts/versions#unlock',    as: 'concept_versions_unlock'
+    post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', as: 'concept_versions_to_review'
+    get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
-    post 'collections/:origin/branch'      => 'collections/versions#branch',    :as => 'collection_versions_branch'
-    post 'collections/:origin/merge'       => 'collections/versions#merge',     :as => 'collection_versions_merge'
-    post 'collections/:origin/lock'        => 'collections/versions#lock',      :as => 'collection_versions_lock'
-    post 'collections/:origin/unlock'      => 'collections/versions#unlock',    :as => 'collection_versions_unlock'
-    post 'collections/:origin/to_review'   => 'collections/versions#to_review', :as => 'collection_versions_to_review'
-    get 'collections/:origin/consistency_check' => 'collections/versions#consistency_check', :as => 'collection_versions_consistency_check'
+    post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
+    post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
+    post 'collections/:origin/lock'        => 'collections/versions#lock',      as: 'collection_versions_lock'
+    post 'collections/:origin/unlock'      => 'collections/versions#unlock',    as: 'collection_versions_unlock'
+    post 'collections/:origin/to_review'   => 'collections/versions#to_review', as: 'collection_versions_to_review'
+    get 'collections/:origin/consistency_check' => 'collections/versions#consistency_check', as: 'collection_versions_consistency_check'
 
-    get 'alphabetical_concepts(/:prefix)' => 'concepts/alphabetical#index', :as => 'alphabetical_concepts'
-    get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', :as => 'untranslated_concepts'
-    get 'hierarchical_concepts' => 'concepts/hierarchical#index', :as => 'hierarchical_concepts'
-    get 'expired_concepts' => 'concepts/expired#index', :as => 'expired_concepts'
+    get 'alphabetical_concepts(/:prefix)' => 'concepts/alphabetical#index', as: 'alphabetical_concepts'
+    get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', as: 'untranslated_concepts'
+    get 'hierarchical_concepts' => 'concepts/hierarchical#index', as: 'hierarchical_concepts'
+    get 'expired_concepts' => 'concepts/expired#index', as: 'expired_concepts'
 
-    get 'dashboard' => 'dashboard#index', :as => 'dashboard'
-    match 'dashboard/reset' => 'dashboard#reset', :as => 'reset', :via => [:get, :post]
+    get 'dashboard' => 'dashboard#index', as: 'dashboard'
+    match 'dashboard/reset' => 'dashboard#reset', as: 'reset', via: [:get, :post]
 
-    get 'config' => 'instance_configuration#index', :as => 'instance_configuration'
+    get 'config' => 'instance_configuration#index', as: 'instance_configuration'
     patch 'config' => 'instance_configuration#update'
 
-    get 'search' => 'search_results#index', :as => 'search'
+    get 'search' => 'search_results#index', as: 'search'
 
-    get 'help' => 'pages#help', :as => 'help'
+    get 'help' => 'pages#help', as: 'help'
 
     get '/' => 'frontpage#index'
-    # root :to => 'frontpage#index', :format => nil
+    # root to: 'frontpage#index', format: nil
   end
 
-  get 'remote_labels' => 'remote_labels#show', :as => 'remote_label'
-  get 'schema' => redirect('/'), :as => 'schema'
-  get 'dataset' => 'rdf#dataset', :as => 'rdf_dataset'
-  get 'scheme' => 'concepts/scheme#show', :as => 'rdf_scheme'
-  get 'search' => 'search_results#index', :as => 'rdf_search'
+  get 'remote_labels' => 'remote_labels#show', as: 'remote_label'
+  get 'schema' => redirect('/'), as: 'schema'
+  get 'dataset' => 'rdf#dataset', as: 'rdf_dataset'
+  get 'scheme' => 'concepts/scheme#show', as: 'rdf_scheme'
+  get 'search' => 'search_results#index', as: 'rdf_search'
   get 'hierarchy' => 'hierarchy#index'
   get 'hierarchy/:root' => 'hierarchy#show'
 
-  get ':id' => 'rdf#show', :as => 'rdf'
+  get ':id' => 'rdf#show', as: 'rdf'
 
-  get 'collections', :as => 'rdf_collections', :to => 'collections#index'
+  get 'collections', as: 'rdf_collections', to: 'collections#index'
 
-  root :to => 'frontpage#index', :format => nil
+  root to: 'frontpage#index', format: nil
 end

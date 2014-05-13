@@ -80,9 +80,9 @@ module Iqvoc
 
       json = JSON.dump([value])[1..-2] # temporary array wrapper ensures valid JSON text
       if setting = ConfigurationSetting.find_by_key(key)
-        setting.update_attributes(:value => json)
+        setting.update_attributes(value: json)
       else
-        ConfigurationSetting.create(:key => key, :value => json)
+        ConfigurationSetting.create(key: key, value: json)
       end
 
       # update cache

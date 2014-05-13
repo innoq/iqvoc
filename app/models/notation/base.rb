@@ -25,9 +25,9 @@ class Notation::Base < ActiveRecord::Base
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     # TODO: Adopt this to RDFAPI
     data = rdf_object.match /"(?<value>.+)"\^\^<(?<data_type>.+)>/
-    create! :concept_id => rdf_subject.id,
-      :value => data[:value],
-      :data_type => data[:data_type]
+    create! concept_id: rdf_subject.id,
+      value: data[:value],
+      data_type: data[:data_type]
   end
 
   def self.view_section(obj)

@@ -19,18 +19,18 @@ module Iqvoc
         if user.owns_role?(:editor) || user.owns_role?(:publisher) || user.owns_role?(:administrator) # Editors and above ...
           can :read, [::Concept::Base, ::Collection::Base, ::Label::Base]
           can :create, [::Concept::Base, ::Collection::Base, ::Label::Base]
-          can [:update, :destroy, :unlock], [::Concept::Base, ::Collection::Base, ::Label::Base], :locked_by => user.id, :published_at => nil
-          can :lock, [::Concept::Base, ::Collection::Base, ::Label::Base], :locked_by => nil, :published_at => nil
-          can [:check_consistency, :send_to_review], [::Concept::Base, ::Collection::Base, ::Label::Base], :published_at => nil
+          can [:update, :destroy, :unlock], [::Concept::Base, ::Collection::Base, ::Label::Base], locked_by: user.id, published_at: nil
+          can :lock, [::Concept::Base, ::Collection::Base, ::Label::Base], locked_by: nil, published_at: nil
+          can [:check_consistency, :send_to_review], [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
           can :branch, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
         end
 
         if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...
-          can :merge, [::Concept::Base, ::Collection::Base, ::Label::Base], :published_at => nil
+          can :merge, [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
         end
 
         if user.owns_role?(:administrator)
-          can [:update, :destroy, :unlock], [::Concept::Base, ::Label::Base], :published_at => nil # Mustn't be locked by myself
+          can [:update, :destroy, :unlock], [::Concept::Base, ::Label::Base], published_at: nil # Mustn't be locked by myself
 
           can :manage, User
           can :manage, Iqvoc.config

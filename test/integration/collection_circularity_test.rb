@@ -21,9 +21,9 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
   setup do
     login("administrator")
 
-    @coll1 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
-    @coll2 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
-    @coll3 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
+    @coll1 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
+    @coll2 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
+    @coll3 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
     @concept1 = FactoryGirl.create(:concept)
     @concept2 = FactoryGirl.create(:concept)
     @concept3 = FactoryGirl.create(:concept)
@@ -32,11 +32,11 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
   test "inline assignments are persisted" do
     delimiter = "," # without space
 
-    visit edit_collection_path(@coll1, :lang => "en", :format => "html")
+    visit edit_collection_path(@coll1, lang: "en", format: "html")
     fill_in "concept_inline_member_collection_origins",
-        :with => [@coll2.origin, @coll3.origin].join(delimiter)
+        with: [@coll2.origin, @coll3.origin].join(delimiter)
     fill_in "concept_inline_member_concept_origins",
-        :with => [@concept1.origin, @concept2.origin, @concept3.origin].join(delimiter)
+        with: [@concept1.origin, @concept2.origin, @concept3.origin].join(delimiter)
     click_button "Save"
 
     assert page.has_no_css?(".flash_error")
@@ -48,8 +48,8 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     assert page.has_link?(@concept3.pref_label.to_s)
 
     click_link_or_button "Continue editing"
-    fill_in "concept_inline_member_collection_origins", :with => ""
-    fill_in "concept_inline_member_concept_origins", :with => ""
+    fill_in "concept_inline_member_collection_origins", with: ""
+    fill_in "concept_inline_member_concept_origins", with: ""
     click_button "Save"
 
     assert page.has_no_css?(".flash_error")
@@ -64,9 +64,9 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     click_link_or_button "Continue editing"
     fill_in "concept_inline_member_collection_origins",
-        :with => [@coll2.origin, @coll3.origin].join(delimiter)
+        with: [@coll2.origin, @coll3.origin].join(delimiter)
     fill_in "concept_inline_member_concept_origins",
-        :with => [@concept1.origin, @concept2.origin, @concept3.origin].join(delimiter)
+        with: [@concept1.origin, @concept2.origin, @concept3.origin].join(delimiter)
     click_button "Save"
 
     assert page.has_no_css?(".flash_error")
@@ -80,29 +80,29 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
   test "circular sub-collection references are rejected during update" do
     # add coll2 as subcollection of coll1
-    visit edit_collection_path(@coll1, :lang => "en", :format => "html")
+    visit edit_collection_path(@coll1, lang: "en", format: "html")
     fill_in "concept_inline_member_collection_origins",
-        :with => "%s," % @coll2.origin
+        with: "%s," % @coll2.origin
     click_button "Save"
 
     assert page.has_no_css?(".flash_error")
     assert page.has_content?(I18n.t("txt.controllers.collections.save.success"))
     assert page.has_link?(@coll2.pref_label.to_s,
-        :href => collection_path(@coll2, :lang => "en", :format => "html"))
+        href: collection_path(@coll2, lang: "en", format: "html"))
 
     # add coll1 as subcollection of coll2
-    visit edit_collection_path(@coll2, :lang => "en", :format => "html")
+    visit edit_collection_path(@coll2, lang: "en", format: "html")
     fill_in "concept_inline_member_collection_origins",
-        :with => "%s," % @coll1.origin
+        with: "%s," % @coll1.origin
     click_button "Save"
 
     assert page.has_css?(".alert-danger")
     assert page.has_css?("#edit_concept")
     assert page.has_content?( # XXX: page.has_content? didn't work
-        I18n.t("txt.controllers.collections.circular_error", :label => @coll1.pref_label))
+        I18n.t("txt.controllers.collections.circular_error", label: @coll1.pref_label))
 
     # ensure coll1 is not a subcollection of coll2
-    visit collection_path(@coll2, :lang => "en", :format => "html")
+    visit collection_path(@coll2, lang: "en", format: "html")
     assert page.has_no_css?(".relation ul.treeview li") # XXX: too unspecific
   end
 end

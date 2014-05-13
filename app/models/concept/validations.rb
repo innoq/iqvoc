@@ -3,9 +3,9 @@ module Concept
     extend ActiveSupport::Concern
 
     included do
-      validates :origin, :presence => true, :on => :update
+      validates :origin, presence: true, on: :update
 
-      validate :distinct_versions, :on => :create
+      validate :distinct_versions, on: :create
       validate :pref_label_in_primary_thesaurus_language
       validate :unique_pref_label_language
       validate :exclusive_top_term
@@ -18,11 +18,11 @@ module Concept
       query = Concept::Base.by_origin(origin)
       existing_total = query.count
       if existing_total >= 2
-        errors.add :base, I18n.t("txt.models.concept.version_error", :origin => origin)
+        errors.add :base, I18n.t("txt.models.concept.version_error", origin: origin)
       elsif existing_total == 1
         unless (query.published.count == 0 and published?) or
                (query.published.count == 1 and not published?)
-          errors.add :base, I18n.t("txt.models.concept.version_error", :origin => origin)
+          errors.add :base, I18n.t("txt.models.concept.version_error", origin: origin)
         end
       end
     end
@@ -81,7 +81,7 @@ module Concept
         conflicting_pref_labels = pref_labels.select do |l|
           Labeling::SKOS::PrefLabel.
             joins(:owner, :target).
-            where(:labels => { :value => l.value, :language => l.language }).
+            where(labels: { value: l.value, language: l.language }).
             where("labelings.owner_id != ?", id).
             where("concepts.origin != ?", origin).
             any?
@@ -91,11 +91,11 @@ module Concept
           if conflicting_pref_labels.one?
             errors.add :base,
               I18n.t("txt.models.concept.pref_label_not_unique",
-                :label => conflicting_pref_labels.last.value)
+                label: conflicting_pref_labels.last.value)
           else
             errors.add :base,
               I18n.t("txt.models.concept.pref_labels_not_unique",
-                :label => conflicting_pref_labels.map(&:value).join(", "))
+                label: conflicting_pref_labels.map(&:value).join(", "))
           end
         end
       end
@@ -106,8 +106,8 @@ module Concept
         relations.each do |relation|
           if relation.class.rankable? && !(0..100).include?(relation.rank)
             errors.add :base, I18n.t("txt.models.concept.invalid_rank_for_ranked_relations",
-              :relation => relation.class.model_name.human.downcase,
-              :relation_target_label => relation.target.pref_label.to_s)
+              relation: relation.class.model_name.human.downcase,
+              relation_target_label: relation.target.pref_label.to_s)
           end
         end
       end

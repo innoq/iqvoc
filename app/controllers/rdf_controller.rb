@@ -25,11 +25,11 @@ class RdfController < ApplicationController
     end
 
     if @concept = scope.by_origin(params[:id]).with_associations.last
-      object_path = concept_path(:id => @concept, :published => params[:published])
+      object_path = concept_path(id: @concept, published: params[:published])
       object = @concept
       tpl = "concepts/show"
     elsif @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).with_associations.last
-      object_path = collection_path(:id => @collection)
+      object_path = collection_path(id: @collection)
       object = @collection
       tpl = "collections/show"
     else

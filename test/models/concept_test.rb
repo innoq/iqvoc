@@ -27,14 +27,14 @@ class ConceptTest < ActiveSupport::TestCase
 
   test "should not allow identical concepts" do
     origin = "foo"
-    c1 = Concept::Base.new(:origin => origin)
-    c2 = Concept::Base.new(:origin => origin, :published_at => Time.now)
+    c1 = Concept::Base.new(origin: origin)
+    c2 = Concept::Base.new(origin: origin, published_at: Time.now)
     assert c1.save
     assert c2.save
 
     origin = "bar"
-    c1 = Concept::Base.new(:origin => origin)
-    c2 = Concept::Base.new(:origin => origin)
+    c1 = Concept::Base.new(origin: origin)
+    c2 = Concept::Base.new(origin: origin)
     assert c1.save
     assert_raise ActiveRecord::RecordInvalid do
       c2.save!
@@ -44,12 +44,12 @@ class ConceptTest < ActiveSupport::TestCase
   test "should not save concept with empty preflabel" do
     FactoryGirl.create(:concept).publish! # Is the factory working as expected?
     assert_raise ActiveRecord::RecordInvalid do
-      FactoryGirl.create(:concept, :pref_labelings => []).publish!
+      FactoryGirl.create(:concept, pref_labelings: []).publish!
     end
   end
 
   test "concepts without pref_labels should be saveable but not publishable" do
-    concept =  FactoryGirl.create(:concept, :pref_labelings => [])
+    concept =  FactoryGirl.create(:concept, pref_labelings: [])
     assert_equal [], concept.pref_labels
     assert concept.valid?
     assert !concept.publishable?
@@ -74,14 +74,14 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "unique pref label" do
-    label = Label::SKOS::Base.create(:value => "foo", :language => "en")
+    label = Label::SKOS::Base.create(value: "foo", language: "en")
 
-    concept1 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept1 = FactoryGirl.build(:concept, pref_labelings: [], narrower_relations: [])
     concept1.pref_labels << label
     concept1.save!
     assert concept1.publishable?
 
-    concept2 = FactoryGirl.build(:concept, :pref_labelings => [], :narrower_relations => [])
+    concept2 = FactoryGirl.build(:concept, pref_labelings: [], narrower_relations: [])
     concept2.pref_labels << label
     concept2.save!
     refute concept2.publishable?
@@ -90,8 +90,8 @@ class ConceptTest < ActiveSupport::TestCase
   test "concepts can have multiple preferred labels" do
     concept = FactoryGirl.build(:concept)
     concept.labelings << FactoryGirl.build(:pref_labeling,
-        :target => FactoryGirl.create(:pref_label,
-            :language => Iqvoc::Concept.pref_labeling_languages.second))
+        target: FactoryGirl.create(:pref_label,
+            language: Iqvoc::Concept.pref_labeling_languages.second))
     concept.save!
     concept.reload
 
@@ -101,7 +101,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "labelings_by_text setter" do
-    concept = FactoryGirl.build(:concept, :pref_labelings => [])
+    concept = FactoryGirl.build(:concept, pref_labelings: [])
 
     concept.labelings_by_text = {
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
@@ -120,7 +120,7 @@ class ConceptTest < ActiveSupport::TestCase
 
   test "labels including commas" do
     labels_for = lambda do |concept, type|
-        type.includes(:target).where(:owner_id => concept.id).
+        type.includes(:target).where(owner_id: concept.id).
             map { |ln| ln.target.value }
     end
 

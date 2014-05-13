@@ -24,34 +24,34 @@ class ImportTest < ActionDispatch::IntegrationTest
 
   test 'import privileges' do
     # guest
-    visit imports_path(:lang => 'en')
+    visit imports_path(lang: 'en')
     assert page.has_content? 'No permission'
 
     ['reader', 'editor', 'publisher'].each do |role|
       login role
-      visit imports_path(:lang => 'en')
+      visit imports_path(lang: 'en')
       assert page.has_content?('No permission'), "#{role} must not access exports"
       logout
     end
 
     login 'administrator'
-    visit imports_path(:lang => 'en')
+    visit imports_path(lang: 'en')
     assert page.has_content? 'Import'
   end
 
   test 'import job creation' do
     login('administrator')
-    visit imports_path(:lang => 'en')
+    visit imports_path(lang: 'en')
 
     attach_file('NTriples file', @file)
-    fill_in 'Default namespace', :with => 'http://hobbies.com#'
+    fill_in 'Default namespace', with: 'http://hobbies.com#'
     check('Publish')
 
     click_button('Import')
     assert page.has_content? 'Import job was created. Reload page to see current processing status.'
 
     Delayed::Worker.new.work_off
-    visit imports_path(:lang => 'en')
+    visit imports_path(lang: 'en')
     page.find('table tbody tr[1] td[1] a').click
 
     assert page.has_content? 'Output'
@@ -60,18 +60,18 @@ class ImportTest < ActionDispatch::IntegrationTest
 
   test 'invalid import form submission' do
     login('administrator')
-    visit imports_path(:lang => 'en')
+    visit imports_path(lang: 'en')
 
     click_button('Import')
     assert page.has_content? 'Error occurred while creating Import job.'
 
     attach_file('NTriples file', @file)
-    fill_in 'Default namespace', :with => ''
+    fill_in 'Default namespace', with: ''
     click_button('Import')
     assert page.has_content? 'Error occurred while creating Import job.'
 
     attach_file('NTriples file', nil)
-    fill_in 'Default namespace', :with => 'http://hobbies.com#'
+    fill_in 'Default namespace', with: 'http://hobbies.com#'
     click_button('Import')
     assert page.has_content? 'Error occurred while creating Import job.'
   end

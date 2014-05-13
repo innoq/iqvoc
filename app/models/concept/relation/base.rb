@@ -36,13 +36,13 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   # ********* Associations
 
-  belongs_to :owner,  :class_name => "Concept::Base"
-  belongs_to :target, :class_name => "Concept::Base"
+  belongs_to :owner,  class_name: "Concept::Base"
+  belongs_to :target, class_name: "Concept::Base"
 
   # ********* Scopes
 
   def self.by_owner(owner_id)
-    where(:owner_id => owner_id)
+    where(owner_id: owner_id)
   end
 
   def self.by_owner_origin(owner_origin)

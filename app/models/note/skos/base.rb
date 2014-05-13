@@ -31,11 +31,11 @@ class Note::SKOS::Base < Note::Base
       end
       lang = $3
       value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
-      target_class.new(:value => value, :language => lang).tap do |new_instance|
+      target_class.new(value: value, language: lang).tap do |new_instance|
         rdf_subject.send(target_class.name.to_relation_name) << new_instance
       end
     when Array # Blank node
-      note = target_class.create!(:owner => rdf_subject)
+      note = target_class.create!(owner: rdf_subject)
       rdf_object.each do |annotation|
         ns, pred = *annotation.first.split(":", 2)
         note.annotations.create! do |a|
@@ -50,7 +50,7 @@ class Note::SKOS::Base < Note::Base
   def build_rdf(document, subject)
     if annotations.any?
       subject.send(rdf_namespace).build_predicate(rdf_predicate) do |blank_node|
-        blank_node.Rdfs::comment(value, :lang => language || nil) if value
+        blank_node.Rdfs::comment(value, lang: language || nil) if value
         annotations.each do |annotation|
           if IqRdf::Namespace.find_namespace_class(annotation.namespace)
             val = if annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP
@@ -59,14 +59,14 @@ class Note::SKOS::Base < Note::Base
             else
               annotation.value
             end
-            blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, val, :lang => annotation.language || nil)
+            blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, val, lang: annotation.language || nil)
           else
             raise "#{self.class}#build_rdf: can't find namespace '#{annotation.namespace}' for note annotation '#{annotation.id}'."
           end
         end
       end
     else
-      subject.send(rdf_namespace).send(rdf_predicate, value, :lang => language)
+      subject.send(rdf_namespace).send(rdf_predicate, value, lang: language)
     end
   end
 

@@ -52,7 +52,7 @@ class Concept::Base < ActiveRecord::Base
           Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
             value.squish!
             unless value.blank?
-              self.send(relation_name).build(:target => labeling_class.label_class.new(:value => value, :language => lang))
+              self.send(relation_name).build(target: labeling_class.label_class.new(value: value, language: lang))
             end
           end
         end
@@ -91,7 +91,7 @@ class Concept::Base < ActiveRecord::Base
       # This is necessary because changing the rank of an already assigned relation
       # would otherwise be ignored.
       Concept::Base.by_origin(new_origins.keys).each do |c|
-        concept.send(relation_name).create_with_reverse_relation(c, :rank => new_origins[c.origin])
+        concept.send(relation_name).create_with_reverse_relation(c, rank: new_origins[c.origin])
       end
     end
   end
@@ -110,26 +110,26 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, :foreign_key => 'owner_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
-  has_many :related_concepts, :through => :relations, :source => :target
-  has_many :referenced_relations, :foreign_key => 'target_id', :class_name => "Concept::Relation::Base", :dependent => :destroy
+  has_many :relations, foreign_key: 'owner_id', class_name: "Concept::Relation::Base", dependent: :destroy
+  has_many :related_concepts, through: :relations, source: :target
+  has_many :referenced_relations, foreign_key: 'target_id', class_name: "Concept::Relation::Base", dependent: :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, :foreign_key => 'owner_id', :class_name => "Labeling::Base", :dependent => :destroy
-  has_many :labels, :through => :labelings, :source => :target
+  has_many :labelings, foreign_key: 'owner_id', class_name: "Labeling::Base", dependent: :destroy
+  has_many :labels, through: :labelings, source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
-  has_many :notes, :class_name => "Note::Base", :as => :owner, :dependent => :destroy
-  include_to_deep_cloning({:notes => :annotations})
+  has_many :notes, class_name: "Note::Base", as: :owner, dependent: :destroy
+  include_to_deep_cloning({notes: :annotations})
 
-  has_many :matches, :foreign_key => 'concept_id', :class_name => "Match::Base", :dependent => :destroy
+  has_many :matches, foreign_key: 'concept_id', class_name: "Match::Base", dependent: :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, :foreign_key => 'target_id', :class_name => "Collection::Member::Base", :dependent => :destroy
-  has_many :collections, :through => :collection_members, :class_name => Iqvoc::Collection.base_class_name
+  has_many :collection_members, foreign_key: 'target_id', class_name: "Collection::Member::Base", dependent: :destroy
+  has_many :collections, through: :collection_members, class_name: Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
-  has_many :notations, :class_name => 'Notation::Base', :foreign_key => 'concept_id', :dependent => :destroy
+  has_many :notations, class_name: 'Notation::Base', foreign_key: 'concept_id', dependent: :destroy
   include_to_deep_cloning :notations
   @nested_relations << :notations
 
@@ -142,18 +142,18 @@ class Concept::Base < ActiveRecord::Base
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :broader_relations,
-    :foreign_key => :owner_id,
-    :class_name => Iqvoc::Concept.broader_relation_class_name,
-    :extend => Concept::Relation::ReverseRelationExtension
+    foreign_key: :owner_id,
+    class_name: Iqvoc::Concept.broader_relation_class_name,
+    extend: Concept::Relation::ReverseRelationExtension
 
   # Narrower
   # FIXME: Actually this is not needed anymore.
   # BUT: the include in scope :tops doesn't work with
   # 'Iqvoc::Concept.broader_relation_class_name'!?!?! (Rails Bug????)
   has_many :narrower_relations,
-    :foreign_key => :owner_id,
-    :class_name => Iqvoc::Concept.broader_relation_class.narrower_class.name,
-    :extend => Concept::Relation::ReverseRelationExtension
+    foreign_key: :owner_id,
+    class_name: Iqvoc::Concept.broader_relation_class.narrower_class.name,
+    extend: Concept::Relation::ReverseRelationExtension
 
   # Relations
   # e.g. 'concept_relation_skos_relateds'
@@ -161,25 +161,25 @@ class Concept::Base < ActiveRecord::Base
   # classes!
   Iqvoc::Concept.relation_class_names.each do |relation_class_name|
     has_many relation_class_name.to_relation_name,
-      :foreign_key => :owner_id,
-      :class_name  => relation_class_name,
-      :extend => Concept::Relation::ReverseRelationExtension
+      foreign_key: :owner_id,
+      class_name: relation_class_name,
+      extend: Concept::Relation::ReverseRelationExtension
   end
 
   # *** Labels/Labelings
 
   has_many :pref_labelings,
-    :foreign_key => 'owner_id',
-    :class_name => Iqvoc::Concept.pref_labeling_class_name
+    foreign_key: 'owner_id',
+    class_name: Iqvoc::Concept.pref_labeling_class_name
 
   has_many :pref_labels,
-    :through => :pref_labelings,
-    :source => :target
+    through: :pref_labelings,
+    source: :target
 
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
-      :foreign_key => 'owner_id',
-      :class_name => labeling_class_name
+      foreign_key: 'owner_id',
+      class_name: labeling_class_name
     # Only clone superclass relations
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
       # When a Label has only one labeling (the "no skosxl" case) we'll have to
@@ -196,8 +196,8 @@ class Concept::Base < ActiveRecord::Base
 
   Iqvoc::Concept.match_class_names.each do |match_class_name|
     has_many match_class_name.to_relation_name,
-      :class_name  => match_class_name,
-      :foreign_key => 'concept_id'
+      class_name: match_class_name,
+      foreign_key: 'concept_id'
 
     # Serialized setters and getters (\r\n or , separated) -- TODO: use Iqvoc::InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
@@ -214,7 +214,7 @@ class Concept::Base < ActiveRecord::Base
         end
       end
       urls.each do |url|
-        self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(:value => url)
+        self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
       end
     end
 
@@ -224,14 +224,14 @@ class Concept::Base < ActiveRecord::Base
 
   Iqvoc::Concept.note_class_names.each do |class_name|
     relation_name = class_name.to_relation_name
-    has_many relation_name, :class_name => class_name, :as => :owner
+    has_many relation_name, class_name: class_name, as: :owner
     @nested_relations << relation_name
   end
 
   # *** Further association classes (could be ranks or stuff like that)
 
   Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
-    has_many association_class.name.to_relation_name, :class_name => association_class.name, :foreign_key => foreign_key, :dependent => :destroy
+    has_many association_class.name.to_relation_name, class_name: association_class.name, foreign_key: foreign_key, dependent: :destroy
     include_to_deep_cloning(association_class.deep_cloning_relations)
     association_class.referenced_by(self)
   end
@@ -239,32 +239,32 @@ class Concept::Base < ActiveRecord::Base
   # ********** Relation Stuff
 
   @nested_relations.each do |relation|
-    accepts_nested_attributes_for relation, :allow_destroy => true, :reject_if => Proc.new { |attrs| attrs[:value].blank? }
+    accepts_nested_attributes_for relation, allow_destroy: true, reject_if: Proc.new { |attrs| attrs[:value].blank? }
   end
 
   # ********** Scopes
 
   def self.tops
-    where(:top_term => true)
+    where(top_term: true)
   end
 
   def self.broader_tops
     includes(:narrower_relations, :pref_labels).
-    where(:concept_relations => { :id => nil },
-      :labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }).
+    where(concept_relations: { id: nil },
+      labelings: { type: Iqvoc::Concept.pref_labeling_class_name }).
     order("LOWER(#{Label::Base.table_name}.value)")
   end
 
   def self.with_associations
     includes([
-      { :labelings => :target }, :relations, :matches, :notes, :notations
+      { labelings: :target }, :relations, :matches, :notes, :notations
     ])
   end
 
   def self.with_pref_labels
     includes(:pref_labels).
     order("LOWER(#{Label::Base.table_name}.value)").
-    where(:labelings => { :type => Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
+    where(labelings: { type: Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
   end
 
   def self.for_dashboard
@@ -397,7 +397,7 @@ class Concept::Base < ActiveRecord::Base
 
   def associated_objects_in_editing_mode
     {
-      :concept_relations => Concept::Relation::Base.by_owner(id).target_in_edit_mode,
+      concept_relations: Concept::Relation::Base.by_owner(id).target_in_edit_mode,
     }
   end
 

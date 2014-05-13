@@ -1,5 +1,5 @@
 class AlphabeticalSearchResult
-  delegate :url_helpers, :to => 'Rails.application.routes'
+  delegate :url_helpers, to: 'Rails.application.routes'
 
   def initialize(pref_labeling)
     @labeling = pref_labeling
@@ -14,7 +14,7 @@ class AlphabeticalSearchResult
   end
 
   def path
-    url_helpers.rdf_path(@labeling.owner.origin, :lang => nil, :format => nil)
+    url_helpers.rdf_path(@labeling.owner.origin, lang: nil, format: nil)
   end
 
   def definition?

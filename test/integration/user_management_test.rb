@@ -24,29 +24,29 @@ class UserManagementTest < ActionDispatch::IntegrationTest
   test "create user" do
     login "administrator"
 
-    visit users_path(:lang => :en)
+    visit users_path(lang: :en)
     assert page.has_content?("Test User")
-    assert page.has_css?('.users-table-row', :count => 1)
+    assert page.has_css?('.users-table-row', count: 1)
     click_link "New User"
 
-    fill_in "Forename", :with => "Arnulf"
-    fill_in "Surname", :with => "Beckenbauer"
-    fill_in "Email", :with => "arnulf@beckenbauer.com"
-    fill_in "Password", :with => "secret"
-    fill_in "Password (Confirmation)", :with => "secret"
+    fill_in "Forename", with: "Arnulf"
+    fill_in "Surname", with: "Beckenbauer"
+    fill_in "Email", with: "arnulf@beckenbauer.com"
+    fill_in "Password", with: "secret"
+    fill_in "Password (Confirmation)", with: "secret"
     click_button "Save"
 
     assert page.has_content?("Arnulf Beckenbauer")
-    assert page.has_css?('.users-table-row', :count => 2)
+    assert page.has_css?('.users-table-row', count: 2)
   end
 
   test "delete user" do
     login "administrator"
-    visit users_path(:lang => :en)
-    assert page.has_css?('.users-table-row', :count => 1)
+    visit users_path(lang: :en)
+    assert page.has_css?('.users-table-row', count: 1)
     within ".users-table-row" do
       click_on "Delete"
     end
-    assert page.has_css?('.users-table-row', :count => 0)
+    assert page.has_css?('.users-table-row', count: 0)
   end
 end

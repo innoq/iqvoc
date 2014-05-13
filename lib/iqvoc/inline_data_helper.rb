@@ -24,8 +24,8 @@ module Iqvoc
     SPLITTER = /[,\n] */
 
     CSV_OPTIONS = {
-      :col_sep => ", ",
-      :quote_char => '"'
+      col_sep: ", ",
+      quote_char: '"'
     }
 
     def self.parse_inline_values(inline_values)

@@ -19,9 +19,9 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ConceptBrowsingTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept1 = FactoryGirl.create(:concept, :narrower_relations => [])
-    @concept2 = FactoryGirl.create(:concept, :narrower_relations => [])
-    @concept3 = FactoryGirl.create(:concept, :narrower_relations => [])
+    @concept1 = FactoryGirl.create(:concept, narrower_relations: [])
+    @concept2 = FactoryGirl.create(:concept, narrower_relations: [])
+    @concept3 = FactoryGirl.create(:concept, narrower_relations: [])
   end
 
   test "showing published concept" do
@@ -32,16 +32,16 @@ class ConceptBrowsingTest < ActionDispatch::IntegrationTest
   test "persisting inline relations" do
     login "administrator"
 
-    visit new_concept_path(:lang => "en", :format => "html", :published => 0)
+    visit new_concept_path(lang: "en", format: "html", published: 0)
     fill_in "concept_relation_skos_relateds",
-        :with => "#{@concept1.origin},#{@concept2.origin},"
+        with: "#{@concept1.origin},#{@concept2.origin},"
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
-    assert page.has_css?("#concept_relation_skos_relateds a", :count => 2)
+    assert page.has_css?("#concept_relation_skos_relateds a", count: 2)
 
     click_link_or_button I18n.t("txt.views.versioning.to_edit_mode")
-    fill_in "concept_relation_skos_relateds", :with => ""
+    fill_in "concept_relation_skos_relateds", with: ""
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
@@ -49,11 +49,11 @@ class ConceptBrowsingTest < ActionDispatch::IntegrationTest
 
     click_link_or_button I18n.t("txt.views.versioning.edit_mode")
     fill_in "concept_relation_skos_relateds",
-        :with => "#{@concept1.origin}, #{@concept2.origin}, #{@concept3.origin}"
+        with: "#{@concept1.origin}, #{@concept2.origin}, #{@concept3.origin}"
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
-    assert page.has_css?("#concept_relation_skos_relateds a", :count => 3)
+    assert page.has_css?("#concept_relation_skos_relateds a", count: 3)
   end
 
 end

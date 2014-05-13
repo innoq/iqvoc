@@ -20,11 +20,11 @@ class Label::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  has_many :labelings, :foreign_key => 'target_id', :class_name => "Labeling::Base"
-  has_many :concepts, :through => :labelings, :source => :owner
+  has_many :labelings, foreign_key: 'target_id', class_name: "Labeling::Base"
+  has_many :concepts, through: :labelings, source: :owner
 
-  has_many :pref_labelings, :foreign_key => 'target_id', :class_name => Iqvoc::Concept.pref_labeling_class_name
-  has_many :pref_labeled_concepts, :through => :pref_labelings, :source => :owner
+  has_many :pref_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.pref_labeling_class_name
+  has_many :pref_labeled_concepts, through: :pref_labelings, source: :owner
 
   # ********* Scopes
 
@@ -35,7 +35,7 @@ class Label::Base < ActiveRecord::Base
     elsif lang_code.blank?
       where(arel_table[:language].eq(nil))
     else
-      where(:language => lang_code)
+      where(language: lang_code)
     end
   end
 
@@ -43,7 +43,7 @@ class Label::Base < ActiveRecord::Base
     prefix = prefix.to_s
     table = Label::Base.table_name
     where("LOWER(SUBSTR(#{table}.value, 1, :length)) = :prefix",
-        :length => prefix.length, :prefix => prefix.downcase)
+        length: prefix.length, prefix: prefix.downcase)
   end
 
   def self.missing_translation(lang, main_lang)
@@ -55,9 +55,9 @@ class Label::Base < ActiveRecord::Base
     joins(sanitize_sql(["LEFT OUTER JOIN labels pref_labels ON
         pref_labels.id = pref_labelings.target_id AND
         pref_labels.language = '%s'", lang])).
-    where('labelings.type = :class_name', :class_name => Iqvoc::Concept.pref_labeling_class_name).
+    where('labelings.type = :class_name', class_name: Iqvoc::Concept.pref_labeling_class_name).
     where('pref_labels.id IS NULL').
-    where('labels.language = :lang', :lang => main_lang).
+    where('labels.language = :lang', lang: main_lang).
     includes(:pref_labeled_concepts)
   end
 

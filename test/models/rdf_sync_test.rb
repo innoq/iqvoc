@@ -35,11 +35,11 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     @view_context = FakeViewContext.new
 
-    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
-        :view_context => @view_context)
+    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, username: @username,
+        view_context: @view_context)
 
     @concepts = 15.times.map do
-      FactoryGirl.create(:concept, :narrower_relations => [])
+      FactoryGirl.create(:concept, narrower_relations: [])
     end
 
     # HTTP request mocking
@@ -53,7 +53,7 @@ class RDFSyncTest < ActiveSupport::TestCase
       fn.call(req)
       true
     end.to_return do |req|
-      { :status => 204 }
+      { status: 204 }
     end
   end
 
@@ -93,13 +93,13 @@ class RDFSyncTest < ActiveSupport::TestCase
     concepts = Iqvoc::Concept.base_class.published.unsynced
 
     assert_not_equal 0, concepts.count
-    assert_not_equal 0, concepts.where(:rdf_updated_at => nil).count
+    assert_not_equal 0, concepts.where(rdf_updated_at: nil).count
 
     2.times do # 2 requests (reset + insert) per batch
       @observers << lambda { |req| } # no need to check details here
     end
     assert @sync.all
-    assert_equal 0, concepts.where(:rdf_updated_at => nil).count
+    assert_equal 0, concepts.where(rdf_updated_at: nil).count
   end
 
   test "request batches" do
@@ -107,9 +107,9 @@ class RDFSyncTest < ActiveSupport::TestCase
     concept_count = concepts.count
     batch_count = 3
 
-    sync = Iqvoc::RDFSync.new(@base_url, @target_host, :username => @username,
-        :batch_size => (concept_count / batch_count).ceil,
-        :view_context => @view_context)
+    sync = Iqvoc::RDFSync.new(@base_url, @target_host, username: @username,
+        batch_size: (concept_count / batch_count).ceil,
+        view_context: @view_context)
 
     (2 * batch_count).times do # 2 requests (reset + insert) per batch
       @observers << lambda { |req| } # no need to check details here

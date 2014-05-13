@@ -45,7 +45,7 @@ class DashboardController < ApplicationController
 
     if request.post?
       DatabaseCleaner.strategy = :truncation, {
-        :except => Iqvoc.truncation_blacklist
+        except: Iqvoc.truncation_blacklist
       }
       DatabaseCleaner.clean
 

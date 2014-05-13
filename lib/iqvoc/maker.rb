@@ -35,9 +35,9 @@ module Iqvoc
         } if label["components"]
 
         options = {
-          :inflectionals => label.delete("inflectionals"),
-          :components => components,
-          :label_attributes => label
+          inflectionals: label.delete("inflectionals"),
+          components: components,
+          label_attributes: label
         }
 
         labels[term] = self.label(term, options)
@@ -59,9 +59,9 @@ module Iqvoc
         }
 
         options = {
-          :pref_labels => lbls["pref"],
-          :alt_labels => lbls["alt"],
-          :concept_attributes => concept
+          pref_labels: lbls["pref"],
+          alt_labels: lbls["alt"],
+          concept_attributes: concept
         }
 
         identifier = options[:pref_labels].first.value
@@ -72,7 +72,7 @@ module Iqvoc
             create_with_reverse_relation(relations["narrower"]) if relations["narrower"]
       } if data["concepts"]
 
-      return { :concepts => concepts, :labels => labels }
+      return { concepts: concepts, labels: labels }
     end
 
     # optional arguments:
@@ -94,12 +94,12 @@ module Iqvoc
       pref_labels.each { |term|
         label = term.is_a?(String) ? self.label(term) : term
         Iqvoc::Concept.pref_labeling_class.
-            create!(:owner => concept, :target => label)
+            create!(owner: concept, target: label)
       }
       alt_labels.each { |term|
         label = term.is_a?(String) ? self.label(term) : term
         Iqvoc::Concept.further_labeling_classes.first.first.
-            create!(:owner => concept, :target => label)
+            create!(owner: concept, target: label)
       }
 
       return concept
@@ -115,7 +115,7 @@ module Iqvoc
       components = options[:components] || []
 
       defaults = { # NB: must use strings, not symbols as keys due to YAML
-        :value => value, # intentionally not a string; symbol takes precedence
+        value: value, # intentionally not a string; symbol takes precedence
         "origin" => Iqvoc::Origin.new(value).to_s,
         "language" => Iqvoc::Concept.pref_labeling_languages.first,
         "published_at" => 2.days.ago
@@ -126,14 +126,14 @@ module Iqvoc
       label = klass.base_class.create!(attributes)
 
       inflectionals.each { |inf|
-        label.inflectionals.create!(:value => inf)
+        label.inflectionals.create!(value: inf)
       }
 
       if components.length > 0
         compound_form_contents = components.each_with_index.map { |label, i|
-          CompoundForm::Content::Base.new(:label => label, :order => i)
+          CompoundForm::Content::Base.new(label: label, order: i)
         }
-        label.compound_forms.create!(:compound_form_contents => compound_form_contents)
+        label.compound_forms.create!(compound_form_contents: compound_form_contents)
       end
 
       return label

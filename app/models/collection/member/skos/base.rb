@@ -26,7 +26,7 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
     member_instance = rdf_subject.members.select{|rel| rel.target == rdf_object}.first
     if member_instance.nil?
       predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-      member_instance = predicate_class.new(:target => rdf_object)
+      member_instance = predicate_class.new(target: rdf_object)
       rdf_subject.members << member_instance
     end
 

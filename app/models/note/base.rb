@@ -28,9 +28,9 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :owner, :polymorphic => true
+  belongs_to :owner, polymorphic: true
 
-  has_many :annotations, :class_name => "Note::Annotated::Base", :foreign_key => :note_id, :dependent => :destroy
+  has_many :annotations, class_name: "Note::Annotated::Base", foreign_key: :note_id, dependent: :destroy
 
   accepts_nested_attributes_for :annotations
 
@@ -40,7 +40,7 @@ class Note::Base < ActiveRecord::Base
     if (lang_code.is_a?(Array) && lang_code.include?(nil))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     else
-      where(:language => lang_code)
+      where(language: lang_code)
     end
   end
 
@@ -49,22 +49,22 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.by_owner_type(klass)
-    where(:owner_type => klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
+    where(owner_type: klass.is_a?(ActiveRecord::Base) ? klass.name : klass)
   end
 
   def self.for_concepts
-    where(:owner_type => 'Concept::Base')
+    where(owner_type: 'Concept::Base')
   end
 
   def self.for_labels
-    where(:owner_type => 'Label::Base')
+    where(owner_type: 'Label::Base')
   end
 
   def self.by_owner(owner)
     if owner.is_a?(Label::Base)
-      for_labels.where(:owner_id => owner.id)
+      for_labels.where(owner_id: owner.id)
     elsif owner.is_a?(Concept::Base)
-      for_concepts.where(:owner_id => owner.id)
+      for_concepts.where(owner_id: owner.id)
     else
       raise "Note::Base.by_owner: Unknown owner (#{owner.inspect})"
     end
@@ -80,8 +80,8 @@ class Note::Base < ActiveRecord::Base
   def from_annotation_list!(str)
     str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
       namespace, predicate = annotation.first.split(":", 2)
-      annotations << Note::Annotated::Base.new(:value => annotation.second,
-          :namespace => namespace, :predicate => predicate)
+      annotations << Note::Annotated::Base.new(value: annotation.second,
+          namespace: namespace, predicate: predicate)
     end
     self
   end

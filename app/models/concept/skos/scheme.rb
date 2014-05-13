@@ -36,7 +36,7 @@ class Concept::SKOS::Scheme < Concept::Base
   end
 
   def self.instance
-    first_or_create!(:origin => 'scheme', :published_at => Time.now)
+    first_or_create!(origin: 'scheme', published_at: Time.now)
   end
 
   def self.create(attributes = nil, options = {}, &block)
@@ -70,7 +70,7 @@ class Concept::SKOS::Scheme < Concept::Base
 
   def inline_top_concepts
     if @inline_top_concept_origins
-      Iqvoc::Concept.base_class.editor_selectable.where(:origin => @inline_top_concept_origins)
+      Iqvoc::Concept.base_class.editor_selectable.where(origin: @inline_top_concept_origins)
     else
       top_concepts.select { |c| c.editor_selectable? }
     end
@@ -80,8 +80,8 @@ class Concept::SKOS::Scheme < Concept::Base
     return if inline_top_concept_origins.nil? # There is nothing to do
 
     Iqvoc::Concept.base_class.transaction do
-      Iqvoc::Concept.base_class.tops.update_all :top_term => false
-      Iqvoc::Concept.base_class.where(:origin => @inline_top_concept_origins).update_all(:top_term => true)
+      Iqvoc::Concept.base_class.tops.update_all top_term: false
+      Iqvoc::Concept.base_class.where(origin: @inline_top_concept_origins).update_all(top_term: true)
     end
   end
 end

@@ -19,10 +19,10 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class TreeTest < ActionDispatch::IntegrationTest
 
   test "browse hierarchical concepts tree" do
-    concept = FactoryGirl.create(:concept, :broader_relations => [])
+    concept = FactoryGirl.create(:concept, broader_relations: [])
     narrower_concept = concept.narrower_relations.first.target
 
-    visit hierarchical_concepts_path(:lang => :de, :format => :html)
+    visit hierarchical_concepts_path(lang: :de, format: :html)
     assert page.has_link?(concept.pref_label.to_s),
       "Concept #{concept.pref_label} isn't visible in the hierarchical concepts list"
     assert !page.has_content?(narrower_concept.pref_label.to_s),

@@ -16,7 +16,7 @@
 
 class UserSessionsController < ApplicationController
 
-  skip_before_action :require_user, :only => [:new, :create]
+  skip_before_action :require_user, only: [:new, :create]
 
   def new
     authorize! :create, UserSession
@@ -38,7 +38,7 @@ class UserSessionsController < ApplicationController
       end
     else
       flash[:error] = I18n.t("txt.views.user_sessions.error")
-      render :action => :new
+      render action: :new
     end
   end
 

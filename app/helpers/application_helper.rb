@@ -17,8 +17,8 @@
 module ApplicationHelper
 
   GLYPHS = {
-    :yes => "&#x2713;",
-    :no  => "&#x2717;"
+    yes: "&#x2713;",
+    no: "&#x2717;"
   }
 
   def user_details(user)
@@ -33,9 +33,9 @@ module ApplicationHelper
   def item_listing(items, &block)
     return nil if items.empty?
 
-    content_tag :ul, :class => "entity_list" do
+    content_tag :ul, class: "entity_list" do
       items.map do |item|
-        content_tag :li, :class => (items.last == item ? "last-child" : "") do
+        content_tag :li, class: (items.last == item ? "last-child" : "") do
           block.call(item)
         end
       end.join("\n").html_safe
@@ -44,7 +44,7 @@ module ApplicationHelper
 
   def error_messages_for(object)
     if object.errors.any?
-      content_tag :div, :class => 'alert alert-danger' do
+      content_tag :div, class: 'alert alert-danger' do
         content_tag(:p, content_tag(:strong, t('txt.common.form_errors'))) <<
         content_tag(:ul) do
           object.errors.full_messages.each do |msg|
@@ -61,7 +61,7 @@ module ApplicationHelper
     end
 
     content_for :page_header do
-      content_tag :div, :class => "page-header" do
+      content_tag :div, class: "page-header" do
         content_tag :h1 do
           ("#{title} #{content_tag(:small, args[:desc])}").html_safe
         end
@@ -71,7 +71,7 @@ module ApplicationHelper
 
   def login_logout
     if current_user
-      link_to t("txt.views.navigation.logout"), user_session_path, :method => :delete
+      link_to t("txt.views.navigation.logout"), user_session_path, method: :delete
     else
       link_to t("txt.views.navigation.login"), new_user_session_path
     end
@@ -86,7 +86,7 @@ module ApplicationHelper
 
     type = :danger if type == 'error'
 
-    content_tag(:div, :class => "alert alert-#{type}") do
+    content_tag(:div, class: "alert alert-#{type}") do
       html
     end
   end
@@ -97,7 +97,7 @@ module ApplicationHelper
       css_classes << additional_css.split(" ")
     end
 
-    content_tag :i, "", :class => css_classes.join(" ")
+    content_tag :i, "", class: css_classes.join(" ")
   end
 
   def glyph(name)

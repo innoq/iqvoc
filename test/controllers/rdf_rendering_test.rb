@@ -31,15 +31,15 @@ root:
     @concepts = create_hierarchy(concepts, rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
 
-    @admin = FactoryGirl.create(:user, :role => 'administrator')
+    @admin = FactoryGirl.create(:user, role: 'administrator')
   end
 
   test "individual concept representations" do
     @controller = ConceptsController.new
 
-    params = { :lang => "en", :format => "ttl" }
+    params = { lang: "en", format: "ttl" }
 
-    get :show, params.merge(:id => "root")
+    get :show, params.merge(id: "root")
     assert_response 200
     assert @response.body.include? ':root a skos:Concept'
     assert @response.body.include? 'skos:narrower :foo'
@@ -48,7 +48,7 @@ root:
     assert @response.body.include? ':foo skos:prefLabel "Foo"@en.'
     assert @response.body.include? ':bar skos:prefLabel "Bar"@en.'
 
-    get :show, params.merge(:id => "foo")
+    get :show, params.merge(id: "foo")
     assert_response 200
     assert @response.body.include? ':foo a skos:Concept'
     assert @response.body.include? 'skos:broader :root'
@@ -72,12 +72,12 @@ root:
   end
 
   def create_concept(origin, pref_label, label_lang, published=true)
-    concept = Iqvoc::Concept.base_class.create(:origin => origin,
-        :published_at => (published ? Time.now : nil))
-    label = Iqvoc::Label.base_class.create(:value => pref_label,
-        :language => label_lang)
-    labeling = Iqvoc::Concept.pref_labeling_class.create(:owner => concept,
-        :target => label)
+    concept = Iqvoc::Concept.base_class.create(origin: origin,
+        published_at: (published ? Time.now : nil))
+    label = Iqvoc::Label.base_class.create(value: pref_label,
+        language: label_lang)
+    labeling = Iqvoc::Concept.pref_labeling_class.create(owner: concept,
+        target: label)
     return concept
   end
 

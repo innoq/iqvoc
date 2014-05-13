@@ -23,7 +23,7 @@ class RemoteLabelsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render :json => { :label => label }
+        render json: { label: label }
       end
     end
   end

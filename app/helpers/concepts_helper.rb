@@ -18,7 +18,7 @@ module ConceptsHelper
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
-    render "concepts/hierarchical/treeview", :concepts => concepts, :broader => broader
+    render "concepts/hierarchical/treeview", concepts: concepts, broader: broader
   end
 
   # turns a hash of concept/relations pairs of arbitrary nesting depth into the
@@ -30,17 +30,17 @@ module ConceptsHelper
     content_tag(ordered ? "ol" : "ul", options) do
       hash.map do |concept, rels|
         rels.empty? ? content_tag("li", concept) : content_tag("li") do
-          h(concept) + nested_list(rels, :ordered => ordered) # NB: recursive
+          h(concept) + nested_list(rels, ordered: ordered) # NB: recursive
         end
       end.join("\n").html_safe
     end
   end
 
   def letter_selector(letters = ('A'..'Z').to_a, &block)
-    content_tag :ul, :class => 'letter-selector list-unstyled' do
+    content_tag :ul, class: 'letter-selector list-unstyled' do
       letters.map do |letter|
         content_tag :li, link_to(letter, yield(letter)),
-          :class => ('active' if params[:prefix] == letter.to_s.downcase)
+          class: ('active' if params[:prefix] == letter.to_s.downcase)
       end.join("").html_safe
     end
   end
@@ -54,7 +54,7 @@ module ConceptsHelper
 
     Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
       (languages || Iqvoc.available_languages).each do |lang|
-        render_concept_association(res, concept, labeling_class, :lang => lang)
+        render_concept_association(res, concept, labeling_class, lang: lang)
       end
     end
 
@@ -85,12 +85,12 @@ module ConceptsHelper
     desc = concept.class.model_name.human
 
     if concept.expired_at
-      desc += " #{t('txt.views.concepts.expired_at', :date => l(concept.expired_at, :format => :long))} "
+      desc += " #{t('txt.views.concepts.expired_at', date: l(concept.expired_at, format: :long))} "
     end
 
     title = concept.pref_label || concept.origin
 
-    page_header :title => title.to_s, :desc => desc.html_safe
+    page_header title: title.to_s, desc: desc.html_safe
   end
 
   private
@@ -101,7 +101,7 @@ module ConceptsHelper
     html = if association_class.respond_to?(:hidden?) && association_class.hidden?(concept)
       ""
     else
-      render(association_class.partial_name(concept), further_options.merge(:concept => concept, :klass => association_class))
+      render(association_class.partial_name(concept), further_options.merge(concept: concept, klass: association_class))
     end
     # Convert the already safely buffered string back to a regular one
     # in order to be able to modify it with squish

@@ -11,14 +11,14 @@ module Iqvoc
       helper :all
       helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
 
-      rescue_from ActiveRecord::RecordNotFound, :with => :handle_not_found
-      rescue_from CanCan::AccessDenied, :with => :handle_access_denied
+      rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
+      rescue_from CanCan::AccessDenied, with: :handle_access_denied
     end
 
     protected
 
     def default_url_options(options = nil)
-      { :format => params[:format], :lang => I18n.locale }.
+      { format: params[:format], lang: I18n.locale }.
         merge(options || {})
     end
 
@@ -26,7 +26,7 @@ module Iqvoc
     def ensure_extension
       unless params[:format] || !request.get?
         flash.keep
-        redirect_to url_for(params.merge(:format => (request.format && request.format.symbol) || :html))
+        redirect_to url_for(params.merge(format: (request.format && request.format.symbol) || :html))
       end
     end
 
@@ -36,7 +36,7 @@ module Iqvoc
       @user_session = UserSession.new if @status == 401
       @return_url = request.fullpath
       respond_to do |format|
-        format.html { render :template => 'errors/access_denied', :status => @status }
+        format.html { render template: 'errors/access_denied', status: @status }
         format.any  { head @status }
       end
     end
@@ -46,7 +46,7 @@ module Iqvoc
       SearchResultsController.prepare_basic_variables(self)
 
       respond_to do |format|
-        format.html { render :template => 'errors/not_found', :status => 404 }
+        format.html { render template: 'errors/not_found', status: 404 }
         format.any  { head 404 }
       end
     end
@@ -61,8 +61,8 @@ module Iqvoc
 
     def concept_widget_data(concept, rank = nil)
       data = {
-        :id => concept.origin,
-        :name => (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : "")
+        id: concept.origin,
+        name: (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : "")
       }
       data[:rank] = rank if rank
       data
@@ -70,15 +70,15 @@ module Iqvoc
 
     def collection_widget_data(collection)
       {
-        :id => collection.origin,
-        :name => collection.pref_label.to_s
+        id: collection.origin,
+        name: collection.pref_label.to_s
       }
     end
 
     def label_widget_data(label)
       {
-        :id => label.origin,
-        :name => label.value
+        id: label.origin,
+        name: label.value
       }
     end
 

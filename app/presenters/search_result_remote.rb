@@ -38,7 +38,7 @@ class SearchResultRemote
     predicate = URI.parse(rdf_predicate_uri)
     value = body || label
 
-    subject.build_full_uri_predicate(predicate, value, :lang => language)
+    subject.build_full_uri_predicate(predicate, value, lang: language)
   end
 
   def build_search_result_rdf(document, result)

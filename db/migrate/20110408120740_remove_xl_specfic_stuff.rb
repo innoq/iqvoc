@@ -14,7 +14,7 @@ class RemoveXlSpecficStuff < ActiveRecord::Migration
   end
 
   def self.down
-    add_column :labels, "rev", :integer,  :default => 1
+    add_column :labels, "rev", :integer,  default: 1
     add_column :labels, "published_version_id", :integer
     add_column :labels, "published_at", :date
     add_column :labels, "locked_by", :integer
@@ -23,7 +23,7 @@ class RemoveXlSpecficStuff < ActiveRecord::Migration
     add_column :labels, "to_review", :boolean
     add_column :labels, "rdf_updated_at", :date
 
-    create_table "label_relations", :force => true do |t|
+    create_table "label_relations", force: true do |t|
       t.string   "type"
       t.integer  "domain_id"
       t.integer  "range_id"
@@ -31,8 +31,8 @@ class RemoveXlSpecficStuff < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    add_index "label_relations", ["domain_id", "range_id", "type"], :name => "index_label_relations_on_domain_id_and_range_id_and_type"
-    add_index "label_relations", ["type"], :name => "index_label_relations_on_type"
+    add_index "label_relations", ["domain_id", "range_id", "type"], name: "index_label_relations_on_domain_id_and_range_id_and_type"
+    add_index "label_relations", ["type"], name: "index_label_relations_on_type"
 
   end
 

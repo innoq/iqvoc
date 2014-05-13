@@ -19,20 +19,20 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    [ {:en => "Xen1", :de => "Xde1"},
-      {:en => "Xen2"}
+    [ {en: "Xen1", de: "Xde1"},
+      {en: "Xen2"}
     ].map do |hsh|
       labelings = []
       hsh.each do |lang, val|
         labelings << FactoryGirl.create(:pref_labeling,
-            :target => FactoryGirl.create(:pref_label, :language => lang, :value => val))
+            target: FactoryGirl.create(:pref_label, language: lang, value: val))
       end
-      FactoryGirl.create(:concept, :pref_labelings => labelings)
+      FactoryGirl.create(:concept, pref_labelings: labelings)
     end
   end
 
   test "showing only concepts with a pref label in respective language" do
-    visit alphabetical_concepts_path(:lang => :en, :prefix => "x", :format => :html)
+    visit alphabetical_concepts_path(lang: :en, prefix: "x", format: :html)
     concepts = page.all(".concept-items .concept-item")
 
     assert_equal :en, I18n.locale
@@ -40,7 +40,7 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     assert_equal "Xen1", concepts[0].find(".concept-item-link").text.strip
     assert_equal "Xen2", concepts[1].find(".concept-item-link").text.strip
 
-    visit alphabetical_concepts_path(:lang => :de, :prefix => "x", :format => :html)
+    visit alphabetical_concepts_path(lang: :de, prefix: "x", format: :html)
     concepts = page.all(".concept-items .concept-item")
 
     assert_equal :de, I18n.locale

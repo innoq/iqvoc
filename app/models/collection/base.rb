@@ -17,28 +17,28 @@
 class Collection::Base < Concept::Base
 
   has_many Note::SKOS::Definition.name.to_relation_name,
-      :class_name => 'Note::SKOS::Definition',
-      :as => :owner,
-      :dependent => :destroy
+      class_name: 'Note::SKOS::Definition',
+      as: :owner,
+      dependent: :destroy
 
   has_many :members,
-      :class_name  => 'Collection::Member::Base',
-      :foreign_key => 'collection_id',
-      :dependent   => :destroy
+      class_name: 'Collection::Member::Base',
+      foreign_key: 'collection_id',
+      dependent: :destroy
 
   has_many :parent_collection_members,
-      :class_name  => 'Collection::Member::Base',
-      :foreign_key => 'target_id',
-      :dependent   => :destroy
+      class_name: 'Collection::Member::Base',
+      foreign_key: 'target_id',
+      dependent: :destroy
   has_many :parent_collections,
-      :through => :parent_collection_members
+      through: :parent_collection_members
 
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   validate :circular_subcollections
 
   def self.by_origin(origin)
-    where(:origin => origin)
+    where(origin: origin)
   end
 
   def self.by_label_value(val)
@@ -94,7 +94,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_concepts
     if @member_concept_origins
-      Concept::Base.editor_selectable.where(:origin => @member_concept_origins)
+      Concept::Base.editor_selectable.where(origin: @member_concept_origins)
     else
       concepts.select{|c| c.editor_selectable?}
     end
@@ -112,7 +112,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_collections
     if @member_collection_origins
-      Collection::Base.where(:origin => @member_collection_origins)
+      Collection::Base.where(origin: @member_collection_origins)
     else
       subcollections
     end
@@ -131,7 +131,7 @@ class Collection::Base < Concept::Base
       member = existing.find{ |m| m.target.origin == new_origin }
       unless member
         c = target_class.by_origin(new_origin).first
-        member = Iqvoc::Collection.member_class.create(:collection => self, :target => c) if c
+        member = Iqvoc::Collection.member_class.create(collection: self, target: c) if c
       end
       new << member if member
     end
@@ -154,10 +154,10 @@ class Collection::Base < Concept::Base
   # TODO: This should be a real circle detector (but still performant) or be
   # removed (seems to me like the better idea).
   def circular_subcollections
-    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).includes(:members => :target).each do |subcollection|
+    Iqvoc::Collection.base_class.by_origin(@member_collection_origins).includes(members: :target).each do |subcollection|
       if subcollection.subcollections.include?(self)
         errors.add(:base,
-          I18n.t("txt.controllers.collections.circular_error", :label => subcollection.pref_label))
+          I18n.t("txt.controllers.collections.circular_error", label: subcollection.pref_label))
       end
     end
   end

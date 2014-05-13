@@ -25,24 +25,24 @@ class SearchResultsController < ApplicationController
 
   api :GET, 'search', 'Search for concepts or collections based on various criteria.'
   formats [:html, :ttl, :rdf]
-  param :q, String, :required => true,
-      :desc => 'Query term (URL-encoded, if necessary). Wild cards are not '\
+  param :q, String, required: true,
+      desc: 'Query term (URL-encoded, if necessary). Wild cards are not '\
                'supported, see the `qt` parameter below.'
   param :qt, ['exact', 'contains', 'begins_with', 'ends_with'],
-      :desc => 'Query type'
+      desc: 'Query type'
   param :t, %w(labels pref_labels notes),
-      :required => true,
-      :desc => 'Specifies the properties to be searched.'
+      required: true,
+      desc: 'Specifies the properties to be searched.'
   param :for, %w(concept collection all),
-      :desc => 'The result type you are searching for.'
+      desc: 'The result type you are searching for.'
   param 'l[]', Iqvoc.all_languages,
-      :required => true,
-      :desc => 'One or more languages of the labels or notes to be queried. '\
+      required: true,
+      desc: 'One or more languages of the labels or notes to be queried. '\
                'Use 2-letter language codes from ISO 639.1.'
   param :c, String,
-      :desc => 'Constrains results to members of the given collection ID.'
+      desc: 'Constrains results to members of the given collection ID.'
   param 'ds[]', String ,
-      :desc => 'Specifies one or more external data sets (connected thesauri)'\
+      desc: 'Specifies one or more external data sets (connected thesauri)'\
                'to include in search.'
   example <<-DOC
     GET /search.ttl
@@ -71,12 +71,12 @@ class SearchResultsController < ApplicationController
     self.class.prepare_basic_variables(self)
 
     # Map short params to their log representation
-    { :t  => :type,
-      :q  => :query,
-      :l  => :languages,
-      :qt => :query_type,
-      :c  => :collection_origin,
-      :ds  => :datasets }.each do |short, long|
+    { t: :type,
+      q: :query,
+      l: :languages,
+      qt: :query_type,
+      c: :collection_origin,
+      ds: :datasets }.each do |short, long|
       params[long] ||= params[short]
     end
 
@@ -113,13 +113,13 @@ class SearchResultsController < ApplicationController
 
       if klass.forces_multi_query? || (klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = klass.multi_query(params.merge({:languages => languages}))
+        @results = klass.multi_query(params.merge({languages: languages}))
         # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
         # each sub-query has to return 100 objects at most.
         @klass = klass
       else
         @multi_query = false
-        @results = klass.single_query(params.merge({:languages => languages}))
+        @results = klass.single_query(params.merge({languages: languages}))
       end
 
       if @multi_query
@@ -141,7 +141,7 @@ class SearchResultsController < ApplicationController
             @results = @results + results
           else
             flash.now[:error] ||= []
-            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', :source => dataset)
+            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
           end
         end
         @results = @results.sort {|x, y| x.to_s <=> y.to_s }
@@ -151,7 +151,7 @@ class SearchResultsController < ApplicationController
       @results = @results.page(params[:page])
 
       respond_to do |format|
-        format.html { render :index, :layout => with_layout? }
+        format.html { render :index, layout: with_layout? }
         format.any(:ttl, :rdf, :nt)
       end
     end
@@ -160,7 +160,7 @@ class SearchResultsController < ApplicationController
   def self.prepare_basic_variables(controller)
     langs = Iqvoc.all_languages.each_with_object({}) do |lang, hsh|
       lang ||= "none"
-      hsh[lang] = I18n.t("languages.#{lang}", :default => lang)
+      hsh[lang] = I18n.t("languages.#{lang}", default: lang)
     end
     controller.instance_variable_set(:@available_languages, langs)
 

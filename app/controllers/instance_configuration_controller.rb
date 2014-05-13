@@ -42,7 +42,7 @@ class InstanceConfigurationController < ApplicationController
     errors = []
     params[:config].each { |key, value|
       unless Iqvoc.config.defaults.include?(key)
-        errors << t("txt.controllers.instance_configuration.invalid_key", :key => key)
+        errors << t("txt.controllers.instance_configuration.invalid_key", key: key)
       else
         default_value = Iqvoc.config.defaults[key]
         begin
@@ -51,7 +51,7 @@ class InstanceConfigurationController < ApplicationController
           Rails.logger.error(exc)
           Rails.logger.error(exc.backtrace.join("\n"))
           errors << t("txt.controllers.instance_configuration.invalid_value",
-              :key => key, :error_message => exc.message)
+              key: key, error_message: exc.message)
         end
       end
     }
@@ -60,7 +60,7 @@ class InstanceConfigurationController < ApplicationController
       flash[:success] = t("txt.controllers.instance_configuration.update_success")
     else
       flash[:error] = t("txt.controllers.instance_configuration.update_error",
-          :error_messages => errors.join("; "))
+          error_messages: errors.join("; "))
     end
 
     redirect_to instance_configuration_url

@@ -18,7 +18,7 @@ class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::A
 
   self.table_name = 'note_annotations'
 
-  belongs_to :note, :class_name => Note::Base.name
+  belongs_to :note, class_name: Note::Base.name
 
   def identifier
     (self.namespace && self.predicate) ?

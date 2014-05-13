@@ -26,35 +26,35 @@ class ExportTest < ActionDispatch::IntegrationTest
 
   test 'export privileges' do
     # guest
-    visit exports_path(:lang => 'en')
+    visit exports_path(lang: 'en')
     assert page.has_content? 'No permission'
 
     ['reader', 'editor', 'publisher'].each do |role|
       login role
-      visit exports_path(:lang => 'en')
+      visit exports_path(lang: 'en')
       assert page.has_content?('No permission'), "#{role} must not access exports"
       logout
     end
 
     login 'administrator'
-    visit exports_path(:lang => 'en')
+    visit exports_path(lang: 'en')
     assert page.has_content? 'Export'
   end
 
   test 'full export generation' do
     login('administrator')
 
-    visit exports_path(:lang => 'en')
+    visit exports_path(lang: 'en')
     assert page.has_content? 'Export'
 
-    select('RDF/N-Triples', :from => 'Type')
-    fill_in 'Default namespace', :with => 'http://www.example.com/'
+    select('RDF/N-Triples', from: 'Type')
+    fill_in 'Default namespace', with: 'http://www.example.com/'
     click_link_or_button 'Request Export'
     assert page.has_content? 'Export job was created. Reload page to see current processing status.'
 
     Delayed::Worker.new.work_off
 
-    visit exports_path(:lang => 'en')
+    visit exports_path(lang: 'en')
     click_link_or_button 'Download'
 
     assert_equal 'application/n-triples', page.response_headers['Content-Type']
@@ -63,11 +63,11 @@ class ExportTest < ActionDispatch::IntegrationTest
   test 'invalid export form submission' do
     login('administrator')
 
-    visit exports_path(:lang => 'en')
+    visit exports_path(lang: 'en')
     assert page.has_content? 'Export'
 
-    select('RDF/N-Triples', :from => 'Type')
-    fill_in 'Default namespace', :with => ''
+    select('RDF/N-Triples', from: 'Type')
+    fill_in 'Default namespace', with: ''
     click_link_or_button 'Request Export'
     assert page.has_content? 'Error occurred while creating Export job.'
   end

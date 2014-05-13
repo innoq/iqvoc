@@ -27,7 +27,7 @@ module SearchExtension
       query_terms = params[:query].split(/\r\n/)
       results     = []
       query_terms.each do |term|
-        results << { :query => term, :result => single_query(params.merge({:query => term})) }
+        results << { query: term, result: single_query(params.merge({query: term})) }
       end
       results
     end

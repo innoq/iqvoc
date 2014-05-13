@@ -28,14 +28,14 @@ module NavigationHelper
     items.map do |item|
       if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
         if item[:items]
-          content_tag :li, :class => "dropdown" do
+          content_tag :li, class: "dropdown" do
             raw(link_to(element_value(item[:text]).html_safe +
-                    content_tag(:b, nil, :class => "caret"), "#",
-                    :class => "dropdown-toggle",
-                    :data => { :toggle => "dropdown" }) +
+                    content_tag(:b, nil, class: "caret"), "#",
+                    class: "dropdown-toggle",
+                    data: { toggle: "dropdown" }) +
                 content_tag(:ul,
                     item[:items].map { |i| nav_item(i) }.join.html_safe,
-                    :class => "dropdown-menu"))
+                    class: "dropdown-menu"))
           end
         else
           nav_item(item)
@@ -46,8 +46,8 @@ module NavigationHelper
 
   def sidebar(&block)
     content_for :sidebar do
-      content_tag :div, :class => 'sidebar' do
-        content_tag :div, :class => 'list-group' do
+      content_tag :div, class: 'sidebar' do
+        content_tag :div, class: 'list-group' do
           capture(&block)
         end
       end
@@ -55,7 +55,7 @@ module NavigationHelper
   end
 
   def sidebar_header(text)
-    content_tag :h4, text, :class => 'sidebar-header'
+    content_tag :h4, text, class: 'sidebar-header'
   end
 
   def sidebar_item(opts = {}, &block)
@@ -86,7 +86,7 @@ module NavigationHelper
   def nav_item(item)
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
     css = active ? "active" : nil
-    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href])), :class => css
+    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href])), class: css
   end
 
   def nav_item_authorized?(item)

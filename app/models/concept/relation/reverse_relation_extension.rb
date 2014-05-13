@@ -22,12 +22,12 @@ module Concept
         relation_class = proxy_association.reflection.class_name.constantize
         ActiveRecord::Base.transaction do
           # The one direction
-          scope = relation_class.where(:owner_id => proxy_association.owner.id, :target_id => target_concept.id)
+          scope = relation_class.where(owner_id: proxy_association.owner.id, target_id: target_concept.id)
           attributes = attributes.except(:rank) unless relation_class.rankable?
           scope.any? || scope.create!(attributes)
 
           # The reverse direction
-          scope = relation_class.reverse_relation_class.where(:owner_id => target_concept.id, :target_id => proxy_association.owner.id)
+          scope = relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id)
           scope.any? || scope.create!(attributes)
         end
       end
@@ -35,11 +35,11 @@ module Concept
       def destroy_with_reverse_relation(target_concept)
         relation_class = proxy_association.reflection.class_name.constantize
         ActiveRecord::Base.transaction do
-          relation_class.where(:owner_id => proxy_association.owner.id, :target_id => target_concept.id).load.each do |relation|
+          relation_class.where(owner_id: proxy_association.owner.id, target_id: target_concept.id).load.each do |relation|
             relation.destroy
           end
 
-          relation_class.reverse_relation_class.where(:owner_id => target_concept.id, :target_id => proxy_association.owner.id).load.each do |relation|
+          relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id).load.each do |relation|
             relation.destroy
           end
         end

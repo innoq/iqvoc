@@ -18,8 +18,8 @@ module Versioning
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :published_version, :foreign_key => 'published_version_id', :class_name => name
-    belongs_to :locking_user, :foreign_key => 'locked_by', :class_name => 'User'
+    belongs_to :published_version, foreign_key: 'published_version_id', class_name: name
+    belongs_to :locking_user, foreign_key: 'locked_by', class_name: 'User'
 
     after_initialize do
       disable_validations_for_publishing
@@ -28,7 +28,7 @@ module Versioning
 
   module ClassMethods
     def by_origin(origin)
-       where(:origin => origin)
+       where(origin: origin)
      end
 
      def published
@@ -36,7 +36,7 @@ module Versioning
      end
 
      def unpublished
-       where(:published_at => nil)
+       where(published_at: nil)
      end
 
      # The following method returns all objects which should be selectable by the editor
@@ -61,7 +61,7 @@ module Versioning
      end
 
      def unsynced
-       where(:rdf_updated_at => nil)
+       where(rdf_updated_at: nil)
      end
 
      def include_to_deep_cloning(*association_names)
@@ -78,16 +78,16 @@ module Versioning
   end
 
   def branch(user)
-    new_version = self.dup(:include => self.class.includes_to_deep_cloning)
+    new_version = self.dup(include: self.class.includes_to_deep_cloning)
     new_version.lock_by_user(user.id)
     new_version.increment(:rev)
     new_version.published_version_id = self.id
     new_version.unpublish
     new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
-      :language => I18n.locale.to_s,
-      :annotations_attributes => [
-        { :namespace => "dct", :predicate => "creator", :value => user.name },
-        { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
+      language: I18n.locale.to_s,
+      annotations_attributes: [
+        { namespace: "dct", predicate: "creator", value: user.name },
+        { namespace: "dct", predicate: "modified", value: DateTime.now.to_s }
       ])
     new_version
   end

@@ -20,13 +20,13 @@ class NoteTest < ActiveSupport::TestCase
 
   test "should parse turtle note annotations" do
     str = '[umt:source <aDisBMS>; umt:thsisn "00000001"; dct:date "2010-04-29"]'
-    concept = Concept::SKOS::Base.create(:origin => "_00000001", :published_at => Time.now)
+    concept = Concept::SKOS::Base.create(origin: "_00000001", published_at: Time.now)
     concept.note_skos_change_notes << ::Note::SKOS::ChangeNote.new.from_annotation_list!(str)
 
     assert_equal 1, Note::SKOS::ChangeNote.count, 1
     assert_equal 3, Note::SKOS::ChangeNote.first.annotations.count, 3
-    assert_equal 1, Note::Annotated::Base.where(:namespace => "umt",
-        :predicate => 'thsisn', :value => '"00000001"').count
+    assert_equal 1, Note::Annotated::Base.where(namespace: "umt",
+        predicate: 'thsisn', value: '"00000001"').count
   end
 
 end

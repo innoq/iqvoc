@@ -24,17 +24,17 @@ class Labeling::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :owner,  :class_name => "Concept::Base"
-  belongs_to :target, :class_name => "Label::Base"
+  belongs_to :owner,  class_name: "Concept::Base"
+  belongs_to :target, class_name: "Label::Base"
 
   # ********** Scopes
 
   def self.by_concept(concept)
-    where(:owner_id => concept.id)
+    where(owner_id: concept.id)
   end
 
   def self.by_label(label)
-    where(:target_id => label.id)
+    where(target_id: label.id)
   end
 
   def self.concept_published

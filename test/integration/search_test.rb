@@ -23,18 +23,18 @@ class SearchTest < ActionDispatch::IntegrationTest
     Kaminari.config.default_per_page = 5
 
     @concepts =  ["Tree", "Forest"].map do |english_label_value|
-      FactoryGirl.create(:concept, :pref_labelings => [
-          FactoryGirl.create(:pref_labeling, :target => FactoryGirl.create(:pref_label,
-              :language => :en, :value => english_label_value))
+      FactoryGirl.create(:concept, pref_labelings: [
+          FactoryGirl.create(:pref_labeling, target: FactoryGirl.create(:pref_label,
+              language: :en, value: english_label_value))
         ])
     end
 
     # create collection
     @collection = FactoryGirl.create(:collection,
-      :members => @concepts.map { |c| Iqvoc::Collection.member_class.new(:target => c) },
-        :labelings => [], :pref_labelings => [
+      members: @concepts.map { |c| Iqvoc::Collection.member_class.new(target: c) },
+        labelings: [], pref_labelings: [
             FactoryGirl.create(:pref_labeling,
-                :target => FactoryGirl.create(:pref_label, :language => :en, :value => "Alpha"))
+                target: FactoryGirl.create(:pref_label, language: :en, value: "Alpha"))
         ])
   end
 
@@ -43,14 +43,14 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "searching" do
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     [{
-        :type => 'Labels', :query => 'Forest', :query_type => 'contains',
-        :amount => 1, :result => 'Forest'
+        type: 'Labels', query: 'Forest', query_type: 'contains',
+        amount: 1, result: 'Forest'
       }].each { |q|
       find("#t").select q[:type]
-      fill_in "Search term(s)", :with => q[:query]
+      fill_in "Search term(s)", with: q[:query]
       find("#qt").select q[:query_type]
 
       # select all languages
@@ -60,7 +60,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
       click_button("Search")
 
-      assert page.has_css?(".search-result", :count => q[:amount]),
+      assert page.has_css?(".search-result", count: q[:amount]),
       "Page has #{page.all(:css, ".search-result").count} '.search-result' nodes. Should be #{q[:amount]}."
 
       within(".search-result") do
@@ -70,13 +70,13 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "collection/concept filter" do
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     find("#t").select "Labels"
     find("#qt").select "contains"
-    fill_in "Search term(s)", :with => "Alpha"
+    fill_in "Search term(s)", with: "Alpha"
     click_button("Search")
-    assert page.has_css?(".search-result", :count => 1)
+    assert page.has_css?(".search-result", count: 1)
 
     choose "Concepts"
     click_button "Search"
@@ -88,11 +88,11 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "searching within collections" do
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     find("#t").select "Labels"
     find("#qt").select "contains"
-    fill_in "Search term(s)", :with => "res"
+    fill_in "Search term(s)", with: "res"
     find("#c").select @collection.to_s
 
     # select all languages
@@ -102,7 +102,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?(".search-result", :count => 1)
+    assert page.has_css?(".search-result", count: 1)
     assert page.find(".search-results").has_content?("Forest")
 
     # TTL & RDF/XML
@@ -122,15 +122,15 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "searching specific classes within collections" do
-    concept = FactoryGirl.create(:concept, { :notes => [
-          Iqvoc::Concept.note_classes[1].new(:language => "en", :value => "lorem ipsum")
+    concept = FactoryGirl.create(:concept, { notes: [
+          Iqvoc::Concept.note_classes[1].new(language: "en", value: "lorem ipsum")
         ] })
 
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     find("#t").select "Notes"
     find("#qt").select "contains"
-    fill_in "Search term(s)", :with => "ipsum"
+    fill_in "Search term(s)", with: "ipsum"
     find("#c").select @collection.to_s
 
     # select all languages
@@ -140,16 +140,16 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?(".search-result", :count => 1)
+    assert page.has_css?(".search-result", count: 1)
     assert page.find(".search-results").has_content?(concept.pref_label.to_s)
   end
 
   test "empty query with selected collection should return all collection members" do
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     find("#t").select "Labels"
     find("#qt").select "exact match"
-    fill_in "Search term(s)", :with => ""
+    fill_in "Search term(s)", with: ""
     find("#c").select @collection.to_s
 
     # select all languages
@@ -159,7 +159,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     click_button("Search")
 
-    assert page.has_css?(".search-result", :count => 2)
+    assert page.has_css?(".search-result", count: 2)
     assert page.find(".search-results").has_content?("Tree")
     assert page.find(".search-results").has_content?("Forest")
   end
@@ -168,25 +168,25 @@ class SearchTest < ActionDispatch::IntegrationTest
     # create a large number of concepts
     12.times { |i|
       FactoryGirl.create(:concept,
-        :pref_labelings => [FactoryGirl.create(:pref_labeling,
-            :target => FactoryGirl.create(:pref_label, :language => :en,
-              :value => "sample_#{sprintf("_%04d", i + 1)}"))])
+        pref_labelings: [FactoryGirl.create(:pref_labeling,
+            target: FactoryGirl.create(:pref_label, language: :en,
+              value: "sample_#{sprintf("_%04d", i + 1)}"))])
     }
 
-    visit search_path(:lang => 'en', :format => 'html')
+    visit search_path(lang: 'en', format: 'html')
 
     find("#t").select "Labels"
     find("#qt").select "contains"
-    fill_in "Search term(s)", :with => "sample_"
+    fill_in "Search term(s)", with: "sample_"
 
     click_button("Search")
 
-    assert page.has_css?(".search-result", :count => 5)
-    assert page.has_css?(".pagination .page", :count => 3)
+    assert page.has_css?(".search-result", count: 5)
+    assert page.has_css?(".pagination .page", count: 3)
 
     find(".pagination").all(".page").last.find("a").click
 
-    assert page.has_css?(".search-result", :count => 2)
+    assert page.has_css?(".search-result", count: 2)
 
     # TTL & RDF/XML
 

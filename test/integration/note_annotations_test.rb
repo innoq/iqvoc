@@ -22,11 +22,11 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
   test "creating and retrieving change notes" do
     login "administrator"
 
-    visit new_concept_path(:lang => "en", :format => "html", :published => 0)
+    visit new_concept_path(lang: "en", format: "html", published: 0)
     fill_in "concept_labelings_by_text_labeling_skos_pref_labels_en",
-        :with => "Foo"
+        with: "Foo"
     fill_in "concept_note_skos_change_notes_attributes_0_value",
-        :with => "lorem ipsum"
+        with: "lorem ipsum"
     click_button "Save"
 
     assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
@@ -36,14 +36,14 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     click_link_or_button I18n.t("txt.views.versioning.versioning_mode")
     fill_in "concept_note_skos_change_notes_attributes_1_value",
-        :with => "dolor sit amet"
+        with: "dolor sit amet"
     click_button "Save"
 
-    assert page.has_css?("dl.note_annotations", :count => 1)
+    assert page.has_css?("dl.note_annotations", count: 1)
 
     click_link_or_button I18n.t("txt.views.versioning.publishing")
     assert page.has_content? I18n.t("txt.controllers.versioning.published")
-    assert page.has_css?("dl.note_annotations", :count => 1)
+    assert page.has_css?("dl.note_annotations", count: 1)
 
     # TTL & RDF/XML
 
@@ -92,9 +92,9 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     rdfapi.devour concept, 'skos:prefLabel', '"foo"@en'
 
-    note = Note::RDFS::SeeAlso.create :owner => concept, :value => 'foo', :language => 'en'
-    note.annotations.create :namespace => 'dct', :predicate => 'title', :value => 'Foo Bar', :language => 'en'
-    note.annotations.create :namespace => 'foaf', :predicate => 'page', :value => 'http://google.de/'
+    note = Note::RDFS::SeeAlso.create owner: concept, value: 'foo', language: 'en'
+    note.annotations.create namespace: 'dct', predicate: 'title', value: 'Foo Bar', language: 'en'
+    note.annotations.create namespace: 'foaf', predicate: 'page', value: 'http://google.de/'
 
     visit "/#{concept.origin}.ttl"
 

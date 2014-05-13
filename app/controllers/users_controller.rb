@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       flash[:success] = I18n.t('txt.controllers.users.successfully_created')
       redirect_to users_path
     else
-      render :action => :new
+      render action: :new
     end
   end
 
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
       redirect_to users_path
     else
-      render :action => :edit
+      render action: :edit
     end
   end
 

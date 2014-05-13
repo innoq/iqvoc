@@ -3,7 +3,7 @@ class CreateImports < ActiveRecord::Migration
     create_table :imports do |t|
       t.references :user
       t.text :output
-      t.boolean :success, :default => false
+      t.boolean :success, default: false
       t.timestamps
       t.timestamp :finished_at
     end

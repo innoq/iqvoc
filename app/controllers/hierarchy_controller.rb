@@ -53,7 +53,7 @@ class HierarchyController < ApplicationController
                                "hierarchy with optional siblings."
   formats [:html, :ttl, :rdf]
   param :dir, ['down', 'up'],
-      :desc => <<-DOC
+      desc: <<-DOC
       Direction of the hierarchy.
 
       *down* follow narrower from root to its leaf nodes.
@@ -116,7 +116,7 @@ class HierarchyController < ApplicationController
     error = "missing root parameter" unless root_origin # TODO: i18n
     unless error
       root_concepts = root_origin == "scheme" ? scope.tops.load : # XXX: special-casing
-          scope.where(:origin => root_origin).load
+          scope.where(origin: root_origin).load
       unless root_concepts.length > 0
         error = [404, "no concept matching root parameter"] # TODO: i18n
       end
@@ -125,15 +125,15 @@ class HierarchyController < ApplicationController
     if error
       status, error = error if error.is_a? Array
       flash.now[:error] = error
-      render "hierarchy/show", :status => (status || 400)
+      render "hierarchy/show", status: (status || 400)
       return
     end
 
     # caching -- NB: invalidated on any in-scope concept modifications
     latest = scope.maximum(:updated_at)
     response.cache_control[:public] = !include_unpublished # XXX: this should not be necessary!?
-    return unless stale?(:etag => [latest, params], :last_modified => latest,
-        :public => !include_unpublished)
+    return unless stale?(etag: [latest, params], last_modified: latest,
+        public: !include_unpublished)
 
     # NB: order matters due to the `where` clause below
     if direction == "up"

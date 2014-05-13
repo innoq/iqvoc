@@ -1,7 +1,7 @@
 class SeparateNoteAnnotationPredicates < ActiveRecord::Migration
   def self.up
     rename_column :note_annotations, :identifier, :predicate
-    add_column :note_annotations, :namespace, :string, :limit => 50
+    add_column :note_annotations, :namespace, :string, limit: 50
 
     annotations = select_rows("SELECT id, predicate FROM note_annotations")
 

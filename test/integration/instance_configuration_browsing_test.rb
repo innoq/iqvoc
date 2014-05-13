@@ -50,7 +50,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     login "administrator"
     visit "/en/config"
 
-    fill_in "config_title", :with => "lorem ipsum"
+    fill_in "config_title", with: "lorem ipsum"
     click_button "Save"
 
     assert page.find(".navbar-brand").has_content? "lorem ipsum"

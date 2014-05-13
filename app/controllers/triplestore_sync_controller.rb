@@ -23,7 +23,7 @@ class TriplestoreSyncController < ApplicationController
     authorize! :use, :dashboard
 
     flash.now[:info] = [I18n.t("txt.controllers.triplestore_sync.batch_hint",
-        :host => root_url(:lang => nil))]
+        host: root_url(lang: nil))]
 
     if Iqvoc.config["triplestore.url"] == Iqvoc.config.defaults["triplestore.url"]
       flash.now[:warning] = I18n.t("txt.controllers.triplestore_sync.config_warning")
@@ -38,7 +38,7 @@ class TriplestoreSyncController < ApplicationController
         target_info = "#{target_info} (as #{username})" # XXX: i18n
       end
       flash.now[:info] << I18n.t("txt.controllers.triplestore_sync.config_info",
-          :target_info => target_info)
+          target_info: target_info)
     end
 
     # per-class pagination
@@ -64,7 +64,7 @@ class TriplestoreSyncController < ApplicationController
       flash[:error] << I18n.t("txt.controllers.triplestore_sync.error")
     end
 
-    redirect_to :action => "index"
+    redirect_to action: "index"
   end
 
 end

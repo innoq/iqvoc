@@ -24,7 +24,7 @@ class Match::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :concept, :class_name => "Concept::Base", :foreign_key => 'concept_id'
+  belongs_to :concept, class_name: "Concept::Base", foreign_key: 'concept_id'
 
   # ********** Validations
 

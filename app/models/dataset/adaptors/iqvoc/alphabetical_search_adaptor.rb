@@ -28,8 +28,8 @@ class Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor < Dataset::Adaptors::I
       label, path = link.text, link['data-resource-path'] # href
 
       options = {
-        :definition => element.at_css('.concept-item-definition').try(:content),
-        :definition_language => element.at_css('.concept-item-definition').try(:[], :lang)
+        definition: element.at_css('.concept-item-definition').try(:content),
+        definition_language: element.at_css('.concept-item-definition').try(:[], :lang)
       }
 
       result = AlphabeticalSearchResultRemote.new(url, path, label, options)

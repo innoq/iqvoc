@@ -20,13 +20,13 @@ class NavigationTest < ActionDispatch::IntegrationTest
 
   test "extend navigation on root level" do
     Iqvoc::Navigation.add({
-      :text => "root element 1",
-      :href => "http://foo.local/"
+      text: "root element 1",
+      href: "http://foo.local/"
     })
 
     Iqvoc::Navigation.add_grouped({
-      :text => "extension 1",
-      :href => "http://foo.local/"
+      text: "extension 1",
+      href: "http://foo.local/"
     })
 
     visit "/en"

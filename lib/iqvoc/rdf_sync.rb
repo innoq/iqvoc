@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 class Iqvoc::RDFSync
-  delegate :url_helpers, :to => "Rails.application.routes"
+  delegate :url_helpers, to: "Rails.application.routes"
 
   ADAPTORS = { # XXX: inappropriate?
     "virtuoso" => lambda do  |host_url, options|
@@ -57,14 +57,14 @@ class Iqvoc::RDFSync
   def push(records)
     data = records.inject({}) do |memo, record|
       graph_uri = url_helpers.rdf_url(record.origin,
-          :host => URI.parse(@base_url).host, :format => nil, :lang => nil)
+          host: URI.parse(@base_url).host, format: nil, lang: nil)
       memo[graph_uri] = serialize(record)
       memo
     end
 
     adaptor_type = "sesame" # XXX: hard-coded
-    adaptor = ADAPTORS[adaptor_type].call(@target_url, :username => @username,
-        :password => @password)
+    adaptor = ADAPTORS[adaptor_type].call(@target_url, username: @username,
+        password: @password)
     return adaptor.batch_update(data)
   end
 
@@ -91,7 +91,7 @@ class Iqvoc::RDFSync
   # yields batches of candidates for synchronization
   def gather_candidates # TODO: rename
     Iqvoc::Sync.syncable_classes.each do |klass|
-      self.class.candidates(klass).find_in_batches(:batch_size => @batch_size) do |records|
+      self.class.candidates(klass).find_in_batches(batch_size: @batch_size) do |records|
         yield records
       end
     end
@@ -109,12 +109,12 @@ end
 module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
 
   def triplestore_syncer
-    base_url = root_url(:lang => nil) # XXX: brittle in the face of future changes?
+    base_url = root_url(lang: nil) # XXX: brittle in the face of future changes?
 
     return Iqvoc::RDFSync.new(base_url, Iqvoc.config["triplestore.url"],
-        :username => Iqvoc.config["triplestore.username"].presence,
-        :password => Iqvoc.config["triplestore.password"].presence,
-        :view_context => view_context) # fugly, but necessary; cf. RDFSync#serialize
+        username: Iqvoc.config["triplestore.username"].presence,
+        password: Iqvoc.config["triplestore.password"].presence,
+        view_context: view_context) # fugly, but necessary; cf. RDFSync#serialize
   end
 
 end

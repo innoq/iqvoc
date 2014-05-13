@@ -20,12 +20,12 @@ class Labeling::SKOS::Base < Labeling::Base
 
   # ********** Associations
 
-  belongs_to :target, :class_name => "Label::Base", :dependent => :destroy # the destroy is new
+  belongs_to :target, class_name: "Label::Base", dependent: :destroy # the destroy is new
 
   # ********** Scopes
 
   def self.by_label_with_language(label, language)
-    includes(:target).merge(self.label_class.where(:value => label, :language => language))
+    includes(:target).merge(self.label_class.where(value: label, language: language))
   end
 
   # ********** Methods
@@ -58,9 +58,9 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Base.where(:origin => params[:collection_origin]).last
+      collection = Collection::Base.where(origin: params[:collection_origin]).last
       if collection
-        scope = scope.includes(:owner => :collection_members)
+        scope = scope.includes(owner: :collection_members)
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
         scope = scope.references(:collection_members)
       else
@@ -107,13 +107,13 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
-    predicate_class.new(:target => self.label_class.new(:value => value, :language => lang)).tap do |labeling|
+    predicate_class.new(target: self.label_class.new(value: value, language: lang)).tap do |labeling|
       rdf_subject.send(predicate_class.name.to_relation_name) << labeling
     end
   end
 
   def build_rdf(document, subject)
-    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.value.to_s, :lang => target.language)
+    subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, target.value.to_s, lang: target.language)
   end
 
   def build_search_result_rdf(document, result)
