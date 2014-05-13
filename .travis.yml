@@ -33,5 +33,8 @@ deploy:
       secure: gg/Mb5U2IEVm359R8pP+2hLnU7R80GoJqF+YZliEGf/Fxy2EjYiWzwKJPOCSls+b9py1Xm+rBsFaO4qh5nbmYwX23zpWkETXG+tu0V1X2XH4qsvv+yGJn8IvHt81GibqUYkYLaKrNSHR5GU4K4JlRop1b0OStiHnhfAjLKXUYWU=
     app:
       master: try-iqvoc
+    on:
+      branch: master
+      rvm: 2.0.0
     run:
       - "rake db:migrate"
