@@ -20,11 +20,13 @@ module Versioning
   included do
     belongs_to :published_version, :foreign_key => 'published_version_id', :class_name => name
     belongs_to :locking_user, :foreign_key => 'locked_by', :class_name => 'User'
+
+    after_initialize do
+      disable_validations_for_publishing
+    end
   end
 
   module ClassMethods
-    # ********* Scopes
-
     def by_origin(origin)
        where(:origin => origin)
      end
@@ -75,8 +77,6 @@ module Versioning
      end
   end
 
-  # ********* Instance methods
-
   def branch(user)
     new_version = self.dup(:include => self.class.includes_to_deep_cloning)
     new_version.lock_by_user(user.id)
@@ -90,20 +90,6 @@ module Versioning
         { :namespace => "dct", :predicate => "modified", :value => DateTime.now.to_s }
       ])
     new_version
-  end
-
-  def publish
-    write_attribute(:published_at, Time.now)
-    write_attribute(:to_review, nil)
-    write_attribute(:published_version_id, nil)
-  end
-
-  def unpublish
-    write_attribute(:published_at, nil)
-  end
-
-  def published?
-    read_attribute(:published_at).present?
   end
 
   # Editor selectable if published or no published version exists (before
@@ -142,4 +128,40 @@ module Versioning
     write_attribute(:to_review, true)
   end
 
+  def enable_validations_for_publishing
+    @_run_validations_for_publishing = true
+  end
+
+  def disable_validations_for_publishing
+    @_run_validations_for_publishing = false
+  end
+
+  def validatable_for_publishing?
+    @_run_validations_for_publishing
+  end
+
+  def publish
+    write_attribute(:published_at, Time.now)
+    write_attribute(:to_review, nil)
+    write_attribute(:published_version_id, nil)
+  end
+
+  def unpublish
+    write_attribute(:published_at, nil)
+  end
+
+  def published?
+    read_attribute(:published_at).present?
+  end
+
+  def publish!
+    enable_validations_for_publishing
+    publish
+    save!
+  end
+
+  def publishable?
+    enable_validations_for_publishing
+    valid?
+  end
 end

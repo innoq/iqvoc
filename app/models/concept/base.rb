@@ -18,9 +18,6 @@ class Concept::Base < ActiveRecord::Base
 
   self.table_name = 'concepts'
 
-  include Publishable
-  include Versioning
-
   class_attribute :default_includes
   self.default_includes = []
 
@@ -28,11 +25,12 @@ class Concept::Base < ActiveRecord::Base
   self.rdf_namespace = nil
   self.rdf_class = nil
 
-  include Concept::Validations
-
   Iqvoc::Concept.include_modules.each do |mod|
     include mod
   end
+
+  include Versioning
+  include Concept::Validations
 
   # ********** Hooks
 
