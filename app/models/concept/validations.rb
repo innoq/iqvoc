@@ -50,7 +50,7 @@ module Concept
     def pref_label_in_primary_thesaurus_language
       if validatable_for_publishing?
         labels = pref_labels.select{|l| l.published?}
-        if labels.count == 0
+        if labels.none?
           errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
         elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
           errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
