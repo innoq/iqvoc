@@ -6,7 +6,7 @@ module Concept
       validates :origin, :presence => true, :on => :update
 
       validate :distinct_versions, :on => :create
-      validate :pref_label_in_primary_thesaurus_language, :on => :update
+      validate :pref_label_in_primary_thesaurus_language
       validate :unique_pref_label_language
       validate :exclusive_top_term
       validate :rooted_top_terms

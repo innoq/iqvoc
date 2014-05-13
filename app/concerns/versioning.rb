@@ -128,6 +128,14 @@ module Versioning
     write_attribute(:to_review, true)
   end
 
+  def with_validations_for_publishing
+    enable_validations_for_publishing
+    status = yield
+    disable_validations_for_publishing
+
+    return status
+  end
+
   def enable_validations_for_publishing
     @_run_validations_for_publishing = true
   end
@@ -155,13 +163,15 @@ module Versioning
   end
 
   def publish!
-    enable_validations_for_publishing
-    publish
-    save!
+    with_validations_for_publishing do
+      publish
+      save!
+    end
   end
 
   def publishable?
-    enable_validations_for_publishing
-    valid?
+    with_validations_for_publishing do
+      valid?
+    end
   end
 end

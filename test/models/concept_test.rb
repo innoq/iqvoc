@@ -18,6 +18,13 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptTest < ActiveSupport::TestCase
 
+  test "blank concept" do
+    c = Concept::Base.new
+    assert c.valid?
+    refute c.publishable?
+    assert c.valid?
+  end
+
   test "should not allow identical concepts" do
     origin = "foo"
     c1 = Concept::Base.new(:origin => origin)
