@@ -6,6 +6,8 @@ module Iqvoc
       extend ActiveSupport::Concern
 
       included do
+        Iqvoc.first_level_class_configuration_modules << self
+
         mattr_accessor :base_class_name, :member_class_name, :note_class_names
 
         self.base_class_name = 'Collection::SKOS::Unordered'

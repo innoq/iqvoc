@@ -1,0 +1,16 @@
+<%= render 'header', :collection => @collection %>
+<%= render 'sidebar', :collection => @collection %>
+
+<% if @new_collection_version.blank? && can?(:branch, @collection) %>
+    <div class="editing_versioning_toolbar well">
+      <%= button_to t("txt.views.versioning.versioning_mode"),
+        collection_versions_branch_path(:origin => @collection.origin), :class => "btn btn-default" %>
+    </div>
+<% elsif can?(:read, @new_collection_version) %>
+    <div class="editing_versioning_toolbar well">
+      <%= link_to t("txt.views.versioning.preview_new_version"),
+        collection_path(:published => 0, :id => @new_collection_version), :class => 'btn btn-default' %>
+    </div>
+<% end %>
+
+<%= render 'data', :collection => @collection %>

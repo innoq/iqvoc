@@ -4,7 +4,7 @@
 # migrations to update existing data.
 -%>
 
-<%= bootstrap_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection), :layout => :horizontal, :label_col => 'col-sm-3', :control_col => 'col-sm-9' do |f| %>
+<%= bootstrap_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection, :published => 0), :layout => :horizontal, :label_col => 'col-sm-3', :control_col => 'col-sm-9' do |f| %>
 <fieldset>
   <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
   <% if not Iqvoc.const_defined?(:SKOSXL) %>

@@ -16,8 +16,6 @@
 
 class Collection::Base < Concept::Base
 
-  #*********** Associations
-
   has_many Note::SKOS::Definition.name.to_relation_name,
       :class_name => 'Note::SKOS::Definition',
       :as => :owner,
@@ -35,12 +33,9 @@ class Collection::Base < Concept::Base
   has_many :parent_collections,
       :through => :parent_collection_members
 
-
-  #********** Hooks
-
   after_save :regenerate_concept_members, :regenerate_collection_members
 
-  #********** Scopes
+  validate :circular_subcollections
 
   def self.by_origin(origin)
     where(:origin => origin)
@@ -60,11 +55,9 @@ class Collection::Base < Concept::Base
         where(Collection::Member::Base.arel_table[:collection_id].eq(parent_id))
   end
 
-  #********** Validations
-
-  validate :circular_subcollections
-
-  #********** Methods
+  def self.edit_link_partial_name
+    "partials/collection/edit_link_base"
+  end
 
   def subcollections
     members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
@@ -125,8 +118,6 @@ class Collection::Base < Concept::Base
     end
   end
 
-  #********** Hook methods
-
   def regenerate_members(target_class, target_origins)
     return if target_origins.nil? # There is nothing to do
     existing = self.members.includes(:target)
@@ -170,14 +161,4 @@ class Collection::Base < Concept::Base
       end
     end
   end
-
-  def pref_label_in_primary_thesaurus_language
-    labels = self.send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target).select{|l| l.published?}
-    if labels.count == 0
-      errors.add :base, I18n.t("txt.models.concept.no_pref_label_error")
-    elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
-      errors.add :base, I18n.t("txt.models.concept.main_pref_label_language_missing_error")
-    end
-  end
-
 end

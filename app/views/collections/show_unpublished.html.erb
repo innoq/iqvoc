@@ -1,0 +1,41 @@
+<%= render 'header', :collection => @collection %>
+<%= render 'sidebar', :collection => @collection %>
+
+<%= alert :info, :header => t('txt.common.unpublished_version') + "." do %>
+  <%= t("txt.views.versioning.current_revision", :rev => @collection.rev) %>
+  <% if @collection.locked? %>
+    <%= t("txt.views.versioning.in_ongoing_editing_by", :user => @collection.locking_user.name) %>
+  <% end %>
+<% end %>
+
+<div class="editing_versioning_toolbar well">
+  <% if (not @collection.locked?) || @collection.locked_by == @current_user.id %>
+    <%= button_to t("txt.views.versioning.publishing"),
+      collection_versions_merge_path(:origin => @collection.origin), :class => 'btn btn-primary' %>
+  <% end %>
+  <%= button_to t("txt.views.versioning.consistency_check"),
+    collection_versions_consistency_check_path(:origin => @collection.origin), :class => 'btn btn-default', :method => :get %>
+
+  <% if (not @collection.in_review?) && @collection.locked_by == @current_user.id %>
+    <%= button_to t("txt.common.to_review"),
+      collection_versions_to_review_path(:origin => @collection.origin), :class => 'btn btn-default' %>
+  <% end %>
+
+  <% unless @collection.locked? %>
+    <%= button_to t("txt.views.versioning.to_edit_mode"),
+      collection_versions_lock_path(:origin => @collection.origin), :class => 'btn btn-default' %>
+    <%= button_to t("txt.views.versioning.delete"),
+      collection_path(:published => 0, :id => @collection.origin),
+      :method => :delete,
+      :class => 'btn btn-danger',
+      :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @collection) %>
+  <% else %>
+    <%= button_to t("txt.views.versioning.unlock"),
+      collection_versions_unlock_path(:origin => @collection.origin), :class => 'btn btn-default' if can?(:unlock, @collection) %>
+    <%= link_to t("txt.views.versioning.edit_mode"),
+      edit_collection_path(:published => 0, :id => @collection.origin),
+      :class => 'btn btn-default' if can?(:update, @collection) %>
+  <% end %>
+</div>
+
+<%= render 'data', :collection => @collection %>

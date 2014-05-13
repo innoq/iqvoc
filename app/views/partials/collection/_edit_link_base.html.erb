@@ -1,0 +1,4 @@
+<%= link_to truncate(item.pref_label.to_s, :length => 45), (item.published? ? collection_path(item) : collection_path(item, :published => 0)) %>
+<% if item.additional_info %>
+  (<%= item.additional_info %>)
+<% end %>

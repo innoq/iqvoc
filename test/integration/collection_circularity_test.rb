@@ -19,17 +19,17 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
   setup do
-    @coll1 = FactoryGirl.create(:collection)
-    @coll2 = FactoryGirl.create(:collection)
-    @coll3 = FactoryGirl.create(:collection)
+    login("administrator")
+
+    @coll1 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
+    @coll2 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
+    @coll3 = FactoryGirl.create(:collection, :published_at => nil, :locked_by => @user.id)
     @concept1 = FactoryGirl.create(:concept)
     @concept2 = FactoryGirl.create(:concept)
     @concept3 = FactoryGirl.create(:concept)
   end
 
   test "inline assignments are persisted" do
-    login("administrator")
-
     delimiter = "," # without space
 
     visit edit_collection_path(@coll1, :lang => "en", :format => "html")
@@ -47,7 +47,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     assert page.has_link?(@concept2.pref_label.to_s)
     assert page.has_link?(@concept3.pref_label.to_s)
 
-    click_link_or_button "Edit"
+    click_link_or_button "Continue editing"
     fill_in "concept_inline_member_collection_origins", :with => ""
     fill_in "concept_inline_member_concept_origins", :with => ""
     click_button "Save"
@@ -62,7 +62,7 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
 
     delimiter = ", " # with space
 
-    click_link_or_button "Edit"
+    click_link_or_button "Continue editing"
     fill_in "concept_inline_member_collection_origins",
         :with => [@coll2.origin, @coll3.origin].join(delimiter)
     fill_in "concept_inline_member_concept_origins",
@@ -79,8 +79,6 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
   end
 
   test "circular sub-collection references are rejected during update" do
-    login("administrator")
-
     # add coll2 as subcollection of coll1
     visit edit_collection_path(@coll1, :lang => "en", :format => "html")
     fill_in "concept_inline_member_collection_origins",

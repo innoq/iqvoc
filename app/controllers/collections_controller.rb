@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @top_collections = Iqvoc::Collection.base_class.with_pref_labels
+        @top_collections = Iqvoc::Collection.base_class.with_pref_labels.published
         @top_collections = if params[:root].present?
           @top_collections.by_parent_id(params[:root])
         else
@@ -34,7 +34,7 @@ class CollectionsController < ApplicationController
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
-          collections = Iqvoc::Collection.base_class.with_pref_labels.by_parent_id(params[:root])
+          collections = Iqvoc::Collection.base_class.with_pref_labels.published.by_parent_id(params[:root])
           collections.map do |collection|
             { :id => collection.id,
               :url => collection_path(:id => collection, :format => :html),
@@ -44,7 +44,7 @@ class CollectionsController < ApplicationController
             }
           end
         else
-          collections = Iqvoc::Collection.base_class.with_pref_labels.merge(Label::Base.by_query_value("#{params[:query]}%"))
+          collections = Iqvoc::Collection.base_class.with_pref_labels.published.merge(Label::Base.by_query_value("#{params[:query]}%"))
           collections.map do |c|
             collection_widget_data(c)
           end
@@ -55,14 +55,29 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
+    published = params[:published] == '1' || !params[:published]
+    scope = Iqvoc::Collection.base_class.by_origin(params[:id])
+
+    if published
+      scope = scope.published
+      @new_collection_version = Iqvoc::Collection.base_class.by_origin(params[:id]).unpublished.last
+    else
+      scope = scope.unpublished
+    end
+
+    @collection = scope.last!
     authorize! :read, @collection
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@collection,
       [:pref_labels,
-        {:members => {:target => [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}])
+        {:members => {:target => [:pref_labels] + Iqvoc::Collection.base_class.default_includes}}])
+
+    respond_to do |format|
+      format.html { published ? render('show_published') : render('show_unpublished') }
+      format.any(:rdf, :ttl, :nt)
+    end
   end
 
   def new
@@ -79,7 +94,7 @@ class CollectionsController < ApplicationController
 
     if @collection.save
       flash[:success] = I18n.t("txt.controllers.collections.save.success")
-      redirect_to collection_path(:id => @collection)
+      redirect_to collection_path(:published => 0, :id => @collection.origin)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :new
@@ -105,7 +120,7 @@ class CollectionsController < ApplicationController
 
     if @collection.update_attributes(params[:concept])
       flash[:success] = I18n.t("txt.controllers.collections.save.success")
-      redirect_to collection_path(:id => @collection)
+      redirect_to collection_path(@collection, :published => 0)
     else
       flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
       render :edit
