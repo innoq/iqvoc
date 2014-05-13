@@ -115,9 +115,15 @@ module Iqvoc
 
     def publish
       published = 0
+      # Respect order of first level classes configured in FIRST_LEVEL_OBJECTS
+      # Example: XL labels have to be published before referencing concepts
+      sorted_new_subjects = @new_subjects.sort_by do |a|
+        FIRST_LEVEL_OBJECT_CLASSES.index(a.class)
+      end
+
       if @publish
         @logger.info "Publishing #{@new_subjects.count} new subjects..."
-        @new_subjects.each do |subject|
+        sorted_new_subjects.each do |subject|
           if subject.publishable?
             subject.publish!
             published += 1
