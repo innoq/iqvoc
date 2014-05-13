@@ -119,8 +119,7 @@ module Iqvoc
         @logger.info "Publishing #{@new_subjects.count} new subjects..."
         @new_subjects.each do |subject|
           if subject.publishable?
-            subject.publish
-            subject.save!
+            subject.publish!
             published += 1
           else
             @logger.warn "WARNING: Publishing failed! Subject ('#{subject.origin}') invalid: #{subject.errors.to_hash.inspect}"
