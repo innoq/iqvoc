@@ -49,7 +49,7 @@ module Iqvoc
       # in order to handle a missing scheme definition in ntriple data
       @seen_first_level_objects[Iqvoc::Concept.root_class.instance.origin] = Iqvoc::Concept.root_class.instance
 
-      @new_subjects = [] # Concepts to be published later
+      @new_subjects = [] # Concepts, collections, labels etc. to be published later
 
       # Triples the importer doesn't understand immediately. Example:
       #
