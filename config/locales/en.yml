@@ -279,7 +279,7 @@ en:
        reset: Reset Thesaurus
        reset_warning: "All concepts, collections and labels in the thesaurus will be deleted."
        jobs_pending_warning: "Pending background jobs detected (e.g. exports). Pending Jobs will be deleted too."
-       reset_success: "Thesaurus has been reset."
+       reset_success: "Thesaurus has been resetted."
      collections:
        new: "New Collection"
      triplestore_sync:
