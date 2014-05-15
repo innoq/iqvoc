@@ -101,10 +101,11 @@ module Iqvoc
         second_level_types["#{klass.rdf_namespace}:#{klass.rdf_predicate}"] = klass
       end
 
+      @logger.info 'Iqvoc::SkosImporter: Importing triples...'
       file.each do |line|
         extracted_triple = *extract_triple(line)
 
-        if has_unknown_namespaces?(extracted_triple) && @verbose
+        if @verbose && has_unknown_namespaces?(extracted_triple)
           @logger.warn "Iqvoc::SkosImporter: Unknown namespaces. Skipping #{extracted_triple.join(' ')}"
         end
 
@@ -175,6 +176,7 @@ module Iqvoc
             @logger.warn "Iqvoc::SkosImporter: Subject with origin '#{origin} already exists but has another class (#{@existing_origins[origin]}) then the one I wanted to create (#{types[object]}). You seem to have a problem with your configuration!"
           end
         else
+          @logger.info "Iqvoc::SkosImporter: Creating Subject: #{subject} #{predicate} #{object}" if @verbose
           @seen_first_level_objects[origin] = types[object].create! do |klass|
             klass.origin = origin
           end
