@@ -9,19 +9,19 @@ module Iqvoc
       Iqvoc::Collection.base_class
     ]
     self.second_level_object_classes = Iqvoc::Concept.labeling_classes.keys +
-        Iqvoc::Concept.note_classes +
-        Iqvoc::Concept.relation_classes +
-        Iqvoc::Concept.match_classes +
-        Iqvoc::Concept.notation_classes +
-        Iqvoc::Concept.additional_association_classes.keys +
-        [Iqvoc::Concept.root_class] +
-        [Iqvoc::Collection.member_class]
+      Iqvoc::Concept.note_classes +
+      Iqvoc::Concept.relation_classes +
+      Iqvoc::Concept.match_classes +
+      Iqvoc::Concept.notation_classes +
+      Iqvoc::Concept.additional_association_classes.keys +
+      [Iqvoc::Concept.root_class] +
+      [Iqvoc::Collection.member_class]
 
     def self.prepend_first_level_object_classes(args)
       self.first_level_object_classes.unshift(*args)
     end
 
-    def initialize(object, default_namespace_url, logger = Rails.logger, publish = true)
+    def initialize(object, default_namespace_url, logger = Rails.logger, publish = true, verbose = false)
       @file = case object
                 when File
                   File.open(object)
@@ -31,8 +31,9 @@ module Iqvoc
                   open(object)
               end
 
+      @default_namespace_url = default_namespace_url
       @publish = publish
-
+      @verbose = verbose
       @logger = logger
 
       unless @file.is_a?(File) || @file.is_a?(Array)
@@ -88,6 +89,9 @@ module Iqvoc
 
       start = Time.now
 
+      @logger.info "default namespace: '#{@default_namespace_url}'"
+      @logger.info "publish: '#{@publish}'"
+
       first_level_types = {} # type identifier ("namespace:SomeClass") to Iqvoc class assignment hash
       first_level_object_classes.each do |klass|
         first_level_types["#{klass.rdf_namespace}:#{klass.rdf_class}"] = klass
@@ -98,9 +102,15 @@ module Iqvoc
       end
 
       file.each do |line|
-        identify_blank_nodes(*extract_triple(line)) ||
-            import_first_level_objects(first_level_types, *extract_triple(line)) ||
-            import_second_level_objects(second_level_types, false, *extract_triple(line))
+        extracted_triple = *extract_triple(line)
+
+        if has_unknown_namespaces?(extracted_triple) && @verbose
+          @logger.warn "Iqvoc::SkosImporter: Unknown namespaces. Skipping #{extracted_triple.join(' ')}"
+        end
+
+        identify_blank_nodes(*extracted_triple) ||
+            import_first_level_objects(first_level_types, *extracted_triple) ||
+            import_second_level_objects(second_level_types, false, *extracted_triple)
       end
 
       @logger.info "Computing 'forward' defined triples..."
@@ -260,8 +270,15 @@ module Iqvoc
           ":#{Iqvoc::Origin.new($1)}" # Force correct origins in the default namespace
         end
       end
-
       triple
+    end
+
+    def has_unknown_namespaces?(triple)
+      triple.each do |obj|
+        return true if obj =~ /^<.*>$/
+        break
+      end
+      false
     end
 
     ActiveSupport.run_load_hooks(:skos_importer, self)
