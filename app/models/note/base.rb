@@ -110,6 +110,7 @@ class Note::Base < ActiveRecord::Base
     query_str = build_query_string(params)
 
     scope = by_query_value(query_str).by_language(params[:languages].to_a)
+    scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end
 
