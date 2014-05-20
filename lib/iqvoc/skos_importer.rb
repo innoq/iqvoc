@@ -215,7 +215,6 @@ module Iqvoc
       #
       if blank_node?(object)
         if final
-          binding.pry
           @blank_nodes.reduce({}) do |memo, (key, struct)|
             if struct.size == 3 && struct.include?(["rdf:type", "rdf:List"]) && blank_node?(struct[2].last)
               new_struct = struct.dup
@@ -226,7 +225,6 @@ module Iqvoc
             end
             memo
           end
-          binding.pry
           object = @blank_nodes[object]
         else
           @unknown_second_level_triples << initial_triple
