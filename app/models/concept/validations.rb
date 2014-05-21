@@ -5,26 +5,12 @@ module Concept
     included do
       validates :origin, presence: true, on: :update
 
-      validate :distinct_versions, on: :create
       validate :pref_label_in_primary_thesaurus_language
       validate :unique_pref_label_language
       validate :exclusive_top_term
       validate :rooted_top_terms
       validate :valid_rank_for_ranked_relations
       validate :unique_pref_label
-    end
-
-    def distinct_versions
-      query = Concept::Base.by_origin(origin)
-      existing_total = query.count
-      if existing_total >= 2
-        errors.add :base, I18n.t("txt.models.concept.version_error", origin: origin)
-      elsif existing_total == 1
-        unless (query.published.count == 0 and published?) or
-               (query.published.count == 1 and not published?)
-          errors.add :base, I18n.t("txt.models.concept.version_error", origin: origin)
-        end
-      end
     end
 
     # top term and broader relations are mutually exclusive
