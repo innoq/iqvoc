@@ -21,41 +21,28 @@ require 'iqvoc/skos_importer'
 class SkosExportTest < ActiveSupport::TestCase
 
   setup do
-    Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
+    @testdata = File.read(Rails.root.join('data', 'hobbies.nt')).split("\n")
+    @export_file = Rails.root.join('tmp/export/skos_export_test.nt').to_s
 
-    Iqvoc.config['languages.pref_labeling'] = ['de', 'en']
-    Iqvoc.config['languages.further_labelings.Labeling::SKOS::AltLabel'] = ['de', 'en']
-
-    @testdata = File.read(Rails.root.join('test','models', 'testdata.nt')).split("\n")
-
-    Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
-  end
-
-  teardown do
-    Iqvoc.config["languages.pref_labeling"] = ["en", "de"]
-    Iqvoc.config["languages.further_labelings.Labeling::SKOS::AltLabel"] = ["en", "de"]
+    Iqvoc::SkosImporter.new(@testdata, 'http://hobbies.com/').run
   end
 
   test "basic_exporter_functionality" do
-    testfile = Rails.root.join('public/export/skos_export_test.nt').to_s
+    Iqvoc::SkosExporter.new(@export_file, 'nt', 'http://hobbies.com/').run
 
-    Iqvoc::SkosExporter.new(testfile, 'nt', 'http://www.example.com/').run
-
-    generated_export = File.read(testfile)
+    generated_export = File.read(@export_file)
 
     @testdata.each do |ntriple|
-      assert generated_export.include?(ntriple), "could'n find ntriple '#{ntriple}' in #{generated_export}"
+      assert generated_export.include?(ntriple), "could'n find ntriple '#{ntriple}' in generated_export"
     end
 
     # delete export
-    File.delete(testfile)
+    File.delete(@export_file)
   end
 
   test 'skos exporter with an unknown export type' do
-    testfile = Rails.root.join('public/export/skos_export_test.nt').to_s
-
     assert_raise RuntimeError do
-      exporter = Iqvoc::SkosExporter.new(testfile, 'txt', 'http://www.example.com/')
+      Iqvoc::SkosExporter.new(@export_file, 'txt', 'http://hobbies.com/')
     end
 
   end

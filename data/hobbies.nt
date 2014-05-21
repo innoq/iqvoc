@@ -257,4 +257,3 @@
 <http://hobbies.com/tennis> <http://www.w3.org/2004/02/skos/core#prefLabel> "Tennis"@en .
 <http://hobbies.com/tennis> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
 <http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/tennis> .
-<http://hobbies.com/the_rest> <http://www.w3.org/2000/01/rdf-schema#comment> "\n== Observation hobbies ==\n=== Indoors ===\n* [[Audiophile|Audiophilia]]\n* [[Microscopy]]\n* [[Reading (process)|Reading]]\n* [[Shortwave listening]]\n* [[Videophile|Videophilia]] (Home theater)\n{{Portal box|Astronomy|College football|Formula One}}\n\n=== Outdoors ===\n* [[Amateur astronomy]]\n* [[Amateur geology]]\n* [[Birdwatching|Bird watching]]\n* [[College football]]\n* [[Meteorology]]\n* [[Surveillance]]\n* [[Travel]]\n* [[Parkour]]\n" .
