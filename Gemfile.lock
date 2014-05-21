@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/innoq/iq_rdf.git
-  revision: 3729457becee82b9ee211dc72453f10370ad0f03
-  specs:
-    iq_rdf (0.1.15)
-      activesupport
-      builder
-      bundler
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -119,6 +110,10 @@ GEM
       unicode-display_width (~> 0.1.1)
     htmlentities (4.3.1)
     i18n (0.6.9)
+    iq_rdf (0.1.14)
+      activesupport
+      builder
+      bundler
     iq_triplestorage (0.2.2)
     jdbc-mysql (5.1.30)
     jdbc-sqlite3 (3.7.2.1)
@@ -329,7 +324,7 @@ DEPENDENCIES
   faraday
   font-awesome-rails
   hirb-unicode
-  iq_rdf (>= 0.1.13)!
+  iq_rdf (>= 0.1.13)
   iq_triplestorage
   jruby-openssl
   json
