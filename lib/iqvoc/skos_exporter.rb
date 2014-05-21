@@ -73,7 +73,7 @@ module Iqvoc
 
       offset = 0
       while true
-        collections = Iqvoc::Collection.base_class.order("id").limit(100).offset(offset)
+        collections = Iqvoc::Collection.base_class.published.order("id").limit(100).offset(offset)
         limit = collections.size < 100 ? collections.size : 100
         break if collections.size == 0
 
