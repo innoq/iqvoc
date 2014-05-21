@@ -1,260 +1,260 @@
-<http://hobbies.com#indoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "indoors"@en .
-<http://hobbies.com#outdoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "outdoors"@en .
-<http://hobbies.com#achievement_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#achievement_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Achievement hobbies"@en .
-<http://hobbies.com#achievement_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
-<http://hobbies.com#gardening> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#gardening> <http://www.w3.org/2004/02/skos/core#prefLabel> "Gardening"@en .
-<http://hobbies.com#gardening> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#model_building> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#model_building> <http://www.w3.org/2004/02/skos/core#prefLabel> "Model building"@en .
-<http://hobbies.com#model_building> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#model_rocketry> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#model_rocketry> <http://www.w3.org/2004/02/skos/core#prefLabel> "Model rocketry"@en .
-<http://hobbies.com#model_rocketry> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#model_building> .
-<http://hobbies.com#radio-controlled_modeling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#radio-controlled_modeling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Radio-controlled modeling"@en .
-<http://hobbies.com#radio-controlled_modeling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#model_building> .
-<http://hobbies.com#scale_modeling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#scale_modeling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scale modeling"@en .
-<http://hobbies.com#scale_modeling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#model_building> .
-<http://hobbies.com#photography> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#photography> <http://www.w3.org/2004/02/skos/core#prefLabel> "Photography"@en .
-<http://hobbies.com#photography> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#audiophilia> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#audiophilia> <http://www.w3.org/2004/02/skos/core#prefLabel> "Audiophilia"@en .
-<http://hobbies.com#audiophilia> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#audiophilia> .
-<http://hobbies.com#baton_twirling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#baton_twirling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Baton twirling"@en .
-<http://hobbies.com#baton_twirling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#baton_twirling> .
-<http://hobbies.com#bonsai> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#bonsai> <http://www.w3.org/2004/02/skos/core#prefLabel> "Bonsai"@en .
-<http://hobbies.com#bonsai> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#bonsai> .
-<http://hobbies.com#computer_programming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#computer_programming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Computer programming"@en .
-<http://hobbies.com#computer_programming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#computer_programming> .
-<http://hobbies.com#dance> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#dance> <http://www.w3.org/2004/02/skos/core#prefLabel> "Dance"@en .
-<http://hobbies.com#dance> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#dance> .
-<http://hobbies.com#amateur_radio> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#amateur_radio> <http://www.w3.org/2004/02/skos/core#prefLabel> "Amateur radio"@en .
-<http://hobbies.com#amateur_radio> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#amateur_radio> .
-<http://hobbies.com#home_automation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#home_automation> <http://www.w3.org/2004/02/skos/core#prefLabel> "Home automation"@en .
-<http://hobbies.com#home_automation> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#home_automation> .
-<http://hobbies.com#knapping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#knapping> <http://www.w3.org/2004/02/skos/core#prefLabel> "Knapping"@en .
-<http://hobbies.com#knapping> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#knapping> .
-<http://hobbies.com#lapidary> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#lapidary> <http://www.w3.org/2004/02/skos/core#prefLabel> "Lapidary"@en .
-<http://hobbies.com#lapidary> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#lapidary> .
-<http://hobbies.com#locksport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#locksport> <http://www.w3.org/2004/02/skos/core#prefLabel> "Locksport"@en .
-<http://hobbies.com#locksport> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#locksport> .
-<http://hobbies.com#scrapbooking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#scrapbooking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scrapbooking"@en .
-<http://hobbies.com#scrapbooking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#scrapbooking> .
-<http://hobbies.com#air_sports> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#air_sports> <http://www.w3.org/2004/02/skos/core#prefLabel> "Air sports"@en .
-<http://hobbies.com#air_sports> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#air_sports> .
-<http://hobbies.com#board_sports> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#board_sports> <http://www.w3.org/2004/02/skos/core#prefLabel> "Board sports"@en .
-<http://hobbies.com#board_sports> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#board_sports> .
-<http://hobbies.com#kayaking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#kayaking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kayaking"@en .
-<http://hobbies.com#kayaking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#kayaking> .
-<http://hobbies.com#kitesurfing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#kitesurfing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kitesurfing"@en .
-<http://hobbies.com#kitesurfing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#kitesurfing> .
-<http://hobbies.com#mountainbiking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#mountainbiking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Mountainbiking"@en .
-<http://hobbies.com#mountainbiking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#mountainbiking> .
-<http://hobbies.com#scuba_diving> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#scuba_diving> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scuba diving"@en .
-<http://hobbies.com#scuba_diving> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#scuba_diving> .
-<http://hobbies.com#snowmobiling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#snowmobiling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Snowmobiling"@en .
-<http://hobbies.com#snowmobiling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#achievement_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#snowmobiling> .
-<http://hobbies.com#collection_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#collection_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Collection hobbies"@en .
-<http://hobbies.com#collection_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
-<http://hobbies.com#coin_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#coin_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Coin collecting"@en .
-<http://hobbies.com#coin_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#coin_collecting> .
-<http://hobbies.com#stamp_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#stamp_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Stamp collecting"@en .
-<http://hobbies.com#stamp_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#stamp_collecting> .
-<http://hobbies.com#antiquities> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#antiquities> <http://www.w3.org/2004/02/skos/core#prefLabel> "Antiquities"@en .
-<http://hobbies.com#antiquities> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#antiquities> .
-<http://hobbies.com#auto_audiophilia> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#auto_audiophilia> <http://www.w3.org/2004/02/skos/core#prefLabel> "Auto audiophilia"@en .
-<http://hobbies.com#auto_audiophilia> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#auto_audiophilia> .
-<http://hobbies.com#fossil_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#fossil_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fossil collecting"@en .
-<http://hobbies.com#fossil_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#fossil_collecting> .
-<http://hobbies.com#metal_detecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#metal_detecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Metal detecting"@en .
-<http://hobbies.com#metal_detecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#metal_detecting> .
-<http://hobbies.com#mineral_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#mineral_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Mineral collecting"@en .
-<http://hobbies.com#mineral_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#collection_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#mineral_collecting> .
-<http://hobbies.com#competition_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#competition_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Competition hobbies"@en .
-<http://hobbies.com#competition_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com#scheme> .
-<http://hobbies.com#billiards> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#billiards> <http://www.w3.org/2004/02/skos/core#prefLabel> "Billiards"@en .
-<http://hobbies.com#billiards> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#billiards> .
-<http://hobbies.com#bowling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#bowling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Bowling"@en .
-<http://hobbies.com#bowling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#bowling> .
-<http://hobbies.com#boxing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#boxing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Boxing"@en .
-<http://hobbies.com#boxing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#boxing> .
-<http://hobbies.com#chess> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#chess> <http://www.w3.org/2004/02/skos/core#prefLabel> "Chess"@en .
-<http://hobbies.com#chess> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#chess> .
-<http://hobbies.com#darts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#darts> <http://www.w3.org/2004/02/skos/core#prefLabel> "Darts"@en .
-<http://hobbies.com#darts> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#darts> .
-<http://hobbies.com#fencing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#fencing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fencing"@en .
-<http://hobbies.com#fencing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#fencing> .
-<http://hobbies.com#role-playing_games> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#role-playing_games> <http://www.w3.org/2004/02/skos/core#prefLabel> "Role-playing games"@en .
-<http://hobbies.com#role-playing_games> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#role-playing_games> .
-<http://hobbies.com#table_football> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#table_football> <http://www.w3.org/2004/02/skos/core#prefLabel> "Table football"@en .
-<http://hobbies.com#table_football> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#table_football> .
-<http://hobbies.com#handball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#handball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Handball"@en .
-<http://hobbies.com#handball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#handball> .
-<http://hobbies.com#martial_arts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#martial_arts> <http://www.w3.org/2004/02/skos/core#prefLabel> "Martial arts"@en .
-<http://hobbies.com#martial_arts> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#martial_arts> .
-<http://hobbies.com#video_gaming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#video_gaming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Video gaming"@en .
-<http://hobbies.com#video_gaming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#video_gaming> .
-<http://hobbies.com#airsoft> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#airsoft> <http://www.w3.org/2004/02/skos/core#prefLabel> "Airsoft"@en .
-<http://hobbies.com#airsoft> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#airsoft> .
-<http://hobbies.com#archery> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#archery> <http://www.w3.org/2004/02/skos/core#prefLabel> "Archery"@en .
-<http://hobbies.com#archery> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#archery> .
-<http://hobbies.com#auto_racing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#auto_racing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Auto racing"@en .
-<http://hobbies.com#auto_racing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#auto_racing> .
-<http://hobbies.com#badminton> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#badminton> <http://www.w3.org/2004/02/skos/core#prefLabel> "Badminton"@en .
-<http://hobbies.com#badminton> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#badminton> .
-<http://hobbies.com#baseball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#baseball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Baseball"@en .
-<http://hobbies.com#baseball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#baseball> .
-<http://hobbies.com#basketball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#basketball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Basketball"@en .
-<http://hobbies.com#basketball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#basketball> .
-<http://hobbies.com#climbing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#climbing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Climbing"@en .
-<http://hobbies.com#climbing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#climbing> .
-<http://hobbies.com#cricket> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#cricket> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cricket"@en .
-<http://hobbies.com#cricket> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#cricket> .
-<http://hobbies.com#cycling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#cycling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cycling"@en .
-<http://hobbies.com#cycling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#cycling> .
-<http://hobbies.com#disc_golf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#disc_golf> <http://www.w3.org/2004/02/skos/core#prefLabel> "Disc golf"@en .
-<http://hobbies.com#disc_golf> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#disc_golf> .
-<http://hobbies.com#equestrianism> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#equestrianism> <http://www.w3.org/2004/02/skos/core#prefLabel> "Equestrianism"@en .
-<http://hobbies.com#equestrianism> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#equestrianism> .
-<http://hobbies.com#figure_skating> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#figure_skating> <http://www.w3.org/2004/02/skos/core#prefLabel> "Figure skating"@en .
-<http://hobbies.com#figure_skating> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#figure_skating> .
-<http://hobbies.com#fishing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#fishing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fishing"@en .
-<http://hobbies.com#fishing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#fishing> .
-<http://hobbies.com#golfing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#golfing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Golfing"@en .
-<http://hobbies.com#golfing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#golfing> .
-<http://hobbies.com#gymnastics> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#gymnastics> <http://www.w3.org/2004/02/skos/core#prefLabel> "Gymnastics"@en .
-<http://hobbies.com#gymnastics> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#gymnastics> .
-<http://hobbies.com#ice_hockey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#ice_hockey> <http://www.w3.org/2004/02/skos/core#prefLabel> "Ice hockey"@en .
-<http://hobbies.com#ice_hockey> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#ice_hockey> .
-<http://hobbies.com#kart_racing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#kart_racing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kart racing"@en .
-<http://hobbies.com#kart_racing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#kart_racing> .
-<http://hobbies.com#paintball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#paintball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Paintball"@en .
-<http://hobbies.com#paintball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#paintball> .
-<http://hobbies.com#rugby_league> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#rugby_league> <http://www.w3.org/2004/02/skos/core#prefLabel> "Rugby league"@en .
-<http://hobbies.com#rugby_league> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#rugby_league> .
-<http://hobbies.com#swimming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#swimming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Swimming"@en .
-<http://hobbies.com#swimming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#swimming> .
-<http://hobbies.com#tennis> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<http://hobbies.com#tennis> <http://www.w3.org/2004/02/skos/core#prefLabel> "Tennis"@en .
-<http://hobbies.com#tennis> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com#competition_hobbies> .
-<http://hobbies.com#outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com#tennis> .
-<http://hobbies.com#the_rest> <http://www.w3.org/2000/01/rdf-schema#comment> "\n== Observation hobbies ==\n=== Indoors ===\n* [[Audiophile|Audiophilia]]\n* [[Microscopy]]\n* [[Reading (process)|Reading]]\n* [[Shortwave listening]]\n* [[Videophile|Videophilia]] (Home theater)\n{{Portal box|Astronomy|College football|Formula One}}\n\n=== Outdoors ===\n* [[Amateur astronomy]]\n* [[Amateur geology]]\n* [[Birdwatching|Bird watching]]\n* [[College football]]\n* [[Meteorology]]\n* [[Surveillance]]\n* [[Travel]]\n* [[Parkour]]\n" .
+<http://hobbies.com/indoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "indoors"@en .
+<http://hobbies.com/outdoors> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Collection> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#prefLabel> "outdoors"@en .
+<http://hobbies.com/achievement_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/achievement_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Achievement hobbies"@en .
+<http://hobbies.com/achievement_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com/scheme> .
+<http://hobbies.com/gardening> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/gardening> <http://www.w3.org/2004/02/skos/core#prefLabel> "Gardening"@en .
+<http://hobbies.com/gardening> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/model_building> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/model_building> <http://www.w3.org/2004/02/skos/core#prefLabel> "Model building"@en .
+<http://hobbies.com/model_building> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/model_rocketry> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/model_rocketry> <http://www.w3.org/2004/02/skos/core#prefLabel> "Model rocketry"@en .
+<http://hobbies.com/model_rocketry> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/model_building> .
+<http://hobbies.com/radio-controlled_modeling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/radio-controlled_modeling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Radio-controlled modeling"@en .
+<http://hobbies.com/radio-controlled_modeling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/model_building> .
+<http://hobbies.com/scale_modeling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/scale_modeling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scale modeling"@en .
+<http://hobbies.com/scale_modeling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/model_building> .
+<http://hobbies.com/photography> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/photography> <http://www.w3.org/2004/02/skos/core#prefLabel> "Photography"@en .
+<http://hobbies.com/photography> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/audiophilia> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/audiophilia> <http://www.w3.org/2004/02/skos/core#prefLabel> "Audiophilia"@en .
+<http://hobbies.com/audiophilia> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/audiophilia> .
+<http://hobbies.com/baton_twirling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/baton_twirling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Baton twirling"@en .
+<http://hobbies.com/baton_twirling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/baton_twirling> .
+<http://hobbies.com/bonsai> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/bonsai> <http://www.w3.org/2004/02/skos/core#prefLabel> "Bonsai"@en .
+<http://hobbies.com/bonsai> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/bonsai> .
+<http://hobbies.com/computer_programming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/computer_programming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Computer programming"@en .
+<http://hobbies.com/computer_programming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/computer_programming> .
+<http://hobbies.com/dance> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/dance> <http://www.w3.org/2004/02/skos/core#prefLabel> "Dance"@en .
+<http://hobbies.com/dance> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/dance> .
+<http://hobbies.com/amateur_radio> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/amateur_radio> <http://www.w3.org/2004/02/skos/core#prefLabel> "Amateur radio"@en .
+<http://hobbies.com/amateur_radio> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/amateur_radio> .
+<http://hobbies.com/home_automation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/home_automation> <http://www.w3.org/2004/02/skos/core#prefLabel> "Home automation"@en .
+<http://hobbies.com/home_automation> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/home_automation> .
+<http://hobbies.com/knapping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/knapping> <http://www.w3.org/2004/02/skos/core#prefLabel> "Knapping"@en .
+<http://hobbies.com/knapping> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/knapping> .
+<http://hobbies.com/lapidary> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/lapidary> <http://www.w3.org/2004/02/skos/core#prefLabel> "Lapidary"@en .
+<http://hobbies.com/lapidary> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/lapidary> .
+<http://hobbies.com/locksport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/locksport> <http://www.w3.org/2004/02/skos/core#prefLabel> "Locksport"@en .
+<http://hobbies.com/locksport> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/locksport> .
+<http://hobbies.com/scrapbooking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/scrapbooking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scrapbooking"@en .
+<http://hobbies.com/scrapbooking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/scrapbooking> .
+<http://hobbies.com/air_sports> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/air_sports> <http://www.w3.org/2004/02/skos/core#prefLabel> "Air sports"@en .
+<http://hobbies.com/air_sports> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/air_sports> .
+<http://hobbies.com/board_sports> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/board_sports> <http://www.w3.org/2004/02/skos/core#prefLabel> "Board sports"@en .
+<http://hobbies.com/board_sports> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/board_sports> .
+<http://hobbies.com/kayaking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/kayaking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kayaking"@en .
+<http://hobbies.com/kayaking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/kayaking> .
+<http://hobbies.com/kitesurfing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/kitesurfing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kitesurfing"@en .
+<http://hobbies.com/kitesurfing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/kitesurfing> .
+<http://hobbies.com/mountainbiking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/mountainbiking> <http://www.w3.org/2004/02/skos/core#prefLabel> "Mountainbiking"@en .
+<http://hobbies.com/mountainbiking> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/mountainbiking> .
+<http://hobbies.com/scuba_diving> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/scuba_diving> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scuba diving"@en .
+<http://hobbies.com/scuba_diving> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/scuba_diving> .
+<http://hobbies.com/snowmobiling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/snowmobiling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Snowmobiling"@en .
+<http://hobbies.com/snowmobiling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/achievement_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/snowmobiling> .
+<http://hobbies.com/collection_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/collection_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Collection hobbies"@en .
+<http://hobbies.com/collection_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com/scheme> .
+<http://hobbies.com/coin_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/coin_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Coin collecting"@en .
+<http://hobbies.com/coin_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/coin_collecting> .
+<http://hobbies.com/stamp_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/stamp_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Stamp collecting"@en .
+<http://hobbies.com/stamp_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/stamp_collecting> .
+<http://hobbies.com/antiquities> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/antiquities> <http://www.w3.org/2004/02/skos/core#prefLabel> "Antiquities"@en .
+<http://hobbies.com/antiquities> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/antiquities> .
+<http://hobbies.com/auto_audiophilia> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/auto_audiophilia> <http://www.w3.org/2004/02/skos/core#prefLabel> "Auto audiophilia"@en .
+<http://hobbies.com/auto_audiophilia> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/auto_audiophilia> .
+<http://hobbies.com/fossil_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/fossil_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fossil collecting"@en .
+<http://hobbies.com/fossil_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/fossil_collecting> .
+<http://hobbies.com/metal_detecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/metal_detecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Metal detecting"@en .
+<http://hobbies.com/metal_detecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/metal_detecting> .
+<http://hobbies.com/mineral_collecting> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/mineral_collecting> <http://www.w3.org/2004/02/skos/core#prefLabel> "Mineral collecting"@en .
+<http://hobbies.com/mineral_collecting> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/collection_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/mineral_collecting> .
+<http://hobbies.com/competition_hobbies> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/competition_hobbies> <http://www.w3.org/2004/02/skos/core#prefLabel> "Competition hobbies"@en .
+<http://hobbies.com/competition_hobbies> <http://www.w3.org/2004/02/skos/core#topConceptOf> <http://hobbies.com/scheme> .
+<http://hobbies.com/billiards> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/billiards> <http://www.w3.org/2004/02/skos/core#prefLabel> "Billiards"@en .
+<http://hobbies.com/billiards> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/billiards> .
+<http://hobbies.com/bowling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/bowling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Bowling"@en .
+<http://hobbies.com/bowling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/bowling> .
+<http://hobbies.com/boxing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/boxing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Boxing"@en .
+<http://hobbies.com/boxing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/boxing> .
+<http://hobbies.com/chess> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/chess> <http://www.w3.org/2004/02/skos/core#prefLabel> "Chess"@en .
+<http://hobbies.com/chess> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/chess> .
+<http://hobbies.com/darts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/darts> <http://www.w3.org/2004/02/skos/core#prefLabel> "Darts"@en .
+<http://hobbies.com/darts> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/darts> .
+<http://hobbies.com/fencing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/fencing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fencing"@en .
+<http://hobbies.com/fencing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/fencing> .
+<http://hobbies.com/role-playing_games> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/role-playing_games> <http://www.w3.org/2004/02/skos/core#prefLabel> "Role-playing games"@en .
+<http://hobbies.com/role-playing_games> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/role-playing_games> .
+<http://hobbies.com/table_football> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/table_football> <http://www.w3.org/2004/02/skos/core#prefLabel> "Table football"@en .
+<http://hobbies.com/table_football> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/table_football> .
+<http://hobbies.com/handball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/handball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Handball"@en .
+<http://hobbies.com/handball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/handball> .
+<http://hobbies.com/martial_arts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/martial_arts> <http://www.w3.org/2004/02/skos/core#prefLabel> "Martial arts"@en .
+<http://hobbies.com/martial_arts> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/martial_arts> .
+<http://hobbies.com/video_gaming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/video_gaming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Video gaming"@en .
+<http://hobbies.com/video_gaming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/indoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/video_gaming> .
+<http://hobbies.com/airsoft> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/airsoft> <http://www.w3.org/2004/02/skos/core#prefLabel> "Airsoft"@en .
+<http://hobbies.com/airsoft> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/airsoft> .
+<http://hobbies.com/archery> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/archery> <http://www.w3.org/2004/02/skos/core#prefLabel> "Archery"@en .
+<http://hobbies.com/archery> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/archery> .
+<http://hobbies.com/auto_racing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/auto_racing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Auto racing"@en .
+<http://hobbies.com/auto_racing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/auto_racing> .
+<http://hobbies.com/badminton> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/badminton> <http://www.w3.org/2004/02/skos/core#prefLabel> "Badminton"@en .
+<http://hobbies.com/badminton> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/badminton> .
+<http://hobbies.com/baseball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/baseball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Baseball"@en .
+<http://hobbies.com/baseball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/baseball> .
+<http://hobbies.com/basketball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/basketball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Basketball"@en .
+<http://hobbies.com/basketball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/basketball> .
+<http://hobbies.com/climbing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/climbing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Climbing"@en .
+<http://hobbies.com/climbing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/climbing> .
+<http://hobbies.com/cricket> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/cricket> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cricket"@en .
+<http://hobbies.com/cricket> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/cricket> .
+<http://hobbies.com/cycling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/cycling> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cycling"@en .
+<http://hobbies.com/cycling> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/cycling> .
+<http://hobbies.com/disc_golf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/disc_golf> <http://www.w3.org/2004/02/skos/core#prefLabel> "Disc golf"@en .
+<http://hobbies.com/disc_golf> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/disc_golf> .
+<http://hobbies.com/equestrianism> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/equestrianism> <http://www.w3.org/2004/02/skos/core#prefLabel> "Equestrianism"@en .
+<http://hobbies.com/equestrianism> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/equestrianism> .
+<http://hobbies.com/figure_skating> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/figure_skating> <http://www.w3.org/2004/02/skos/core#prefLabel> "Figure skating"@en .
+<http://hobbies.com/figure_skating> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/figure_skating> .
+<http://hobbies.com/fishing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/fishing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Fishing"@en .
+<http://hobbies.com/fishing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/fishing> .
+<http://hobbies.com/golfing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/golfing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Golfing"@en .
+<http://hobbies.com/golfing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/golfing> .
+<http://hobbies.com/gymnastics> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/gymnastics> <http://www.w3.org/2004/02/skos/core#prefLabel> "Gymnastics"@en .
+<http://hobbies.com/gymnastics> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/gymnastics> .
+<http://hobbies.com/ice_hockey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/ice_hockey> <http://www.w3.org/2004/02/skos/core#prefLabel> "Ice hockey"@en .
+<http://hobbies.com/ice_hockey> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/ice_hockey> .
+<http://hobbies.com/kart_racing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/kart_racing> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kart racing"@en .
+<http://hobbies.com/kart_racing> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/kart_racing> .
+<http://hobbies.com/paintball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/paintball> <http://www.w3.org/2004/02/skos/core#prefLabel> "Paintball"@en .
+<http://hobbies.com/paintball> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/paintball> .
+<http://hobbies.com/rugby_league> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/rugby_league> <http://www.w3.org/2004/02/skos/core#prefLabel> "Rugby league"@en .
+<http://hobbies.com/rugby_league> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/rugby_league> .
+<http://hobbies.com/swimming> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/swimming> <http://www.w3.org/2004/02/skos/core#prefLabel> "Swimming"@en .
+<http://hobbies.com/swimming> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/swimming> .
+<http://hobbies.com/tennis> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://hobbies.com/tennis> <http://www.w3.org/2004/02/skos/core#prefLabel> "Tennis"@en .
+<http://hobbies.com/tennis> <http://www.w3.org/2004/02/skos/core#broader> <http://hobbies.com/competition_hobbies> .
+<http://hobbies.com/outdoors> <http://www.w3.org/2004/02/skos/core#member> <http://hobbies.com/tennis> .
+<http://hobbies.com/the_rest> <http://www.w3.org/2000/01/rdf-schema#comment> "\n== Observation hobbies ==\n=== Indoors ===\n* [[Audiophile|Audiophilia]]\n* [[Microscopy]]\n* [[Reading (process)|Reading]]\n* [[Shortwave listening]]\n* [[Videophile|Videophilia]] (Home theater)\n{{Portal box|Astronomy|College football|Formula One}}\n\n=== Outdoors ===\n* [[Amateur astronomy]]\n* [[Amateur geology]]\n* [[Birdwatching|Bird watching]]\n* [[College football]]\n* [[Meteorology]]\n* [[Surveillance]]\n* [[Travel]]\n* [[Parkour]]\n" .

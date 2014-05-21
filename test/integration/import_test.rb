@@ -44,7 +44,7 @@ class ImportTest < ActionDispatch::IntegrationTest
     visit imports_path(lang: 'en')
 
     attach_file('NTriples file', @file)
-    fill_in 'Default namespace', with: 'http://hobbies.com#'
+    fill_in 'Default namespace', with: 'http://hobbies.com/'
     check('Publish')
 
     click_button('Import')

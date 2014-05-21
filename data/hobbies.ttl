@@ -1,6 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
-@prefix : <http://hobbies.com#>.
+@prefix : <http://hobbies.com/>.
 @prefix skos: <http://www.w3.org/2004/02/skos/core#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
