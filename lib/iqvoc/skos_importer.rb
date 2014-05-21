@@ -177,7 +177,7 @@ module Iqvoc
           end
         else
           @logger.info "Iqvoc::SkosImporter: Creating Subject: #{subject} #{predicate} #{object}" if @verbose
-          @seen_first_level_objects[origin] = types[object].create! do |klass|
+          @seen_first_level_objects[origin] = types[object].create do |klass|
             klass.origin = origin
           end
           @new_subjects << @seen_first_level_objects[origin]
