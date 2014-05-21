@@ -393,12 +393,12 @@ en:
 
    models:
      label:
-       version_error: "New Label version already exists."
+       version_error: "New version already exists."
        value_error: "Literal form must be given."
      concept:
        uri: "Concept URI"
        origin_error: "Invalid origin."
-       version_error: "New Concept version already exists: %{origin}"
+       version_error: "New version already exists: %{origin}"
        no_pref_label_error: "At least one preferred label must be specified."
        orphan_error: "Missing broader term or Top Term assignment."
        top_term_exclusive_error: "A Top Term must not have any broader terms."

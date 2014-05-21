@@ -387,12 +387,12 @@ de:
 
    models:
      label:
-       version_error: "Es existieren schon zwei Versionen dieses Labels"
-       value_error: "Die Vorlageform muss ausgefüllt sein!"
+       version_error: "Es existieren schon zwei Versionen"
+       value_error: "Die Vorlageform muss ausgefüllt sein"
      concept:
        uri: "Konzept-URI"
        origin_error: "Origin ungültig!"
-       version_error: "Es existieren schon zwei Versionen dieses Konzepts: %{origin}"
+       version_error: "Es existieren schon zwei Versionen von %{origin}"
        no_pref_label_error: "Es muss mindestens ein bevorzugtes Label angegeben werden."
        orphan_error: "Es muss ein allgemeinerer Begriff zugewiesen oder der Begriff als Begriff oberster Ebene definiert werden."
        top_term_exclusive_error: "Einem Begriff oberster Ebene darf kein allgemeinerer Begriff zugewiesen werden."
