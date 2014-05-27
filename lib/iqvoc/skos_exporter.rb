@@ -10,7 +10,7 @@ module Iqvoc
 
     def initialize(file_path, type, default_namespace_url, logger = Rails.logger)
       default_url_options[:port] = URI.parse(default_namespace_url).port
-      default_url_options[:host] = URI.parse(default_namespace_url).to_s
+      default_url_options[:host] = URI.parse(default_namespace_url).to_s.gsub(/\/$/, '')
 
       @file_path = file_path
       @type = type
