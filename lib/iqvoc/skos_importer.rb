@@ -110,8 +110,13 @@ module Iqvoc
         end
 
         identify_blank_nodes(*extracted_triple) ||
-           import_first_level_objects(first_level_types, *extracted_triple) ||
-            import_second_level_objects(second_level_types, false, line)
+          import_first_level_objects(first_level_types, *extracted_triple) ||
+          import_second_level_objects(second_level_types, false, line)
+      end
+
+      # treeify blank nodes hash
+      @blank_nodes.each do |origin, bnode_struct|
+        tranform_blank_node(origin, bnode_struct)
       end
 
       @logger.info "Computing 'forward' defined triples..."
@@ -233,16 +238,6 @@ module Iqvoc
       #
       if blank_node?(object)
         if final
-          @blank_nodes.reduce({}) do |memo, (key, struct)|
-            if struct.size == 3 && struct.include?(["rdf:type", "rdf:List"]) && blank_node?(struct[2].last)
-              new_struct = struct.dup
-              new_struct[2][1] = @blank_nodes.delete(new_struct[2][1])
-              memo[key] = new_struct
-            else
-              memo[key] = struct
-            end
-            memo
-          end
           object = @blank_nodes[object]
         else
           @unknown_second_level_triples << line
@@ -301,6 +296,19 @@ module Iqvoc
         break
       end
       false
+    end
+
+    # if blank node contains another blank node,
+    # move child blank node to his parent
+    def tranform_blank_node(origin, bnode_struct)
+      bnode_origin = bnode_struct[2][1] # only origin could contain another blank node
+      if blank_node?(bnode_origin)
+        bnode_child_struct = @blank_nodes[bnode_origin]
+        bnode_struct[2][1] = bnode_child_struct # move to parent node
+        tranform_blank_node(bnode_origin, bnode_child_struct)
+
+        @blank_nodes.delete(bnode_origin) # remove old blank node
+      end
     end
 
     ActiveSupport.run_load_hooks(:skos_importer, self)
