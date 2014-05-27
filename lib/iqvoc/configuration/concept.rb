@@ -49,7 +49,7 @@ module Iqvoc
 
         self.additional_association_class_names = {}
 
-        self.view_sections = ["main", "labels", "relations", "notes", "notations", "matches"]
+        self.view_sections = ["labels", "main", "relations", "notes", "notations", "matches"]
 
         self.include_module_names = []
       end
