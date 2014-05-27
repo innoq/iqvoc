@@ -56,16 +56,16 @@ module Iqvoc
 
       # Assign the default concept scheme singleton instance as a seen first level object upfront
       # in order to handle a missing scheme definition in ntriple data
-      @seen_first_level_objects[Iqvoc::Concept.root_class.instance.origin] = Iqvoc::Concept.root_class.instance
+      @seen_first_level_objects[Iqvoc::Concept.root_class.instance.origin] = Iqvoc::Concept.root_class
 
-      @new_subjects = [] # Concepts, collections, labels etc. to be published later
+      @new_subjects = {} # Concepts, collections, labels etc. to be published later
 
       # Triples the importer doesn't understand immediately. Example:
       #
       #     :a skos:prefLabel "foo". # => What is :a? Remember this and try again later
       #     ....
       #     :a rdf:type skos:Concept # => Now I know :a, good I remembered it's prefLabel...
-      @unknown_second_level_triples = []
+      @unknown_second_level_triples = Set.new
 
       # Hash of arrays of arrays: { "_:n123" => [["pred1", "obj1"], ["pred2", "obj2"]] }
       @blank_nodes = {}
@@ -102,7 +102,7 @@ module Iqvoc
       end
 
       @logger.info 'Iqvoc::SkosImporter: Importing triples...'
-      file.each do |line|
+      file.each_with_index do |line, index|
         extracted_triple = *extract_triple(line)
 
         if @verbose && has_unknown_namespaces?(extracted_triple)
@@ -110,13 +110,14 @@ module Iqvoc
         end
 
         identify_blank_nodes(*extracted_triple) ||
-            import_first_level_objects(first_level_types, *extracted_triple) ||
-            import_second_level_objects(second_level_types, false, *extracted_triple)
+           import_first_level_objects(first_level_types, *extracted_triple) ||
+            import_second_level_objects(second_level_types, false, line)
       end
 
       @logger.info "Computing 'forward' defined triples..."
-      @unknown_second_level_triples.each do |s, p, o|
-        import_second_level_objects(second_level_types, true, s, p, o)
+      @unknown_second_level_triples.each do |line|
+        import_second_level_objects(second_level_types, true, line)
+        puts line
       end
 
       first_import_step_done = Time.now
@@ -136,13 +137,15 @@ module Iqvoc
       published = 0
       # Respect order of first level classes configured in FIRST_LEVEL_OBJECTS
       # Example: XL labels have to be published before referencing concepts
-      sorted_new_subjects = @new_subjects.sort_by do |a|
-        first_level_object_classes.index(a.class)
+      sorted_new_subjects = @new_subjects.sort_by do |origin, klass|
+        first_level_object_classes.index(klass)
       end
 
       if @publish
         @logger.info "Publishing #{@new_subjects.count} new subjects..."
-        sorted_new_subjects.each do |subject|
+
+        sorted_new_subjects.each do |origin, klass|
+          subject = klass.find_by(origin: origin)
           if subject.publishable?
             subject.publish!
             published += 1
@@ -177,10 +180,13 @@ module Iqvoc
           end
         else
           @logger.info "Iqvoc::SkosImporter: Creating Subject: #{subject} #{predicate} #{object}" if @verbose
-          @seen_first_level_objects[origin] = types[object].create do |klass|
+          # FIXME
+
+          types[object].create do |klass|
             klass.origin = origin
           end
-          @new_subjects << @seen_first_level_objects[origin]
+          @seen_first_level_objects[origin] = types[object]
+          @new_subjects[origin] = types[object]
         end
         true
       else
@@ -188,10 +194,10 @@ module Iqvoc
       end
     end
 
-    def import_second_level_objects(types, final, subject, predicate, object)
-      return unless (subject =~ /^:(.*)$/ && types[predicate]) # We're not responsible for this
+    def import_second_level_objects(types, final, line)
+      subject, predicate, object = *extract_triple(line)
 
-      initial_triple = [subject, predicate, object]
+      return unless (subject =~ /^:(.*)$/ && types[predicate]) # We're not responsible for this
 
       # Load the subject and replace the string by the respective data object
       subject_origin = $1
@@ -200,7 +206,7 @@ module Iqvoc
         if final
           @logger.warn "Iqvoc::SkosImporter: Couldn't find Subject with origin '#{subject_origin}. Skipping entry '#{subject} #{predicate} #{object}.'"
         else
-          @unknown_second_level_triples << initial_triple
+          @unknown_second_level_triples << line
         end
         return false
       end
@@ -211,9 +217,9 @@ module Iqvoc
         object = load_first_level_object(object_origin)
         unless object
           if final
-            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}'. Skipping entry ':#{subject_origin} #{predicate} #{object}.'"
+            @logger.warn "Iqvoc::SkosImporter: Couldn't find Object with origin '#{object_origin}'. Skipping entry ':#{subject_origin} #{predicate} #{object_origin}.'"
           else
-            @unknown_second_level_triples << initial_triple
+            @unknown_second_level_triples << line
           end
           return false
         end
@@ -239,7 +245,7 @@ module Iqvoc
           end
           object = @blank_nodes[object]
         else
-          @unknown_second_level_triples << initial_triple
+          @unknown_second_level_triples << line
           return false
         end
       end
@@ -254,11 +260,15 @@ module Iqvoc
       unless @seen_first_level_objects[origin]
         klass = @existing_origins[origin]
         if klass
-          @seen_first_level_objects[origin] = klass.by_origin(origin).last
+          @seen_first_level_objects[origin] = klass
         end
       end
 
-      @seen_first_level_objects[origin]
+      # FIXME: bang
+      # FIXME: return something?
+      if klass = @seen_first_level_objects[origin]
+        klass.find_by!(origin: origin)
+      end
     end
 
     def blank_node?(str)
