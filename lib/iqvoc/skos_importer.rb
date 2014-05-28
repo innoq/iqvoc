@@ -122,7 +122,6 @@ module Iqvoc
       @logger.info "Computing 'forward' defined triples..."
       @unknown_second_level_triples.each do |line|
         import_second_level_objects(second_level_types, true, line)
-        puts line
       end
 
       first_import_step_done = Time.now
