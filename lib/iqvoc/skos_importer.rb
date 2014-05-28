@@ -246,7 +246,7 @@ module Iqvoc
       begin
         types[predicate].build_from_rdf(subject, predicate, object)
       rescue InvalidStringLiteralError => e
-        warn e.message
+        @logger.warn e.message
       end
     end
 
