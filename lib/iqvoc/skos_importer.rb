@@ -301,13 +301,15 @@ module Iqvoc
     # if blank node contains another blank node,
     # move child blank node to his parent
     def tranform_blank_node(origin, bnode_struct)
-      bnode_origin = bnode_struct[2][1] # only origin could contain another blank node
-      if blank_node?(bnode_origin)
-        bnode_child_struct = @blank_nodes[bnode_origin]
-        bnode_struct[2][1] = bnode_child_struct # move to parent node
-        tranform_blank_node(bnode_origin, bnode_child_struct)
+      bnode_struct.each_index do |i|
+        bnode_origin = bnode_struct[i][1] # only origin could contain another blank node
+        if blank_node?(bnode_origin)
+          bnode_child_struct = @blank_nodes[bnode_origin]
+          bnode_struct[i][1] = bnode_child_struct # move to parent node
+          tranform_blank_node(bnode_origin, bnode_child_struct)
 
-        @blank_nodes.delete(bnode_origin) # remove old blank node
+          @blank_nodes.delete(bnode_origin) # remove old blank node
+        end
       end
     end
 
