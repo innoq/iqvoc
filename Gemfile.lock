@@ -324,7 +324,7 @@ DEPENDENCIES
   faraday
   font-awesome-rails
   hirb-unicode
-  iq_rdf (>= 0.1.13)
+  iq_rdf (>= 0.1.15)
   iq_triplestorage
   jruby-openssl
   json
