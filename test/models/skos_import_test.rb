@@ -20,6 +20,7 @@ require 'iqvoc/skos_importer'
 class SkosImportTest < ActiveSupport::TestCase
 
   setup do
+    I18n.locale = :en
     Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
 
     Iqvoc.config["languages.pref_labeling"] = ["de", "en"]
@@ -76,6 +77,7 @@ class SkosImportTest < ActiveSupport::TestCase
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
+    # binding.pry
     assert_equal "Animal", concepts["animal"].pref_label.to_s
 
     broader_relation = concepts["cow"].broader_relations.first
