@@ -99,7 +99,9 @@ module Versioning
   end
 
   def lock_by_user(user_id)
-    write_attribute(:locked_by, user_id)
+    tap do
+      write_attribute(:locked_by, user_id)
+    end
   end
 
   def locked?
@@ -117,7 +119,9 @@ module Versioning
   end
 
   def unlock
-    write_attribute(:locked_by, nil)
+    tap do
+      write_attribute(:locked_by, nil)
+    end
   end
 
   def in_review?
@@ -125,7 +129,9 @@ module Versioning
   end
 
   def to_review
-    write_attribute(:to_review, true)
+    tap do
+      write_attribute(:to_review, true)
+    end
   end
 
   def with_validations_for_publishing
@@ -149,13 +155,17 @@ module Versioning
   end
 
   def publish
-    write_attribute(:published_at, Time.now)
-    write_attribute(:to_review, nil)
-    write_attribute(:published_version_id, nil)
+    tap do
+      write_attribute(:published_at, Time.now)
+      write_attribute(:to_review, nil)
+      write_attribute(:published_version_id, nil)
+    end
   end
 
   def unpublish
-    write_attribute(:published_at, nil)
+    tap do
+      write_attribute(:published_at, nil)
+    end
   end
 
   def published?
