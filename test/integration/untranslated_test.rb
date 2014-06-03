@@ -23,13 +23,12 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
       {en: "Xen2"},
       {en: "Yen1", de: "Yde1"},
       {en: "Yen2"}
-    ].map do |hsh|
-      labelings = []
-      hsh.each do |lang, val|
-        labelings << FactoryGirl.create(:pref_labeling,
-            target: FactoryGirl.create(:pref_label, language: lang, value: val))
+    ].each do |hsh|
+      concept = Concept::SKOS::Base.new
+      hsh.each do |lang, value|
+        Iqvoc::RDFAPI.devour concept, "skos:prefLabel", "\"#{value}\"@#{lang}"
       end
-      FactoryGirl.create(:concept, pref_labelings: labelings)
+      concept.publish.save
     end
   end
 

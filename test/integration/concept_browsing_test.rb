@@ -19,9 +19,9 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ConceptBrowsingTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concept1 = FactoryGirl.create(:concept, narrower_relations: [])
-    @concept2 = FactoryGirl.create(:concept, narrower_relations: [])
-    @concept3 = FactoryGirl.create(:concept, narrower_relations: [])
+    @concept1 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
+    @concept2 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
+    @concept3 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
   end
 
   test "showing published concept" do

@@ -19,19 +19,6 @@ require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
 
-  setup do
-    puts "import test"
-    Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
-
-    Iqvoc.config["languages.pref_labeling"] = ["de", "en"]
-    Iqvoc.config["languages.further_labelings.Labeling::SKOS::AltLabel"] = ["de", "en"]
-  end
-
-  teardown do
-    Iqvoc.config["languages.pref_labeling"] = ["en", "de"]
-    Iqvoc.config["languages.further_labelings.Labeling::SKOS::AltLabel"] = ["en", "de"]
-  end
-
   TEST_DATA = (<<-DATA
 <http://www.example.com/animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .
@@ -77,7 +64,12 @@ class SkosImportTest < ActiveSupport::TestCase
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
+    current_locale = I18n.locale
+    I18n.locale = :en
     assert_equal "Animal", concepts["animal"].pref_label.to_s
+    I18n.locale = :de
+    assert_equal "Tier", concepts["animal"].pref_label.to_s
+    I18n.locale = current_locale
 
     broader_relation = concepts["cow"].broader_relations.first
     assert_not_nil broader_relation

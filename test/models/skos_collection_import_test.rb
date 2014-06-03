@@ -19,7 +19,6 @@ require 'iqvoc/skos_importer'
 
 class SkosCollectionImportTest < ActiveSupport::TestCase
   setup do
-    puts "import coll test"
     Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
 
     Iqvoc.config.register_setting("languages.pref_labeling", ["de", "en"])

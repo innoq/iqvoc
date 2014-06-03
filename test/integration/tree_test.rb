@@ -19,8 +19,18 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class TreeTest < ActionDispatch::IntegrationTest
 
   test "browse hierarchical concepts tree" do
-    concept = FactoryGirl.create(:concept, broader_relations: [])
-    narrower_concept = concept.narrower_relations.first.target
+    narrower_concept = Concept::SKOS::Base.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, "skos:prefLabel", '"Narrower"@en'
+      c.publish
+      c.save
+    end
+
+    concept = Concept::SKOS::Base.new(top_term: true).tap do |c|
+      Iqvoc::RDFAPI.devour c, "skos:prefLabel", '"Foo"@en'
+      Iqvoc::RDFAPI.devour c, "skos:narrower", narrower_concept
+      c.publish
+      c.save
+    end
 
     visit hierarchical_concepts_path(lang: :de, format: :html)
     assert page.has_link?(concept.pref_label.to_s),

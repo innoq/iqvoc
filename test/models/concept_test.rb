@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
+require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
 
@@ -41,58 +42,72 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test "should not save concept with empty preflabel" do
-    FactoryGirl.create(:concept).publish! # Is the factory working as expected?
+  test "concept with no preflabel" do
+    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
+
+    assert concept.save
+    refute concept.publishable?
     assert_raise ActiveRecord::RecordInvalid do
-      FactoryGirl.create(:concept, pref_labelings: []).publish!
+      concept.publish!
     end
   end
 
   test "concepts without pref_labels should be saveable but not publishable" do
-    concept =  FactoryGirl.create(:concept, pref_labelings: [])
+    concept =  Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
     assert_equal [], concept.pref_labels
     assert concept.valid?
-    assert !concept.publishable?
+    refute concept.publishable?
   end
 
   test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
-    concept = FactoryGirl.create(:concept)
+    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
+    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bear"@en'
+
+    assert concept.save
+
     assert_equal 1, concept.pref_labels.count
+
     assert concept.publishable?
 
     concept.pref_labels.first.language = Iqvoc::Concept.pref_labeling_languages.second
     assert !concept.publishable?
   end
 
-  test "concept shouldn't have more then one pref label of the same language" do
-    concept = FactoryGirl.create(:concept)
+  test "one pref label per language" do
+    concept = Concept::SKOS::Base.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, "skos:prefLabel", '"Bear"@en'
+      c.publish
+      c.save
+    end
+
     assert concept.valid?
-    concept.pref_labelings << FactoryGirl.build(:pref_labeling)
+    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Beaaar"@en'
+    concept.pref_labelings.reload
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
     assert concept.invalid?
   end
 
   test "unique pref label" do
-    label = Label::SKOS::Base.create(value: "foo", language: "en")
+    bear_one = Iqvoc::RDFAPI.devour "bear_one", "a", "skos:Concept"
+    Iqvoc::RDFAPI.devour bear_one, "skos:prefLabel", '"Bear"@en'
 
-    concept1 = FactoryGirl.build(:concept, pref_labelings: [], narrower_relations: [])
-    concept1.pref_labels << label
-    concept1.save!
-    assert concept1.publishable?
+    assert bear_one.save
+    assert bear_one.publishable?
 
-    concept2 = FactoryGirl.build(:concept, pref_labelings: [], narrower_relations: [])
-    concept2.pref_labels << label
-    concept2.save!
-    refute concept2.publishable?
+    bear_two = Iqvoc::RDFAPI.devour "bear_two", "a", "skos:Concept"
+    Iqvoc::RDFAPI.devour bear_two, "skos:prefLabel", '"Bear"@en'
+
+    bear_two.save!
+    refute bear_two.publishable?
   end
 
-  test "concepts can have multiple preferred labels" do
-    concept = FactoryGirl.build(:concept)
-    concept.labelings << FactoryGirl.build(:pref_labeling,
-        target: FactoryGirl.create(:pref_label,
-            language: Iqvoc::Concept.pref_labeling_languages.second))
-    concept.save!
+  test "multiple pref labels" do
+    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
+    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bear"@en'
+    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bär"@de'
+
+    assert concept.save
     concept.reload
 
     assert_equal 2, concept.pref_labels.count
@@ -101,11 +116,14 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test "labelings_by_text setter" do
-    concept = FactoryGirl.build(:concept, pref_labelings: [])
+    concept = Concept::SKOS::Base.new
 
     concept.labelings_by_text = {
-      Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label'}
+      Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {
+        Iqvoc::Concept.pref_labeling_languages.first => 'A new label'
+      }
     }
+
     assert concept.valid?
     assert concept.save
     concept.reload
@@ -113,9 +131,11 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal Iqvoc::Concept.pref_labeling_languages.first, concept.pref_label.language.to_s
 
     concept.labelings_by_text = {
-      Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'}
+      Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {
+        Iqvoc::Concept.pref_labeling_languages.first => 'A new label, Another Label in the same language'
+      }
     }
-    assert !concept.save
+    refute concept.save
   end
 
   test "labels including commas" do

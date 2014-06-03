@@ -19,15 +19,12 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   setup do
-    @concepts = [
-      [:en, "Tree"],
-      [:en, "Forest"],
-      [:de, "Baum"],
-      [:de, "Forst"]
-    ].map { |lang, text|
-      FactoryGirl.create(:concept, pref_labelings: [FactoryGirl.create(:pref_labeling,
-          target: FactoryGirl.create(:pref_label, language: lang, value: text))])
-    }
+    @concepts = %w("Tree"@en "Forest"@en "Baum"@de "Forst"@de).map do |literal|
+      concept = Concept::SKOS::Base.new.publish
+      concept.save
+      Iqvoc::RDFAPI.devour concept, "skos:prefLabel", literal
+      concept
+    end
   end
 
   test "selecting a concept in alphabetical view" do
@@ -60,12 +57,12 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
 
   test "showing expired concepts" do
     # prepare database with expired concept
-    concepts = [[:en, "Method"], [:de, "Methode"]].map do |lang, text|
-      FactoryGirl.create(:concept,
-        expired_at: 2.days.ago,
-        pref_labelings: [
-          FactoryGirl.create(:pref_labeling, target: FactoryGirl.create(:pref_label, language: lang, value: text))
-        ])
+    concepts = %w("Method"@en "Methode"@de).map do |literal|
+      concept = Concept::SKOS::Base.create! do |c|
+        c.expired_at = 2.days.ago
+      end
+      Iqvoc::RDFAPI.devour concept, "skos:prefLabel", literal
+      concept
     end
 
     visit hierarchical_concepts_path(lang: 'en')

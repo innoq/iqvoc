@@ -92,11 +92,6 @@ GEM
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
     execjs (2.0.2)
-    factory_girl (4.4.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.4.1)
-      factory_girl (~> 4.4.0)
-      railties (>= 3.0.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     font-awesome-rails (4.0.3.1)
@@ -320,7 +315,6 @@ DEPENDENCIES
   carrierwave
   database_cleaner
   delayed_job_active_record (~> 4.0.1)
-  factory_girl_rails
   faraday
   font-awesome-rails
   hirb-unicode

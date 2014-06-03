@@ -15,19 +15,23 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
+require 'iqvoc/rdfapi'
 
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    [ {en: "Xen1", de: "Xde1"},
+    data = [
+      {en: "Xen1", de: "Xde1"},
       {en: "Xen2"}
-    ].map do |hsh|
+    ]
+
+    data.each_with_index do |hsh, i|
+      concept = Iqvoc::RDFAPI.devour "concept_#{i}", "a", "skos:Concept"
       labelings = []
       hsh.each do |lang, val|
-        labelings << FactoryGirl.create(:pref_labeling,
-            target: FactoryGirl.create(:pref_label, language: lang, value: val))
+        Iqvoc::RDFAPI.devour concept, "skos:prefLabel", "\"#{val}\"@#{lang}"
       end
-      FactoryGirl.create(:concept, pref_labelings: labelings)
+      concept.publish.save
     end
   end
 

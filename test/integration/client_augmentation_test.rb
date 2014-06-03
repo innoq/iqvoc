@@ -24,8 +24,8 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
   self.use_transactional_fixtures = false
 
   setup do
-    @concept = FactoryGirl.create(:concept, published_at: nil)
-    FactoryGirl.create(:concept, published_at: nil)
+    @concept = Concept::SKOS::Base.create!
+    Concept::SKOS::Base.create!
 
     Capybara.current_driver = Capybara.javascript_driver
     DatabaseCleaner.start

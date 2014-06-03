@@ -31,7 +31,15 @@ root:
     @concepts = create_hierarchy(concepts, rel_class, {})
     @concepts["root"].update_attribute("top_term", true)
 
-    @admin = FactoryGirl.create(:user, role: 'administrator')
+    @admin = User.create! do |u|
+      u.forename = 'Test'
+      u.surname = 'User'
+      u.email = 'testuser@iqvoc.local'
+      u.password = 'omgomgomg'
+      u.password_confirmation = 'omgomgomg'
+      u.role = 'administrator'
+      u.active = true
+    end
   end
 
   test "individual concept representations" do

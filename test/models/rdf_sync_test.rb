@@ -38,8 +38,8 @@ class RDFSyncTest < ActiveSupport::TestCase
     @sync = Iqvoc::RDFSync.new(@base_url, @target_host, username: @username,
         view_context: @view_context)
 
-    @concepts = 15.times.map do
-      FactoryGirl.create(:concept, narrower_relations: [])
+    @concepts = 1.upto(15).map do |i|
+      Concept::SKOS::Base.new.publish.tap {|c| c.save }
     end
 
     # HTTP request mocking

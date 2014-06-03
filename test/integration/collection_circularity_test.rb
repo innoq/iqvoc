@@ -21,12 +21,19 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
   setup do
     login("administrator")
 
-    @coll1 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
-    @coll2 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
-    @coll3 = FactoryGirl.create(:collection, published_at: nil, locked_by: @user.id)
-    @concept1 = FactoryGirl.create(:concept)
-    @concept2 = FactoryGirl.create(:concept)
-    @concept3 = FactoryGirl.create(:concept)
+    @coll1 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @coll1, "skos:prefLabel", '"coll1"@en'
+    @coll2 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @coll2, "skos:prefLabel", '"coll2"@en'
+    @coll3 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @coll3, "skos:prefLabel", '"coll3"@en'
+
+    @concept1 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @concept1, "skos:prefLabel", '"concept1"@en'
+    @concept2 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @concept2, "skos:prefLabel", '"concept2"@en'
+    @concept3 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
+    Iqvoc::RDFAPI.devour @concept3, "skos:prefLabel", '"concept3"@en'
   end
 
   test "inline assignments are persisted" do

@@ -20,6 +20,14 @@ module Authentication
   end
 
   def user(role = nil)
-    @user ||= FactoryGirl.create(:user, role: (role || User.default_role))
+    @user ||= User.find_or_create_by(email: 'testuser@iqvoc.local') do |u|
+      u.forename = 'Test'
+      u.surname = 'User'
+      u.password = 'omgomgomg'
+      u.password_confirmation = 'omgomgomg'
+      u.role = 'reader'
+      u.active = true
+      u.role = role || User.default_role
+    end
   end
 end

@@ -22,20 +22,24 @@ class SearchTest < ActionDispatch::IntegrationTest
     @pagination_setting = Kaminari.config.default_per_page
     Kaminari.config.default_per_page = 5
 
-    @concepts =  ["Tree", "Forest"].map do |english_label_value|
-      FactoryGirl.create(:concept, pref_labelings: [
-          FactoryGirl.create(:pref_labeling, target: FactoryGirl.create(:pref_label,
-              language: :en, value: english_label_value))
-        ])
+    @concepts = %w("Tree"@en "Forest"@en).map do |literal|
+      Concept::SKOS::Base.new.tap do |c|
+        Iqvoc::RDFAPI.devour c, "skos:prefLabel", literal
+        c.publish
+        c.save
+      end
     end
 
-    # create collection
-    @collection = FactoryGirl.create(:collection,
-      members: @concepts.map { |c| Iqvoc::Collection.member_class.new(target: c) },
-        labelings: [], pref_labelings: [
-            FactoryGirl.create(:pref_labeling,
-                target: FactoryGirl.create(:pref_label, language: :en, value: "Alpha"))
-        ])
+    @collection = Collection::SKOS::Unordered.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, "skos:prefLabel", '"Alpha"@en'
+      c.publish
+      c.save
+    end
+
+    # assign concepts to collection
+    @concepts.each do |c|
+      Iqvoc::RDFAPI.devour @collection, "skos:member", c
+    end
   end
 
   teardown do
@@ -122,9 +126,11 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "searching specific classes within collections" do
-    concept = FactoryGirl.create(:concept, { notes: [
-          Iqvoc::Concept.note_classes[1].new(language: "en", value: "lorem ipsum")
-        ] })
+    concept = Concept::SKOS::Base.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, "skos:definition", '"lorem ipsum"@en'
+      c.publish
+      c.save
+    end
 
     visit search_path(lang: 'en', format: 'html')
 
@@ -166,12 +172,13 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   test "pagination" do
     # create a large number of concepts
-    12.times { |i|
-      FactoryGirl.create(:concept,
-        pref_labelings: [FactoryGirl.create(:pref_labeling,
-            target: FactoryGirl.create(:pref_label, language: :en,
-              value: "sample_#{sprintf("_%04d", i + 1)}"))])
-    }
+    1.upto(12) do |i|
+      Concept::SKOS::Base.new.tap do |c|
+        Iqvoc::RDFAPI.devour c, "skos:prefLabel", "\"sample_#{sprintf("_%04d", i)}\"@en"
+        c.publish
+        c.save
+      end
+    end
 
     visit search_path(lang: 'en', format: 'html')
 
