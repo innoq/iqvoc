@@ -30,7 +30,7 @@ class ExportsController < ApplicationController
   end
 
   def create
-    export = Export.new(params[:export])
+    export = Export.new(export_params)
     export.user = current_user
     export.token = srand
 
@@ -57,7 +57,11 @@ class ExportsController < ApplicationController
       flash[:error] = t('txt.views.export.missing_file')
       redirect_to exports_path
     end
+  end
 
+  private
+  def export_params
+    params.require(:export).except!(:user_id, :user).permit!
   end
 
 end

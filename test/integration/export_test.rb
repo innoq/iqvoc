@@ -71,6 +71,4 @@ class ExportTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Request Export'
     assert page.has_content? 'Error occurred while creating Export job.'
   end
-
-
 end

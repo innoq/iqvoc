@@ -107,7 +107,7 @@ class ConceptsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Concept.base_class
 
-    @concept = Iqvoc::Concept.base_class.new(params[:concept])
+    @concept = Iqvoc::Concept.base_class.new(concept_params)
     @datasets = datasets_as_json
 
     if @concept.save
@@ -146,7 +146,7 @@ class ConceptsController < ApplicationController
 
     @datasets = datasets_as_json
 
-    if @concept.update_attributes(params[:concept])
+    if @concept.update_attributes(concept_params)
       flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
       redirect_to concept_path(published: 0, id: @concept)
     else
@@ -170,6 +170,10 @@ class ConceptsController < ApplicationController
   end
 
   protected
+
+def concept_params
+  params.require(:concept).permit!
+end
 
   # TODO: rename to match the behavior of the method
   def labeling_as_json(labeling)

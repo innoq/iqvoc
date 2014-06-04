@@ -63,12 +63,6 @@ module Iqvoc::Environments
     # number of complex assets.
     config.assets.debug = true
 
-    # Enforce whitelist mode for mass assignment.
-    # This will create an empty whitelist of attributes available for mass-assignment for all models
-    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
-    # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = false
-
     # Adds additional error checking when serving assets at runtime.
     # Checks for improperly declared sprockets dependencies.
     # Raises helpful error messages.

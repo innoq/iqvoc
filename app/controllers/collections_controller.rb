@@ -90,7 +90,7 @@ class CollectionsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Collection.base_class
 
-    @collection = Iqvoc::Collection.base_class.new(params[:concept])
+    @collection = Iqvoc::Collection.base_class.new(concept_params)
 
     if @collection.save
       flash[:success] = I18n.t("txt.controllers.collections.save.success")
@@ -118,7 +118,7 @@ class CollectionsController < ApplicationController
     @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :update, @collection
 
-    if @collection.update_attributes(params[:concept])
+    if @collection.update_attributes(concept_params)
       flash[:success] = I18n.t("txt.controllers.collections.save.success")
       redirect_to collection_path(@collection, published: 0)
     else
@@ -141,6 +141,10 @@ class CollectionsController < ApplicationController
   end
 
   private
+
+  def concept_params
+    params.require(:concept).permit!
+  end
 
   def build_note_relations
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?

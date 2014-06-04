@@ -40,7 +40,7 @@ class InstanceConfigurationController < ApplicationController
 
     # deserialize and save configuration settings
     errors = []
-    params[:config].each { |key, value|
+    config_params.each do |key, value|
       unless Iqvoc.config.defaults.include?(key)
         errors << t("txt.controllers.instance_configuration.invalid_key", key: key)
       else
@@ -54,7 +54,7 @@ class InstanceConfigurationController < ApplicationController
               key: key, error_message: exc.message)
         end
       end
-    }
+    end
 
     if errors.none?
       flash[:success] = t("txt.controllers.instance_configuration.update_success")
@@ -119,6 +119,11 @@ class InstanceConfigurationController < ApplicationController
     else
       raise TypeError, "unsupported type: #{type}"
     end
+  end
+
+  private
+  def config_params
+    params.require(:config).permit!
   end
 
 end

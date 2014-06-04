@@ -15,18 +15,19 @@
 # limitations under the License.
 
 class UsersController < ApplicationController
-  load_and_authorize_resource
-
   def index
     @users = User.all
+    authorize! :read, User
   end
 
   def new
+    authorize! :create, User
     @user = User.new
   end
 
   def create
-    @user = User.new(params[:user])
+    authorize! :create, User
+    @user = User.new(user_params)
 
     if @user.save
       flash[:success] = I18n.t('txt.controllers.users.successfully_created')
@@ -38,12 +39,14 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    authorize! :update, @user
   end
 
   def update
     @user = User.find(params[:id])
+    authorize! :update, @user
 
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(user_params)
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
       redirect_to users_path
     else
@@ -53,8 +56,18 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    authorize! :destroy, @user
+
     @user.destroy
 
     redirect_to users_path
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:forename, :surname, :email, :password,
+                                 :password_confirmation, :active, :role,
+                                 :telephone_number)
   end
 end

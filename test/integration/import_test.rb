@@ -75,5 +75,4 @@ class ImportTest < ActionDispatch::IntegrationTest
     click_button('Import')
     assert page.has_content? 'Error occurred while creating Import job.'
   end
-
 end

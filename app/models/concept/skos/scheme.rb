@@ -39,12 +39,12 @@ class Concept::SKOS::Scheme < Concept::Base
     first_or_create!(origin: 'scheme', published_at: Time.now)
   end
 
-  def self.create(attributes = nil, options = {}, &block)
+  def self.create(attributes = nil, &block)
     raise TypeError, "Singleton" if first
     super
   end
 
-  def self.create!(attributes = nil, options = {}, &block)
+  def self.create!(attributes = nil, &block)
     raise TypeError, "Singleton" if first
     super
   end

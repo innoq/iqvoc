@@ -30,7 +30,7 @@ class ImportsController < ApplicationController
   end
 
   def create
-    import = Import.new(params[:import])
+    import = Import.new(import_params)
     import.user = current_user
 
     if import.save
@@ -43,6 +43,11 @@ class ImportsController < ApplicationController
       flash[:error] = t('txt.views.import.error')
     end
     redirect_to imports_path
+  end
+
+  private
+  def import_params
+    params.require(:import).except!(:user_id, :user).permit!
   end
 
 end
