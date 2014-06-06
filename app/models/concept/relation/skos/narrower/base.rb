@@ -23,7 +23,7 @@ class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
   end
 
   def self.view_section(obj)
-    "main"
+    'main'
   end
 
   def self.view_section_sort_key(obj)
@@ -31,7 +31,7 @@ class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
   end
 
   def self.partial_name(obj)
-    "partials/concept/relation/skos/narrower"
+    'partials/concept/relation/skos/narrower'
   end
 
 end

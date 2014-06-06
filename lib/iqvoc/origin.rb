@@ -105,7 +105,7 @@ module Iqvoc
     end
 
     def inspect
-      "#<Iqvoc::Origin:0x%08x>" % object_id
+      '#<Iqvoc::Origin:0x%08x>' % object_id
     end
 
   end

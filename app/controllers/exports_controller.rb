@@ -48,7 +48,7 @@ class ExportsController < ApplicationController
 
   def download
     export = Export.find(params[:export_id])
-    time = export.finished_at.strftime("%Y-%m-%d_%H-%M")
+    time = export.finished_at.strftime('%Y-%m-%d_%H-%M')
 
     begin
       send_file export.build_filename,

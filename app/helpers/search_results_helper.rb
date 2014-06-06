@@ -41,7 +41,7 @@ module SearchResultsHelper
     end
 
     content_tag :h2 do
-      raw( t('txt.views.search_results.search_results') << " " << content_tag(:small, desc) )
+      raw( t('txt.views.search_results.search_results') << ' ' << content_tag(:small, desc) )
     end
   end
 

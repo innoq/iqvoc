@@ -21,13 +21,13 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
   setup do
     Iqvoc::Concept.pref_labeling_class_name = 'Labeling::SKOS::PrefLabel'
 
-    Iqvoc.config.register_setting("languages.pref_labeling", ["de", "en"])
-    Iqvoc.config.register_setting("languages.further_labelings.Labeling::SKOS::AltLabel", ["de", "en"])
+    Iqvoc.config.register_setting('languages.pref_labeling', ['de', 'en'])
+    Iqvoc.config.register_setting('languages.further_labelings.Labeling::SKOS::AltLabel', ['de', 'en'])
   end
 
   teardown do
-    Iqvoc.config["languages.pref_labeling"] = ["en", "de"]
-    Iqvoc.config["languages.further_labelings.Labeling::SKOS::AltLabel"] = ["en", "de"]
+    Iqvoc.config['languages.pref_labeling'] = ['en', 'de']
+    Iqvoc.config['languages.further_labelings.Labeling::SKOS::AltLabel'] = ['en', 'de']
   end
 
   TEST_DATA = (<<-DATA
@@ -53,42 +53,42 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
      DATA
     ).split("\n")
 
-  test "basic importer functionality" do
+  test 'basic importer functionality' do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
     concepts = {}
-    ["cow", "donkey", "snake"].each do |origin|
+    ['cow', 'donkey', 'snake'].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last
       assert_not_nil(concepts[origin], "Couldn't find concept '#{origin}'.")
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
     end
 
     collections = {}
-    ["land-animal", "legged-animal"].each do |origin|
+    ['land-animal', 'legged-animal'].each do |origin|
       collections[origin] = Iqvoc::Collection.base_class.by_origin(origin).last
       assert_not_nil(collections[origin], "Couldn't find collections '#{origin}'.")
       assert collections[origin].published?, "collections '#{origin}' wasn't published."
     end
 
-    collection_with_member = concepts["cow"].collections.first
+    collection_with_member = concepts['cow'].collections.first
     assert_not_nil collection_with_member
 
-    concept_member = collections["land-animal"].members.first
+    concept_member = collections['land-animal'].members.first
     assert_not_nil concept_member
   end
 
-  test "subcollections importer functionality" do
+  test 'subcollections importer functionality' do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
 
-    collection_with_subcollections = Iqvoc::Collection.base_class.by_origin("land-animal").last
+    collection_with_subcollections = Iqvoc::Collection.base_class.by_origin('land-animal').last
     assert_not_nil collection_with_subcollections
     assert_not_nil collection_with_subcollections.subcollections.first
   end
 
-  test "empty string import"  do
+  test 'empty string import'  do
     test_data = (<<-DATA
       <http://www.example.com/water-animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Collection> .
       <http://www.example.com/water-animal> <http://www.w3.org/2008/05/skos#prefLabel> ""@de .
@@ -97,7 +97,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
     assert_nothing_raised do
     assert_difference('Collection::Base.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
       end
     end
   end

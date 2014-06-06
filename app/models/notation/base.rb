@@ -31,7 +31,7 @@ class Notation::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    "main"
+    'main'
   end
 
   def self.view_section_sort_key(obj)
@@ -39,11 +39,11 @@ class Notation::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/notation/base"
+    'partials/notation/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/notation/edit_base"
+    'partials/notation/edit_base'
   end
 
   def build_rdf(document, subject)

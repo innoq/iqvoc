@@ -85,8 +85,8 @@ class SearchResultsController < ApplicationController
 
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
-    request.query_parameters.delete("commit")
-    request.query_parameters.delete("utf8")
+    request.query_parameters.delete('commit')
+    request.query_parameters.delete('utf8')
 
     @datasets = init_datasets
 
@@ -96,11 +96,11 @@ class SearchResultsController < ApplicationController
       # Deal with language parameter patterns
       languages = []
       # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
-      if params[:languages].respond_to?(:each) && params[:languages].include?("none")
+      if params[:languages].respond_to?(:each) && params[:languages].include?('none')
         # Special treatment for the "nil language"
         languages << nil
       elsif params[:languages].respond_to?(:split)
-        languages = params[:languages].split(",")
+        languages = params[:languages].split(',')
       end
 
       # Ensure a valid class was selected
@@ -124,9 +124,9 @@ class SearchResultsController < ApplicationController
 
       if @multi_query
         @results = Kaminari.paginate_array(@results)
-        logger.debug("Using multi query mode")
+        logger.debug('Using multi query mode')
       else
-        logger.debug("Using single query mode")
+        logger.debug('Using single query mode')
       end
 
       if params[:limit] && Iqvoc.unlimited_search_results
@@ -159,7 +159,7 @@ class SearchResultsController < ApplicationController
 
   def self.prepare_basic_variables(controller)
     langs = Iqvoc.all_languages.each_with_object({}) do |lang, hsh|
-      lang ||= "none"
+      lang ||= 'none'
       hsh[lang] = I18n.t("languages.#{lang}", default: lang)
     end
     controller.instance_variable_set(:@available_languages, langs)

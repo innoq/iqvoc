@@ -20,7 +20,7 @@ class Concepts::HierarchicalController < ConceptsController
     authorize! :read, Iqvoc::Concept.base_class
 
     scope = Iqvoc::Concept.base_class
-    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
+    scope = params[:published] == '0' ? scope.editor_selectable : scope.published
 
     # only select unexpired concepts
     scope = scope.not_expired

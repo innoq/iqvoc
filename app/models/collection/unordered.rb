@@ -18,7 +18,7 @@
 class Collection::Unordered < Collection::SKOS::Base
 
   def initialize(*args)
-    ActiveSupport::Deprecation.warn("Collection::Unordered is deprecated. Use Collection::SKOS::Unordered instead.")
+    ActiveSupport::Deprecation.warn('Collection::Unordered is deprecated. Use Collection::SKOS::Unordered instead.')
     super
   end
 

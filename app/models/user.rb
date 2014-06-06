@@ -17,7 +17,7 @@
 class User < ActiveRecord::Base
 
   ROLES = [
-    "reader", "editor", "publisher", "administrator"
+    'reader', 'editor', 'publisher', 'administrator'
   ]
 
   validates_length_of :forename, :surname, within: 2..255
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   def self.default_role
-    "reader"
+    'reader'
   end
 
   def name

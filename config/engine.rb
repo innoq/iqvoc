@@ -25,19 +25,19 @@ require 'iqvoc/controller_extensions'
 module Iqvoc
 
   class Engine < Rails::Engine
-    paths["lib/tasks"] << "lib/engine_tasks"
+    paths['lib/tasks'] << 'lib/engine_tasks'
 
-    initializer "iqvoc.mixin_controller_extensions" do |app|
+    initializer 'iqvoc.mixin_controller_extensions' do |app|
       if Kernel.const_defined?(:ApplicationController)
         ApplicationController.send(:include, Iqvoc::ControllerExtensions)
       end
     end
 
-    initializer "iqvoc.add_assets_to_precompilation" do |app|
+    initializer 'iqvoc.add_assets_to_precompilation' do |app|
       app.config.assets.precompile += Iqvoc.core_assets
     end
 
-    initializer "iqvoc.load_migrations" do |app|
+    initializer 'iqvoc.load_migrations' do |app|
       # Pull in all the migrations to the application embedding iqvoc
       app.config.paths['db/migrate'].concat(Iqvoc::Engine.paths['db/migrate'].existent)
     end

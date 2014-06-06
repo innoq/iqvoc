@@ -24,7 +24,7 @@ class DashboardController < ApplicationController
       @items += klass.for_dashboard.load
     end
 
-    factor = params[:order] == "desc" ? -1 : 1
+    factor = params[:order] == 'desc' ? -1 : 1
 
     if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
       @items.sort! do |x, y|
@@ -49,10 +49,10 @@ class DashboardController < ApplicationController
       }
       DatabaseCleaner.clean
 
-      flash.now[:success] = t("txt.views.dashboard.reset_success")
+      flash.now[:success] = t('txt.views.dashboard.reset_success')
     else
-      flash.now[:danger] = t("txt.views.dashboard.reset_warning")
-      flash.now[:error] = t("txt.views.dashboard.jobs_pending_warning") if Delayed::Job.any?
+      flash.now[:danger] = t('txt.views.dashboard.reset_warning')
+      flash.now[:error] = t('txt.views.dashboard.jobs_pending_warning') if Delayed::Job.any?
     end
   end
 

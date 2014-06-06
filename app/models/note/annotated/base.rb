@@ -22,7 +22,7 @@ class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::A
 
   def identifier
     (self.namespace && self.predicate) ?
-        [self.namespace, self.predicate].join(":") :
+        [self.namespace, self.predicate].join(':') :
         (self.namespace || self.predicate)
   end
 

@@ -30,14 +30,14 @@ class Note::SKOS::Base < Note::Base
         raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
-      value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+      value = JSON.parse(%Q{["#{$1}"]})[0].gsub('\\n', "\n") # Trick to decode \uHHHHH chars
       target_class.new(value: value, language: lang).tap do |new_instance|
         rdf_subject.send(target_class.name.to_relation_name) << new_instance
       end
     when Array # Blank node
       note = target_class.create!(owner: rdf_subject)
       rdf_object.each do |annotation|
-        ns, pred = *annotation.first.split(":", 2)
+        ns, pred = *annotation.first.split(':', 2)
         note.annotations.create! do |a|
           a.namespace = ns
           a.predicate = pred

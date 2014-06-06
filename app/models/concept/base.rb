@@ -77,7 +77,7 @@ class Concept::Base < ActiveRecord::Base
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
       new_origins = new_origins.each_with_object({}) do |e, hsh|
-        key, value = e.split(":") # NB: defaults to nil if no rank is provided
+        key, value = e.split(':') # NB: defaults to nil if no rank is provided
         hsh[key] = value
       end
 
@@ -100,9 +100,9 @@ class Concept::Base < ActiveRecord::Base
   after_save do |concept|
     # Generate a origin if none was given yet
     if concept.origin.blank?
-      raise "Concept::Base#after_save (generate origin): Unable to set the origin by id!" unless concept.id
+      raise 'Concept::Base#after_save (generate origin): Unable to set the origin by id!' unless concept.id
       concept.reload
-      concept.origin = sprintf("_%08d", concept.id)
+      concept.origin = sprintf('_%08d', concept.id)
       concept.save! # On exception the complete save transaction will be rolled back
     end
   end
@@ -111,22 +111,22 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, foreign_key: 'owner_id', class_name: "Concept::Relation::Base", dependent: :destroy
+  has_many :relations, foreign_key: 'owner_id', class_name: 'Concept::Relation::Base', dependent: :destroy
   has_many :related_concepts, through: :relations, source: :target
-  has_many :referenced_relations, foreign_key: 'target_id', class_name: "Concept::Relation::Base", dependent: :destroy
+  has_many :referenced_relations, foreign_key: 'target_id', class_name: 'Concept::Relation::Base', dependent: :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, foreign_key: 'owner_id', class_name: "Labeling::Base", dependent: :destroy
+  has_many :labelings, foreign_key: 'owner_id', class_name: 'Labeling::Base', dependent: :destroy
   has_many :labels, through: :labelings, source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
-  has_many :notes, class_name: "Note::Base", as: :owner, dependent: :destroy
+  has_many :notes, class_name: 'Note::Base', as: :owner, dependent: :destroy
   include_to_deep_cloning({notes: :annotations})
 
-  has_many :matches, foreign_key: 'concept_id', class_name: "Match::Base", dependent: :destroy
+  has_many :matches, foreign_key: 'concept_id', class_name: 'Match::Base', dependent: :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, foreign_key: 'target_id', class_name: "Collection::Member::Base", dependent: :destroy
+  has_many :collection_members, foreign_key: 'target_id', class_name: 'Collection::Member::Base', dependent: :destroy
   has_many :collections, through: :collection_members, class_name: Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
@@ -275,15 +275,15 @@ class Concept::Base < ActiveRecord::Base
   # ********** Class methods
 
   def self.inline_partial_name
-    "partials/concept/inline_base"
+    'partials/concept/inline_base'
   end
 
   def self.new_link_partial_name
-    "partials/concept/new_link_base"
+    'partials/concept/new_link_base'
   end
 
   def self.edit_link_partial_name
-    "partials/concept/edit_link_base"
+    'partials/concept/edit_link_base'
   end
 
   # ********** Methods
@@ -330,7 +330,7 @@ class Concept::Base < ActiveRecord::Base
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale.to_s == "none" ? nil : I18n.locale.to_s
+    lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
@@ -349,7 +349,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
-    if lang == "none"
+    if lang == 'none'
       lang = nil
     elsif lang
       lang = lang.to_s

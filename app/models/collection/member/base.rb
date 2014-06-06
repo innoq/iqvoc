@@ -26,7 +26,7 @@ class Collection::Member::Base < ActiveRecord::Base
   belongs_to :target, class_name: 'Concept::Base'
 
   def self.view_section(obj)
-    "main"
+    'main'
   end
 
   def self.view_section_sort_key(obj)
@@ -34,7 +34,7 @@ class Collection::Member::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/collection/member"
+    'partials/collection/member'
   end
 
 end

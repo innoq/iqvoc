@@ -16,11 +16,11 @@
 
 class Labeling::SKOS::Base < Labeling::Base
 
-  self.rdf_namespace = "skos"
+  self.rdf_namespace = 'skos'
 
   # ********** Associations
 
-  belongs_to :target, class_name: "Label::Base", dependent: :destroy # the destroy is new
+  belongs_to :target, class_name: 'Label::Base', dependent: :destroy # the destroy is new
 
   # ********** Scopes
 
@@ -101,7 +101,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
     lang = $3
     value = begin
-      JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
+      JSON.parse(%Q{["#{$1}"]})[0].gsub('\\n', "\n") # Trick to decode \uHHHHH chars
     rescue JSON::ParserError
       $1
     end

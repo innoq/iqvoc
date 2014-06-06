@@ -24,36 +24,36 @@ class ConceptBrowsingTest < ActionDispatch::IntegrationTest
     @concept3 = Concept::SKOS::Base.new.publish.tap {|c| c.save }
   end
 
-  test "showing published concept" do
+  test 'showing published concept' do
     visit "/en/concepts/#{@concept1.origin}.html"
     assert page.has_content?("#{@concept1.pref_label}")
   end
 
-  test "persisting inline relations" do
-    login "administrator"
+  test 'persisting inline relations' do
+    login 'administrator'
 
-    visit new_concept_path(lang: "en", format: "html", published: 0)
-    fill_in "concept_relation_skos_relateds",
+    visit new_concept_path(lang: 'en', format: 'html', published: 0)
+    fill_in 'concept_relation_skos_relateds',
         with: "#{@concept1.origin},#{@concept2.origin},"
-    click_button "Save"
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.success")
-    assert page.has_css?("#concept_relation_skos_relateds a", count: 2)
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
+    assert page.has_css?('#concept_relation_skos_relateds a', count: 2)
 
-    click_link_or_button I18n.t("txt.views.versioning.to_edit_mode")
-    fill_in "concept_relation_skos_relateds", with: ""
-    click_button "Save"
+    click_link_or_button I18n.t('txt.views.versioning.to_edit_mode')
+    fill_in 'concept_relation_skos_relateds', with: ''
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
-    assert page.has_no_css?("#concept_relation_skos_relateds a")
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.update_success')
+    assert page.has_no_css?('#concept_relation_skos_relateds a')
 
-    click_link_or_button I18n.t("txt.views.versioning.edit_mode")
-    fill_in "concept_relation_skos_relateds",
+    click_link_or_button I18n.t('txt.views.versioning.edit_mode')
+    fill_in 'concept_relation_skos_relateds',
         with: "#{@concept1.origin}, #{@concept2.origin}, #{@concept3.origin}"
-    click_button "Save"
+    click_button 'Save'
 
-    assert page.has_content? I18n.t("txt.controllers.versioned_concept.update_success")
-    assert page.has_css?("#concept_relation_skos_relateds a", count: 3)
+    assert page.has_content? I18n.t('txt.controllers.versioned_concept.update_success')
+    assert page.has_css?('#concept_relation_skos_relateds a', count: 3)
   end
 
 end

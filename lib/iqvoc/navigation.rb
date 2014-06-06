@@ -43,7 +43,7 @@ module Iqvoc
     # can use the index to insert it's item under the group
     def self.setup_extension_group(position)
       group = {
-        text: proc { t("txt.views.navigation.extensions") },
+        text: proc { t('txt.views.navigation.extensions') },
         items: []
       }
 

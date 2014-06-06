@@ -19,21 +19,21 @@ require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
 
-  test "blank concept" do
+  test 'blank concept' do
     c = Concept::Base.new
     assert c.valid?
     refute c.publishable?
     assert c.valid?
   end
 
-  test "should not allow identical concepts" do
-    origin = "foo"
+  test 'should not allow identical concepts' do
+    origin = 'foo'
     c1 = Concept::Base.new(origin: origin)
     c2 = Concept::Base.new(origin: origin, published_at: Time.now)
     assert c1.save
     assert c2.save
 
-    origin = "bar"
+    origin = 'bar'
     c1 = Concept::Base.new(origin: origin)
     c2 = Concept::Base.new(origin: origin)
     assert c1.save
@@ -42,8 +42,8 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test "concept with no preflabel" do
-    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
+  test 'concept with no preflabel' do
+    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
 
     assert concept.save
     refute concept.publishable?
@@ -52,16 +52,16 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
-  test "concepts without pref_labels should be saveable but not publishable" do
-    concept =  Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
+  test 'concepts without pref_labels should be saveable but not publishable' do
+    concept =  Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
     assert_equal [], concept.pref_labels
     assert concept.valid?
     refute concept.publishable?
   end
 
-  test "published concept must have a pref_label of the first pref_label language configured (the main language)" do
-    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
-    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bear"@en'
+  test 'published concept must have a pref_label of the first pref_label language configured (the main language)' do
+    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
 
     assert concept.save
 
@@ -73,39 +73,39 @@ class ConceptTest < ActiveSupport::TestCase
     assert !concept.publishable?
   end
 
-  test "one pref label per language" do
+  test 'one pref label per language' do
     concept = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, "skos:prefLabel", '"Bear"@en'
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Bear"@en'
       c.publish
       c.save
     end
 
     assert concept.valid?
-    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Beaaar"@en'
+    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Beaaar"@en'
     concept.pref_labelings.reload
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
     assert concept.invalid?
   end
 
-  test "unique pref label" do
-    bear_one = Iqvoc::RDFAPI.devour "bear_one", "a", "skos:Concept"
-    Iqvoc::RDFAPI.devour bear_one, "skos:prefLabel", '"Bear"@en'
+  test 'unique pref label' do
+    bear_one = Iqvoc::RDFAPI.devour 'bear_one', 'a', 'skos:Concept'
+    Iqvoc::RDFAPI.devour bear_one, 'skos:prefLabel', '"Bear"@en'
 
     assert bear_one.save
     assert bear_one.publishable?
 
-    bear_two = Iqvoc::RDFAPI.devour "bear_two", "a", "skos:Concept"
-    Iqvoc::RDFAPI.devour bear_two, "skos:prefLabel", '"Bear"@en'
+    bear_two = Iqvoc::RDFAPI.devour 'bear_two', 'a', 'skos:Concept'
+    Iqvoc::RDFAPI.devour bear_two, 'skos:prefLabel', '"Bear"@en'
 
     bear_two.save!
     refute bear_two.publishable?
   end
 
-  test "multiple pref labels" do
-    concept = Iqvoc::RDFAPI.devour "bear", "a", "skos:Concept"
-    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bear"@en'
-    Iqvoc::RDFAPI.devour concept, "skos:prefLabel", '"Bär"@de'
+  test 'multiple pref labels' do
+    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
+    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bär"@de'
 
     assert concept.save
     concept.reload
@@ -115,7 +115,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert concept.publishable?
   end
 
-  test "labelings_by_text setter" do
+  test 'labelings_by_text setter' do
     concept = Concept::SKOS::Base.new
 
     concept.labelings_by_text = {
@@ -138,43 +138,43 @@ class ConceptTest < ActiveSupport::TestCase
     refute concept.save
   end
 
-  test "labels including commas" do
+  test 'labels including commas' do
     labels_for = lambda do |concept, type|
         type.includes(:target).where(owner_id: concept.id).
             map { |ln| ln.target.value }
     end
 
     form_data = {
-      "labelings_by_text" => {
-        "labeling_skos_pref_labels" => { "en" => "lipsum" },
-        "labeling_skos_alt_labels" => { "en" => "foo, bar" }
+      'labelings_by_text' => {
+        'labeling_skos_pref_labels' => { 'en' => 'lipsum' },
+        'labeling_skos_alt_labels' => { 'en' => 'foo, bar' }
       }
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
 
-    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
-    assert_equal "lipsum",
-        concept.labelings_by_text("labeling_skos_pref_labels", "en")
-    assert_equal ["foo", "bar"],
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal 'lipsum',
+        concept.labelings_by_text('labeling_skos_pref_labels', 'en')
+    assert_equal ['foo', 'bar'],
         labels_for.call(concept, Labeling::SKOS::AltLabel)
-    assert_equal "foo, bar",
-        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+    assert_equal 'foo, bar',
+        concept.labelings_by_text('labeling_skos_alt_labels', 'en')
 
     form_data = {
-      "labelings_by_text" => {
-        "labeling_skos_pref_labels" => { "en" => "lipsum" },
-        "labeling_skos_alt_labels" => { "en" => 'lorem, "foo, bar", ipsum' }
+      'labelings_by_text' => {
+        'labeling_skos_pref_labels' => { 'en' => 'lipsum' },
+        'labeling_skos_alt_labels' => { 'en' => 'lorem, "foo, bar", ipsum' }
       }
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
 
-    assert_equal ["lipsum"], labels_for.call(concept, Labeling::SKOS::PrefLabel)
-    assert_equal "lipsum",
-        concept.labelings_by_text("labeling_skos_pref_labels", "en")
-    assert_equal ["lorem", "foo, bar", "ipsum"],
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal 'lipsum',
+        concept.labelings_by_text('labeling_skos_pref_labels', 'en')
+    assert_equal ['lorem', 'foo, bar', 'ipsum'],
         labels_for.call(concept, Labeling::SKOS::AltLabel)
     assert_equal 'lorem, "foo, bar", ipsum',
-        concept.labelings_by_text("labeling_skos_alt_labels", "en")
+        concept.labelings_by_text('labeling_skos_alt_labels', 'en')
   end
 
 end

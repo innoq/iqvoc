@@ -20,7 +20,7 @@ class Label::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  has_many :labelings, foreign_key: 'target_id', class_name: "Labeling::Base"
+  has_many :labelings, foreign_key: 'target_id', class_name: 'Labeling::Base'
   has_many :concepts, through: :labelings, source: :owner
 
   has_many :pref_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.pref_labeling_class_name
@@ -29,8 +29,8 @@ class Label::Base < ActiveRecord::Base
   # ********* Scopes
 
   def self.by_language(lang_code)
-    lang_code = nil if lang_code.to_s == "none"
-    if (lang_code.is_a?(Array) && lang_code.include?("none"))
+    lang_code = nil if lang_code.to_s == 'none'
+    if (lang_code.is_a?(Array) && lang_code.include?('none'))
       where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
     elsif lang_code.blank?
       where(arel_table[:language].eq(nil))
@@ -90,8 +90,8 @@ class Label::Base < ActiveRecord::Base
   end
 
   def to_s
-    if (language.presence || "none") != I18n.locale.to_s
-      value.to_s + " [#{I18n.t("txt.common.translation_missing_for")} '#{I18n.locale}']"
+    if (language.presence || 'none') != I18n.locale.to_s
+      value.to_s + " [#{I18n.t('txt.common.translation_missing_for')} '#{I18n.locale}']"
     else
       value.to_s
     end

@@ -42,10 +42,10 @@ module Iqvoc
 
       # Some general Namespaces to support in any case
       @prefixes = {
-        "http://www.w3.org/2004/02/skos/core#" => "skos:",
-        "http://www.w3.org/2008/05/skos#" => "skos:",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#" => "rdf:",
-        default_namespace_url => ":"
+        'http://www.w3.org/2004/02/skos/core#' => 'skos:',
+        'http://www.w3.org/2008/05/skos#' => 'skos:',
+        'http://www.w3.org/1999/02/22-rdf-syntax-ns#' => 'rdf:',
+        default_namespace_url => ':'
       }
       # Add the namespaces specified in the Iqvoc config
       Iqvoc.rdf_namespaces.each do |pref, uri|
@@ -172,7 +172,7 @@ module Iqvoc
     end
 
     def import_first_level_objects(types, subject, predicate, object)
-      if (predicate == "rdf:type" && types[object] && subject =~ /^:(.+)$/)
+      if (predicate == 'rdf:type' && types[object] && subject =~ /^:(.+)$/)
         # We've found a subject definition with a class we know and which is in our responsibility (":")
         origin = $1
 
@@ -278,7 +278,7 @@ module Iqvoc
       triple.each do |e| # Do some fun with the uris and literals
         @prefixes.keys.each do |uri_prefix| # Use prefixes instead of full uris
           e.gsub! /^<#{uri_prefix}([^>]*)>/ do |matches|
-            @prefixes[uri_prefix] + $1.gsub(".", "_")
+            @prefixes[uri_prefix] + $1.gsub('.', '_')
           end
         end
         e.squish!

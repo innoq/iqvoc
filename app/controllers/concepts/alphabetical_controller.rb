@@ -22,7 +22,7 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    redirect_to(url_for prefix: "a") unless params[:prefix]
+    redirect_to(url_for prefix: 'a') unless params[:prefix]
 
     datasets = init_datasets
 

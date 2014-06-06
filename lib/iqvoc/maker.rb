@@ -27,31 +27,31 @@ module Iqvoc
       data = YAML.load(yml)
 
       labels = {}
-      data["labels"].each { |label| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
-        term = label.delete("value")
+      data['labels'].each { |label| # XXX: use omap to simplify format (making `value` the key instead of an attribute)?
+        term = label.delete('value')
 
-        components = label.delete("components").map { |term|
+        components = label.delete('components').map { |term|
           labels[term]
-        } if label["components"]
+        } if label['components']
 
         options = {
-          inflectionals: label.delete("inflectionals"),
+          inflectionals: label.delete('inflectionals'),
           components: components,
           label_attributes: label
         }
 
         labels[term] = self.label(term, options)
-      } if data["labels"]
+      } if data['labels']
 
       concepts = {}
-      data["concepts"].each { |concept| # XXX: use omap to simplify format (using a single pref_label as key)?
+      data['concepts'].each { |concept| # XXX: use omap to simplify format (using a single pref_label as key)?
         relations = {}
-        ["broader", "narrower"].each { |type| # TODO: missing related, support for poly-hierarchies
+        ['broader', 'narrower'].each { |type| # TODO: missing related, support for poly-hierarchies
           relations[type] = concepts[concept.delete(type)] if concept[type]
         }
 
         lbls = {} # TODO: rename
-        ["pref", "alt"].each { |type| # TODO: missing hidden
+        ['pref', 'alt'].each { |type| # TODO: missing hidden
           key = "#{type}_labels"
           lbls[type] = concept.delete(key).map { |term|
             labels[term]
@@ -59,18 +59,18 @@ module Iqvoc
         }
 
         options = {
-          pref_labels: lbls["pref"],
-          alt_labels: lbls["alt"],
+          pref_labels: lbls['pref'],
+          alt_labels: lbls['alt'],
           concept_attributes: concept
         }
 
         identifier = options[:pref_labels].first.value
         concepts[identifier] = self.concept(options)
         concepts[identifier].send(Iqvoc::Concept.broader_relation_class.name.to_relation_name).
-            create_with_reverse_relation(relations["broader"]) if relations["broader"]
+            create_with_reverse_relation(relations['broader']) if relations['broader']
         concepts[identifier].send(Iqvoc::Concept.broader_relation_class.narrower_class.name.to_relation_name).
-            create_with_reverse_relation(relations["narrower"]) if relations["narrower"]
-      } if data["concepts"]
+            create_with_reverse_relation(relations['narrower']) if relations['narrower']
+      } if data['concepts']
 
       return { concepts: concepts, labels: labels }
     end
@@ -85,7 +85,7 @@ module Iqvoc
       alt_labels = options[:alt_labels] || []
 
       defaults = { # NB: must use strings, not symbols as keys due to YAML
-        "published_at" => 3.days.ago
+        'published_at' => 3.days.ago
       }
       attributes = defaults.merge(attributes)
 
@@ -116,9 +116,9 @@ module Iqvoc
 
       defaults = { # NB: must use strings, not symbols as keys due to YAML
         value: value, # intentionally not a string; symbol takes precedence
-        "origin" => Iqvoc::Origin.new(value).to_s,
-        "language" => Iqvoc::Concept.pref_labeling_languages.first,
-        "published_at" => 2.days.ago
+        'origin' => Iqvoc::Origin.new(value).to_s,
+        'language' => Iqvoc::Concept.pref_labeling_languages.first,
+        'published_at' => 2.days.ago
       }
       attributes = defaults.merge(attributes)
 

@@ -28,14 +28,14 @@ module NavigationHelper
     items.map do |item|
       if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
         if item[:items]
-          content_tag :li, class: "dropdown" do
+          content_tag :li, class: 'dropdown' do
             raw(link_to(element_value(item[:text]).html_safe +
-                    content_tag(:b, nil, class: "caret"), "#",
-                    class: "dropdown-toggle",
-                    data: { toggle: "dropdown" }) +
+                    content_tag(:b, nil, class: 'caret'), '#',
+                    class: 'dropdown-toggle',
+                    data: { toggle: 'dropdown' }) +
                 content_tag(:ul,
                     item[:items].map { |i| nav_item(i) }.join.html_safe,
-                    class: "dropdown-menu"))
+                    class: 'dropdown-menu'))
           end
         else
           nav_item(item)
@@ -72,7 +72,7 @@ module NavigationHelper
     else
       desc = ActiveSupport::SafeBuffer.new
       if icon = opts.delete(:icon)
-        desc << icon(icon) << " "
+        desc << icon(icon) << ' '
       end
       desc << opts.delete(:text).to_s
       link_to(desc.html_safe, opts.delete(:path), opts)
@@ -85,7 +85,7 @@ module NavigationHelper
 
   def nav_item(item)
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
-    css = active ? "active" : nil
+    css = active ? 'active' : nil
     content_tag :li, link_to(element_value(item[:text]), element_value(item[:href])), class: css
   end
 

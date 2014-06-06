@@ -27,7 +27,7 @@ class SkosExportTest < ActiveSupport::TestCase
     Iqvoc::SkosImporter.new(@testdata, 'http://hobbies.com/').run
   end
 
-  test "basic_exporter_functionality" do
+  test 'basic_exporter_functionality' do
     Iqvoc::SkosExporter.new(@export_file, 'nt', 'http://hobbies.com/').run
 
     generated_export = File.read(@export_file)

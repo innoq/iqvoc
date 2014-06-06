@@ -32,7 +32,7 @@ ActiveRecord::Base.send :include, Iqvoc::DeepCloning
 
 Rails.configuration.after_initialize do
   if Iqvoc::Concept.note_class_names.empty?
-    raise(TypeError, "note_class_names misconfiguration: must not be empty")
+    raise(TypeError, 'note_class_names misconfiguration: must not be empty')
   end
 end
 

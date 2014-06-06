@@ -18,7 +18,7 @@ module ConceptsHelper
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
-    render "concepts/hierarchical/treeview", concepts: concepts, broader: broader
+    render 'concepts/hierarchical/treeview', concepts: concepts, broader: broader
   end
 
   # turns a hash of concept/relations pairs of arbitrary nesting depth into the
@@ -27,9 +27,9 @@ module ConceptsHelper
     ordered = options[:ordered] || false
     options.delete(:ordered)
 
-    content_tag(ordered ? "ol" : "ul", options) do
+    content_tag(ordered ? 'ol' : 'ul', options) do
       hash.map do |concept, rels|
-        rels.empty? ? content_tag("li", concept) : content_tag("li") do
+        rels.empty? ? content_tag('li', concept) : content_tag('li') do
           h(concept) + nested_list(rels, ordered: ordered) # NB: recursive
         end
       end.join("\n").html_safe
@@ -41,7 +41,7 @@ module ConceptsHelper
       letters.map do |letter|
         content_tag :li, link_to(letter, yield(letter)),
           class: ('active' if params[:prefix] == letter.to_s.downcase)
-      end.join("").html_safe
+      end.join('').html_safe
     end
   end
 
@@ -99,14 +99,14 @@ module ConceptsHelper
   # associated to the concept.
   def render_concept_association(hash, concept, association_class, further_options = {})
     html = if association_class.respond_to?(:hidden?) && association_class.hidden?(concept)
-      ""
+      ''
     else
       render(association_class.partial_name(concept), further_options.merge(concept: concept, klass: association_class))
     end
     # Convert the already safely buffered string back to a regular one
     # in order to be able to modify it with squish
     if String.new(html).squish.present?
-      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= "") << html.html_safe
+      ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= '') << html.html_safe
     end
   end
 
