@@ -104,7 +104,7 @@ class SearchResultsController < ApplicationController
       end
 
       # Ensure a valid class was selected
-      unless klass = Iqvoc.searchable_class_names.detect {|key, value| value == params[:type] }.try(:first)
+      unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
         raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
       end
       klass = klass.constantize
@@ -133,7 +133,7 @@ class SearchResultsController < ApplicationController
         @results = @results.per(params[:limit].to_i)
       end
 
-      if params[:datasets] && datasets = @datasets.select {|a| params[:datasets].include?(a.name) }
+      if params[:datasets] && datasets = @datasets.select { |a| params[:datasets].include?(a.name) }
         @results = SearchResultCollection.new(@results)
         datasets.each do |dataset|
           results = dataset.search(params)
@@ -144,7 +144,7 @@ class SearchResultsController < ApplicationController
             flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
           end
         end
-        @results = @results.sort {|x, y| x.to_s <=> y.to_s }
+        @results = @results.sort { |x, y| x.to_s <=> y.to_s }
       end
 
       @results = Kaminari.paginate_array(@results)

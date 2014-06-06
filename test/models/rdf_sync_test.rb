@@ -39,7 +39,7 @@ class RDFSyncTest < ActiveSupport::TestCase
         view_context: @view_context)
 
     @concepts = 1.upto(15).map do |i|
-      Concept::SKOS::Base.new.publish.tap {|c| c.save }
+      Concept::SKOS::Base.new.publish.tap { |c| c.save }
     end
 
     # HTTP request mocking

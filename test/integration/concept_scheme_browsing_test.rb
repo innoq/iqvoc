@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
 
   test 'list top concepts in rdf scheme' do
-    @concept = Concept::SKOS::Base.new(top_term: true).publish.tap {|c| c.save }
+    @concept = Concept::SKOS::Base.new(top_term: true).publish.tap { |c| c.save }
 
     visit '/scheme.ttl'
 
@@ -28,7 +28,7 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
   end
 
   test 'top concepts rdf' do
-    @concept = Concept::SKOS::Base.new(top_term: true).publish.tap {|c| c.save }
+    @concept = Concept::SKOS::Base.new(top_term: true).publish.tap { |c| c.save }
 
     visit "/#{@concept.origin}.ttl"
 
@@ -36,7 +36,7 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
   end
 
   test 'non-top-concept in scheme' do
-    non_top_concept = Concept::SKOS::Base.new(top_term: false).publish.tap {|c| c.save }
+    non_top_concept = Concept::SKOS::Base.new(top_term: false).publish.tap { |c| c.save }
 
     visit "/#{non_top_concept.origin}.ttl"
 
@@ -50,9 +50,9 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
     assert !page.has_link?('Tree 2', href: 'http://www.example.com/en/concepts/foo_1.html')
     assert !page.has_link?('Tree 2', href: 'http://www.example.com/en/concepts/foo_2.html')
 
-    concept1 = Concept::SKOS::Base.new(origin: 'foo_1', top_term: false).publish.tap {|c| c.save }
+    concept1 = Concept::SKOS::Base.new(origin: 'foo_1', top_term: false).publish.tap { |c| c.save }
     Iqvoc::RDFAPI.devour concept1, 'skos:prefLabel', '"Tree 2"@en'
-    concept2 = Concept::SKOS::Base.new(origin: 'foo_2', top_term: false).publish.tap {|c| c.save }
+    concept2 = Concept::SKOS::Base.new(origin: 'foo_2', top_term: false).publish.tap { |c| c.save }
     Iqvoc::RDFAPI.devour concept2, 'skos:prefLabel', '"Tree 2"@en'
 
     login 'administrator'

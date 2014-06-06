@@ -23,14 +23,14 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
     raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Collection."          unless rdf_subject.is_a?(Collection::Base)
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a Collection or Concept." unless rdf_object.is_a?(Collection::Base) or rdf_object.is_a?(Concept::Base)
 
-    member_instance = rdf_subject.members.detect{|rel| rel.target == rdf_object}
+    member_instance = rdf_subject.members.detect{ |rel| rel.target == rdf_object }
     if member_instance.nil?
       predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
       member_instance = predicate_class.new(target: rdf_object)
       rdf_subject.members << member_instance
     end
 
-    if rdf_object.collections.select{|coll| coll.id == rdf_subject.id}.empty?
+    if rdf_object.collections.select{ |coll| coll.id == rdf_subject.id }.empty?
       rdf_object.collections << rdf_subject
     end
     member_instance

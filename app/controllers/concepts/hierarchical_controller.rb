@@ -55,7 +55,7 @@ class Concepts::HierarchicalController < ConceptsController
     respond_to do |format|
       format.html
       format.json do # Treeview data
-        concepts = @concepts.select {|c| can? :read, c }.map do |c|
+        concepts = @concepts.select { |c| can? :read, c }.map do |c|
           {
             id: c.id,
             url: concept_path(id: c, format: :html),

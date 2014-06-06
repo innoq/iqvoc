@@ -100,7 +100,7 @@ class Collection::Base < Concept::Base
     if @member_concept_origins
       Concept::Base.editor_selectable.where(origin: @member_concept_origins)
     else
-      concepts.select{|c| c.editor_selectable?}
+      concepts.select{ |c| c.editor_selectable? }
     end
   end
 

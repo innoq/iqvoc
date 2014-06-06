@@ -35,7 +35,7 @@ module Concept
 
     def pref_label_in_primary_thesaurus_language
       if validatable_for_publishing?
-        labels = pref_labels.select{|l| l.published?}
+        labels = pref_labels.select{ |l| l.published? }
         if labels.none?
           errors.add :base, I18n.t('txt.models.concept.no_pref_label_error')
         elsif not labels.map(&:language).map(&:to_s).include?(Iqvoc::Concept.pref_labeling_languages.first.to_s)
@@ -48,7 +48,7 @@ module Concept
       # We have many sources a prefLabel can be defined in
       pls = pref_labelings.map(&:target) +
         send(Iqvoc::Concept.pref_labeling_class_name.to_relation_name).map(&:target) +
-        labelings.select{|l| l.is_a?(Iqvoc::Concept.pref_labeling_class)}.map(&:target)
+        labelings.select{ |l| l.is_a?(Iqvoc::Concept.pref_labeling_class) }.map(&:target)
       languages = {}
       pls.compact.each do |pref_label|
         lang = pref_label.language.to_s

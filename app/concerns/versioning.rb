@@ -73,7 +73,7 @@ module Versioning
 
      def includes_to_deep_cloning
        (@@include_to_deep_cloning ||= {})[self] ||= []
-       (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
+       (@@include_to_deep_cloning.keys & self.ancestors).map{ |c| @@include_to_deep_cloning[c] }.flatten.compact
      end
   end
 
