@@ -1,13 +1,10 @@
 class RemoveClassificationsAndClassifiers < ActiveRecord::Migration
-
   def self.up
     drop_table 'classifications'
     drop_table 'classifiers'
-
   end
 
   def self.down
-
     create_table 'classifications', force: true do |t|
       t.integer  'owner_id'
       t.integer  'target_id'
@@ -26,7 +23,5 @@ class RemoveClassificationsAndClassifiers < ActiveRecord::Migration
     end
 
     add_index 'classifiers', ['notation'], name: 'ix_classifiers_on_notation'
-
   end
-
 end

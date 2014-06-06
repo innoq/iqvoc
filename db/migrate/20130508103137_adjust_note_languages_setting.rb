@@ -1,5 +1,4 @@
 class AdjustNoteLanguagesSetting < ActiveRecord::Migration
-
   class ConfigSettings < ActiveRecord::Base
     self.table_name = 'configuration_settings'
   end
@@ -13,5 +12,4 @@ class AdjustNoteLanguagesSetting < ActiveRecord::Migration
     record = ConfigSettings.where('key' => 'languages.notes').first
     record.update_attribute('key', 'note_languages') if record
   end
-
 end

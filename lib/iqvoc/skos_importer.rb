@@ -2,7 +2,6 @@ require 'iqvoc/rdfapi'
 
 module Iqvoc
   class SkosImporter
-
     class_attribute :first_level_object_classes, :second_level_object_classes
     self.first_level_object_classes = [
       Iqvoc::Concept.base_class,
@@ -314,5 +313,4 @@ module Iqvoc
 
     ActiveSupport.run_load_hooks(:skos_importer, self)
   end
-
 end

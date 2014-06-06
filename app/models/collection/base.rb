@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collection::Base < Concept::Base
-
   has_many Note::SKOS::Definition.name.to_relation_name,
       class_name: 'Note::SKOS::Definition',
       as: :owner,

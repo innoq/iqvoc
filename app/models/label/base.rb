@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Label::Base < ActiveRecord::Base
-
   self.table_name = 'labels'
 
   # ********** Associations
@@ -96,5 +95,4 @@ class Label::Base < ActiveRecord::Base
       value.to_s
     end
   end
-
 end

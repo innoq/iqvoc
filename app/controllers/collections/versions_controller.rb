@@ -141,5 +141,4 @@ class Collections::VersionsController < ApplicationController
     flash[:success] = t('txt.controllers.versioning.to_review_success')
     redirect_to collection_path(collection, published: 0)
   end
-
 end

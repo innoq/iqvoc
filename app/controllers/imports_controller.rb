@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class ImportsController < ApplicationController
-
   before_action do
     authorize! :import, Concept::Base
   end
@@ -49,5 +48,4 @@ class ImportsController < ApplicationController
   def import_params
     params.require(:import).except!(:user_id, :user).permit!
   end
-
 end

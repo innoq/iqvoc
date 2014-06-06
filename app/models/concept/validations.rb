@@ -98,6 +98,5 @@ module Concept
         end
       end
     end
-
   end
 end

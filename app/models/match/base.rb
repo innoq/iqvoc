@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Match::Base < ActiveRecord::Base
-
   self.table_name = 'matches'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -53,5 +52,4 @@ class Match::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     'partials/match/edit_base'
   end
-
 end

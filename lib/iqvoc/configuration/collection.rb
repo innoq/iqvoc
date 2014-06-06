@@ -30,7 +30,6 @@ module Iqvoc
           note_class_names.map(&:constantize)
         end
       end
-
     end
   end
 end

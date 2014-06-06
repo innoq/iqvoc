@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Notation::Base < ActiveRecord::Base
-
   self.table_name = 'notations'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -55,5 +54,4 @@ class Notation::Base < ActiveRecord::Base
       raise "#{self.class}#build_rdf: couldn't find Namespace '#{self.rdf_namespace.camelcase}'."
     end
   end
-
 end

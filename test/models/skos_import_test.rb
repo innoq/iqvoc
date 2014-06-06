@@ -18,7 +18,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
-
   TEST_DATA = (<<-DATA
 <http://www.example.com/animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .

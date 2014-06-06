@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class EditConceptsTest < ActionDispatch::IntegrationTest
-
   setup do
     @concept = Concept::SKOS::Base.new.tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"foo"@en'
@@ -39,5 +38,4 @@ class EditConceptsTest < ActionDispatch::IntegrationTest
     click_link('Vorschau der Version in Bearbeitung')
     assert_equal concept_url(@concept, published: 0, lang: 'de', format: 'html'), current_url
   end
-
 end

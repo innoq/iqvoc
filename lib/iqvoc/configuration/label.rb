@@ -17,7 +17,6 @@ module Iqvoc
           base_class_name.constantize
         end
       end
-
     end
   end
 end

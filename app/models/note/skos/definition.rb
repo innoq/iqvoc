@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Note::SKOS::Definition < Note::SKOS::Base
-
   self.rdf_predicate = 'definition'
 
   def self.view_section(obj)
@@ -29,5 +28,4 @@ class Note::SKOS::Definition < Note::SKOS::Base
   def self.search_result_partial_name
     'partials/note/skos/definition/search_result'
   end
-
 end

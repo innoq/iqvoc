@@ -19,7 +19,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/rdf_sync'
 
 class RDFSyncTest < ActiveSupport::TestCase
-
   setup do
     @rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
     @skos = 'http://www.w3.org/2004/02/skos/core#'
@@ -116,5 +115,4 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     assert sync.all
   end
-
 end

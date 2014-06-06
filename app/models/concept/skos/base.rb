@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::SKOS::Base < Concept::Base
-
   self.rdf_namespace = 'skos'
   self.rdf_class = 'Concept'
 

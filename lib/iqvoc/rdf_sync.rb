@@ -103,11 +103,9 @@ class Iqvoc::RDFSync
     return klass ? klass.published.unsynced :
         Iqvoc::Sync.syncable_classes.map { |klass| candidates(klass) }
   end
-
 end
 
 module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
-
   def triplestore_syncer
     base_url = root_url(lang: nil) # XXX: brittle in the face of future changes?
 
@@ -116,5 +114,4 @@ module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
         password: Iqvoc.config['triplestore.password'].presence,
         view_context: view_context) # fugly, but necessary; cf. RDFSync#serialize
   end
-
 end

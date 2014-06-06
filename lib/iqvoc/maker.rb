@@ -1,6 +1,5 @@
 module Iqvoc
   module Maker
-
     # labels:
     # -
     #   value: <string>
@@ -138,6 +137,5 @@ module Iqvoc
 
       return label
     end
-
   end
 end

@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class UserSessionsController < ApplicationController
-
   skip_before_action :require_user, only: [:new, :create]
 
   def new
@@ -54,5 +53,4 @@ class UserSessionsController < ApplicationController
   def user_session_params
     params.require(:user_session).permit(:email, :password)
   end
-
 end

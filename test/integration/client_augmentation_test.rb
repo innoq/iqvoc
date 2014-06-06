@@ -20,7 +20,6 @@ require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
 class ClientAugmentationTest < ActionDispatch::IntegrationTest
-
   self.use_transactional_fixtures = false
 
   setup do
@@ -54,5 +53,4 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
     uri = '%s?%s' % [uri.path, uri.query]
     assert_equal concept_path(@concept, published: 0, lang: 'de', format: 'html'), uri
   end
-
 end

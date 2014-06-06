@@ -98,6 +98,5 @@ module Iqvoc
     def with_layout?
       !params[:layout]
     end
-
   end
 end

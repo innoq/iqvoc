@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Labeling::SKOS::Base < Labeling::Base
-
   self.rdf_namespace = 'skos'
 
   # ********** Associations
@@ -120,5 +119,4 @@ class Labeling::SKOS::Base < Labeling::Base
     result.Sdc::link(IqRdf.build_uri(owner.origin))
     build_rdf(document, result)
   end
-
 end

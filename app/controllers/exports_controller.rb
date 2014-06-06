@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class ExportsController < ApplicationController
-
   before_action do
     authorize! :export, Concept::Base
   end
@@ -63,5 +62,4 @@ class ExportsController < ApplicationController
   def export_params
     params.require(:export).except!(:user_id, :user).permit!
   end
-
 end

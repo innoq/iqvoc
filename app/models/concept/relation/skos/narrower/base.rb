@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
-
   self.rdf_predicate = 'narrower'
 
   def self.reverse_relation_class
@@ -33,5 +32,4 @@ class Concept::Relation::SKOS::Narrower::Base < Concept::Relation::SKOS::Base
   def self.partial_name(obj)
     'partials/concept/relation/skos/narrower'
   end
-
 end

@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class CollectionCircularityTest < ActionDispatch::IntegrationTest
-
   setup do
     login('administrator')
 

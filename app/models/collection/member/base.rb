@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collection::Member::Base < ActiveRecord::Base
-
   self.table_name = 'collection_members'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -36,5 +35,4 @@ class Collection::Member::Base < ActiveRecord::Base
   def self.partial_name(obj)
     'partials/collection/member'
   end
-
 end

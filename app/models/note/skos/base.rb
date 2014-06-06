@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Note::SKOS::Base < Note::Base
-
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -69,5 +68,4 @@ class Note::SKOS::Base < Note::Base
       subject.send(rdf_namespace).send(rdf_predicate, value, lang: language)
     end
   end
-
 end

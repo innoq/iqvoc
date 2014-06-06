@@ -1,5 +1,4 @@
 module WidgetHelper
-
   def widget_values(concept, relation_class)
     concept.concept_relations_by_id(relation_class.name.to_relation_name)
   end
@@ -35,5 +34,4 @@ module WidgetHelper
     concepts = concepts_with_ranks.reject { |k, v| !allowed_concepts.include?(k) }
     concepts.map { |c, r| concept_widget_data(c, r) }.to_json
   end
-
 end

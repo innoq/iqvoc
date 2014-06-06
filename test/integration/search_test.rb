@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class SearchTest < ActionDispatch::IntegrationTest
-
   setup do
     @pagination_setting = Kaminari.config.default_per_page
     Kaminari.config.default_per_page = 5
@@ -214,5 +213,4 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.source.include?('#result2">')
     assert !page.source.include?('#result3">') # we're on page 3/3
   end
-
 end

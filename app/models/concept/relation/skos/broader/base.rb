@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
-
   self.rdf_predicate = 'broader'
 
   def self.narrower_class
@@ -37,5 +36,4 @@ class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
   def self.narrower_editable
     !singular?
   end
-
 end

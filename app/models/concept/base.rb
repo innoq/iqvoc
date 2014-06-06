@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Base < ActiveRecord::Base
-
   self.table_name = 'concepts'
 
   class_attribute :default_includes
@@ -401,5 +400,4 @@ class Concept::Base < ActiveRecord::Base
       concept_relations: Concept::Relation::Base.by_owner(id).target_in_edit_mode,
     }
   end
-
 end

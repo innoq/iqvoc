@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
-
   test 'list top concepts in rdf scheme' do
     @concept = Concept::SKOS::Base.new(top_term: true).publish.tap { |c| c.save }
 
@@ -69,5 +68,4 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
     assert page.has_link? 'Tree 2', href: 'http://www.example.com/en/concepts/foo_1.html'
     assert page.has_link? 'Tree 2', href: 'http://www.example.com/en/concepts/foo_2.html'
   end
-
 end

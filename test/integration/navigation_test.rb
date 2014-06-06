@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class NavigationTest < ActionDispatch::IntegrationTest
-
   test 'extend navigation on root level' do
     Iqvoc::Navigation.add({
       text: 'root element 1',
@@ -43,5 +42,4 @@ class NavigationTest < ActionDispatch::IntegrationTest
     assert_equal 1, dropdown.all('li').size
     assert dropdown.first('li').has_link?('extension 1')
   end
-
 end

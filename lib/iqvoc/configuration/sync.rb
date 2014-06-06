@@ -22,7 +22,6 @@ module Iqvoc
           self.syncable_class_names.map { |name| name.constantize }
         end
       end
-
     end
   end
 end

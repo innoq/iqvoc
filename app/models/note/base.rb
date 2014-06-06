@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Note::Base < ActiveRecord::Base
-
   self.table_name = 'notes'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -122,5 +121,4 @@ class Note::Base < ActiveRecord::Base
     result.Sdc::link(IqRdf.build_uri(owner.origin))
     build_rdf(document, result)
   end
-
 end

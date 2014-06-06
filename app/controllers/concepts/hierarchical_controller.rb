@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concepts::HierarchicalController < ConceptsController
-
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
@@ -68,5 +67,4 @@ class Concepts::HierarchicalController < ConceptsController
       end
     end
   end
-
 end

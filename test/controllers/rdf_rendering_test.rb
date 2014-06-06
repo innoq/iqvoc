@@ -88,5 +88,4 @@ root:
         target: label)
     return concept
   end
-
 end

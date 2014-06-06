@@ -19,7 +19,6 @@
 # controllers is the scope used. Use if statements or published methods instead.
 # "DRYness"
 class Concepts::UntranslatedController < ConceptsController
-
   def index
     authorize! :read, Concept::Base
 
@@ -34,5 +33,4 @@ class Concepts::UntranslatedController < ConceptsController
       @labels = scope.order('LOWER(labels.value)').page(params[:page])
     end
   end
-
 end

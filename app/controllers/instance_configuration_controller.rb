@@ -17,7 +17,6 @@
 require 'csv'
 
 class InstanceConfigurationController < ApplicationController
-
   def index
     authorize! :show, Iqvoc.config
 
@@ -125,5 +124,4 @@ class InstanceConfigurationController < ApplicationController
   def config_params
     params.require(:config).permit!
   end
-
 end

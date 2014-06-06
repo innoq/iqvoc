@@ -18,7 +18,6 @@ require 'test_helper'
 require 'integration_test_helper'
 
 class InstanceConfigurationTest < ActionDispatch::IntegrationTest
-
   test 'configuration privileges' do
     uri = '/en/config'
 
@@ -69,5 +68,4 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
 
     # TODO: test routes-by-language availability, post-modification
   end
-
 end

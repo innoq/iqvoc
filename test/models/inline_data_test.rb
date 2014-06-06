@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class InlineDataTest < ActiveSupport::TestCase
-
   test 'serialization' do
     values = ['foo', 'bar']
     assert_equal 'foo, bar',
@@ -57,5 +56,4 @@ class InlineDataTest < ActiveSupport::TestCase
     inline_values = ''
     assert_equal [], Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
   end
-
 end

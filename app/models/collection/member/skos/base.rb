@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collection::Member::SKOS::Base < Collection::Member::Base
-
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'member'
 

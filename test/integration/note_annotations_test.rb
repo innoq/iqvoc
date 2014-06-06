@@ -18,7 +18,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 require 'iqvoc/rdfapi'
 
 class NoteAnnotationsTest < ActionDispatch::IntegrationTest
-
   test 'creating and retrieving change notes' do
     login 'administrator'
 
@@ -108,5 +107,4 @@ RDF
 
     assert page.body.include?(ttl)
   end
-
 end

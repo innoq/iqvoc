@@ -15,7 +15,6 @@
 # limitations under the License.
 
 module SearchResultsHelper
-
   def search_language_selected?(lang)
     (params[:languages] && params[:languages].include?(lang.to_s)) ||
       (!params[:query] && I18n.locale.to_s == lang.to_s)
@@ -44,5 +43,4 @@ module SearchResultsHelper
       raw( t('txt.views.search_results.search_results') << ' ' << content_tag(:small, desc) )
     end
   end
-
 end

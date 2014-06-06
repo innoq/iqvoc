@@ -23,7 +23,6 @@ require 'carrierwave'
 require 'iqvoc/controller_extensions'
 
 module Iqvoc
-
   class Engine < Rails::Engine
     paths['lib/tasks'] << 'lib/engine_tasks'
 
@@ -42,5 +41,4 @@ module Iqvoc
       app.config.paths['db/migrate'].concat(Iqvoc::Engine.paths['db/migrate'].existent)
     end
   end
-
 end

@@ -20,7 +20,6 @@ require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
-
   self.use_transactional_fixtures = false
 
   setup do
@@ -84,5 +83,4 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     section.check(checkbox_id)
     assert section.has_css?('li.deleted', count: 1)
   end
-
 end

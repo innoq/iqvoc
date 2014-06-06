@@ -96,5 +96,4 @@ module NavigationHelper
   def element_value(e)
     e.is_a?(Proc) ? instance_eval(&e) : e
   end
-
 end

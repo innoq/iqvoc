@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class HygieneTest < ActiveSupport::TestCase
-
   test 'trailing whitespace' do
     assert_no_occurrence '[[:blank:]]$', 'trailing whitespace'
   end
@@ -33,5 +32,4 @@ class HygieneTest < ActiveSupport::TestCase
     lines = `git grep -In#{extra_options} '#{pattern}' | grep -v '^vendor/'`
     assert_not_equal 0, $?.to_i, "#{error_message}:\n#{lines}"
   end
-
 end

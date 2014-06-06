@@ -184,5 +184,4 @@ class HierarchyController < ApplicationController
       rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
     end.flatten.uniq
   end
-
 end

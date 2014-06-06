@@ -24,7 +24,6 @@ module Iqvoc
       unless @file_path.is_a?(String)
         raise "Iqvoc::SkosExporter#export: Parameter 'file' should be a String."
       end
-
     end
 
     def run
@@ -134,13 +133,11 @@ module Iqvoc
       end
     end
 
-
     def create_directory(file_path)
       dirname = File.dirname(file_path)
       unless File.directory?(dirname)
         FileUtils.mkdir_p(dirname)
       end
-
     end
 
     def serialize_rdf(document, type)
@@ -152,6 +149,5 @@ module Iqvoc
         document.to_ntriples
       end
     end
-
   end
 end

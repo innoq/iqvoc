@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class DashboardController < ApplicationController
-
   def index
     authorize! :use, :dashboard
 
@@ -55,5 +54,4 @@ class DashboardController < ApplicationController
       flash.now[:error] = t('txt.views.dashboard.jobs_pending_warning') if Delayed::Job.any?
     end
   end
-
 end

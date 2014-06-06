@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::Base < ActiveRecord::Base
-
   # ATTENTION:
   # This class (and the inheriting subclasses) should not reference the
   # Concept::Base class directly at load time!
@@ -117,5 +116,4 @@ class Concept::Relation::Base < ActiveRecord::Base
   def self.rankable?
     self.class.included_modules.include?(Iqvoc::Rankable)
   end
-
 end

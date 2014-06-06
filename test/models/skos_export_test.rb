@@ -19,7 +19,6 @@ require 'iqvoc/skos_exporter'
 require 'iqvoc/skos_importer'
 
 class SkosExportTest < ActiveSupport::TestCase
-
   setup do
     @testdata = File.read(Rails.root.join('data', 'hobbies.nt')).split("\n")
     @export_file = Rails.root.join('tmp/export/skos_export_test.nt').to_s
@@ -46,5 +45,4 @@ class SkosExportTest < ActiveSupport::TestCase
     end
 
   end
-
 end

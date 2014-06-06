@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Note::SKOS::ChangeNote < Note::SKOS::Base
-
   self.rdf_predicate = 'changeNote'
 
   def self.edit_partial_name(obj)
@@ -46,5 +45,4 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
       end
     end
   end
-
 end

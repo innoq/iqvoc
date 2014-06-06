@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class CollectionsController < ApplicationController
-
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
@@ -149,5 +148,4 @@ class CollectionsController < ApplicationController
   def build_note_relations
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
   end
-
 end

@@ -146,5 +146,4 @@ class Concepts::VersionsController < ApplicationController
     flash[:success] = t('txt.controllers.versioning.to_review_success')
     redirect_to concept_path(published: 0, id: concept)
   end
-
 end

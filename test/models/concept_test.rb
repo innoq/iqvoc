@@ -18,7 +18,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
-
   test 'blank concept' do
     c = Concept::Base.new
     assert c.valid?
@@ -176,5 +175,4 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 'lorem, "foo, bar", ipsum',
         concept.labelings_by_text('labeling_skos_alt_labels', 'en')
   end
-
 end

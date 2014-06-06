@@ -27,5 +27,4 @@ class RemoteLabelsController < ApplicationController
       end
     end
   end
-
 end

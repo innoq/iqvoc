@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Broader::Mono < Concept::Relation::SKOS::Broader::Base
-
   def self.partial_name(obj)
     'partials/concept/relation/skos/broader/mono'
   end
@@ -24,5 +23,4 @@ class Concept::Relation::SKOS::Broader::Mono < Concept::Relation::SKOS::Broader:
   def self.singular?
     true
   end
-
 end

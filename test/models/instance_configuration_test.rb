@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
-
   setup do
     @config = Iqvoc::InstanceConfiguration.instance
   end
@@ -54,5 +53,4 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
     assert_raise(TypeError) { @config.register_setting('foo', nil) }
     assert_raise(TypeError) { @config.register_setting('foo', Hash.new) }
   end
-
 end

@@ -17,7 +17,6 @@
 require 'singleton'
 
 module Iqvoc
-
   # provides the interface to configuration settings
   class InstanceConfiguration
     include Singleton
@@ -120,7 +119,5 @@ module Iqvoc
         raise TypeError, 'complex values not supported'
       end
     end
-
   end
-
 end

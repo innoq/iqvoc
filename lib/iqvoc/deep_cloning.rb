@@ -16,7 +16,6 @@
 
 module Iqvoc
   module DeepCloning
-
     def self.included(base) #:nodoc:
       base.alias_method_chain :dup, :deep_cloning
     end
@@ -87,6 +86,5 @@ module Iqvoc
 
       return kopy
     end
-
   end
 end

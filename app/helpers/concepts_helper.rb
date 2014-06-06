@@ -15,7 +15,6 @@
 # limitations under the License.
 
 module ConceptsHelper
-
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
     render 'concepts/hierarchical/treeview', concepts: concepts, broader: broader
@@ -109,5 +108,4 @@ module ConceptsHelper
       ((hash[association_class.view_section(concept)] ||= {})[association_class.view_section_sort_key(concept)] ||= '') << html.html_safe
     end
   end
-
 end

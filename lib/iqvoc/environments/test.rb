@@ -1,7 +1,6 @@
 require 'iqvoc'
 
 module Iqvoc::Environments
-
   def self.setup_test(config)
     # Settings specified here will take precedence over those in config/application.rb.
 
@@ -40,5 +39,4 @@ module Iqvoc::Environments
 
     config.i18n.enforce_available_locales = true
   end
-
 end

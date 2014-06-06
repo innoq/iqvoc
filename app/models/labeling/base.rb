@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Labeling::Base < ActiveRecord::Base
-
   self.table_name = 'labelings'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -85,5 +84,4 @@ class Labeling::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     'partials/labeling/edit_base'
   end
-
 end

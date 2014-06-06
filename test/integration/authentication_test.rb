@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class AuthenticationTest < ActionDispatch::IntegrationTest
-
   test 'sign in' do
     user
     visit dashboard_path(lang: :de)
@@ -36,5 +35,4 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Abmelden'
     assert page.has_content?('Abmeldung erfolgreich')
   end
-
 end

@@ -18,7 +18,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 require 'iqvoc/rdfapi'
 
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
-
   setup do
     data = [
       { en: 'Xen1', de: 'Xde1' },
@@ -51,5 +50,4 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     assert_equal 1, concepts.length
     assert_equal 'Xde1', concepts[0].find('.concept-item-link').text.strip
   end
-
 end

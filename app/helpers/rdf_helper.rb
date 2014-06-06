@@ -15,9 +15,7 @@
 # limitations under the License.
 
 module RdfHelper
-
   def render_concept(document, concept, suppress_extra_labels = false)
-
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
@@ -95,5 +93,4 @@ module RdfHelper
 
     end
   end
-
 end

@@ -48,8 +48,6 @@ module Iqvoc
       else # no user
         can :create, UserSession
       end
-
     end
-
   end
 end

@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collection::SKOS::Base < Collection::Base
-
   self.rdf_namespace = 'skos'
   self.rdf_class = 'Collection'
 
@@ -31,5 +30,4 @@ class Collection::SKOS::Base < Collection::Base
 
     return subject
   end
-
 end

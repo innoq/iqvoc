@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Base < Concept::Relation::Base
-
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -53,5 +52,4 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
       end
     end
   end
-
 end

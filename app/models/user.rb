@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class User < ActiveRecord::Base
-
   ROLES = [
     'reader', 'editor', 'publisher', 'administrator'
   ]
@@ -47,5 +46,4 @@ class User < ActiveRecord::Base
   def to_s
     self.name.to_s
   end
-
 end

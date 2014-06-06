@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class ConceptBrowsingTest < ActionDispatch::IntegrationTest
-
   setup do
     @concept1 = Concept::SKOS::Base.new.publish.tap { |c| c.save }
     @concept2 = Concept::SKOS::Base.new.publish.tap { |c| c.save }
@@ -55,5 +54,4 @@ class ConceptBrowsingTest < ActionDispatch::IntegrationTest
     assert page.has_content? I18n.t('txt.controllers.versioned_concept.update_success')
     assert page.has_css?('#concept_relation_skos_relateds a', count: 3)
   end
-
 end

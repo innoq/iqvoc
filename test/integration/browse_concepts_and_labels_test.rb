@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
-
   setup do
     @concepts = %w("Tree"@en "Forest"@en "Baum"@de "Forst"@de).map do |literal|
       concept = Concept::SKOS::Base.new.publish
@@ -70,5 +69,4 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     click_link_or_button('M')
     assert page.has_content?(concepts.first.pref_label.to_s), 'should have one expired concept'
   end
-
 end

@@ -17,7 +17,6 @@
 module Concept
   module Relation
     module ReverseRelationExtension
-
       def create_with_reverse_relation(target_concept, attributes = {})
         relation_class = proxy_association.reflection.class_name.constantize
         ActiveRecord::Base.transaction do
@@ -44,7 +43,6 @@ module Concept
           end
         end
       end
-
     end
   end
 end

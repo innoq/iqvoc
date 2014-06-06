@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
-
   setup do
     [ { en: 'Xen1', de: 'Xde1' },
       { en: 'Xen2' },
@@ -57,5 +56,4 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
     assert_equal :en, I18n.locale
     assert_equal 1, page.all('.alert-danger').length
   end
-
 end

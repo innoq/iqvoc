@@ -15,7 +15,6 @@
 # limitations under the License.
 
 module DashboardHelper
-
   def sorting_controls_for(name)
     content_tag :div, class: 'sorting-controls' do
       link_to(icon('arrow-circle-o-up', 'sorting-arrow'),
@@ -42,5 +41,4 @@ module DashboardHelper
       item.published? ? concept_path(id: item.origin) : concept_path(published: 0, id: item.origin)
     end
   end
-
 end

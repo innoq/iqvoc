@@ -69,5 +69,4 @@ class Concepts::SchemeController < ApplicationController
   def concept_params
     params.require(:concept).permit!
   end
-
 end

@@ -1,7 +1,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class EditCollectionsTest < ActionDispatch::IntegrationTest
-
   setup do
     @collection = Collection::SKOS::Unordered.new.publish.tap { |c| c.save }
   end
@@ -19,5 +18,4 @@ class EditCollectionsTest < ActionDispatch::IntegrationTest
     click_link('Vorschau der Version in Bearbeitung')
     assert_equal collection_url(@collection, published: 0, lang: 'de', format: 'html'), current_url
   end
-
 end

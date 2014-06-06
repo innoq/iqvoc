@@ -15,7 +15,6 @@
 # limitations under the License.
 
 module ApplicationHelper
-
   GLYPHS = {
     yes: '&#x2713;',
     no: '&#x2717;'
@@ -115,5 +114,4 @@ module ApplicationHelper
       Iqvoc.title
     end
   end
-
 end
