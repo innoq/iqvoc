@@ -30,7 +30,7 @@ class Dataset::IqvocDataset
     return 'unknown' if @repository.nil?
 
     void = RDF::Vocabulary.new('http://rdfs.org/ns/void#')
-    query = RDF::Query.new({dataset: {RDF.type => void.Dataset, RDF::DC.title => :title}})
+    query = RDF::Query.new({ dataset: { RDF.type => void.Dataset, RDF::DC.title => :title } })
     results = query.execute(@repository)
 
     return 'unknown' if results.empty?

@@ -30,7 +30,7 @@ class CollectionsController < ApplicationController
 
         @top_collections.to_a.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
-        ActiveRecord::Associations::Preloader.new.preload(@top_collections, {members: :target})
+        ActiveRecord::Associations::Preloader.new.preload(@top_collections, { members: :target })
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
@@ -72,7 +72,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@collection,
       [:pref_labels,
-        {members: {target: [:pref_labels] + Iqvoc::Collection.base_class.default_includes}}])
+        { members: { target: [:pref_labels] + Iqvoc::Collection.base_class.default_includes } }])
 
     respond_to do |format|
       format.html { published ? render('show_published') : render('show_unpublished') }
@@ -109,7 +109,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@collection, [
         :pref_labels,
-        {members: {target: [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}])
+        { members: { target: [:pref_labels] + Iqvoc::Concept.base_class.default_includes } }])
 
     build_note_relations
   end

@@ -121,7 +121,7 @@ class Concept::Base < ActiveRecord::Base
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
   has_many :notes, class_name: 'Note::Base', as: :owner, dependent: :destroy
-  include_to_deep_cloning({notes: :annotations})
+  include_to_deep_cloning({ notes: :annotations })
 
   has_many :matches, foreign_key: 'concept_id', class_name: 'Match::Base', dependent: :destroy
   include_to_deep_cloning(:matches)

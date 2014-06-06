@@ -21,8 +21,8 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
     data = [
-      {en: 'Xen1', de: 'Xde1'},
-      {en: 'Xen2'}
+      { en: 'Xen1', de: 'Xde1' },
+      { en: 'Xen2' }
     ]
 
     data.each_with_index do |hsh, i|

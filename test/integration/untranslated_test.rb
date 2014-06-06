@@ -19,10 +19,10 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
 
   setup do
-    [ {en: 'Xen1', de: 'Xde1'},
-      {en: 'Xen2'},
-      {en: 'Yen1', de: 'Yde1'},
-      {en: 'Yen2'}
+    [ { en: 'Xen1', de: 'Xde1' },
+      { en: 'Xen2' },
+      { en: 'Yen1', de: 'Yde1' },
+      { en: 'Yen2' }
     ].each do |hsh|
       concept = Concept::SKOS::Base.new
       hsh.each do |lang, value|
