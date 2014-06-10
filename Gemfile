@@ -28,7 +28,7 @@ gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'jruby-openssl', :platforms => :jruby
+gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
@@ -38,7 +38,7 @@ gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'bootstrap_form', '~> 2.1.1'
 gem 'font-awesome-rails'
 gem 'apipie-rails'
-gem 'maruku', :require => false
+gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
@@ -46,7 +46,7 @@ gem 'carrierwave'
 group :development do
   gem 'view_marker'
   gem 'better_errors'
-  gem 'binding_of_caller', :platform => :ruby
+  gem 'binding_of_caller', platform: :ruby
   gem 'quiet_assets'
 end
 
@@ -62,7 +62,7 @@ group :development, :test do
     gem 'cane'
   end
 
-  gem 'pry-byebug', '~> 1.1.2', :platforms => :ruby_20
+  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
 
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
@@ -80,6 +80,6 @@ group :production do
 end
 
 group :heroku do
-  gem 'pg', :platforms => :ruby
+  gem 'pg', platforms: :ruby
   gem 'rails_12factor'
 end
