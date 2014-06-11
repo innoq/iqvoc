@@ -1,10 +1,11 @@
 <%= content_tag :div, :class => "translation", :lang => (defined?(concept) ? lang || nil : nil) do %>
   <% if defined?(concept) %>
-    <strong><%= klass.model_name.human(:count => 2) %> (<%= lang || "-" %>):</strong>
-    <%= concept.labels_for_labeling_class_and_language(klass, lang).select{|label| label.value}.join(', ') %>
+    <span class='concept_label'><%= klass.model_name.human(:count => 2) %> (<%= lang || "-" %>):</span>
+		<span class='concept_label_value'>
+    <%= concept.labels_for_labeling_class_and_language(klass, lang).select{|label| label.value}.join(', ') %></span>
   <% elsif defined?(label) %>
-    <strong><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></strong>
-    <div>
+    <span class='concept_label'><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></span>
+    <div class='concept_label_value'>
       <%= item_listing(label.concepts_for_labeling_class(klass)) do |c|
         link_to(c.origin, concept_path(:id => c), :alt => c.pref_label)
       end %>

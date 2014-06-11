@@ -1,5 +1,5 @@
-<div class="relation panel">
-  <h2><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h2>
+<div class="relation broader_poly">
+  <h4><%= Iqvoc::Concept.broader_relation_class.model_name.human(:count => 2) %></h4>
   <div class="relation-body block">
     <% if concept.top_term? %>
       <strong><%= concept.class.human_attribute_name("top_term") %></strong>

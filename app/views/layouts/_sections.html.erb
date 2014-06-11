@@ -1,9 +1,7 @@
 <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
-  <div>
+<div class='concept_section'>
 	<%- data[section_key].keys.sort.each do |sort_key| -%>
 		<%= raw data[section_key][sort_key] %>
   <%- end -%>
-  </div>
+</div>
 <%- end -%>
-
-
