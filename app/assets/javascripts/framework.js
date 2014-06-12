@@ -2,6 +2,7 @@
 //= require rails
 //= require jquery-ui.custom
 //= require jquery-ui.datepicker-de
+//= require tree.jquery.js
 //= require storage
 //= require bootstrap/transition
 //= require bootstrap/collapse

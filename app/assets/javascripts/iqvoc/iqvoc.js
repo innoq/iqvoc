@@ -181,21 +181,46 @@ jQuery(document).ready(function($) {
   });
   $("select.search_type").change();
 
-  // // hierarchical tree view
-  // $("ul.hybrid-treeview").each(function() {
-  //   var url = $(this).attr("data-url"),
-  //     container = this;
-  //   $(this).treeview({
-  //     collapsed: true,
-  //     toggle: function() {
-  //       var el = $(this);
-  //       if(el.hasClass("hasChildren")) {
-  //         var childList = el.removeClass("hasChildren").find("ul");
-  //         $.fn.treeviewLoad({ url: url }, this.id, childList, container);
-  //       }
-  //     }
-  //   });
-  // });
+  // hierarchical tree view
+  $("ul.hybrid-treeview").each(function() {
+    var url = $(this).attr("data-url"),
+      container = this;
+
+    // build tree data from html markup
+    var data = $(this).children('li').map(function() {
+      var item = $(this);
+      return {
+        label: item.children('a').html(),
+        load_on_demand: true,
+        id: item.attr('id')
+      };
+    });
+
+    $(this).tree({
+      dragAndDrop: true,
+      autoEscape: false,
+      data: data,
+      dataUrl: function(node) {
+        return node ? url + '?root=' + node.id : url;
+      },
+      // modify json structure
+      dataFilter: function(data) {
+        var loadedData = data.map(function(item) {
+          return {
+            id: item.id,
+            label: item.text,
+            url: item.url
+          };
+        });
+        return loadedData;
+      },
+      onCreateLi: function(node, $li) {
+        $li.find('.jqtree-title').replaceWith(
+          '<a href="' + node.url +'">' + node.name + '</a>'
+        );
+      }
+    });
+  });
 
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
