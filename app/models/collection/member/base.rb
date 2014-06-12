@@ -26,7 +26,7 @@ class Collection::Member::Base < ActiveRecord::Base
   belongs_to :target, class_name: 'Concept::Base'
 
   def self.view_section(obj)
-    "matches"
+    "collection"
   end
 
   def self.view_section_sort_key(obj)
