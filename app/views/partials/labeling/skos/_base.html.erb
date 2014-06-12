@@ -1,14 +1,21 @@
 <%= content_tag :div, :class => "translation", :lang => (defined?(concept) ? lang || nil : nil) do %>
   <% if defined?(concept) %>
-    <span class='concept_label'><%= klass.model_name.human(:count => 2) %> (<%= lang || "-" %>):</span>
-		<span class='concept_label_value'>
-    <%= concept.labels_for_labeling_class_and_language(klass, lang).select{|label| label.value}.join(', ') %></span>
+    <h4 class='inline concept_label'><%= klass.model_name.human(:count => 2) %> (<%= lang || "-" %>):</h4>
+		<% if concept.labels_for_labeling_class_and_language(klass, lang).any? %>
+		<span><%= concept.labels_for_labeling_class_and_language(klass, lang).select{|label| label.value}.join(', ') %></span>
+		<% else %>
+		<span class='empty'><%= t('txt.common.value.empty')%></span>
+		<% end %>
   <% elsif defined?(label) %>
-    <span class='concept_label'><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></span>
-    <div class='concept_label_value'>
+    <h4 class='inline concept_label'><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h4>
+    <div>
+			<% if label.concepts_for_labeling_class(klass).any? %>
       <%= item_listing(label.concepts_for_labeling_class(klass)) do |c|
         link_to(c.origin, concept_path(:id => c), :alt => c.pref_label)
       end %>
+			<% else %>
+			<span class='empty'><%= t('txt.common.value.empty')%></span>
+			<% end %>
     </div>
   <% end %>
 <% end %>

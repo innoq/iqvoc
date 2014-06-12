@@ -8,6 +8,10 @@
   <% notes = object.notes_for_class(klass) %>
   <h4><%= klass.model_name.human(:count => notes.count) %></h4>
   <div class="relation-body">
+		<% if notes.any? %>
     <%= render :partial => 'partials/note/note', :collection => notes %>
+		<%else%>
+		<span class='empty'><%= t('txt.common.value.empty')%></span>
+		<%end%>
   </div>
 </div>

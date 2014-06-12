@@ -1,4 +1,8 @@
 <div class="relation">
-  <span class='concept_label'><%= klass.model_name.human(:count => 2) %>:</span>
+  <h4 class='inline'><%= klass.model_name.human(:count => 2) %>:</h4>
+	<% if concept.notations_for_class(klass).any? %>
    <%= concept.notations_for_class(klass).map { |notation| link_to notation.value, notation.data_type }.join(', ').html_safe %>
+	<% else %>
+			<span class='empty'><%= t('txt.common.value.empty')%></span>
+	<% end %>
 </div>

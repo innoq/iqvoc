@@ -5,6 +5,8 @@
       <div class="selector">
         <%= treeview(concept.narrower_relations.map(&:target)) %>
       </div>
+		<%else%>
+			<span class='empty'><%= t('txt.common.value.empty')%></span>
     <% end %>
   </div>
 </div>

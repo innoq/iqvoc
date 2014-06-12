@@ -80,6 +80,8 @@ en:
        ttl: "RDF/Turtle"
        nt: "RDF/N-Triples"
        xml: "RDF/XML"
+     value:
+       empty: not specified
 
    views:
      layouts:
