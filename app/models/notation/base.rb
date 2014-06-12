@@ -35,7 +35,7 @@ class Notation::Base < ActiveRecord::Base
   end
 
   def self.view_section_sort_key(obj)
-    500
+    25
   end
 
   def self.partial_name(obj)

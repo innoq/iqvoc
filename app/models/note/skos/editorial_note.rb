@@ -18,4 +18,8 @@ class Note::SKOS::EditorialNote < Note::SKOS::Base
 
   self.rdf_predicate = 'editorialNote'
 
+  def self.view_section(obj)
+    "editor_notes"
+  end
+
 end

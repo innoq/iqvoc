@@ -1,8 +1,4 @@
 <div class="relation">
-  <h4><%= klass.model_name.human(:count => 2) %></h4>
-  <div class="relation-body">
-    <%= item_listing(concept.notations_for_class(klass)) do |notation|
-      link_to notation.value, notation.data_type
-    end %>
-  </div>
+  <span class='concept_label'><%= klass.model_name.human(:count => 2) %>:</span>
+   <%= concept.notations_for_class(klass).map { |notation| link_to notation.value, notation.data_type }.join(', ').html_safe %>
 </div>

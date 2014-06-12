@@ -26,11 +26,11 @@ class Collection::Member::Base < ActiveRecord::Base
   belongs_to :target, class_name: 'Concept::Base'
 
   def self.view_section(obj)
-    "main"
+    "matches"
   end
 
   def self.view_section_sort_key(obj)
-    100
+    600
   end
 
   def self.partial_name(obj)

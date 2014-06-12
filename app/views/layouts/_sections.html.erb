@@ -1,7 +1,10 @@
 <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
+<% unless current_user.nil? && section_key == 'editor_notes' %>
 <div class='concept_section'>
+	<h3><%#= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></h3>
 	<%- data[section_key].keys.sort.each do |sort_key| -%>
 		<%= raw data[section_key][sort_key] %>
   <%- end -%>
 </div>
+<%- end -%>
 <%- end -%>
