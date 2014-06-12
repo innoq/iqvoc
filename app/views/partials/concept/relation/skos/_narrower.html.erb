@@ -1,12 +1,6 @@
-<div class="relation narrower">
-  <h4><%= Iqvoc::Concept.broader_relation_class.narrower_class.model_name.human(:count => 2) %></h4>
-  <div class="relation-body">
-    <% if concept.narrower_relations.any? %>
-      <div class="selector">
-        <%= treeview(concept.narrower_relations.map(&:target)) %>
-      </div>
-		<%else%>
-			<span class='empty'><%= t('txt.common.value.empty')%></span>
-    <% end %>
+<div class="relation">
+  <h4><%= t("txt.views.layouts.sections.hierarchy") %></h4>
+  <div class="hierarchy">
+		Tree
   </div>
 </div>

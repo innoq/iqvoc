@@ -87,6 +87,7 @@ de:
      layouts:
        sections:
          main: Basisdaten
+         hierarchy: Hierarchie
          labels: Bezeichner
          relations: Beziehungen
          notes: Anmerkungen

@@ -1,6 +1,7 @@
 <%= content_tag :div, :class => "translation", :lang => (defined?(concept) ? lang || nil : nil) do %>
   <% if defined?(concept) %>
-    <h4 class='inline concept_label'><%= klass.model_name.human(:count => 2) %> (<%= lang || "-" %>):</h4>
+		<% count = (klass == Labeling::SKOS::PrefLabel) ? 1 : 2  %>
+    <h4 class='inline concept_label'><%= klass.model_name.human(:count => count) %> (<%= lang || "-" %>):</h4>
 		<% if concept.labels_for_labeling_class_and_language(klass, lang).any? %>
 		<span><%= concept.labels_for_labeling_class_and_language(klass, lang).select{|label| label.value}.join(', ') %></span>
 		<% else %>

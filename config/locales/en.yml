@@ -92,6 +92,7 @@ en:
          logout: "Logout"
        sections:
          main: Main
+         hierarchy: Hierarchy
          labels: Labels
          relations: Relations
          notes: Notes
