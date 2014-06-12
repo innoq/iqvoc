@@ -78,10 +78,6 @@ group :test do
   gem 'webmock'
 end
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :heroku do
   gem 'pg', :platforms => :ruby
   gem 'rails_12factor'
