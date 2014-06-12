@@ -192,7 +192,8 @@ jQuery(document).ready(function($) {
       return {
         label: item.children('a').html(),
         load_on_demand: true,
-        id: item.attr('id')
+        id: item.attr('id'),
+        url: item.children('a').attr('href'),
       };
     });
 
