@@ -200,6 +200,8 @@ jQuery(document).ready(function($) {
     $(this).tree({
       dragAndDrop: true,
       autoEscape: false,
+      closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
+      openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,
       dataUrl: function(node) {
         return node ? url + '?root=' + node.id : url;
@@ -216,9 +218,16 @@ jQuery(document).ready(function($) {
         return loadedData;
       },
       onCreateLi: function(node, $li) {
-        $li.find('.jqtree-title').replaceWith(
-          '<a href="' + node.url +'">' + node.name + '</a>'
-        );
+        var link = $('<a href="' + node.url +'">' + node.name + '</a>');
+        $li.find('.jqtree-title').replaceWith(link);
+
+        if(node.moved) {
+          var save_button = $('<button><i class="fa fa-save"></i></button>');
+          var copy_button = $('<button><i class="fa fa-copy"></i></button>');
+          var undo_button = $('<button><i class="fa fa-undo"></i></button>');
+
+          link.after(' ', save_button, copy_button, undo_button);
+        }
       }
     });
   });
@@ -227,10 +236,7 @@ jQuery(document).ready(function($) {
       'tree.move',
       function(event) {
         var moved_node = event.move_info.moved_node;
-        // add "moved" to Node-name if not already exists
-        if (moved_node.name.indexOf('(moved)') > -1 === false) {
-          $(this).tree('updateNode', moved_node, moved_node.name + ' <b>(moved)</b>');
-        }
+        $(this).tree('updateNode', moved_node, {moved: true});
         // log node movement
         // console.log('moved_node', moved_node);
         // console.log('target_node', event.move_info.target_node);
