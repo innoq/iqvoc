@@ -223,6 +223,22 @@ jQuery(document).ready(function($) {
     });
   });
 
+  $('ul.hybrid-treeview').bind(
+      'tree.move',
+      function(event) {
+        var moved_node = event.move_info.moved_node;
+        // add "moved" to Node-name if not already exists
+        if (moved_node.name.indexOf('(moved)') > -1 === false) {
+          $(this).tree('updateNode', moved_node, moved_node.name + ' <b>(moved)</b>');
+        }
+        // log node movement
+        // console.log('moved_node', moved_node);
+        // console.log('target_node', event.move_info.target_node);
+        // console.log('position', event.move_info.position);
+        // console.log('previous_parent', event.move_info.previous_parent);
+      }
+  );
+
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
