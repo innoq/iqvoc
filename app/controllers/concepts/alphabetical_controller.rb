@@ -26,13 +26,8 @@ class Concepts::AlphabeticalController < ConceptsController
 
     datasets = init_datasets
 
-    @letters = Label::Base.connection.execute <<-SQL.strip_heredoc
-      SELECT DISTINCT UPPER(SUBSTR(value, 1, 1))
-      AS letter
-      FROM labels
-      ORDER BY letter
-    SQL
-    @letters = @letters.to_a.flatten
+    @letters = Label::Base.select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter")
+                          .order("letter").map(&:letter)
 
     if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
       @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
