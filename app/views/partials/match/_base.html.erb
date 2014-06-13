@@ -11,5 +11,11 @@
     end.html_safe %></td>
 	</tr>
    <% end %>
+<%else%>
+<tr>
+	<td><%= klass.model_name.human(:count => 1) %></td>
+	<td><span class='empty'>keine Angabe</span></td>
+	<td><span class='empty'>keine Angabe</span></td>
+</tr>
 <% end %>
 
