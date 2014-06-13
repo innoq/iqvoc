@@ -1,3 +1,12 @@
 ul.jqtree-tree li.jqtree_common {
   padding-left: 15px;
 }
+
+ul.jqtree-tree li.jqtree-ghost span.jqtree-line {
+  background-color: #000;
+  height: 1px;
+}
+
+ul.jqtree-tree span.jqtree-border {
+  border: solid 1px #000;
+}
