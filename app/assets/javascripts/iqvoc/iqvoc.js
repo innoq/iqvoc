@@ -228,6 +228,15 @@ jQuery(document).ready(function($) {
 
           link.after(' ', save_button, ' ', copy_button, ' ', undo_button);
         }
+      },
+      onCanMoveTo: function(moved_node, target_node, position){
+        // prevent node movement inside parent node
+        if (moved_node.parent === target_node.parent && position === 'after'){
+          return false;
+        }
+        else {
+          return true;
+        }
       }
     });
   });
@@ -238,10 +247,10 @@ jQuery(document).ready(function($) {
         var moved_node = event.move_info.moved_node;
         $(this).tree('updateNode', moved_node, {moved: true});
         // log node movement
-        // console.log('moved_node', moved_node);
-        // console.log('target_node', event.move_info.target_node);
-        // console.log('position', event.move_info.position);
-        // console.log('previous_parent', event.move_info.previous_parent);
+        console.log('moved_node', moved_node);
+        console.log('target_node', event.move_info.target_node);
+        console.log('position', event.move_info.position);
+        console.log('previous_parent', event.move_info.previous_parent);
       }
   );
 
