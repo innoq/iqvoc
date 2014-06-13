@@ -1,21 +1,17 @@
-<% if concept.matches_for_class(klass).any? %>
-	<% concept.matches_for_class(klass).each_with_index do |match, index| %>
-	<tr>
-		<%if index == 0%>
-		<td rowspan='<%= concept.matches_for_class(klass).size%>'><%= klass.model_name.human(:count => 1) %></td>
-		<%end%>
-		<td><span class='empty'>keine Angabe</span></td>
-		<td><%= auto_link(match.value, :html => { :target => '_blank' }) do |text| 
-      Iqvoc::rdf_namespaces.each {|prefix, url| text = text.gsub(url, "#{prefix}:") } 
-      text
-    end.html_safe %></td>
-	</tr>
-   <% end %>
-<%else%>
-<tr>
-	<td><%= klass.model_name.human(:count => 1) %></td>
-	<td><span class='empty'>keine Angabe</span></td>
-	<td><span class='empty'>keine Angabe</span></td>
-</tr>
-<% end %>
-
+<div class="relation mappings">
+  <h4><%= klass.model_name.human(:count => 2) %></h4>
+  <div class="relation-body">
+		<% if concept.matches_for_class(klass).any? %>
+    <%= item_listing(concept.matches_for_class(klass)) do |match|
+      auto_link(match.value, :html => { :target => '_blank' }) do |text|
+        Iqvoc::rdf_namespaces.each do |prefix, url|
+          text = text.gsub(url, "#{prefix}:")
+        end
+        text
+      end.html_safe
+    end %>
+	  <% else %>
+					<span class='empty'><%= t('txt.common.value.empty')%></span>	
+	  <% end %>
+  </div>
+</div>

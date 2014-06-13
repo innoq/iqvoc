@@ -80,9 +80,9 @@ ConceptMappingManager.prototype.determineConceptMappings = function() {
 };
 ConceptMappingManager.prototype.readFromLinks = function() { // TODO: rename
   var urisByMatchType = {};
-  $(".relation.panel", this.root).each(function(i, node) { // match-type panels
+  $(".relation.mappings", this.root).each(function(i, node) { // match-type panels
     var container = $(node);
-    var matchType = container.find("h2").text();
+    var matchType = container.find("h4").text();
     var mappings = container.find(".entity_list a");
     urisByMatchType[matchType] = {
       values: $.map(mappings, function(node) {

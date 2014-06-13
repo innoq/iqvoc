@@ -7,7 +7,9 @@
 	font-size: 16px;
 	margin-top: 24px;
 }
-
+.concept_section {
+	clear:both;
+}
 .relation, .note {
 	margin-top: 24px;
 }
@@ -25,4 +27,7 @@
 }
 body {
 	margin-bottom:100px;
+}
+.concept-mappings {
+	overflow:hidden;
 }

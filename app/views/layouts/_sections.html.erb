@@ -1,28 +1,10 @@
 <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
 <% unless current_user.nil? && section_key == 'editor_notes' %>
-<% if section_key == 'matches' %>
-<div class='concept_section'>
-<h4>Matches</h4>
-<table class='table table-condense'>
-	<thead>
-		<tr>
-			<th>Type</th>
-			<th>Source</th>
-			<th>Match</th>
-		</tr>
-	</thead>
-	<%- data[section_key].keys.sort.each do |sort_key| -%>
-		<%= raw data[section_key][sort_key] %>
-  <%- end -%>
-</table>
-</div>
-<%else%>
-
-<div class='concept_section'>
+<div class="concept_section" id="<%= section_key %>">
+	<%= content_tag :h4, t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) if section_key == 'matches'%>
 	<%- data[section_key].keys.sort.each do |sort_key| -%>
 		<%= raw data[section_key][sort_key] %>
   <%- end -%>
 </div>
-<%end%>
 <%- end -%>
 <%- end -%>

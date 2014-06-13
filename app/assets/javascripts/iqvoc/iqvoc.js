@@ -208,7 +208,6 @@ jQuery(document).ready(function($) {
   } else { // view mode
     new IQVOC.ConceptMappingManager("#matches", false);
   }
-
   IQVOC.labelResolver();
   $(document.body).on("concept-label", function(ev, container) {
     IQVOC.labelResolver(container);
