@@ -200,6 +200,7 @@ jQuery(document).ready(function($) {
     $(this).tree({
       dragAndDrop: true,
       autoEscape: false,
+      selectable: false,
       closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
       openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,
