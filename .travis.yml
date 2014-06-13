@@ -35,6 +35,6 @@ deploy:
       master: try-iqvoc
     on:
       branch: master
-      rvm: 2.0.0
+      rvm: 2.0
     run:
       - "rake db:migrate"
