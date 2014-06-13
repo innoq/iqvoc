@@ -56,6 +56,5 @@ module Iqvoc
         rdf_predicate.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
       end
     end
-
   end
 end

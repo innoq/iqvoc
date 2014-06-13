@@ -18,7 +18,7 @@ class RdfController < ApplicationController
   skip_before_action :set_locale
 
   def show
-    scope = if params[:published] == "0"
+    scope = if params[:published] == '0'
       Iqvoc::Concept.base_class.unpublished
     else
       Iqvoc::Concept.base_class.published
@@ -27,13 +27,13 @@ class RdfController < ApplicationController
     if @concept = scope.by_origin(params[:id]).with_associations.last
       object_path = concept_path(id: @concept, published: params[:published])
       object = @concept
-      tpl = "concepts/show"
+      tpl = 'concepts/show'
     elsif @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).with_associations.last
       object_path = collection_path(id: @collection)
       object = @collection
-      tpl = "collections/show"
+      tpl = 'collections/show'
     else
-      raise ActiveRecord::RecordNotFound, "Resource not found."
+      raise ActiveRecord::RecordNotFound, 'Resource not found.'
     end
 
     respond_to do |format|

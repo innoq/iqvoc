@@ -29,6 +29,5 @@ module Iqvoc
         'partials/concept/relation/edit_ranked'
       end
     end
-
   end
 end

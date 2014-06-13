@@ -22,7 +22,7 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    redirect_to(url_for prefix: "a") unless params[:prefix]
+    redirect_to(url_for prefix: 'a') unless params[:prefix]
 
     datasets = init_datasets
 
@@ -34,7 +34,7 @@ class Concepts::AlphabeticalController < ConceptsController
     SQL
     @letters = @letters.to_a.flatten
 
-    if dataset = datasets.detect {|dataset| dataset.name == params[:dataset] }
+    if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
       @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else

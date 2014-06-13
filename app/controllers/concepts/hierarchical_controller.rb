@@ -15,12 +15,11 @@
 # limitations under the License.
 
 class Concepts::HierarchicalController < ConceptsController
-
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
     scope = Iqvoc::Concept.base_class
-    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
+    scope = params[:published] == '0' ? scope.editor_selectable : scope.published
 
     # only select unexpired concepts
     scope = scope.not_expired
@@ -55,7 +54,7 @@ class Concepts::HierarchicalController < ConceptsController
     respond_to do |format|
       format.html
       format.json do # Treeview data
-        concepts = @concepts.select {|c| can? :read, c }.map do |c|
+        concepts = @concepts.select { |c| can? :read, c }.map do |c|
           {
             id: c.id,
             url: concept_path(id: c, format: :html),
@@ -68,5 +67,4 @@ class Concepts::HierarchicalController < ConceptsController
       end
     end
   end
-
 end

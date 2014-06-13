@@ -17,36 +17,35 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class InlineDataTest < ActiveSupport::TestCase
-
-  test "serialization" do
-    values = ["foo", "bar"]
-    assert_equal "foo, bar",
+  test 'serialization' do
+    values = ['foo', 'bar']
+    assert_equal 'foo, bar',
         Iqvoc::InlineDataHelper.generate_inline_values(values)
 
-    values = ["lorem", "foo, bar", "ipsum"]
+    values = ['lorem', 'foo, bar', 'ipsum']
     assert_equal 'lorem, "foo, bar", ipsum',
         Iqvoc::InlineDataHelper.generate_inline_values(values)
   end
 
-  test "deserialization" do
-    inline_values = "foo, bar"
-    assert_equal ["foo", "bar"],
+  test 'deserialization' do
+    inline_values = 'foo, bar'
+    assert_equal ['foo', 'bar'],
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem, "foo, bar", ipsum'
-    assert_equal ["lorem", "foo, bar", "ipsum"],
+    assert_equal ['lorem', 'foo, bar', 'ipsum'],
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem,"foo, bar",ipsum'
-    assert_equal ["lorem", "foo, bar", "ipsum"],
+    assert_equal ['lorem', 'foo, bar', 'ipsum'],
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'foo, bar,baz' # inconsistent whitespace
-    assert_equal ["foo", "bar", "baz"],
+    assert_equal ['foo', 'bar', 'baz'],
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem,"foo, bar", ipsum' # inconsistent whitespace
-    assert_equal ["lorem", "foo, bar", "ipsum"],
+    assert_equal ['lorem', 'foo, bar', 'ipsum'],
         Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem, "foo, bar",ipsum' # inconsistent whitespace
@@ -57,5 +56,4 @@ class InlineDataTest < ActiveSupport::TestCase
     inline_values = ''
     assert_equal [], Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
   end
-
 end

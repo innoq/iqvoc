@@ -18,25 +18,24 @@ require 'test_helper'
 require 'integration_test_helper'
 
 class InstanceConfigurationTest < ActionDispatch::IntegrationTest
-
-  test "configuration privileges" do
-    uri = "/en/config"
+  test 'configuration privileges' do
+    uri = '/en/config'
 
     # guest
     visit uri
-    assert page.has_content?("No permission")
+    assert page.has_content?('No permission')
 
-    ["reader", "editor", "publisher"].each do |role|
+    ['reader', 'editor', 'publisher'].each do |role|
       login role
       visit uri
-      assert page.has_content?("No permission"), "#{role} must not access instance configuration"
+      assert page.has_content?('No permission'), "#{role} must not access instance configuration"
       logout
     end
 
-    login "administrator"
+    login 'administrator'
     visit uri
-    assert_equal "/en/config.html", page.current_path
-    assert page.has_css?("input#config_title")
+    assert_equal '/en/config.html', page.current_path
+    assert page.has_css?('input#config_title')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.pref_labeling"]')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.further_labelings.Labeling::SKOS::AltLabel"]')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.notes"]')
@@ -44,30 +43,29 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     # TODO: also test POST
   end
 
-  test "modify and persist configuration" do
-    assert page.find(".navbar-brand").has_content? "iQvoc"
+  test 'modify and persist configuration' do
+    assert page.find('.navbar-brand').has_content? 'iQvoc'
 
-    login "administrator"
-    visit "/en/config"
+    login 'administrator'
+    visit '/en/config'
 
-    fill_in "config_title", with: "lorem ipsum"
-    click_button "Save"
+    fill_in 'config_title', with: 'lorem ipsum'
+    click_button 'Save'
 
-    assert page.find(".navbar-brand").has_content? "lorem ipsum"
+    assert page.find('.navbar-brand').has_content? 'lorem ipsum'
 
     # ensure that settings persist across sessions -- XXX: ineffective!?
     check_page = lambda { |uri|
       visit uri
-      assert page.find(".navbar-brand").has_content? "lorem ipsum"
+      assert page.find('.navbar-brand').has_content? 'lorem ipsum'
     }
-    ["reader", "editor", "publisher", "administrator"].each do |role|
+    ['reader', 'editor', 'publisher', 'administrator'].each do |role|
       login role
-      check_page.call "/en/config"
+      check_page.call '/en/config'
       logout
-      check_page.call "/en/search"
+      check_page.call '/en/search'
     end
 
     # TODO: test routes-by-language availability, post-modification
   end
-
 end

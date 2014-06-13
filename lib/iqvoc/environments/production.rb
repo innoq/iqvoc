@@ -1,7 +1,6 @@
 require 'iqvoc'
 
 module Iqvoc::Environments
-
   def self.setup_production(config)
     # Settings specified here will take precedence over those in config/application.rb.
 

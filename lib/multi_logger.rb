@@ -1,5 +1,4 @@
 class MultiLogger
-
   attr_reader :loggers
 
   def initialize(*args)

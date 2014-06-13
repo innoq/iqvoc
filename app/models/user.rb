@@ -15,9 +15,8 @@
 # limitations under the License.
 
 class User < ActiveRecord::Base
-
   ROLES = [
-    "reader", "editor", "publisher", "administrator"
+    'reader', 'editor', 'publisher', 'administrator'
   ]
 
   validates_length_of :forename, :surname, within: 2..255
@@ -33,7 +32,7 @@ class User < ActiveRecord::Base
   end
 
   def self.default_role
-    "reader"
+    'reader'
   end
 
   def name
@@ -47,5 +46,4 @@ class User < ActiveRecord::Base
   def to_s
     self.name.to_s
   end
-
 end

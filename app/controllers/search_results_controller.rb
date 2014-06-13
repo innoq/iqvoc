@@ -85,8 +85,8 @@ class SearchResultsController < ApplicationController
 
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
-    request.query_parameters.delete("commit")
-    request.query_parameters.delete("utf8")
+    request.query_parameters.delete('commit')
+    request.query_parameters.delete('utf8')
 
     @datasets = init_datasets
 
@@ -96,15 +96,15 @@ class SearchResultsController < ApplicationController
       # Deal with language parameter patterns
       languages = []
       # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
-      if params[:languages].respond_to?(:each) && params[:languages].include?("none")
+      if params[:languages].respond_to?(:each) && params[:languages].include?('none')
         # Special treatment for the "nil language"
         languages << nil
       elsif params[:languages].respond_to?(:split)
-        languages = params[:languages].split(",")
+        languages = params[:languages].split(',')
       end
 
       # Ensure a valid class was selected
-      unless klass = Iqvoc.searchable_class_names.detect {|key, value| value == params[:type] }.try(:first)
+      unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
         raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
       end
       klass = klass.constantize
@@ -113,27 +113,27 @@ class SearchResultsController < ApplicationController
 
       if klass.forces_multi_query? || (klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = klass.multi_query(params.merge({languages: languages}))
+        @results = klass.multi_query(params.merge({ languages: languages }))
         # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
         # each sub-query has to return 100 objects at most.
         @klass = klass
       else
         @multi_query = false
-        @results = klass.single_query(params.merge({languages: languages}))
+        @results = klass.single_query(params.merge({ languages: languages }))
       end
 
       if @multi_query
         @results = Kaminari.paginate_array(@results)
-        logger.debug("Using multi query mode")
+        logger.debug('Using multi query mode')
       else
-        logger.debug("Using single query mode")
+        logger.debug('Using single query mode')
       end
 
       if params[:limit] && Iqvoc.unlimited_search_results
         @results = @results.per(params[:limit].to_i)
       end
 
-      if params[:datasets] && datasets = @datasets.select {|a| params[:datasets].include?(a.name) }
+      if params[:datasets] && datasets = @datasets.select { |a| params[:datasets].include?(a.name) }
         @results = SearchResultCollection.new(@results)
         datasets.each do |dataset|
           results = dataset.search(params)
@@ -144,7 +144,7 @@ class SearchResultsController < ApplicationController
             flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
           end
         end
-        @results = @results.sort {|x, y| x.to_s <=> y.to_s }
+        @results = @results.sort { |x, y| x.to_s <=> y.to_s }
       end
 
       @results = Kaminari.paginate_array(@results)
@@ -159,7 +159,7 @@ class SearchResultsController < ApplicationController
 
   def self.prepare_basic_variables(controller)
     langs = Iqvoc.all_languages.each_with_object({}) do |lang, hsh|
-      lang ||= "none"
+      lang ||= 'none'
       hsh[lang] = I18n.t("languages.#{lang}", default: lang)
     end
     controller.instance_variable_set(:@available_languages, langs)
@@ -167,5 +167,4 @@ class SearchResultsController < ApplicationController
     collections = Iqvoc::Collection.base_class.includes(:pref_labels).load
     controller.instance_variable_set(:@collections, collections)
   end
-
 end

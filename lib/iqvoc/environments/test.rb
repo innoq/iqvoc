@@ -1,7 +1,6 @@
 require 'iqvoc'
 
 module Iqvoc::Environments
-
   def self.setup_test(config)
     # Settings specified here will take precedence over those in config/application.rb.
 
@@ -18,7 +17,7 @@ module Iqvoc::Environments
 
     # Configure static asset server for tests with Cache-Control for performance.
     config.serve_static_assets  = true
-    config.static_cache_control = "public, max-age=3600"
+    config.static_cache_control = 'public, max-age=3600'
 
     # Show full error reports and disable caching.
     config.consider_all_requests_local       = true
@@ -40,5 +39,4 @@ module Iqvoc::Environments
 
     config.i18n.enforce_available_locales = true
   end
-
 end

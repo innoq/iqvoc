@@ -56,9 +56,9 @@ class ConceptsController < ApplicationController
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept,
-          Iqvoc::Concept.base_class.default_includes + [collection_members: {collection: :labels},
-          broader_relations: {target: [:pref_labels, :broader_relations]},
-          narrower_relations: {target: [:pref_labels, :narrower_relations]}])
+          Iqvoc::Concept.base_class.default_includes + [collection_members: { collection: :labels },
+          broader_relations: { target: [:pref_labels, :broader_relations] },
+          narrower_relations: { target: [:pref_labels, :narrower_relations] }])
 
         published ? render('show_published') : render('show_unpublished')
       end
@@ -111,10 +111,10 @@ class ConceptsController < ApplicationController
     @datasets = datasets_as_json
 
     if @concept.save
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.success")
+      flash[:success] = I18n.t('txt.controllers.versioned_concept.success')
       redirect_to concept_path(published: 0, id: @concept.origin)
     else
-      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.error")
+      flash.now[:error] = I18n.t('txt.controllers.versioned_concept.error')
       render :new
     end
   end
@@ -147,10 +147,10 @@ class ConceptsController < ApplicationController
     @datasets = datasets_as_json
 
     if @concept.update_attributes(concept_params)
-      flash[:success] = I18n.t("txt.controllers.versioned_concept.update_success")
+      flash[:success] = I18n.t('txt.controllers.versioned_concept.update_success')
       redirect_to concept_path(published: 0, id: @concept)
     else
-      flash.now[:error] = I18n.t("txt.controllers.versioned_concept.update_error")
+      flash.now[:error] = I18n.t('txt.controllers.versioned_concept.update_error')
       render action: :edit
     end
   end
@@ -161,10 +161,10 @@ class ConceptsController < ApplicationController
     authorize! :destroy, @new_concept
 
     if @new_concept.destroy
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete")
+      flash[:success] = I18n.t('txt.controllers.concept_versions.delete')
       redirect_to dashboard_path
     else
-      flash[:success] = I18n.t("txt.controllers.concept_versions.delete_error")
+      flash[:success] = I18n.t('txt.controllers.concept_versions.delete_error')
       redirect_to concept_path(published: 0, id: @new_concept)
     end
   end

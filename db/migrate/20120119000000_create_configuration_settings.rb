@@ -1,5 +1,4 @@
 class CreateConfigurationSettings < ActiveRecord::Migration
-
   def up
     create_table :configuration_settings, force: true do |t|
       t.string :key
@@ -10,5 +9,4 @@ class CreateConfigurationSettings < ActiveRecord::Migration
   def down
     drop_table :configuration_settings
   end
-
 end

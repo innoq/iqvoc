@@ -17,7 +17,6 @@
 require 'csv'
 
 class InstanceConfigurationController < ApplicationController
-
   def index
     authorize! :show, Iqvoc.config
 
@@ -27,8 +26,8 @@ class InstanceConfigurationController < ApplicationController
     end
 
     @settings_by_namespace = settings.inject({}) do |memo, (key, value)|
-      namespace, setting = key.split(".", 2)
-      namespace = setting ? namespace : "common"
+      namespace, setting = key.split('.', 2)
+      namespace = setting ? namespace : 'common'
       memo[namespace] ||= {}
       memo[namespace][key] = value
       memo
@@ -42,7 +41,7 @@ class InstanceConfigurationController < ApplicationController
     errors = []
     config_params.each do |key, value|
       unless Iqvoc.config.defaults.include?(key)
-        errors << t("txt.controllers.instance_configuration.invalid_key", key: key)
+        errors << t('txt.controllers.instance_configuration.invalid_key', key: key)
       else
         default_value = Iqvoc.config.defaults[key]
         begin
@@ -50,17 +49,17 @@ class InstanceConfigurationController < ApplicationController
         rescue TypeError => exc
           Rails.logger.error(exc)
           Rails.logger.error(exc.backtrace.join("\n"))
-          errors << t("txt.controllers.instance_configuration.invalid_value",
+          errors << t('txt.controllers.instance_configuration.invalid_value',
               key: key, error_message: exc.message)
         end
       end
     end
 
     if errors.none?
-      flash[:success] = t("txt.controllers.instance_configuration.update_success")
+      flash[:success] = t('txt.controllers.instance_configuration.update_success')
     else
-      flash[:error] = t("txt.controllers.instance_configuration.update_error",
-          error_messages: errors.join("; "))
+      flash[:error] = t('txt.controllers.instance_configuration.update_error',
+          error_messages: errors.join('; '))
     end
 
     redirect_to instance_configuration_url
@@ -96,25 +95,25 @@ class InstanceConfigurationController < ApplicationController
   # raises TypeError on failure
   def convert_value(str, type)
     if [TrueClass, FalseClass].include?(type)
-      if str == "true"
+      if str == 'true'
         return true
-      elsif str == "false"
+      elsif str == 'false'
         return false
       else
-        raise TypeError, "expected boolean"
+        raise TypeError, 'expected boolean'
       end
     elsif type == String
       return str
     elsif type == Symbol
       return str
     elsif type == Fixnum
-      raise TypeError, "expected integer" unless str =~ /^[-+]?[0-9]+$/
+      raise TypeError, 'expected integer' unless str =~ /^[-+]?[0-9]+$/
       return str.to_i
     elsif type == Float
       begin
         return Float(str)
       rescue ArgumentError
-        raise TypeError, "expected float"
+        raise TypeError, 'expected float'
       end
     else
       raise TypeError, "unsupported type: #{type}"
@@ -125,5 +124,4 @@ class InstanceConfigurationController < ApplicationController
   def config_params
     params.require(:config).permit!
   end
-
 end

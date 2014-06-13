@@ -3,7 +3,6 @@ require 'iqvoc/rdfapi'
 
 RDFAPI = Iqvoc::RDFAPI
 class RDFAPITest < ActiveSupport::TestCase
-
   test 'should instantiate known class names using strings only' do
     result = RDFAPI.devour 'foobar', 'a', 'Concept::SKOS::Base'
     assert result.is_a? Concept::SKOS::Base

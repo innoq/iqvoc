@@ -2,7 +2,7 @@ module DatasetInitialization
   extend ActiveSupport::Concern
 
   def init_datasets
-    datasets = Iqvoc.config['sources.iqvoc'].reject {|s| s.blank? }
+    datasets = Iqvoc.config['sources.iqvoc'].reject { |s| s.blank? }
     datasets.map do |url|
       Dataset::IqvocDataset.new(url)
     end

@@ -1,19 +1,19 @@
-namespaced_app_name = app_path.gsub("_", "/").camelize
+namespaced_app_name = app_path.gsub('_', '/').camelize
 
 gem 'iqvoc'
 
-["config/application.rb",
- "config/environment.rb",
- "config/initializers/session_store.rb",
- "config.ru",
- "Rakefile"].each do |file|
+['config/application.rb',
+ 'config/environment.rb',
+ 'config/initializers/session_store.rb',
+ 'config.ru',
+ 'Rakefile'].each do |file|
   gsub_file file, app_const_base, namespaced_app_name
 end
 
-gsub_file "config/application.rb", /filter_parameters .*:password\b/,
+gsub_file 'config/application.rb', /filter_parameters .*:password\b/,
     '\0, :password_confirmation'
 
-gsub_file "config/routes.rb", "#{app_const_base}::Application", "Rails.application"
+gsub_file 'config/routes.rb', "#{app_const_base}::Application", 'Rails.application'
 
 %w(development test production).each do |env|
   remove_file "config/environments/#{env}.rb"
@@ -45,8 +45,8 @@ end
 # Iqvoc.core_assets += []
 EOF
 
-remove_file "app/assets/javascripts/application.js"
-create_file "app/assets/javascripts/manifest.js", <<-EOF
+remove_file 'app/assets/javascripts/application.js'
+create_file 'app/assets/javascripts/manifest.js', <<-EOF
 //= require framework
 //= require iqvoc/manifest
 
@@ -54,8 +54,8 @@ create_file "app/assets/javascripts/manifest.js", <<-EOF
 EOF
 create_file "app/assets/javascripts/#{app_path}/manifest.js"
 
-remove_file "app/assets/stylesheets/application.css"
-create_file "app/assets/stylesheets/manifest.css", <<-EOF
+remove_file 'app/assets/stylesheets/application.css'
+create_file 'app/assets/stylesheets/manifest.css', <<-EOF
 /*
 *= require framework
 *= require iqvoc/manifest
@@ -65,10 +65,10 @@ create_file "app/assets/stylesheets/manifest.css", <<-EOF
 EOF
 create_file "app/assets/stylesheets/#{app_path}/manifest.css"
 
-remove_file "public/index.html"
-remove_file "app/controllers/application_controller.rb"
-remove_file "app/helpers/application_helper.rb"
-remove_file "app/views/layouts/application.html.erb"
+remove_file 'public/index.html'
+remove_file 'app/controllers/application_controller.rb'
+remove_file 'app/helpers/application_helper.rb'
+remove_file 'app/views/layouts/application.html.erb'
 
-remove_file "Gemfile"
-create_file "Gemfile", "source 'http://rubygems.org'\n\ngem 'iqvoc'"
+remove_file 'Gemfile'
+create_file 'Gemfile', "source 'http://rubygems.org'\n\ngem 'iqvoc'"

@@ -73,7 +73,7 @@ module Versioning
 
      def includes_to_deep_cloning
        (@@include_to_deep_cloning ||= {})[self] ||= []
-       (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
+       (@@include_to_deep_cloning.keys & self.ancestors).map{ |c| @@include_to_deep_cloning[c] }.flatten.compact
      end
   end
 
@@ -86,8 +86,8 @@ module Versioning
     new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
       language: I18n.locale.to_s,
       annotations_attributes: [
-        { namespace: "dct", predicate: "creator", value: user.name },
-        { namespace: "dct", predicate: "modified", value: DateTime.now.to_s }
+        { namespace: 'dct', predicate: 'creator', value: user.name },
+        { namespace: 'dct', predicate: 'modified', value: DateTime.now.to_s }
       ])
     new_version
   end
@@ -110,11 +110,11 @@ module Versioning
 
   def state
     if published?
-      I18n.t("txt.common.state.published")
+      I18n.t('txt.common.state.published')
     elsif !published? && in_review?
-      I18n.t("txt.common.state.in_review")
+      I18n.t('txt.common.state.in_review')
     elsif !published? && !in_review?
-      I18n.t("txt.common.state.checked_out")
+      I18n.t('txt.common.state.checked_out')
     end
   end
 

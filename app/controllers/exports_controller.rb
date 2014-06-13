@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class ExportsController < ApplicationController
-
   before_action do
     authorize! :export, Concept::Base
   end
@@ -48,7 +47,7 @@ class ExportsController < ApplicationController
 
   def download
     export = Export.find(params[:export_id])
-    time = export.finished_at.strftime("%Y-%m-%d_%H-%M")
+    time = export.finished_at.strftime('%Y-%m-%d_%H-%M')
 
     begin
       send_file export.build_filename,
@@ -63,5 +62,4 @@ class ExportsController < ApplicationController
   def export_params
     params.require(:export).except!(:user_id, :user).permit!
   end
-
 end

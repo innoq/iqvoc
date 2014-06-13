@@ -1,18 +1,18 @@
 # encoding: UTF-8
 
 class Iqvoc::RDFSync
-  delegate :url_helpers, to: "Rails.application.routes"
+  delegate :url_helpers, to: 'Rails.application.routes'
 
   ADAPTORS = { # XXX: inappropriate?
-    "virtuoso" => lambda do  |host_url, options|
+    'virtuoso' => lambda do  |host_url, options|
       require 'iq_triplestorage/virtuoso_adaptor'
       return IqTriplestorage::VirtuosoAdaptor.new(host_url, options)
     end,
-    "sesame" => lambda do |host_url, options|
+    'sesame' => lambda do |host_url, options|
       require 'iq_triplestorage/sesame_adaptor'
-      host_url, _, repo = host_url.rpartition("/repositories/")
+      host_url, _, repo = host_url.rpartition('/repositories/')
       if host_url.blank? || repo.blank?
-       raise ArgumentError, "missing repository in Sesame URL"
+       raise ArgumentError, 'missing repository in Sesame URL'
       end
       options[:repository] = repo
       return IqTriplestorage::SesameAdaptor.new(host_url, options)
@@ -26,7 +26,7 @@ class Iqvoc::RDFSync
     @password = options[:password]
     @batch_size = options[:batch_size] || 100
     @view_context = options[:view_context] # XXX: not actually optional
-    raise(ArgumentError, "missing view context") unless @view_context # XXX: smell (see above)
+    raise(ArgumentError, 'missing view context') unless @view_context # XXX: smell (see above)
   end
 
   def all # TODO: rename
@@ -62,7 +62,7 @@ class Iqvoc::RDFSync
       memo
     end
 
-    adaptor_type = "sesame" # XXX: hard-coded
+    adaptor_type = 'sesame' # XXX: hard-coded
     adaptor = ADAPTORS[adaptor_type].call(@target_url, username: @username,
         password: @password)
     return adaptor.batch_update(data)
@@ -103,18 +103,15 @@ class Iqvoc::RDFSync
     return klass ? klass.published.unsynced :
         Iqvoc::Sync.syncable_classes.map { |klass| candidates(klass) }
   end
-
 end
 
 module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
-
   def triplestore_syncer
     base_url = root_url(lang: nil) # XXX: brittle in the face of future changes?
 
-    return Iqvoc::RDFSync.new(base_url, Iqvoc.config["triplestore.url"],
-        username: Iqvoc.config["triplestore.username"].presence,
-        password: Iqvoc.config["triplestore.password"].presence,
+    return Iqvoc::RDFSync.new(base_url, Iqvoc.config['triplestore.url'],
+        username: Iqvoc.config['triplestore.username'].presence,
+        password: Iqvoc.config['triplestore.password'].presence,
         view_context: view_context) # fugly, but necessary; cf. RDFSync#serialize
   end
-
 end

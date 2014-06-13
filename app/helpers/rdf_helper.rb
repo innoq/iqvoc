@@ -15,13 +15,11 @@
 # limitations under the License.
 
 module RdfHelper
-
   def render_concept(document, concept, suppress_extra_labels = false)
-
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
-    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").load.each_with_object({}) do |c, hash|
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select('id, origin').load.each_with_object({}) do |c, hash|
       hash[c.id] = c.origin
     end
 
@@ -71,7 +69,7 @@ module RdfHelper
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
-    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").load.each_with_object({}) do |c, hash|
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select('id, origin').load.each_with_object({}) do |c, hash|
       hash[c.id] = c.origin
     end
 
@@ -95,5 +93,4 @@ module RdfHelper
 
     end
   end
-
 end

@@ -18,7 +18,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
-
   TEST_DATA = (<<-DATA
 <http://www.example.com/animal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
 <http://www.example.com/animal> <http://www.w3.org/2008/05/skos#prefLabel> "Tier"@de .
@@ -46,19 +45,19 @@ class SkosImportTest < ActiveSupport::TestCase
     DATA
   ).split("\n")
 
-  test "unicode json decoding trick" do
-    encoded_val = "\\u00C4ffle"
-    decoded_val = JSON.parse(%Q{["#{encoded_val}"]})[0].gsub("\\n", "\n")
-    assert_equal decoded_val, "Äffle"
+  test 'unicode json decoding trick' do
+    encoded_val = '\\u00C4ffle'
+    decoded_val = JSON.parse(%Q{["#{encoded_val}"]})[0].gsub('\\n', "\n")
+    assert_equal decoded_val, 'Äffle'
   end
 
-  test "basic_importer_functionality" do
+  test 'basic_importer_functionality' do
     assert_difference('Concept::SKOS::Base.count', 4) do
-      Iqvoc::SkosImporter.new(TEST_DATA, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
 
     concepts = {}
-    ["animal", "cow", "donkey", "monkey"].each do |origin|
+    ['animal', 'cow', 'donkey', 'monkey'].each do |origin|
       concepts[origin] = Iqvoc::Concept.base_class.by_origin(origin).last
       assert_not_nil(concepts[origin], "Couldn't find concept '#{origin}'.")
       assert concepts[origin].published?, "Concept '#{origin}' wasn't published."
@@ -66,37 +65,37 @@ class SkosImportTest < ActiveSupport::TestCase
 
     current_locale = I18n.locale
     I18n.locale = :en
-    assert_equal "Animal", concepts["animal"].pref_label.to_s
+    assert_equal 'Animal', concepts['animal'].pref_label.to_s
     I18n.locale = :de
-    assert_equal "Tier", concepts["animal"].pref_label.to_s
+    assert_equal 'Tier', concepts['animal'].pref_label.to_s
     I18n.locale = current_locale
 
-    broader_relation = concepts["cow"].broader_relations.first
+    broader_relation = concepts['cow'].broader_relations.first
     assert_not_nil broader_relation
     assert_not_nil broader_relation.target
-    assert_equal concepts["animal"].origin, broader_relation.target.origin
+    assert_equal concepts['animal'].origin, broader_relation.target.origin
 
-    narrower_relations = concepts["animal"].narrower_relations
+    narrower_relations = concepts['animal'].narrower_relations
     assert_equal 3, narrower_relations.count
 
-    note = concepts["animal"].note_skos_definitions.first
+    note = concepts['animal'].note_skos_definitions.first
     assert_not_nil note
-    assert_equal "Ein Tier ist kein Mensch.", note.value
+    assert_equal 'Ein Tier ist kein Mensch.', note.value
 
-    match = concepts["monkey"].match_skos_exact_matches.first
+    match = concepts['monkey'].match_skos_exact_matches.first
     assert_not_nil match
-    assert_equal "http://dbpedia.org/page/Monkey", match.value
+    assert_equal 'http://dbpedia.org/page/Monkey', match.value
   end
 
-  test "incorrect origin" do
+  test 'incorrect origin' do
     assert_difference('Concept::SKOS::Base.count', 1) do
-      Iqvoc::SkosImporter.new(["<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>."], "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(['<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.'], 'http://www.example.com/').run
     end
-    assert_nil Iqvoc::Concept.base_class.by_origin("1").last
-    assert_not_nil Iqvoc::Concept.base_class.by_origin("_1").last
+    assert_nil Iqvoc::Concept.base_class.by_origin('1').last
+    assert_not_nil Iqvoc::Concept.base_class.by_origin('_1').last
   end
 
-  test "blank nodes" do
+  test 'blank nodes' do
     test_data = (<<-DATA
       <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
       <http://www.example.com/car> <http://www.w3.org/2008/05/skos#prefLabel> "Car"@en .
@@ -107,15 +106,15 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Note::SKOS::ChangeNote.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
     end
 
     assert_difference('Note::Annotated::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 
-  test "notations" do
+  test 'notations' do
     test_data = (<<-DATA
       <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
       <http://www.example.com/car> <http://www.w3.org/2008/05/skos#notation> "ME-IQ 1234"^^<http://www.example.com/licensePlate> .
@@ -124,11 +123,11 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Notation::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 
-  test "top concepts for concept scheme" do
+  test 'top concepts for concept scheme' do
     test_data = (<<-DATA
       <http://www.example.com/car> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept> .
       <http://www.example.com/car> <http://www.w3.org/2008/05/skos#topConceptOf> <http://www.example.com/scheme> .
@@ -138,7 +137,7 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Concept::SKOS::Base.tops.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, "http://www.example.com/").run
+      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 end

@@ -40,12 +40,12 @@ class Concept::SKOS::Scheme < Concept::Base
   end
 
   def self.create(attributes = nil, &block)
-    raise TypeError, "Singleton" if first
+    raise TypeError, 'Singleton' if first
     super
   end
 
   def self.create!(attributes = nil, &block)
-    raise TypeError, "Singleton" if first
+    raise TypeError, 'Singleton' if first
     super
   end
 

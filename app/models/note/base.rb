@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Note::Base < ActiveRecord::Base
-
   self.table_name = 'notes'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -30,7 +29,7 @@ class Note::Base < ActiveRecord::Base
 
   belongs_to :owner, polymorphic: true
 
-  has_many :annotations, class_name: "Note::Annotated::Base", foreign_key: :note_id, dependent: :destroy
+  has_many :annotations, class_name: 'Note::Annotated::Base', foreign_key: :note_id, dependent: :destroy
 
   accepts_nested_attributes_for :annotations
 
@@ -79,7 +78,7 @@ class Note::Base < ActiveRecord::Base
   # TODO: This should move to umt because the "list" is more or less proprietary
   def from_annotation_list!(str)
     str.gsub(/\[|\]/, '').split('; ').map { |a| a.split(' ') }.each do |annotation|
-      namespace, predicate = annotation.first.split(":", 2)
+      namespace, predicate = annotation.first.split(':', 2)
       annotations << Note::Annotated::Base.new(value: annotation.second,
           namespace: namespace, predicate: predicate)
     end
@@ -91,7 +90,7 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    "notes"
+    'notes'
   end
 
   def self.view_section_sort_key(obj)
@@ -99,11 +98,11 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/note/base"
+    'partials/note/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/note/edit_base"
+    'partials/note/edit_base'
   end
 
   def self.single_query(params = {})
@@ -122,5 +121,4 @@ class Note::Base < ActiveRecord::Base
     result.Sdc::link(IqRdf.build_uri(owner.origin))
     build_rdf(document, result)
   end
-
 end

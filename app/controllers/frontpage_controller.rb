@@ -15,9 +15,7 @@
 # limitations under the License.
 
 class FrontpageController < ApplicationController
-
   def index
     @suppress_quicksearch = true
   end
-
 end

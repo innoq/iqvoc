@@ -15,9 +15,8 @@
 # limitations under the License.
 
 class Collection::SKOS::Base < Collection::Base
-
-  self.rdf_namespace = "skos"
-  self.rdf_class = "Collection"
+  self.rdf_namespace = 'skos'
+  self.rdf_class = 'Collection'
 
   def build_rdf_subject(&block)
     ns = IqRdf::Namespace.find_namespace_class(self.rdf_namespace)
@@ -25,11 +24,10 @@ class Collection::SKOS::Base < Collection::Base
     subject = IqRdf.build_uri(self.origin, ns.build_uri(self.rdf_class), &block)
 
     # ensure skos:Collection type is present
-    unless self.rdf_namespace == "skos" && self.rdf_class == "Collection"
-      subject.Rdf.build_predicate("type", IqRdf::Skos.build_uri("Collection"))
+    unless self.rdf_namespace == 'skos' && self.rdf_class == 'Collection'
+      subject.Rdf.build_predicate('type', IqRdf::Skos.build_uri('Collection'))
     end
 
     return subject
   end
-
 end

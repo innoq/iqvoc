@@ -9,7 +9,7 @@ class RemoteLabelsController < ApplicationController
     concept_url = params[:concept_url]
 
     # ensure known dataset
-    @dataset = @datasets.detect {|d| concept_url.to_s.start_with?(d.url.to_s) }
+    @dataset = @datasets.detect { |d| concept_url.to_s.start_with?(d.url.to_s) }
     unless @dataset
       head 422
       return
@@ -27,5 +27,4 @@ class RemoteLabelsController < ApplicationController
       end
     end
   end
-
 end

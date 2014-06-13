@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Notation::Base < ActiveRecord::Base
-
   self.table_name = 'notations'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -31,7 +30,7 @@ class Notation::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    "main"
+    'main'
   end
 
   def self.view_section_sort_key(obj)
@@ -39,11 +38,11 @@ class Notation::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/notation/base"
+    'partials/notation/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/notation/edit_base"
+    'partials/notation/edit_base'
   end
 
   def build_rdf(document, subject)
@@ -55,5 +54,4 @@ class Notation::Base < ActiveRecord::Base
       raise "#{self.class}#build_rdf: couldn't find Namespace '#{self.rdf_namespace.camelcase}'."
     end
   end
-
 end

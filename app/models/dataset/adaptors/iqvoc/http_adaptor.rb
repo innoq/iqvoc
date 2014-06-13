@@ -25,7 +25,7 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
     end
 
     if response.status == 302 && redirect_count < 3
-      response = http_get(response.headers["location"], redirect_count + 1)
+      response = http_get(response.headers['location'], redirect_count + 1)
     end
 
     response

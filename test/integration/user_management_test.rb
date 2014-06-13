@@ -17,35 +17,34 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class UserManagementTest < ActionDispatch::IntegrationTest
-
   setup do
   end
 
-  test "create user" do
-    login "administrator"
+  test 'create user' do
+    login 'administrator'
 
     visit users_path(lang: :en)
-    assert page.has_content?("Test User")
+    assert page.has_content?('Test User')
     assert page.has_css?('.users-table-row', count: 1)
-    click_link "New User"
+    click_link 'New User'
 
-    fill_in "Forename", with: "Arnulf"
-    fill_in "Surname", with: "Beckenbauer"
-    fill_in "Email", with: "arnulf@beckenbauer.com"
-    fill_in "Password", with: "secret"
-    fill_in "Password (Confirmation)", with: "secret"
-    click_button "Save"
+    fill_in 'Forename', with: 'Arnulf'
+    fill_in 'Surname', with: 'Beckenbauer'
+    fill_in 'Email', with: 'arnulf@beckenbauer.com'
+    fill_in 'Password', with: 'secret'
+    fill_in 'Password (Confirmation)', with: 'secret'
+    click_button 'Save'
 
-    assert page.has_content?("Arnulf Beckenbauer")
+    assert page.has_content?('Arnulf Beckenbauer')
     assert page.has_css?('.users-table-row', count: 2)
   end
 
-  test "delete user" do
-    login "administrator"
+  test 'delete user' do
+    login 'administrator'
     visit users_path(lang: :en)
     assert page.has_css?('.users-table-row', count: 1)
-    within ".users-table-row" do
-      click_on "Delete"
+    within '.users-table-row' do
+      click_on 'Delete'
     end
     assert page.has_css?('.users-table-row', count: 0)
   end

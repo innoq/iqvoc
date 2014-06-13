@@ -15,21 +15,20 @@
 # limitations under the License.
 
 module DashboardHelper
-
   def sorting_controls_for(name)
-    content_tag :div, class: "sorting-controls" do
-      link_to(icon("arrow-circle-o-up", "sorting-arrow"),
-        dashboard_path(order: "asc", by: name.to_s)) +
-        link_to(icon("arrow-circle-o-down", "sorting-arrow"),
-        dashboard_path(order: "desc", by: name.to_s))
+    content_tag :div, class: 'sorting-controls' do
+      link_to(icon('arrow-circle-o-up', 'sorting-arrow'),
+        dashboard_path(order: 'asc', by: name.to_s)) +
+        link_to(icon('arrow-circle-o-down', 'sorting-arrow'),
+        dashboard_path(order: 'desc', by: name.to_s))
     end
   end
 
   def consistency_status(item)
     css, msg = if item.publishable?
-      ["valid", "&#x2713;"]
+      ['valid', '&#x2713;']
     else
-      ["invalid", "&#x2717;"]
+      ['invalid', '&#x2717;']
     end
 
     content_tag :span, raw(msg), class: css
@@ -42,5 +41,4 @@ module DashboardHelper
       item.published? ? concept_path(id: item.origin) : concept_path(published: 0, id: item.origin)
     end
   end
-
 end

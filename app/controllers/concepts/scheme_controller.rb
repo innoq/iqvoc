@@ -57,10 +57,10 @@ class Concepts::SchemeController < ApplicationController
     authorize! :update, @scheme
 
     if @scheme.update_attributes(concept_params)
-      flash[:success] = t("txt.controllers.concept_scheme.save.success")
+      flash[:success] = t('txt.controllers.concept_scheme.save.success')
       redirect_to scheme_path
     else
-      flash[:error] = t("txt.controllers.concept_scheme.save.error")
+      flash[:error] = t('txt.controllers.concept_scheme.save.error')
       render :edit
     end
   end
@@ -69,5 +69,4 @@ class Concepts::SchemeController < ApplicationController
   def concept_params
     params.require(:concept).permit!
   end
-
 end

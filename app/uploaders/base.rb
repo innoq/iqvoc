@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class Base < CarrierWave::Uploader::Base
-
   storage :file
 
   def store_dir
@@ -19,5 +18,4 @@ class Base < CarrierWave::Uploader::Base
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.hex)
   end
-
 end

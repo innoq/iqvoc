@@ -17,7 +17,7 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class RdfRenderingTest < ActionController::TestCase
-  require "authlogic/test_case"
+  require 'authlogic/test_case'
 
   setup do
     activate_authlogic
@@ -29,7 +29,7 @@ root:
     EOS
     rel_class = Iqvoc::Concept.broader_relation_class.narrower_class
     @concepts = create_hierarchy(concepts, rel_class, {})
-    @concepts["root"].update_attribute("top_term", true)
+    @concepts['root'].update_attribute('top_term', true)
 
     @admin = User.create! do |u|
       u.forename = 'Test'
@@ -42,12 +42,12 @@ root:
     end
   end
 
-  test "individual concept representations" do
+  test 'individual concept representations' do
     @controller = ConceptsController.new
 
-    params = { lang: "en", format: "ttl" }
+    params = { lang: 'en', format: 'ttl' }
 
-    get :show, params.merge(id: "root")
+    get :show, params.merge(id: 'root')
     assert_response 200
     assert @response.body.include? ':root a skos:Concept'
     assert @response.body.include? 'skos:narrower :foo'
@@ -56,7 +56,7 @@ root:
     assert @response.body.include? ':foo skos:prefLabel "Foo"@en.'
     assert @response.body.include? ':bar skos:prefLabel "Bar"@en.'
 
-    get :show, params.merge(id: "foo")
+    get :show, params.merge(id: 'foo')
     assert_response 200
     assert @response.body.include? ':foo a skos:Concept'
     assert @response.body.include? 'skos:broader :root'
@@ -66,7 +66,7 @@ root:
 
   def create_hierarchy(hash, rel_class, memo=nil, parent=nil)
     hash.each do |origin, children|
-      concept = create_concept(origin, origin.capitalize, "en")
+      concept = create_concept(origin, origin.capitalize, 'en')
       memo[origin] = concept if memo
       link_concepts(parent, rel_class, concept) if parent
       create_hierarchy(children, rel_class, memo, concept) unless children.blank?
@@ -88,5 +88,4 @@ root:
         target: label)
     return concept
   end
-
 end

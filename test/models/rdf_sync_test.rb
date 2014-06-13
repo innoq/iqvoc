@@ -19,14 +19,13 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 require 'iqvoc/rdf_sync'
 
 class RDFSyncTest < ActiveSupport::TestCase
-
   setup do
-    @rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    @skos = "http://www.w3.org/2004/02/skos/core#"
+    @rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+    @skos = 'http://www.w3.org/2004/02/skos/core#'
 
-    @base_url = "http://example.com/"
-    @target_host = "http://example.org/sesame/repositories/test"
-    @username = "johndoe"
+    @base_url = 'http://example.com/'
+    @target_host = 'http://example.org/sesame/repositories/test'
+    @username = 'johndoe'
 
     class FakeViewContext # XXX: does not belong here
       def iqvoc_default_rdf_namespaces
@@ -39,7 +38,7 @@ class RDFSyncTest < ActiveSupport::TestCase
         view_context: @view_context)
 
     @concepts = 1.upto(15).map do |i|
-      Concept::SKOS::Base.new.publish.tap {|c| c.save }
+      Concept::SKOS::Base.new.publish.tap { |c| c.save }
     end
 
     # HTTP request mocking
@@ -60,10 +59,10 @@ class RDFSyncTest < ActiveSupport::TestCase
   teardown do
     WebMock.reset!
     WebMock.allow_net_connect!
-    raise(TypeError, "unhandled request observer") unless @observers.length == 0
+    raise(TypeError, 'unhandled request observer') unless @observers.length == 0
   end
 
-  test "serialization" do
+  test 'serialization' do
     concept = @concepts[0]
 
     assert @sync.serialize(concept).include?(<<-EOS.strip)
@@ -71,7 +70,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     EOS
   end
 
-  test "single-batch synchronization" do
+  test 'single-batch synchronization' do
     concepts = @concepts[0..4]
 
     @observers << lambda do |req|
@@ -89,7 +88,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     res = @sync.sync(concepts)
   end
 
-  test "full synchronization" do
+  test 'full synchronization' do
     concepts = Iqvoc::Concept.base_class.published.unsynced
 
     assert_not_equal 0, concepts.count
@@ -102,7 +101,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     assert_equal 0, concepts.where(rdf_updated_at: nil).count
   end
 
-  test "request batches" do
+  test 'request batches' do
     concepts = Iqvoc::Concept.base_class.published.unsynced
     concept_count = concepts.count
     batch_count = 3
@@ -116,5 +115,4 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     assert sync.all
   end
-
 end
