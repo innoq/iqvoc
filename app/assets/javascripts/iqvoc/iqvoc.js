@@ -222,11 +222,11 @@ jQuery(document).ready(function($) {
         $li.find('.jqtree-title').replaceWith(link);
 
         if(node.moved) {
-          var save_button = $('<button><i class="fa fa-save"></i></button>');
-          var copy_button = $('<button><i class="fa fa-copy"></i></button>');
-          var undo_button = $('<button><i class="fa fa-undo"></i></button>');
+          var save_button = $('<button class="btn btn-primary btn-xs"><i class="fa fa-save"></i></button>');
+          var copy_button = $('<button class="btn btn-primary btn-xs"><i class="fa fa-copy"></i></button>');
+          var undo_button = $('<button class="btn btn-primary btn-xs"><i class="fa fa-undo"></i></button>');
 
-          link.after(' ', save_button, copy_button, undo_button);
+          link.after(' ', save_button, ' ', copy_button, ' ', undo_button);
         }
       }
     });
