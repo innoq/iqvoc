@@ -11,3 +11,8 @@ ul.jqtree-tree li.jqtree-ghost span.jqtree-line {
 ul.jqtree-tree span.jqtree-border {
   border: solid 1px #000;
 }
+
+.jqtree-tree .jqtree-loading > div .jqtree-title:after {
+  content: url('ajax-loader.gif');
+  margin-left: 8px;
+}
