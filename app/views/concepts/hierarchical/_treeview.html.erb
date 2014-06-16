@@ -1,5 +1,8 @@
 <% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) %>
-<ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<ul class="hybrid-treeview" data-url="<%= hcpath %>"
+  data-save-label="<%= t('txt.common.save') %>"
+  data-copy-label="<%= t('txt.common.copy') %>"
+  data-undo-label="<%= t('txt.common.reset') %>">
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
 

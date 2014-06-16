@@ -183,8 +183,12 @@ jQuery(document).ready(function($) {
 
   // hierarchical tree view
   $("ul.hybrid-treeview").each(function() {
-    var url = $(this).attr("data-url"),
-      container = this;
+    var url = $(this).attr("data-url");
+    var container = this;
+
+    var saveLabel = $(container).data('save-label');
+    var copyLabel = $(container).data('copy-label');
+    var undoLabel = $(container).data('undo-label');
 
     // build tree data from html markup
     var data = $(this).children('li').map(function() {
@@ -223,11 +227,11 @@ jQuery(document).ready(function($) {
         $li.find('.jqtree-title').replaceWith(link);
 
         if(node.moved) {
-          var save_button = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> Save</button>');
-          var copy_button = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-copy"></i> Copy</button>');
-          var undo_button = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-undo"></i> Undo</button>');
+          var saveButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
+          var copyButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+          var undoButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
-          link.after(' ', save_button, ' ', copy_button, ' ', undo_button);
+          link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
         }
       },
       onCanMoveTo: function(moved_node, target_node, position){

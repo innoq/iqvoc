@@ -51,6 +51,7 @@ en:
      back: Back
      welcome: "Hello %{user_name}"
      save: "Save"
+     copy: 'Copy'
      reset: "Reset"
      language: "Language"
      add_note: "Add"
