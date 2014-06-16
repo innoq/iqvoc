@@ -223,13 +223,14 @@ jQuery(document).ready(function($) {
         return loadedData;
       },
       onCreateLi: function(node, $li) {
+
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
         if(node.moved) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
-          var undoButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
+          var undoButton = $('<button type="button" class="btn btn-primary btn-xs node-reset" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
           link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
         }
@@ -246,18 +247,22 @@ jQuery(document).ready(function($) {
     });
   });
 
-  $('ul.hybrid-treeview').bind(
-      'tree.move',
-      function(event) {
-        var moved_node = event.move_info.moved_node;
-        $(this).tree('updateNode', moved_node, {moved: true});
-        // log node movement
-        console.log('moved_node', moved_node);
-        console.log('target_node', event.move_info.target_node);
-        console.log('position', event.move_info.position);
-        console.log('previous_parent', event.move_info.previous_parent);
-      }
-  );
+  $('ul.hybrid-treeview').on('tree.move', function(event) {
+    var moved_node = event.move_info.moved_node;
+    $(this).tree('updateNode', moved_node, {
+      moved: true,
+      old_parent_id: moved_node.parent.id
+    });
+  });
+
+  $('ul.hybrid-treeview').on('click', 'button.node-reset', function(event) {
+    var $tree = $('ul.hybrid-treeview');
+    var node = $tree.tree('getNodeById', $(this).data('node-id'));
+    var target_node = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
+
+    $tree.tree('updateNode', node, {moved: false});
+    $tree.tree('moveNode', node, target_node, 'inside');
+  });
 
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
