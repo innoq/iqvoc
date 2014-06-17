@@ -169,6 +169,10 @@ class ConceptsController < ApplicationController
     end
   end
 
+  def move
+    # ...
+  end
+
   protected
 
 def concept_params
