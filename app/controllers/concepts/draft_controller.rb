@@ -16,5 +16,22 @@
 
 class Concepts::DraftController < ConceptsController
   def index
+    authorize! :read, Iqvoc::Concept.base_class
+
+    scope = Iqvoc::Concept.base_class
+
+    # only select unexpired concepts
+    scope = scope.not_expired
+
+    @concepts = scope.tops.includes(:narrower_relations).references(:concepts)
+
+    # When in single query mode, AR handles ALL includes to be loaded by that
+    # one query. We don't want that! So let's do it manually :-)
+    ActiveRecord::Associations::Preloader.new.preload(@concepts,
+        Iqvoc::Concept.base_class.default_includes + [:pref_labels])
+
+    @concepts.to_a.sort! do |a, b|
+      a.pref_label.to_s <=> b.pref_label.to_s
+    end
   end
 end

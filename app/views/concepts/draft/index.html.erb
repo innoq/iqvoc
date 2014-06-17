@@ -1,3 +1,5 @@
 <%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
   :desc => t('txt.views.navigation.draft') %>
 <%= render 'concepts/sidebars/plural' %>
+
+<%= treeview @concepts %>
