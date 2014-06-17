@@ -223,14 +223,13 @@ jQuery(document).ready(function($) {
         return loadedData;
       },
       onCreateLi: function(node, $li) {
-
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
         if(node.moved) {
-          var saveButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-          var copyButton = $('<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
-          var undoButton = $('<button type="button" class="btn btn-primary btn-xs node-reset" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
+          var saveButton = $('<button type="button" class="btn btn-primary btn-xs save-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
+          var copyButton = $('<button type="button" class="btn btn-primary btn-xs copy-node-button" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+          var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
           link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
         }
@@ -247,21 +246,48 @@ jQuery(document).ready(function($) {
     });
   });
 
+  // mark moved nodes
   $('ul.hybrid-treeview').on('tree.move', function(event) {
     var moved_node = event.move_info.moved_node;
     $(this).tree('updateNode', moved_node, {
       moved: true,
-      old_parent_id: moved_node.parent.id
+      old_parent_id: moved_node.parent.id,
+      target_node_id: event.move_info.target_node.id
     });
   });
 
-  $('ul.hybrid-treeview').on('click', 'button.node-reset', function(event) {
+  // save moved node
+  $('ul.hybrid-treeview').on('click', 'button.save-node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
     var node = $tree.tree('getNodeById', $(this).data('node-id'));
-    var target_node = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
+    var oldParentNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
+    var newParentNodeId = $tree.tree('getNodeById', $(this).data('new-parent-node-id'));
+
+    console.log('node', node);
+    console.log('oldParentNode', oldParentNode);
+    console.log('newParentNode', newParentNodeId);
+
+    // do patch request
+    // ...
+    // $.ajax({
+    //   url : '...',
+    //   data : ...,
+    //   type : 'PATCH',
+    //   contentType : 'application/json',
+    //   processData: false,
+    //   dataType: 'json'
+    // });
+  });
+
+  // reset moved node
+  // TODO: move to correct old position, currently moved on top
+  $('ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
+    var $tree = $('ul.hybrid-treeview');
+    var node = $tree.tree('getNodeById', $(this).data('node-id'));
+    var targetNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
 
     $tree.tree('updateNode', node, {moved: false});
-    $tree.tree('moveNode', node, target_node, 'inside');
+    $tree.tree('moveNode', node, targetNode, 'inside');
   });
 
   // unobtrusive tabs
