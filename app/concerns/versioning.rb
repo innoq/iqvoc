@@ -28,53 +28,53 @@ module Versioning
 
   module ClassMethods
     def by_origin(origin)
-       where(origin: origin)
-     end
+      where(origin: origin)
+    end
 
-     def published
-       where(arel_table[:published_at].not_eq(nil))
-     end
+    def published
+      where(arel_table[:published_at].not_eq(nil))
+    end
 
-     def unpublished
-       where(published_at: nil)
-     end
+    def unpublished
+      where(published_at: nil)
+    end
 
      # The following method returns all objects which should be selectable by the editor
-     def editor_selectable
-       where(
-         arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
-           arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
-         )
-       )
-     end
+    def editor_selectable
+      where(
+        arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
+          arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
+        )
+      )
+    end
 
-     def in_edit_mode
-       where(arel_table[:locked_by].not_eq(nil))
-     end
+    def in_edit_mode
+      where(arel_table[:locked_by].not_eq(nil))
+    end
 
-     def unpublished_or_follow_up
-       where(
-         arel_table[:published_at].eq(nil).or(
-           arel_table[:follow_up].not_eq(nil)
-         )
-       )
-     end
+    def unpublished_or_follow_up
+      where(
+        arel_table[:published_at].eq(nil).or(
+          arel_table[:follow_up].not_eq(nil)
+        )
+      )
+    end
 
-     def unsynced
-       where(rdf_updated_at: nil)
-     end
+    def unsynced
+      where(rdf_updated_at: nil)
+    end
 
-     def include_to_deep_cloning(*association_names)
-       (@@include_to_deep_cloning ||= {})[self] ||= []
-       association_names.each do |association_name|
-         @@include_to_deep_cloning[self] << association_name
-       end
-     end
+    def include_to_deep_cloning(*association_names)
+      (@@include_to_deep_cloning ||= {})[self] ||= []
+      association_names.each do |association_name|
+        @@include_to_deep_cloning[self] << association_name
+      end
+    end
 
-     def includes_to_deep_cloning
-       (@@include_to_deep_cloning ||= {})[self] ||= []
-       (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
-     end
+    def includes_to_deep_cloning
+      (@@include_to_deep_cloning ||= {})[self] ||= []
+      (@@include_to_deep_cloning.keys & self.ancestors).map{|c| @@include_to_deep_cloning[c]}.flatten.compact
+    end
   end
 
   def branch(user)
