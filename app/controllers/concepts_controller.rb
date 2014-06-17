@@ -175,9 +175,9 @@ class ConceptsController < ApplicationController
 
   protected
 
-def concept_params
-  params.require(:concept).permit!
-end
+  def concept_params
+    params.require(:concept).permit!
+  end
 
   # TODO: rename to match the behavior of the method
   def labeling_as_json(labeling)
