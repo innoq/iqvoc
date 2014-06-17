@@ -39,7 +39,16 @@ module Versioning
       where(published_at: nil)
     end
 
-     # The following method returns all objects which should be selectable by the editor
+    def locked
+      where(arel_table[:locked_by].not_eq(nil))
+    end
+
+    def published_with_newer_versions
+      concepts = published.where('origin not in (?)', locked.map(&:origin))
+      concepts << locked
+    end
+
+    # The following method returns all objects which should be selectable by the editor
     def editor_selectable
       where(
         arel_table[:published_at].not_eq(nil).or( # == published (is there a way to OR combine two scopes? `published OR where(...)`)
