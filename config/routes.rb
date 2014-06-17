@@ -65,6 +65,7 @@ Rails.application.routes.draw do
     get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', as: 'untranslated_concepts'
     get 'hierarchical_concepts' => 'concepts/hierarchical#index', as: 'hierarchical_concepts'
     get 'expired_concepts' => 'concepts/expired#index', as: 'expired_concepts'
+    get 'draft_concepts' => 'concepts/draft#index', as: 'draft_concepts'
 
     get 'dashboard' => 'dashboard#index', as: 'dashboard'
     match 'dashboard/reset' => 'dashboard#reset', as: 'reset', via: [:get, :post]

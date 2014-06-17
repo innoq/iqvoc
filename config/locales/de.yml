@@ -166,6 +166,7 @@ de:
        instance_configuration: "Konfiguration"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
+       draft: "Bearbeitung"
        expired: "Abgelaufene"
        search: "Suche"
        about: "Über"
