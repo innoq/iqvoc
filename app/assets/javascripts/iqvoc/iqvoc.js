@@ -219,6 +219,7 @@ jQuery(document).ready(function($) {
           return {
             id: item.id,
             label: item.text,
+            load_on_demand: item.hasChildren,
             url: item.url,
             published: item.published ? true : false,
             editable: item.editable ? true : false
