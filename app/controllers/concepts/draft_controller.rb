@@ -53,6 +53,7 @@ class Concepts::DraftController < ConceptsController
             additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
             load_on_demand: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
             url: url,
+            update_url: move_concept_url(c),
             published: (c.published?) ? true : false,
             locked: (can?(:branch, c) || can?(:update, c) ? false : true)
           }
