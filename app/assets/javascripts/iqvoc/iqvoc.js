@@ -184,9 +184,9 @@ jQuery(document).ready(function($) {
   // hierarchical tree view
   $("ul.hybrid-treeview").each(function() {
     var url = $(this).data('url');
-    var dragabbleSupport = $(this).data('dragabble');
     var container = this;
 
+    var dragabbleSupport = $(container).data('dragabble');
     var saveLabel = $(container).data('save-label');
     var copyLabel = $(container).data('copy-label');
     var undoLabel = $(container).data('undo-label');
@@ -214,6 +214,7 @@ jQuery(document).ready(function($) {
         return node ? url + '?root=' + node.id : url;
       },
       onCreateLi: function(node, $li) {
+        // TODO: add additionalText if present
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
@@ -234,6 +235,7 @@ jQuery(document).ready(function($) {
         }
 
         if(node.moved) {
+          // TODO: move data-attributes to parent li to be more DRY
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs save-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs copy-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
@@ -278,7 +280,7 @@ jQuery(document).ready(function($) {
     console.log('oldParentNode', oldParentNode);
     console.log('newParentNode', newParentNodeId);
 
-    // do patch request
+    // TODO: do patch request
     // ...
     // $.ajax({
     //   url : '...',
@@ -300,7 +302,7 @@ jQuery(document).ready(function($) {
     console.log('oldParentNode', oldParentNode);
     console.log('newParentNode', newParentNodeId);
 
-    // do patch request
+    // TODO: do patch request
     // ...
   });
 
