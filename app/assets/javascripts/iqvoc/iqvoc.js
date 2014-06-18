@@ -228,9 +228,11 @@ jQuery(document).ready(function($) {
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
+        // mark published/unpublished items
         if (typeof node.published != 'undefined' && !node.published) {
-          var lockIcon = ' <i class="fa fa-lock"/>';
-          link.after(lockIcon);
+          link.addClass('unpublished');
+        } else {
+          link.addClass('published');
         }
 
         if(node.moved) {
