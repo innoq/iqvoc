@@ -11,7 +11,7 @@
   <% concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
 
-    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
+    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>" data-has-children="<%= (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) %>">
       <%= link_to(concept.pref_label.to_s, concept_url(:id => concept)) %>
       <% if concept.additional_info.present? %>
         (<%= concept.additional_info %>)

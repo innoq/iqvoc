@@ -194,9 +194,10 @@ jQuery(document).ready(function($) {
     // build tree data from html markup
     var data = $(this).children('li').map(function() {
       var item = $(this);
+      var hasChildren = item.data('has-children');
       return {
         label: item.children('a').html(),
-        load_on_demand: true,
+        load_on_demand: hasChildren,
         id: item.attr('id'),
         url: item.children('a').attr('href'),
       };
