@@ -8,7 +8,7 @@
 <% else %>
   <ul class="hybrid-treeview" data-url="<%= hcpath %>">
 <% end %>
-  <% concepts.select { |c| can? :read, c }.each do |concept| %>
+  <% concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
 
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
