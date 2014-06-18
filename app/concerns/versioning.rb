@@ -44,8 +44,12 @@ module Versioning
     end
 
     def published_with_newer_versions
-      concepts = published.where('origin not in (?)', locked.map(&:origin))
-      concepts << locked
+      # published objects without objects which have a new one in editing
+      published_objects = arel_table[:published_at].not_eq(nil).and(arel_table[:origin].not_in(unpublished.map(&:origin)))
+      # only unpublished objects
+      unpublished_objects = arel_table[:published_at].eq(nil)
+
+      where(published_objects.or(unpublished_objects))
     end
 
     # The following method returns all objects which should be selectable by the editor
