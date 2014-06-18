@@ -45,10 +45,11 @@ class Concepts::DraftController < ConceptsController
     respond_to do |format|
       format.html
       format.json do # Treeview data
-        concepts = @concepts.select {|c| can? :read, c }.map do |c|
+        concepts = @concepts.select { |c| can? :read, c }.map do |c|
+          url = (c.published?) ? concept_path(id: c, format: :html) : concept_path(id: c, format: :html, published: 0)
           {
             id: c.id,
-            url: concept_path(id: c, format: :html),
+            url: url,
             text: CGI.escapeHTML(c.pref_label.to_s),
             hasChildren: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
             additionalText: (" (#{c.additional_info})" if c.additional_info.present?),

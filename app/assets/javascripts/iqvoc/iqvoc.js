@@ -218,7 +218,8 @@ jQuery(document).ready(function($) {
           return {
             id: item.id,
             label: item.text,
-            url: item.url
+            url: item.url,
+            published: item.published ? true : false
           };
         });
         return loadedData;
@@ -226,6 +227,11 @@ jQuery(document).ready(function($) {
       onCreateLi: function(node, $li) {
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
+
+        if (typeof node.published != 'undefined' && !node.published) {
+          var lockIcon = ' <i class="fa fa-lock"/>';
+          link.after(lockIcon);
+        }
 
         if(node.moved) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs save-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
