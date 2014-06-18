@@ -16,7 +16,7 @@
 
 class Concepts::DraftController < ConceptsController
   def index
-    authorize! :read, Iqvoc::Concept.base_class
+    authorize! :update, Iqvoc::Concept.base_class
 
     scope = Iqvoc::Concept.base_class
 
