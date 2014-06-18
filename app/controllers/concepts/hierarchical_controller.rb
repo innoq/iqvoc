@@ -61,7 +61,8 @@ class Concepts::HierarchicalController < ConceptsController
             url: concept_path(id: c, format: :html),
             text: CGI.escapeHTML(c.pref_label.to_s),
             hasChildren: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
-            additionalText: (" (#{c.additional_info})" if c.additional_info.present?)
+            additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
+            published: (c.published?) ? true : false
           }
         end
         render json: concepts
