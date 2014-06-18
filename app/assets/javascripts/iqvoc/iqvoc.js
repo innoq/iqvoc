@@ -184,7 +184,7 @@ jQuery(document).ready(function($) {
   // hierarchical tree view
   $("ul.hybrid-treeview").each(function() {
     var url = $(this).data('url');
-    var dragabble = $(this).data('dragabble');
+    var dragabbleSupport = $(this).data('dragabble');
     var container = this;
 
     var saveLabel = $(container).data('save-label');
@@ -203,7 +203,7 @@ jQuery(document).ready(function($) {
     });
 
     $(this).tree({
-      dragAndDrop: dragabble ? true : false,
+      dragAndDrop: dragabbleSupport ? true : false,
       autoEscape: false,
       selectable: false,
       closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
@@ -219,7 +219,8 @@ jQuery(document).ready(function($) {
             id: item.id,
             label: item.text,
             url: item.url,
-            published: item.published ? true : false
+            published: item.published ? true : false,
+            editable: item.editable ? true : false
           };
         });
         return loadedData;
@@ -228,11 +229,19 @@ jQuery(document).ready(function($) {
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
-        // mark published/unpublished items
-        if (typeof node.published != 'undefined' && !node.published) {
-          link.addClass('unpublished');
-        } else {
-          link.addClass('published');
+        if (dragabbleSupport) {
+          // mark published/unpublished items
+          if (typeof node.published != 'undefined' && !node.published) {
+            link.addClass('unpublished');
+          } else {
+            link.addClass('published');
+          }
+
+          // mark locked items
+          if (typeof node.editable != 'undefined' && !node.editable) {
+            var lockIcon = ' <i class="fa fa-lock"/>';
+            link.after(lockIcon);
+          }
         }
 
         if(node.moved) {
@@ -246,6 +255,9 @@ jQuery(document).ready(function($) {
       onCanMoveTo: function(moved_node, target_node, position){
         // prevent node movement inside parent node
         if (moved_node.parent === target_node.parent && position === 'after'){
+          return false;
+        }
+        else if (moved_node.editable === false) {
           return false;
         }
         else {

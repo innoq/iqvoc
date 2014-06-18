@@ -62,7 +62,6 @@ class Concepts::HierarchicalController < ConceptsController
             text: CGI.escapeHTML(c.pref_label.to_s),
             hasChildren: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
             additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
-            published: (c.published?) ? true : false
           }
         end
         render json: concepts
