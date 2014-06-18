@@ -235,7 +235,7 @@ jQuery(document).ready(function($) {
 
         if(node.moved) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs save-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-          var copyButton = $('<button type="button" class="btn btn-primary btn-xs copy-node-button" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+          var copyButton = $('<button type="button" class="btn btn-primary btn-xs copy-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
           link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
@@ -288,6 +288,20 @@ jQuery(document).ready(function($) {
     //   processData: false,
     //   dataType: 'json'
     // });
+  });
+
+  $('ul.hybrid-treeview').on('click', 'button.copy-node-btn', function(event) {
+    var $tree = $('ul.hybrid-treeview');
+    var node = $tree.tree('getNodeById', $(this).data('node-id'));
+    var oldParentNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
+    var newParentNodeId = $tree.tree('getNodeById', $(this).data('new-parent-node-id'));
+
+    console.log('node', node);
+    console.log('oldParentNode', oldParentNode);
+    console.log('newParentNode', newParentNodeId);
+
+    // do patch request
+    // ...
   });
 
   // reset moved node
