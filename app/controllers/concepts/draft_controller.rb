@@ -49,12 +49,12 @@ class Concepts::DraftController < ConceptsController
           url = (c.published?) ? concept_path(id: c, format: :html) : concept_path(id: c, format: :html, published: 0)
           {
             id: c.id,
-            url: url,
-            text: CGI.escapeHTML(c.pref_label.to_s),
-            hasChildren: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
+            label: CGI.escapeHTML(c.pref_label.to_s),
             additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
+            load_on_demand: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
+            url: url,
             published: (c.published?) ? true : false,
-            editable: (can?(:branch, c) || can?(:update, c) ? true : false)
+            locked: (can?(:branch, c) || can?(:update, c) ? false : true)
           }
         end
         render json: concepts

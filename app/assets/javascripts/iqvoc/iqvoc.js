@@ -213,20 +213,6 @@ jQuery(document).ready(function($) {
       dataUrl: function(node) {
         return node ? url + '?root=' + node.id : url;
       },
-      // modify json structure
-      dataFilter: function(data) {
-        var loadedData = data.map(function(item) {
-          return {
-            id: item.id,
-            label: item.text,
-            load_on_demand: item.hasChildren,
-            url: item.url,
-            published: item.published ? true : false,
-            editable: item.editable ? true : false
-          };
-        });
-        return loadedData;
-      },
       onCreateLi: function(node, $li) {
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
@@ -240,12 +226,10 @@ jQuery(document).ready(function($) {
           }
 
           // mark locked items
-          if (typeof node.editable != 'undefined' && !node.editable) {
-            var lockIcon = ' <i class="fa fa-lock"/>';
-            link.after(lockIcon);
+          if (typeof node.locked != 'undefined' && node.locked) {
+            link.after(' <i class="fa fa-lock"/>');
           } else {
-            var moveIcon = ' <i class="fa fa-arrows"/>';
-            link.after(moveIcon);
+            link.after(' <i class="fa fa-arrows"/>');
           }
         }
 
@@ -263,7 +247,7 @@ jQuery(document).ready(function($) {
           return false;
         }
         // prevent locked node movement
-        else if (moved_node.editable === false) {
+        else if (moved_node.locked === true) {
           return false;
         }
         else {
