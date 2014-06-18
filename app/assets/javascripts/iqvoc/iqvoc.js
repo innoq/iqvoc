@@ -241,6 +241,9 @@ jQuery(document).ready(function($) {
           if (typeof node.editable != 'undefined' && !node.editable) {
             var lockIcon = ' <i class="fa fa-lock"/>';
             link.after(lockIcon);
+          } else {
+            var moveIcon = ' <i class="fa fa-arrows"/>';
+            link.after(moveIcon);
           }
         }
 
