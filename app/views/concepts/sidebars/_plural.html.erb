@@ -8,10 +8,12 @@
       :icon => 'list-alt',
       :path => alphabetical_concepts_path(:prefix => 'a'),
       :active => params[:controller] == 'concepts/alphabetical' %>
-  <%= sidebar_item :text => t("txt.views.navigation.draft"),
-      :icon => 'list-alt',
-      :path => draft_concepts_path,
-      :active => params[:controller] == 'concepts/draft' %>
+  <% if can?(:update, Iqvoc::Concept.base_class) %>
+    <%= sidebar_item :text => t("txt.views.navigation.draft"),
+        :icon => 'list-alt',
+        :path => draft_concepts_path,
+        :active => params[:controller] == 'concepts/draft' %>
+  <% end %>
   <%= sidebar_item :text => t("txt.views.navigation.expired"),
       :icon => 'list-alt',
       :path => expired_concepts_path(:prefix => 'a'),
