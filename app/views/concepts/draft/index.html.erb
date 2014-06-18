@@ -2,4 +2,4 @@
   :desc => t('txt.views.navigation.draft') %>
 <%= render 'concepts/sidebars/plural' %>
 
-<%= treeview @concepts %>
+<%= render "concepts/hierarchical/treeview", concepts: @concepts, broader: false, hcpath: draft_concepts_path(format: :json), dragabble: true %>

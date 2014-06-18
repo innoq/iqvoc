@@ -183,7 +183,8 @@ jQuery(document).ready(function($) {
 
   // hierarchical tree view
   $("ul.hybrid-treeview").each(function() {
-    var url = $(this).attr("data-url");
+    var url = $(this).data('url');
+    var dragabble = $(this).data('dragabble');
     var container = this;
 
     var saveLabel = $(container).data('save-label');
@@ -202,7 +203,7 @@ jQuery(document).ready(function($) {
     });
 
     $(this).tree({
-      dragAndDrop: true,
+      dragAndDrop: dragabble ? true : false,
       autoEscape: false,
       selectable: false,
       closedIcon: $('<i class="fa fa-plus-square-o"></i>'),

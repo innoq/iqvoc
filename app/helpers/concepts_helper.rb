@@ -17,8 +17,8 @@
 module ConceptsHelper
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
-  def treeview(concepts, broader = false)
-    render "concepts/hierarchical/treeview", concepts: concepts, broader: broader
+  def treeview(concepts, broader = false, dragabble = false)
+    render "concepts/hierarchical/treeview", concepts: concepts, broader: broader, dragabble: false
   end
 
   # turns a hash of concept/relations pairs of arbitrary nesting depth into the

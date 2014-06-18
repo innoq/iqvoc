@@ -1,8 +1,13 @@
-<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) %>
+<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) unless hcpath %>
+<% if dragabble %>
 <ul class="hybrid-treeview" data-url="<%= hcpath %>"
+  data-dragabble="true"
   data-save-label="<%= t('txt.common.save') %>"
   data-copy-label="<%= t('txt.common.copy') %>"
   data-undo-label="<%= t('txt.common.reset') %>">
+<% else %>
+  <ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<% end %>
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
 
