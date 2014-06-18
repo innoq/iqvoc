@@ -257,6 +257,7 @@ jQuery(document).ready(function($) {
         if (moved_node.parent === target_node.parent && position === 'after'){
           return false;
         }
+        // prevent locked node movement
         else if (moved_node.editable === false) {
           return false;
         }
