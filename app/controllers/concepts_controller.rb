@@ -170,7 +170,18 @@ class ConceptsController < ApplicationController
   end
 
   def move
-    # ...
+    moved_node = Iqvoc::Concept.base_class.by_origin(params[:origin])
+    old_parent_node = Iqvoc::Concept.base_class.find(params[:old_parent_node_id])
+    new_parent_node = Iqvoc::Concept.base_class.find(params[:new_parent_node_id])
+
+    case params[:tree_action]
+    when 'move'
+      # move node
+    when 'copy'
+      # copy node
+    end
+
+    render nothing: true
   end
 
   protected
