@@ -184,8 +184,8 @@ class ConceptsController < ApplicationController
     ActiveRecord::Base.transaction do
       if params[:tree_action] == 'move'
         # removed old relations
-        moved_concept.relations.find_by(target_id: old_parent_concept.id).destroy
-        old_parent_concept.relations.find_by(target_id: moved_concept.id).destroy
+        moved_concept.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
+                     .destroy_with_reverse_relation(old_parent_concept)
       end
 
       # get concept to work with
@@ -197,17 +197,15 @@ class ConceptsController < ApplicationController
       end
 
       # add new relations to editable concept
-      new_broader_relation = Concept::Relation::SKOS::Broader::Mono.create(
-        owner: editable_concept,
-        target: new_parent_concept
-      )
-      editable_concept.broader_relations << new_broader_relation
+      Iqvoc::Concept.broader_relation_class.create! do |r|
+        r.owner = editable_concept
+        r.target = new_parent_concept
+      end
 
-      new_narrower_relation = Concept::Relation::SKOS::Narrower::Base.create(
-        owner: new_parent_concept,
-        target: editable_concept
-      )
-      new_parent_concept.narrower_relations << new_narrower_relation
+      Concept::Relation::SKOS::Narrower::Base.create! do |r|
+        r.owner = new_parent_concept
+        r.target = editable_concept
+      end
     end
 
     render nothing: true
