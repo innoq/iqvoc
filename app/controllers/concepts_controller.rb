@@ -170,9 +170,14 @@ class ConceptsController < ApplicationController
   end
 
   def move
-    # TODO: check authorization
-
     moved_concept = Iqvoc::Concept.base_class.find(params[:moved_node_id])
+
+    if moved_concept.published?
+      authorize! :branch, moved_concept
+    else
+      authorize! :update, moved_concept
+    end
+
     old_parent_concept = Iqvoc::Concept.base_class.find(params[:old_parent_node_id])
     new_parent_concept = Iqvoc::Concept.base_class.find(params[:new_parent_node_id])
 
