@@ -60,7 +60,7 @@ class Concepts::HierarchicalController < ConceptsController
             id: c.id,
             label: CGI.escapeHTML(c.pref_label.to_s),
             additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
-            load_on_demand: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
+            load_on_demand: (params[:broader] ? c.broader_relations.published.any? : c.narrower_relations.published.any?),
             url: concept_path(id: c, format: :html),
             published: (c.published?) ? true : false
           }
