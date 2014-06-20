@@ -300,7 +300,8 @@ jQuery(document).ready(function($) {
         200: function() {
           var moved_node = $tree.tree('getNodeById', movedNodeId);
           $tree.tree('updateNode', moved_node, {
-            moved: false
+            moved: false,
+            published: false
           });
         }
       }
