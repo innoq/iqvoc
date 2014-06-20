@@ -249,7 +249,7 @@ jQuery(document).ready(function($) {
           return false;
         }
         // prevent locked node movement
-        else if (moved_node.locked === true) {
+        else if (moved_node.locked === true || target_node.locked === true) {
           return false;
         }
         // only drop node inside nodes, no ordering
