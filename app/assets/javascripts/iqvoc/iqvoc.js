@@ -236,8 +236,8 @@ jQuery(document).ready(function($) {
 
         if(node.moved) {
           // TODO: move data-attributes to parent li to be more DRY
-          var saveButton = $('<button type="button" class="btn btn-primary btn-xs save-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-          var copyButton = $('<button type="button" class="btn btn-primary btn-xs copy-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+          var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
+          var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
           link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
@@ -269,41 +269,27 @@ jQuery(document).ready(function($) {
     });
   });
 
-  // save moved node
-  $('ul.hybrid-treeview').on('click', 'button.save-node-btn', function(event) {
+  // save/copy moved node
+  $('ul.hybrid-treeview').on('click', 'button.node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
-    var node = $tree.tree('getNodeById', $(this).data('node-id'));
-    var oldParentNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
-    var newParentNodeId = $tree.tree('getNodeById', $(this).data('new-parent-node-id'));
+    var treeAction = $(this).data('tree-action');
+    var updateUrl = $(this).data('update-url');
+    var oldParentNodeId = $(this).data('old-parent-node-id');
+    var newParentNodeId = $(this).data('new-parent-node-id');
 
-    console.log('node', node);
-    console.log('oldParentNode', oldParentNode);
+    console.log('treeAction', treeAction);
+    console.log('oldParentNode', oldParentNodeId);
     console.log('newParentNode', newParentNodeId);
 
-    // TODO: do patch request
-    // ...
-    // $.ajax({
-    //   url : '...',
-    //   data : ...,
-    //   type : 'PATCH',
-    //   contentType : 'application/json',
-    //   processData: false,
-    //   dataType: 'json'
-    // });
-  });
-
-  $('ul.hybrid-treeview').on('click', 'button.copy-node-btn', function(event) {
-    var $tree = $('ul.hybrid-treeview');
-    var node = $tree.tree('getNodeById', $(this).data('node-id'));
-    var oldParentNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
-    var newParentNodeId = $tree.tree('getNodeById', $(this).data('new-parent-node-id'));
-
-    console.log('node', node);
-    console.log('oldParentNode', oldParentNode);
-    console.log('newParentNode', newParentNodeId);
-
-    // TODO: do patch request
-    // ...
+    $.ajax({
+      url : updateUrl,
+      type : 'PATCH',
+      data : {
+        tree_action: treeAction,
+        old_parent_node_id: oldParentNodeId,
+        new_parent_node_id: newParentNodeId
+      }
+    });
   });
 
   // reset moved node
