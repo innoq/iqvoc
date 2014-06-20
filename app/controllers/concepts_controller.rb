@@ -185,11 +185,9 @@ class ConceptsController < ApplicationController
 
       # get concept to work with
       if moved_concept.published?
-        # create new version
         editable_concept = moved_concept.branch(current_user)
         editable_concept.save
       else
-        # update current version
         editable_concept = moved_concept
       end
 
