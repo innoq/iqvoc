@@ -252,7 +252,10 @@ jQuery(document).ready(function($) {
         else if (moved_node.locked === true) {
           return false;
         }
-        else {
+        // only drop node inside nodes, no ordering
+        else if (position === 'after') {
+          return false;
+        } else {
           return true;
         }
       }
@@ -274,10 +277,13 @@ jQuery(document).ready(function($) {
     var $tree = $('ul.hybrid-treeview');
     var treeAction = $(this).data('tree-action');
     var updateUrl = $(this).data('update-url');
+
+    var movedNodeId = $(this).data('node-id');
     var oldParentNodeId = $(this).data('old-parent-node-id');
     var newParentNodeId = $(this).data('new-parent-node-id');
 
     console.log('treeAction', treeAction);
+    console.log('movedNodeId', movedNodeId);
     console.log('oldParentNode', oldParentNodeId);
     console.log('newParentNode', newParentNodeId);
 
@@ -286,8 +292,17 @@ jQuery(document).ready(function($) {
       type : 'PATCH',
       data : {
         tree_action: treeAction,
+        moved_node_id: movedNodeId,
         old_parent_node_id: oldParentNodeId,
         new_parent_node_id: newParentNodeId
+      },
+      statusCode: {
+        200: function() {
+          var moved_node = $tree.tree('getNodeById', movedNodeId);
+          $tree.tree('updateNode', moved_node, {
+            moved: false
+          });
+        }
       }
     });
   });
