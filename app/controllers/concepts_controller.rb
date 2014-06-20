@@ -174,37 +174,34 @@ class ConceptsController < ApplicationController
     old_parent_concept = Iqvoc::Concept.base_class.find(params[:old_parent_node_id])
     new_parent_concept = Iqvoc::Concept.base_class.find(params[:new_parent_node_id])
 
-    case params[:tree_action]
-    when 'move'
+    if params[:tree_action] == 'move'
       # removed old relations
       moved_concept.relations.find_by(target_id: old_parent_concept.id).destroy
       old_parent_concept.relations.find_by(target_id: moved_concept.id).destroy
-
-      # get concept to work with
-      if moved_concept.published?
-        # create new version
-        editable_concept = moved_concept.branch(current_user)
-        editable_concept.save
-      else
-        # update current version
-        editable_concept = moved_concept
-      end
-
-      # add new relations to editable concept
-      new_broader_relation = Concept::Relation::SKOS::Broader::Mono.new(
-        owner: editable_concept,
-        target: new_parent_concept
-      )
-      editable_concept.broader_relations << new_broader_relation
-
-      new_narrower_relation = Concept::Relation::SKOS::Narrower::Base.new(
-        owner: new_parent_concept,
-        target: editable_concept
-      )
-      new_parent_concept.narrower_relations << new_narrower_relation
-    when 'copy'
-      # copy node
     end
+
+    # get concept to work with
+    if moved_concept.published?
+      # create new version
+      editable_concept = moved_concept.branch(current_user)
+      editable_concept.save
+    else
+      # update current version
+      editable_concept = moved_concept
+    end
+
+    # add new relations to editable concept
+    new_broader_relation = Concept::Relation::SKOS::Broader::Mono.new(
+      owner: editable_concept,
+      target: new_parent_concept
+    )
+    editable_concept.broader_relations << new_broader_relation
+
+    new_narrower_relation = Concept::Relation::SKOS::Narrower::Base.new(
+      owner: new_parent_concept,
+      target: editable_concept
+    )
+    new_parent_concept.narrower_relations << new_narrower_relation
 
     render nothing: true
   end
