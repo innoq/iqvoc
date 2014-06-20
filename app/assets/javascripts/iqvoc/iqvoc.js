@@ -187,6 +187,7 @@ jQuery(document).ready(function($) {
     var container = this;
 
     var dragabbleSupport = $(container).data('dragabble');
+    var polyhierarchySupport = $(container).data('polyhierarchy-support');
     var saveLabel = $(container).data('save-label');
     var copyLabel = $(container).data('copy-label');
     var undoLabel = $(container).data('undo-label');
@@ -199,7 +200,7 @@ jQuery(document).ready(function($) {
         label: item.children('a').html(),
         load_on_demand: hasChildren,
         id: item.attr('id'),
-        url: item.children('a').attr('href'),
+        url: item.children('a').attr('href')
       };
     });
 
@@ -239,8 +240,11 @@ jQuery(document).ready(function($) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
-
-          link.after(' ', saveButton, ' ', copyButton, ' ', undoButton);
+          link.after(' ', saveButton, ' ', undoButton);
+          
+          if(polyhierarchySupport) {
+            saveButton.after(' ', copyButton);
+          }
         }
       },
       onCanMoveTo: function(moved_node, target_node, position){
