@@ -47,24 +47,25 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def self.by_owner_origin(owner_origin)
     includes(:owner).merge(Concept::Base.by_origin(owner_origin))
+                    .references(:concepts)
   end
 
   def self.by_target_origin(target_origin)
-    includes(:target).
-    merge(Concept::Base.by_origin(target_origin)).
-    references(:concepts)
+    includes(:target).merge(Concept::Base.by_origin(target_origin))
+                     .references(:concepts)
   end
 
   def self.target_editor_selectable
     includes(:target).merge(Concept::Base.editor_selectable)
+                     .references(:concepts)
   end
 
   def self.published
-    includes(:target).merge(Concept::Base.published)
+    includes(:target).merge(Concept::Base.published).references(:concepts)
   end
 
   def self.target_in_edit_mode
-    joins(:target).merge(Concept::Base.in_edit_mode)
+    joins(:target).merge(Concept::Base.in_edit_mode).references(:concepts)
   end
 
   # ********* Methods
