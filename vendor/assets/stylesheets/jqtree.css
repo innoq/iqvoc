@@ -34,9 +34,9 @@ ul.jqtree-tree .jqtree-toggler:hover {
     text-decoration: none;
 }
 
-ul.jqtree-tree .jqtree-element {
+/* ul.jqtree-tree .jqtree-element {
     cursor: pointer;
-}
+} */
 
 .jqtree-tree .jqtree-title {
     color: #1C4257;
