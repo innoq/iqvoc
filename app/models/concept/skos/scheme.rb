@@ -84,4 +84,14 @@ class Concept::SKOS::Scheme < Concept::Base
       Iqvoc::Concept.base_class.where(origin: @inline_top_concept_origins).update_all(top_term: true)
     end
   end
+
+  def mono_hierarchy?
+    Iqvoc::Concept.broader_relation_class.new.kind_of?(
+      Concept::Relation::SKOS::Broader::Mono
+    )
+  end
+
+  def poly_hierarchy?
+    !mono_hierarchy?
+  end
 end
