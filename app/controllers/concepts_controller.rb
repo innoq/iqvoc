@@ -192,13 +192,13 @@ class ConceptsController < ApplicationController
       end
 
       # add new relations to editable concept
-      new_broader_relation = Concept::Relation::SKOS::Broader::Mono.new(
+      new_broader_relation = Concept::Relation::SKOS::Broader::Mono.create(
         owner: editable_concept,
         target: new_parent_concept
       )
       editable_concept.broader_relations << new_broader_relation
 
-      new_narrower_relation = Concept::Relation::SKOS::Narrower::Base.new(
+      new_narrower_relation = Concept::Relation::SKOS::Narrower::Base.create(
         owner: new_parent_concept,
         target: editable_concept
       )
