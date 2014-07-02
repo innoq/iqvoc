@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
           link.after(' ', saveButton, ' ', undoButton);
-          
+
           if(polyhierarchySupport) {
             saveButton.after(' ', copyButton);
           }
