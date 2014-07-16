@@ -8,3 +8,4 @@
 //= require iqvoc/federated_concept_mapper
 //= require iqvoc/concept_mapping_manager
 //= require iqvoc/label_resolver
+//= require iqvoc/treeview
