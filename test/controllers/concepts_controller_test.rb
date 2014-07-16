@@ -50,9 +50,10 @@ class ConceptsControllerTest < ActionController::TestCase
       c.publish
       c.save
     end
+
   end
 
-  test 'unauthorized node movement' do
+  test 'unauthorized node movement request' do
     patch :move,
           lang: 'en',
           origin: @air_sports.origin,
@@ -63,8 +64,35 @@ class ConceptsControllerTest < ActionController::TestCase
     assert_response 401
   end
 
-  test 'bad node movement' do
+  test 'bad node movement request' do
     patch :move, lang: 'en', origin: @air_sports.origin
     assert_response 400
+  end
+
+  test 'concept movement' do
+    UserSession.create(@admin)
+
+    assert_equal 1, @achievement_hobbies.narrower_relations.size
+    assert_equal 0, @sports.narrower_relations.size
+    assert_equal @air_sports.id, @achievement_hobbies.narrower_relations.first.target.id
+
+    # move air_sports from achievement hobbies => sports
+    patch :move,
+          lang: 'en',
+          origin: @air_sports.origin,
+          tree_action: 'move',
+          moved_node_id: @air_sports.id,
+          old_parent_node_id: @achievement_hobbies.id,
+          new_parent_node_id: @sports.id
+    assert_response 200
+
+    # test newly created air_sports draft concept (not published yet)
+    # FIXME: last concept should be the new draft
+    @air_sports_draft_concept = Iqvoc::Concept.base_class.last
+
+    assert_equal @air_sports_draft_concept.rev, 2
+    assert_equal @air_sports_draft_concept.published_version_id, @air_sports.id
+    assert_equal 1, @air_sports_draft_concept.broader_relations.size
+    refute @air_sports_draft_concept.published?
   end
 end
