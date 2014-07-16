@@ -26,7 +26,8 @@ function Treeview(container) {
         label: item.children('a').html(),
         load_on_demand: hasChildren,
         id: item.attr('id'),
-        url: item.children('a').attr('href')
+        url: item.children('a').attr('href'),
+        locked: item.data('top-term') ? true : false
       };
     });
 
