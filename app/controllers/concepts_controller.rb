@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011-2013 innoQ Deutschland GmbH
+# Copyright 2011-2014 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ class ConceptsController < ApplicationController
   end
 
   def move
-    moved_concept = Iqvoc::Concept.base_class.find(params[:moved_node_id])
+    moved_concept = Iqvoc::Concept.base_class.find(params.require(:moved_node_id))
 
     if moved_concept.published?
       authorize! :branch, moved_concept
@@ -178,8 +178,8 @@ class ConceptsController < ApplicationController
       authorize! :update, moved_concept
     end
 
-    old_parent_concept = Iqvoc::Concept.base_class.find(params[:old_parent_node_id])
-    new_parent_concept = Iqvoc::Concept.base_class.find(params[:new_parent_node_id])
+    old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
+    new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
 
     ActiveRecord::Base.transaction do
       if params[:tree_action] == 'move'
