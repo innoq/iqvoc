@@ -178,22 +178,27 @@ class ConceptsController < ApplicationController
       authorize! :update, moved_concept
     end
 
-    old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
     new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
 
     ActiveRecord::Base.transaction do
-      if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
-        # removed old relations
-        moved_concept.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
-                     .destroy_with_reverse_relation(old_parent_concept)
-      end
-
       # get concept to work with
       if moved_concept.published?
         editable_concept = moved_concept.branch(current_user)
         editable_concept.save
       else
         editable_concept = moved_concept
+      end
+
+      if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
+        if moved_concept.top_term
+          editable_concept.update_attribute(:top_term, false)
+        else
+          # removed old relations
+          old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
+
+          editable_concept.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
+                       .destroy_with_reverse_relation(old_parent_concept)
+        end
       end
 
       # add new relations to editable concept
