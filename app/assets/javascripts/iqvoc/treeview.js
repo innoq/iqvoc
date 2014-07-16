@@ -74,6 +74,10 @@ function Treeview(container) {
           }
         }
       },
+      onIsMoveHandle: function($element) {
+        // dom element which acts as move handle
+        return ($element.is('.fa-arrows'));
+      },
       onCanMoveTo: function(moved_node, target_node, position){
         // prevent node movement inside parent node
         if (moved_node.parent === target_node.parent && position === 'after'){
