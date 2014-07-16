@@ -182,7 +182,7 @@ class ConceptsController < ApplicationController
     new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
 
     ActiveRecord::Base.transaction do
-      if params[:tree_action] == 'move'
+      if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
         # removed old relations
         moved_concept.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
                      .destroy_with_reverse_relation(old_parent_concept)
