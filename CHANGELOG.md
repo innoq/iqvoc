@@ -3,9 +3,12 @@
   * [Asynchronous](https://github.com/innoq/iqvoc#background-jobs) SKOS exporter
   * Improved web based SKOS importer
   * Versioning for collections
-  * Concepts, collections and concept scheme can be requested as NTriples
+  * Concepts, collections and concept scheme can be serialized as NTriples
   * Rails 4.1
   * Bootstrap 3
+  * Heroku improvements
+  * Improved thesaurus reset
+  * Fix import of large RDF graphs
 
 ## [4.3.2]
 
