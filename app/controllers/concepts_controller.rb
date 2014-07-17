@@ -34,9 +34,8 @@ class ConceptsController < ApplicationController
   end
 
   def show
-    scope = Iqvoc::Concept.base_class.
-      by_origin(params[:id]).
-      with_associations
+    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations
+
     published = params[:published] == '1' || !params[:published]
     if published
       scope = scope.published
