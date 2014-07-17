@@ -14,7 +14,9 @@
 
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>"
       data-has-children="<%= (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) %>"
-      data-update-url="<%= move_concept_url(concept, format: :json) %>">
+      data-update-url="<%= move_concept_url(concept, format: :json) %>"
+      data-published="<%= concept.published? %>"
+      >
       <%= link_to(concept.pref_label.to_s, concept_url(:id => concept)) %>
       <% if concept.additional_info.present? %>
         (<%= concept.additional_info %>)
