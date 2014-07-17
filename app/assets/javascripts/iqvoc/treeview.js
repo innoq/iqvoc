@@ -21,13 +21,19 @@ function Treeview(container) {
     // build tree data from html markup
     var data = $(this).children('li').map(function() {
       var item = $(this);
-      var hasChildren = item.data('has-children');
+      var published = item.data('published');
+      var concept_url = item.children('a').attr('href');
+      if (published === false) {
+        concept_url+= '?published=0';
+      }
+
       return {
         label: item.children('a').html(),
-        load_on_demand: hasChildren,
+        load_on_demand: item.data('has-children'),
         id: item.attr('id'),
-        url: item.children('a').attr('href'),
-        update_url: item.data('update-url')
+        url: concept_url,
+        update_url: item.data('update-url'),
+        published: published
       };
     });
 
@@ -138,6 +144,19 @@ function Treeview(container) {
             moved: false,
             published: false
           });
+
+          var old_parent_node = $tree.tree('getNodeById', oldParentNodeId);
+          $tree.tree('updateNode', old_parent_node, {
+            moved: false,
+            published: false
+          });
+
+          var new_parent_node = $tree.tree('getNodeById', newParentNodeId);
+          $tree.tree('updateNode', new_parent_node, {
+            moved: false,
+            published: false
+          });
+
         }
       }
     });
