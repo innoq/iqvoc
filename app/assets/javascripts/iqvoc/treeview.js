@@ -55,6 +55,8 @@ function Treeview(container) {
         if (dragabbleSupport) {
           // mark published/unpublished items
           if (typeof node.published != 'undefined' && !node.published) {
+            // modify draft link
+            link.attr('href', link.attr('href')+'?published=0');
             link.addClass('unpublished');
           } else {
             link.addClass('published');
