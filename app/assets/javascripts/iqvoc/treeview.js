@@ -63,7 +63,7 @@ function Treeview(container) {
           }
 
           // mark locked items
-          if (typeof node.locked != 'undefined' && node.locked) {
+          if (typeof node.locked !== 'undefined' && node.locked) {
             link.after(' <i class="fa fa-lock"/>');
           } else {
             link.after(' <i class="fa fa-arrows"/>');
