@@ -48,7 +48,8 @@ class ClientAugmentationTest < ActionDispatch::IntegrationTest
     concept_row = table.all('tr')[1]
 
     # click row to visit concept page
-    concept_row.click
+    concept_row.trigger('click')
+    sleep 0.1
     uri = URI.parse(current_url)
     uri = '%s?%s' % [uri.path, uri.query]
     assert_equal concept_path(@concept, published: 0, lang: 'de', format: 'html'), uri
