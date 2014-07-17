@@ -54,7 +54,7 @@ function Treeview(container) {
 
         if (dragabbleSupport) {
           // mark published/unpublished items
-          if (typeof node.published != 'undefined' && !node.published) {
+          if (typeof node.published !== 'undefined' && !node.published) {
             // modify draft link
             link.attr('href', link.attr('href')+'?published=0');
             link.addClass('unpublished');
@@ -147,17 +147,19 @@ function Treeview(container) {
             published: false
           });
 
-          var old_parent_node = $tree.tree('getNodeById', oldParentNodeId);
-          $tree.tree('updateNode', old_parent_node, {
-            moved: false,
-            published: false
-          });
-
           var new_parent_node = $tree.tree('getNodeById', newParentNodeId);
           $tree.tree('updateNode', new_parent_node, {
             moved: false,
             published: false
           });
+
+          if (oldParentNodeId !== 'undefined'){
+            var old_parent_node = $tree.tree('getNodeById', oldParentNodeId);
+            $tree.tree('updateNode', old_parent_node, {
+              moved: false,
+              published: false
+            });
+          }
 
         }
       }
