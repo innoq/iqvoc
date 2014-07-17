@@ -179,37 +179,33 @@ class ConceptsController < ApplicationController
     end
 
     new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
+    new_parent_concept_editable = editable_concept(new_parent_concept)
 
     ActiveRecord::Base.transaction do
-      # get concept to work with
-      if moved_concept.published?
-        editable_concept = moved_concept.branch(current_user)
-        editable_concept.save
-      else
-        editable_concept = moved_concept
-      end
+      moved_concept_editable = editable_concept(moved_concept)
 
       if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
         if moved_concept.top_term
-          editable_concept.update_attribute(:top_term, false)
+          moved_concept_editable.update_attribute(:top_term, false)
         else
           # removed old relations
           old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
+          old_parent_concept_editable = editable_concept(old_parent_concept)
 
-          editable_concept.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
-                       .destroy_with_reverse_relation(old_parent_concept)
+          moved_concept_editable.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
+                       .destroy_with_reverse_relation(old_parent_concept_editable)
         end
       end
 
       # add new relations to editable concept
       Iqvoc::Concept.broader_relation_class.create! do |r|
-        r.owner = editable_concept
-        r.target = new_parent_concept
+        r.owner = moved_concept_editable
+        r.target = new_parent_concept_editable
       end
 
       Concept::Relation::SKOS::Narrower::Base.create! do |r|
-        r.owner = new_parent_concept
-        r.target = editable_concept
+        r.owner = new_parent_concept_editable
+        r.target = moved_concept_editable
       end
     end
 
@@ -220,6 +216,21 @@ class ConceptsController < ApplicationController
 
   def concept_params
     params.require(:concept).permit!
+  end
+
+  # get concept to work with
+  # return a new version of the concept or the current draft (if exists)
+  def editable_concept(concept)
+    if concept.published?
+      # create a new version
+      editable_concept = concept.branch(current_user)
+      editable_concept.save
+    else
+      # use current draft concept
+      editable_concept = concept
+    end
+
+    editable_concept
   end
 
   # TODO: rename to match the behavior of the method
