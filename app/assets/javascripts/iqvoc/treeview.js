@@ -125,11 +125,6 @@ function Treeview(container) {
     var oldParentNodeId = $(this).data('old-parent-node-id');
     var newParentNodeId = $(this).data('new-parent-node-id');
 
-    console.log('treeAction', treeAction);
-    console.log('movedNodeId', movedNodeId);
-    console.log('oldParentNode', oldParentNodeId);
-    console.log('newParentNode', newParentNodeId);
-
     $.ajax({
       url : updateUrl,
       type : 'PATCH',
@@ -141,26 +136,9 @@ function Treeview(container) {
       },
       statusCode: {
         200: function() {
-          var moved_node = $tree.tree('getNodeById', movedNodeId);
-          $tree.tree('updateNode', moved_node, {
-            moved: false,
-            published: false
+          [movedNodeId, newParentNodeId, oldParentNodeId].forEach(function(nodeId){
+            setToDraft(nodeId, $tree);
           });
-
-          var new_parent_node = $tree.tree('getNodeById', newParentNodeId);
-          $tree.tree('updateNode', new_parent_node, {
-            moved: false,
-            published: false
-          });
-
-          if (oldParentNodeId !== 'undefined'){
-            var old_parent_node = $tree.tree('getNodeById', oldParentNodeId);
-            $tree.tree('updateNode', old_parent_node, {
-              moved: false,
-              published: false
-            });
-          }
-
         }
       }
     });
@@ -176,6 +154,16 @@ function Treeview(container) {
     $tree.tree('updateNode', node, {moved: false});
     $tree.tree('moveNode', node, targetNode, 'inside');
   });
+
+  function setToDraft(nodeId, $tree) {
+    if (nodeId !== 'undefined') {
+      var moved_node = $tree.tree('getNodeById', nodeId);
+      $tree.tree('updateNode', moved_node, {
+        moved: false,
+        published: false
+      });
+    }
+  }
 }
 
 return function(selector) {
