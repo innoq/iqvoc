@@ -71,10 +71,14 @@ function Treeview(container) {
         }
 
         if(node.moved) {
-          // TODO: move data-attributes to parent li to be more DRY
-          var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-          var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'" data-new-parent-node-id="' + node.target_node_id +'" data-update-url="'+ node.update_url +'" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
-          var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn" data-node-id="' + node.id + '" data-old-parent-node-id="' + node.old_parent_id +'"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
+          $li.data('node-id', node.id);
+          $li.data('old-parent-node-id', node.old_parent_id);
+          $li.data('new-parent-node-id', node.target_node_id);
+          $li.data('update-url', node.update_url);
+
+          var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
+          var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+          var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
           link.after(' ', saveButton, ' ', undoButton);
 
           if(polyhierarchySupport) {
@@ -119,11 +123,11 @@ function Treeview(container) {
   $('ul.hybrid-treeview').on('click', 'button.node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
     var treeAction = $(this).data('tree-action');
-    var updateUrl = $(this).data('update-url');
+    var updateUrl = $(this).closest('li').data('update-url');
 
-    var movedNodeId = $(this).data('node-id');
-    var oldParentNodeId = $(this).data('old-parent-node-id');
-    var newParentNodeId = $(this).data('new-parent-node-id');
+    var movedNodeId = $(this).closest('li').data('node-id');
+    var oldParentNodeId = $(this).closest('li').data('old-parent-node-id');
+    var newParentNodeId = $(this).closest('li').data('new-parent-node-id');
 
     $.ajax({
       url : updateUrl,
