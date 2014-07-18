@@ -21,19 +21,14 @@ function Treeview(container) {
     // build tree data from html markup
     var data = $(this).children('li').map(function() {
       var item = $(this);
-      var published = item.data('published');
-      var concept_url = item.children('a').attr('href');
-      if (published === false) {
-        concept_url+= '?published=0';
-      }
 
       return {
         label: item.children('a').html(),
         load_on_demand: item.data('has-children'),
         id: item.attr('id'),
-        url: concept_url,
+        url: item.children('a').attr('href'),
         update_url: item.data('update-url'),
-        published: published
+        published: item.data('published')
       };
     });
 
@@ -56,7 +51,10 @@ function Treeview(container) {
           // mark published/unpublished items
           if (typeof node.published !== 'undefined' && !node.published) {
             // modify draft link
-            link.attr('href', link.attr('href')+'?published=0');
+            if (link.attr('href').indexOf('published') < 0) {
+              link.attr('href', link.attr('href')+'?published=0'); // FIXME: implicit knowledge
+            }
+
             link.addClass('unpublished');
           } else {
             link.addClass('published');
