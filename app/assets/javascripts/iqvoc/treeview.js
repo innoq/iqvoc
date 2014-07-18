@@ -79,10 +79,10 @@ function Treeview(container) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
-          link.after(' ', saveButton, ' ', undoButton);
+          link.after(saveButton, undoButton);
 
           if(polyhierarchySupport) {
-            saveButton.after(' ', copyButton);
+            saveButton.after(copyButton);
           }
         }
       },
