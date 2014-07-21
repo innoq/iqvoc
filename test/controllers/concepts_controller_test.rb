@@ -96,21 +96,28 @@ class ConceptsControllerTest < ActionController::TestCase
     assert_response 200
 
     # assign new concepts versions
-    @air_sports_draft = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
-    @sports_draft = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
-    @achievement_hobbies_draft = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
+    @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
+    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
+    @air_sports_version = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
 
     # all new concepts are unpublished
-    refute @air_sports_draft.published?
-    refute @sports_draft.published?
-    refute @achievement_hobbies_draft.published?
+    refute @air_sports_version.published?
+    refute @sports_version.published?
+    refute @achievement_hobbies_version.published?
 
-    assert_equal @air_sports_draft.rev, 2
-    assert_equal @air_sports_draft.published_version_id, @air_sports.id
+    assert_equal @air_sports_version.rev, 2
+    assert_equal @sports_version.rev, 2
+    assert_equal @achievement_hobbies_version.rev, 2
+
+    assert_equal @air_sports_version.published_version_id, @air_sports.id
 
     # test relations
-    assert_equal 0, @achievement_hobbies_draft.narrower_relations.size
-    assert_equal 1, @sports_draft.narrower_relations.size
-    assert_equal 1, @air_sports_draft.broader_relations.size
+    assert_equal 0, @achievement_hobbies_version.narrower_relations.size
+
+    assert_equal 1, @sports_version.narrower_relations.size
+    assert_equal @sports_version.narrower_relations.first.target, @air_sports_version
+
+    assert_equal 1, @air_sports_version.broader_relations.size
+    assert_equal @air_sports_version.broader_relations.first.target, @sports_version
   end
 end

@@ -178,33 +178,36 @@ class ConceptsController < ApplicationController
     end
 
     new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
-    new_parent_concept_editable = editable_concept(new_parent_concept)
+    new_parent_concept_version = concept_version(new_parent_concept)
 
     ActiveRecord::Base.transaction do
-      moved_concept_editable = editable_concept(moved_concept)
+      moved_concept_version = concept_version(moved_concept)
 
       if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
-        if moved_concept.top_term
-          moved_concept_editable.update_attribute(:top_term, false)
+        if moved_concept.top_term?
+          moved_concept_version.update_attribute(:top_term, false)
         else
           # removed old relations
           old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
-          old_parent_concept_editable = editable_concept(old_parent_concept)
+          old_parent_concept_version = concept_version(old_parent_concept)
 
-          moved_concept_editable.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
-                       .destroy_with_reverse_relation(old_parent_concept_editable)
+          moved_concept_version.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
+             .destroy_with_reverse_relation(old_parent_concept_version)
+
+          old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id).destroy!
+          moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id).destroy!
         end
       end
 
-      # add new relations to editable concept
+      # add new relations to concept version
       Iqvoc::Concept.broader_relation_class.create! do |r|
-        r.owner = moved_concept_editable
-        r.target = new_parent_concept_editable
+        r.owner = moved_concept_version
+        r.target = new_parent_concept_version
       end
 
       Concept::Relation::SKOS::Narrower::Base.create! do |r|
-        r.owner = new_parent_concept_editable
-        r.target = moved_concept_editable
+        r.owner = new_parent_concept_version
+        r.target = moved_concept_version
       end
     end
 
@@ -219,17 +222,17 @@ class ConceptsController < ApplicationController
 
   # get concept to work with
   # return a new version of the concept or the current draft (if exists)
-  def editable_concept(concept)
+  def concept_version(concept)
     if concept.published?
       # create a new version
-      editable_concept = concept.branch(current_user)
-      editable_concept.save
+      version = concept.branch(current_user)
+      version.save!
     else
       # use current draft concept
-      editable_concept = concept
+      version = concept
     end
 
-    editable_concept
+    version
   end
 
   # TODO: rename to match the behavior of the method
