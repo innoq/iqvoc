@@ -32,19 +32,23 @@ class ConceptsControllerTest < ActionController::TestCase
       u.active = true
     end
 
+    # Concept hierarchy for testing
+    #
+    # + Achievement Hobbies
+    #   - Air Sport
+    # + Sports
+    #
     @air_sports = Concept::SKOS::Base.new.tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.publish
       c.save
     end
-
     @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
       Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
       c.publish
       c.save
     end
-
     @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
       c.publish
@@ -76,7 +80,12 @@ class ConceptsControllerTest < ActionController::TestCase
     assert_equal 0, @sports.narrower_relations.size
     assert_equal @air_sports.id, @achievement_hobbies.narrower_relations.first.target.id
 
-    # move air_sports from achievement hobbies => sports
+    # Move concept:
+    #
+    # + Achievement Hobbies
+    # + Sports
+    #   - Air Sport
+    #
     patch :move,
           lang: 'en',
           origin: @air_sports.origin,
@@ -86,13 +95,22 @@ class ConceptsControllerTest < ActionController::TestCase
           new_parent_node_id: @sports.id
     assert_response 200
 
-    # test newly created air_sports draft concept (not published yet)
-    # FIXME: last concept should be the new draft
-    @air_sports_draft_concept = Iqvoc::Concept.base_class.last
+    # assign new concepts versions
+    @air_sports_draft = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
+    @sports_draft = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
+    @achievement_hobbies_draft = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
 
-    assert_equal @air_sports_draft_concept.rev, 2
-    assert_equal @air_sports_draft_concept.published_version_id, @air_sports.id
-    assert_equal 1, @air_sports_draft_concept.broader_relations.size
-    refute @air_sports_draft_concept.published?
+    # all new concepts are unpublished
+    refute @air_sports_draft.published?
+    refute @sports_draft.published?
+    refute @achievement_hobbies_draft.published?
+
+    assert_equal @air_sports_draft.rev, 2
+    assert_equal @air_sports_draft.published_version_id, @air_sports.id
+
+    # test relations
+    assert_equal 0, @achievement_hobbies_draft.narrower_relations.size
+    assert_equal 1, @sports_draft.narrower_relations.size
+    assert_equal 1, @air_sports_draft.broader_relations.size
   end
 end
