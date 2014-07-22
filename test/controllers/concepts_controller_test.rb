@@ -73,7 +73,7 @@ class ConceptsControllerTest < ActionController::TestCase
     assert_response 400
   end
 
-  test 'concept movement' do
+  test 'concept movement request' do
     UserSession.create(@admin)
 
     assert_equal 1, @achievement_hobbies.narrower_relations.size
@@ -119,5 +119,13 @@ class ConceptsControllerTest < ActionController::TestCase
 
     assert_equal 1, @air_sports_version.broader_relations.size
     assert_equal @air_sports_version.broader_relations.first.target, @sports_version
+  end
+
+  test 'concept movement with unpublished participants' do
+    skip
+  end
+
+  test 'concept clone request' do
+    skip
   end
 end
