@@ -40,26 +40,32 @@ function Treeview(container) {
       openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,
       dataUrl: function(node) {
-        return node ? url + '?root=' + node.id : url;
+        // build ajax url (add root param)
+        // FIXME: uggly url concatenation
+        if (url.indexOf('published') < 0) {
+          return node ? url + '?root=' + node.id : url;
+        }
+        else {
+          return node ? url + '&root=' + node.id : url;
+        }
       },
       onCreateLi: function(node, $li) {
         // TODO: add additionalText if present
         var link = $('<a href="' + node.url +'">' + node.name + '</a>');
         $li.find('.jqtree-title').replaceWith(link);
 
-        if (dragabbleSupport) {
-          // mark published/unpublished items
-          if (typeof node.published !== 'undefined' && !node.published) {
-            // modify draft link
-            if (link.attr('href').indexOf('published') < 0) {
-              link.attr('href', link.attr('href')+'?published=0'); // FIXME: implicit knowledge
-            }
-
-            link.addClass('unpublished');
-          } else {
-            link.addClass('published');
+        // mark published/unpublished items
+        if (typeof node.published !== 'undefined' && !node.published) {
+          // modify draft link
+          if (link.attr('href').indexOf('published') < 0) {
+            link.attr('href', link.attr('href')+'?published=0'); // FIXME: implicit knowledge
           }
+          link.addClass('unpublished');
+        } else {
+          link.addClass('published');
+        }
 
+        if (dragabbleSupport) {
           // mark locked items
           if (typeof node.locked !== 'undefined' && node.locked) {
             link.after(' <i class="fa fa-lock"/>');
