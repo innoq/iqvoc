@@ -60,8 +60,17 @@ class Concept::Relation::Base < ActiveRecord::Base
                      .references(:concepts)
   end
 
+  def self.published_with_newer_versions
+    includes(:target).merge(Concept::Base.published_with_newer_versions)
+                     .references(:concepts)
+  end
+
   def self.published
     includes(:target).merge(Concept::Base.published).references(:concepts)
+  end
+
+  def self.unpublished
+    includes(:target).merge(Concept::Base.unpublished).references(:concepts)
   end
 
   def self.target_in_edit_mode
