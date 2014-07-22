@@ -195,7 +195,10 @@ class ConceptsController < ApplicationController
              .destroy_with_reverse_relation(old_parent_concept_version)
 
           old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id).destroy!
-          moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id).destroy!
+
+          if moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id)
+            moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id).destroy!
+          end
         end
       end
 
