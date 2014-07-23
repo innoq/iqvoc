@@ -194,8 +194,10 @@ class ConceptsController < ApplicationController
           moved_concept_version.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
              .destroy_with_reverse_relation(old_parent_concept_version)
 
-          old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id).destroy!
-
+          # delete relations which will be created during branching
+          if old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id)
+            old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id).destroy!
+          end
           if moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id)
             moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id).destroy!
           end

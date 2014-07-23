@@ -122,7 +122,59 @@ class ConceptsControllerTest < ActionController::TestCase
   end
 
   test 'concept movement with unpublished participants' do
-    skip
+    UserSession.create(@admin)
+
+    # create unpublished concepts
+    @air_sports = Concept::SKOS::Base.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      c.save
+    end
+    @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
+      c.save
+    end
+    @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      c.save
+    end
+
+    patch :move,
+          lang: 'en',
+          origin: @air_sports.origin,
+          tree_action: 'move',
+          moved_node_id: @air_sports.id,
+          old_parent_node_id: @achievement_hobbies.id,
+          new_parent_node_id: @sports.id
+    assert_response 200
+
+    # assign new concepts versions
+    @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
+    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
+    @air_sports_version = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
+
+    # all new concepts are unpublished
+    refute @air_sports_version.published?
+    refute @sports_version.published?
+    refute @achievement_hobbies_version.published?
+
+    assert_equal @air_sports_version.rev, 1
+    assert_equal @sports_version.rev, 1
+    assert_equal @achievement_hobbies_version.rev, 1
+
+    # modified concept are the already existing concepts
+    assert_equal @achievement_hobbies, @achievement_hobbies_version
+    assert_equal @sports, @sports_version
+    assert_equal @air_sports, @air_sports_version
+
+    # test relations
+    assert_equal 0, @achievement_hobbies_version.narrower_relations.size
+
+    assert_equal 1, @sports_version.narrower_relations.size
+    assert_equal @sports_version.narrower_relations.first.target, @air_sports_version
+
+    assert_equal 1, @air_sports_version.broader_relations.size
+    assert_equal @air_sports_version.broader_relations.first.target, @sports_version
   end
 
   test 'concept clone request' do
