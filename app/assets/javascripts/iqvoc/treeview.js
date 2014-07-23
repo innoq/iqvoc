@@ -164,7 +164,7 @@ function Treeview(container) {
   });
 
   function setToDraft(nodeId, $tree) {
-    if (nodeId !== 'undefined') {
+    if (typeof nodeId !== 'undefined') {
       var moved_node = $tree.tree('getNodeById', nodeId);
       $tree.tree('updateNode', moved_node, {
         moved: false,
