@@ -1,3 +1,13 @@
+## [4.5.0]
+
+4.5.0 brings drag'n'drop concept editing capabilities and a new hierarchical
+concept draft view. Browse your thesaurus an see where new concepts version
+exists.
+
+  * Add hierarchical draft view with new concept versions
+  * Drag'n'Drop support for moving and copying concepts inside hierarchies
+  * Minor bugfixes
+
 ## [4.4.0]
 
   * [Asynchronous](https://github.com/innoq/iqvoc#background-jobs) SKOS exporter
