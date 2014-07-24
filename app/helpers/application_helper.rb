@@ -114,4 +114,9 @@ module ApplicationHelper
       Iqvoc.title
     end
   end
+
+  def loading_indicator(label)
+    "<i class=\"fa fa-spin fa-spinner\"></i> #{label}"
+  end
+
 end

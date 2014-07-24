@@ -3,6 +3,6 @@
   <%= f.email_field :email %>
   <%= f.password_field :password %>
   <%= f.form_group do %>
-    <%= submit_tag t("txt.views.user_sessions.login"), :class => 'btn btn-primary' %>
+    <%= button_tag t("txt.views.user_sessions.login"), :class => 'btn btn-primary', data: {disable_with: loading_indicator(t("txt.views.user_sessions.login"))} %>
   <% end %>
 <% end %>
