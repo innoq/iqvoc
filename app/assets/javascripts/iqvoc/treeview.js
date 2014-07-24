@@ -116,6 +116,9 @@ function Treeview(container) {
   // mark moved nodes
   $('ul.hybrid-treeview').on('tree.move', function(event) {
     var moved_node = event.move_info.moved_node;
+
+    debugger;
+
     $(this).tree('updateNode', moved_node, {
       moved: true,
       old_parent_id: moved_node.parent.id,
@@ -162,8 +165,8 @@ function Treeview(container) {
   // TODO: move to correct old position, currently moved on top
   $('ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
-    var node = $tree.tree('getNodeById', $(this).data('node-id'));
-    var targetNode = $tree.tree('getNodeById', $(this).data('old-parent-node-id'));
+    var node = $tree.tree('getNodeById', $(this).closest('li').data('node-id'));
+    var targetNode = $tree.tree('getNodeById', $(this).closest('li').data('old-parent-node-id'));
 
     $tree.tree('updateNode', node, {moved: false});
     $tree.tree('moveNode', node, targetNode, 'inside');
