@@ -50,6 +50,7 @@ en:
      value: "Value"
      back: Back
      welcome: "Hello %{user_name}"
+     move: "Move"
      save: "Save"
      copy: 'Copy'
      reset: "Reset"

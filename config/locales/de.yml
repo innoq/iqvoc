@@ -50,6 +50,7 @@ de:
      value: "Wert"
      back: Zurück
      welcome: "Hallo %{user_name}"
+     move: "Verschieben"
      save: "Speichern"
      copy: "Kopieren"
      reset: "Zurücksetzen"
