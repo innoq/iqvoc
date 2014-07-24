@@ -50,7 +50,9 @@ en:
      value: "Value"
      back: Back
      welcome: "Hello %{user_name}"
+     move: "Move"
      save: "Save"
+     copy: 'Copy'
      reset: "Reset"
      language: "Language"
      add_note: "Add"
@@ -173,6 +175,7 @@ en:
        instance_configuration: "Configuration"
        hierarchical: "Hierarchical"
        alphabetical: "Alphabetical"
+       draft: "Draft"
        expired: "Expired"
        search: "Search"
        about: "About"

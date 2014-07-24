@@ -1,17 +1,30 @@
-<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) %>
-<ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) unless hcpath %>
+<% if dragabble %>
+<ul class="hybrid-treeview" data-url="<%= hcpath %>"
+  data-dragabble="true"
+  data-polyhierarchy-support="<%= Iqvoc::Concept.root_class.instance.poly_hierarchy? %>"
+  data-save-label="<%= t('txt.common.move') %>"
+  data-copy-label="<%= t('txt.common.copy') %>"
+  data-undo-label="<%= t('txt.common.reset') %>">
+<% else %>
+  <ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<% end %>
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
 
-    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(concept.pref_label.to_s, concept_url(:id => concept)) %>
+    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>"
+      data-has-children="<%= (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) %>"
+      data-update-url="<%= move_concept_url(concept, format: :json) %>"
+      data-published="<%= concept.published? %>"
+    >
+      <% if concept.published? %>
+        <%= link_to(concept.pref_label.to_s, concept_url(id: concept)) %>
+      <% else %>
+        <%= link_to(concept.pref_label.to_s, concept_url(id: concept, published: 0)) %>
+      <% end %>
+
       <% if concept.additional_info.present? %>
         (<%= concept.additional_info %>)
-      <% end %>
-      <% if has_children %>
-        <ul>
-          <li><span class="placeholder">&nbsp;</span></li>
-        </ul>
       <% end %>
     </li>
   <% end %>

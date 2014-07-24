@@ -50,7 +50,9 @@ de:
      value: "Wert"
      back: Zurück
      welcome: "Hallo %{user_name}"
+     move: "Verschieben"
      save: "Speichern"
+     copy: "Kopieren"
      reset: "Zurücksetzen"
      language: "Sprache"
      add_note: "Hinzufügen"
@@ -165,6 +167,7 @@ de:
        instance_configuration: "Konfiguration"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
+       draft: "Bearbeitung"
        expired: "Abgelaufene"
        search: "Suche"
        about: "Über"

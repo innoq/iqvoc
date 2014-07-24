@@ -3,7 +3,11 @@
   <div class="relation-body">
     <% if concept.narrower_relations.any? %>
       <div class="selector">
-        <%= treeview(concept.narrower_relations.map(&:target)) %>
+        <% if(params[:published] == '0') %>
+          <%= treeview(concept.narrower_relations.published_with_newer_versions.map(&:target)) %>
+        <% else %>
+          <%= treeview(concept.narrower_relations.published.map(&:target)) %>
+        <% end %>
       </div>
     <% end %>
   </div>

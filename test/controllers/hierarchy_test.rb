@@ -390,8 +390,8 @@ boot:
   end
 
   def link_concepts(source, rel_class, target)
-      rel_name = rel_class.name.to_relation_name
-      source.send(rel_name).create_with_reverse_relation(target)
+    rel_name = rel_class.name.to_relation_name
+    source.send(rel_name).create_with_reverse_relation(target)
   end
 
   def create_concept(origin, pref_label, label_lang, published=true)

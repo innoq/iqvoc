@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', as: 'concept_versions_to_review'
     get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
+    patch 'concepts/:origin/move'       => 'concepts#move', as: 'move_concept'
+
     post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
     post 'collections/:origin/lock'        => 'collections/versions#lock',      as: 'collection_versions_lock'

@@ -13,6 +13,7 @@ module Iqvoc
 
       rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
       rescue_from CanCan::AccessDenied, with: :handle_access_denied
+      rescue_from ActionController::ParameterMissing, with: :handle_bad_request
     end
 
     protected
@@ -48,6 +49,14 @@ module Iqvoc
       respond_to do |format|
         format.html { render template: 'errors/not_found', status: 404 }
         format.any  { head 404 }
+      end
+    end
+
+    def handle_bad_request(exception)
+      @exception = exception
+
+      respond_to do |format|
+        format.any  { head 400 }
       end
     end
 
