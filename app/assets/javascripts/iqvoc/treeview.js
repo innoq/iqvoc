@@ -211,7 +211,7 @@ function Treeview(container) {
 }
 
 return function(selector) {
-  return new Treeview(selector); // XXX: returning an instance of a private class seems weird
+  return new Treeview(selector);
 };
 
 }(jQuery));
