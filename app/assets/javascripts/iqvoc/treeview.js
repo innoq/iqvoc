@@ -138,6 +138,7 @@ function Treeview(container) {
 
     var movedNodeId = $(this).closest('li').data('node-id');
     var oldParentNodeId = $(this).closest('li').data('old-parent-node-id');
+    var oldPreviousSiblingId = $(this).closest('li').data('old-previous-sibling-id');
     var newParentNodeId = $(this).closest('li').data('new-parent-node-id');
 
     $.ajax({
@@ -151,13 +152,22 @@ function Treeview(container) {
       },
       statusCode: {
         200: function() {
-          // TODO: copy node to previous position if tree_action == 'copy'
-          // add node to old parent, necessary to see both node directly after movement,
-          // this is not necessary if you refresh the page
-
           [movedNodeId, newParentNodeId, oldParentNodeId].forEach(function(nodeId){
             setToDraft(nodeId, $tree);
           });
+
+          // add node to old parent, necessary to see both node directly after movement,
+          // this is not necessary if you refresh the page
+          if (treeAction === 'copy') {
+            var node = $tree.tree('getNodeById', movedNodeId);
+            if (typeof oldPreviousSiblingId !== 'undefined') {
+              var old_previous_sibling = $tree.tree('getNodeById', oldPreviousSiblingId);
+              $tree.tree('addNodeAfter', node, old_previous_sibling);
+            } else if (typeof oldParentNodeId !== 'undefined') {
+              var old_parent_node = $tree.tree('getNodeById', oldParentNodeId);
+              $tree.tree('appendNode', node, old_parent_node);
+            }
+          }
         }
       }
     });
