@@ -78,6 +78,7 @@ function Treeview(container) {
           $li.data('node-id', node.id);
           $li.data('old-parent-node-id', node.old_parent_id);
           $li.data('new-parent-node-id', node.target_node_id);
+          $li.data('old-previous-sibling-id', node.old_previous_sibling_id);
           $li.data('update-url', node.update_url);
 
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
@@ -117,13 +118,16 @@ function Treeview(container) {
   $('ul.hybrid-treeview').on('tree.move', function(event) {
     var moved_node = event.move_info.moved_node;
 
-    debugger;
-
     $(this).tree('updateNode', moved_node, {
       moved: true,
-      old_parent_id: moved_node.parent.id,
       target_node_id: event.move_info.target_node.id
     });
+
+    if (moved_node.getPreviousSibling() !== null) {
+      $(this).tree('updateNode', moved_node, {old_previous_sibling_id: moved_node.getPreviousSibling().id});
+    } else {
+      $(this).tree('updateNode', moved_node, {old_parent_id: moved_node.parent.id});
+    }
   });
 
   // save/copy moved node
@@ -150,7 +154,7 @@ function Treeview(container) {
           if (treeAction === 'copy') {
             // add node to old parent, necessary to see both node directly after movement,
             // this is not necessary if you refresh the page
-            appennNode(movedNodeId, oldParentNodeId, $tree)
+            appennNode(movedNodeId, oldParentNodeId, $tree);
           }
 
           [movedNodeId, newParentNodeId, oldParentNodeId].forEach(function(nodeId){
@@ -162,14 +166,21 @@ function Treeview(container) {
   });
 
   // reset moved node
-  // TODO: move to correct old position, currently moved on top
   $('ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
     var node = $tree.tree('getNodeById', $(this).closest('li').data('node-id'));
     var targetNode = $tree.tree('getNodeById', $(this).closest('li').data('old-parent-node-id'));
+    var old_previous_sibling = $tree.tree('getNodeById', $(this).closest('li').data('old-previous-sibling-id'));
 
+    console.log('old_previous_sibling', old_previous_sibling);
+
+    if (typeof old_previous_sibling !== 'undefined') {
+      $tree.tree('moveNode', node, old_previous_sibling, 'after');
+    }
+    else {
+      $tree.tree('moveNode', node, targetNode, 'inside');
+    }
     $tree.tree('updateNode', node, {moved: false});
-    $tree.tree('moveNode', node, targetNode, 'inside');
   });
 
   function setToDraft(nodeId, $tree) {
