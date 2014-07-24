@@ -125,7 +125,8 @@ function Treeview(container) {
 
     if (moved_node.getPreviousSibling() !== null) {
       $(this).tree('updateNode', moved_node, {old_previous_sibling_id: moved_node.getPreviousSibling().id});
-    } else {
+    }
+    if (typeof moved_node.parent.id !== 'undefined') {
       $(this).tree('updateNode', moved_node, {old_parent_id: moved_node.parent.id});
     }
   });
