@@ -168,17 +168,11 @@ function Treeview(container) {
   // reset moved node
   $('ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
     var $tree = $('ul.hybrid-treeview');
-    var node = $tree.tree('getNodeById', $(this).closest('li').data('node-id'));
-    var targetNode = $tree.tree('getNodeById', $(this).closest('li').data('old-parent-node-id'));
-    var old_previous_sibling = $tree.tree('getNodeById', $(this).closest('li').data('old-previous-sibling-id'));
+    var nodeId = $(this).closest('li').data('node-id');
+    var oldPreviousSiblingId = $(this).closest('li').data('old-previous-sibling-id');
+    var oldParentNodeId = $(this).closest('li').data('old-parent-node-id');
 
-    if (typeof old_previous_sibling !== 'undefined') {
-      $tree.tree('moveNode', node, old_previous_sibling, 'after');
-    }
-    else if (typeof targetNode !== 'undefined') {
-      $tree.tree('moveNode', node, targetNode, 'inside');
-    }
-    $tree.tree('updateNode', node, {moved: false});
+    moveToOldPosition(nodeId, oldPreviousSiblingId, oldParentNodeId, $tree);
   });
 
   function setToDraft(nodeId, $tree) {
@@ -189,6 +183,22 @@ function Treeview(container) {
         published: false
       });
     }
+  }
+
+
+  function moveToOldPosition(nodeId, oldPreviousSiblingId, oldParentNodeId, $tree) {
+
+    var node = $tree.tree('getNodeById', nodeId);
+
+    if (typeof oldPreviousSiblingId !== 'undefined') {
+      var old_previous_sibling = $tree.tree('getNodeById', oldPreviousSiblingId);
+      $tree.tree('moveNode', node, old_previous_sibling, 'after');
+    }
+    else if (typeof oldParentNodeId !== 'undefined') {
+      var oldParentNode = $tree.tree('getNodeById', oldParentNodeId);
+      $tree.tree('moveNode', node, oldParentNode, 'inside');
+    }
+    $tree.tree('updateNode', node, {moved: false});
   }
 
   function appennNode(nodeId, targetNodeId, $tree) {
