@@ -144,6 +144,12 @@ function Treeview(container) {
       },
       statusCode: {
         200: function() {
+          if (treeAction === 'copy') {
+            // add node to old parent, necessary to see both node directly after movement,
+            // this is not necessary if you refresh the page
+            appennNode(movedNodeId, oldParentNodeId, $tree)
+          }
+
           [movedNodeId, newParentNodeId, oldParentNodeId].forEach(function(nodeId){
             setToDraft(nodeId, $tree);
           });
@@ -171,6 +177,17 @@ function Treeview(container) {
         published: false
       });
     }
+  }
+
+  function appennNode(nodeId, targetNodeId, $tree) {
+    var moved_node = $tree.tree('getNodeById', nodeId);
+    var target_node = $tree.tree('getNodeById', targetNodeId);
+
+    $tree.tree('appendNode', moved_node, target_node);
+    $tree.tree('updateNode', moved_node, {
+      moved: false,
+      published: false
+    });
   }
 }
 
