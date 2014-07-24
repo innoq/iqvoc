@@ -172,12 +172,10 @@ function Treeview(container) {
     var targetNode = $tree.tree('getNodeById', $(this).closest('li').data('old-parent-node-id'));
     var old_previous_sibling = $tree.tree('getNodeById', $(this).closest('li').data('old-previous-sibling-id'));
 
-    console.log('old_previous_sibling', old_previous_sibling);
-
     if (typeof old_previous_sibling !== 'undefined') {
       $tree.tree('moveNode', node, old_previous_sibling, 'after');
     }
-    else {
+    else if (typeof targetNode !== 'undefined') {
       $tree.tree('moveNode', node, targetNode, 'inside');
     }
     $tree.tree('updateNode', node, {moved: false});
