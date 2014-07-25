@@ -219,6 +219,14 @@ class ConceptsController < ApplicationController
     render nothing: true
   end
 
+  def add_match
+    
+  end
+
+  def remove_match
+
+  end
+
   protected
 
   def concept_params
