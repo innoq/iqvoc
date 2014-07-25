@@ -16,7 +16,7 @@
 
 class User < ActiveRecord::Base
   ROLES = [
-    'reader', 'editor', 'publisher', 'administrator'
+    'reader', 'editor', 'publisher', 'administrator', 'match_editor'
   ]
 
   validates_length_of :forename, :surname, within: 2..255
@@ -46,4 +46,19 @@ class User < ActiveRecord::Base
   def to_s
     self.name.to_s
   end
+
+  def self.botuser
+    find_by(email: 'botuser@iqvoc')
+  end
+
+  def self.create(attributes = nil, &block)
+    raise TypeError, 'Botuser already exist' if find_by(email: 'botuser@iqvoc')
+    super
+  end
+
+  def self.create!(attributes = nil, &block)
+    raise TypeError, 'Botuser already exist' if find_by(email: 'botuser@iqvoc')
+    super
+  end
+
 end
