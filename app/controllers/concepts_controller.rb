@@ -220,11 +220,47 @@ class ConceptsController < ApplicationController
   end
 
   def add_match
-    
+    origin = params.require(:origin)
+    match_class = params.require(:match_class)
+    uri = params.require(:uri)
+
+    concept = Iqvoc::Concept.base_class.find_by(origin: origin)
+
+    # TODO: botuser must be a persisted user, currently able to login!!!
+    UserSession.create(User.botuser)
+
+    if concept.published?
+      authorize! :branch, concept
+    else
+      authorize! :update, concept
+    end
+
+    published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
+    unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
+    concept_version = unpublished_concept || published_concept.branch(current_user)
+
+    # TODO: move to instance configuration???
+    known_match_classes = ['Match::SKOS::BroadMatch']
+
+    # TODO: validate referer
+    # iqvoc_sources = Iqvoc.config['sources.iqvoc']
+    # if iqvoc_sources.include? request.referer
+    #   raise ActionController::ParameterMissing.new(uri)
+    # end
+
+    if known_match_classes.include? match_class
+      match_class.constantize.create(concept_id: concept_version.id, value: uri)
+    else
+      text = 'unknown_match_class'
+      status_code = 400
+    end
+    concept_version.unlock
+
+    render text: text, status: status_code
   end
 
   def remove_match
-
+    render nothing: true
   end
 
   protected

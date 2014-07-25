@@ -25,7 +25,7 @@ class ConceptsControllerTest < ActionController::TestCase
     @admin = User.create! do |u|
       u.forename = 'Test'
       u.surname = 'User'
-      u.email = 'testuser@iqvoc.local'
+      u.email = 'admin@iqvoc'
       u.password = 'omgomgomg'
       u.password_confirmation = 'omgomgomg'
       u.role = 'administrator'
@@ -216,4 +216,16 @@ class ConceptsControllerTest < ActionController::TestCase
     assert_equal 1, @achievement_hobbies_version.narrower_relations.size
     assert_equal @achievement_hobbies_version.narrower_relations.first.target, @air_sports
   end
+
+  test 'add match' do
+    # UserSession.create(@admin)
+
+    patch :add_match,
+          lang: 'en',
+          origin: @achievement_hobbies.origin,
+          match_class: 'Match::SKOS::BroadMatch',
+          uri: 'http://google.de'
+    assert_response 200
+  end
+
 end
