@@ -48,17 +48,13 @@ class User < ActiveRecord::Base
   end
 
   def self.botuser
-    find_by(email: 'botuser@iqvoc')
+    User.new(email: 'botuser@iqvoc',
+             forename: 'botuser',
+             surname: 'botuser',
+             password: 'botuser',
+             password_confirmation: 'botuser',
+             role: 'match_editor',
+             active: false
+    )
   end
-
-  def self.create(attributes = nil, &block)
-    raise TypeError, 'Botuser already exist' if find_by(email: 'botuser@iqvoc')
-    super
-  end
-
-  def self.create!(attributes = nil, &block)
-    raise TypeError, 'Botuser already exist' if find_by(email: 'botuser@iqvoc')
-    super
-  end
-
 end
