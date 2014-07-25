@@ -25,6 +25,14 @@ module Iqvoc
           can :branch, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
         end
 
+        if user.owns_role?(:match_editor)
+          can :read, ::Concept::Base
+          can :create, ::Concept::Base
+          can [:update, :lock], ::Concept::Base, locked_by: user.id, published_at: nil
+          can :lock, ::Concept::Base, locked_by: nil, published_at: nil
+          can :branch, ::Concept::Base, &@@if_published
+        end
+
         if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...
           can :merge, [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
         end
