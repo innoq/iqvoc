@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
              password: 'botuser',
              password_confirmation: 'botuser',
              role: 'match_editor',
-             active: false
+             active: true
     )
   end
 end
