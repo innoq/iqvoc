@@ -223,16 +223,12 @@ class ConceptsController < ApplicationController
     origin = params.require(:origin)
     uri = params.require(:uri)
     match_class = params.require(:match_class)
-
-    render json: {type: 'unknown_match_class', message: 'Unknown match class.'}, status: 400 and return if unknown_match_class? match_class
-
- 
-    # TODO: validate referer
-    # iqvoc_sources = Iqvoc.config['sources.iqvoc']
-    # if iqvoc_sources.include? request.referer
-    #   raise ActionController::ParameterMissing.new(uri)
-    # end
     
+    iqvoc_sources = Iqvoc.config['sources.iqvoc']
+    render json: {type: 'unknown_referer', message: 'Unknown referer.'}, status: 403 and return if iqvoc_sources.exclude? request.referer
+   
+    render json: {type: 'unknown_match_class', message: 'Unknown match class.'}, status: 400 and return if unknown_match_class? match_class
+   
     # TODO: botuser must be a persisted user, currently able to login!!!
     UserSession.create(User.botuser)
     
@@ -242,14 +238,19 @@ class ConceptsController < ApplicationController
     else
       authorize! :update, concept
     end
-
+    
+    published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
     unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
     render json: {type: 'concept_locked', message: 'Concept is locked.'}, status: 423 and return if !unpublished_concept.nil? && unpublished_concept.locked?
 
-    published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
-    unpublished_concept ||= published_concept.branch(current_user)
-    match_class.constantize.create( concept_id: unpublished_concept.id, value: uri )
-    unpublished_concept.unlock
+    begin
+      unpublished_concept ||= published_concept.branch(current_user)
+      match_class.constantize.create( concept_id: unpublished_concept.id, value: uri )
+    rescue
+      render nothing: true, status: 500 and return
+    ensure
+      unpublished_concept.unlock
+    end
 
     render json: {type: 'concept_mapping_created', message: 'Concept mapping created.'}, status: 200 
   end
