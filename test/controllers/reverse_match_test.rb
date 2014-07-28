@@ -31,7 +31,7 @@ class ReverseMatchTest < ActionController::TestCase
       u.active = true
     end
 
-    Iqvoc.config.register_setting('sources.iqvoc', ['http://umthes.innoq.com'])
+    Iqvoc.config.register_setting('sources.iqvoc', ['http://try.iqvoc.net'])
 
     @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
@@ -47,7 +47,7 @@ class ReverseMatchTest < ActionController::TestCase
       new_version.save
     end
 
-    @request.env['HTTP_REFERER'] = 'http://iqvoc.net'
+    @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
   end
 
   test 'match creation' do
@@ -75,5 +75,15 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'Match::SKOS::BroadMatch',
           uri: 'http://iqvoc.net'
     assert_response 423
+  end
+
+  test 'unknown referer' do
+    @request.env['HTTP_REFERER'] = 'http://iqvoc.net'
+    patch :add_match,
+          lang: 'en',
+          origin: @achievement_hobbies.origin,
+          match_class: 'Match::SKOS::BroadMatch',
+          uri: 'http://iqvoc.net'
+    assert_response 403
   end
 end
