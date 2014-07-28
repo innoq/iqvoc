@@ -221,42 +221,37 @@ class ConceptsController < ApplicationController
 
   def add_match
     origin = params.require(:origin)
-    match_class = params.require(:match_class)
     uri = params.require(:uri)
+    match_class = params.require(:match_class)
 
-    concept = Iqvoc::Concept.base_class.find_by(origin: origin)
+    render json: {type: 'unknown_match_class', message: 'Unknown match class.'}, status: 400 and return if unknown_match_class? match_class
 
+ 
+    # TODO: validate referer
+    # iqvoc_sources = Iqvoc.config['sources.iqvoc']
+    # if iqvoc_sources.include? request.referer
+    #   raise ActionController::ParameterMissing.new(uri)
+    # end
+    
     # TODO: botuser must be a persisted user, currently able to login!!!
     UserSession.create(User.botuser)
-
+    
+    concept = Iqvoc::Concept.base_class.find_by(origin: origin)
     if concept.published?
       authorize! :branch, concept
     else
       authorize! :update, concept
     end
 
-    published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
     unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
-    concept_version = unpublished_concept || published_concept.branch(current_user)
+    render json: {type: 'concept_locked', message: 'Concept is locked.'}, status: 423 and return if !unpublished_concept.nil? && unpublished_concept.locked?
 
-    # TODO: move to instance configuration???
-    known_match_classes = ['Match::SKOS::BroadMatch']
+    published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
+    unpublished_concept ||= published_concept.branch(current_user)
+    match_class.constantize.create( concept_id: unpublished_concept.id, value: uri )
+    unpublished_concept.unlock
 
-    # TODO: validate referer
-    # iqvoc_sources = Iqvoc.config['sources.iqvoc']
-    # if iqvoc_sources.include? request.referer
-    #   raise ActionController::ParameterMissing.new(uri)
-    # end
-
-    if known_match_classes.include? match_class
-      match_class.constantize.create(concept_id: concept_version.id, value: uri)
-    else
-      text = 'unknown_match_class'
-      status_code = 400
-    end
-    concept_version.unlock
-
-    render text: text, status: status_code
+    render json: {type: 'concept_mapping_created', message: 'Concept mapping created.'}, status: 200 
   end
 
   def remove_match
@@ -264,6 +259,10 @@ class ConceptsController < ApplicationController
   end
 
   protected
+
+  def unknown_match_class?(match_class)
+    Iqvoc::Concept.match_class_names.exclude? match_class
+  end
 
   def concept_params
     params.require(:concept).permit!
