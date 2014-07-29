@@ -222,15 +222,14 @@ class ConceptsController < ApplicationController
   def add_match
     origin = params.require(:origin)
     uri = params.require(:uri)
-    match_class = params.require(:match_class)
     
+    match_class = params.require(:match_class)
+    match_classes = Iqvoc::Concept.match_class_names
+    render_response :unknown_match and return if match_classes.exclude? match_class
+
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
-
     render_response :no_referer and return if request.referer.nil?
- 
     render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
-
-    render_response :unknown_match and return if unknown_match_class? match_class
 
     # TODO: botuser must be a persisted user, currently able to login!!!
     UserSession.create(User.botuser)
@@ -280,10 +279,6 @@ class ConceptsController < ApplicationController
       concept_locked:  { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
       server_error:    { status: 500, json: {} }
     }
-  end
-
-  def unknown_match_class?(match_class)
-    Iqvoc::Concept.match_class_names.exclude? match_class
   end
 
   def concept_params
