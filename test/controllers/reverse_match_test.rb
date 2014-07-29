@@ -47,6 +47,7 @@ class ReverseMatchTest < ActionController::TestCase
       new_version.save
     end
 
+    @request.env['HTTP_ACCEPT'] = 'application/json' 
     @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
   end
 

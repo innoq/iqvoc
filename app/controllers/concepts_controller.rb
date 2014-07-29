@@ -225,9 +225,9 @@ class ConceptsController < ApplicationController
     match_class = params.require(:match_class)
     
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
-    render json: {type: 'unknown_referer', message: 'Unknown referer.'}, status: 403 and return if iqvoc_sources.exclude? request.referer
+    render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
    
-    render json: {type: 'unknown_match_class', message: 'Unknown match class.'}, status: 400 and return if unknown_match_class? match_class
+    render_response :unknown_match and return if unknown_match_class? match_class
    
     # TODO: botuser must be a persisted user, currently able to login!!!
     UserSession.create(User.botuser)
@@ -241,18 +241,18 @@ class ConceptsController < ApplicationController
     
     published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
     unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
-    render json: {type: 'concept_locked', message: 'Concept is locked.'}, status: 423 and return if !unpublished_concept.nil? && unpublished_concept.locked?
+    render_response :concept_locked and return if !unpublished_concept.nil? && unpublished_concept.locked?
 
     begin
       unpublished_concept ||= published_concept.branch(current_user)
       match_class.constantize.create( concept_id: unpublished_concept.id, value: uri )
     rescue
-      render nothing: true, status: 500 and return
+      render_response :server_error and return
     ensure
       unpublished_concept.unlock
     end
 
-    render json: {type: 'concept_mapping_created', message: 'Concept mapping created.'}, status: 200 
+    render_response :mapping_created
   end
 
   def remove_match
@@ -260,6 +260,23 @@ class ConceptsController < ApplicationController
   end
 
   protected
+
+  def render_response(type)
+    message = messages[type]
+    respond_to do |format|
+      format.json { render message }
+    end
+  end
+
+  def messages
+    { 
+      mapping_created: { status: 200, json: { type: 'concept_mapping_created', message: 'Concept mapping created.'} },
+      unknown_match:   { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },
+      unknown_referer: { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } }, 
+      concept_locked:  { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
+      server_error:    { status: 500, json: {} }
+    }
+  end
 
   def unknown_match_class?(match_class)
     Iqvoc::Concept.match_class_names.exclude? match_class
