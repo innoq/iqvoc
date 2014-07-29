@@ -225,23 +225,26 @@ class ConceptsController < ApplicationController
     match_class = params.require(:match_class)
     
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
+
+    render_response :no_referer and return if request.referer.nil?
+ 
     render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
-   
+
     render_response :unknown_match and return if unknown_match_class? match_class
-   
+
     # TODO: botuser must be a persisted user, currently able to login!!!
     UserSession.create(User.botuser)
-    
+
     concept = Iqvoc::Concept.base_class.find_by(origin: origin)
     if concept.published?
       authorize! :branch, concept
     else
       authorize! :update, concept
     end
-    
+
     published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
     unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
-    render_response :concept_locked and return if !unpublished_concept.nil? && unpublished_concept.locked?
+    render_response :concept_locked and return if unpublished_concept && unpublished_concept.locked?
 
     begin
       unpublished_concept ||= published_concept.branch(current_user)
@@ -272,6 +275,7 @@ class ConceptsController < ApplicationController
     { 
       mapping_created: { status: 200, json: { type: 'concept_mapping_created', message: 'Concept mapping created.'} },
       unknown_match:   { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },
+      no_referer:      { status: 400, json: { type: 'no_referer', message: 'Referer is not set.' } },
       unknown_referer: { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } }, 
       concept_locked:  { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
       server_error:    { status: 500, json: {} }

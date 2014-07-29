@@ -51,6 +51,16 @@ class ReverseMatchTest < ActionController::TestCase
     @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
   end
 
+  test 'no referer' do
+    @request.env['HTTP_REFERER'] = nil
+    patch :add_match,
+          lang: 'en',
+          origin: @achievement_hobbies.origin,
+          match_class: 'Match::SKOS::BroadMatch',
+          uri: 'http://google.de'
+    assert_response 400
+  end
+
   test 'match creation' do
     patch :add_match,
           lang: 'en',
