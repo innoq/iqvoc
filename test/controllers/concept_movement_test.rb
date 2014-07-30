@@ -16,10 +16,12 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class ConceptsControllerTest < ActionController::TestCase
+class ConceptMovementTest < ActionController::TestCase
   require 'authlogic/test_case'
 
   setup do
+    @controller = ConceptsController.new
+
     activate_authlogic
 
     @admin = User.create! do |u|
