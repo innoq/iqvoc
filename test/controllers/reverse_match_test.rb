@@ -31,7 +31,7 @@ class ReverseMatchTest < ActionController::TestCase
       u.active = true
     end
 
-    Iqvoc.config.register_setting('sources.iqvoc', ['http://try.iqvoc.net'])
+    Iqvoc.config['sources.iqvoc'] << 'http://try.iqvoc.net'
 
     @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
@@ -47,7 +47,7 @@ class ReverseMatchTest < ActionController::TestCase
       new_version.save
     end
 
-    @request.env['HTTP_ACCEPT'] = 'application/json' 
+    @request.env['HTTP_ACCEPT'] = 'application/json'
     @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
   end
 
@@ -69,8 +69,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'Match::SKOS::NarrowMatch',
           uri: 'http://iqvoc.net'
     assert_response 200
-  end  
-  
+  end
+
   test 'add match' do
     patch :add_match,
           lang: 'en',
