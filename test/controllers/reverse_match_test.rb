@@ -51,7 +51,27 @@ class ReverseMatchTest < ActionController::TestCase
     @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
   end
 
-  test 'match creation' do
+  test 'remove non existing match' do
+    m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
+    patch :remove_match,
+          lang: 'en',
+          origin: @achievement_hobbies.origin,
+          match_class: 'Match::SKOS::RelatedMatch',
+          uri: 'http://iqvoc.net'
+    assert_response 400
+  end
+
+  test 'remove match' do
+    m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
+    patch :remove_match,
+          lang: 'en',
+          origin: @achievement_hobbies.origin,
+          match_class: 'Match::SKOS::NarrowMatch',
+          uri: 'http://iqvoc.net'
+    assert_response 200
+  end  
+  
+  test 'add match' do
     patch :add_match,
           lang: 'en',
           origin: @achievement_hobbies.origin,
