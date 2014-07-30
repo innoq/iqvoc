@@ -1,0 +1,1 @@
+BotUser.instance

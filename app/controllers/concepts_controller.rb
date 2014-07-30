@@ -223,7 +223,7 @@ class ConceptsController < ApplicationController
 
   def add_match
     begin
-      @unpublished_concept ||= @published_concept.branch(current_user)
+      @unpublished_concept ||= @published_concept.branch(@current_user)
       @unpublished_concept.save
       @match_class.constantize.create( concept_id: @unpublished_concept.id, value: @uri )
     rescue
@@ -237,7 +237,7 @@ class ConceptsController < ApplicationController
 
   def remove_match
     begin
-      @unpublished_concept ||= @published_concept.branch(current_user)
+      @unpublished_concept ||= @published_concept.branch(@current_user)
       @unpublished_concept.save
       match = @match_class.constantize.find_by( concept_id: @unpublished_concept.id, value: @uri )
       render_response :unknown_relation and return if match.nil?
@@ -252,10 +252,11 @@ class ConceptsController < ApplicationController
   end
 
   protected
+
   def prepare_match
     @origin = params.require(:origin)
     @uri = params.require(:uri)
-    
+
     @match_class = params.require(:match_class)
     match_classes = Iqvoc::Concept.match_class_names
     render_response :unknown_match and return if match_classes.exclude? @match_class
@@ -264,10 +265,9 @@ class ConceptsController < ApplicationController
     render_response :no_referer and return if request.referer.nil?
     render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
 
-    # TODO: botuser must be a persisted user, currently able to login!!!
-    UserSession.create(User.botuser)
-
+    @current_user = BotUser.instance
     concept = Iqvoc::Concept.base_class.find_by(origin: @origin)
+
     if concept.published?
       authorize! :branch, concept
     else
@@ -287,13 +287,13 @@ class ConceptsController < ApplicationController
   end
 
   def messages
-    { 
+    {
       mapping_added:   { status: 200, json: { type: 'concept_mapping_created', message: 'Concept mapping created.'} },
       mapping_removed: { status: 200, json: { type: 'concept_mapping_removed', message: 'Concept mapping removed.'} },
       unknown_relation:{ status: 400, json: { type: 'unknown_relation', message: 'Concept or relation is wrong.'} },
       unknown_match:   { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },
       no_referer:      { status: 400, json: { type: 'no_referer', message: 'Referer is not set.' } },
-      unknown_referer: { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } }, 
+      unknown_referer: { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } },
       concept_locked:  { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
       server_error:    { status: 500, json: {} }
     }
