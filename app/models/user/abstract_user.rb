@@ -16,6 +16,7 @@
 
 class AbstractUser < ActiveRecord::Base
   self.table_name = 'users'
+
   validates_presence_of :email
   validates_uniqueness_of :email
   # validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
@@ -36,7 +37,7 @@ class AbstractUser < ActiveRecord::Base
 
   def to_s
     self.name.to_s
-  end 
+  end
 
   def owns_role?(name)
     self.role == name.to_s
