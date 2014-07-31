@@ -3,7 +3,7 @@ class ReverseMatchesController < ApplicationController
 
   def add_match
     begin
-      @unpublished_concept ||= @published_concept.branch(@current_user)
+      @unpublished_concept ||= @published_concept.branch(@botuser)
       @unpublished_concept.save
       @match_class.constantize.create( concept_id: @unpublished_concept.id, value: @uri )
     rescue
@@ -17,7 +17,7 @@ class ReverseMatchesController < ApplicationController
 
   def remove_match
     begin
-      @unpublished_concept ||= @published_concept.branch(@current_user)
+      @unpublished_concept ||= @published_concept.branch(@botuser)
       @unpublished_concept.save
       match = @match_class.constantize.find_by( concept_id: @unpublished_concept.id, value: @uri )
       render_response :unknown_relation and return if match.nil?
@@ -45,13 +45,13 @@ class ReverseMatchesController < ApplicationController
     render_response :no_referer and return if request.referer.nil?
     render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
 
-    @current_user = BotUser.instance
     concept = Iqvoc::Concept.base_class.find_by(origin: @origin)
+    @botuser = BotUser.instance
 
     if concept.published?
-      authorize! :branch, concept
+      @botuser.can? :branch, concept
     else
-      authorize! :update, concept
+      @botuser.can? :update, concept
     end
 
     @published_concept = Iqvoc::Concept.base_class.by_origin(@origin).published.last

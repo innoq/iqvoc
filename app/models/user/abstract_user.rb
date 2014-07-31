@@ -17,6 +17,8 @@
 class AbstractUser < ActiveRecord::Base
   self.table_name = 'users'
 
+  delegate :can?, :cannot?, :to => :ability
+
   validates_presence_of :email
   validates_uniqueness_of :email
   # validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
@@ -43,4 +45,7 @@ class AbstractUser < ActiveRecord::Base
     self.role == name.to_s
   end
 
+  def ability
+    @ability ||= Iqvoc::Ability.new(self)
+  end
 end
