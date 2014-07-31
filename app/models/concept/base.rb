@@ -30,6 +30,7 @@ class Concept::Base < ActiveRecord::Base
 
   include Versioning
   include Concept::Validations
+  include Concept::ReverseMatch
   include FirstLevelObjectValidations
 
   # ********** Hooks
@@ -211,10 +212,14 @@ class Concept::Base < ActiveRecord::Base
           urls.delete(match.value) # We're done with that one
         else
           self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
+          # TODO: patch request to delete reverse match
+          self.remove_reverse_match(match.value,  match_class_name)
         end
       end
       urls.each do |url|
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
+        # TODO: patch request to create reverse match
+        self.add_reverse_match(url,  match_class_name)
       end
     end
 
