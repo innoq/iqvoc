@@ -218,6 +218,8 @@ class ConceptsController < ApplicationController
 
     render nothing: true
   end
+  
+  protected
 
   def concept_params
     params.require(:concept).permit!
