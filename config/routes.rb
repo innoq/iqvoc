@@ -53,8 +53,6 @@ Rails.application.routes.draw do
     get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
     patch 'concepts/:origin/move'        => 'concepts#move',               as: 'move_concept'
-    patch 'concepts/:origin/add_match'   => 'reverse_matches#add_match',          as: 'add_match'
-    patch 'concepts/:origin/remove_match'=> 'reverse_matches#remove_match',       as: 'remove_match'
 
     post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
@@ -82,6 +80,8 @@ Rails.application.routes.draw do
     # root to: 'frontpage#index', format: nil
   end
 
+  patch ':origin/add_match'   => 'reverse_matches#add_match',          as: 'add_match'
+  patch ':origin/remove_match'=> 'reverse_matches#remove_match',       as: 'remove_match'
   get 'remote_labels' => 'remote_labels#show', as: 'remote_label'
   get 'schema' => redirect('/'), as: 'schema'
   get 'dataset' => 'rdf#dataset', as: 'rdf_dataset'
@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   get 'hierarchy/:root' => 'hierarchy#show'
 
   get ':id' => 'rdf#show', as: 'rdf'
-
+  
   get 'collections', as: 'rdf_collections', to: 'collections#index'
 
   root to: 'frontpage#index', format: nil
