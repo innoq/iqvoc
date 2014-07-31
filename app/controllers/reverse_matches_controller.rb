@@ -10,6 +10,7 @@ class ReverseMatchesController < ApplicationController
       render_response :server_error and return
     ensure
       @unpublished_concept.unlock
+      @unpublished_concept.save
     end
 
     render_response :mapping_added
@@ -26,6 +27,7 @@ class ReverseMatchesController < ApplicationController
       render_response :server_error and return
     ensure
       @unpublished_concept.unlock
+      @unpublished_concept.save
     end
 
     render_response :mapping_removed
