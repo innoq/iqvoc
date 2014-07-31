@@ -19,7 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 class ReverseMatchTest < ActionController::TestCase
 
   setup do
-    @controller = ConceptsController.new
+    @controller = ReverseMatchesController.new
 
     @admin = User.create! do |u|
       u.forename = 'Test'

@@ -53,8 +53,8 @@ Rails.application.routes.draw do
     get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
     patch 'concepts/:origin/move'        => 'concepts#move',               as: 'move_concept'
-    patch 'concepts/:origin/add_match'   => 'concepts#add_match',          as: 'add_match'
-    patch 'concepts/:origin/remove_match'=> 'concepts#remove_match',       as: 'remove_match'
+    patch 'concepts/:origin/add_match'   => 'reverse_matches#add_match',          as: 'add_match'
+    patch 'concepts/:origin/remove_match'=> 'reverse_matches#remove_match',       as: 'remove_match'
 
     post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
