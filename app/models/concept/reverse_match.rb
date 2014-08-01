@@ -14,7 +14,7 @@ module Concept
 
       # TODO: Error Handling
       conn = connection(url, {content_type: 'application/json', referer: 'http://0.0.0.0:3000'})
-      response = conn.patch do |req|
+      response = conn.send(method) do |req|
         req.params['match_class'] = match_class
         req.params['uri'] = 'http://0.0.0.0:3000/en/concepts/air_sports.html'
       end
