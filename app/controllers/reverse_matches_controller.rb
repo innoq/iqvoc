@@ -44,6 +44,7 @@ class ReverseMatchesController < ApplicationController
     render_response :unknown_match and return if match_classes.exclude? @match_class
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
+    # TODO: iqvoc sources infinite loop :-)
     iqvoc_sources = ['http://0.0.0.0:3000']
     render_response :no_referer and return if request.referer.nil?
     render_response :unknown_referer and return if iqvoc_sources.exclude? request.referer
