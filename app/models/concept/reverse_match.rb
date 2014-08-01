@@ -3,23 +3,21 @@ module Concept
     extend ActiveSupport::Concern
 
     def add_reverse_match(target_url, match_class)
-      # FIXME: uggly url concatenation
-      # target_url += '/add_match'
+      
+      # TODO: Error Handling
+      conn = connection(target_url, { accept: 'application/json' })
+      response = conn.get
 
-      conn = connection('http://0.0.0.0:3001/')
+      link = response.body['links'].detect {|h| h['rel'] == 'add_match' }
+      url = link['href']
+      method = link['method']
 
+      # TODO: Error Handling
+      conn = connection(url, {content_type: 'application/json', referer: 'http://0.0.0.0:3000'})
       response = conn.patch do |req|
-        req.url 'en/concepts/fishing/add_match'
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Referer'] = 'http://0.0.0.0:3000'
-
-        # TODO: add inverse of match_class
         req.params['match_class'] = match_class
-        # TODO: build uri dynamicly
         req.params['uri'] = 'http://0.0.0.0:3000/en/concepts/air_sports.html'
       end
-
-      # binding.pry
     end
 
     def remove_reverse_match(target_url, match_class)
@@ -27,10 +25,11 @@ module Concept
 
     private
 
-    def connection(url)
-      Faraday.new(:url => url) do |faraday|
-        faraday.response :logger # FIXME: log requests to STDOUT
-        faraday.adapter  Faraday.default_adapter
+    def connection(url, headers={})
+      Faraday::Connection.new( url: url, headers: headers) do |builder|
+        builder.use FaradayMiddleware::ParseJson
+        builder.use FaradayMiddleware::FollowRedirects, limit:5
+        builder.adapter Faraday.default_adapter
       end
     end
 
