@@ -40,6 +40,9 @@ class RdfController < ApplicationController
       format.html do
         redirect_to object_path
       end
+      format.json do
+        redirect_to object_path
+      end
       format.any do
         authorize! :read, object
         render tpl

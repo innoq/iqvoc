@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   get 'hierarchy/:root' => 'hierarchy#show'
 
   get ':id' => 'rdf#show', as: 'rdf'
-  
+
   get 'collections', as: 'rdf_collections', to: 'collections#index'
 
   root to: 'frontpage#index', format: nil
