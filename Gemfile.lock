@@ -93,6 +93,8 @@ GEM
     execjs (2.2.1)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.1)
+      faraday (>= 0.7.4, < 0.10)
     font-awesome-rails (4.1.0.0)
       railties (>= 3.2, < 5.0)
     haml (4.0.5)
@@ -308,6 +310,7 @@ DEPENDENCIES
   database_cleaner
   delayed_job_active_record (~> 4.0.1)
   faraday
+  faraday_middleware
   font-awesome-rails
   hirb-unicode
   iq_rdf (>= 0.1.15)
