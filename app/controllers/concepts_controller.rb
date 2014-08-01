@@ -81,9 +81,15 @@ class ConceptsController < ApplicationController
               labels: concept.labelings.map { |ln| labeling_as_json(ln) },
               relations: published_relations.call(concept).count
             }
-          }
+          },
+					links: [
+            { rel: 'self', href: concept_url(@concept, format: nil), method: 'get' },
+            { ref: 'add_match', href: add_match_url(@concept, lang: nil), method: 'patch' },
+            { ref: 'remove_match', href: remove_match_url(@concept, lang: nil), method: 'patch' }
+					]
         }
-        render json: concept_data
+				# FIXME: use jbuilder instead???
+				render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
     end
@@ -218,7 +224,7 @@ class ConceptsController < ApplicationController
 
     render nothing: true
   end
-  
+
   protected
 
   def concept_params
