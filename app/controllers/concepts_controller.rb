@@ -84,8 +84,8 @@ class ConceptsController < ApplicationController
           },
 					links: [
             { rel: 'self', href: concept_url(@concept, format: nil), method: 'get' },
-            { ref: 'add_match', href: add_match_url(@concept, lang: nil), method: 'patch' },
-            { ref: 'remove_match', href: remove_match_url(@concept, lang: nil), method: 'patch' }
+            { rel: 'add_match', href: add_match_url(@concept, lang: nil), method: 'patch' },
+            { rel: 'remove_match', href: remove_match_url(@concept, lang: nil), method: 'patch' }
 					]
         }
 				# FIXME: use jbuilder instead???
