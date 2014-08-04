@@ -45,10 +45,10 @@ class ReverseMatchesController < ApplicationController
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
     # TODO: iqvoc sources infinite loop :-)
+    render_response :no_referer and return if request.referer.nil?
+    referer = URI.parse(request.referer)
     iqvoc_sources = ['http://0.0.0.0:3000']
     iqvoc_sources.map!{ |s| URI.parse(s) }
-    referer = URI.parse(request.referer)
-    render_response :no_referer and return if request.referer.nil?
     render_response :unknown_referer and return if iqvoc_sources.exclude? referer
 
     concept = Iqvoc::Concept.base_class.find_by(origin: @origin)
