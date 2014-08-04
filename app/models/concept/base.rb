@@ -15,6 +15,7 @@
 # limitations under the License.
 
 class Concept::Base < ActiveRecord::Base
+  attr_accessor :reverse_match_service
   self.table_name = 'concepts'
 
   class_attribute :default_includes
@@ -212,13 +213,13 @@ class Concept::Base < ActiveRecord::Base
         else
           self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
           # TODO: patch request to delete reverse match
-          self.reverse_match_service.add(origin, match.value, match_class_name)
+          self.reverse_match_service.remove(origin, match.value, match_class_name)
         end
       end
       urls.each do |url|
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
         # TODO: patch request to create reverse match
-        self.reverse_match_service.remove(origin, url, match_class_name)
+        self.reverse_match_service.add(origin, url, match_class_name)
       end
     end
 
