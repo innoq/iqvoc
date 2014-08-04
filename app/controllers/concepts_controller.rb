@@ -145,8 +145,8 @@ class ConceptsController < ApplicationController
 
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
-    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
     authorize! :update, @concept
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
 
     @datasets = datasets_as_json
 
