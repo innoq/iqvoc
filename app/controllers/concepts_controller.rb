@@ -82,14 +82,14 @@ class ConceptsController < ApplicationController
               relations: published_relations.call(concept).count
             }
           },
-					links: [
+          links: [
             { rel: 'self', href: concept_url(@concept, format: nil), method: 'get' },
             { rel: 'add_match', href: add_match_url(@concept, lang: nil), method: 'patch' },
             { rel: 'remove_match', href: remove_match_url(@concept, lang: nil), method: 'patch' }
-					]
+          ]
         }
-				# FIXME: use jbuilder instead???
-				render json: concept_data
+        # FIXME: use jbuilder instead???
+        # render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
     end
