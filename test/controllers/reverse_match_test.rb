@@ -48,7 +48,7 @@ class ReverseMatchTest < ActionController::TestCase
     end
 
     @request.env['HTTP_ACCEPT'] = 'application/json'
-    @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
+    @request.env['HTTP_REFERER'] = 'http://0.0.0.0:3000'
   end
 
   test 'remove non existing match' do
