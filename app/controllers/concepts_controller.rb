@@ -49,7 +49,6 @@ class ConceptsController < ApplicationController
     authorize! :read, @concept
 
     @datasets = datasets_as_json
-
     respond_to do |format|
       format.html do
         # When in single query mode, AR handles ALL includes to be loaded by that
@@ -89,7 +88,7 @@ class ConceptsController < ApplicationController
           ]
         }
         # FIXME: use jbuilder instead???
-        # render json: concept_data
+        render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
     end
@@ -146,7 +145,7 @@ class ConceptsController < ApplicationController
 
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
-
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
     authorize! :update, @concept
 
     @datasets = datasets_as_json
