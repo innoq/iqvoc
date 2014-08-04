@@ -219,9 +219,14 @@ class Concept::Base < ActiveRecord::Base
       end
       urls.each do |url|
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
-        # TODO: error handling job creation, check _custom param 
-        job = self.reverse_match_service.build_job(:add_match, origin, url, match_class_name)
-        self.reverse_match_service.add(job)
+        # TODO: error handling job creation, check _custom param, sources check should be in job creation 
+
+        iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
+        url_object = URI.parse(url)
+        if iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
+          job = self.reverse_match_service.build_job(:add_match, origin, url, match_class_name)
+          self.reverse_match_service.add(job)
+        end
       end
     end
 
