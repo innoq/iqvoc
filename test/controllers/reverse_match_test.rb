@@ -55,7 +55,7 @@ class ReverseMatchTest < ActionController::TestCase
     m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
     patch :remove_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::RelatedMatch',
+          match_class: 'related_match',
           uri: 'http://iqvoc.net'
     assert_response 400
   end
@@ -64,7 +64,7 @@ class ReverseMatchTest < ActionController::TestCase
     m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
     patch :remove_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::BroadMatch',
+          match_class: 'broad_match',
           uri: 'http://iqvoc.net'
     assert_response 200
   end
@@ -72,7 +72,7 @@ class ReverseMatchTest < ActionController::TestCase
   test 'add match' do
     patch :add_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::BroadMatch',
+          match_class: 'broad_match',
           uri: 'http://google.de'
     assert_response 200
   end
@@ -81,7 +81,7 @@ class ReverseMatchTest < ActionController::TestCase
     @request.env['HTTP_REFERER'] = nil
     patch :add_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::BroadMatch',
+          match_class: 'broad_match',
           uri: 'http://google.de'
     assert_response 400
   end
@@ -89,7 +89,7 @@ class ReverseMatchTest < ActionController::TestCase
   test 'unknown match class' do
     patch :add_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'UnknownMatch::SKOS::BroadMatch',
+          match_class: 'UnknownMatch',
           uri: 'http://google.de'
     assert_response 400
   end
@@ -98,7 +98,7 @@ class ReverseMatchTest < ActionController::TestCase
     @request.env['HTTP_REFERER'] = 'http://iqvoc.net'
     patch :add_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::BroadMatch',
+          match_class: 'broad_match',
           uri: 'http://iqvoc.net'
     assert_response 403
   end
@@ -106,7 +106,7 @@ class ReverseMatchTest < ActionController::TestCase
   test 'concept locked' do
     patch :add_match,
           origin: @airsoft.origin,
-          match_class: 'Match::SKOS::BroadMatch',
+          match_class: 'broad_match',
           uri: 'http://iqvoc.net'
     assert_response 423
   end
