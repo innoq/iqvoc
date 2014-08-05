@@ -42,14 +42,6 @@ module Iqvoc
           'Match::SKOS::BroadMatch',
           'Match::SKOS::NarrowMatch',
         ]
-        
-        self.reverse_match_class_names    = {
-          'Match::SKOS::CloseMatch' => 'close_match',
-          'Match::SKOS::ExactMatch' => 'exact_match',
-          'Match::SKOS::RelatedMatch' => 'related_match',
-          'Match::SKOS::BroadMatch' => 'broad_match',
-          'Match::SKOS::NarrowMatch' => 'narrow_match',
-        }
 
         self.notation_class_names         = [
           'Notation::Base'
@@ -133,6 +125,13 @@ module Iqvoc
 
         def match_classes
           match_class_names.map(&:constantize)
+        end
+
+        def reverse_match_class_names
+          match_class_names.inject({}) do |result, element|
+             result[element] = element.parameterize.underscore
+             result
+          end
         end
 
         def notation_classes

@@ -40,9 +40,10 @@ class ReverseMatchesController < ApplicationController
     @uri = params.require(:uri)
     match_class = params.require(:match_class)
 
-    match_classes = Iqvoc::Concept.match_class_names
-    render_response :unknown_match and return if match_classes.exclude? match_class
-    @target_match_class = match_class.constantize.reverse_match_class_name
+    match_classes = Iqvoc::Concept.reverse_match_class_names
+    render_response :unknown_match and return if match_classes.values.exclude? match_class
+    klass = match_classes.key(match_class)
+    @target_match_class = klass.constantize.reverse_match_class_name
     render_response :unknown_match and return if @target_match_class.nil?
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
