@@ -212,14 +212,14 @@ class Concept::Base < ActiveRecord::Base
           urls.delete(match.value) # We're done with that one
         else
           self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
-          # TODO: error handling job creation, check _custom param 
+          # TODO: error handling job creation, check _custom param
           job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class_name)
           # self.reverse_match_service.add(job)
         end
       end
       urls.each do |url|
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
-        # TODO: error handling job creation, check _custom param, sources check should be in job creation 
+        # TODO: error handling job creation, check _custom param, sources check should be in job creation
 
         iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
         url_object = URI.parse(url)
