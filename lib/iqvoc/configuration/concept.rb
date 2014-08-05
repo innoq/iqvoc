@@ -44,11 +44,11 @@ module Iqvoc
         ]
         
         self.reverse_match_class_names    = {
-          'Match::SKOS::CloseMatch' => :close_match,
-          'Match::SKOS::ExactMatch' => :exact_match,
-          'Match::SKOS::RelatedMatch' => :related_match,
-          'Match::SKOS::BroadMatch' => :broad_match,
-          'Match::SKOS::NarrowMatch' => :narrow_match,
+          'Match::SKOS::CloseMatch' => 'close_match',
+          'Match::SKOS::ExactMatch' => 'exact_match',
+          'Match::SKOS::RelatedMatch' => 'related_match',
+          'Match::SKOS::BroadMatch' => 'broad_match',
+          'Match::SKOS::NarrowMatch' => 'narrow_match',
         }
 
         self.notation_class_names         = [
