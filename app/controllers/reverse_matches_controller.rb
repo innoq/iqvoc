@@ -5,7 +5,7 @@ class ReverseMatchesController < ApplicationController
     begin
       @unpublished_concept ||= @published_concept.branch(@botuser)
       @unpublished_concept.save
-      @match_class.constantize.create( concept_id: @unpublished_concept.id, value: @uri )
+      @target_match_class.constantize.create( concept_id: @unpublished_concept.id, value: @uri )
     rescue
       render_response :server_error and return
     ensure
@@ -20,7 +20,7 @@ class ReverseMatchesController < ApplicationController
     begin
       @unpublished_concept ||= @published_concept.branch(@botuser)
       @unpublished_concept.save
-      match = @match_class.constantize.find_by( concept_id: @unpublished_concept.id, value: @uri )
+      match = @target_match_class.constantize.find_by( concept_id: @unpublished_concept.id, value: @uri )
       render_response :unknown_relation and return if match.nil?
       match.destroy
     rescue
@@ -36,12 +36,14 @@ class ReverseMatchesController < ApplicationController
   protected
 
   def prepare_match
-    @origin = params.require(:origin)
+    origin = params.require(:origin)
     @uri = params.require(:uri)
+    match_class = params.require(:match_class)
 
-    @match_class = params.require(:match_class)
     match_classes = Iqvoc::Concept.match_class_names
-    render_response :unknown_match and return if match_classes.exclude? @match_class
+    render_response :unknown_match and return if match_classes.exclude? match_class
+    @target_match_class = match_class.constantize.reverse_match_class_name
+    render_response :unknown_match and return if @target_match_class.nil?
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc']
     # TODO: iqvoc sources infinite loop :-)
@@ -51,7 +53,7 @@ class ReverseMatchesController < ApplicationController
     iqvoc_sources.map!{ |s| URI.parse(s) }
     render_response :unknown_referer and return if iqvoc_sources.exclude? referer
 
-    concept = Iqvoc::Concept.base_class.find_by(origin: @origin)
+    concept = Iqvoc::Concept.base_class.find_by(origin: origin)
     @botuser = BotUser.instance
 
     if concept.published?
@@ -60,8 +62,8 @@ class ReverseMatchesController < ApplicationController
       @botuser.can? :update, concept
     end
 
-    @published_concept = Iqvoc::Concept.base_class.by_origin(@origin).published.last
-    @unpublished_concept = Iqvoc::Concept.base_class.by_origin(@origin).unpublished.last
+    @published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
+    @unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
     render_response :concept_locked and return if @unpublished_concept && @unpublished_concept.locked?
   end
 

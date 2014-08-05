@@ -64,7 +64,7 @@ class ReverseMatchTest < ActionController::TestCase
     m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
     patch :remove_match,
           origin: @achievement_hobbies.origin,
-          match_class: 'Match::SKOS::NarrowMatch',
+          match_class: 'Match::SKOS::BroadMatch',
           uri: 'http://iqvoc.net'
     assert_response 200
   end
