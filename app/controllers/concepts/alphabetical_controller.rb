@@ -24,15 +24,10 @@ class Concepts::AlphabeticalController < ConceptsController
 
     redirect_to(url_for prefix: 'a') unless params[:prefix]
 
-    datasets = init_datasets
-
     @letters = Label::Base.select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter")
                           .order("letter").map(&:letter)
 
-    if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
-      @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
-      @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
-    else
+    if params[:datasets].nil?
       @search_results = find_labelings
 
       # When in single query mode, AR handles ALL includes to be loaded by that
@@ -44,6 +39,13 @@ class Concepts::AlphabeticalController < ConceptsController
       ActiveRecord::Associations::Preloader.new.preload(@search_results, owner: includes)
 
       @search_results.to_a.map! { |pl| AlphabeticalSearchResult.new(pl) }
+    else
+      datasets = init_datasets
+
+      if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
+        @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
+        @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
+      end
     end
 
     respond_to do |format|
