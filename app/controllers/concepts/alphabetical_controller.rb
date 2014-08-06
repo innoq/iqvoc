@@ -27,7 +27,7 @@ class Concepts::AlphabeticalController < ConceptsController
     @letters = Label::Base.select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter")
                           .order("letter").map(&:letter)
 
-    if params[:datasets].nil?
+    if params[:dataset].nil?
       @search_results = find_labelings
 
       # When in single query mode, AR handles ALL includes to be loaded by that
