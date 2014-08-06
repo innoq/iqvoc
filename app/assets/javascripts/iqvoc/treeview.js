@@ -40,14 +40,8 @@ function Treeview(container) {
       openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,
       dataUrl: function(node) {
-        // build ajax url (add root param)
-        // FIXME: uggly url concatenation
-        if (url.indexOf('published') < 0) {
-          return node ? url + '?root=' + node.id : url;
-        }
-        else {
-          return node ? url + '&root=' + node.id : url;
-        }
+        var uri = URI(url).addQuery('root', node.id);
+        return uri.normalize().toString();
       },
       onCreateLi: function(node, $li) {
         // TODO: add additionalText if present
@@ -57,9 +51,8 @@ function Treeview(container) {
         // mark published/unpublished items
         if (typeof node.published !== 'undefined' && !node.published) {
           // modify draft link
-          if (link.attr('href').indexOf('published') < 0) {
-            link.attr('href', link.attr('href')+'?published=0'); // FIXME: implicit knowledge
-          }
+          var href = URI(link.attr('href'));
+          link.attr('href', href.addQuery('published', 0));
           link.addClass('unpublished');
         } else {
           link.addClass('published');
