@@ -128,6 +128,8 @@ en:
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
        classifiers: "Environment classes"
+       pending_jobs_header: "Pending jobs"
+       pending_jobs_message: "There are pending jobs for this concept."
      labels:
        new: "New Label"
        template_form: "Literal form"

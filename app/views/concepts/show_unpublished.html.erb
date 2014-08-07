@@ -8,6 +8,12 @@
   <% end %>
 <% end %>
 
+<% if @concept.jobs.any? %>
+  <%= alert :warning, :header => t('txt.views.concepts.pending_jobs_header') + "." do %>
+    <%= t("txt.views.concepts.pending_jobs_message") %>
+  <% end %>
+<% end %>
+
 <div class="editing_versioning_toolbar well">
   <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.views.versioning.publishing"),

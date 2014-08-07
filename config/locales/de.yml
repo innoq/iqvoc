@@ -126,6 +126,8 @@ de:
        new: "Neues %{concept_class_name}"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
+       pending_jobs_header: "Austehende Jobs"
+       pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
