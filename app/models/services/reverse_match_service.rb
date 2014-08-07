@@ -18,9 +18,5 @@ module Services
     def add(job)
       Delayed::Job.enqueue(job, queue: 'reverse_matches')
     end
-
-    def remove(job)
-      Delayed::Job.enqueue(job, queue: 'reverse_matches')
-    end
   end
 end
