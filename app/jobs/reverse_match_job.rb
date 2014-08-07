@@ -14,7 +14,7 @@ class ReverseMatchJob < Struct.new(:type, :match_class, :subject, :object, :refe
     # TODO: Error Handling
     conn = connection(request_url, { content_type: 'application/json', referer: referer })
     response = conn.send(request_method) do |req|
-      req.params['match_class'] = "#{match_class}foo"
+      req.params['match_class'] = match_class
       req.params['uri'] = object
     end
   end
