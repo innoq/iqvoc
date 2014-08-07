@@ -12,7 +12,7 @@ module Services
       object = rdf_url(origin, host: @host, port: @port)
       match_classes = Iqvoc::Concept.reverse_match_class_names
       match_class = match_classes[match_class]
-      ReverseMatchJob.new(type, match_class, subject, object, referer)
+      ReverseMatchJob.new(type, match_class, subject, object, referer, origin)
     end
 
     def add(job)
