@@ -232,6 +232,10 @@ class Concept::Base < ActiveRecord::Base
 
   end
 
+  # *** Job Relations
+  has_many :job_relations, primary_key: 'origin', foreign_key: 'owner_reference', class_name: 'JobRelation'
+  has_many :jobs, through: :job_relations
+
   # *** Notes
 
   Iqvoc::Concept.note_class_names.each do |class_name|
