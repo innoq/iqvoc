@@ -16,11 +16,16 @@ class ReverseMatchJob < Struct.new(:type, :match_class, :subject, :object, :refe
     response = conn.send(request_method) do |req|
       req.params['match_class'] = match_class
       req.params['uri'] = object
+      # req.options.timeout = 2
+      # req.options.open_timeout = 2
     end
   end
 
   def error(job, exception)
     case exception
+    when Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError, Faraday::Error::ResourceNotFound
+      # binding.pry
+      # ...
     when Faraday::ClientError
       body = exception.response[:body] || {}
       message = JSON.parse(body) unless body.empty?
