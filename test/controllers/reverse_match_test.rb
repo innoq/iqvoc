@@ -31,7 +31,7 @@ class ReverseMatchTest < ActionController::TestCase
       u.active = true
     end
 
-    Iqvoc.config['sources.iqvoc'] << 'http://try.iqvoc.net'
+    Iqvoc.config['sources.iqvoc'] = ['http://try.iqvoc.net']
 
     @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
@@ -48,7 +48,11 @@ class ReverseMatchTest < ActionController::TestCase
     end
 
     @request.env['HTTP_ACCEPT'] = 'application/json'
-    @request.env['HTTP_REFERER'] = 'http://0.0.0.0:3000'
+    @request.env['HTTP_REFERER'] = 'http://try.iqvoc.net'
+  end
+
+  teardown do
+    Iqvoc.config['sources.iqvoc'] = []
   end
 
   test 'remove non existing match' do
