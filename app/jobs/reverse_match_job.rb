@@ -22,18 +22,24 @@ class ReverseMatchJob < Struct.new(:type, :match_class, :subject, :object, :refe
   end
 
   def error(job, exception)
+    error_type = nil
+
     case exception
-    when Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError, Faraday::Error::ResourceNotFound
-      # binding.pry
-      # ...
+    when Faraday::Error::ConnectionFailed
+      error_type = 'connection_failed'
+    when Faraday::Error::TimeoutError
+      error_type = 'timeout_error'
+    when Faraday::Error::ResourceNotFound
+      error_type = 'resource_not_found'
     when Faraday::ClientError
       body = exception.response[:body] || {}
       message = JSON.parse(body) unless body.empty?
       error_type = message['type']
-      unless error_type.nil?
-        reference = JobRelation.find_by(owner_reference: self.origin, job: job)
-        reference.update_attribute(:response_error, error_type)
-      end
+    end
+
+    unless error_type.nil?
+      reference = JobRelation.find_by(owner_reference: self.origin, job: job)
+      reference.update_attribute(:response_error, error_type)
     end
   end
 
