@@ -1,6 +1,8 @@
 module ReverseMatchErrors
   extend ActiveSupport::Concern
 
+  private
+
   def messages
     {
       mapping_added:    { status: 200, json: { type: 'mapping_added', message: 'Concept mapping created.'} },
@@ -13,5 +15,9 @@ module ReverseMatchErrors
       concept_locked:   { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
       server_error:     { status: 500, json: {} }
     }
+  end
+
+  def status_and_body(key)
+    [messages[key][:status], messages[key][:json].to_json]
   end
 end
