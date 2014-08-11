@@ -62,6 +62,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_relatedmatch',
           uri: 'http://iqvoc.net'
     assert_response 400
+    body = JSON.parse response.body
+    assert_equal body['type'], "unknown_relation"
   end
 
   test 'remove match' do
@@ -71,6 +73,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_broadmatch',
           uri: 'http://iqvoc.net'
     assert_response 200
+    body = JSON.parse response.body
+    assert_equal body['type'], "concept_mapping_removed"
   end
 
   test 'add match' do
@@ -79,6 +83,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_broadmatch',
           uri: 'http://google.de'
     assert_response 200
+    body = JSON.parse response.body
+    assert_equal body['type'], "concept_mapping_created"
   end
 
   test 'no referer' do
@@ -88,6 +94,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_broadmatch',
           uri: 'http://google.de'
     assert_response 400
+    body = JSON.parse response.body
+    assert_equal body['type'], "no_referer"
   end
 
   test 'unknown match class' do
@@ -96,6 +104,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'UnknownMatch',
           uri: 'http://google.de'
     assert_response 400
+    body = JSON.parse response.body
+    assert_equal body['type'], "unknown_match"
   end
 
   test 'unknown referer' do
@@ -105,6 +115,8 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_broadmatch',
           uri: 'http://iqvoc.net'
     assert_response 403
+    body = JSON.parse response.body
+    assert_equal body['type'], "unknown_referer"
   end
 
   test 'concept locked' do
@@ -113,5 +125,16 @@ class ReverseMatchTest < ActionController::TestCase
           match_class: 'match_skos_broadmatch',
           uri: 'http://iqvoc.net'
     assert_response 423
+    body = JSON.parse response.body
+    assert_equal body['type'], "concept_locked"
+  end
+
+  test 'missing parameter' do
+    patch :add_match,
+          origin: @achievement_hobbies.origin,
+          uri: 'http://google.de'
+    assert_response 400 
+    body = JSON.parse response.body
+    assert_equal body['type'], "parameter_missing"
   end
 end
