@@ -74,7 +74,7 @@ class ReverseMatchTest < ActionController::TestCase
           uri: 'http://iqvoc.net'
     assert_response 200
     body = JSON.parse response.body
-    assert_equal body['type'], "concept_mapping_removed"
+    assert_equal body['type'], 'mapping_removed'
   end
 
   test 'add match' do
@@ -84,7 +84,7 @@ class ReverseMatchTest < ActionController::TestCase
           uri: 'http://google.de'
     assert_response 200
     body = JSON.parse response.body
-    assert_equal body['type'], "concept_mapping_created"
+    assert_equal body['type'], 'mapping_added'
   end
 
   test 'no referer' do

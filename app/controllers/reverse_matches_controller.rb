@@ -1,4 +1,5 @@
 class ReverseMatchesController < ApplicationController
+  include ReverseMatchErrors
   before_action :prepare_match, only: [:add_match, :remove_match]
 
   def add_match
@@ -75,19 +76,5 @@ class ReverseMatchesController < ApplicationController
     respond_to do |format|
       format.json { render message }
     end
-  end
-
-  def messages
-    {
-      mapping_added:    { status: 200, json: { type: 'concept_mapping_created', message: 'Concept mapping created.'} },
-      mapping_removed:  { status: 200, json: { type: 'concept_mapping_removed', message: 'Concept mapping removed.'} },
-      parameter_missing:{ status: 400, json: { type: 'parameter_missing', message: 'Required parameter missing.'} },
-      unknown_relation: { status: 400, json: { type: 'unknown_relation', message: 'Concept or relation is wrong.'} },
-      unknown_match:    { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },
-      no_referer:       { status: 400, json: { type: 'no_referer', message: 'Referer is not set.' } },
-      unknown_referer:  { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } },
-      concept_locked:   { status: 423, json: { type: 'concept_locked', message: 'Concept is locked.' } },
-      server_error:     { status: 500, json: {} }
-    }
   end
 end
