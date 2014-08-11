@@ -33,7 +33,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       c.save
     end
 
-    @reverse_match_service = Services::ReverseMatchService.new('http://try.iqvoc.com', '80')
+    @reverse_match_service = Services::ReverseMatchService.new('http://try.iqvoc.com', 80)
 
     body = {links: [
       { rel: 'self', href: 'http://0.0.0.0:3000/en/concepts/airsoft', method: 'get' },
@@ -95,11 +95,11 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
   test 'unknown match class' do
     status, body = status_and_body(:unknown_match)
-    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft')
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft')
       .with(:headers => {'Accept' => '*/*', 'Content-Type'=>'application/json', 'Referer'=>'http://try.iqvoc.com/', 'User-Agent'=>'Faraday v0.9.0'})
       .to_return(status: status, body: body.to_json, headers: {})
 
-    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', '')
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
     Delayed::Worker.new.work_off
