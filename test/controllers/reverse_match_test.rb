@@ -133,7 +133,7 @@ class ReverseMatchTest < ActionController::TestCase
     patch :add_match,
           origin: @achievement_hobbies.origin,
           uri: 'http://google.de'
-    assert_response 400 
+    assert_response 400
     body = JSON.parse response.body
     assert_equal body['type'], "parameter_missing"
   end
