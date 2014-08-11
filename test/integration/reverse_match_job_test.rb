@@ -54,23 +54,22 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
   test 'successfull job' do
     status, body = status_and_body(:mapping_added)
-    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft')
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft')
       .with(:headers => {'Accept' => '*/*', 'Content-Type'=>'application/json', 'Referer'=>'http://try.iqvoc.com/', 'User-Agent'=>'Faraday v0.9.0'})
       .to_return(status: status, body: body.to_json, headers: {})
 
-    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
     Delayed::Worker.new.work_off
-    delayed_jobs = Delayed::Job.all
-    assert_equal 0, delayed_jobs.size
+    assert_equal 0, @airsoft.jobs.size
   end
 
   test 'job timeout' do
     status, body = status_and_body(:mapping_added)
-    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft').to_timeout
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft').to_timeout
 
-    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
     Delayed::Worker.new.work_off
@@ -82,9 +81,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
   test 'unknown resource' do
     status, body = status_and_body(:mapping_added)
-    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft').to_return(status: 404)
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft').to_return(status: 404)
 
-    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
     Delayed::Worker.new.work_off
@@ -92,5 +91,21 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
     job_relation = @airsoft.job_relations.first
     assert_equal 'resource_not_found', job_relation.response_error
+  end
+
+  test 'unknown match class' do
+    status, body = status_and_body(:unknown_match)
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft')
+      .with(:headers => {'Accept' => '*/*', 'Content-Type'=>'application/json', 'Referer'=>'http://try.iqvoc.com/', 'User-Agent'=>'Faraday v0.9.0'})
+      .to_return(status: status, body: body.to_json, headers: {})
+
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', '')
+    @reverse_match_service.add(job)
+
+    Delayed::Worker.new.work_off
+    assert_equal 1, @airsoft.jobs.size
+
+    job_relation = @airsoft.job_relations.first
+    assert_equal 'unknown_match', job_relation.response_error
   end
 end
