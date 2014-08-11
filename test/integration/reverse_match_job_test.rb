@@ -79,4 +79,18 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job_relation = @airsoft.job_relations.first
     assert_equal 'timeout_error', job_relation.response_error
   end
+
+  test 'unknown resource' do
+    status, body = status_and_body(:mapping_added)
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft').to_return(status: 404)
+
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
+    @reverse_match_service.add(job)
+
+    Delayed::Worker.new.work_off
+    assert_equal 1, @airsoft.jobs.size
+
+    job_relation = @airsoft.job_relations.first
+    assert_equal 'resource_not_found', job_relation.response_error
+  end
 end
