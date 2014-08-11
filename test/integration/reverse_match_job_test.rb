@@ -27,7 +27,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       c.save
     end
 
-    @airsoft = Concept::SKOS::Base.new.tap do |c|
+    @airsoft = Concept::SKOS::Base.new(origin: 'airsoft').tap do |c|
       Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
@@ -52,17 +52,31 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     DatabaseCleaner.clean
   end
 
-  test 'test successfull job' do
+  test 'successfull job' do
     status, body = status_and_body(:mapping_added)
     stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft')
       .with(:headers => {'Accept' => '*/*', 'Content-Type'=>'application/json', 'Referer'=>'http://try.iqvoc.com/', 'User-Agent'=>'Faraday v0.9.0'})
-      .to_return(status: status, body: body, headers: {})
+      .to_return(status: status, body: body.to_json, headers: {})
 
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
     @reverse_match_service.add(job)
 
     Delayed::Worker.new.work_off
     delayed_jobs = Delayed::Job.all
-    assert_equal delayed_jobs.size, 0
+    assert_equal 0, delayed_jobs.size
+  end
+
+  test 'job timeout' do
+    status, body = status_and_body(:mapping_added)
+    stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=&uri=http://try.iqvoc.com/airsoft').to_timeout
+
+    job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'match_skos_broadmatch')
+    @reverse_match_service.add(job)
+
+    Delayed::Worker.new.work_off
+    assert_equal 1, @airsoft.jobs.size
+
+    job_relation = @airsoft.job_relations.first
+    assert_equal 'timeout_error', job_relation.response_error
   end
 end

@@ -18,6 +18,6 @@ module ReverseMatchErrors
   end
 
   def status_and_body(key)
-    [messages[key][:status], messages[key][:json].to_json]
+    [messages[key][:status], messages[key][:json]]
   end
 end
