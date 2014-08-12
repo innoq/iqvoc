@@ -131,7 +131,7 @@ en:
        classifiers: "Environment classes"
        pending_jobs_header: "Pending jobs"
        pending_jobs_message: "There are pending jobs for this concept."
-       job_detail: "%{match_class}-Relation of %{subject} to %{target} pending."
+       job_detail: "%{match_class}-Relation of concept %{subject} from remote ontology to %{target} pending."
        job_state: "(State: %{state})"
      labels:
        new: "New Label"
