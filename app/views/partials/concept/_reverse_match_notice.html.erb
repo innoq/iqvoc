@@ -6,7 +6,7 @@
       <li>
         <%= t("txt.views.concepts.job_detail",
             match_class: j[:match_class],
-            subject: link_to(t("txt.common.concept"), j[:subject]),
+            subject: link_to(j[:subject], j[:subject], class: 'unlabeled'),
             target: link_to(concept, concept_path(concept))
           ).html_safe
         %>
