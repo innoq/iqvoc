@@ -51,6 +51,22 @@ class ConceptsController < ApplicationController
     @datasets = datasets_as_json
     respond_to do |format|
       format.html do
+        if @concept.jobs.any?
+          match_classes = Iqvoc::Concept.reverse_match_class_names
+
+          @jobs = @concept.job_relations.map do |jr|
+            handler = YAML.load(jr.job.handler)
+            match_class = match_classes.key(handler.match_class)
+            match_class_label = match_class.constantize.rdf_predicate.camelize if match_class
+
+            result = {response_error: jr.response_error}
+            result[:subject] = handler.subject
+            result[:type] = handler.type
+            result[:match_class] = match_class_label || match_class
+            result
+          end
+        end
+
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept,

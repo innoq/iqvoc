@@ -8,9 +8,24 @@
   <% end %>
 <% end %>
 
-<% if @concept.jobs.any? %>
+<% if @jobs.any? %>
   <%= alert :warning, :header => t('txt.views.concepts.pending_jobs_header') + "." do %>
     <%= t("txt.views.concepts.pending_jobs_message") %>
+    <ul>
+      <% @jobs.each do |j| %>
+        <li>
+          <%= t("txt.views.concepts.job_detail",
+              match_class: j[:match_class],
+              subject: link_to(t("txt.common.concept"), j[:subject]),
+              target: link_to(@concept, concept_path(@concept))
+            ).html_safe
+          %>
+          <% unless j[:response_error].empty? %>
+            <%= t("txt.views.concepts.job_state", state: j[:response_error]) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
   <% end %>
 <% end %>
 

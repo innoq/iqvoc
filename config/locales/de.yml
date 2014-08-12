@@ -45,6 +45,7 @@ de:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
+     concept: "Konzept"
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
@@ -128,6 +129,8 @@ de:
        classifiers: "Umweltklassen"
        pending_jobs_header: "Austehende Jobs"
        pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
+       job_detail: "%{match_class}-Beziehung von %{subject} auf %{target} austehend."
+       job_state: "(Status: %{state})"
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
