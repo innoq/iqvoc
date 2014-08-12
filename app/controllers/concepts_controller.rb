@@ -51,7 +51,7 @@ class ConceptsController < ApplicationController
     @datasets = datasets_as_json
     respond_to do |format|
       format.html do
-        if @concept.jobs.any?
+        if @concept.jobs
           match_classes = Iqvoc::Concept.reverse_match_class_names
 
           @jobs = @concept.job_relations.map do |jr|
