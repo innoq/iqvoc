@@ -51,10 +51,10 @@ class ReverseMatchesController < ApplicationController
     @target_match_class = klass.constantize.reverse_match_class_name
     render_response :unknown_match and return if @target_match_class.nil?
 
-    iqvoc_sources = Iqvoc.config['sources.iqvoc']
+    iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |s| URI.parse(s) }
     render_response :no_referer and return if request.referer.nil?
     referer = URI.parse(request.referer)
-    iqvoc_sources.map!{ |s| URI.parse(s) }
+
     render_response :unknown_referer and return if iqvoc_sources.exclude? referer
 
     concept = Iqvoc::Concept.base_class.find_by(origin: origin)
