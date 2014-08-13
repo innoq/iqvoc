@@ -214,7 +214,7 @@ class Concept::Base < ActiveRecord::Base
           self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
           # TODO: error handling job creation, check _custom param
           job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class_name)
-          # self.reverse_match_service.add(job)
+          self.reverse_match_service.add(job)
         end
       end
       urls.each do |url|
