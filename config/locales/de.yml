@@ -129,6 +129,8 @@ de:
        classifiers: "Umweltklassen"
        pending_jobs_header: "Austehende Jobs"
        pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
+       add_match: "Anlage:"
+       remove_match: "Löschung:"
        job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} austehend."
        job_state: "(Status: %{state})"
      labels:
