@@ -24,7 +24,7 @@
       <% end %>
 
       <% if concept.additional_info.present? %>
-        (<%= concept.additional_info %>)
+        <span class="additional_info">(<%= concept.additional_info %>)</span>
       <% end %>
     </li>
   <% end %>

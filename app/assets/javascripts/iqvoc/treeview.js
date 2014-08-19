@@ -28,7 +28,8 @@ function Treeview(container) {
         id: item.attr('id'),
         url: item.children('a').attr('href'),
         update_url: item.data('update-url'),
-        published: item.data('published')
+        published: item.data('published'),
+        additionalText: item.children('span.additional_info')
       };
     });
 
@@ -44,8 +45,7 @@ function Treeview(container) {
         return uri.normalize().toString();
       },
       onCreateLi: function(node, $li) {
-        // TODO: add additionalText if present
-        var link = $('<a href="' + node.url +'">' + node.name + '</a>');
+        var link = buildLink(node.url, node.name, node.additionalText)
         $li.find('.jqtree-title').replaceWith(link);
 
         // mark published/unpublished items
@@ -200,6 +200,15 @@ function Treeview(container) {
       $tree.tree('moveNode', node, oldParentNode, 'inside');
     }
     $tree.tree('updateNode', node, {moved: false});
+  }
+
+  function buildLink(url, label, additionalText) {
+    var link = $('<a>').attr('href', url).html(label);
+
+    if (additionalText) {
+      link = link.after(' ', additionalText);
+    }
+    return link;
   }
 
 }

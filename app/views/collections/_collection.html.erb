@@ -4,12 +4,6 @@
           collection_path(:id => collection) %>
 
   <%- if collection.additional_info -%>
-    (<%= collection.additional_info %>)
-  <%- end -%>
-
-  <%- if has_children -%>
-    <ul>
-      <li><span class="placeholder">&nbsp;</span></li>
-    </ul>
+    <span class="additional_info">(<%= collection.additional_info %>)</span>
   <%- end -%>
 </li>
