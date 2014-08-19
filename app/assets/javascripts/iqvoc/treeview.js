@@ -45,7 +45,7 @@ function Treeview(container) {
         return uri.normalize().toString();
       },
       onCreateLi: function(node, $li) {
-        var link = buildLink(node.url, node.name, node.additionalText)
+        var link = buildLink(node.url, node.name, node.additionalText);
         $li.find('.jqtree-title').replaceWith(link);
 
         // mark published/unpublished items
