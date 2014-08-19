@@ -56,13 +56,14 @@ class ConceptsController < ApplicationController
 
           @jobs = @concept.job_relations.map do |jr|
             handler = YAML.load(jr.job.handler)
-            match_class = match_classes.key(handler.match_class)
-            match_class_label = match_class.constantize.rdf_predicate.camelize if match_class
+            match_class_name = match_classes.key(handler.match_class)
+            reverse_match_class_name = match_class_name.constantize.reverse_match_class_name
+            reverse_match_class_label = reverse_match_class_name.constantize.rdf_predicate.camelize if reverse_match_class_name
 
             result = {response_error: jr.response_error}
             result[:subject] = handler.subject
             result[:type] = handler.type
-            result[:match_class] = match_class_label || match_class
+            result[:match_class] = reverse_match_class_label || reverse_match_class_name
             result
           end
         end
