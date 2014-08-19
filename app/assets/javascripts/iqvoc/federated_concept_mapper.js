@@ -11,6 +11,11 @@ var baseClass = IQVOC.ConceptMapper;
 function FederatedConceptMapper(selector) {
   baseClass.apply(this, arguments);
 
+  this.noResultsMsg = {
+    label: this.root.data("no-results-msg"),
+    value: ''
+  };
+
   var sources = this.root.data("datasets");
   if(!sources) { // fall back to non-federated base class only
     return;
@@ -37,6 +42,9 @@ function FederatedConceptMapper(selector) {
       }
     },
     response: function(ev, ui) {
+      if (!ui.content.length) {
+        ui.content.push(self.noResultsMsg);
+      }
       self.indicator.css("visibility", "hidden");
     },
     minLength: 2
