@@ -103,7 +103,7 @@ de:
          languages: Sprachen
          performance: Performance
          triplestore: Triplestore
-         sources: Verteilte Suche
+         sources: Föderation
        settings:
          title: Titel
          languages_notes: Sprachen für Notes
