@@ -21,6 +21,11 @@ var EntitySelector = function(node) {
   this.entities = this.getSelection();
   this.uriTemplate = this.el.data("entity-uri");
 
+  this.noResultsMsg = {
+    label: this.el.data("no-results-msg"),
+    value: ''
+  };
+
   var self = this;
 
   this.indicator.css("visibility", "hidden");
@@ -35,7 +40,12 @@ var EntitySelector = function(node) {
     source: $.proxy(this, "onInput"), // XXX: discards original `this` context
     search: function(ev, ui) { self.indicator.css("visibility", "visible"); },
     focus: function(ev, ui) { return false; },
-    select: this.onSelect
+    select: this.onSelect,
+    response: function(ev, ui) {
+      if (!ui.content.length) {
+        ui.content.push(self.noResultsMsg);
+      }
+    }
   });
 
   // jQuery UI does not add a type attribute
