@@ -186,6 +186,17 @@ tr.highlightable {
   margin-bottom: 25px;
   > * { margin-right: 10px; }
 
+  .input-group {
+      display: inline-table;
+      vertical-align: middle;
+
+      .input-group-addon,
+      .input-group-btn,
+      .form-control {
+          width: auto !important;
+      }
+  }
+
   .form-control {
     width: auto;
     display: inline-block;

@@ -23,22 +23,21 @@ function FederatedConceptMapper(selector) {
   this.source = $("<select />").addClass("form-control").append(sources).
       insertBefore(this.input);
 
-  this.indicator = $("<i />").
-      addClass("concept-mapper-indicator hidden fa fa-refresh fa-spin").
-      insertAfter(this.input);
+  this.indicator = $("<i />").addClass("spinner fa fa-refresh fa-spin").css("visibility", "hidden");
+  this.indicatorWrapper.append(this.indicator);
 
   var self = this;
-  this.input.autocomplete({ // TODO: extract autocomplete extension into subclass
+  this.input.find('input').autocomplete({ // TODO: extract autocomplete extension into subclass
     source: $.proxy(this, "onChange"),
     search: function(ev, ui) {
       if(self.source.val() === "_custom") {
         return false;
       } else {
-        self.indicator.removeClass("hidden");
+        self.indicator.css("visibility", "visible");
       }
     },
     response: function(ev, ui) {
-      self.indicator.addClass("hidden");
+      self.indicator.css("visibility", "hidden");
     },
     minLength: 2
   });

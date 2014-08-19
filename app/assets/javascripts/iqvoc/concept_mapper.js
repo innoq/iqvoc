@@ -22,12 +22,20 @@ function ConceptMapper(selector) {
 
   this.container = $("<div />").addClass("concept-mapper control-group");
 
-  this.input = $("<input />").attr("type", "text").addClass("form-control").
-      prependTo(this.container);
+  this.bootstrapInputGroup = $('<div class="input-group" />');
+  this.indicatorWrapper = $('<span class="input-group-addon" />');
+
+  this.input = this.bootstrapInputGroup
+                  .append($("<input />").attr("type", "text").addClass("form-control"))
+                  .append(this.indicatorWrapper)
+                  .prependTo(this.container);
+
   $("<button />").addClass("btn btn-default fa fa-plus").
       insertAfter(this.input).click($.proxy(this, "onConfirm"));
-  this.matchType = $("<select />").addClass("form-control").
-      append(matchOptions).insertAfter(this.input);
+
+  this.matchType = $("<select />").addClass("form-control")
+                    .append(matchOptions)
+                    .insertAfter(this.input);
 
   this.container.prependTo(this.root);
 }
@@ -39,7 +47,7 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   var textArea = document.getElementsByName(textAreaName)[0];
   textArea = $(textArea);
 
-  var newURI = this.input.val();
+  var newURI = this.input.find('input').val();
   var newValue = $.trim(textArea.val() + this.delimiter + newURI);
 
   textArea.val(newValue);
