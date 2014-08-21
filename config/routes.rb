@@ -90,7 +90,5 @@ Rails.application.routes.draw do
 
   get ':id' => 'rdf#show', as: 'rdf'
 
-  get 'collections', as: 'rdf_collections', to: 'collections#index'
-
   root to: 'frontpage#index', format: nil
 end

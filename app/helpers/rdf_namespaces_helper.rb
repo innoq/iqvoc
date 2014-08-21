@@ -4,7 +4,6 @@ module RdfNamespacesHelper
   def iqvoc_default_rdf_namespaces
     Iqvoc.rdf_namespaces.merge({
       default: root_url(format: nil, lang: nil, trailing_slash: true),
-      coll: rdf_collections_url(trailing_slash: true, lang: nil, format: nil),
       schema: schema_url(format: nil, anchor: '', lang: nil)
     })
   end
