@@ -51,7 +51,7 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   var newValue = $.trim(textArea.val() + this.delimiter + newURI);
 
   textArea.val(newValue);
-  this.input.val("");
+  this.input.find('input').val("");
   this.root.trigger("concept-mapped", {
     uri: newURI,
     matchType: this.matchTypes[textAreaName]
