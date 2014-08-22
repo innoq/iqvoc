@@ -129,6 +129,7 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new(concept_params)
+    # TODO: add reverse match service
     @datasets = datasets_as_json
 
     if @concept.save
