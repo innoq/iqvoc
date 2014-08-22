@@ -151,6 +151,7 @@ GEM
     minitest (5.4.0)
     multi_json (1.10.1)
     multipart-post (2.0.0)
+    mysql2 (0.3.13)
     net-http-persistent (1.9)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
@@ -321,6 +322,7 @@ DEPENDENCIES
   kaminari-bootstrap (~> 3.0.1)
   linkeddata
   maruku
+  mysql2 (= 0.3.13)
   nokogiri (~> 1.6.0)
   pg
   poltergeist (~> 1.5.0)
