@@ -75,6 +75,9 @@ class ReverseMatchTest < ActionController::TestCase
     assert_response 200
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_removed'
+
+    new_concept_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).last
+    assert_equal 2, new_concept_version.rev
   end
 
   test 'add match' do
@@ -85,6 +88,9 @@ class ReverseMatchTest < ActionController::TestCase
     assert_response 200
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_added'
+
+    new_concept_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).last
+    assert_equal 2, new_concept_version.rev
   end
 
   test 'no referer' do
@@ -119,14 +125,14 @@ class ReverseMatchTest < ActionController::TestCase
     assert_equal body['type'], "unknown_referer"
   end
 
-  test 'concept locked' do
+  test 'concept with a version' do
     patch :add_match,
           origin: @airsoft.origin,
           match_class: 'match_skos_broadmatch',
           uri: 'http://iqvoc.net'
-    assert_response 423
+    assert_response 403
     body = JSON.parse response.body
-    assert_equal body['type'], "concept_locked"
+    assert_equal body['type'], "in_processing"
   end
 
   test 'missing parameter' do

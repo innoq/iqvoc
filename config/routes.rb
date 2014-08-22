@@ -80,8 +80,9 @@ Rails.application.routes.draw do
     # root to: 'frontpage#index', format: nil
   end
 
-  patch ':origin/add_match'   => 'reverse_matches#add_match',          as: 'add_match'
-  patch ':origin/remove_match'=> 'reverse_matches#remove_match',       as: 'remove_match'
+  patch ':origin/add_match' => 'reverse_matches#add_match', as: 'add_match'
+  patch ':origin/remove_match' => 'reverse_matches#remove_match', as: 'remove_match'
+  
   get 'remote_labels' => 'remote_labels#show', as: 'remote_label'
   get 'schema' => redirect('/'), as: 'schema'
   get 'dataset' => 'rdf#dataset', as: 'rdf_dataset'

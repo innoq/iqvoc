@@ -4,14 +4,15 @@ class ReverseMatchesController < ApplicationController
 
   def add_match
     begin
-      @unpublished_concept ||= @published_concept.branch(@botuser)
-      @unpublished_concept.save
-      @target_match_class.constantize.create( concept_id: @unpublished_concept.id, value: @uri )
+      # NOTE: currently it's only allowed to add matches to published concepts
+      # which are _NOT_ in processing. See older commits how to work with
+      # currently edited concepts
+      unpublished_concept = @published_concept.branch(@botuser)
+      unpublished_concept.save
+      @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
+      unpublished_concept.publish!
     rescue
       render_response :server_error and return
-    ensure
-      @unpublished_concept.unlock
-      @unpublished_concept.save
     end
 
     render_response :mapping_added
@@ -19,16 +20,14 @@ class ReverseMatchesController < ApplicationController
 
   def remove_match
     begin
-      @unpublished_concept ||= @published_concept.branch(@botuser)
-      @unpublished_concept.save
-      match = @target_match_class.constantize.find_by( concept_id: @unpublished_concept.id, value: @uri )
+      unpublished_concept = @published_concept.branch(@botuser)
+      unpublished_concept.save
+      match = @target_match_class.constantize.find_by(concept_id: unpublished_concept.id, value: @uri)
       render_response :unknown_relation and return if match.nil?
       match.destroy
+      unpublished_concept.publish!
     rescue
       render_response :server_error and return
-    ensure
-      @unpublished_concept.unlock
-      @unpublished_concept.save
     end
 
     render_response :mapping_removed
@@ -57,18 +56,12 @@ class ReverseMatchesController < ApplicationController
 
     render_response :unknown_referer and return if iqvoc_sources.exclude? referer
 
-    concept = Iqvoc::Concept.base_class.find_by(origin: origin)
     @botuser = BotUser.instance
-
-    if concept.published?
-      @botuser.can? :branch, concept
-    else
-      @botuser.can? :update, concept
-    end
-
     @published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
-    @unpublished_concept = Iqvoc::Concept.base_class.by_origin(origin).unpublished.last
-    render_response :concept_locked and return if @unpublished_concept && @unpublished_concept.locked?
+    @botuser.can? :branch, @published_concept
+
+    unpublished_concepts = Iqvoc::Concept.base_class.by_origin(origin).unpublished
+    render_response :in_processing and return if unpublished_concepts.any?
   end
 
   def render_response(type)
