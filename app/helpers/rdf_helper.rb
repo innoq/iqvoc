@@ -27,7 +27,7 @@ module RdfHelper
 
       concept.collection_members.each do |collection_member|
         if @rdf_helper_cached_collections[collection_member.collection_id]
-          c.Schema::memberOf(IqRdf::Coll::build_uri(@rdf_helper_cached_collections[collection_member.collection_id]))
+          c.Schema::memberOf(IqRdf.build_uri(@rdf_helper_cached_collections[collection_member.collection_id]))
         end
       end
 
@@ -88,7 +88,7 @@ module RdfHelper
       end
 
       collection.subcollections.each do |subcollection|
-        c.Skos::member(IqRdf::Coll.build_uri(subcollection.origin))
+        c.Skos::member(IqRdf.build_uri(subcollection.origin))
       end
 
     end
