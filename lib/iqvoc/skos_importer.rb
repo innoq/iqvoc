@@ -78,6 +78,7 @@ module Iqvoc
     end
 
     def run
+      print_known_import_classes
       import @file
     end
 
@@ -308,6 +309,18 @@ module Iqvoc
 
           @blank_nodes.delete(bnode_origin) # remove old blank node
         end
+      end
+    end
+
+    def print_known_import_classes
+      @logger.info "Known first level classes"
+      first_level_object_classes.each_with_index do |floc, i|
+        @logger.info "\t #{i+1}: #{floc.rdf_namespace}:#{floc.rdf_class} => #{floc.to_s}"
+      end
+
+      @logger.info "Known second level classes"
+      second_level_object_classes.each_with_index do |floc, i|
+        @logger.info "\t #{i+1}: #{floc.rdf_namespace}:#{floc.rdf_predicate} => #{floc.to_s}"
       end
     end
 
