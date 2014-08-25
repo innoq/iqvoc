@@ -319,8 +319,8 @@ module Iqvoc
       end
 
       @logger.info "Known second level classes"
-      second_level_object_classes.each_with_index do |floc, i|
-        @logger.info "\t #{i+1}: #{floc.rdf_namespace}:#{floc.rdf_predicate} => #{floc.to_s}"
+      second_level_object_classes.each_with_index do |sloc, i|
+        @logger.info "\t #{i+1}: #{sloc.rdf_namespace}:#{sloc.rdf_predicate} => #{sloc.to_s}"
       end
     end
 
