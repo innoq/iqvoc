@@ -24,31 +24,11 @@ class CreateConceptTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'New Concept'
     click_link_or_button 'New Concept'
 
+    assert page.has_content? 'A concept have to be published before you can assign mapping properties.'
     # fill in english pref label
     fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en', with: 'Foo'
 
     save_check_and_publish
-  end
-
-  test 'concept creation with match relation' do
-    Iqvoc.config['sources.iqvoc'] = ['http://try.iqvoc.net']
-
-    login('administrator')
-    visit dashboard_path(lang: 'en')
-
-    assert page.has_content? 'New Concept'
-    click_link_or_button 'New Concept'
-
-    # fill in english pref label
-    fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en', with: 'Bar'
-
-    # fill in match
-    fill_in 'concept_inline_match_skos_close_matches', with: 'http://try.iqvoc.net/air_sports'
-
-    save_check_and_publish
-
-    @bar = Iqvoc::Concept.base_class.last
-    assert_equal 1, @bar.jobs.size, 1
   end
 
   private
