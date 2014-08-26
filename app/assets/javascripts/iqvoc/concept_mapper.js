@@ -37,7 +37,7 @@ function ConceptMapper(selector) {
                     .append(matchOptions)
                     .insertAfter(this.input);
 
-  this.container.prependTo(this.root);
+  this.container.appendTo(this.root);
 }
 ConceptMapper.prototype.delimiter = ", ";
 ConceptMapper.prototype.onConfirm = function(ev) {
