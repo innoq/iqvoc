@@ -25,7 +25,7 @@ class Note::SKOS::Base < Note::Base
     target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     case rdf_object
     when String # Literal
-      unless rdf_object =~ /^"(.*)"(@(.+))$/
+      unless rdf_object =~ Iqvoc::RDFAPI::LITERAL_REGEXP
         raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
