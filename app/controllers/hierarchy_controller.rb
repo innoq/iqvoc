@@ -44,6 +44,14 @@ class HierarchyController < ApplicationController
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
+    # special-casing to avoid confusion, based on user feedback
+    if params[:root]
+      msg = ['to use a specific concept as hierarchy root, please use',
+          url_for(params.merge 'action' => 'show')].join("\n")
+      render :status => 400, :text => msg
+      return
+    end
+
     depth = params[:depth] || (unbounded? ? -1 : nil)
 
     render_hierarchy 'scheme', depth, unbounded?
