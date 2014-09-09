@@ -48,7 +48,7 @@ class HierarchyController < ApplicationController
     if params[:root]
       msg = ['to use a specific concept as hierarchy root, please use',
           url_for(params.merge 'action' => 'show')].join("\n")
-      render :status => 400, :text => msg
+      render status: 400, text: msg
       return
     end
 
