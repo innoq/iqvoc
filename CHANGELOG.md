@@ -1,3 +1,8 @@
+## [4.6.0]
+
+  * [Reverse matches](https://github.com/innoq/iqvoc/wiki/Interconnecting-iQvoc#reverse-matches)
+  * Bugfixes
+
 ## [4.5.2]
 
 Another patch release before 4.6.0.
