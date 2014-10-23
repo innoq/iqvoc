@@ -1,7 +1,13 @@
+## [4.5.2]
+
+Another patch release before 4.6.0.
+
+  * Bugfixes
+
 ## [4.5.1]
 
   * Fix hierarchical collection view
-  * some minor improvements
+  * Some minor improvements
 
 ## [4.5.0]
 
