@@ -1,3 +1,8 @@
+## [4.5.1]
+
+  * Fix hierarchical collection view
+  * some minor improvements
+
 ## [4.5.0]
 
 4.5.0 brings drag'n'drop concept editing capabilities and a new hierarchical

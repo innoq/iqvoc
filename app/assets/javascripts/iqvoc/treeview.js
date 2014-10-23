@@ -25,10 +25,12 @@ function Treeview(container) {
       return {
         label: item.children('a').html(),
         load_on_demand: item.data('has-children'),
+        locked: item.data('locked'),
         id: item.attr('id'),
         url: item.children('a').attr('href'),
         update_url: item.data('update-url'),
-        published: item.data('published')
+        published: item.data('published'),
+        additionalText: item.children('span.additional_info')
       };
     });
 
@@ -40,26 +42,18 @@ function Treeview(container) {
       openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,
       dataUrl: function(node) {
-        // build ajax url (add root param)
-        // FIXME: uggly url concatenation
-        if (url.indexOf('published') < 0) {
-          return node ? url + '?root=' + node.id : url;
-        }
-        else {
-          return node ? url + '&root=' + node.id : url;
-        }
+        var uri = URI(url).addQuery('root', node.id);
+        return uri.normalize().toString();
       },
       onCreateLi: function(node, $li) {
-        // TODO: add additionalText if present
-        var link = $('<a href="' + node.url +'">' + node.name + '</a>');
+        var link = buildLink(node.url, node.name, node.additionalText);
         $li.find('.jqtree-title').replaceWith(link);
 
         // mark published/unpublished items
         if (typeof node.published !== 'undefined' && !node.published) {
           // modify draft link
-          if (link.attr('href').indexOf('published') < 0) {
-            link.attr('href', link.attr('href')+'?published=0'); // FIXME: implicit knowledge
-          }
+          var href = URI(link.attr('href'));
+          link.attr('href', href.addQuery('published', 0));
           link.addClass('unpublished');
         } else {
           link.addClass('published');
@@ -68,9 +62,15 @@ function Treeview(container) {
         if (dragabbleSupport) {
           // mark locked items
           if (typeof node.locked !== 'undefined' && node.locked) {
-            link.after(' <i class="fa fa-lock"/>');
-          } else {
-            link.after(' <i class="fa fa-arrows"/>');
+            // add icon only to the first element of the collection.
+            // the second one could be a nodelist for parents nodes.
+            $(link[0]).after(' <i class="fa fa-lock"/>');
+          }
+
+          if (typeof node.locked !== 'undefined' && !node.locked) {
+            // add icon only to the first element of the collection.
+            // the second one could be a nodelist for parents nodes.
+            $(link[0]).after(' <i class="fa fa-arrows"/>');
           }
         }
 
@@ -84,7 +84,10 @@ function Treeview(container) {
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
           var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
-          link.after(saveButton, undoButton);
+
+          // add icon only to the first element of the collection.
+          // the second one could be a nodelist for parents nodes.
+          $(link[0]).after(saveButton, undoButton);
 
           if(polyhierarchySupport) {
             saveButton.after(copyButton);
@@ -207,6 +210,15 @@ function Treeview(container) {
       $tree.tree('moveNode', node, oldParentNode, 'inside');
     }
     $tree.tree('updateNode', node, {moved: false});
+  }
+
+  function buildLink(url, label, additionalText) {
+    var link = $('<a>').attr('href', url).html(label);
+
+    if (additionalText) {
+      link = link.after(' ', additionalText);
+    }
+    return link;
   }
 
 }

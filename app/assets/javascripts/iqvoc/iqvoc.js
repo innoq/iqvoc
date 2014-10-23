@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
     });
   };
   var updateNoteLangs = function(langSelected) {
-    $(".inline_note.new select").each(function(i, sel) { // NB: new notes only!
+    $(".inline_note.new select[id*=language]").each(function(i, sel) { // NB: new notes only!
       $(sel).find("option").each(function(i, opt) {
         var el = $(opt),
           lang = el.val();

@@ -6,7 +6,6 @@ module Iqvoc
 
     def initialize(user = nil)
       can :read, Iqvoc::Concept.root_class.instance
-      can :read, ::Collection::Base
       can :read, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
 
       # static pages

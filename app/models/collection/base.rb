@@ -83,7 +83,7 @@ class Collection::Base < Concept::Base
   end
 
   def build_rdf_subject(&block)
-    IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri('Collection'), &block)
+    IqRdf.build_uri(self.origin, IqRdf::Skos::build_uri('Collection'), &block)
   end
 
   def inline_member_concept_origins=(origins)

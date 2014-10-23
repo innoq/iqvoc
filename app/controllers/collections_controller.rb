@@ -37,8 +37,8 @@ class CollectionsController < ApplicationController
           collections.map do |collection|
             { id: collection.id,
               url: collection_path(id: collection, format: :html),
-              text: CGI.escapeHTML(collection.pref_label.to_s),
-              hasChildren: collection.subcollections.any?,
+              name: CGI.escapeHTML(collection.pref_label.to_s),
+              load_on_demand: collection.subcollections.any?,
               additionalText: " (#{collection.additional_info})"
             }
           end

@@ -3,7 +3,7 @@
   <%= link_to result.label.to_s, result.path,
     :alt => result.concept.origin, :data => { 'resource-path' => result.path }, :class => 'concept-item-link' %>
   <% if result.concept.additional_info.present? %>
-  (<%= result.concept.additional_info %>)
+    <span class="additional_info">(<%= result.concept.additional_info %>)</span>
   <% end %>
   </p>
 
