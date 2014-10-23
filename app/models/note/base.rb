@@ -36,8 +36,10 @@ class Note::Base < ActiveRecord::Base
   # ********** Scopes
 
   def self.by_language(lang_code)
-    if (lang_code.is_a?(Array) && lang_code.include?(nil))
-      where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code.compact)))
+    lang_code = Array.wrap(lang_code).flatten.compact
+
+    if lang_code.none? || lang_code.include?(nil)
+      where(arel_table[:language].eq(nil).or(arel_table[:language].in(lang_code)))
     else
       where(language: lang_code)
     end
