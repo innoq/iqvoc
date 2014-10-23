@@ -45,6 +45,7 @@ en:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
+     concept: "Concept"
      pref_label: "Preferred label"
      edit: "Edit"
      value: "Value"
@@ -128,6 +129,13 @@ en:
        pref_label: "PrefLabel"
        close_match: "CloseMatch"
        classifiers: "Environment classes"
+       pending_jobs_header: "Pending jobs"
+       pending_jobs_message: "There are pending jobs for this concept."
+       disabled_matches_form_message: "A concept have to be published before you can assign mapping properties."
+       add_match: "Creation:"
+       remove_match: "Deletion:"
+       job_detail: "%{match_class}-Relation of concept %{subject} from remote ontology to %{target} pending."
+       job_state: "(State: %{state})"
      labels:
        new: "New Label"
        template_form: "Literal form"

@@ -19,7 +19,7 @@ module Versioning
 
   included do
     belongs_to :published_version, foreign_key: 'published_version_id', class_name: name
-    belongs_to :locking_user, foreign_key: 'locked_by', class_name: 'User'
+    belongs_to :locking_user, foreign_key: 'locked_by', class_name: 'AbstractUser'
 
     after_initialize do
       disable_validations_for_publishing

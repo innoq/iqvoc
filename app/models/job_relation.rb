@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011-2013 innoQ Deutschland GmbH
+# Copyright 2011-2014 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::ExactMatch < Match::SKOS::MappingRelation
-  def self.reverse_match_class_name
-    self.to_s
-  end
+class JobRelation < ActiveRecord::Base
+  # ********* Associations
 
-  self.rdf_predicate = 'exactMatch'
+  belongs_to :owner,
+    class_name: 'Concept::Base',
+    primary_key: 'origin',
+    foreign_key: 'owner_reference'
+
+  belongs_to :job, class_name: 'Delayed::Backend::ActiveRecord::Job'
 end

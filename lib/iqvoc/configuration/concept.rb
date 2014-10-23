@@ -127,6 +127,13 @@ module Iqvoc
           match_class_names.map(&:constantize)
         end
 
+        def reverse_match_class_names
+          match_class_names.inject({}) do |result, element|
+             result[element] = element.parameterize.underscore
+             result
+          end
+        end
+
         def notation_classes
           notation_class_names.map(&:constantize)
         end

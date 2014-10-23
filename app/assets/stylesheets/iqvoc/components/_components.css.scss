@@ -183,8 +183,19 @@ tr.highlightable {
 }
 
 .concept-mapper {
-  margin-bottom: 25px;
+  margin: 25px 0;
   > * { margin-right: 10px; }
+
+  .input-group {
+      display: inline-table;
+      vertical-align: middle;
+
+      .input-group-addon,
+      .input-group-btn,
+      .form-control {
+          width: auto !important;
+      }
+  }
 
   .form-control {
     width: auto;

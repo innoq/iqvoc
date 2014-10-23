@@ -49,9 +49,25 @@ class ConceptsController < ApplicationController
     authorize! :read, @concept
 
     @datasets = datasets_as_json
-
     respond_to do |format|
       format.html do
+        if @concept.jobs
+          match_classes = Iqvoc::Concept.reverse_match_class_names
+
+          @jobs = @concept.job_relations.map do |jr|
+            handler = YAML.load(jr.job.handler)
+            match_class_name = match_classes.key(handler.match_class)
+            reverse_match_class_name = match_class_name.constantize.reverse_match_class_name
+            reverse_match_class_label = reverse_match_class_name.constantize.rdf_predicate.camelize if reverse_match_class_name
+
+            result = {response_error: jr.response_error}
+            result[:subject] = handler.subject
+            result[:type] = handler.type
+            result[:match_class] = reverse_match_class_label || reverse_match_class_name
+            result
+          end
+        end
+
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept,
@@ -81,8 +97,14 @@ class ConceptsController < ApplicationController
               labels: concept.labelings.map { |ln| labeling_as_json(ln) },
               relations: published_relations.call(concept).count
             }
-          }
+          },
+          links: [
+            { rel: 'self', href: concept_url(@concept, format: nil), method: 'get' },
+            { rel: 'add_match', href: add_match_url(@concept, lang: nil), method: 'patch' },
+            { rel: 'remove_match', href: remove_match_url(@concept, lang: nil), method: 'patch' }
+          ]
         }
+        # FIXME: use jbuilder instead???
         render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
@@ -107,6 +129,7 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new(concept_params)
+    # TODO: add reverse match service
     @datasets = datasets_as_json
 
     if @concept.save
@@ -140,8 +163,8 @@ class ConceptsController < ApplicationController
 
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
-
     authorize! :update, @concept
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
 
     @datasets = datasets_as_json
 

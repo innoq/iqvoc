@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', as: 'concept_versions_to_review'
     get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
-    patch 'concepts/:origin/move'       => 'concepts#move', as: 'move_concept'
+    patch 'concepts/:origin/move'        => 'concepts#move',               as: 'move_concept'
 
     post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
@@ -79,6 +79,9 @@ Rails.application.routes.draw do
     get '/' => 'frontpage#index'
     # root to: 'frontpage#index', format: nil
   end
+
+  patch ':origin/add_match' => 'reverse_matches#add_match', as: 'add_match'
+  patch ':origin/remove_match' => 'reverse_matches#remove_match', as: 'remove_match'
 
   get 'remote_labels' => 'remote_labels#show', as: 'remote_label'
   get 'schema' => redirect('/'), as: 'schema'

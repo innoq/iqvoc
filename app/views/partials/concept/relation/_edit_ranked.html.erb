@@ -8,5 +8,7 @@
     :"data-entity-uri" => concept_path("{id}"),
     :"data-singular" => klass.singular? || nil,
     :"data-entities" => widget_entities_ranked(concept, klass),
-    :"data-qualified" => "rank" %>
+    :"data-qualified" => "rank",
+    :'data-no-results-msg' => t('txt.views.search_results.no_results')
+  %>
 <% end %>

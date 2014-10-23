@@ -30,6 +30,7 @@ gem 'json'
 gem 'rails_autolink'
 gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
+gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'

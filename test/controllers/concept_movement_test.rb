@@ -27,7 +27,7 @@ class ConceptMovementTest < ActionController::TestCase
     @admin = User.create! do |u|
       u.forename = 'Test'
       u.surname = 'User'
-      u.email = 'testuser@iqvoc.local'
+      u.email = 'admin@iqvoc'
       u.password = 'omgomgomg'
       u.password_confirmation = 'omgomgomg'
       u.role = 'administrator'

@@ -1,0 +1,25 @@
+<%# binding.pry %>
+<%= alert :warning, :header => t('txt.views.concepts.pending_jobs_header') + "." do %>
+  <%= t("txt.views.concepts.pending_jobs_message") %>
+  <ol>
+    <% jobs.each do |j| %>
+      <li>
+        <% if j[:type] == :remove_match %>
+          <%= t("txt.views.concepts.remove_match") %>
+        <% else %>
+          <%= t("txt.views.concepts.add_match") %>
+        <% end %>
+
+        <%= t("txt.views.concepts.job_detail",
+            match_class: j[:match_class],
+            subject: link_to(j[:subject], j[:subject], class: 'unlabeled'),
+            target: link_to(concept, concept_path(concept))
+          ).html_safe
+        %>
+        <% if j[:response_error] %>
+          <%= t("txt.views.concepts.job_state", state: j[:response_error]) %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
