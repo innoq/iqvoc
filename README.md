@@ -86,7 +86,7 @@ overview of the possibilities.
 
 ## Documentation
 
-Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki/_pages).
+Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki).
 
 ## Versioning
 
