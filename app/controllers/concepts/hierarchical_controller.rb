@@ -15,12 +15,15 @@
 # limitations under the License.
 
 class Concepts::HierarchicalController < ConceptsController
-
   def index
-    authorize! :read, Iqvoc::Concept.base_class
+    if params[:published] == '0'
+      authorize! :update, Iqvoc::Concept.base_class
+    else
+      authorize! :read, Iqvoc::Concept.base_class
+    end
 
     scope = Iqvoc::Concept.base_class
-    scope = params[:published] == "0" ? scope.editor_selectable : scope.published
+    scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
     # only select unexpired concepts
     scope = scope.not_expired
@@ -55,18 +58,28 @@ class Concepts::HierarchicalController < ConceptsController
     respond_to do |format|
       format.html
       format.json do # Treeview data
-        concepts = @concepts.select {|c| can? :read, c }.map do |c|
+        concepts = @concepts.select { |c| can? :read, c }.map do |c|
+          url = (c.published?) ? concept_path(id: c, format: :html) : concept_path(id: c, format: :html, published: 0)
+
+          load_on_demand = if params[:published] == '0'
+                             params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?
+                           else
+                             params[:broader] ? c.broader_relations.published.any? : c.narrower_relations.published.any?
+                           end
+
           {
             id: c.id,
-            url: concept_path(id: c, format: :html),
-            text: CGI.escapeHTML(c.pref_label.to_s),
-            hasChildren: (params[:broader] ? c.broader_relations.any? : c.narrower_relations.any?),
-            additionalText: (" (#{c.additional_info})" if c.additional_info.present?)
+            label: CGI.escapeHTML(c.pref_label.to_s),
+            additionalText: (" (#{c.additional_info})" if c.additional_info.present?),
+            load_on_demand: load_on_demand,
+            url: url,
+            update_url: move_concept_url(c),
+            published: (c.published?) ? true : false,
+            locked: (can?(:branch, c) || can?(:update, c) ? false : true)
           }
         end
         render json: concepts
       end
     end
   end
-
 end

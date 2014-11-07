@@ -15,16 +15,15 @@
 # limitations under the License.
 
 module ApplicationHelper
-
   GLYPHS = {
-    yes: "&#x2713;",
-    no: "&#x2717;"
+    yes: '&#x2713;',
+    no: '&#x2717;'
   }
 
   def user_details(user)
     details = mail_to(user.email, user.name)
     if user.telephone_number?
-      details << " " << user.telephone_number
+      details << ' ' << user.telephone_number
     end
     details
   end
@@ -33,9 +32,9 @@ module ApplicationHelper
   def item_listing(items, &block)
     return nil if items.empty?
 
-    content_tag :ul, class: "entity_list" do
+    content_tag :ul, class: 'entity_list' do
       items.map do |item|
-        content_tag :li, class: (items.last == item ? "last-child" : "") do
+        content_tag :li, class: (items.last == item ? 'last-child' : '') do
           block.call(item)
         end
       end.join("\n").html_safe
@@ -61,7 +60,7 @@ module ApplicationHelper
     end
 
     content_for :page_header do
-      content_tag :div, class: "page-header" do
+      content_tag :div, class: 'page-header' do
         content_tag :h1 do
           ("#{title} #{content_tag(:small, args[:desc])}").html_safe
         end
@@ -71,9 +70,9 @@ module ApplicationHelper
 
   def login_logout
     if current_user
-      link_to t("txt.views.navigation.logout"), user_session_path, method: :delete
+      link_to t('txt.views.navigation.logout'), user_session_path, method: :delete
     else
-      link_to t("txt.views.navigation.login"), new_user_session_path
+      link_to t('txt.views.navigation.login'), new_user_session_path
     end
   end
 
@@ -91,13 +90,13 @@ module ApplicationHelper
     end
   end
 
-  def icon(name, additional_css = "")
+  def icon(name, additional_css = '')
     css_classes = %W(fa fa-#{name})
     if additional_css.respond_to?(:split)
-      css_classes << additional_css.split(" ")
+      css_classes << additional_css.split(' ')
     end
 
-    content_tag :i, "", class: css_classes.join(" ")
+    content_tag :i, '', class: css_classes.join(' ')
   end
 
   def glyph(name)
@@ -105,7 +104,7 @@ module ApplicationHelper
   end
 
   def html_classes(*args)
-    args.compact.join(" ")
+    args.compact.join(' ')
   end
 
   def page_title
@@ -114,6 +113,10 @@ module ApplicationHelper
     else
       Iqvoc.title
     end
+  end
+
+  def loading_indicator(label)
+    "<i class=\"fa fa-spin fa-spinner\"></i> #{label}"
   end
 
 end

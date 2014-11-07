@@ -14,5 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+
+unless defined?(Iqvoc) && Iqvoc.const_defined?(:Engine)
+  require File.expand_path('../../config/environment', __FILE__)
+end
+
 require 'rails/test_help'
+require 'iqvoc/rdfapi'

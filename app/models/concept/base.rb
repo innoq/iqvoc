@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class Concept::Base < ActiveRecord::Base
-
+  attr_accessor :reverse_match_service
   self.table_name = 'concepts'
 
   class_attribute :default_includes
@@ -77,7 +77,7 @@ class Concept::Base < ActiveRecord::Base
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
       new_origins = new_origins.each_with_object({}) do |e, hsh|
-        key, value = e.split(":") # NB: defaults to nil if no rank is provided
+        key, value = e.split(':') # NB: defaults to nil if no rank is provided
         hsh[key] = value
       end
 
@@ -100,9 +100,9 @@ class Concept::Base < ActiveRecord::Base
   after_save do |concept|
     # Generate a origin if none was given yet
     if concept.origin.blank?
-      raise "Concept::Base#after_save (generate origin): Unable to set the origin by id!" unless concept.id
+      raise 'Concept::Base#after_save (generate origin): Unable to set the origin by id!' unless concept.id
       concept.reload
-      concept.origin = sprintf("_%08d", concept.id)
+      concept.origin = sprintf('_%08d', concept.id)
       concept.save! # On exception the complete save transaction will be rolled back
     end
   end
@@ -111,22 +111,22 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, foreign_key: 'owner_id', class_name: "Concept::Relation::Base", dependent: :destroy
+  has_many :relations, foreign_key: 'owner_id', class_name: 'Concept::Relation::Base', dependent: :destroy
   has_many :related_concepts, through: :relations, source: :target
-  has_many :referenced_relations, foreign_key: 'target_id', class_name: "Concept::Relation::Base", dependent: :destroy
+  has_many :referenced_relations, foreign_key: 'target_id', class_name: 'Concept::Relation::Base', dependent: :destroy
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, foreign_key: 'owner_id', class_name: "Labeling::Base", dependent: :destroy
+  has_many :labelings, foreign_key: 'owner_id', class_name: 'Labeling::Base', dependent: :destroy
   has_many :labels, through: :labelings, source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
-  has_many :notes, class_name: "Note::Base", as: :owner, dependent: :destroy
-  include_to_deep_cloning({notes: :annotations})
+  has_many :notes, class_name: 'Note::Base', as: :owner, dependent: :destroy
+  include_to_deep_cloning({ notes: :annotations })
 
-  has_many :matches, foreign_key: 'concept_id', class_name: "Match::Base", dependent: :destroy
+  has_many :matches, foreign_key: 'concept_id', class_name: 'Match::Base', dependent: :destroy
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, foreign_key: 'target_id', class_name: "Collection::Member::Base", dependent: :destroy
+  has_many :collection_members, foreign_key: 'target_id', class_name: 'Collection::Member::Base', dependent: :destroy
   has_many :collections, through: :collection_members, class_name: Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
@@ -212,14 +212,29 @@ class Concept::Base < ActiveRecord::Base
           urls.delete(match.value) # We're done with that one
         else
           self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
+          # TODO: error handling job creation, check _custom param
+          job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class_name)
+          self.reverse_match_service.add(job)
         end
       end
       urls.each do |url|
         self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
+        # TODO: error handling job creation, check _custom param, sources check should be in job creation
+
+        iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
+        url_object = URI.parse(url)
+        if self.reverse_match_service && iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
+          job = self.reverse_match_service.build_job(:add_match, origin, url, match_class_name)
+          self.reverse_match_service.add(job)
+        end
       end
     end
 
   end
+
+  # *** Job Relations
+  has_many :job_relations, primary_key: 'origin', foreign_key: 'owner_reference', class_name: 'JobRelation'
+  has_many :jobs, through: :job_relations
 
   # *** Notes
 
@@ -275,15 +290,15 @@ class Concept::Base < ActiveRecord::Base
   # ********** Class methods
 
   def self.inline_partial_name
-    "partials/concept/inline_base"
+    'partials/concept/inline_base'
   end
 
   def self.new_link_partial_name
-    "partials/concept/new_link_base"
+    'partials/concept/new_link_base'
   end
 
   def self.edit_link_partial_name
-    "partials/concept/edit_link_base"
+    'partials/concept/edit_link_base'
   end
 
   # ********** Methods
@@ -330,7 +345,7 @@ class Concept::Base < ActiveRecord::Base
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale.to_s == "none" ? nil : I18n.locale.to_s
+    lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
     @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
@@ -349,7 +364,7 @@ class Concept::Base < ActiveRecord::Base
   def labels_for_labeling_class_and_language(labeling_class, lang = :en, only_published = true)
     # Convert lang to string in case it's not nil.
     # nil values play their own role for labels without a language.
-    if lang == "none"
+    if lang == 'none'
       lang = nil
     elsif lang
       lang = lang.to_s
@@ -358,7 +373,7 @@ class Concept::Base < ActiveRecord::Base
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
-    ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{|l| l.published? || !only_published}
+    ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{ |l| l.published? || !only_published }
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
@@ -401,5 +416,4 @@ class Concept::Base < ActiveRecord::Base
       concept_relations: Concept::Relation::Base.by_owner(id).target_in_edit_mode,
     }
   end
-
 end

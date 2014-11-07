@@ -1,11 +1,40 @@
+## [4.6.0]
+
+  * [Reverse matches](https://github.com/innoq/iqvoc/wiki/Interconnecting-iQvoc#reverse-matches)
+  * Bugfixes
+
+## [4.5.2]
+
+Another patch release before 4.6.0.
+
+  * Bugfixes
+
+## [4.5.1]
+
+  * Fix hierarchical collection view
+  * Some minor improvements
+
+## [4.5.0]
+
+4.5.0 brings drag'n'drop concept editing capabilities and a new hierarchical
+concept draft view. Browse your thesaurus an see where new concepts version
+exists.
+
+  * Add hierarchical draft view with new concept versions
+  * Drag'n'Drop support for moving and copying concepts inside hierarchies
+  * Minor bugfixes
+
 ## [4.4.0]
 
   * [Asynchronous](https://github.com/innoq/iqvoc#background-jobs) SKOS exporter
   * Improved web based SKOS importer
   * Versioning for collections
-  * Concepts, collections and concept scheme can be requested as NTriples
+  * Concepts, collections and concept scheme can be serialized as NTriples
   * Rails 4.1
   * Bootstrap 3
+  * Heroku improvements
+  * Improved thesaurus reset
+  * Fix import of large RDF graphs
 
 ## [4.3.2]
 

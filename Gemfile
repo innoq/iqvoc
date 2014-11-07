@@ -19,18 +19,18 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '4.1.0'
-gem 'protected_attributes', '>= 1.0.7'
+gem 'rails', '4.1.3'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'authlogic', '~> 3.4.2'
-gem 'cancan'
-gem 'iq_rdf', '>= 0.1.13'
+gem 'cancancan'
+gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'jruby-openssl', :platforms => :jruby
+gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
+gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'
@@ -39,7 +39,7 @@ gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'bootstrap_form', '~> 2.1.1'
 gem 'font-awesome-rails'
 gem 'apipie-rails'
-gem 'maruku', :require => false
+gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
@@ -47,7 +47,7 @@ gem 'carrierwave'
 group :development do
   gem 'view_marker'
   gem 'better_errors'
-  gem 'binding_of_caller', :platform => :ruby
+  gem 'binding_of_caller', platform: :ruby
   gem 'quiet_assets'
 end
 
@@ -63,7 +63,7 @@ group :development, :test do
     gem 'cane'
   end
 
-  gem 'pry-byebug', '~> 1.1.2', :platforms => :ruby_20
+  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
 
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
@@ -74,11 +74,10 @@ end
 group :test do
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
-  gem 'factory_girl_rails'
   gem 'webmock'
 end
 
 group :heroku do
-  gem 'pg', :platforms => :ruby
+  gem 'pg', platforms: :ruby
   gem 'rails_12factor'
 end

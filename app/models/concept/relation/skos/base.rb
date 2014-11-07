@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Base < Concept::Relation::Base
-
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -24,7 +23,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
 
     relation_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
 
-    relation_instance = rdf_subject.send(self.name.to_relation_name).select{|rel| rel.target == rdf_object}
+    relation_instance = rdf_subject.send(self.name.to_relation_name).select{ |rel| rel.target == rdf_object }
     if relation_instance.empty?
       relation_instance = relation_class.new(target: rdf_object)
       rdf_subject.send(self.name.to_relation_name) << relation_instance
@@ -33,7 +32,7 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
     if relation_class.bidirectional?
       reverse_class      = relation_class.reverse_relation_class
       reverse_collection = rdf_object.send(reverse_class.name.to_relation_name)
-      if reverse_collection.select{|rel| rel.target == rdf_subject}.empty?
+      if reverse_collection.select{ |rel| rel.target == rdf_subject }.empty?
         reverse_instance = reverse_class.new(target: rdf_subject)
         reverse_collection << reverse_instance
       end
@@ -53,5 +52,4 @@ class Concept::Relation::SKOS::Base < Concept::Relation::Base
       end
     end
   end
-
 end

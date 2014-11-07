@@ -1,6 +1,14 @@
 <div class="relation">
-  <h4><%= t("txt.views.layouts.sections.hierarchy") %></h4>
-  <div class="hierarchy">
-		Tree
+  <h2><%= Iqvoc::Concept.broader_relation_class.narrower_class.model_name.human(:count => 2) %></h2>
+  <div class="relation-body">
+    <% if concept.narrower_relations.any? %>
+      <div class="selector">
+        <% if(params[:published] == '0') %>
+          <%= treeview(concept.narrower_relations.published_with_newer_versions.map(&:target)) %>
+        <% else %>
+          <%= treeview(concept.narrower_relations.published.map(&:target)) %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

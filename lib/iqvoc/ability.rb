@@ -6,7 +6,6 @@ module Iqvoc
 
     def initialize(user = nil)
       can :read, Iqvoc::Concept.root_class.instance
-      can :read, ::Collection::Base
       can :read, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
 
       # static pages
@@ -23,6 +22,14 @@ module Iqvoc
           can :lock, [::Concept::Base, ::Collection::Base, ::Label::Base], locked_by: nil, published_at: nil
           can [:check_consistency, :send_to_review], [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
           can :branch, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
+        end
+
+        if user.owns_role?(:match_editor)
+          can :read, ::Concept::Base
+          can :create, ::Concept::Base
+          can [:update, :lock], ::Concept::Base, locked_by: user.id, published_at: nil
+          can :lock, ::Concept::Base, locked_by: nil, published_at: nil
+          can :branch, ::Concept::Base, &@@if_published
         end
 
         if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...
@@ -48,8 +55,6 @@ module Iqvoc
       else # no user
         can :create, UserSession
       end
-
     end
-
   end
 end

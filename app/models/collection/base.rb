@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Collection::Base < Concept::Base
-
   has_many Note::SKOS::Definition.name.to_relation_name,
       class_name: 'Note::SKOS::Definition',
       as: :owner,
@@ -56,11 +55,11 @@ class Collection::Base < Concept::Base
   end
 
   def self.edit_link_partial_name
-    "partials/collection/edit_link_base"
+    'partials/collection/edit_link_base'
   end
 
   def self.new_link_partial_name
-    "partials/collection/new_link_base"
+    'partials/collection/new_link_base'
   end
 
   def subcollections
@@ -84,7 +83,7 @@ class Collection::Base < Concept::Base
   end
 
   def build_rdf_subject(&block)
-    IqRdf::Coll::build_uri(self.origin, IqRdf::Skos::build_uri("Collection"), &block)
+    IqRdf.build_uri(self.origin, IqRdf::Skos::build_uri('Collection'), &block)
   end
 
   def inline_member_concept_origins=(origins)
@@ -100,7 +99,7 @@ class Collection::Base < Concept::Base
     if @member_concept_origins
       Concept::Base.editor_selectable.where(origin: @member_concept_origins)
     else
-      concepts.select{|c| c.editor_selectable?}
+      concepts.select{ |c| c.editor_selectable? }
     end
   end
 
@@ -161,7 +160,7 @@ class Collection::Base < Concept::Base
     Iqvoc::Collection.base_class.by_origin(@member_collection_origins).includes(members: :target).each do |subcollection|
       if subcollection.subcollections.include?(self)
         errors.add(:base,
-          I18n.t("txt.controllers.collections.circular_error", label: subcollection.pref_label))
+          I18n.t('txt.controllers.collections.circular_error', label: subcollection.pref_label))
       end
     end
   end

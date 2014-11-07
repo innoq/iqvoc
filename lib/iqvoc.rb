@@ -44,7 +44,6 @@ module Iqvoc
   module Sync
     include Iqvoc::Configuration::Sync
   end
-
 end
 
 # FIXME: For reasons yet unknown, the load hook is executed twice

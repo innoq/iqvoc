@@ -15,7 +15,9 @@
 # limitations under the License.
 
 class Match::SKOS::ExactMatch < Match::SKOS::MappingRelation
+  def self.reverse_match_class_name
+    self.to_s
+  end
 
   self.rdf_predicate = 'exactMatch'
-
 end

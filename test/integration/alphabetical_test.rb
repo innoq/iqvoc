@@ -15,37 +15,39 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
+require 'iqvoc/rdfapi'
 
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
-
   setup do
-    [ {en: "Xen1", de: "Xde1"},
-      {en: "Xen2"}
-    ].map do |hsh|
+    data = [
+      { en: 'Xen1', de: 'Xde1' },
+      { en: 'Xen2' }
+    ]
+
+    data.each_with_index do |hsh, i|
+      concept = Iqvoc::RDFAPI.devour "concept_#{i}", 'a', 'skos:Concept'
       labelings = []
       hsh.each do |lang, val|
-        labelings << FactoryGirl.create(:pref_labeling,
-            target: FactoryGirl.create(:pref_label, language: lang, value: val))
+        Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', "\"#{val}\"@#{lang}"
       end
-      FactoryGirl.create(:concept, pref_labelings: labelings)
+      concept.publish.save
     end
   end
 
-  test "showing only concepts with a pref label in respective language" do
-    visit alphabetical_concepts_path(lang: :en, prefix: "x", format: :html)
-    concepts = page.all(".concept-items .concept-item")
+  test 'showing only concepts with a pref label in respective language' do
+    visit alphabetical_concepts_path(lang: :en, prefix: 'x', format: :html)
+    concepts = page.all('.concept-items .concept-item')
 
     assert_equal :en, I18n.locale
     assert_equal 2, concepts.length
-    assert_equal "Xen1", concepts[0].find(".concept-item-link").text.strip
-    assert_equal "Xen2", concepts[1].find(".concept-item-link").text.strip
+    assert_equal 'Xen1', concepts[0].find('.concept-item-link').text.strip
+    assert_equal 'Xen2', concepts[1].find('.concept-item-link').text.strip
 
-    visit alphabetical_concepts_path(lang: :de, prefix: "x", format: :html)
-    concepts = page.all(".concept-items .concept-item")
+    visit alphabetical_concepts_path(lang: :de, prefix: 'x', format: :html)
+    concepts = page.all('.concept-items .concept-item')
 
     assert_equal :de, I18n.locale
     assert_equal 1, concepts.length
-    assert_equal "Xde1", concepts[0].find(".concept-item-link").text.strip
+    assert_equal 'Xde1', concepts[0].find('.concept-item-link').text.strip
   end
-
 end

@@ -15,14 +15,12 @@
 # limitations under the License.
 
 class Concept::Relation::SKOS::Broader::Mono < Concept::Relation::SKOS::Broader::Base
-
   def self.partial_name(obj)
-    "partials/concept/relation/skos/broader/mono"
+    'partials/concept/relation/skos/broader/mono'
   end
 
   # if `singular` is true, only a single occurrence is allowed per instance
   def self.singular?
     true
   end
-
 end

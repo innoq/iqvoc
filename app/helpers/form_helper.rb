@@ -15,7 +15,6 @@
 # limitations under the License.
 
 module FormHelper
-
   ## Generates verbose bootstrap wrapper HTML for generic forms
   #
   ## Accepts a hash of arguments with the following keys:
@@ -38,5 +37,4 @@ module FormHelper
       end
     end
   end
-
 end

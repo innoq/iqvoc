@@ -40,19 +40,19 @@ class Concepts::VersionsController < ApplicationController
         if new_version.publishable?
           new_version.save
 
-          if Iqvoc.config["triplestore.autosync"]
+          if Iqvoc.config['triplestore.autosync']
            synced = triplestore_syncer.sync([new_version]) # XXX: blocking
-           flash[:warning] = "triplestore synchronization failed" unless synced # TODO: i18n
+           flash[:warning] = 'triplestore synchronization failed' unless synced # TODO: i18n
           end
 
-          flash[:success] = t("txt.controllers.versioning.published")
+          flash[:success] = t('txt.controllers.versioning.published')
           redirect_to concept_path(id: new_version)
         else
-          flash[:error] = t("txt.controllers.versioning.merged_publishing_error")
+          flash[:error] = t('txt.controllers.versioning.merged_publishing_error')
           redirect_to concept_path(published: 0, id: new_version)
         end
       else
-        flash[:error] = t("txt.controllers.versioning.merged_delete_error")
+        flash[:error] = t('txt.controllers.versioning.merged_delete_error')
         redirect_to concept_path(published: 0, id: new_version)
       end
     end
@@ -73,7 +73,7 @@ class Concepts::VersionsController < ApplicationController
       new_version = current_concept.branch(current_user)
       new_version.save!
     end
-    flash[:success] = t("txt.controllers.versioning.branched")
+    flash[:success] = t('txt.controllers.versioning.branched')
     redirect_to edit_concept_path(published: 0, id: new_version)
   end
 
@@ -92,7 +92,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.lock_by_user(current_user.id)
     new_version.save validate: false
 
-    flash[:success] = t("txt.controllers.versioning.locked")
+    flash[:success] = t('txt.controllers.versioning.locked')
     redirect_to edit_concept_path(published: 0, id: new_version)
   end
 
@@ -111,7 +111,7 @@ class Concepts::VersionsController < ApplicationController
     new_version.unlock
     new_version.save validate: false
 
-    flash[:success] = t("txt.controllers.versioning.unlocked")
+    flash[:success] = t('txt.controllers.versioning.unlocked')
 
     redirect_to concept_path(published: 0, id: new_version)
   end
@@ -125,11 +125,11 @@ class Concepts::VersionsController < ApplicationController
     authorize! :check_consistency, concept
 
     if concept.publishable?
-      flash[:success] = t("txt.controllers.versioning.consistency_check_success")
+      flash[:success] = t('txt.controllers.versioning.consistency_check_success')
       redirect_to concept_path(published: 0, id: concept)
     else
-      flash[:error] = t("txt.controllers.versioning.consistency_check_error")
-      redirect_to edit_concept_path(published: 0, id: concept, full_consistency_check: "1")
+      flash[:error] = t('txt.controllers.versioning.consistency_check_error')
+      redirect_to edit_concept_path(published: 0, id: concept, full_consistency_check: '1')
     end
   end
 
@@ -143,8 +143,7 @@ class Concepts::VersionsController < ApplicationController
 
     concept.to_review
     concept.save!
-    flash[:success] = t("txt.controllers.versioning.to_review_success")
+    flash[:success] = t('txt.controllers.versioning.to_review_success')
     redirect_to concept_path(published: 0, id: concept)
   end
-
 end

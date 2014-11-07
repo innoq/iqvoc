@@ -56,13 +56,17 @@ class Concepts::SchemeController < ApplicationController
     @scheme = Iqvoc::Concept.root_class.instance
     authorize! :update, @scheme
 
-    if @scheme.update_attributes(params[:concept])
-      flash[:success] = t("txt.controllers.concept_scheme.save.success")
+    if @scheme.update_attributes(concept_params)
+      flash[:success] = t('txt.controllers.concept_scheme.save.success')
       redirect_to scheme_path
     else
-      flash[:error] = t("txt.controllers.concept_scheme.save.error")
+      flash[:error] = t('txt.controllers.concept_scheme.save.error')
       render :edit
     end
   end
 
+  private
+  def concept_params
+    params.require(:concept).permit!
+  end
 end

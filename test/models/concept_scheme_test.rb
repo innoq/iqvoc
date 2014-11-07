@@ -17,7 +17,7 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptSchemeTest < ActiveSupport::TestCase
-  test "singleton concept scheme" do
+  test 'singleton concept scheme' do
     assert_equal 0, Concept::SKOS::Scheme.count
 
     assert_difference 'Concept::SKOS::Scheme.count' do

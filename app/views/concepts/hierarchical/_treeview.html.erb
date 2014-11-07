@@ -1,17 +1,32 @@
-<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) %>
-<ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<% hcpath = hierarchical_concepts_path(:format => :json, :published => params[:published], :broader => broader || nil) unless hcpath %>
+<% if dragabble %>
+<ul class="hybrid-treeview" data-url="<%= hcpath %>"
+  data-dragabble="true"
+  data-polyhierarchy-support="<%= Iqvoc::Concept.root_class.instance.poly_hierarchy? %>"
+  data-save-label="<%= t('txt.common.move') %>"
+  data-copy-label="<%= t('txt.common.copy') %>"
+  data-undo-label="<%= t('txt.common.reset') %>">
+<% else %>
+  <ul class="hybrid-treeview" data-url="<%= hcpath %>">
+<% end %>
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
     <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
+    <% locked = can?(:branch, concept) || can?(:update, concept) ? false : true %>
 
-    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>">
-      <%= link_to(concept.pref_label.to_s, concept_url(:id => concept)) %>
-      <% if concept.additional_info.present? %>
-        (<%= concept.additional_info %>)
+    <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>"
+      data-has-children="<%= (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) %>"
+      data-update-url="<%= move_concept_url(concept, format: :json) %>"
+      data-published="<%= concept.published? %>"
+      data-locked="<%= locked %>"
+    >
+      <% if concept.published? %>
+        <%= link_to(concept.pref_label.to_s, concept_url(id: concept)) %>
+      <% else %>
+        <%= link_to(concept.pref_label.to_s, concept_url(id: concept, published: 0)) %>
       <% end %>
-      <% if has_children %>
-        <ul>
-          <li><span class="placeholder">&nbsp;</span></li>
-        </ul>
+
+      <% if concept.additional_info.present? %>
+        <span class="additional_info">(<%= concept.additional_info %>)</span>
       <% end %>
     </li>
   <% end %>

@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
     });
   };
   var updateNoteLangs = function(langSelected) {
-    $(".inline_note.new select").each(function(i, sel) { // NB: new notes only!
+    $(".inline_note.new select[id*=language]").each(function(i, sel) { // NB: new notes only!
       $(sel).find("option").each(function(i, opt) {
         var el = $(opt),
           lang = el.val();
@@ -182,20 +182,7 @@ jQuery(document).ready(function($) {
   $("select.search_type").change();
 
   // hierarchical tree view
-  $("ul.hybrid-treeview").each(function() {
-    var url = $(this).attr("data-url"),
-      container = this;
-    $(this).treeview({
-      collapsed: true,
-      toggle: function() {
-        var el = $(this);
-        if(el.hasClass("hasChildren")) {
-          var childList = el.removeClass("hasChildren").find("ul");
-          $.fn.treeviewLoad({ url: url }, this.id, childList, container);
-        }
-      }
-    });
-  });
+  IQVOC.treeview("ul.hybrid-treeview");
 
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
@@ -211,5 +198,5 @@ jQuery(document).ready(function($) {
   IQVOC.labelResolver();
   $(document.body).on("concept-label", function(ev, container) {
     IQVOC.labelResolver(container);
-  })
+  });
 });

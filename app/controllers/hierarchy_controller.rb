@@ -19,8 +19,8 @@ class HierarchyController < ApplicationController
     name 'Hierarchy'
   end
 
-  api :GET, 'hierarchy', "Retrieve the downwards concepts hierarchy starting "\
-                         "at top concepts."
+  api :GET, 'hierarchy', 'Retrieve the downwards concepts hierarchy starting '\
+                         'at top concepts.'
   formats [:html, :ttl, :rdf]
   example <<-DOC
     GET /hierarchy.ttl
@@ -44,13 +44,21 @@ class HierarchyController < ApplicationController
   def index
     authorize! :read, Iqvoc::Concept.base_class
 
+    # special-casing to avoid confusion, based on user feedback
+    if params[:root]
+      msg = ['to use a specific concept as hierarchy root, please use',
+          url_for(params.merge 'action' => 'show')].join("\n")
+      render status: 400, text: msg
+      return
+    end
+
     depth = params[:depth] || (unbounded? ? -1 : nil)
 
-    render_hierarchy "scheme", depth, unbounded?
+    render_hierarchy 'scheme', depth, unbounded?
   end
 
   api :GET, 'hierarchy/:root', "Retrieve a concept's up- or downwards "\
-                               "hierarchy with optional siblings."
+                               'hierarchy with optional siblings.'
   formats [:html, :ttl, :rdf]
   param :dir, ['down', 'up'],
       desc: <<-DOC
@@ -61,10 +69,10 @@ class HierarchyController < ApplicationController
       *up* follow broader from root to its top term(s).
       DOC
   param :depth, [1, 2, 3, 4],
-      "Number of levels of hierarchy to be included in the response"
+      'Number of levels of hierarchy to be included in the response'
   param :siblings, ['1', 'true'],
-      "Siblings of each node will be included even if they are not part of "\
-      "the hierarchy."
+      'Siblings of each node will be included even if they are not part of '\
+      'the hierarchy.'
   example <<-DOC
     GET /hierarchy/model_building.ttl?dir=down&depth=1
 
@@ -91,41 +99,41 @@ class HierarchyController < ApplicationController
   private
 
   def unbounded?
-    Iqvoc.config["performance.unbounded_hierarchy"]
+    Iqvoc.config['performance.unbounded_hierarchy']
   end
 
   def render_hierarchy(root_origin, depth, unbounded = false)
     default_depth = 3
     max_depth = 4 # XXX: arbitrary
 
-    direction = params[:dir] == "up" ? "up" : "down"
+    direction = params[:dir] == 'up' ? 'up' : 'down'
     depth = depth.blank? ? default_depth : (Float(depth).to_i rescue nil)
-    include_siblings = ["true", "1"].include?(params[:siblings])
-    include_unpublished = params[:published] == "0"
+    include_siblings = ['true', '1'].include?(params[:siblings])
+    include_unpublished = params[:published] == '0'
 
     scope = Iqvoc::Concept.base_class
     scope = include_unpublished ? scope.editor_selectable : scope.published
 
     # validate depth parameter
     if not depth
-      error = "invalid depth parameter" # TODO: i18n
+      error = 'invalid depth parameter' # TODO: i18n
     elsif depth > max_depth and not unbounded
-      error = [403, "excessive depth"] # TODO: i18n
+      error = [403, 'excessive depth'] # TODO: i18n
     end
     # validate root parameter
-    error = "missing root parameter" unless root_origin # TODO: i18n
+    error = 'missing root parameter' unless root_origin # TODO: i18n
     unless error
-      root_concepts = root_origin == "scheme" ? scope.tops.load : # XXX: special-casing
+      root_concepts = root_origin == 'scheme' ? scope.tops.load : # XXX: special-casing
           scope.where(origin: root_origin).load
       unless root_concepts.length > 0
-        error = [404, "no concept matching root parameter"] # TODO: i18n
+        error = [404, 'no concept matching root parameter'] # TODO: i18n
       end
     end
     # error handling
     if error
       status, error = error if error.is_a? Array
       flash.now[:error] = error
-      render "hierarchy/show", status: (status || 400)
+      render 'hierarchy/show', status: (status || 400)
       return
     end
 
@@ -136,7 +144,7 @@ class HierarchyController < ApplicationController
         public: !include_unpublished)
 
     # NB: order matters due to the `where` clause below
-    if direction == "up"
+    if direction == 'up'
       scope = scope.includes(:narrower_relations, :broader_relations)
     else
       scope = scope.includes(:broader_relations, :narrower_relations)
@@ -152,10 +160,10 @@ class HierarchyController < ApplicationController
     end
 
     @relation_class = Iqvoc::Concept.broader_relation_class
-    @relation_class = @relation_class.narrower_class unless direction == "up"
+    @relation_class = @relation_class.narrower_class unless direction == 'up'
 
     respond_to do |format|
-      format.any(:html, :rdf, :ttl) { render "hierarchy/show" }
+      format.any(:html, :rdf, :ttl) { render 'hierarchy/show' }
     end
   end
 
@@ -184,5 +192,4 @@ class HierarchyController < ApplicationController
       rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
     end.flatten.uniq
   end
-
 end

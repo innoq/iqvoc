@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Match::Base < ActiveRecord::Base
-
   self.table_name = 'matches'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -24,7 +23,7 @@ class Match::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :concept, class_name: "Concept::Base", foreign_key: 'concept_id'
+  belongs_to :concept, class_name: 'Concept::Base', foreign_key: 'concept_id'
 
   # ********** Validations
 
@@ -32,14 +31,14 @@ class Match::Base < ActiveRecord::Base
     begin
       URI.parse(m.value)
     rescue URI::InvalidURIError => e
-      errors.add(:value, "Not a valid url")
+      errors.add(:value, 'Not a valid url')
     end
   end
 
   # ********** Methods
 
   def self.view_section(obj)
-    "matches"
+    'matches'
   end
 
   def self.view_section_sort_key(obj)
@@ -47,11 +46,10 @@ class Match::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/match/base"
+    'partials/match/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/match/edit_base"
+    'partials/match/edit_base'
   end
-
 end

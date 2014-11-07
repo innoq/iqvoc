@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Concept::Relation::Base < ActiveRecord::Base
-
   # ATTENTION:
   # This class (and the inheriting subclasses) should not reference the
   # Concept::Base class directly at load time!
@@ -36,8 +35,8 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   # ********* Associations
 
-  belongs_to :owner,  class_name: "Concept::Base"
-  belongs_to :target, class_name: "Concept::Base"
+  belongs_to :owner,  class_name: 'Concept::Base'
+  belongs_to :target, class_name: 'Concept::Base'
 
   # ********* Scopes
 
@@ -47,24 +46,34 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def self.by_owner_origin(owner_origin)
     includes(:owner).merge(Concept::Base.by_origin(owner_origin))
+                    .references(:concepts)
   end
 
   def self.by_target_origin(target_origin)
-    includes(:target).
-    merge(Concept::Base.by_origin(target_origin)).
-    references(:concepts)
+    includes(:target).merge(Concept::Base.by_origin(target_origin))
+                     .references(:concepts)
   end
 
   def self.target_editor_selectable
     includes(:target).merge(Concept::Base.editor_selectable)
+                     .references(:concepts)
+  end
+
+  def self.published_with_newer_versions
+    includes(:target).merge(Concept::Base.published_with_newer_versions)
+                     .references(:concepts)
   end
 
   def self.published
-    includes(:target).merge(Concept::Base.published)
+    includes(:target).merge(Concept::Base.published).references(:concepts)
+  end
+
+  def self.unpublished
+    includes(:target).merge(Concept::Base.unpublished).references(:concepts)
   end
 
   def self.target_in_edit_mode
-    joins(:target).merge(Concept::Base.in_edit_mode)
+    joins(:target).merge(Concept::Base.in_edit_mode).references(:concepts)
   end
 
   # ********* Methods
@@ -78,7 +87,7 @@ class Concept::Relation::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    "relations"
+    'relations'
   end
 
   def self.view_section_sort_key(obj)
@@ -86,11 +95,11 @@ class Concept::Relation::Base < ActiveRecord::Base
   end
 
   def self.partial_name(obj)
-    "partials/concept/relation/base"
+    'partials/concept/relation/base'
   end
 
   def self.edit_partial_name(obj)
-    "partials/concept/relation/edit_base"
+    'partials/concept/relation/edit_base'
   end
 
   # if `singular` is true, only a single occurrence is allowed per instance
@@ -100,7 +109,7 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def rank
     unless self.class.rankable?
-      raise "Use `include Rankable` to make a concept relation rankable."
+      raise 'Use `include Rankable` to make a concept relation rankable.'
     else
       super
     end
@@ -108,7 +117,7 @@ class Concept::Relation::Base < ActiveRecord::Base
 
   def rank=(val)
     unless self.class.rankable?
-      raise "Use `include Rankable` to make a concept relation rankable."
+      raise 'Use `include Rankable` to make a concept relation rankable.'
     else
       super
     end
@@ -117,5 +126,4 @@ class Concept::Relation::Base < ActiveRecord::Base
   def self.rankable?
     self.class.included_modules.include?(Iqvoc::Rankable)
   end
-
 end

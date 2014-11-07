@@ -15,13 +15,11 @@
 # limitations under the License.
 
 module RdfHelper
-
   def render_concept(document, concept, suppress_extra_labels = false)
-
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
-    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").load.each_with_object({}) do |c, hash|
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select('id, origin').load.each_with_object({}) do |c, hash|
       hash[c.id] = c.origin
     end
 
@@ -29,7 +27,7 @@ module RdfHelper
 
       concept.collection_members.each do |collection_member|
         if @rdf_helper_cached_collections[collection_member.collection_id]
-          c.Schema::memberOf(IqRdf::Coll::build_uri(@rdf_helper_cached_collections[collection_member.collection_id]))
+          c.Schema::memberOf(IqRdf.build_uri(@rdf_helper_cached_collections[collection_member.collection_id]))
         end
       end
 
@@ -71,7 +69,7 @@ module RdfHelper
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_
     # calls in the future.
-    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select("id, origin").load.each_with_object({}) do |c, hash|
+    @rdf_helper_cached_collections ||= Iqvoc::Collection.base_class.select('id, origin').load.each_with_object({}) do |c, hash|
       hash[c.id] = c.origin
     end
 
@@ -90,10 +88,9 @@ module RdfHelper
       end
 
       collection.subcollections.each do |subcollection|
-        c.Skos::member(IqRdf::Coll.build_uri(subcollection.origin))
+        c.Skos::member(IqRdf.build_uri(subcollection.origin))
       end
 
     end
   end
-
 end

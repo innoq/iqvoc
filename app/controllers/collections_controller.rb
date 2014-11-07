@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class CollectionsController < ApplicationController
-
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
@@ -30,7 +29,7 @@ class CollectionsController < ApplicationController
 
         @top_collections.to_a.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
-        ActiveRecord::Associations::Preloader.new.preload(@top_collections, {members: :target})
+        ActiveRecord::Associations::Preloader.new.preload(@top_collections, { members: :target })
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
@@ -38,8 +37,8 @@ class CollectionsController < ApplicationController
           collections.map do |collection|
             { id: collection.id,
               url: collection_path(id: collection, format: :html),
-              text: CGI.escapeHTML(collection.pref_label.to_s),
-              hasChildren: collection.subcollections.any?,
+              name: CGI.escapeHTML(collection.pref_label.to_s),
+              load_on_demand: collection.subcollections.any?,
               additionalText: " (#{collection.additional_info})"
             }
           end
@@ -72,7 +71,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@collection,
       [:pref_labels,
-        {members: {target: [:pref_labels] + Iqvoc::Collection.base_class.default_includes}}])
+        { members: { target: [:pref_labels] + Iqvoc::Collection.base_class.default_includes } }])
 
     respond_to do |format|
       format.html { published ? render('show_published') : render('show_unpublished') }
@@ -90,13 +89,13 @@ class CollectionsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Collection.base_class
 
-    @collection = Iqvoc::Collection.base_class.new(params[:concept])
+    @collection = Iqvoc::Collection.base_class.new(concept_params)
 
     if @collection.save
-      flash[:success] = I18n.t("txt.controllers.collections.save.success")
+      flash[:success] = I18n.t('txt.controllers.collections.save.success')
       redirect_to collection_path(published: 0, id: @collection.origin)
     else
-      flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
+      flash.now[:error] = I18n.t('txt.controllers.collections.save.error')
       render :new
     end
   end
@@ -109,7 +108,7 @@ class CollectionsController < ApplicationController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@collection, [
         :pref_labels,
-        {members: {target: [:pref_labels] + Iqvoc::Concept.base_class.default_includes}}])
+        { members: { target: [:pref_labels] + Iqvoc::Concept.base_class.default_includes } }])
 
     build_note_relations
   end
@@ -118,11 +117,11 @@ class CollectionsController < ApplicationController
     @collection = Iqvoc::Collection.base_class.by_origin(params[:id]).last!
     authorize! :update, @collection
 
-    if @collection.update_attributes(params[:concept])
-      flash[:success] = I18n.t("txt.controllers.collections.save.success")
+    if @collection.update_attributes(concept_params)
+      flash[:success] = I18n.t('txt.controllers.collections.save.success')
       redirect_to collection_path(@collection, published: 0)
     else
-      flash.now[:error] = I18n.t("txt.controllers.collections.save.error")
+      flash.now[:error] = I18n.t('txt.controllers.collections.save.error')
       render :edit
     end
   end
@@ -132,18 +131,21 @@ class CollectionsController < ApplicationController
     authorize! :destroy, @collection
 
     if @collection.destroy
-      flash[:success] = I18n.t("txt.controllers.collections.destroy.success")
+      flash[:success] = I18n.t('txt.controllers.collections.destroy.success')
       redirect_to collections_path
     else
-      flash.now[:error] = I18n.t("txt.controllers.collections.destroy.error")
+      flash.now[:error] = I18n.t('txt.controllers.collections.destroy.error')
       render action: :show
     end
   end
 
   private
 
+  def concept_params
+    params.require(:concept).permit!
+  end
+
   def build_note_relations
     @collection.note_skos_definitions.build if @collection.note_skos_definitions.empty?
   end
-
 end

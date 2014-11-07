@@ -32,7 +32,7 @@ In order to deploy to heroku you need to have an account and [heroku toolbelt](h
 ```
 $ bundle install
 $ heroku create
-$ bin/rake heroku:config
+$ heroku config:add HEROKU=true RAILS_ENV=heroku RACK_ENV=heroku SECRET_KEY_BASE=$(bundle exec rake secret)
 $ git push heroku master
 $ heroku run rake db:migrate
 $ heroku run rake db:seed
@@ -86,7 +86,7 @@ overview of the possibilities.
 
 ## Documentation
 
-Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki/_pages).
+Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki).
 
 ## Versioning
 

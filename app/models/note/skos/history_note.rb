@@ -15,7 +15,5 @@
 # limitations under the License.
 
 class Note::SKOS::HistoryNote < Note::SKOS::Base
-
   self.rdf_predicate = 'historyNote'
-
 end

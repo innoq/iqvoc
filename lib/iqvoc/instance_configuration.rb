@@ -17,7 +17,6 @@
 require 'singleton'
 
 module Iqvoc
-
   # provides the interface to configuration settings
   class InstanceConfiguration
     include Singleton
@@ -26,7 +25,7 @@ module Iqvoc
 
     class UnregisteredSetting < ArgumentError
       def to_s
-        "A setting needs to be registered with register_setting before it can be used."
+        'A setting needs to be registered with register_setting before it can be used.'
       end
     end
 
@@ -114,13 +113,11 @@ module Iqvoc
     # checks whether value type is supported
     def self.validate_value(value) # TODO: compare type to default's? (cf. controller)
       if value == nil
-        raise TypeError, "nil values not supported"
+        raise TypeError, 'nil values not supported'
       end
       unless [TrueClass, FalseClass, String, Fixnum, Float, Array].include?(value.class)
-        raise TypeError, "complex values not supported"
+        raise TypeError, 'complex values not supported'
       end
     end
-
   end
-
 end

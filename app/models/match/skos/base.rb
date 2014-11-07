@@ -15,7 +15,6 @@
 # limitations under the License.
 
 class Match::SKOS::Base < Match::Base
-
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -38,5 +37,4 @@ class Match::SKOS::Base < Match::Base
       raise "#{self.class}#build_rdf: couldn't find Namespace '#{self.rdf_namespace.camelcase}'."
     end
   end
-
 end

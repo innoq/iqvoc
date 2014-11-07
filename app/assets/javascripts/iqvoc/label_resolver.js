@@ -7,11 +7,18 @@ return function(context) {
 };
 
 function retrieveLabel(conceptURL, el, callback) {
+  var datasets = $("body").data("datasets");
   var proxy = $("body").data("remote-label-path");
-	$.get(proxy, { concept_url: conceptURL }, function(data, status, xhr) {
-		el.text(data.label);
-		el.removeClass("unlabeled");
-	});
+
+	var conceptBaseURL = getBaseURI(conceptURL);
+
+	// try to get remote label if conceptBaseURL is a iqvoc instance
+	if(conceptBaseURL in datasets) {
+		$.get(proxy, { concept_url: conceptURL }, function(data, status, xhr) {
+			el.text(data.label);
+			el.removeClass("unlabeled");
+		});
+	}
 }
 
 function processNode(i, node) {
@@ -20,4 +27,13 @@ function processNode(i, node) {
 	retrieveLabel(uri, el);
 }
 
-}(jQuery))
+function getBaseURI(url) {
+	var uri = new URI(url);
+	var parts = {
+		protocol: uri.protocol(),
+		hostname: uri.host()
+	};
+	return URI.build(parts);
+}
+
+}(jQuery));

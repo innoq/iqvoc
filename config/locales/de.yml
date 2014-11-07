@@ -45,12 +45,15 @@ de:
   txt:
    common:
      iqvoc_title: "iQvoc Vocabulary Management System"
+     concept: "Konzept"
      pref_label: "Bevorzugtes Label"
      edit: "Bearbeiten"
      value: "Wert"
      back: Zurück
      welcome: "Hallo %{user_name}"
+     move: "Verschieben"
      save: "Speichern"
+     copy: "Kopieren"
      reset: "Zurücksetzen"
      language: "Sprache"
      add_note: "Hinzufügen"
@@ -104,7 +107,7 @@ de:
          languages: Sprachen
          performance: Performance
          triplestore: Triplestore
-         sources: Verteilte Suche
+         sources: Föderation
        settings:
          title: Titel
          languages_notes: Sprachen für Notes
@@ -127,6 +130,13 @@ de:
        new: "Neues %{concept_class_name}"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
+       pending_jobs_header: "Austehende Jobs"
+       pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
+       disabled_matches_form_message: "Matches können erst nach Veröffentlichung eines Konzepts angelegt werden."
+       add_match: "Anlage:"
+       remove_match: "Löschung:"
+       job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} austehend."
+       job_state: "(Status: %{state})"
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
@@ -168,6 +178,7 @@ de:
        instance_configuration: "Konfiguration"
        hierarchical: "Hierarchisch"
        alphabetical: "Alphabetisch"
+       draft: "Bearbeitung"
        expired: "Abgelaufene"
        search: "Suche"
        about: "Über"

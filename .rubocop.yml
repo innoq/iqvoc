@@ -1,0 +1,44 @@
+AllCops:
+  # Include gemspec and Rakefile
+  Include:
+    - '**/*.gemspec'
+    - '**/Rakefile'
+    - '**/Gemfile'
+  Exclude:
+    - 'vendor/**/*'
+  # By default, the rails cops are not run. Override in project or home
+  # directory .rubocop.yml files, or by giving the -R/--rails option.
+  RunRailsCops: true
+
+Style/Documentation:
+  Enabled: false
+
+##################### Rails ##################################
+
+Rails/ActionFilter:
+  EnforcedStyle: action
+  SupportedStyles:
+    - action
+    - filter
+  Include:
+    - app/controllers/**/*.rb
+
+Rails/DefaultScope:
+  Include:
+    - app/models/**/*.rb
+
+Rails/HasAndBelongsToMany:
+  Include:
+    - app/models/**/*.rb
+
+Rails/ReadWriteAttribute:
+  Include:
+    - app/models/**/*.rb
+
+Rails/ScopeArgs:
+  Include:
+    - app/models/**/*.rb
+
+Rails/Validation:
+  Include:
+    - app/models/**/*.rb

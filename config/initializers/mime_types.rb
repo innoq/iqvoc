@@ -20,6 +20,6 @@
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register_alias "text/html", :iphone
 
-Mime::Type.register "application/rdf+xml", :rdf
-Mime::Type.register "text/turtle", :ttl
-Mime::Type.register "application/n-triples", :nt
+Mime::Type.register 'application/rdf+xml', :rdf
+Mime::Type.register 'text/turtle', :ttl
+Mime::Type.register 'application/n-triples', :nt

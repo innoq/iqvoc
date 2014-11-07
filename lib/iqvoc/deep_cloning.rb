@@ -16,7 +16,6 @@
 
 module Iqvoc
   module DeepCloning
-
     def self.included(base) #:nodoc:
       base.alias_method_chain :dup, :deep_cloning
     end
@@ -68,7 +67,7 @@ module Iqvoc
             deep_associations = association[association.keys.first]
             association = association.keys.first
           end
-          opts = deep_associations.blank? ? {} : {include: deep_associations}
+          opts = deep_associations.blank? ? {} : { include: deep_associations }
           association_reflection = self.class.reflect_on_association(association)
           cloned_object = case association_reflection.macro
           when :belongs_to, :has_one
@@ -87,6 +86,5 @@ module Iqvoc
 
       return kopy
     end
-
   end
 end

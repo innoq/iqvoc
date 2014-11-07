@@ -17,7 +17,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class ImportTest < ActionDispatch::IntegrationTest
-
   setup do
     @file = Rails.root.join('data/hobbies.nt')
   end
@@ -75,5 +74,4 @@ class ImportTest < ActionDispatch::IntegrationTest
     click_button('Import')
     assert page.has_content? 'Error occurred while creating Import job.'
   end
-
 end

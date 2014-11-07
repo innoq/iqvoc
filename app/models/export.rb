@@ -29,5 +29,4 @@ class Export < ActiveRecord::Base
   def delete_dump_file
     File.delete(self.build_filename)
   end
-
 end

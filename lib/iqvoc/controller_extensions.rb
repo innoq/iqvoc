@@ -13,6 +13,7 @@ module Iqvoc
 
       rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
       rescue_from CanCan::AccessDenied, with: :handle_access_denied
+      rescue_from ActionController::ParameterMissing, with: :handle_bad_request
     end
 
     protected
@@ -51,6 +52,14 @@ module Iqvoc
       end
     end
 
+    def handle_bad_request(exception)
+      @exception = exception
+
+      respond_to do |format|
+        format.any  { head 400 }
+      end
+    end
+
     def set_locale
       if params[:lang].present? && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
         I18n.locale = params[:lang]
@@ -62,7 +71,7 @@ module Iqvoc
     def concept_widget_data(concept, rank = nil)
       data = {
         id: concept.origin,
-        name: (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : "")
+        name: (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : '')
       }
       data[:rank] = rank if rank
       data
@@ -98,6 +107,5 @@ module Iqvoc
     def with_layout?
       !params[:layout]
     end
-
   end
 end

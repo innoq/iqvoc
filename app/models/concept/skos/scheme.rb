@@ -39,13 +39,13 @@ class Concept::SKOS::Scheme < Concept::Base
     first_or_create!(origin: 'scheme', published_at: Time.now)
   end
 
-  def self.create(attributes = nil, options = {}, &block)
-    raise TypeError, "Singleton" if first
+  def self.create(attributes = nil, &block)
+    raise TypeError, 'Singleton' if first
     super
   end
 
-  def self.create!(attributes = nil, options = {}, &block)
-    raise TypeError, "Singleton" if first
+  def self.create!(attributes = nil, &block)
+    raise TypeError, 'Singleton' if first
     super
   end
 
@@ -83,5 +83,15 @@ class Concept::SKOS::Scheme < Concept::Base
       Iqvoc::Concept.base_class.tops.update_all top_term: false
       Iqvoc::Concept.base_class.where(origin: @inline_top_concept_origins).update_all(top_term: true)
     end
+  end
+
+  def mono_hierarchy?
+    Iqvoc::Concept.broader_relation_class.new.kind_of?(
+      Concept::Relation::SKOS::Broader::Mono
+    )
+  end
+
+  def poly_hierarchy?
+    !mono_hierarchy?
   end
 end

@@ -2,7 +2,6 @@ require 'iqvoc'
 
 # inject template name
 class ActionView::TemplateRenderer
-
   def render_with_source_comment(context, options)
     res = render_without_source_comment(context, options)
     template = determine_template(options)
@@ -14,7 +13,6 @@ class ActionView::TemplateRenderer
     end
   end
   alias_method_chain :render, :source_comment
-
 end
 
 # inject partial name
@@ -33,7 +31,6 @@ class ActionView::PartialRenderer
 end
 
 module Iqvoc::Environments
-
   def self.setup_development(config)
     # Settings specified here will take precedence over those in config/application.rb.
 
@@ -63,12 +60,6 @@ module Iqvoc::Environments
     # number of complex assets.
     config.assets.debug = true
 
-    # Enforce whitelist mode for mass assignment.
-    # This will create an empty whitelist of attributes available for mass-assignment for all models
-    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
-    # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = false
-
     # Adds additional error checking when serving assets at runtime.
     # Checks for improperly declared sprockets dependencies.
     # Raises helpful error messages.
@@ -79,5 +70,4 @@ module Iqvoc::Environments
 
     config.i18n.enforce_available_locales = true
   end
-
 end

@@ -61,8 +61,13 @@
   <!-- / Concept relations -->
 
   <!-- Matches -->
-  <fieldset class="matches" data-datasets="<%= @datasets %>" data-remote-proxy-url="<%= alphabetical_concepts_path %>" data-translation-other="<%= t('txt.common.other') %>">
+  <fieldset <%= 'disabled' unless @concept.published_version.present? %> class="matches" data-datasets="<%= @datasets %>" data-remote-proxy-url="<%= alphabetical_concepts_path %>" data-translation-other="<%= t('txt.common.other') %>" data-no-results-msg="<%= t('txt.views.search_results.no_results') %>">
     <legend><%= Match::Base.model_name.human(:count => 2) %></legend>
+    <% unless @concept.published_version.present? %>
+      <%= alert :info do %>
+        <%= t('txt.views.concepts.disabled_matches_form_message') %>
+      <% end %>
+    <% end %>
     <% Iqvoc::Concept.match_classes.each do |match_class| %>
       <%= render match_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => match_class, :f => f %>
     <% end %>

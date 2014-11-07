@@ -17,10 +17,19 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
 
 class TreeTest < ActionDispatch::IntegrationTest
+  test 'browse hierarchical concepts tree' do
+    narrower_concept = Concept::SKOS::Base.new.tap do |c|
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Narrower"@en'
+      c.publish
+      c.save
+    end
 
-  test "browse hierarchical concepts tree" do
-    concept = FactoryGirl.create(:concept, broader_relations: [])
-    narrower_concept = concept.narrower_relations.first.target
+    concept = Concept::SKOS::Base.new(top_term: true).tap do |c|
+      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Foo"@en'
+      Iqvoc::RDFAPI.devour c, 'skos:narrower', narrower_concept
+      c.publish
+      c.save
+    end
 
     visit hierarchical_concepts_path(lang: :de, format: :html)
     assert page.has_link?(concept.pref_label.to_s),
@@ -28,5 +37,4 @@ class TreeTest < ActionDispatch::IntegrationTest
     assert !page.has_content?(narrower_concept.pref_label.to_s),
       "Narrower relation (#{narrower_concept.pref_label}) shouldn't be visible in the hierarchical concepts list"
   end
-
 end

@@ -15,7 +15,9 @@
 # limitations under the License.
 
 class Match::SKOS::NarrowMatch < Match::SKOS::MappingRelation
+  def self.reverse_match_class_name
+    'Match::SKOS::BroadMatch'
+  end
 
   self.rdf_predicate = 'narrowMatch'
-
 end

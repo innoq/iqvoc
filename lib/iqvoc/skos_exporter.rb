@@ -10,7 +10,7 @@ module Iqvoc
 
     def initialize(file_path, type, default_namespace_url, logger = Rails.logger)
       default_url_options[:port] = URI.parse(default_namespace_url).port
-      default_url_options[:host] = URI.parse(default_namespace_url).to_s
+      default_url_options[:host] = URI.parse(default_namespace_url).to_s.gsub(/\/$/, '')
 
       @file_path = file_path
       @type = type
@@ -24,7 +24,6 @@ module Iqvoc
       unless @file_path.is_a?(String)
         raise "Iqvoc::SkosExporter#export: Parameter 'file' should be a String."
       end
-
     end
 
     def run
@@ -73,7 +72,7 @@ module Iqvoc
 
       offset = 0
       while true
-        collections = Iqvoc::Collection.base_class.published.order("id").limit(100).offset(offset)
+        collections = Iqvoc::Collection.base_class.published.order('id').limit(100).offset(offset)
         limit = collections.size < 100 ? collections.size : 100
         break if collections.size == 0
 
@@ -90,11 +89,11 @@ module Iqvoc
     end
 
     def add_concepts(document)
-      @logger.info "Exporting concepts..."
+      @logger.info 'Exporting concepts...'
 
       offset = 0
       while true
-        concepts = Iqvoc::Concept.base_class.published.order("id").limit(100).offset(offset)
+        concepts = Iqvoc::Concept.base_class.published.order('id').limit(100).offset(offset)
         limit = concepts.size < 100 ? concepts.size : 100
         break if concepts.size == 0
 
@@ -105,7 +104,7 @@ module Iqvoc
               :matches,
               :collection_members,
               :notations,
-              {relations: :target, labelings: :target, notes: :annotations}
+              { relations: :target, labelings: :target, notes: :annotations }
           ])
 
         concepts.each do |concept|
@@ -123,7 +122,7 @@ module Iqvoc
       begin
         @logger.info "Saving export to '#{@file_path}'"
         create_directory(@file_path)
-        file = File.open(@file_path, "w")
+        file = File.open(@file_path, 'w')
         content = serialize_rdf(content, type)
         file.write(content)
       rescue IOError => e
@@ -134,13 +133,11 @@ module Iqvoc
       end
     end
 
-
     def create_directory(file_path)
       dirname = File.dirname(file_path)
       unless File.directory?(dirname)
         FileUtils.mkdir_p(dirname)
       end
-
     end
 
     def serialize_rdf(document, type)
@@ -152,6 +149,5 @@ module Iqvoc
         document.to_ntriples
       end
     end
-
   end
 end
