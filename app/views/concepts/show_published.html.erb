@@ -23,24 +23,24 @@
   </blockquote>
 <% end %>
 
-<ul class="list-group">
+<ul class="representations list-group">
   <li class="list-group-item">
     <%= icon('link') %>
     <%= link_to "HTML", concept_path(:id => @concept, :format => :html,
       :published => is_published) %>
   </li>
   <li class="list-group-item">
-    <%= icon('link') %> <%# TODO: RDF icon %>
+    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
     <%= link_to "RDF/XML", concept_path(:id => @concept, :format => :rdf,
       :published => is_published) %>
   </li>
   <li class="list-group-item">
-    <%= icon('link') %> <%# TODO: RDF icon %>
+    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
     <%= link_to "Turtle", concept_path(:id => @concept, :format => :ttl,
       :published => is_published) %>
   </li>
   <li class="list-group-item">
-    <%= icon('link') %> <%# TODO: RDF icon %>
+    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
     <%= link_to "N-Triples", concept_path(:id => @concept, :format => :nt,
       :published => is_published) %>
   </li>
