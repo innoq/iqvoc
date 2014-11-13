@@ -18,8 +18,9 @@ class Note::SKOS::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
-      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
+    # https://github.com/rails/rails/issues/16928
+    unless rdf_subject.class.reflections.include?(self.name.to_relation_name.to_s)
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name.to_s})."
     end
 
     target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
