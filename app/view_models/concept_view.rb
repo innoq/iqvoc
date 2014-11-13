@@ -4,7 +4,8 @@ class ConceptView
 
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary
     @concept = concept
-    @definition = @concept.notes_for_class(Note::SKOS::Definition).first.value # FIXME: hard-coded class, arbitrary pick
+    @definition = @concept.notes_for_class(Note::SKOS::Definition).first.
+        try(:value) # FIXME: hard-coded class, arbitrary pick
 
     published = @concept.published? ? nil : '0'
     @representations = [ # TODO: rename to "links"?
