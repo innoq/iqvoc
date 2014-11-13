@@ -17,38 +17,23 @@
     </div>
 <% end %>
 
-<% if @definition %>
+<% if @view.definition %>
   <blockquote>
-    <%= auto_link(@definition.value, :html => { :target => '_blank' }) %>
+    <%= @view.definition %> <%# FIXME: `auto_link` throws "undefined method `empty?' for #<Note::SKOS::Definition:...>" %>
   </blockquote>
 <% end %>
 
 <ul class="representations list-group">
+  <% @view.representations.each do |repr| %>
   <li class="list-group-item">
-    <%= icon('link') %>
-    <%= link_to "HTML", concept_path(:id => @concept, :format => :html,
-      :published => is_published) %>
+    <% if repr['type'] == :rdf %>
+      <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
+    <% else %>
+      <%= icon('link') %>
+    <% end %>
+    <%= link_to repr['caption'], repr['uri'] %>
   </li>
-  <li class="list-group-item">
-    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
-    <%= link_to "RDF/XML", concept_path(:id => @concept, :format => :rdf,
-      :published => is_published) %>
-  </li>
-  <li class="list-group-item">
-    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
-    <%= link_to "Turtle", concept_path(:id => @concept, :format => :ttl,
-      :published => is_published) %>
-  </li>
-  <li class="list-group-item">
-    <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
-    <%= link_to "N-Triples", concept_path(:id => @concept, :format => :nt,
-      :published => is_published) %>
-  </li>
-  <li class="list-group-item">
-    <%= icon('link') %>
-    <%= link_to t('txt.models.concept.uri'), rdf_url(@concept.origin,
-      :format => nil, :published => is_published, :lang => nil) %>
-  </li>
+  <% end %>
 </ul>
 
 <%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>

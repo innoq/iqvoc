@@ -68,7 +68,7 @@ class ConceptsController < ApplicationController
           end
         end
 
-        @definition = @concept.notes_for_class(Note::SKOS::Definition).first # FIXME: hard-coded class, arbitrary pick
+        @view = ConceptView.new(@concept, self)
 
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
