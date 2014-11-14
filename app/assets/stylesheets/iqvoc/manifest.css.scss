@@ -10,6 +10,25 @@
 @import 'iqvoc/components/entity_select';
 @import 'iqvoc/hacks/hacks';
 
-.representations img { // FIXME: does not belong here
+
+
+
+// FIXME: does not belong here
+
+.representations img {
   height: 1em;
+}
+
+.pref-label,
+.alt-label {
+  border: 1px solid #EEE;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  padding: 0.2em 0.5em;
+  background-color: whitesmoke;
+  cursor: help;
+}
+
+.pref-label {
+  font-weight: bold;
 }
