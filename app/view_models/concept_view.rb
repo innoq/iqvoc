@@ -37,8 +37,12 @@ class ConceptView
       by_lang[lang['id']] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
         caption = klass.model_name.human
         by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
-          value = note.value
-          memo << value unless value.blank? || note.language != lang["id"] # XXX: lang check inefficient across iterations?
+          if note.language == lang['id'] # XXX: lang check inefficient across iterations?
+            value = note.value
+            ann = note.annotations # XXX: too implicit (buried down here) -- XXX: exposing data model
+            ann = nil if ann.length == 0
+            memo << [value, ann] unless value.blank? and not ann
+          end
           memo
         end
         by_type

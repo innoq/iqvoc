@@ -32,6 +32,11 @@
   margin: 0 0.5em 0.5em;
 }
 
+.notes .panel .note_annotations { // XXX: should not be necessary
+  float: none;
+  overflow: auto; // contain floats
+}
+
 .representations img {
   height: 1em;
 }

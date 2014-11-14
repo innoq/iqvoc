@@ -45,10 +45,22 @@
 
       <section class="notes row">
         <% @view.notes[lang['id']].each do |caption, notes| %>
-          <% notes.each do |note| %>
+          <% notes.each do |note, annotations| %>
           <article class="panel">
             <h4><%= caption %></h4>
+
+            <% if note %>
             <p><%= auto_link(note, :html => { :target => '_blank' }) %></p>
+            <% end %>
+
+            <% if annotations %>
+            <dl class="note_annotations">
+              <% annotations.each do |annotation| %>
+                <dt><%= annotation.identifier %></dt>
+                <dd><%= auto_link(annotation.value, :html => { :target => '_blank' }) %></dd>
+              <% end %>
+            </dl>
+            <% end %>
           </article>
           <% end %>
         <% end %>
