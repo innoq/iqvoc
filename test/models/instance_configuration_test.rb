@@ -28,7 +28,7 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
 
   test 'should require a setting to be registered upfront' do
     assert_raise Iqvoc::InstanceConfiguration::UnregisteredSetting do
-      @config['foo'] = 'bar'
+      @config['new_setting_key'] = 'new_setting_value'
     end
   end
 
