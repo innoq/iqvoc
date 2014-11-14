@@ -28,7 +28,7 @@
   color: #777; // TODO: use variable
 }
 
-.notes .panel p { // XXX: should not be necessary
+.notes .panel > * { // XXX: should not be necessary
   margin: 0 0.5em 0.5em;
 }
 
