@@ -2,6 +2,7 @@ class ConceptView
   attr_accessor :title, :definition # TODO: title currently unused
   attr_accessor :languages # `[{ id, caption }]`
   attr_accessor :pref_labels, :alt_labels # indexed by language
+  attr_accessor :notes # indexed by language and caption (~type)
   attr_accessor :representations
 
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary
@@ -27,8 +28,22 @@ class ConceptView
     @languages.uniq!.map! do |lang|
       {
         'id' => lang,
-        'caption' => ctx.t("languages.#{lang || "-"}")
+        'caption' => ctx.t("languages.#{lang || '-'}")
       }
+    end
+
+    # notes
+    @notes = @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
+      by_lang[lang['id']] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
+        caption = klass.model_name.human
+        by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
+          value = note.value
+          memo << value unless value.blank? || note.language != lang["id"] # XXX: lang check inefficient across iterations?
+          memo
+        end
+        by_type
+      end
+      by_lang
     end
 
     # resource representations

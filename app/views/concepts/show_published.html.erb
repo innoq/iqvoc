@@ -26,23 +26,34 @@
 <ul class="nav nav-tabs">
   <% @view.languages.each_with_index do |lang, i| %>
     <%= content_tag('li', :class => ("active" if i == 0)) do %>
-      <a href="#<%= lang["id"] %>" data-toggle="tab"><%= lang["caption"] %></a>
+      <a href="#<%= lang['id'] %>" data-toggle="tab"><%= lang['caption'] %></a>
     <% end %>
   <% end %>
 
   <div class="tab-content col-md-12"> <%# XXX: grid column without row? %>
     <% @view.languages.each_with_index do |lang, i| %> <%# XXX: excessive logic; move into view model? %>
-    <div class="tab-pane <%= 'active' if i == 0 %>" id="<%= lang["id"] %>">
+    <div class="tab-pane <%= 'active' if i == 0 %>" id="<%= lang['id'] %>">
       <section class="labels">
-        <% [[:pref_labels, "pref-label", "txt.common.pref_label"],
-            [:alt_labels, "alt-label", "txt.common.alt_label"]].
+        <% [[:pref_labels, 'pref-label', 'txt.common.pref_label'],
+            [:alt_labels, 'alt-label', 'txt.common.alt_label']].
           each do |meth, klass, caption| %>
-        <% @view.send(meth)[lang["id"]].try(:each) do |label| %>
+        <% @view.send(meth)[lang['id']].try(:each) do |label| %>
           <span title="<%= t(caption) %>" class="<%= klass %>"><%= label %></span>
         <% end %>
       <% end %>
       </section>
-    </div>
+
+      <section class="notes row">
+        <% @view.notes[lang['id']].each do |caption, notes| %>
+          <% notes.each do |note| %>
+          <article class="panel">
+            <h4><%= caption %></h4>
+            <p><%= auto_link(note, :html => { :target => '_blank' }) %></p>
+          </article>
+          <% end %>
+        <% end %>
+      </section>
+    </div> <!-- .tab-pane -->
     <% end %>
   </div>
 </ul>
