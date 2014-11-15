@@ -1,5 +1,3 @@
-<%- is_published = @concept.published? ? nil : "0" -%>
-
 <%= render 'header', :concept => @concept %>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
@@ -23,9 +21,9 @@
   </blockquote>
 <% end %>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs"> <%# TODO: create generic partial? %>
   <% @view.languages.each_with_index do |lang, i| %>
-    <%= content_tag('li', :class => ("active" if i == 0)) do %>
+    <%= content_tag('li', :class => ('active' if i == 0)) do %>
       <a href="#<%= lang['id'] %>" data-toggle="tab"><%= lang['caption'] %></a>
     <% end %>
   <% end %>
