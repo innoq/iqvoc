@@ -35,7 +35,10 @@ class Note::Base < ActiveRecord::Base
              class_name: 'Collection::SKOS::Unordered',
              foreign_key: 'owner_id'
 
-  has_many :annotations, class_name: 'Note::Annotated::Base', foreign_key: :note_id, dependent: :destroy
+  has_many :annotations,
+           class_name: 'Note::Annotated::Base',
+           foreign_key: :note_id,
+           dependent: :destroy
 
   accepts_nested_attributes_for :annotations
 
