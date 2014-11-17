@@ -67,25 +67,25 @@ boot:
 
   test 'permission handling' do
     get :show, lang: 'en', format: 'html', root: 'root'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Root']
-    entries = get_entries('ul.concept-hierarchy li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li')
     assert_equal entries, ['Foo', 'Bar']
-    entries = get_entries('ul.concept-hierarchy li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li')
     assert_equal entries, ['Alpha', 'Bravo']
-    entries = get_entries('ul.concept-hierarchy li li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li > ul > li')
     assert_equal entries, ['Uno', 'Dos']
-    entries = css_select('ul.concept-hierarchy li li li li li')
+    entries = css_select('ul.concept-hierarchy > li > ul > li > ul > li > ul > li > ul > li')
     assert_equal entries.length, 0 # exceeded default depth
 
     @concepts['bar'].update_attribute('published_at', nil)
 
     get :show, lang: 'en', format: 'html', root: 'root'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Root']
-    entries = get_entries('ul.concept-hierarchy li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li')
     assert_equal entries, ['Foo']
-    entries = get_entries('ul.concept-hierarchy li li li')
+    entries = get_entries('ul.concept-hierarchy li > ul > li > ul > li')
     assert_equal entries.length, 0
   end
 
@@ -230,41 +230,41 @@ boot:
     get :show, lang: 'en', format: 'html', root: 'root'
     assert_response 200
     assert_equal flash[:error], nil
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries.length, 1
     assert_equal entries[0], 'Root'
 
     get :show, lang: 'en', format: 'html', root: 'root'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Root']
-    entries = get_entries('ul.concept-hierarchy li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li')
     assert_equal entries, ['Foo', 'Bar']
-    entries = get_entries('ul.concept-hierarchy li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li')
     assert_equal entries, ['Alpha', 'Bravo']
-    entries = get_entries('ul.concept-hierarchy li li li li')
+    entries = get_entries('ul.concept-hierarchy li > ul > li > ul > li > ul > li')
     assert_equal entries, ['Uno', 'Dos']
-    entries = css_select('ul.concept-hierarchy li li li li li')
+    entries = css_select('ul.concept-hierarchy > li > ul > li > ul > li > ul > li > ul > li')
     assert_equal entries.length, 0 # exceeded default depth
 
     get :show, lang: 'en', format: 'html', root: 'bravo'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Bravo']
-    entries = get_entries('ul.concept-hierarchy li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li')
     assert_equal entries, ['Uno', 'Dos']
-    entries = get_entries('ul.concept-hierarchy li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li')
     assert_equal entries, ['Lorem', 'Ipsum']
-    entries = css_select('ul.concept-hierarchy li li li li')
+    entries = css_select('ul.concept-hierarchy > li > ul > li > ul > li > ul > li')
     assert_equal entries.length, 0
 
     get :show, lang: 'en', format: 'html', root: 'lorem'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Lorem']
-    entries = css_select('ul.concept-hierarchy li li')
+    entries = css_select('ul.concept-hierarchy > li > ul > li')
     assert_equal entries.length, 0
   end
 
   test 'depth handling' do
-    selector = 'ul.concept-hierarchy li li li li li'
+    selector = 'ul.concept-hierarchy > li > ul > li > ul > li > ul > li > ul > li'
 
     get :show, lang: 'en', format: 'html', root: 'root'
     entries = css_select(selector)
@@ -275,11 +275,11 @@ boot:
     assert_equal entries.length, 2
 
     get :show, lang: 'en', format: 'html', root: 'root', depth: 1
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Root']
-    entries = get_entries('ul.concept-hierarchy li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li')
     assert_equal entries, ['Foo', 'Bar']
-    entries = css_select('ul.concept-hierarchy li li li')
+    entries = css_select('ul.concept-hierarchy > li > ul > li > ul > li')
     assert_equal entries.length, 0
 
     get :show, lang: 'en', format: 'html', root: 'root', depth: 5
@@ -293,9 +293,9 @@ boot:
 
   test 'direction handling' do
     get :show, lang: 'en', format: 'html', root: 'root'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Root']
-    entries = get_entries('ul.concept-hierarchy li li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li > ul > li')
     assert_equal entries, ['Uno', 'Dos']
 
     get :show, lang: 'en', format: 'html', root: 'root', dir: 'up'
@@ -311,17 +311,17 @@ boot:
     assert_equal entries.length, 0
 
     get :show, lang: 'en', format: 'html', root: 'lorem', dir: 'up'
-    entries = get_entries('ul.concept-hierarchy li')
+    entries = get_entries('ul.concept-hierarchy > li')
     assert_equal entries, ['Lorem']
-    entries = get_entries('ul.concept-hierarchy li li li li')
+    entries = get_entries('ul.concept-hierarchy li > ul > li > ul > li > ul > li')
     assert_equal entries, ['Bar']
-    entries = css_select('ul.concept-hierarchy li li li li li')
+    entries = css_select('ul.concept-hierarchy li > ul > li > ul > li > ul > li > ul > li')
     assert_equal entries.length, 0
 
     get :show, lang: 'en', format: 'html', root: 'lorem', dir: 'up', depth: 4
     page.all('ul.concept-hierarchy li').
         map { |node| node.native.children.first.text }
-    entries = get_entries('ul.concept-hierarchy li li li li li')
+    entries = get_entries('ul.concept-hierarchy > li > ul > li > ul > li > ul > li > ul > li')
     assert_equal entries, ['Root']
   end
 
