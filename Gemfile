@@ -59,6 +59,7 @@ group :development, :test do
     gem 'sqlite3'
     gem 'spring'
     gem 'pry-rails'
+    gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
   end
