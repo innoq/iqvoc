@@ -29,10 +29,10 @@ class Note::Base < ActiveRecord::Base
 
   belongs_to :owner, polymorphic: true
   belongs_to :concept,
-             class_name: 'Concept::SKOS::Base',
+             class_name: Iqvoc::Concept.base_class_name,
              foreign_key: 'owner_id'
   belongs_to :collection,
-             class_name: 'Collection::SKOS::Unordered',
+             class_name: Iqvoc::Collection.base_class_name,
              foreign_key: 'owner_id'
 
   has_many :annotations,
