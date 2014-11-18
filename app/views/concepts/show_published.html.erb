@@ -5,12 +5,12 @@
     <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>
   <% end %>
     <div class="editing_versioning_toolbar well">
-      <%= button_to t("txt.views.versioning.versioning_mode"),
-        concept_versions_branch_path(:origin => @concept.origin), :class => "btn btn-default" %>
+      <%= button_to t('txt.views.versioning.versioning_mode'),
+        concept_versions_branch_path(:origin => @concept.origin), :class => 'btn btn-default' %>
     </div>
 <% elsif can?(:read, @new_concept_version) %>
     <div class="editing_versioning_toolbar well">
-      <%= link_to t("txt.views.versioning.preview_new_version"),
+      <%= link_to t('txt.views.versioning.preview_new_version'),
         concept_path(:published => 0, :id => @new_concept_version), :class => 'btn btn-default' %>
     </div>
 <% end %>
@@ -34,8 +34,8 @@
       <section class="labels">
         <% [[:pref_labels, 'pref-label', 'txt.common.pref_label'],
             [:alt_labels, 'alt-label', 'txt.common.alt_label']].
-          each do |meth, klass, caption| %>
-        <% @view.send(meth)[lang['id']].try(:each) do |label| %>
+          each do |label_type, klass, caption| %>
+        <% @view.send(label_type)[lang['id']].try(:each) do |label| %>
           <span title="<%= t(caption) %>" class="<%= klass %>"><%= label %></span>
         <% end %>
       <% end %>
