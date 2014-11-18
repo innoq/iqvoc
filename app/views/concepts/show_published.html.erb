@@ -15,11 +15,21 @@
     </div>
 <% end %>
 
-<% if @view.definition %>
-<blockquote>
-  <%= auto_link(@view.definition, :html => { :target => '_blank' }) %>
-</blockquote>
-<% end %>
+<div class="row">
+  <% if @view.definition %>
+  <blockquote class="col-md-8">
+    <%= auto_link(@view.definition, :html => { :target => '_blank' }) %>
+  </blockquote>
+  <% end %>
+
+  <% if @view.collections %>
+  <ul class="list-group col-md-4">
+    <% @view.collections.each do |coll| %>
+    <li class="list-group-item"><%= link_to coll.caption, coll.uri %></li>
+    <% end %>
+  </ul>
+  <% end %>
+</div>
 
 <ul class="nav nav-tabs"> <%# TODO: create generic partial? %>
   <% @view.languages.each_with_index do |lang, i| %>

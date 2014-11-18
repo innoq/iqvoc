@@ -1,14 +1,19 @@
 class ConceptView
   attr_accessor :title, :definition # TODO: title currently unused
-  attr_accessor :languages # `[{ id, caption }]`
+  attr_accessor :collections # `[{ caption, uri }]`
+  attr_accessor :languages # `[{ id, caption, active }]`
   attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
-  attr_accessor :representations
+  attr_accessor :representations # `[{ caption, uri, type }]`
 
-  def initialize(concept, ctx) # XXX: `ctx` should not be necessary
+  def initialize(concept, ctx) # XXX: `ctx` should not be necessary -- TODO: move complex calculations into separate methods
     @concept = concept
     @definition = @concept.notes_for_class(Note::SKOS::Definition).first.
         try(:value) # FIXME: hard-coded class, arbitrary pick
+    @collections = @concept.collections.map do |coll|
+      OpenStruct.new :caption => coll.label.to_s,
+          :uri => ctx.collection_path(:id => coll)
+    end.presence
 
     # labels and languages
     @languages = []
@@ -18,11 +23,11 @@ class ConceptView
       (languages || Iqvoc.available_languages).each do |lang| # XXX: `Iqvoc.available_languages` obsolete?
         @languages << lang # XXX: doesn't belong here, e.g. due to arbitrary order
 
-        collection = labeling_class == Iqvoc::Concept.pref_labeling_class ?
+        bucket = labeling_class == Iqvoc::Concept.pref_labeling_class ?
             @pref_labels : @alt_labels
         labels = @concept.
             labels_for_labeling_class_and_language(labeling_class, lang)
-        collection[lang] = labels.map(&:value) if labels.length > 0
+        bucket[lang] = labels.map(&:value).presence
       end
     end
     @languages.uniq!.map! do |lang|
@@ -37,8 +42,7 @@ class ConceptView
         by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
           if note.language == lang.id # XXX: lang check inefficient across iterations?
             value = note.value
-            ann = note.annotations # XXX: too implicit (buried down here) -- XXX: exposing data model
-            ann = nil if ann.length == 0
+            ann = note.annotations.presence # XXX: too implicit (buried down here) -- XXX: exposing data model
             memo << [value, ann] unless value.blank? and not ann
           end
           memo
