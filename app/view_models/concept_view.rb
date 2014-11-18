@@ -28,7 +28,8 @@ class ConceptView
     @languages.uniq!.map! do |lang|
       {
         'id' => lang,
-        'caption' => ctx.t("languages.#{lang || '-'}")
+        'caption' => ctx.t("languages.#{lang || '-'}"),
+        'active' => lang == I18n.locale.to_s # XXX: is this correct?
       }
     end
 
