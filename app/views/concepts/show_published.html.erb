@@ -15,20 +15,32 @@
     </div>
 <% end %>
 
-<div class="row">
+<div class="concept-summary row">
   <% if @view.definition %>
   <blockquote class="col-md-8">
     <%= auto_link(@view.definition, :html => { :target => '_blank' }) %>
   </blockquote>
   <% end %>
 
-  <% if @view.collections %>
-  <ul class="list-group col-md-4">
-    <% @view.collections.each do |coll| %>
-    <li class="list-group-item"><%= link_to coll.caption, coll.uri %></li>
+  <div class="col-md-4">
+    <% if @view.collections %>
+    <h3>Collections</h3> <%# FIXME: hard-coded %>
+    <ul class="collections list-group">
+      <% @view.collections.each do |link| %>
+      <li class="list-group-item"><%= link_to link.caption, link.uri %></li>
+      <% end %>
+    </ul>
     <% end %>
-  </ul>
-  <% end %>
+
+    <% if @view.related %>
+    <h3>Related Concepts</h3> <%# FIXME: hard-coded %>
+    <ul class="related list-group">
+      <% @view.related.each do |link| %>
+      <li class="list-group-item"><%= link_to link.caption, link.uri %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
 </div>
 
 <ul class="nav nav-tabs"> <%# TODO: create generic partial? %>

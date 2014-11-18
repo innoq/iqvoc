@@ -1,5 +1,6 @@
 class ConceptView
   attr_accessor :title, :definition # TODO: title currently unused
+  attr_accessor :related # `[{ caption, uri }]`
   attr_accessor :collections # `[{ caption, uri }]`
   attr_accessor :languages # `[{ id, caption, active }]`
   attr_accessor :pref_labels, :alt_labels # indexed by language
@@ -10,10 +11,19 @@ class ConceptView
     @concept = concept
     @definition = @concept.notes_for_class(Note::SKOS::Definition).first.
         try(:value) # FIXME: hard-coded class, arbitrary pick
+    published = @concept.published? ? nil : '0'
+
     @collections = @concept.collections.map do |coll|
       OpenStruct.new :caption => coll.label.to_s,
           :uri => ctx.collection_path(:id => coll)
     end.presence
+
+    related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
+    @related = @concept.related_concepts_for_relation_class(related_class,
+        published).map do |rel_concept|
+      OpenStruct.new :caption => rel_concept.pref_label.to_s,
+          :uri => ctx.concept_path(:id => rel_concept)
+    end.uniq # XXX: should not be necessary!?
 
     # labels and languages
     @languages = []
@@ -53,7 +63,6 @@ class ConceptView
     end
 
     # resource representations
-    published = @concept.published? ? nil : '0'
     @representations = [ # TODO: rename to "links"?
       { 'caption' => 'HTML', 'type' => :link, :format => :html },
       { 'caption' => 'RDF/XML', 'type' => :rdf, :format => :rdf },
