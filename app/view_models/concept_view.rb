@@ -1,11 +1,31 @@
 class ConceptView
   attr_accessor :title, :definition # TODO: title currently unused
-  attr_accessor :related # `[{ caption, uri }]`
-  attr_accessor :collections # `[{ caption, uri }]`
-  attr_accessor :languages # `[{ id, caption, active }]`
+  attr_accessor :related # `Link`s
+  attr_accessor :collections # `Link`s
+  attr_accessor :languages # `Language`s
   attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
-  attr_accessor :representations # `[{ caption, uri, type }]`
+  attr_accessor :representations # `Link`s
+
+  class Language # TODO: rename? -- TODO: expose for reuse? -- XXX: un-dry
+    attr_reader :id, :caption, :active
+
+    def initialize(id, caption, active)
+      @id = id # TODO: `.to_s`?
+      @caption = caption
+      @active = active
+    end
+  end
+
+  class Link # TODO: expose for reuse? -- XXX: un-dry
+    attr_reader :caption, :uri, :type
+
+    def initialize(caption, uri, type=nil)
+      @caption = caption
+      @uri = uri
+      @type = type
+    end
+  end
 
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary -- TODO: move complex calculations into separate methods
     @concept = concept
@@ -14,15 +34,13 @@ class ConceptView
     published = @concept.published? ? nil : '0'
 
     @collections = @concept.collections.map do |coll|
-      OpenStruct.new :caption => coll.label.to_s,
-          :uri => ctx.collection_path(:id => coll)
+      Link.new coll.label.to_s, ctx.collection_path(:id => coll)
     end.presence
 
     related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
     @related = @concept.related_concepts_for_relation_class(related_class,
         published).map do |rel_concept|
-      OpenStruct.new :caption => rel_concept.pref_label.to_s,
-          :uri => ctx.concept_path(:id => rel_concept)
+      Link.new rel_concept.pref_label.to_s, ctx.concept_path(:id => rel_concept)
     end.uniq # XXX: should not be necessary!?
 
     # labels and languages
@@ -41,8 +59,8 @@ class ConceptView
       end
     end
     @languages.uniq!.map! do |lang|
-      OpenStruct.new(:id => lang, :caption => ctx.t("languages.#{lang || '-'}"),
-          :active => lang == I18n.locale.to_s) # XXX: is this correct?
+      Language.new(lang, ctx.t("languages.#{lang || '-'}"),
+          lang == I18n.locale.to_s) # XXX: is this correct?
     end
 
     # notes
@@ -76,8 +94,7 @@ class ConceptView
         item['uri'] = ctx.concept_path(:id => @concept,
             :format => item[:format], :published => published)
       end
-      OpenStruct.new(:caption => item['caption'], :uri => item['uri'],
-          :type => item['type'])
+      Link.new(item['caption'], item['uri'], item['type'])
     end
   end
 

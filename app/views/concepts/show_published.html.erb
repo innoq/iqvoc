@@ -93,16 +93,20 @@
 </ul>
 
 <ul class="representations list-group">
-  <% @view.representations.each do |repr| %>
+  <% @view.representations.each do |link| %>
   <li class="list-group-item">
-    <% if repr.type == :rdf %>
+    <% if link.type == :rdf %>
       <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
     <% else %>
       <%= icon('link') %>
     <% end %>
-    <%= link_to repr.caption, repr.uri %>
+    <%= link_to link.caption, link.uri %>
   </li>
   <% end %>
 </ul>
+
+
+
+<%# FIXME: obsolete %>
 
 <%= render 'layouts/sections', :sections => Iqvoc::Concept.view_sections, :data => concept_view_data(@concept) %>
