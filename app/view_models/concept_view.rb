@@ -5,7 +5,6 @@ class ConceptView
   attr_accessor :languages # `Language`s
   attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
-  attr_accessor :representations # `Link`s
 
   class Language # TODO: rename? -- TODO: expose for reuse? -- XXX: un-dry
     attr_reader :id, :caption, :active
@@ -28,10 +27,12 @@ class ConceptView
   end
 
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary -- TODO: move complex calculations into separate methods
+    @ctx = ctx
+
     @concept = concept
     @definition = @concept.notes_for_class(Note::SKOS::Definition).first.
         try(:value) # FIXME: hard-coded class, arbitrary pick
-    published = @concept.published? ? nil : '0'
+    @published = @concept.published? ? nil : '0'
 
     @collections = @concept.collections.map do |coll|
       Link.new coll.label.to_s, ctx.collection_path(:id => coll)
@@ -39,7 +40,7 @@ class ConceptView
 
     related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
     @related = @concept.related_concepts_for_relation_class(related_class,
-        published).map do |rel_concept|
+        @published).map do |rel_concept|
       Link.new rel_concept.pref_label.to_s, ctx.concept_path(:id => rel_concept)
     end.uniq # XXX: should not be necessary!?
 
@@ -79,20 +80,23 @@ class ConceptView
       end
       by_lang
     end
+  end
 
-    # resource representations
-    @representations = [ # TODO: rename to "links"?
+  # resource representations
+  # returns a list of `Link`s
+  def representations
+    [
       { 'caption' => 'HTML', 'type' => :link, :format => :html },
       { 'caption' => 'RDF/XML', 'type' => :rdf, :format => :rdf },
       { 'caption' => 'Turtle', 'type' => :rdf, :format => :ttl },
       { 'caption' => 'N-Triples', 'type' => :rdf, :format => :nt },
-      { 'caption' => ctx.t('txt.models.concept.uri'), 'type' => :link,
-          'uri' => ctx.rdf_url(@concept.origin, :format => nil, :lang => nil,
-              :published => published) }
+      { 'caption' => @ctx.t('txt.models.concept.uri'), 'type' => :link,
+          'uri' => @ctx.rdf_url(@concept.origin, :format => nil, :lang => nil,
+              :published => @published) }
     ].map do |item|
       unless item['uri'] # assume default URI, keyed on format
-        item['uri'] = ctx.concept_path(:id => @concept,
-            :format => item[:format], :published => published)
+        item['uri'] = @ctx.concept_path(:id => @concept, # XXX: use `rdf_url` w/ `:lang => nil`?
+            :format => item[:format], :published => @published)
       end
       Link.new(item['caption'], item['uri'], item['type'])
     end
