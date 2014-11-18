@@ -58,12 +58,13 @@ class ConceptView
       { 'caption' => ctx.t('txt.models.concept.uri'), 'type' => :link,
           'uri' => ctx.rdf_url(@concept.origin, :format => nil, :lang => nil,
               :published => published) }
-    ].each do |item|
+    ].map do |item|
       unless item['uri'] # assume default URI, keyed on format
-        format = item.delete('format')
-        item['uri'] = ctx.concept_path(:id => @concept, :format => format,
-            :published => published)
+        item['uri'] = ctx.concept_path(:id => @concept,
+            :format => item[:format], :published => published)
       end
+      OpenStruct.new(:caption => item['caption'], :uri => item['uri'],
+          :type => item['type'])
     end
   end
 

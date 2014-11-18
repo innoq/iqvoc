@@ -73,12 +73,12 @@
 <ul class="representations list-group">
   <% @view.representations.each do |repr| %>
   <li class="list-group-item">
-    <% if repr['type'] == :rdf %>
+    <% if repr.type == :rdf %>
       <img src="<%= asset_path "rdf_flyer.svg" %>" title="RDF">
     <% else %>
       <%= icon('link') %>
     <% end %>
-    <%= link_to repr['caption'], repr['uri'] %>
+    <%= link_to repr.caption, repr.uri %>
   </li>
   <% end %>
 </ul>
