@@ -23,26 +23,26 @@
 
 <ul class="nav nav-tabs"> <%# TODO: create generic partial? %>
   <% @view.languages.each_with_index do |lang, i| %>
-    <%= content_tag('li', :class => ('active' if lang['active'])) do %>
-      <a href="#<%= lang['id'] %>" data-toggle="tab"><%= lang['caption'] %></a>
+    <%= content_tag('li', :class => ('active' if lang.active)) do %>
+      <a href="#<%= lang.id %>" data-toggle="tab"><%= lang.caption %></a>
     <% end %>
   <% end %>
 
   <div class="tab-content col-md-12"> <%# XXX: grid column without row? %>
     <% @view.languages.each_with_index do |lang, i| %> <%# XXX: excessive logic; move into view model? %>
-    <div class="tab-pane <%= 'active' if lang['active'] %>" id="<%= lang['id'] %>">
+    <div class="tab-pane <%= 'active' if lang.active %>" id="<%= lang.id %>">
       <section class="labels">
         <% [[:pref_labels, 'pref-label', 'txt.common.pref_label'],
             [:alt_labels, 'alt-label', 'txt.common.alt_label']].
           each do |label_type, klass, caption| %>
-        <% @view.send(label_type)[lang['id']].try(:each) do |label| %>
+        <% @view.send(label_type)[lang.id].try(:each) do |label| %>
           <span title="<%= t(caption) %>" class="<%= klass %>"><%= label %></span>
         <% end %>
       <% end %>
       </section>
 
       <section class="notes row">
-        <% @view.notes[lang['id']].each do |caption, notes| %>
+        <% @view.notes[lang.id].each do |caption, notes| %>
           <% notes.each do |note, annotations| %>
           <div class="col-sm-6">
             <article class="panel">

@@ -26,19 +26,16 @@ class ConceptView
       end
     end
     @languages.uniq!.map! do |lang|
-      {
-        'id' => lang,
-        'caption' => ctx.t("languages.#{lang || '-'}"),
-        'active' => lang == I18n.locale.to_s # XXX: is this correct?
-      }
+      OpenStruct.new(:id => lang, :caption => ctx.t("languages.#{lang || '-'}"),
+          :active => lang == I18n.locale.to_s) # XXX: is this correct?
     end
 
     # notes
     @notes = @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
-      by_lang[lang['id']] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
+      by_lang[lang.id] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
         caption = klass.model_name.human
         by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
-          if note.language == lang['id'] # XXX: lang check inefficient across iterations?
+          if note.language == lang.id # XXX: lang check inefficient across iterations?
             value = note.value
             ann = note.annotations # XXX: too implicit (buried down here) -- XXX: exposing data model
             ann = nil if ann.length == 0
