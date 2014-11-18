@@ -16,9 +16,9 @@
 <% end %>
 
 <% if @view.definition %>
-  <blockquote>
-    <%= @view.definition %> <%# FIXME: `auto_link` throws "undefined method `empty?' for #<Note::SKOS::Definition:...>" %>
-  </blockquote>
+<blockquote>
+  <%= auto_link(@view.definition, :html => { :target => '_blank' }) %>
+</blockquote>
 <% end %>
 
 <ul class="nav nav-tabs"> <%# TODO: create generic partial? %>
