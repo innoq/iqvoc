@@ -81,14 +81,14 @@ class ConceptView
   end
 
   def definition
-    @concept.notes_for_class(Note::SKOS::Definition).first.
+    @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first.
         try(:value) # FIXME: hard-coded class, arbitrary pick
   end
 
   # resource representations
   # returns a list of `Link`s
   def representations
-    [
+    @representations ||= [
       { 'caption' => 'HTML', 'type' => :link, :format => :html },
       { 'caption' => 'RDF/XML', 'type' => :rdf, :format => :rdf },
       { 'caption' => 'Turtle', 'type' => :rdf, :format => :ttl },
