@@ -43,14 +43,16 @@
   </div>
 </div>
 
-<ul class="nav nav-tabs"> <%# TODO: create generic partial? %>
+<div class="tabbable row"> <%# TODO: create generic partial? %>
+  <ul class="nav nav-tabs">
   <% @view.languages.each_with_index do |lang, i| %>
     <%= content_tag('li', :class => ('active' if lang.active)) do %>
       <a href="#<%= lang.id %>" data-toggle="tab"><%= lang.caption %></a>
     <% end %>
   <% end %>
+  </ul>
 
-  <div class="tab-content col-md-12"> <%# XXX: grid column without row? %>
+  <div class="tab-content col-md-12">
     <% @view.languages.each_with_index do |lang, i| %> <%# XXX: excessive logic; move into view model? %>
     <div class="tab-pane <%= 'active' if lang.active %>" id="<%= lang.id %>">
       <section class="labels">
@@ -89,8 +91,8 @@
       </section>
     </div> <!-- .tab-pane -->
     <% end %>
-  </div>
-</ul>
+  </div> <!-- .tab-content -->
+</div> <!-- .tabbable -->
 
 <ul class="representations list-group">
   <% @view.representations.each do |link| %>
