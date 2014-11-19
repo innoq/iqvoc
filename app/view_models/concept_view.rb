@@ -1,6 +1,7 @@
 class ConceptView
   attr_accessor :title # TODO: currently unused
   attr_accessor :languages # `Language`s
+  attr_accessor :pref_labels, :alt_labels # strings, indexed by language
 
   class Language # TODO: rename? -- TODO: expose for reuse? -- XXX: un-dry
     attr_reader :id, :caption, :active
@@ -28,21 +29,13 @@ class ConceptView
     @concept = concept
     @published = @concept.published? ? nil : '0'
 
-    labels() # initialize languages -- XXX: smell
+    labels() # initialize for accessors
   end
 
   # returns a string
   def definition
     @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first. # FIXME: hard-coded class, arbitrary pick
         try(:value)
-  end
-
-  def pref_labels
-    labels()[0]
-  end
-
-  def alt_labels
-    labels()[1]
   end
 
   # NB: also determines available languages -- XXX: smell
