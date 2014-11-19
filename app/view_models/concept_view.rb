@@ -1,7 +1,6 @@
 class ConceptView
-  attr_accessor :title # TODO: title currently unused
+  attr_accessor :title # TODO: currently unused
   attr_accessor :languages # `Language`s
-  attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
 
   class Language # TODO: rename? -- TODO: expose for reuse? -- XXX: un-dry
@@ -31,26 +30,6 @@ class ConceptView
     @concept = concept
     @published = @concept.published? ? nil : '0'
 
-    # labels and languages
-    @languages = []
-    @pref_labels = {}
-    @alt_labels = {}
-    Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
-      (languages || Iqvoc.available_languages).each do |lang| # XXX: `Iqvoc.available_languages` obsolete?
-        @languages << lang # XXX: doesn't belong here, e.g. due to arbitrary order
-
-        bucket = labeling_class == Iqvoc::Concept.pref_labeling_class ?
-            @pref_labels : @alt_labels
-        labels = @concept.
-            labels_for_labeling_class_and_language(labeling_class, lang)
-        bucket[lang] = labels.map(&:value).presence
-      end
-    end
-    @languages.uniq!.map! do |lang|
-      Language.new(lang, ctx.t("languages.#{lang || '-'}"),
-          lang == I18n.locale.to_s) # XXX: is this correct?
-    end
-
     # notes
     @notes = @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
       by_lang[lang.id] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
@@ -73,6 +52,37 @@ class ConceptView
   def definition
     @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first. # FIXME: hard-coded class, arbitrary pick
         try(:value)
+  end
+
+  # NB: also determines available languages -- XXX: smell
+  # returns preferred and alternative label strings, indexed by language
+  def labels
+    if @pref_labels.presence && @alt_labels.presence && @languages.presence
+      return @pref_labels, @alt_labels
+    end
+
+    @languages = [] # FIXME: elements (e.g. notes) might have languages other than labelings'?
+    @pref_labels = {}
+    @alt_labels = {}
+
+    Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
+      (languages || Iqvoc.available_languages).each do |lang| # XXX: `Iqvoc.available_languages` obsolete?
+        @languages << lang # XXX: doesn't belong here, e.g. due to arbitrary order
+
+        bucket = labeling_class == Iqvoc::Concept.pref_labeling_class ?
+            @pref_labels : @alt_labels
+        labels = @concept.
+            labels_for_labeling_class_and_language(labeling_class, lang)
+        bucket[lang] = labels.map(&:value).presence
+      end
+    end
+
+    @languages.uniq!.map! do |lang|
+      Language.new(lang, ctx.t("languages.#{lang || '-'}"),
+          lang == I18n.locale.to_s) # XXX: is this correct?
+    end
+
+    return @pref_labels, @alt_labels
   end
 
   # related concepts
