@@ -1,7 +1,6 @@
 class ConceptView
   attr_accessor :title # TODO: title currently unused
   attr_accessor :related # `Link`s
-  attr_accessor :collections # `Link`s
   attr_accessor :languages # `Language`s
   attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
@@ -32,10 +31,6 @@ class ConceptView
 
     @concept = concept
     @published = @concept.published? ? nil : '0'
-
-    @collections = @concept.collections.map do |coll|
-      Link.new(coll.label.to_s, @ctx.collection_path(:id => coll))
-    end.presence
 
     related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
     @related = @concept.related_concepts_for_relation_class(related_class,
@@ -82,13 +77,21 @@ class ConceptView
     end
   end
 
+  # returns a string
   def definition
     @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first.
         try(:value) # FIXME: hard-coded class, arbitrary pick
   end
 
-  # resource representations
   # returns a list of `Link`s
+  def collections
+    @collections ||= @concept.collections.map do |coll|
+      Link.new(coll.label.to_s, @ctx.collection_path(:id => coll))
+    end.presence
+  end
+
+  # resource representations
+  # returns a list of typed `Link`s
   def representations
     @representations ||= [
       { 'caption' => 'HTML', 'type' => :link, :format => :html },
