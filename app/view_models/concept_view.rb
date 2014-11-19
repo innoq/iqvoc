@@ -26,6 +26,7 @@ class ConceptView
     end
   end
 
+  # `ctx` is the controller context
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary -- TODO: move complex calculations into separate methods
     @ctx = ctx
 
@@ -33,13 +34,14 @@ class ConceptView
     @published = @concept.published? ? nil : '0'
 
     @collections = @concept.collections.map do |coll|
-      Link.new coll.label.to_s, ctx.collection_path(:id => coll)
+      Link.new(coll.label.to_s, @ctx.collection_path(:id => coll))
     end.presence
 
     related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
     @related = @concept.related_concepts_for_relation_class(related_class,
         @published).map do |rel_concept|
-      Link.new rel_concept.pref_label.to_s, ctx.concept_path(:id => rel_concept)
+      Link.new(rel_concept.pref_label.to_s,
+          @ctx.concept_path(:id => rel_concept))
     end.uniq # XXX: should not be necessary!?
 
     # labels and languages
