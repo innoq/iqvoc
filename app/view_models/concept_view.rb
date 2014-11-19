@@ -27,12 +27,22 @@ class ConceptView
     @ctx = ctx
     @concept = concept
     @published = @concept.published? ? nil : '0'
+
+    labels() # initialize languages -- XXX: smell
   end
 
   # returns a string
   def definition
     @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first. # FIXME: hard-coded class, arbitrary pick
         try(:value)
+  end
+
+  def pref_labels
+    labels()[0]
+  end
+
+  def alt_labels
+    labels()[1]
   end
 
   # NB: also determines available languages -- XXX: smell
@@ -59,7 +69,7 @@ class ConceptView
     end
 
     @languages.uniq!.map! do |lang|
-      Language.new(lang, ctx.t("languages.#{lang || '-'}"),
+      Language.new(lang, @ctx.t("languages.#{lang || '-'}"),
           lang == I18n.locale.to_s) # XXX: is this correct?
     end
 
