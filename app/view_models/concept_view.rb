@@ -1,7 +1,6 @@
 class ConceptView
   attr_accessor :title # TODO: currently unused
   attr_accessor :languages # `Language`s
-  attr_accessor :notes # indexed by language and caption (~type)
 
   class Language # TODO: rename? -- TODO: expose for reuse? -- XXX: un-dry
     attr_reader :id, :caption, :active
@@ -26,26 +25,8 @@ class ConceptView
   # `ctx` is the controller context
   def initialize(concept, ctx) # XXX: `ctx` should not be necessary -- TODO: move complex calculations into separate methods
     @ctx = ctx
-
     @concept = concept
     @published = @concept.published? ? nil : '0'
-
-    # notes
-    @notes = @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
-      by_lang[lang.id] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
-        caption = klass.model_name.human
-        by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
-          if note.language == lang.id # XXX: lang check inefficient across iterations?
-            value = note.value
-            ann = note.annotations.presence # XXX: too implicit (buried down here) -- XXX: exposing data model
-            memo << [value, ann] unless value.blank? and not ann
-          end
-          memo
-        end
-        by_type
-      end
-      by_lang
-    end
   end
 
   # returns a string
@@ -101,6 +82,26 @@ class ConceptView
     @collections ||= @concept.collections.map do |coll|
       Link.new(coll.label.to_s, @ctx.collection_path(:id => coll))
     end.presence
+  end
+
+  # NB: expects available languages to be set -- XXX: smell
+  # returns note/annotations pairs indexed by language and caption (~type)
+  def notes
+    @notes ||= @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
+      by_lang[lang.id] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
+        caption = klass.model_name.human
+        by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
+          if note.language == lang.id # XXX: lang check inefficient across iterations?
+            value = note.value
+            ann = note.annotations.presence # XXX: too implicit (buried down here) -- XXX: exposing data model
+            memo << [value, ann] unless value.blank? and not ann
+          end
+          memo
+        end
+        by_type
+      end
+      by_lang
+    end
   end
 
   # resource representations
