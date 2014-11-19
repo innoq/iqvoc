@@ -1,5 +1,5 @@
 class ConceptView
-  attr_accessor :title, :definition # TODO: title currently unused
+  attr_accessor :title # TODO: title currently unused
   attr_accessor :related # `Link`s
   attr_accessor :collections # `Link`s
   attr_accessor :languages # `Language`s
@@ -30,8 +30,6 @@ class ConceptView
     @ctx = ctx
 
     @concept = concept
-    @definition = @concept.notes_for_class(Note::SKOS::Definition).first.
-        try(:value) # FIXME: hard-coded class, arbitrary pick
     @published = @concept.published? ? nil : '0'
 
     @collections = @concept.collections.map do |coll|
@@ -80,6 +78,11 @@ class ConceptView
       end
       by_lang
     end
+  end
+
+  def definition
+    @concept.notes_for_class(Note::SKOS::Definition).first.
+        try(:value) # FIXME: hard-coded class, arbitrary pick
   end
 
   # resource representations
