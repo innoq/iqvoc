@@ -1,6 +1,5 @@
 class ConceptView
   attr_accessor :title # TODO: title currently unused
-  attr_accessor :related # `Link`s
   attr_accessor :languages # `Language`s
   attr_accessor :pref_labels, :alt_labels # indexed by language
   attr_accessor :notes # indexed by language and caption (~type)
@@ -31,13 +30,6 @@ class ConceptView
 
     @concept = concept
     @published = @concept.published? ? nil : '0'
-
-    related_class = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary pick; bad heuristic?
-    @related = @concept.related_concepts_for_relation_class(related_class,
-        @published).map do |rel_concept|
-      Link.new(rel_concept.pref_label.to_s,
-          @ctx.concept_path(:id => rel_concept))
-    end.uniq # XXX: should not be necessary!?
 
     # labels and languages
     @languages = []
@@ -79,8 +71,19 @@ class ConceptView
 
   # returns a string
   def definition
-    @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first.
-        try(:value) # FIXME: hard-coded class, arbitrary pick
+    @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first. # FIXME: hard-coded class, arbitrary pick
+        try(:value)
+  end
+
+  # related concepts
+  # returns a list of `Link`s
+  def related
+    klass = Iqvoc::Concept.further_relation_classes.first # XXX: arbitrary; bad heuristic?
+    @related = @concept.related_concepts_for_relation_class(klass, @published).
+        map do |rel_concept|
+      Link.new(rel_concept.pref_label.to_s,
+          @ctx.concept_path(:id => rel_concept))
+    end.uniq # XXX: should not be necessary!?
   end
 
   # returns a list of `Link`s
