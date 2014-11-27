@@ -29,6 +29,7 @@ function Treeview(container) {
         id: item.attr('id'),
         url: item.children('a').attr('href'),
         update_url: item.data('update-url'),
+        glance_url: item.data('glance-url'),
         published: item.data('published'),
         additionalText: item.children('span.additional_info')
       };
@@ -59,6 +60,8 @@ function Treeview(container) {
           link.addClass('published');
         }
 
+        var teaserLink = buildTeaserLink(node, link);
+
         if (dragabbleSupport) {
           // mark locked items
           if (typeof node.locked !== 'undefined' && node.locked) {
@@ -79,7 +82,8 @@ function Treeview(container) {
           $li.data('old-parent-node-id', node.old_parent_id);
           $li.data('new-parent-node-id', node.target_node_id);
           $li.data('old-previous-sibling-id', node.old_previous_sibling_id);
-          $li.data('update-url', node.update_url);
+          $li.data('update-url', node.update_url),
+          $li.data('glance-url', node.glance_url);
 
           var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
           var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
@@ -213,12 +217,33 @@ function Treeview(container) {
   }
 
   function buildLink(url, label, additionalText) {
-    var link = $('<a>').attr('href', url).html(label);
+    var link = $('<a>').attr('href', url).addClass('tree-element-link').html(label);
 
     if (additionalText) {
       link = link.after(' ', additionalText);
     }
     return link;
+  }
+
+  function buildTeaserLink(node, link) {
+    var teaserLink = $('<a/>').addClass('tree-element-teaser-link')
+                              .attr('href', node.glance_url)
+                              .append($('<i class="fa fa-search-plus"/>'))
+    $(link[0]).after(teaserLink);
+
+    teaserLink.click(function(ev) {
+      ev.preventDefault();
+
+      var modal = $("#concept-teaser-modal");
+      var target = $(this).attr("href");
+
+      $.get(target, function(data) {
+        modal.html(data);
+        modal.modal();
+      });
+    });
+
+    return teaserLink;
   }
 
 }

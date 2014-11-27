@@ -1,0 +1,35 @@
+<!-- Modal -->
+<div class="modal-dialog concept-teaser-dialog">
+  <div class="modal-content concept-teaser-content">
+    <div class="modal-header concept-teaser-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4 class="modal-title" id="myModalLabel"><%= @concept.pref_label %></h4>
+    </div>
+    <div class="modal-body concept-teaser-body">
+      <div>
+        <h2>Definition</h2>
+        <p><%= @view.definition %></p>
+      </div>
+      <div>
+        <h2>Alternative Bezeichner</h2>
+        <ul class="label-list">
+          <% @concept.labels.each do |l| %>
+          <li class="label-list-item">
+            <span class="label-list-item-value"><%= l.value %></span>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+      <div>
+        <h2>Kollektionen</h2>
+      </div>
+      <div>
+        <h2>Verwandt</h2>
+      </div>
+    </div>
+    <div class="modal-footer concept-teaser-footer">
+      <a href="<%= concept_path(@concept) %>" class="btn btn-default"><i class="fa fa-angle-double-right"> Zum Konzept</i></a>
+    </div>
+  </div>
+</div>
+<!-- / Modal -->

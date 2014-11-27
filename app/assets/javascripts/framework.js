@@ -5,6 +5,6 @@
 //= require tree.jquery.js
 //= require URI.js
 //= require storage
-//= require bootstrap/transition
 //= require bootstrap/collapse
 //= require bootstrap/tab
+//= require bootstrap/modal
