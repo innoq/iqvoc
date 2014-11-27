@@ -43,6 +43,8 @@ GEM
       activerecord (>= 3.2)
       activesupport (>= 3.2)
       request_store (~> 1.0)
+    autoprefixer-rails (4.0.1)
+      execjs
     awesome_print (1.2.0)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -297,6 +299,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   apipie-rails
   authlogic (~> 3.4.2)
+  autoprefixer-rails
   awesome_print
   better_errors
   binding_of_caller

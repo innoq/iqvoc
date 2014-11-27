@@ -43,6 +43,7 @@ gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
+gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
