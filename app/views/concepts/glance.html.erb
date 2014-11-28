@@ -6,26 +6,44 @@
       <h1 class="modal-title" id="myModalLabel"><%= @concept.pref_label %></h1>
     </div>
     <div class="modal-body concept-teaser-body">
+      <% if @view.definition %>
       <div>
         <h2>Definition</h2>
         <p><%= @view.definition %></p>
       </div>
+      <% end %>
+      <% if @view.alt_labels.any? %>
       <div>
         <h2>Alternative Bezeichner</h2>
         <ul class="label-list">
-          <% @concept.labels.each do |l| %><!--
+          <% @view.alt_labels.each do |l| %><!--
           --><li class="label-list-item">
                <span class="label-list-item-value"><%= l.value %></span>
              </li><!--
           --><% end %>
         </ul>
       </div>
+      <% end %>
+      <% if @view.collections.any? %>
       <div>
         <h2>Kollektionen</h2>
+        <ul>
+          <% @view.collections.each do |c| %>
+            <li><%= link_to c.caption, c.uri %></li>
+          <% end %>
+        </ul>
       </div>
+      <% end %>
+      <% if @view.related.any? %>
       <div>
         <h2>Verwandt</h2>
+        <ul>
+          <% @view.related.each do |c| %>
+            <li><%= link_to c.caption, c.uri %></li>
+          <% end %>
+        </ul>
       </div>
+      <% end %>
     </div>
     <div class="modal-footer concept-teaser-footer">
       <a href="<%= concept_path(@concept) %>" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Zum Konzept</a>
