@@ -13,11 +13,11 @@
       <div>
         <h2>Alternative Bezeichner</h2>
         <ul class="label-list">
-          <% @concept.labels.each do |l| %>
-          <li class="label-list-item">
-            <span class="label-list-item-value"><%= l.value %></span>
-          </li>
-          <% end %>
+          <% @concept.labels.each do |l| %><!--
+          --><li class="label-list-item">
+               <span class="label-list-item-value"><%= l.value %></span>
+             </li><!--
+          --><% end %>
         </ul>
       </div>
       <div>
