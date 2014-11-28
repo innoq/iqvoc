@@ -60,7 +60,9 @@ function Treeview(container) {
           link.addClass('published');
         }
 
-        var teaserLink = buildTeaserLink(node, link);
+        if (typeof link[0] !== 'undefined') {
+          var teaserLink = buildTeaserLink(node, link[0]);
+        }
 
         if (dragabbleSupport) {
           // mark locked items
@@ -226,10 +228,17 @@ function Treeview(container) {
   }
 
   function buildTeaserLink(node, link) {
-    var teaserLink = $('<a/>').addClass('tree-element-teaser-link')
-                              .attr('href', node.glance_url)
-                              .append($('<i class="fa fa-search-plus"/>'))
-    $(link[0]).after(teaserLink);
+    if (typeof node.glance_url === 'undefined') {
+      return;
+    }
+
+    var teaserLink = $('<a/>')
+
+    teaserLink.addClass('tree-element-teaser-link')
+              .attr('href', node.glance_url)
+              .append($('<i class="fa fa-search-plus"/>'))
+
+    $(link).after(teaserLink);
 
     teaserLink.click(function(ev) {
       ev.preventDefault();
