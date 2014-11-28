@@ -9,26 +9,21 @@ form#search {
 }
 
 .navbar-default .navbar-nav > li > a {
-  font-family: 'Fira Sans Light SC';
-  text-transform: lowercase;
+  @include interaction-font();
 }
 
 .btn {
-  font-family: 'Fira Sans Light SC';
-  text-transform: lowercase;
+  @include interaction-font();
 }
 
 .dropdown-menu > li > a {
-  font-family: 'Fira Sans Light SC';
-  text-transform: lowercase;
+  @include interaction-font();
 }
 
-// .list-group-item {
-//   font-family: 'Fira Sans Light SC';
-//   text-transform: lowercase;
-// }
+.list-group-item {
+  @include interaction-font();
+}
 
-// .nav-tabs li > a {
-//   font-family: 'Fira Sans Light SC';
-//   text-transform: lowercase;
-// }
+.nav-tabs li > a {
+  @include interaction-font();
+}
