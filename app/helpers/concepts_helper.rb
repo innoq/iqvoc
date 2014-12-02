@@ -18,6 +18,7 @@ module ConceptsHelper
 
   # if `broader` is supplied, the tree's direction is reversed (descendants represent broader relations)
   def treeview(concepts, broader = false)
+    concepts = concepts.sort { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
     render :partial => "concepts/hierarchical/treeview",
       :locals => { :concepts => concepts, :broader => broader }
   end
