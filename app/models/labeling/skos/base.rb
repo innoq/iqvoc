@@ -56,24 +56,29 @@ class Labeling::SKOS::Base < Labeling::Base
     if params[:collection_origin].present?
       collection = Collection::Unordered.where(:origin => params[:collection_origin]).last
       if collection
-        scope = scope.includes(:owner => :collection_members)
+        # scope = scope.includes(:owner => :collection_members)
+        scope = scope.joins("LEFT OUTER JOIN `collection_members` ON `collection_members`.`target_id` = `concepts`.`id`")
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection)
       else
         raise "Collection with Origin #{params[:collection_origin]} not found!"
       end
     end
     scope = scope.includes(:owner)
-    
+
     scope = case params[:for]
     when "concept"
       scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
     when "collection"
       scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
+      if collection
+        scope = scope.where("`collection_members`.`type` = 'Collection::Member::Collection'")
+      end
+      scope
     else
       # no additional conditions
       scope
     end
-    
+
     scope
   end
 
@@ -84,7 +89,7 @@ class Labeling::SKOS::Base < Labeling::Base
   def self.build_from_rdf(subject, predicate, object)
     raise "Labeling::SKOS::Base#build_from_rdf: Subject (#{subject}) must be a Concept." unless subject.is_a?(Concept::Base)
     raise "Labeling::SKOS::Base#build_from_rdf: Object (#{object}) must be a string literal" unless object =~ /^"(.+)"(@(.+))$/
-    
+
     lang = $3
     value = JSON.parse(%Q{["#{$1}"]})[0].gsub("\\n", "\n") # Trick to decode \uHHHHH chars
 
