@@ -136,6 +136,7 @@ en:
        remove_match: "Deletion:"
        job_detail: "%{match_class}-Relation of concept %{subject} from remote ontology to %{target} pending."
        job_state: "(State: %{state})"
+       to_concept: "To Concept"
      labels:
        new: "New Label"
        template_form: "Literal form"

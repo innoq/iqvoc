@@ -134,6 +134,7 @@ de:
        remove_match: "Löschung:"
        job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} austehend."
        job_state: "(Status: %{state})"
+       to_concept: "Zum Konzept"
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
