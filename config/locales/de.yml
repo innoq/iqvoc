@@ -285,6 +285,8 @@ de:
        reset_warning: "Alle Konzepte, Kollektionen und Labels im Thesaurus werden gelöscht."
        jobs_pending_warning: "Einige Hintergrundprozesse sind noch nicht abgeschlossen (z.B. Exports). Ausstehende Prozesse werden ebenfalls gelöscht."
        reset_success: "Der Thesaurus wurde gelöscht."
+       export: "Export"
+       import: "Import"
      collections:
        new: "Neue Kollektion"
      triplestore_sync:
