@@ -113,13 +113,13 @@ class SearchResultsController < ApplicationController
 
       if klass.forces_multi_query? || (klass.supports_multi_query? && query_size > 1)
         @multi_query = true
-        @results = klass.multi_query(params.merge({ languages: languages }))
+        @results = klass.multi_query(params.merge({ languages: languages.flatten }))
         # TODO: Add a worst case limit here; e.g. when on page 2 (per_page == 50)
         # each sub-query has to return 100 objects at most.
         @klass = klass
       else
         @multi_query = false
-        @results = klass.single_query(params.merge({ languages: languages }))
+        @results = klass.single_query(params.merge({ languages: languages.flatten }))
       end
 
       if @multi_query
