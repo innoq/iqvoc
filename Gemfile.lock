@@ -83,6 +83,7 @@ GEM
     delayed_job_active_record (4.0.1)
       activerecord (>= 3.0, < 4.2)
       delayed_job (>= 3.0, < 4.1)
+    docile (1.1.5)
     ebnf (0.3.6)
       haml (~> 4.0)
       rdf (~> 1.1)
@@ -244,6 +245,11 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    simplecov (0.9.1)
+      docile (~> 1.1.0)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
     slop (3.6.0)
     sparql (1.1.4)
       builder (~> 3.0)
@@ -332,6 +338,7 @@ DEPENDENCIES
   rails_12factor
   rails_autolink
   sass-rails (~> 4.0.3)
+  simplecov
   spring
   sqlite3
   uglifier

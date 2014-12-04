@@ -76,6 +76,7 @@ group :test do
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
   gem 'webmock'
+  gem 'simplecov'
 end
 
 group :production do

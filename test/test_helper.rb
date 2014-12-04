@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require 'simplecov' if ENV['COVERAGE']
+
 ENV['RAILS_ENV'] ||= 'test'
 
 unless defined?(Iqvoc) && Iqvoc.const_defined?(:Engine)
