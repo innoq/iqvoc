@@ -32,6 +32,8 @@ class Collection::Base < Concept::Base
   has_many :parent_collections,
       through: :parent_collection_members
 
+  include_to_deep_cloning(:collection_members)
+
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   validate :circular_subcollections
