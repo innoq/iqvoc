@@ -23,7 +23,7 @@ var EntitySelector = function(node) {
 
   this.noResultsMsg = {
     label: this.el.data("no-results-msg"),
-    value: ''
+    value: ""
   };
 
   var self = this;
@@ -48,9 +48,7 @@ var EntitySelector = function(node) {
     }
   });
 
-  // jQuery UI does not add a type attribute
-  // Bootstrap expects it to be there
-  this.input.attr('type', 'text').addClass('form-control');
+  this.input.attr("type", "text").addClass("form-control"); // for Bootstrap
 
   this.container.append(this.bootstrapInputGroup.append(this.input).append(this.indicatorWrapper.append(this.indicator))).
     append(selection).insertAfter(node).prepend(node);
