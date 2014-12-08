@@ -49,20 +49,15 @@ module Iqvoc
         end
       end
 
-      class UriConformanceFilter < GenericFilter
+      class UniqeHash < GenericFilter
         def call(obj, str)
-          str = str.parameterize # basic url conformance
-
-          # prefix with '_' if origin starts with digit
-          str = str.gsub(/^[0-9].*$/) do |match|
-            "_#{match}"
-          end
+          str = "_#{SecureRandom.hex(8)}"
           run(obj, str)
         end
       end
 
       @filters = {}
-      @filters[:uri_conformance_filter] = UriConformanceFilter
+      @filters[:unique_hash] = UniqeHash
 
       def self.register(name, klass)
         @filters[name.to_sym] = klass
@@ -75,13 +70,18 @@ module Iqvoc
 
     attr_accessor :initial_value, :value, :filters
 
-    def initialize(value)
-      self.initial_value = value.to_s
+    def initialize(value = 'foo')
+      self.initial_value = value
       self.value = initial_value
     end
 
     def touched?
       value != initial_value
+    end
+
+    def valid?
+      # TODO: add validation syntax
+      true
     end
 
     def run_filters!
