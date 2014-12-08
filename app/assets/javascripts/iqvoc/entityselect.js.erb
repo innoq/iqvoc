@@ -46,6 +46,10 @@ var EntitySelector = function(node) {
         ui.content.push(self.noResultsMsg);
       }
     }
+  }).on("keydown", function(ev){
+    if(ev.which === 13) { // Enter; prevent form submission
+      ev.preventDefault();
+    }
   });
 
   this.input.attr("type", "text").addClass("form-control"); // for Bootstrap
