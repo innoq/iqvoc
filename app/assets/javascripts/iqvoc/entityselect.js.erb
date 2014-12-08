@@ -78,14 +78,6 @@ EntitySelector.sourceSelectors = {
   "default": function(callback) {
     var uri = this.el.data("query-url");
     callback(uri);
-  },
-  "dummy-prompt": function(callback) {
-    var uri = this.el.data("query-url");
-    var sources = { iQvoc: "hello", GEMET: "world" };
-    var params = $.map(sources, function(id, name) {
-      return confirm("include " + name) ? 'source=' + id : null;
-    }).join("&");
-    callback(uri + "?" + params);
   }
 };
 $.extend(EntitySelector.prototype, {
