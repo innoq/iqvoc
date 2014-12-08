@@ -111,7 +111,8 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || subcollections.map(&:origin).uniq
+    @member_collection_origins || collections.
+        map { |m| m.origin }.uniq
   end
 
   def inline_member_collections
