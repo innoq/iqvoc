@@ -112,7 +112,13 @@ $.extend(EntitySelector.prototype, {
     if(widget.add(ui.item.value)) {
       var entity = widget.
           createEntity({ id: ui.item.value, name: ui.item.label });
-      widget.container.find("ul").append(entity);
+      var list = widget.container.find("ul").append(entity);
+      // force redraw to work around Safari rendering bug -- FIXME: crude and uninformed
+      list.css("overflow", "auto");
+      setTimeout(function() {
+        list.css("overflow", "");
+      }, 1);
+
       if(widget.singular) {
         widget.input.hide();
         widget.indicatorWrapper.hide();
