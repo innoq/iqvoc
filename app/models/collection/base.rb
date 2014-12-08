@@ -34,7 +34,16 @@ class Collection::Base < Concept::Base
 
   include_to_deep_cloning(:members, :collection_members)
 
-  after_save :regenerate_concept_members, :regenerate_collection_members
+  # ********** Hooks
+
+  after_initialize do |collection|
+    if collection.origin.blank?
+      collection.origin = Iqvoc::Origin.new.to_s
+    end
+  end
+
+  after_save :regenerate_concept_members,
+             :regenerate_collection_members
 
   validate :circular_subcollections
 

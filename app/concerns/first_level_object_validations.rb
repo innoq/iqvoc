@@ -5,6 +5,13 @@ module FirstLevelObjectValidations
 
   included do
     validate :distinct_versions, on: :create # FIXME: on: :create?
+    validate :origin_has_to_be_escaped
+  end
+
+  def origin_has_to_be_escaped
+    unless Iqvoc::Origin.new(origin).valid?
+      errors.add :origin, I18n.t('txt.models.concept.origin_error')
+    end
   end
 
   def distinct_versions
