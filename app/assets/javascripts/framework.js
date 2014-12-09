@@ -1,6 +1,6 @@
 //= require jquery-1.7.1
 //= require rails
-//= require jquery-ui.custom
+//= require jquery-ui
 //= require jquery-ui.datepicker-de
 //= require tree.jquery.js
 //= require URI.js

@@ -21,12 +21,8 @@ var EntitySelector = function(node) {
   this.entities = this.getSelection();
   this.uriTemplate = this.el.data("entity-uri");
 
-  this.noResultsMsg = {
-    label: this.el.data("no-results-msg"),
-    value: ''
-  };
-
   var self = this;
+  var noResultsMsg = this.el.data("no-results-msg");
 
   this.indicator.css("visibility", "hidden");
 
@@ -42,15 +38,17 @@ var EntitySelector = function(node) {
     focus: function(ev, ui) { return false; },
     select: this.onSelect,
     response: function(ev, ui) {
-      if (!ui.content.length) {
-        ui.content.push(self.noResultsMsg);
+      if(!ui.content.length && noResultsMsg) {
+        ui.content.push({ label: noResultsMsg, value: "" });
       }
+    }
+  }).on("keydown", function(ev){
+    if(ev.which === 13) { // Enter; prevent form submission
+      ev.preventDefault();
     }
   });
 
-  // jQuery UI does not add a type attribute
-  // Bootstrap expects it to be there
-  this.input.attr('type', 'text').addClass('form-control');
+  this.input.attr("type", "text").addClass("form-control"); // for Bootstrap
 
   this.container.append(this.bootstrapInputGroup.append(this.input).append(this.indicatorWrapper.append(this.indicator))).
     append(selection).insertAfter(node).prepend(node);
@@ -80,14 +78,6 @@ EntitySelector.sourceSelectors = {
   "default": function(callback) {
     var uri = this.el.data("query-url");
     callback(uri);
-  },
-  "dummy-prompt": function(callback) {
-    var uri = this.el.data("query-url");
-    var sources = { iQvoc: "hello", GEMET: "world" };
-    var params = $.map(sources, function(id, name) {
-      return confirm("include " + name) ? 'source=' + id : null;
-    }).join("&");
-    callback(uri + "?" + params);
   }
 };
 $.extend(EntitySelector.prototype, {
@@ -112,7 +102,13 @@ $.extend(EntitySelector.prototype, {
     if(widget.add(ui.item.value)) {
       var entity = widget.
           createEntity({ id: ui.item.value, name: ui.item.label });
-      widget.container.find("ul").append(entity);
+      var list = widget.container.find("ul").append(entity);
+      // force redraw to work around Safari rendering bug -- FIXME: crude and uninformed
+      list.css("overflow", "auto");
+      setTimeout(function() {
+        list.css("overflow", "");
+      }, 1);
+
       if(widget.singular) {
         widget.input.hide();
         widget.indicatorWrapper.hide();
