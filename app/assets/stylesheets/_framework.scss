@@ -1,5 +1,10 @@
-@import 'jquery-ui-1.10.3.custom';
 @import 'iqvoc/settings/bootstrap-variables';
+
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+
+@import 'jquery-ui';
+@import 'jquery-ui.structure';
+@import 'jquery-ui.theme';
+
 @import 'font-awesome';

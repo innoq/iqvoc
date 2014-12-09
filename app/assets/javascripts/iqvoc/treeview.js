@@ -39,6 +39,7 @@ function Treeview(container) {
       dragAndDrop: dragabbleSupport ? true : false,
       autoEscape: false,
       selectable: false,
+      useContextMenu: false,
       closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
       openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
       data: data,

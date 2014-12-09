@@ -17,12 +17,12 @@
 en:
   authlogic:
     error_messages:
-      login_blank: "can not be blank"
+      login_blank: "must not be empty"
       login_not_found: "is not valid"
       login_invalid: "should use only letters, numbers, spaces, and .-_@ please."
       consecutive_failed_logins_limit_exceeded: "Consecutive failed logins limit exceeded, account is disabled."
       email_invalid: "should look like an email address."
-      password_blank: "can not be blank"
+      password_blank: "must not be empty"
       password_invalid: "is not valid"
       not_active: "Your account is not active"
       not_confirmed: "Your account is not confirmed"
