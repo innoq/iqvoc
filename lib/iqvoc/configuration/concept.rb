@@ -11,6 +11,7 @@ module Iqvoc
         mattr_accessor :base_class_name, :root_class_name,
             :broader_relation_class_name, :further_relation_class_names,
             :pref_labeling_class_name,
+            :alt_labeling_class_name,
             :match_class_names,
             :note_class_names,
             :notation_class_names,
@@ -25,6 +26,7 @@ module Iqvoc
         self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
 
         self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
+        self.alt_labeling_class_name      = 'Labeling::SKOS::AltLabel'
 
         self.note_class_names             = [
           Iqvoc.change_note_class_name,
@@ -73,6 +75,10 @@ module Iqvoc
 
         def pref_labeling_class
           pref_labeling_class_name.constantize
+        end
+
+        def alt_labeling_class
+          alt_labeling_class_name.constantize
         end
 
         def labeling_class_names

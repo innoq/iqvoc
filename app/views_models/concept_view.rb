@@ -37,7 +37,7 @@ class ConceptView
   end
 
   def alt_labels
-    @concept.labels_for_labeling_class_and_language(Labeling::SKOS::AltLabel, I18n.locale)
+    @concept.labels_for_labeling_class_and_language(Iqvoc::Concept.alt_labeling_class, I18n.locale)
   end
 
   # related concepts
