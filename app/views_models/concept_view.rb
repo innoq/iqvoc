@@ -58,26 +58,6 @@ class ConceptView
     end
   end
 
-  # NB: expects available languages to be set -- XXX: smell
-  # returns note/annotations pairs indexed by language and caption (~type)
-  def notes
-    @notes ||= @languages.inject({}) do |by_lang, lang| # XXX: repeatedly iterating over `@languages` -- XXX: arbitrary order?
-      by_lang[lang.id] = Iqvoc::Concept.note_classes.inject({}) do |by_type, klass| # XXX: arbitrary order?
-        caption = klass.model_name.human
-        by_type[caption] = @concept.notes_for_class(klass).inject([]) do |memo, note|
-          if note.language == lang.id # XXX: lang check inefficient across iterations?
-            value = note.value
-            ann = note.annotations.presence # XXX: too implicit (buried down here) -- XXX: exposing data model
-            memo << [value, ann] unless value.blank? and not ann
-          end
-          memo
-        end
-        by_type
-      end
-      by_lang
-    end
-  end
-
   # resource representations
   # returns a list of typed `Link`s
   def representations
