@@ -28,6 +28,7 @@
 .label-list-item {
   display: inline-block;
   margin-right: .5em;
+  margin-bottom: .5em;
 
   &:last-child {
     margin-right: 0;
@@ -37,7 +38,6 @@
 .label-list-item-value {
   background-color: $gray-lighter;
   border: 1px solid darken($gray-lighter, 5%);
-  border-radius: 3px;
   display: inline-block;
   padding: .25em 1em;
 
