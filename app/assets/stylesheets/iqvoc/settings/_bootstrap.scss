@@ -31,3 +31,19 @@ form#search {
 .nav-tabs li > a {
   @include interaction-font();
 }
+
+.modal-header {
+  .alert {
+    margin-top: 0.5em;
+    margin-bottom: -0.5em;
+  }
+
+  > .close {
+    font-size: $font-size-h3;
+    margin: 0;
+  }
+}
+
+.modal-footer {
+  text-align: left;
+}
