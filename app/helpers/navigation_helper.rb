@@ -72,7 +72,7 @@ module NavigationHelper
     else
       desc = ActiveSupport::SafeBuffer.new
       if icon = opts.delete(:icon)
-        desc << icon(icon) << ' '
+        desc << icon(icon, 'fa-fw') << ' '
       end
       desc << opts.delete(:text).to_s
       link_to(desc.html_safe, opts.delete(:path), opts)
