@@ -18,7 +18,9 @@ class ReverseMatchJob < Struct.new(:type, :match_class, :subject, :object, :refe
         req.params['uri'] = object
       end
     rescue Faraday::ClientError => e
-      raise e unless e.response[:status] == 409
+      if e.response.nil? || response[:status] != 409
+        raise e
+      end
     end
 
   end
