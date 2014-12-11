@@ -11,10 +11,16 @@ class ReverseMatchJob < Struct.new(:type, :match_class, :subject, :object, :refe
     request_method = link['method']
 
     conn = connection(request_url, { content_type: 'application/json', referer: referer })
-    response = conn.send(request_method) do |req|
-      req.params['match_class'] = match_class
-      req.params['uri'] = object
+
+    begin
+      response = conn.send(request_method) do |req|
+        req.params['match_class'] = match_class
+        req.params['uri'] = object
+      end
+    rescue Faraday::ClientError => e
+      raise e unless e.response[:status] == 409
     end
+
   end
 
   def error(job, exception)
