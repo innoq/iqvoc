@@ -7,6 +7,7 @@ module ReverseMatchErrors
     {
       mapping_added:    { status: 200, json: { type: 'mapping_added', message: 'Concept mapping created.'} },
       mapping_removed:  { status: 200, json: { type: 'mapping_removed', message: 'Concept mapping removed.'} },
+      mapping_exists:   { status: 200, json: { type: 'mapping_exists', message: 'Concept mapping exists.'} },
       parameter_missing:{ status: 400, json: { type: 'parameter_missing', message: 'Required parameter missing.'} },
       unknown_relation: { status: 400, json: { type: 'unknown_relation', message: 'Concept or relation is wrong.'} },
       unknown_match:    { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },

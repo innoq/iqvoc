@@ -93,6 +93,31 @@ class ReverseMatchTest < ActionController::TestCase
     assert_equal 2, new_concept_version.rev
   end
 
+  test 'add already existing match' do
+    patch :add_match,
+          origin: @achievement_hobbies.origin,
+          match_class: 'match_skos_broadmatch',
+          uri: 'http://google.de'
+    assert_response 200
+    body = JSON.parse response.body
+    assert_equal body['type'], 'mapping_added'
+
+    new_concept_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).last
+    assert_equal 2, new_concept_version.rev
+
+    patch :add_match,
+          origin: @achievement_hobbies.origin,
+          match_class: 'match_skos_broadmatch',
+          uri: 'http://google.de'
+    assert_response 200
+    body = JSON.parse response.body
+    assert_equal body['type'], 'mapping_exists'
+
+    new_concept_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).last
+    assert_equal 2, new_concept_version.rev
+  end
+
+
   test 'no referer' do
     @request.env['HTTP_REFERER'] = nil
     patch :add_match,
