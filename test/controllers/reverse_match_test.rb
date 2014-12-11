@@ -109,7 +109,7 @@ class ReverseMatchTest < ActionController::TestCase
           origin: @achievement_hobbies.origin,
           match_class: 'match_skos_broadmatch',
           uri: 'http://google.de'
-    assert_response 409 
+    assert_response 409
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_exists'
 
