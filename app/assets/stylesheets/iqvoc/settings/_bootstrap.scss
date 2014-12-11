@@ -14,22 +14,27 @@ form#search {
 
 .navbar-default .navbar-nav > li > a {
   @include interaction-font();
+  @include transitional(color);
 }
 
 .btn {
   @include interaction-font();
+  @include transitional();
 }
 
 .dropdown-menu > li > a {
   @include interaction-font();
+  @include transitional(background-color);
 }
 
 .list-group-item {
   @include interaction-font();
+  @include transitional(background-color);
 }
 
 .nav-tabs li > a {
   @include interaction-font();
+  @include transitional(all);
 }
 
 .modal-header {

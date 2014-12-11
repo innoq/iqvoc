@@ -3,3 +3,7 @@
   text-transform: lowercase;
   // font-size: $font-size-small;
 }
+
+@mixin transitional($property: all, $duration: .25s) {
+  transition: $property $duration ease-in-out;
+}
