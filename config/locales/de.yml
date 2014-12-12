@@ -47,6 +47,7 @@ de:
      iqvoc_title: "iQvoc Vocabulary Management System"
      concept: "Konzept"
      pref_label: "Bevorzugtes Label"
+     alt_label: "Alternatives Label" # XXX: duplicates `views.concepts.alt_label`
      edit: "Bearbeiten"
      value: "Wert"
      back: Zurück

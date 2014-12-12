@@ -1,0 +1,27 @@
+<div class="concept-summary row">
+  <% if @view.definition %>
+  <blockquote class="col-md-8">
+    <%= auto_link(@view.definition, :html => { :target => '_blank' }) %>
+  </blockquote>
+  <% end %>
+
+  <div class="col-md-4">
+    <% if @view.collections %>
+    <h3>Collections</h3> <%# FIXME: hard-coded %>
+    <ul class="collections list-group">
+      <% @view.collections.each do |link| %>
+      <li class="list-group-item"><%= link_to link.caption, link.uri %></li>
+      <% end %>
+    </ul>
+    <% end %>
+
+    <% if @view.related %>
+    <h3>Related Concepts</h3> <%# FIXME: hard-coded %>
+    <ul class="related list-group">
+      <% @view.related.each do |link| %>
+      <li class="list-group-item"><%= link_to link.caption, link.uri %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
+</div>

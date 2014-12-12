@@ -9,3 +9,48 @@
 @import 'iqvoc/components/notes';
 @import 'iqvoc/components/entity_select';
 @import 'iqvoc/hacks/hacks';
+
+
+
+
+// FIXME: does not belong here
+
+.notes .panel {
+  margin-top: 1em; // XXX: should not be necessary
+  padding: 0;
+}
+
+.notes .panel h4 {
+  margin: 0 0 0.5em; // XXX: arbitrary/inconsistent
+  padding: 0.2em 0.5em; // XXX: arbitrary/inconsistent
+  font-size: 1em;
+  text-align: right;
+  color: #777; // TODO: use variable
+}
+
+.notes .panel > * { // XXX: should not be necessary
+  margin: 0 0.5em 0.5em;
+}
+
+.notes .panel .note_annotations { // XXX: should not be necessary
+  float: none;
+  overflow: auto; // contain floats
+}
+
+.representations img {
+  height: 1em;
+}
+
+.pref-label,
+.alt-label {
+  border: 1px solid #EEE;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  padding: 0.2em 0.5em;
+  background-color: whitesmoke;
+  cursor: help;
+}
+
+.pref-label {
+  font-weight: bold;
+}

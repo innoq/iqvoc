@@ -68,6 +68,8 @@ class ConceptsController < ApplicationController
           end
         end
 
+        @view = ConceptView.new(@concept, self)
+
         # When in single query mode, AR handles ALL includes to be loaded by that
         # one query. We don't want that! So let's do it manually :-)
         ActiveRecord::Associations::Preloader.new.preload(@concept,
