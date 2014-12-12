@@ -9,6 +9,11 @@
       <h1 class="modal-title" id="concept-teaser-title"><%= @concept.pref_label %></h1>
     </div>
     <div class="modal-body concept-teaser-body">
+      <% if @view.no_content? %>
+      <div class="alert alert-warning" role="alert">
+        <%= t('txt.views.concepts.teaser.no_content') %>
+      </div>
+      <% end %>
       <% if @view.definition %>
       <div>
         <h2><%= Note::SKOS::Definition.model_name.human %></h2>

@@ -14,4 +14,8 @@
   p {
     margin-top: 0;
   }
+
+  .alert {
+    margin-top: $line-height-computed;
+  }
 }

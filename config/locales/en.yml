@@ -139,6 +139,7 @@ en:
        to_concept: "To Concept"
        teaser:
          close: "Close"
+         no_content: "No definitions, alternative labels or collections have been specified for this concept yet."
      labels:
        new: "New Label"
        template_form: "Literal form"

@@ -30,6 +30,10 @@ class ConceptView
     @published = @concept.published? ? nil : '0'
   end
 
+  def no_content?
+    definition.blank? || alt_labels.none? || related.none? || collections.none?
+  end
+
   # returns a string
   def definition
     @definition ||= @concept.notes_for_class(Note::SKOS::Definition).first. # FIXME: hard-coded class, arbitrary pick

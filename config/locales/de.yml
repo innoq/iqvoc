@@ -137,6 +137,7 @@ de:
        to_concept: "Zum Konzept"
        teaser:
          close: "Schließen"
+         no_content: "Bisher wurden diesem Konzept noch keine Definitionen, alternative Bezeichner oder Kollektionen zugewiesen."
      labels:
        new: "Neues Label"
        template_form: "Vorlageform"
