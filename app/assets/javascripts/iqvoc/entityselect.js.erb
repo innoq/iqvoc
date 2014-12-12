@@ -26,7 +26,8 @@ var EntitySelector = function(node) {
 
   this.indicator.css("visibility", "hidden");
 
-  var selection = $.map(this.el.data("entities"), function(entity, i) {
+  var selection = this.el.data("entities") || [];
+  selection = $.map(selection, function(entity, i) {
     return self.createEntity(entity);
   });
   selection = $('<ul class="entity_list" />').append(selection);
