@@ -7,3 +7,7 @@
 @mixin transitional($property: all, $duration: .25s) {
   transition: $property $duration ease-in-out;
 }
+
+@mixin flat-box-shadow {
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
