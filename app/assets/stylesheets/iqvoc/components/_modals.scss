@@ -20,39 +20,3 @@
     margin-top: 0;
   }
 }
-
-.label-list {
-  @include list-unstyled;
-}
-
-.label-list-item {
-  display: inline-block;
-  margin-right: .5em;
-  margin-bottom: .5em;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.label-list-item-value {
-  background-color: $gray-lighter;
-  border: 1px solid darken($gray-lighter, 5%);
-  display: inline-block;
-  padding: .25em 1em;
-
-  &.attached {
-    border-right: 0;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
-}
-
-.label-list-item-lang {
-  // color: $body-bg;
-  border: 1px solid darken($gray-lighter, 5%);
-  border-left: 0;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  padding: .5em .75em;
-}
