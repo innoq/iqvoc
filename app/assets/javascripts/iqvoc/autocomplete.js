@@ -4,9 +4,12 @@ IQVOC.autocomplete = (function($) {
 // `source` is a function expected to calculate the results - it is invoked with
 // the respective query string and a callback and expected to invoke that
 // callback with an array of `{ value, label }` objects
+// `options` is an object with optional members `noResultsMsg`
 // TODO: built-in support for loading indicator?
-function augment(field, source) {
+function augment(field, source, options) {
   field = field.jquery ? field : $(field);
+  options = options || {};
+  options.noResultsMsg = options.noResultsMsg || "no results";
 
   field.typeahead({
     minLength: 3,
@@ -15,7 +18,7 @@ function augment(field, source) {
     source: source,
     templates: {
       empty: function() {
-        var el = $("<p />").text("nothing to see, move along");
+        var el = $("<p />").text(options.noResultsMsg);
         return $("<div />").append(el).html();
       },
       suggestion: function(item) {

@@ -18,10 +18,8 @@ var EntitySelector = function(node) {
   this.entities = this.getSelection();
   this.uriTemplate = this.el.data("entity-uri");
 
-  var self = this;
-  var noResultsMsg = this.el.data("no-results-msg");
-
   var selection = this.el.data("entities") || [];
+  var self = this;
   selection = $.map(selection, function(entity, i) {
     return self.createEntity(entity);
   });
@@ -39,7 +37,9 @@ var EntitySelector = function(node) {
     $('<span class="input-group-addon" />').append(lang).prependTo(inputGroup);
   }
 
-  IQVOC.autocomplete(this.input, $.proxy(this, "onInput"));
+  IQVOC.autocomplete(this.input, $.proxy(this, "onInput"), {
+    noResultsMsg: this.el.data("no-results-msg")
+  });
 
   if(this.singular && this.entities.length) {
     this.input.hide();
