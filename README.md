@@ -115,9 +115,10 @@ iQvoc was originally created and is being maintained by [innoQ Deutschland GmbH]
 * Robert Glaser ([mrreynolds](http://github.com/mrreynolds))
 * Till Schulte-Coerne ([tillsc](http://github.com/tillsc))
 * Frederik Dohr ([FND](http://github.com/FND))
+* Marc Jansing ([mjansing](http://github.com/mjansing))
 
 ## License
 
-Copyright 2014 innoQ Deutschland GmbH
+Copyright 2014 innoQ Deutschland GmbH.
 
 Licensed under the Apache License, Version 2.0
