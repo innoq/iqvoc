@@ -13,8 +13,6 @@ var EntitySelector = function(node) {
   this.container = $('<div class="entity_select" />').data("widget", this);
   this.indicator = $('<i class="spinner fa fa-refresh fa-spin" />');
   this.indicatorWrapper = $('<span class="input-group-addon" />');
-  this.languageWrapper = $('<span class="input-group-addon" />');
-  this.language = this.el.data("language") || false;
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();
@@ -52,8 +50,10 @@ var EntitySelector = function(node) {
   this.container.append(inputGroup.append(this.indicatorWrapper.append(this.indicator))).
     append(selection).insertAfter(node).prepend(node);
 
-  if(this.language) {
-    inputGroup.prepend(this.languageWrapper.append(this.language));
+  // XXX: does not belong here -- XXX: obsolete?
+  var lang = this.el.data("language");
+  if(lang) {
+    $('<span class="input-group-addon" />').append(lang).prependTo(inputGroup);
   }
 
   if(this.singular && this.entities.length) {
