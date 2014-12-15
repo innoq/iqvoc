@@ -44,20 +44,20 @@ var EntitySelector = function(node) {
     }
   });
 
-  var inputGroup = $('<div class="input-group" />').
+  this.inputGroup = $('<div class="input-group" />').
     append(this.input, this.indicator);
-  this.container.append(inputGroup, selection).
+  this.container.append(this.inputGroup, selection).
     insertAfter(node).prepend(node);
 
   // XXX: does not belong here -- XXX: obsolete?
   var lang = this.el.data("language");
   if(lang) {
-    $('<span class="input-group-addon" />').append(lang).prependTo(inputGroup);
+    $('<span class="input-group-addon" />').append(lang).
+      prependTo(this.inputGroup);
   }
 
   if(this.singular && this.entities.length) {
-    this.input.hide();
-    this.indicator.hide();
+    this.inputGroup.hide();
   }
 };
 // data transformations; target format is an array of objects with members
@@ -108,8 +108,7 @@ $.extend(EntitySelector.prototype, {
       }, 1);
 
       if(widget.singular) {
-        widget.input.hide();
-        widget.indicator.hide();
+        widget.inputGroup.hide();
       }
     }
     return false;
@@ -121,8 +120,7 @@ $.extend(EntitySelector.prototype, {
     widget.remove(entity.data("id"));
     entity.remove();
     if(widget.singular && !widget.entities.length) {
-      widget.input.show();
-      widget.indicator.show();
+      widget.inputGroup.show();
     }
     ev.preventDefault();
   },
