@@ -9,3 +9,4 @@
 //= require iqvoc/concept_mapping_manager
 //= require iqvoc/label_resolver
 //= require iqvoc/treeview
+//= require iqvoc/autocomplete

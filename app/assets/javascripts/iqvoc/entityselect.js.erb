@@ -27,23 +27,7 @@ var EntitySelector = function(node) {
   });
   selection = $('<ul class="entity_list" />').append(selection);
 
-  this.input = $('<input type="text" class="form-control" />').autocomplete({
-    minLength: 3,
-    source: $.proxy(this, "onInput"), // XXX: discards original `this` context
-    search: function(ev, ui) { self.indicator.addClass("active"); },
-    focus: function(ev, ui) { return false; },
-    select: this.onSelect,
-    response: function(ev, ui) {
-      if(!ui.content.length && noResultsMsg) {
-        ui.content.push({ label: noResultsMsg, value: "" });
-      }
-    }
-  }).on("keydown", function(ev) {
-    if(ev.which === 13) { // Enter; prevent form submission
-      ev.preventDefault();
-    }
-  });
-
+  this.input = $('<input type="text" class="form-control" />');
   var inputGroup = $('<div class="input-group" />').
     append(this.input, this.indicator);
   this.container.append(inputGroup, selection).
@@ -54,6 +38,8 @@ var EntitySelector = function(node) {
   if(lang) {
     $('<span class="input-group-addon" />').append(lang).prependTo(inputGroup);
   }
+
+  IQVOC.autocomplete(this.input, $.proxy(this, "onInput"));
 
   if(this.singular && this.entities.length) {
     this.input.hide();
@@ -79,19 +65,18 @@ EntitySelector.sourceSelectors = {
   }
 };
 $.extend(EntitySelector.prototype, {
-  onInput: function(req, callback) {
+  onInput: function(query, callback) {
     var self = this;
 
     var responder = function(data, status, xhr) { // TODO: rename, move elsewhere
       data = self.processResponse(data);
-      self.input.autocomplete("option", "autoFocus", data.length === 1);
       callback(data);
       self.indicator.removeClass("active");
     };
 
     var sourceSelector = this.el.data("source-selector") || "default";
     EntitySelector.sourceSelectors[sourceSelector].call(this, function(uri) { // XXX: direct `EntitySelector` reference limits subclassing
-      $.getJSON(uri, { query: req.term }, responder); // TODO: error handling
+      $.getJSON(uri, { query: query }, responder); // TODO: error handling
     });
   },
   onSelect: function(ev, ui) {

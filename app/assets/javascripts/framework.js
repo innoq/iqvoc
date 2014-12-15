@@ -3,6 +3,7 @@
 //= require jquery-ui
 //= require jquery-ui.datepicker-de
 //= require tree.jquery.js
+//= require typeahead.jquery.js
 //= require URI.js
 //= require storage
 //= require bootstrap/collapse
