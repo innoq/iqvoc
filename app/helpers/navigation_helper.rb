@@ -30,7 +30,7 @@ module NavigationHelper
         if item[:items]
           content_tag :li, class: 'dropdown' do
             raw(link_to(element_value(item[:text]).html_safe +
-                    content_tag(:b, nil, class: 'caret'), '#',
+                    content_tag(:i, nil, class: 'fa fa-fw fa-angle-down'), '#',
                     class: 'dropdown-toggle',
                     data: { toggle: 'dropdown' }) +
                 content_tag(:ul,
@@ -72,7 +72,7 @@ module NavigationHelper
     else
       desc = ActiveSupport::SafeBuffer.new
       if icon = opts.delete(:icon)
-        desc << icon(icon) << ' '
+        desc << icon(icon, 'fa-fw') << ' '
       end
       desc << opts.delete(:text).to_s
       link_to(desc.html_safe, opts.delete(:path), opts)

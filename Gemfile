@@ -37,12 +37,13 @@ gem 'uglifier'
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.3.1.0'
 gem 'bootstrap_form', '~> 2.2.0'
-gem 'font-awesome-rails'
+gem 'font-awesome-rails', '~> 4.2.0'
 gem 'apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
+gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'

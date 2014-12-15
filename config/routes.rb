@@ -28,7 +28,11 @@ Rails.application.routes.draw do
 
     resource  :user_session, only: [:new, :create, :destroy]
     resources :users, except: [:show]
-    resources :concepts
+    resources :concepts do
+      member do
+        get 'glance'
+      end
+    end
     resources :collections
     resources :imports, only: [:index, :show, :create]
     resources :exports, only: [:index, :show, :create] do

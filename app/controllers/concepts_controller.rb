@@ -34,18 +34,7 @@ class ConceptsController < ApplicationController
   end
 
   def show
-    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations
-
-    published = params[:published] == '1' || !params[:published]
-    if published
-      scope = scope.published
-      @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
-    else
-      scope = scope.unpublished
-    end
-
-    @concept = scope.last!
-
+    get_concept
     authorize! :read, @concept
 
     @datasets = datasets_as_json
@@ -75,7 +64,7 @@ class ConceptsController < ApplicationController
           broader_relations: { target: [:pref_labels, :broader_relations] },
           narrower_relations: { target: [:pref_labels, :narrower_relations] }])
 
-        published ? render('show_published') : render('show_unpublished')
+        @published ? render('show_published') : render('show_unpublished')
       end
       format.json do
         # When in single query mode, AR handles ALL includes to be loaded by that
@@ -108,6 +97,18 @@ class ConceptsController < ApplicationController
         render json: concept_data
       end
       format.any(:ttl, :rdf, :nt)
+    end
+  end
+
+  def glance
+    get_concept
+    authorize! :read, @concept
+
+    respond_to do |format|
+      format.html do
+        @view = ConceptView.new(@concept, self)
+        render layout: false
+      end
     end
   end
 
@@ -243,6 +244,20 @@ class ConceptsController < ApplicationController
   end
 
   protected
+
+  def get_concept
+    scope = Iqvoc::Concept.base_class.by_origin(params[:id]).with_associations
+
+    @published = params[:published] == '1' || !params[:published]
+    if @published
+      scope = scope.published
+      @new_concept_version = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last
+    else
+      scope = scope.unpublished
+    end
+
+    @concept = scope.last!
+  end
 
   def concept_params
     params.require(:concept).permit!

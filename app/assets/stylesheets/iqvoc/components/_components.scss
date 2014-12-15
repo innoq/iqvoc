@@ -132,6 +132,10 @@ tr.highlightable {
 .lang-widget {
   padding: 0 15px 20px 15px;
 
+  h2 {
+    font-size: $font-size-h4;
+  }
+
   .lang-widget-item {
     white-space: nowrap;
 

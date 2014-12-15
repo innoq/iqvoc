@@ -1,9 +1,10 @@
+@import 'iqvoc/settings/bootstrap-variables';
+
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
 @import 'jquery-ui';
 @import 'jquery-ui.structure';
 @import 'jquery-ui.theme';
 
-@import 'bootstrap';
-body {
-  padding-top: 70px;
-}
 @import 'font-awesome';
