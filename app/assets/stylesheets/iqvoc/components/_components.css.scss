@@ -1,3 +1,13 @@
+.indicator {
+  .fa {
+    visibility: hidden;
+  }
+
+  &.active .fa {
+    visibility: visible;
+  }
+}
+
 .onebox {
   padding-top: 80px;
   margin-top: 2em;

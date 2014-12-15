@@ -11,8 +11,8 @@ var EntitySelector = function(node) {
   }
   this.el = $(node).hide(); // XXX: rename
   this.container = $('<div class="entity_select" />').data("widget", this);
-  this.indicator = $('<i class="spinner fa fa-refresh fa-spin" />');
-  this.indicatorWrapper = $('<span class="input-group-addon" />');
+  this.indicator = $('<span class="indicator input-group-addon" />').
+    append('<i class="fa fa-refresh fa-spin" />');
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();
@@ -21,19 +21,16 @@ var EntitySelector = function(node) {
   var self = this;
   var noResultsMsg = this.el.data("no-results-msg");
 
-  this.indicator.css("visibility", "hidden");
-
   var selection = this.el.data("entities") || [];
   selection = $.map(selection, function(entity, i) {
     return self.createEntity(entity);
   });
   selection = $('<ul class="entity_list" />').append(selection);
 
-  var inputGroup = $('<div class="input-group" />');
   this.input = $('<input type="text" class="form-control" />').autocomplete({
     minLength: 3,
     source: $.proxy(this, "onInput"), // XXX: discards original `this` context
-    search: function(ev, ui) { self.indicator.css("visibility", "visible"); },
+    search: function(ev, ui) { self.indicator.addClass("active"); },
     focus: function(ev, ui) { return false; },
     select: this.onSelect,
     response: function(ev, ui) {
@@ -45,10 +42,12 @@ var EntitySelector = function(node) {
     if(ev.which === 13) { // Enter; prevent form submission
       ev.preventDefault();
     }
-  }).appendTo(inputGroup);
+  });
 
-  this.container.append(inputGroup.append(this.indicatorWrapper.append(this.indicator))).
-    append(selection).insertAfter(node).prepend(node);
+  var inputGroup = $('<div class="input-group" />').
+    append(this.input, this.indicator);
+  this.container.append(inputGroup, selection).
+    insertAfter(node).prepend(node);
 
   // XXX: does not belong here -- XXX: obsolete?
   var lang = this.el.data("language");
@@ -58,7 +57,7 @@ var EntitySelector = function(node) {
 
   if(this.singular && this.entities.length) {
     this.input.hide();
-    this.indicatorWrapper.hide();
+    this.indicator.hide();
   }
 };
 // data transformations; target format is an array of objects with members
@@ -87,7 +86,7 @@ $.extend(EntitySelector.prototype, {
       data = self.processResponse(data);
       self.input.autocomplete("option", "autoFocus", data.length === 1);
       callback(data);
-      self.indicator.css("visibility", "hidden");
+      self.indicator.removeClass("active");
     };
 
     var sourceSelector = this.el.data("source-selector") || "default";
@@ -110,7 +109,7 @@ $.extend(EntitySelector.prototype, {
 
       if(widget.singular) {
         widget.input.hide();
-        widget.indicatorWrapper.hide();
+        widget.indicator.hide();
       }
     }
     return false;
@@ -123,7 +122,7 @@ $.extend(EntitySelector.prototype, {
     entity.remove();
     if(widget.singular && !widget.entities.length) {
       widget.input.show();
-      widget.indicatorWrapper.show();
+      widget.indicator.show();
     }
     ev.preventDefault();
   },
