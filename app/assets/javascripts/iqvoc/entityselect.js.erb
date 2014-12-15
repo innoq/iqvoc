@@ -66,8 +66,9 @@ EntitySelector.sourceSelectors = {
 };
 $.extend(EntitySelector.prototype, {
   onInput: function(query, callback) {
-    var self = this;
+    this.indicator.addClass("active");
 
+    var self = this;
     var responder = function(data, status, xhr) { // TODO: rename, move elsewhere
       data = self.processResponse(data);
       callback(data);

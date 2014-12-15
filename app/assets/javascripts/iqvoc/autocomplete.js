@@ -4,6 +4,7 @@ IQVOC.autocomplete = (function($) {
 // `source` is a function expected to calculate the results - it is invoked with
 // the respective query string and a callback and expected to invoke that
 // callback with an array of `{ value, label }` objects
+// TODO: built-in support for loading indicator?
 function augment(field, source) {
   field = field.jquery ? field : $(field);
 
