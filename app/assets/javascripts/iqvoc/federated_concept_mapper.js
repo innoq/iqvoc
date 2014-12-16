@@ -11,11 +11,6 @@ var baseClass = IQVOC.ConceptMapper;
 function FederatedConceptMapper(selector) {
   baseClass.apply(this, arguments);
 
-  this.noResultsMsg = {
-    label: this.root.data("no-results-msg"),
-    value: ''
-  };
-
   var sources = this.root.data("datasets");
   if(!sources) { // fall back to non-federated base class only
     return;
@@ -33,32 +28,22 @@ function FederatedConceptMapper(selector) {
   this.indicatorWrapper.append(this.indicator);
 
   var self = this;
-  this.input.find('input').autocomplete({ // TODO: extract autocomplete extension into subclass
-    source: $.proxy(this, "onChange"),
-    search: function(ev, ui) {
-      if(self.source.val() === "_custom") {
-        return false;
-      } else {
-        self.indicator.css("visibility", "visible");
-      }
-    },
-    response: function(ev, ui) {
-      if (!ui.content.length) {
-        ui.content.push(self.noResultsMsg);
-      }
-      self.indicator.css("visibility", "hidden");
-    },
-    minLength: 2
+  var input = this.input.find("input")
+
+  IQVOC.autocomplete(input, $.proxy(this, "onChange"), {
+    noResultsMsg: this.root.data("no-results-msg")
   });
+
 }
 FederatedConceptMapper.prototype = new baseClass();
-FederatedConceptMapper.prototype.onChange = function(req, callback) {
+FederatedConceptMapper.prototype.onChange = function(query, callback) {
   var self = this;
+
   $.ajax({
     type: "GET",
     url: this.root.data("remote-proxy-url"),
     data: {
-      prefix: encodeURIComponent(req.term), // FIXME: (double-)encoding should not be necessary
+      prefix: encodeURIComponent(query), // FIXME: (double-)encoding should not be necessary
       dataset: this.source.find("option:selected").text(),
       layout: 0
     },

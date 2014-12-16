@@ -47,7 +47,8 @@ ConceptMapper.prototype.onConfirm = function(ev) {
   var textArea = document.getElementsByName(textAreaName)[0];
   textArea = $(textArea);
 
-  var newURI = this.input.find('input').val();
+  // FIXME: last input the correct one
+  var newURI = $(this.input.find('input')[1]).val();
   var newValue = $.trim(textArea.val() + this.delimiter + newURI);
 
   textArea.val(newValue);
