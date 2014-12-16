@@ -38,7 +38,8 @@ var EntitySelector = function(node) {
   }
 
   IQVOC.autocomplete(this.input, $.proxy(this, "onInput"), {
-    noResultsMsg: this.el.data("no-results-msg")
+    noResultsMsg: this.el.data("no-results-msg"),
+    onSelect: this.onSelect
   });
 
   if(this.singular && this.entities.length) {
@@ -80,12 +81,13 @@ $.extend(EntitySelector.prototype, {
       $.getJSON(uri, { query: query }, responder); // TODO: error handling
     });
   },
-  onSelect: function(ev, ui) {
-    var el = $(this).val(""),
-      widget = el.closest(".entity_select").data("widget");
-    if(widget.add(ui.item.value)) {
+  onSelect: function(ev, element, item) {
+    var el = $(element).val("")
+    var widget = el.closest(".entity_select").data("widget");
+
+    if(widget.add(item.value)) {
       var entity = widget.
-          createEntity({ id: ui.item.value, name: ui.item.label });
+          createEntity({ id: item.value, name: item.label });
       var list = widget.container.find("ul").append(entity);
       // force redraw to work around Safari rendering bug -- FIXME: crude and uninformed
       list.css("overflow", "auto");

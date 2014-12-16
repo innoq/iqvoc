@@ -27,6 +27,10 @@ function augment(field, source, options) {
         return $("<div />").append(el).html();
       }
     }
+  }).bind('typeahead:selected', function(ev, selected, name) {
+    if (options.onSelect) {
+      options.onSelect(ev, this, selected);
+    }
   });
 }
 
