@@ -16,6 +16,7 @@ function augment(field, source, options) {
     highlight: true
   }, {
     source: source,
+    displayKey: "label",
     templates: {
       empty: function() {
         var el = $("<p />").text(options.noResultsMsg);
