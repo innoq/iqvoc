@@ -39,7 +39,8 @@ var EntitySelector = function(node) {
 
   IQVOC.autocomplete(this.input, $.proxy(this, "onInput"), {
     noResultsMsg: this.el.data("no-results-msg"),
-    onSelect: this.onSelect
+    onSelect: this.onSelect,
+    displayKey: "label"
   });
 
   if(this.singular && this.entities.length) {

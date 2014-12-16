@@ -8,15 +8,18 @@ IQVOC.autocomplete = (function($) {
 // TODO: built-in support for loading indicator?
 function augment(field, source, options) {
   field = field.jquery ? field : $(field);
+
   options = options || {};
   options.noResultsMsg = options.noResultsMsg || "no results";
+  options.displayKey = options.displayKey || "value";
+  options.minLength = options.minLength || 3;
 
   field.typeahead({
-    minLength: 3,
+    minLength: options.minLength,
     highlight: true
   }, {
     source: source,
-    displayKey: "label",
+    displayKey: options.displayKey,
     templates: {
       empty: function() {
         var el = $("<p />").text(options.noResultsMsg);
