@@ -35,9 +35,11 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
   test 'should register settings with defaults' do
     @config.register_setting('ho', 'yuken')
     assert_equal 'yuken', @config['ho']
+    @config.deregister_setting('ho')
 
     @config.register_settings('ha' => 'douken')
     assert_equal 'douken', @config['ha']
+    @config.deregister_setting('ha')
   end
 
   test 'should deregister settings' do
@@ -52,5 +54,7 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
     assert_raise(TypeError) { @config['foo'] = nil }
     assert_raise(TypeError) { @config.register_setting('foo', nil) }
     assert_raise(TypeError) { @config.register_setting('foo', Hash.new) }
+
+    @config.deregister_setting('foo')
   end
 end

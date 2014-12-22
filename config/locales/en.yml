@@ -106,15 +106,15 @@ en:
          triplestore: triplestore
          sources: Federation
        settings:
-         title: site title
-         languages_notes: languages for notes
-         languages_pref_labeling: languages for preferred labels
-         languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
-         performance_unbounded_hierarchy: unlimited hierarchy depth
-         triplestore_url: triplestore URL
-         triplestore_username: username for triplestore
-         triplestore_password: password for triplestore
-         triplestore_autosync: automatic triplestore synchronization
+         title: Site title
+         languages_notes: Languages for notes
+         languages_pref_labeling: Languages for preferred labels
+         languages_further_labelings_Labeling::SKOS::AltLabel: Languages for alternative labels
+         performance_unbounded_hierarchy: Unlimited hierarchy depth
+         triplestore_url: Triplestore URL
+         triplestore_username: Username for triplestore
+         triplestore_password: Password for triplestore
+         triplestore_autosync: Automatic triplestore synchronization
          sources_iqvoc: Sources (iQvoc)
      alphabetical_concepts:
      untranslated_concepts:
