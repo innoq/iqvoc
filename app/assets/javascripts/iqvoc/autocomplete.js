@@ -12,10 +12,9 @@ function augment(field, source, options) {
   options = options || {};
   options.noResultsMsg = options.noResultsMsg || "no results";
   options.displayKey = options.displayKey || "value";
-  options.minLength = options.minLength || 3;
 
   field.typeahead({
-    minLength: options.minLength,
+    minLength: 3,
     highlight: true
   }, {
     source: source,
