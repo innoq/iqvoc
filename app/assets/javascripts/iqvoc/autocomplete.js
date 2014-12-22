@@ -32,7 +32,7 @@ function augment(field, source, options) {
     }
   }).bind("typeahead:selected", function(ev, selected, name) {
     if(options.onSelect) {
-      options.onSelect(ev, this, selected); // TODO: document
+      options.onSelect.call(this, ev, selected); // TODO: document
     }
   });
 }

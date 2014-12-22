@@ -82,8 +82,8 @@ $.extend(EntitySelector.prototype, {
       $.getJSON(uri, { query: query }, responder); // TODO: error handling
     });
   },
-  onSelect: function(ev, element, item) {
-    var el = $(element).val("")
+  onSelect: function(ev, item) {
+    var el = $(this).val("")
     var widget = el.closest(".entity_select").data("widget");
 
     if(widget.add(item.value)) {
