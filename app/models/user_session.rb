@@ -15,10 +15,6 @@
 # limitations under the License.
 
 class UserSession < Authlogic::Session::Base
-  # necessary for rails 4.2 because rails went to require ActiveModel::Naming-compliant
-  # objects for forms, should be fixed in a future AuthLogic release
-  extend ActiveModel::Naming
-
   def to_key
     new_record? ? nil : [ self.send(self.class.primary_key) ]
   end
