@@ -56,7 +56,7 @@ group :development, :test do
   gem 'awesome_print'
 
   platforms :ruby do
-    gem 'mysql2', '0.3.13'
+    gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
     gem 'spring'
     gem 'pry-rails'
