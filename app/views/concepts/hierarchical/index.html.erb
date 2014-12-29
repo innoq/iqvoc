@@ -3,7 +3,7 @@
 <%= render 'concepts/sidebars/plural' %>
 
 <% if params[:published] == '0' %>
-  <%= render "concepts/hierarchical/treeview", concepts: @concepts, broader: false, dragabble: true %>
+  <%= treeview @concepts, false, true %>
 <% else %>
   <%= treeview @concepts %>
 <% end %>

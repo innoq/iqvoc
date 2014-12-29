@@ -1,0 +1,64 @@
+body {
+  padding-top: 70px;
+}
+
+form#search {
+  .btn-group {
+    margin-top: 10px;
+  }
+}
+
+.page-header {
+  margin: 12px 0 18px 0;
+}
+
+.navbar-default .navbar-nav > li > a {
+  @include interaction-font();
+  @include transitional(color);
+}
+
+.btn {
+  @include interaction-font();
+  @include transitional();
+}
+
+.dropdown-menu > li > a {
+  @include interaction-font();
+  @include transitional(background-color);
+}
+
+.list-group-item {
+  @include interaction-font();
+  @include transitional(background-color);
+}
+
+.nav-tabs li > a {
+  @include interaction-font();
+  @include transitional(all);
+}
+
+.modal-header {
+  .alert {
+    margin-top: 0.5em;
+    margin-bottom: -0.5em;
+  }
+
+  > .close {
+    font-size: $font-size-h3;
+    margin: 0;
+  }
+}
+
+.modal-footer {
+  text-align: left;
+}
+
+.modal-content {
+  @include flat-box-shadow();
+  border-radius: 0;
+}
+
+.dropdown-menu {
+  @include flat-box-shadow();
+  border-radius: 0;
+}

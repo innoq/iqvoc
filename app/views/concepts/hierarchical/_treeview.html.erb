@@ -18,7 +18,7 @@
       data-update-url="<%= move_concept_url(concept, format: :json) %>"
       data-published="<%= concept.published? %>"
       data-locked="<%= locked %>"
-    >
+      data-glance-url="<%= glance_concept_url(concept) %>">
       <% if concept.published? %>
         <%= link_to(concept.pref_label.to_s, concept_url(id: concept)) %>
       <% else %>

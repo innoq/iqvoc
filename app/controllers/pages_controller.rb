@@ -15,7 +15,15 @@
 # limitations under the License.
 
 class PagesController < ApplicationController
+
+  def components
+    #authorize! :read, :components
+    @concepts_uri = concepts_path(:format => :json)
+    @concept_uri = concept_path(:id => "{id}")
+  end
+
   def help
     authorize! :read, :help
   end
+
 end

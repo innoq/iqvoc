@@ -32,6 +32,8 @@ class Collection::Base < Concept::Base
   has_many :parent_collections,
       through: :parent_collection_members
 
+  include_to_deep_cloning(:members, :collection_members)
+
   after_save :regenerate_concept_members, :regenerate_collection_members
 
   validate :circular_subcollections
@@ -109,8 +111,7 @@ class Collection::Base < Concept::Base
   end
 
   def inline_member_collection_origins
-    @member_collection_origins || collections.
-        map { |m| m.origin }.uniq
+    @member_collection_origins || subcollections.map(&:origin).uniq
   end
 
   def inline_member_collections

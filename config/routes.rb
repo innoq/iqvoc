@@ -28,7 +28,11 @@ Rails.application.routes.draw do
 
     resource  :user_session, only: [:new, :create, :destroy]
     resources :users, except: [:show]
-    resources :concepts
+    resources :concepts do
+      member do
+        get 'glance'
+      end
+    end
     resources :collections
     resources :imports, only: [:index, :show, :create]
     resources :exports, only: [:index, :show, :create] do
@@ -75,6 +79,7 @@ Rails.application.routes.draw do
     get 'search' => 'search_results#index', as: 'search'
 
     get 'help' => 'pages#help', as: 'help'
+    get 'components' => 'pages#components', as: 'components'
 
     get '/' => 'frontpage#index'
     # root to: 'frontpage#index', format: nil

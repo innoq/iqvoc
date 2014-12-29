@@ -3,12 +3,12 @@
   <li id="language_selection" class="dropdown">
     <a href="javascript:;" class="dropdown-toggle">
       <%= t("txt.views.lang_widget.caption") %>
-      <b class="caret"></b>
+      <i class="fa fa-angle-down"></i>
     </a>
 
     <ul class="lang-widget dropdown-menu">
       <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
-        <li class="lang-widget-header"><h3><%= t("txt.views.lang_widget.primary") %></h3></li>
+        <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.primary") %></h2></li>
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
           <li class="lang-widget-item">
           <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), params.merge(:lang => lang || "none"),
@@ -19,7 +19,7 @@
 
   <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
   <% if secondary_languages.any? %>
-    <li class="lang-widget-header"><h3><%= t("txt.views.lang_widget.secondary") %></h3></li>
+    <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.secondary") %></h2></li>
     <% secondary_languages.each do |lang| %>
       <li class="lang-widget-item">
         <label>

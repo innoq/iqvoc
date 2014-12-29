@@ -165,10 +165,10 @@ jQuery(document).ready(function($) {
 
   // Search
   $(".checkbox-select-all").click(function() {
-    $(this).closest('.controls').find("input:checkbox").attr("checked", true);
+    $(this).closest('.language-controls').find("input:checkbox").attr("checked", true);
   });
   $(".checkbox-select-none").click(function() {
-    $(this).closest('.controls').find("input:checkbox").attr("checked", false);
+    $(this).closest('.language-controls').find("input:checkbox").attr("checked", false);
   });
   $("select.search_type").change(function() {
     var result_type_filter = $(".result_type_filter");

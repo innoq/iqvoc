@@ -28,8 +28,17 @@ class Note::Base < ActiveRecord::Base
   # ********** Associations
 
   belongs_to :owner, polymorphic: true
+  belongs_to :concept,
+             class_name: Iqvoc::Concept.base_class_name,
+             foreign_key: 'owner_id'
+  belongs_to :collection,
+             class_name: Iqvoc::Collection.base_class_name,
+             foreign_key: 'owner_id'
 
-  has_many :annotations, class_name: 'Note::Annotated::Base', foreign_key: :note_id, dependent: :destroy
+  has_many :annotations,
+           class_name: 'Note::Annotated::Base',
+           foreign_key: :note_id,
+           dependent: :destroy
 
   accepts_nested_attributes_for :annotations
 
@@ -110,7 +119,39 @@ class Note::Base < ActiveRecord::Base
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
-    scope = by_query_value(query_str).by_language(params[:languages].to_a)
+    scope = by_query_value(query_str).
+            by_language(params[:languages].to_a)
+
+    case params[:for]
+    when 'concept'
+      scope = scope.where('concepts.type' => Iqvoc::Concept.base_class_name)
+                   .references(:concepts)
+      owner = :concept
+    when 'collection'
+      scope = scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
+                   .references(:concepts)
+      owner = :collection
+    else
+      # no additional conditions
+      scope
+    end
+
+    if params[:collection_origin].present?
+      collection = Collection::Base.where(origin: params[:collection_origin]).last
+      if collection
+        if owner
+          scope = scope.includes(owner => :collection_members)
+        else
+          scope = scope.includes(:concept => :collection_members)
+                       .includes(:collection => :collection_members)
+        end
+        scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
+        scope = scope.references(:collection_members)
+      else
+        raise "Collection with Origin #{params[:collection_origin]} not found!"
+      end
+    end
+
     scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end

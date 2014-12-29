@@ -1,0 +1,271 @@
+.indicator {
+  .fa {
+    visibility: hidden;
+  }
+
+  &.active .fa {
+    visibility: visible;
+  }
+}
+
+.onebox {
+  padding-top: 80px;
+  margin-top: 2em;
+  text-align: center;
+
+  background: asset-url("iqvoc_logo.svg") top center no-repeat;
+
+  .logo {
+    margin: 2em 0 1em 0;
+  }
+
+  .onebox-form {
+    @include make-row;
+  }
+
+  .onebox-input-wrapper {
+    @include make-md-column(8);
+    @include make-md-column-offset(2);
+  }
+
+  .onebox-indicator {
+    margin-top: 1em;
+    color: lighten($muted-color, 20%);
+  }
+
+  ol {
+    margin-left: 0;
+    list-style: none;
+    text-align: left;
+  }
+
+  .pagination {
+    text-align: left;
+  }
+}
+
+tr.highlightable {
+  cursor: pointer;
+}
+
+.alert {
+  p {
+    margin: 0 0 10px 0;
+  }
+  ul {
+    margin-left: 30px;
+    margin-bottom: 0px;
+  }
+}
+
+.sorting-controls {
+  margin-left: 5px;
+  > * {
+    margin-right: 2px;
+    color: inherit;
+  }
+}
+
+.arrow_down {
+  margin-top: 3px;
+}
+
+.arrow_up {
+  margin-top: 2px;
+}
+
+.letter-selector {
+  $active: white;
+  margin: 0;
+  li {
+    a {
+      color: #bfbfbf;
+      font-weight: bold;
+    }
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 2px;
+    padding: 2px 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+    &.active {
+      background-color: $active;
+    }
+  }
+}
+
+.translation {
+  margin-bottom: 15px;
+}
+
+.nav-list {
+  li {
+    a {
+      &.inline-language-selector {
+        display: inline;
+        margin: inherit;
+        padding: inherit;
+        &:hover {
+          background: inherit;
+        }
+      }
+    }
+  }
+}
+
+.concept-items {
+  .concept-item {
+    margin-bottom: 15px;
+    p {
+      margin: 0;
+    }
+    .concept-item-link {
+      font-weight: bold;
+    }
+    .concept-item-uri {
+      color: green;
+    }
+  }
+}
+
+.lang-widget {
+  padding: 0 15px 20px 15px;
+
+  h2 {
+    font-size: $font-size-h4;
+  }
+
+  .lang-widget-item {
+    white-space: nowrap;
+
+    label {
+      margin: 0;
+      padding: 2px 10px;
+
+      input {
+        margin-top: -2px;
+        margin-right: 0.5em;
+        display: inline;
+      }
+
+      a {
+        padding-left: 0;
+        display: inline;
+      }
+    }
+  }
+
+  .lang-widget-header {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+}
+
+.search-result {
+  margin-top: 10px;
+  a {
+    font-weight: bold;
+  }
+}
+
+.search-result-meta {
+  margin-top: 0;
+}
+
+.search-result-key {
+  float: left;
+  margin-right: 5px;
+  // font-weight: normal;
+  &:after {
+    content: ':';
+  }
+}
+
+.search-result-link {}
+
+.search-result-uri {
+  display: block;
+  color: green;
+}
+
+.search-result-value {}
+
+.search-result-body {
+  margin-top: 0;
+}
+
+.concept-mapper {
+  margin: 25px 0;
+  > * { margin-right: 10px; }
+
+  .input-group {
+      display: inline-table;
+      vertical-align: middle;
+
+      .input-group-addon,
+      .input-group-btn,
+      .form-control {
+          width: auto !important;
+      }
+  }
+
+  .form-control {
+    width: auto;
+    display: inline-block;
+  }
+}
+
+.concept-mapper-indicator {
+  position: absolute;
+  margin: 8px 0 0 -30px;
+}
+
+.concept-mappings { margin-left: 0; }
+
+.concept-mapping {
+  %padded { padding: 7px 10px; }
+
+  display: inline-block;
+  float: left;
+  clear: left;
+  overflow: hidden;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  padding: 5px 0;
+
+  border-radius: $border-radius-default;
+  background-color: $widget-background-color-dark;
+
+  .concept-mapping-link {
+    @extend %padded;
+    background-color: $widget-highlight-color;
+    color: $widget-highlight-background-color;
+  }
+
+  .concept-mapping-dataset, .concept-mapping-match-type {
+    @extend %padded;
+    color: $muted-color;
+  }
+
+  .concept-mapping-dataset {
+    @extend %padded;
+    background-color: $widget-border-color-dark;
+  }
+
+  .concept-mapping-match-type {
+    @extend %padded;
+    font-style: italic;
+  }
+
+  .concept-mapping-remove {
+    padding-right: 10px;
+    cursor: pointer;
+    color: $muted-color;
+  }
+}
+
+a.unpublished {
+  color: #bfbfbf;
+}
