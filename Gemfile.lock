@@ -116,7 +116,6 @@ GEM
     iq_triplestorage (0.2.2)
     jdbc-mysql (5.1.31)
     jdbc-sqlite3 (3.7.2.1)
-    jruby-openssl (0.9.5-java)
     json (1.8.1)
     json (1.8.1-java)
     json-ld (1.1.6)
@@ -323,7 +322,6 @@ DEPENDENCIES
   hirb-unicode
   iq_rdf (>= 0.1.15)
   iq_triplestorage
-  jruby-openssl
   json
   kaminari
   kaminari-bootstrap (~> 3.0.1)
