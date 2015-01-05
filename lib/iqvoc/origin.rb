@@ -82,7 +82,7 @@ module Iqvoc
     def valid?
       valid = true
 
-      if blank_node = initial_value.match(/^_:(.+)/)
+      if blank_node = initial_value.match(Iqvoc::RDFAPI::BLANK_NODE_REGEXP)
         # blank node validation, should not contain special chars
         valid = false if CGI.escape(blank_node[1]) != blank_node[1]
       else
