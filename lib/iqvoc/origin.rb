@@ -49,7 +49,7 @@ module Iqvoc
         end
       end
 
-      class UniqeHash < GenericFilter
+      class RandomHash < GenericFilter
         def call(obj, str)
           str = "_#{SecureRandom.hex(8)}"
           run(obj, str)
@@ -57,7 +57,7 @@ module Iqvoc
       end
 
       @filters = {}
-      @filters[:unique_hash] = UniqeHash
+      @filters[:unique_hash] = RandomHash
 
       def self.register(name, klass)
         @filters[name.to_sym] = klass
