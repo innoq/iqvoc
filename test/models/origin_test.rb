@@ -16,22 +16,9 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class FoobarAppender < Iqvoc::Origin::Filters::GenericFilter
-  def call(obj, str)
-    str = "#{str}_foobar"
-    run(obj, str)
-  end
-end
-
 class OriginTest < ActiveSupport::TestCase
   def test_origin_generation
     assert_match /_[0-9a-z]{16}/, Iqvoc::Origin.new.to_s
-  end
-
-  def test_register_custom_filter
-    Iqvoc::Origin::Filters.register(:append_foobar, FoobarAppender)
-    assert_equal 'trololo_foobar', Iqvoc::Origin.new('trololo').append_foobar.to_s
-    assert_match /_[0-9a-z]{16}_foobar/, Iqvoc::Origin.new('trololo').to_s
   end
 
   def test_origin_validation

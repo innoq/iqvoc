@@ -14,67 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Note that .to_s respects eventually previously executed method chains
-# Just calling "to_s" runs all registered filters.
-# Prepending "to_s" with a specific filter method only runs the given filter:
-# Iqvoc::Origin.new("fübar").replace_umlauts.to_s # => "fuebar"
-#
-# Adding your own filter classes is easy:
-# class FoobarStripper < Iqvoc::Origin::Filters::GenericFilter
-#   def call(obj, str)
-#     str = str.gsub("foobar", "")
-#     run(obj, str)
-#   end
-# end
-# Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
-#
 require 'iqvoc/rdfapi'
 
 module Iqvoc
   class Origin
-    module Filters
-      class GenericFilter
-        def call(obj, str)
-          # do what has to be done with str
-          # afterwards: make sure to pass "obj" and your modified "str" to "run()"
-          run(obj, str)
-        end
+    attr_accessor :initial_value, :value
 
-        def run(obj, str)
-          obj.tap do |obj|
-            obj.value = str
-          end
-        end
-      end
-
-      class RandomHash < GenericFilter
-        def call(obj, str)
-          str = "_#{SecureRandom.hex(8)}"
-          run(obj, str)
-        end
-      end
-
-      @filters = {}
-      @filters[:unique_hash] = RandomHash
-
-      def self.register(name, klass)
-        @filters[name.to_sym] = klass
-      end
-
-      def self.registered
-        @filters
-      end
-    end
-
-    attr_accessor :initial_value, :value, :filters
-
-    def initialize(value = 'foo')
+    def initialize(value = nil)
       self.initial_value = value
-      self.value = initial_value
-    end
-
-    def touched?
-      value != initial_value
+      self.value = "_#{SecureRandom.hex(8)}"
     end
 
     def valid?
@@ -96,29 +44,8 @@ module Iqvoc
       valid
     end
 
-    def run_filters!
-      Filters.registered.each do |key, filter_class|
-        filter_class.new.call(self, value)
-      end
-    end
-
-    def method_missing(meth, *args)
-      if Filters.registered.keys.include?(meth.to_sym)
-        Filters.registered[meth.to_sym].new.call(self, value)
-      else
-        super
-      end
-    end
-
     def to_s
-      return value if touched?
-      run_filters!
       value
     end
-
-    def inspect
-      '#<Iqvoc::Origin:0x%08x>' % object_id
-    end
-
   end
 end
