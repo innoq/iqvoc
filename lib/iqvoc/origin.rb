@@ -22,7 +22,7 @@ module Iqvoc
 
     def initialize(value = nil)
       self.initial_value = value
-      self.value = "_#{SecureRandom.hex(8)}"
+      self.value = "_#{SecureRandom.hex(4)}"
     end
 
     def valid?
