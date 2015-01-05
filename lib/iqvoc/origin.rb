@@ -14,10 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Provides utilities to replace special chars etc in
-# texts to generate a valid turtle compatible id (an url slug):
-# Iqvoc::Origin.new("fübar").to_s # => "fuebar"
-#
 # Note that .to_s respects eventually previously executed method chains
 # Just calling "to_s" runs all registered filters.
 # Prepending "to_s" with a specific filter method only runs the given filter:
@@ -32,6 +28,8 @@
 # end
 # Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
 #
+require 'iqvoc/rdfapi'
+
 module Iqvoc
   class Origin
     module Filters
