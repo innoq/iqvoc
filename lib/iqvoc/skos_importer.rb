@@ -110,6 +110,11 @@ module Iqvoc
           @logger.warn "Iqvoc::SkosImporter: Unknown namespaces. Skipping #{extracted_triple.join(' ')}"
         end
 
+        unless has_valid_origin?(extracted_triple)
+          @logger.warn "Iqvoc::SkosImporter: Invalid origin. Skipping #{extracted_triple.join(' ')}"
+          next
+        end
+
         identify_blank_nodes(*extracted_triple) ||
           import_first_level_objects(first_level_types, *extracted_triple) ||
           import_second_level_objects(second_level_types, false, line)
@@ -283,9 +288,6 @@ module Iqvoc
           end
         end
         e.squish!
-        e.gsub!(/^:(.*)$/) do
-          ":#{Iqvoc::Origin.new($1)}" # Force correct origins in the default namespace
-        end
       end
       triple
     end
@@ -296,6 +298,19 @@ module Iqvoc
         break
       end
       false
+    end
+
+    def has_valid_origin?(triple)
+      if blank_node?(triple.first)
+        origin = triple.first
+      else
+        # strip out leading ':' for origin validation
+        origin = triple.first[1..-1]
+      end
+
+      result = Iqvoc::Origin.new(origin).valid?
+
+      result
     end
 
     # if blank node contains another blank node,
