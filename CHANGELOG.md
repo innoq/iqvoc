@@ -1,3 +1,15 @@
+## [4.6.1]
+
+We're planning to release 4.7.0 shortly after this patch release:
+
+  * Fixed: users were prevented from logging in
+  * Fixed: collections lost their concepts after saving
+  * Fixed: search for notes didn't yield results when filtered for a certain
+    collection
+  * Fixed: right click was disabled on tree elements
+  * Fixed: several visual glitches in date pickers and autocomplete lists
+  * Bugfixes
+
 ## [4.6.0]
 
   * [Reverse matches](https://github.com/innoq/iqvoc/wiki/Interconnecting-iQvoc#reverse-matches)

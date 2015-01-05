@@ -28,7 +28,6 @@ gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
@@ -37,12 +36,13 @@ gem 'uglifier'
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.3.1.0'
 gem 'bootstrap_form', '~> 2.2.0'
-gem 'font-awesome-rails'
+gem 'font-awesome-rails', '~> 4.2.0'
 gem 'apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
+gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
@@ -55,7 +55,7 @@ group :development, :test do
   gem 'awesome_print'
 
   platforms :ruby do
-    gem 'mysql2', '0.3.13'
+    gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
     gem 'spring'
     gem 'pry-rails'

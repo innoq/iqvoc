@@ -1,10 +1,10 @@
 //= require jquery-1.7.1
 //= require rails
-//= require jquery-ui.custom
+//= require jquery-ui
 //= require jquery-ui.datepicker-de
 //= require tree.jquery.js
 //= require URI.js
 //= require storage
-//= require bootstrap/transition
 //= require bootstrap/collapse
 //= require bootstrap/tab
+//= require bootstrap/modal

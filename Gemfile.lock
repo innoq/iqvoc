@@ -43,6 +43,8 @@ GEM
       activerecord (>= 3.2)
       activesupport (>= 3.2)
       request_store (~> 1.0)
+    autoprefixer-rails (4.0.1)
+      execjs
     awesome_print (1.2.0)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -96,7 +98,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    font-awesome-rails (4.1.0.0)
+    font-awesome-rails (4.2.0.0)
       railties (>= 3.2, < 5.0)
     haml (4.0.5)
       tilt
@@ -114,7 +116,6 @@ GEM
     iq_triplestorage (0.2.2)
     jdbc-mysql (5.1.31)
     jdbc-sqlite3 (3.7.2.1)
-    jruby-openssl (0.9.5-java)
     json (1.8.1)
     json (1.8.1-java)
     json-ld (1.1.6)
@@ -151,7 +152,7 @@ GEM
     minitest (5.4.3)
     multi_json (1.10.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.13)
+    mysql2 (0.3.17)
     net-http-persistent (1.9)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
@@ -202,7 +203,7 @@ GEM
       activesupport (= 4.1.8)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.4.0)
+    rake (10.4.2)
     rdf (1.1.4.2)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
@@ -238,7 +239,7 @@ GEM
     rdf-xsd (1.1.1)
       rdf (~> 1.1)
     request_store (1.0.7)
-    safe_yaml (1.0.3)
+    safe_yaml (1.0.4)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -303,6 +304,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   apipie-rails
   authlogic (~> 3.4.2)
+  autoprefixer-rails
   awesome_print
   better_errors
   binding_of_caller
@@ -316,17 +318,16 @@ DEPENDENCIES
   delayed_job_active_record (~> 4.0.1)
   faraday
   faraday_middleware
-  font-awesome-rails
+  font-awesome-rails (~> 4.2.0)
   hirb-unicode
   iq_rdf (>= 0.1.15)
   iq_triplestorage
-  jruby-openssl
   json
   kaminari
   kaminari-bootstrap (~> 3.0.1)
   linkeddata
   maruku
-  mysql2 (= 0.3.13)
+  mysql2 (~> 0.3.13)
   nokogiri (~> 1.6.0)
   pg
   poltergeist (~> 1.5.0)

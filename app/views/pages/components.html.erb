@@ -1,0 +1,45 @@
+<%= page_header :title => "iQvoc Front-end Components" %>
+
+<h2>Entity Selector</h2>
+
+<p>multi-selection with auto-completion</p>
+
+<p>
+  the selection is transmitted as comma-separated values via the original
+  <code class="language-html">input</code> field
+</p>
+
+<p>typically used for choosing associated concepts from the thesaurus</p>
+
+<input type="text" class="entity_select"
+    data-query-url="<%= @concepts_uri %>"
+    data-entity-uri="<%= @concept_uri %>"
+    data-entities="<%= [{ id: "foo", name: "Foo" }, { id: "bar", name: "Bar" }].to_json %>"
+    data-no-results-msg="No results">
+
+<p>
+  <code class="language-html">data-singular="true"</code> restricts selection to
+  a single item single item (e.g. for choosing a parent within mono hierarchies)
+</p>
+
+<input type="text" class="entity_select"
+    data-query-url="<%= @concepts_uri %>"
+    data-entity-uri="<%= @concept_uri %>"
+    data-singular="true"
+    data-no-results-msg="No results">
+
+<p>
+  <code class="language-html">data-qualified="rank"</code> (with "rank" being an
+  arbitrary identifier) can be used to add an additional qualifier to selected
+  items, typically for ordering - these qualifiers are appended to the
+  respective value with a colon
+</p>
+
+<p>NB: requires <code class="language-javascript">QualifiedEntitySelector</code></p>
+
+<input type="text" class="entity_select"
+    data-query-url="<%= @concepts_uri %>"
+    data-entity-uri="<%= @concept_uri %>"
+    data-entities="<%= [{ id: "foo", name: "Foo", rank: 100 }].to_json %>"
+    data-qualified="rank"
+    data-no-results-msg="No results">

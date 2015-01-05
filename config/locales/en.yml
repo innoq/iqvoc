@@ -106,15 +106,15 @@ en:
          triplestore: triplestore
          sources: Federation
        settings:
-         title: site title
-         languages_notes: languages for notes
-         languages_pref_labeling: languages for preferred labels
-         languages_further_labelings_Labeling::SKOS::AltLabel: languages for alternative labels
-         performance_unbounded_hierarchy: unlimited hierarchy depth
-         triplestore_url: triplestore URL
-         triplestore_username: username for triplestore
-         triplestore_password: password for triplestore
-         triplestore_autosync: automatic triplestore synchronization
+         title: Site title
+         languages_notes: Languages for notes
+         languages_pref_labeling: Languages for preferred labels
+         languages_further_labelings_Labeling::SKOS::AltLabel: Languages for alternative labels
+         performance_unbounded_hierarchy: Unlimited hierarchy depth
+         triplestore_url: Triplestore URL
+         triplestore_username: Username for triplestore
+         triplestore_password: Password for triplestore
+         triplestore_autosync: Automatic triplestore synchronization
          sources_iqvoc: Sources (iQvoc)
      alphabetical_concepts:
      untranslated_concepts:
@@ -136,6 +136,10 @@ en:
        remove_match: "Deletion:"
        job_detail: "%{match_class}-Relation of concept %{subject} from remote ontology to %{target} pending."
        job_state: "(State: %{state})"
+       to_concept: "To Concept"
+       teaser:
+         close: "Close"
+         no_content: "No definitions, alternative labels or collections have been specified for this concept yet."
      labels:
        new: "New Label"
        template_form: "Literal form"
@@ -291,6 +295,8 @@ en:
        reset_warning: "All concepts, collections and labels in the thesaurus will be deleted."
        jobs_pending_warning: "Pending background jobs detected (e.g. exports). Pending Jobs will be deleted too."
        reset_success: "Thesaurus has been resetted."
+       export: "Export"
+       import: "Import"
      collections:
        new: "New Collection"
      triplestore_sync:

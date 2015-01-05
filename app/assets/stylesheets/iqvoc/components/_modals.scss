@@ -1,0 +1,21 @@
+.concept-teaser-header {
+  h1 {
+    font-size: $font-size-h3;
+  }
+}
+
+.concept-teaser-body {
+  padding-top: 0;
+
+  h2 {
+    font-size: $font-size-h4;
+  }
+
+  p {
+    margin-top: 0;
+  }
+
+  .alert {
+    margin-top: $line-height-computed;
+  }
+}

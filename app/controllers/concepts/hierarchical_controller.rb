@@ -74,6 +74,7 @@ class Concepts::HierarchicalController < ConceptsController
             load_on_demand: load_on_demand,
             url: url,
             update_url: move_concept_url(c),
+            glance_url: glance_concept_url(c, format: :html),
             published: (c.published?) ? true : false,
             locked: (can?(:branch, c) || can?(:update, c) ? false : true)
           }

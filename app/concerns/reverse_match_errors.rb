@@ -12,6 +12,7 @@ module ReverseMatchErrors
       unknown_match:    { status: 400, json: { type: 'unknown_match', message: 'Unknown match class.' } },
       no_referer:       { status: 400, json: { type: 'no_referer', message: 'Referer is not set.' } },
       unknown_referer:  { status: 403, json: { type: 'unknown_referer', message: 'Unknown referer.' } },
+      mapping_exists:   { status: 409, json: { type: 'mapping_exists', message: 'Concept mapping exists.'} },
       in_processing:    { status: 403, json: { type: 'in_processing', message: 'Concept in processing' } },
       server_error:     { status: 500, json: {} }
     }
