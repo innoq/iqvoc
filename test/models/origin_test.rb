@@ -33,4 +33,14 @@ class OriginTest < ActiveSupport::TestCase
     assert_equal 'trololo_foobar', Iqvoc::Origin.new('trololo').append_foobar.to_s
     assert_match /_[0-9a-z]{16}_foobar/, Iqvoc::Origin.new('trololo').to_s
   end
+
+  def test_origin_validation
+    %w(air_sports _0997ba7fe13f13d9 _:A01).each do |origin|
+      assert Iqvoc::Origin.new(origin).valid?
+    end
+
+    refute Iqvoc::Origin.new('1').valid?, 'should not start with a number'
+    refute Iqvoc::Origin.new('fußball').valid?, 'should not contain special chars'
+    refute Iqvoc::Origin.new('_:fußball').valid?, 'blank node should not contain special chars'
+  end
 end

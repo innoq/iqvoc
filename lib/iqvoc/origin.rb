@@ -80,8 +80,22 @@ module Iqvoc
     end
 
     def valid?
-      # TODO: add validation syntax
-      true
+      valid = true
+
+      if blank_node = initial_value.match(/^_:(.+)/)
+        # blank node validation, should not contain special chars
+        valid = false if CGI.escape(blank_node[1]) != blank_node[1]
+      else
+        # regular subject validation
+
+        # should not start with a number
+        valid = false if initial_value.match(/^\d.*/)
+
+        # should not contain special chars
+        valid = false if CGI.escape(initial_value) != initial_value
+      end
+
+      valid
     end
 
     def run_filters!
@@ -107,5 +121,6 @@ module Iqvoc
     def inspect
       '#<Iqvoc::Origin:0x%08x>' % object_id
     end
+
   end
 end
