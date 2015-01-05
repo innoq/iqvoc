@@ -14,10 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Provides utilities to replace special chars etc in
-# texts to generate a valid turtle compatible id (an url slug):
-# Iqvoc::Origin.new("fübar").to_s # => "fuebar"
-#
 # Note that .to_s respects eventually previously executed method chains
 # Just calling "to_s" runs all registered filters.
 # Prepending "to_s" with a specific filter method only runs the given filter:
@@ -32,6 +28,8 @@
 # end
 # Iqvoc::Origin::Filters.register(:strip_foobars, FoobarStripper)
 #
+require 'iqvoc/rdfapi'
+
 module Iqvoc
   class Origin
     module Filters
@@ -49,20 +47,15 @@ module Iqvoc
         end
       end
 
-      class UriConformanceFilter < GenericFilter
+      class RandomHash < GenericFilter
         def call(obj, str)
-          str = str.parameterize # basic url conformance
-
-          # prefix with '_' if origin starts with digit
-          str = str.gsub(/^[0-9].*$/) do |match|
-            "_#{match}"
-          end
+          str = "_#{SecureRandom.hex(8)}"
           run(obj, str)
         end
       end
 
       @filters = {}
-      @filters[:uri_conformance_filter] = UriConformanceFilter
+      @filters[:unique_hash] = RandomHash
 
       def self.register(name, klass)
         @filters[name.to_sym] = klass
@@ -75,13 +68,32 @@ module Iqvoc
 
     attr_accessor :initial_value, :value, :filters
 
-    def initialize(value)
-      self.initial_value = value.to_s
+    def initialize(value = 'foo')
+      self.initial_value = value
       self.value = initial_value
     end
 
     def touched?
       value != initial_value
+    end
+
+    def valid?
+      valid = true
+
+      if blank_node = initial_value.match(Iqvoc::RDFAPI::BLANK_NODE_REGEXP)
+        # blank node validation, should not contain special chars
+        valid = false if CGI.escape(blank_node[1]) != blank_node[1]
+      else
+        # regular subject validation
+
+        # should not start with a number
+        valid = false if initial_value.match(/^\d.*/)
+
+        # should not contain special chars
+        valid = false if CGI.escape(initial_value) != initial_value
+      end
+
+      valid
     end
 
     def run_filters!
@@ -107,5 +119,6 @@ module Iqvoc
     def inspect
       '#<Iqvoc::Origin:0x%08x>' % object_id
     end
+
   end
 end
