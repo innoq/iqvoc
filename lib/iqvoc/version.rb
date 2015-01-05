@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011-2013 innoQ Deutschland GmbH
+# Copyright 2011-2015 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,5 +15,5 @@
 # limitations under the License.
 
 module Iqvoc
-  VERSION = "4.7.0"
+  VERSION = "4.8.0"
 end
