@@ -18,7 +18,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class OriginTest < ActiveSupport::TestCase
   def test_origin_generation
-    assert_match /_[0-9a-z]{16}/, Iqvoc::Origin.new.to_s
+    assert_match /_[0-9a-z]{8}/, Iqvoc::Origin.new.to_s
   end
 
   def test_origin_validation
