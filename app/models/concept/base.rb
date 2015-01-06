@@ -32,6 +32,7 @@ class Concept::Base < ActiveRecord::Base
   include Versioning
   include Concept::Validations
   include FirstLevelObjectValidations
+  include FirstLevelObjectScopes
 
   # ********** Hooks
 
@@ -190,7 +191,7 @@ class Concept::Base < ActiveRecord::Base
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
       # When a Label has only one labeling (the "no skosxl" case) we'll have to
       # clone the label too.
-      if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
+      if labeling_class_name.constantize.reflections['target'].options[:dependent] == :destroy
         include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
       else
         include_to_deep_cloning(labeling_class_name.to_relation_name)

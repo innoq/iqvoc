@@ -19,7 +19,7 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '4.1.8'
+gem 'rails', '~> 4.2.0'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'authlogic', '~> 3.4.2'
@@ -33,7 +33,7 @@ gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap-sass', '~> 3.3.1.0'
 gem 'bootstrap_form', '~> 2.2.0'
 gem 'font-awesome-rails', '~> 4.2.0'
@@ -46,9 +46,8 @@ gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
-  gem 'better_errors'
-  gem 'binding_of_caller', platform: :ruby
   gem 'quiet_assets'
+  gem 'web-console'
 end
 
 group :development, :test do

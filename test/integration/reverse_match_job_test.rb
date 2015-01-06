@@ -45,6 +45,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       .with(:headers => {'Accept' => 'application/json', 'User-Agent' => 'Faraday v0.9.0'})
       .to_return(status: 200, body: body, headers: {})
 
+    @worker = Delayed::Worker.new
     DatabaseCleaner.start
   end
 
@@ -61,7 +62,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
+    job = Delayed::Job.last
+    @worker.run(job)
+
     assert_equal 0, @airsoft.jobs.size
   end
 
@@ -72,7 +75,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
+    job = Delayed::Job.last
+    @worker.run(job)
+
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
@@ -86,7 +91,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
+    job = Delayed::Job.last
+    @worker.run(job)
+
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
@@ -102,7 +109,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
+    job = Delayed::Job.last
+    @worker.run(job)
+
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
