@@ -48,10 +48,6 @@ GEM
     autoprefixer-rails (4.0.2.2)
       execjs
     awesome_print (1.2.0)
-    better_errors (2.1.0)
-      coderay (>= 1.0.0)
-      erubis (>= 2.6.6)
-      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.1.0)
@@ -315,6 +311,11 @@ GEM
     unicode-display_width (0.1.1)
     view_marker (1.0.0)
       rails
+    web-console (2.0.0)
+      activemodel (~> 4.0)
+      binding_of_caller (>= 0.7.2)
+      railties (~> 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -334,8 +335,6 @@ DEPENDENCIES
   authlogic (~> 3.4.2)
   autoprefixer-rails
   awesome_print
-  better_errors
-  binding_of_caller
   bootstrap-sass (~> 3.3.1.0)
   bootstrap_form (~> 2.2.0)
   cancancan
@@ -373,4 +372,5 @@ DEPENDENCIES
   sqlite3
   uglifier
   view_marker
+  web-console
   webmock

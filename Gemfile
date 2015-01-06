@@ -47,9 +47,8 @@ gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
-  gem 'better_errors'
-  gem 'binding_of_caller', platform: :ruby
   gem 'quiet_assets'
+  gem 'web-console'
 end
 
 group :development, :test do
