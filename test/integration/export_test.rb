@@ -21,6 +21,8 @@ class ExportTest < ActionDispatch::IntegrationTest
   setup do
     @testdata = File.read(Rails.root.join('test','models', 'testdata.nt')).split("\n")
     Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
+
+    @worker = Delayed::Worker.new
   end
 
   test 'export privileges' do
@@ -50,6 +52,9 @@ class ExportTest < ActionDispatch::IntegrationTest
     fill_in 'Default namespace', with: 'http://www.example.com/'
     click_link_or_button 'Request Export'
     assert page.has_content? 'Export job was created. Reload page to see current processing status.'
+
+    job = Delayed::Job.last
+    @worker.run(job)
 
     visit exports_path(lang: 'en')
     click_link_or_button 'Download'

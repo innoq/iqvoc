@@ -19,6 +19,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class ImportTest < ActionDispatch::IntegrationTest
   setup do
     @file = Rails.root.join('data/hobbies.nt')
+    @worker = Delayed::Worker.new
   end
 
   test 'import privileges' do
@@ -48,6 +49,9 @@ class ImportTest < ActionDispatch::IntegrationTest
 
     click_button('Import')
     assert page.has_content? 'Import job was created. Reload page to see current processing status.'
+
+    job = Delayed::Job.last
+    @worker.run(job)
 
     visit imports_path(lang: 'en')
     page.find('table tbody tr[1] td[1] a').click
