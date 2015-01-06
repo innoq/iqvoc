@@ -88,11 +88,14 @@ class SkosImportTest < ActiveSupport::TestCase
   end
 
   test 'incorrect origin' do
-    assert_difference('Concept::SKOS::Base.count', 1) do
-      Iqvoc::SkosImporter.new(['<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.'], 'http://www.example.com/').run
+    assert_difference('Concept::SKOS::Base.count', 0) do
+      Iqvoc::SkosImporter.new(
+        [
+          '<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.',
+          '<http://www.example.com/fußball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.'
+        ],
+        'http://www.example.com/').run
     end
-    assert_nil Iqvoc::Concept.base_class.by_origin('1').last
-    assert_not_nil Iqvoc::Concept.base_class.by_origin('_1').last
   end
 
   test 'blank nodes' do

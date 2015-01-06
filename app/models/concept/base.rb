@@ -36,6 +36,12 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Hooks
 
+  after_initialize do |concept|
+    if concept.origin.blank?
+      concept.origin = Iqvoc::Origin.new.to_s
+    end
+  end
+
   before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
     # for use with widgets etc.

@@ -28,7 +28,6 @@ gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
