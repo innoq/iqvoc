@@ -32,6 +32,7 @@ class Concept::Base < ActiveRecord::Base
   include Versioning
   include Concept::Validations
   include FirstLevelObjectValidations
+  include FirstLevelObjectScopes
 
   # ********** Hooks
 
