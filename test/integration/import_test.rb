@@ -49,7 +49,6 @@ class ImportTest < ActionDispatch::IntegrationTest
     click_button('Import')
     assert page.has_content? 'Import job was created. Reload page to see current processing status.'
 
-    Delayed::Worker.new.work_off
     visit imports_path(lang: 'en')
     page.find('table tbody tr[1] td[1] a').click
 

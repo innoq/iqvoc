@@ -51,8 +51,6 @@ class ExportTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Request Export'
     assert page.has_content? 'Export job was created. Reload page to see current processing status.'
 
-    Delayed::Worker.new.work_off
-
     visit exports_path(lang: 'en')
     click_link_or_button 'Download'
 

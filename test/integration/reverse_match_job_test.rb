@@ -61,7 +61,6 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
     assert_equal 0, @airsoft.jobs.size
   end
 
@@ -72,7 +71,6 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
@@ -86,7 +84,6 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
@@ -102,7 +99,6 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
     assert_equal 1, @airsoft.jobs.size
 
     job_relation = @airsoft.job_relations.first
