@@ -47,24 +47,24 @@ gem 'autoprefixer-rails'
 group :development do
   gem 'view_marker'
   gem 'quiet_assets'
-  gem 'web-console'
-  gem 'binding_of_caller', '0.7.3.pre1'
 end
 
 group :development, :test do
   gem 'awesome_print'
 
+  gem 'web-console'
+  gem 'binding_of_caller', '0.7.3.pre1'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
+  
   platforms :ruby do
     gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
     gem 'spring'
-    gem 'pry-rails'
-    gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
   end
-
-  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
 
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
