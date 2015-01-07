@@ -13,12 +13,11 @@ class AddForeignKeyConstraints < ActiveRecord::Migration
     add_foreign_key :labelings, :concepts, column: 'owner_id', on_update: :cascade
     add_foreign_key :matches, :concepts, column: 'concept_id', on_delete: :cascade, on_update: :cascade
     add_foreign_key :notations, :concepts, column: 'concept_id', on_update: :cascade
-    add_foreign_key :notes, :concepts, column: 'owner_id', on_delete: :cascade, on_update: :cascade
 
     # labels
     add_foreign_key :labelings, :labels, column: 'target_id',  on_delete: :cascade, on_update: :cascade
 
-    # notes foreign keys
+    # note annotations foreign keys
     add_foreign_key :note_annotations, :notes, column: 'note_id', on_delete: :cascade, on_update: :cascade
   end
 end
