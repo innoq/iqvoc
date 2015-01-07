@@ -48,6 +48,7 @@ group :development do
   gem 'view_marker'
   gem 'quiet_assets'
   gem 'web-console'
+  gem 'binding_of_caller', '0.7.3.pre1'
 end
 
 group :development, :test do
