@@ -57,7 +57,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
-  
+
   platforms :ruby do
     gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
