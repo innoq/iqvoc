@@ -96,12 +96,6 @@ module Versioning
     new_version.increment(:rev)
     new_version.published_version_id = self.id
     new_version.unpublish
-    new_version.send(:"#{Iqvoc.change_note_class_name.to_relation_name}").build(
-      language: I18n.locale.to_s,
-      annotations_attributes: [
-        { namespace: 'dct', predicate: 'creator', value: user.name },
-        { namespace: 'dct', predicate: 'modified', value: DateTime.now.to_s }
-      ])
     new_version
   end
 
