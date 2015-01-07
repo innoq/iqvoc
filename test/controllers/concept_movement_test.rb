@@ -182,8 +182,8 @@ class ConceptMovementTest < ActionController::TestCase
   test 'top term movement' do
     UserSession.create(@admin)
 
-    assert_equal @achievement_hobbies.top_term, true
-    assert_equal @sports.top_term, true
+    assert_equal @achievement_hobbies.top_term?, true
+    assert_equal @sports.top_term?, true
 
     # move achievement_hobbies (includung childs) to sports
     patch :move,
@@ -204,7 +204,7 @@ class ConceptMovementTest < ActionController::TestCase
     refute @achievement_hobbies_version.published?
 
     # is not a top_term anymore
-    assert_equal @achievement_hobbies_version.top_term, false
+    assert_equal @achievement_hobbies_version.top_term?, false
 
     # test relations
     assert_equal 1, @sports_version.narrower_relations.size
