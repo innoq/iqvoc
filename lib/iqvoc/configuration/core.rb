@@ -1,5 +1,4 @@
 require 'active_support/concern'
-require 'iqvoc/configuration/instance_configuration'
 
 module Iqvoc
   module Configuration
