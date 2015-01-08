@@ -69,7 +69,7 @@ class InstanceConfigurationController < ApplicationController
 
   # default value determines value type
   def serialize(value, default_value)
-    InstanceConfiguration.validate_value(value)
+    Iqvoc::Configuration::InstanceConfiguration.validate_value(value)
     if default_value.is_a?(Array)
       return value.to_csv.strip
     else # boolean, String, Fixnum / Float
