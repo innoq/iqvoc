@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'iqvoc/configuration/instance_configuration'
 
 module Iqvoc
   module Configuration
@@ -158,7 +159,7 @@ module Iqvoc
         # ************** instance configuration **************
 
         def config(&block)
-          cfg = InstanceConfiguration.instance
+          cfg = Iqvoc::Configuration::InstanceConfiguration.instance
           if block
             block.call(cfg)
           else
