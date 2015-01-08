@@ -70,7 +70,7 @@ group :development, :test do
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
     gem 'activerecord-jdbcsqlite3-adapter'
-    gem 'activerecord-jdbcpostgresql-adapter'
+    gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.13'
   end
 end
 

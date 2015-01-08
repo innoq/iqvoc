@@ -35,6 +35,9 @@ GEM
     activerecord-jdbcmysql-adapter (1.3.13)
       activerecord-jdbc-adapter (~> 1.3.13)
       jdbc-mysql (>= 5.1.22)
+    activerecord-jdbcpostgresql-adapter (1.3.13)
+      activerecord-jdbc-adapter (~> 1.3.13)
+      jdbc-postgres (>= 9.1)
     activerecord-jdbcsqlite3-adapter (1.3.13)
       activerecord-jdbc-adapter (~> 1.3.13)
       jdbc-sqlite3 (>= 3.7.2, < 3.9)
@@ -129,6 +132,7 @@ GEM
       bundler
     iq_triplestorage (0.2.2)
     jdbc-mysql (5.1.33)
+    jdbc-postgres (9.3.1101)
     jdbc-sqlite3 (3.8.7)
     json (1.8.1)
     json (1.8.1-java)
@@ -186,6 +190,11 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry (0.9.12.6-java)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+      spoon (~> 0.0)
     pry-byebug (1.1.2)
       byebug (~> 1.6)
       pry (~> 0.9.12)
@@ -301,6 +310,8 @@ GEM
     sparql-client (1.1.3.1)
       net-http-persistent (~> 2.9)
       rdf (~> 1.1)
+    spoon (0.0.4)
+      ffi
     spring (1.2.0)
     sprockets (2.12.3)
       hike (~> 1.2)
@@ -347,7 +358,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
-  activerecord-jdbcpostgresql-adapter
+  activerecord-jdbcpostgresql-adapter (~> 1.3.13)
   activerecord-jdbcsqlite3-adapter
   apipie-rails
   authlogic (~> 3.4.2)
