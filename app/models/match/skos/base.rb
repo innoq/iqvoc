@@ -22,7 +22,7 @@ class Match::SKOS::Base < Match::Base
     raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right?
     uri = $1
 
-    match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    match_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     match_class.new(value: uri).tap do |match|
       rdf_subject.send(self.name.to_relation_name) << match
     end

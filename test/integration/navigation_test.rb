@@ -18,12 +18,12 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class NavigationTest < ActionDispatch::IntegrationTest
   test 'extend navigation on root level' do
-    Iqvoc::Navigation.add({
+    Navigation.add({
       text: 'root element 1',
       href: 'http://foo.local/'
     })
 
-    Iqvoc::Navigation.add_grouped({
+    Navigation.add_grouped({
       text: 'extension 1',
       href: 'http://foo.local/'
     })

@@ -20,8 +20,6 @@ require 'database_cleaner'
 require 'delayed_job_active_record'
 require 'carrierwave'
 
-require 'iqvoc/controller_extensions'
-
 module Iqvoc
   class Engine < Rails::Engine
     paths['lib/tasks'] << 'lib/engine_tasks'

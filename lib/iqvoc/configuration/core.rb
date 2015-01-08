@@ -123,7 +123,7 @@ module Iqvoc
 
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
-        self.ability_class_name = 'Iqvoc::Ability'
+        self.ability_class_name = 'Ability'
 
         self.search_sections = [
           'klass',

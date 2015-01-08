@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# NB: not to be used directly, but only through Iqvoc::InstanceConfiguration
+# NB: not to be used directly, but only through InstanceConfiguration
 class ConfigurationSetting < ActiveRecord::Base # TODO: make private, somehow?
   validates :key, uniqueness: true
 end

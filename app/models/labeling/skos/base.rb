@@ -94,7 +94,7 @@ class Labeling::SKOS::Base < Labeling::Base
       raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept."
     end
 
-    unless rdf_object =~ Iqvoc::RDFAPI::LITERAL_REGEXP
+    unless rdf_object =~ RDFAPI::LITERAL_REGEXP
       raise InvalidStringLiteralError, "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
     end
 
@@ -105,7 +105,7 @@ class Labeling::SKOS::Base < Labeling::Base
       $1
     end
 
-    predicate_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    predicate_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     predicate_class.new(target: self.label_class.new(value: value, language: lang)).tap do |labeling|
       rdf_subject.send(predicate_class.name.to_relation_name) << labeling
     end

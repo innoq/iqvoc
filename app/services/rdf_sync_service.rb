@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-class Iqvoc::RDFSync
+class RDFSyncService
   delegate :url_helpers, to: 'Rails.application.routes'
 
   ADAPTORS = { # XXX: inappropriate?
@@ -105,11 +105,11 @@ class Iqvoc::RDFSync
   end
 end
 
-module Iqvoc::RDFSync::Helper # TODO: rename -- XXX: does not belong here!?
+module RDFSyncService::Helper # TODO: rename -- XXX: does not belong here!?
   def triplestore_syncer
     base_url = root_url(lang: nil) # XXX: brittle in the face of future changes?
 
-    return Iqvoc::RDFSync.new(base_url, Iqvoc.config['triplestore.url'],
+    return RDFSyncService.new(base_url, Iqvoc.config['triplestore.url'],
         username: Iqvoc.config['triplestore.username'].presence,
         password: Iqvoc.config['triplestore.password'].presence,
         view_context: view_context) # fugly, but necessary; cf. RDFSync#serialize

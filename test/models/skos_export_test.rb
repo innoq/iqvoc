@@ -15,19 +15,17 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'iqvoc/skos_exporter'
-require 'iqvoc/skos_importer'
 
 class SkosExportTest < ActiveSupport::TestCase
   setup do
     @testdata = File.read(Rails.root.join('data', 'hobbies.nt')).split("\n")
     @export_file = Rails.root.join('tmp/export/skos_export_test.nt').to_s
 
-    Iqvoc::SkosImporter.new(@testdata, 'http://hobbies.com/').run
+    SkosImporter.new(@testdata, 'http://hobbies.com/').run
   end
 
   test 'basic_exporter_functionality' do
-    Iqvoc::SkosExporter.new(@export_file, 'nt', 'http://hobbies.com/').run
+    SkosExporter.new(@export_file, 'nt', 'http://hobbies.com/').run
 
     generated_export = File.read(@export_file)
 
@@ -41,7 +39,7 @@ class SkosExportTest < ActiveSupport::TestCase
 
   test 'skos exporter with an unknown export type' do
     assert_raise RuntimeError do
-      Iqvoc::SkosExporter.new(@export_file, 'txt', 'http://hobbies.com/')
+      SkosExporter.new(@export_file, 'txt', 'http://hobbies.com/')
     end
 
   end

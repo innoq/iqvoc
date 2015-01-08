@@ -41,18 +41,18 @@ class ConceptMovementTest < ActionController::TestCase
     # + Sports
     #
     @air_sports = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.publish
       c.save
     end
     @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:narrower', @air_sports
       c.publish
       c.save
     end
     @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
       c.publish
       c.save
     end
@@ -128,16 +128,16 @@ class ConceptMovementTest < ActionController::TestCase
 
     # create unpublished concepts
     @air_sports = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.save
     end
     @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:narrower', @air_sports
       c.save
     end
     @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
       c.save
     end
 

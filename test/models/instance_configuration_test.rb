@@ -18,7 +18,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
   setup do
-    @config = Iqvoc::InstanceConfiguration.instance
+    @config = InstanceConfiguration.instance
   end
 
   teardown do
@@ -27,7 +27,7 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
   end
 
   test 'should require a setting to be registered upfront' do
-    assert_raise Iqvoc::InstanceConfiguration::UnregisteredSetting do
+    assert_raise InstanceConfiguration::UnregisteredSetting do
       @config['new_setting_key'] = 'new_setting_value'
     end
   end

@@ -61,7 +61,7 @@ class Concept::SKOS::Scheme < Concept::Base
 
   def inline_top_concept_origins=(origins)
     @inline_top_concept_origins = origins.to_s.
-      split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+      split(InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_top_concept_origins

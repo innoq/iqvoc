@@ -124,6 +124,6 @@ class Concept::Relation::Base < ActiveRecord::Base
   end
 
   def self.rankable?
-    self.class.included_modules.include?(Iqvoc::Rankable)
+    self.class.included_modules.include?(Rankable)
   end
 end

@@ -21,21 +21,21 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     @concepts = %w("Tree"@en "Forest"@en).map do |literal|
       Concept::SKOS::Base.new.tap do |c|
-        Iqvoc::RDFAPI.devour c, 'skos:prefLabel', literal
+        RDFAPI.devour c, 'skos:prefLabel', literal
         c.publish
         c.save
       end
     end
 
     @collection = Collection::SKOS::Unordered.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Alpha"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Alpha"@en'
       c.publish
       c.save
     end
 
     # assign concepts to collection
     @concepts.each do |c|
-      Iqvoc::RDFAPI.devour @collection, 'skos:member', c
+      RDFAPI.devour @collection, 'skos:member', c
     end
   end
 
@@ -124,11 +124,11 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   test 'searching specific classes within collections' do
     concept = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:definition', '"lorem ipsum"@en'
+      RDFAPI.devour c, 'skos:definition', '"lorem ipsum"@en'
       c.publish
       c.save
     end
-    Iqvoc::RDFAPI.devour @collection, 'skos:member', concept
+    RDFAPI.devour @collection, 'skos:member', concept
 
     visit search_path(lang: 'en', format: 'html')
 
@@ -172,7 +172,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     # create a large number of concepts
     1.upto(12) do |i|
       Concept::SKOS::Base.new.tap do |c|
-        Iqvoc::RDFAPI.devour c, 'skos:prefLabel', "\"sample_#{sprintf('_%04d', i)}\"@en"
+        RDFAPI.devour c, 'skos:prefLabel', "\"sample_#{sprintf('_%04d', i)}\"@en"
         c.publish
         c.save
       end

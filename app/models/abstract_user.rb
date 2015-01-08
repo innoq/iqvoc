@@ -46,6 +46,6 @@ class AbstractUser < ActiveRecord::Base
   end
 
   def ability
-    @ability ||= Iqvoc::Ability.new(self)
+    @ability ||= Ability.new(self)
   end
 end

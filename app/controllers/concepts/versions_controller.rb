@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/rdf_sync'
-
 class Concepts::VersionsController < ApplicationController
-  include Iqvoc::RDFSync::Helper
+  include RDFSyncService::Helper
 
   def merge
     concept_scope = Iqvoc::Concept.base_class.by_origin(params[:origin])

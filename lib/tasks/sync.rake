@@ -1,7 +1,6 @@
 namespace :sync do
   task :all, [:host] => :environment do |t, args|
     require 'iqvoc'
-    require 'iqvoc/rdf_sync'
 
     if Iqvoc.config["triplestore.url"] == Iqvoc.config.defaults["triplestore.url"] # XXX: duplicates controller
       puts I18n.t("txt.controllers.triplestore_sync.config_warning")
@@ -15,7 +14,7 @@ namespace :sync do
     default_url_options[:host] = ROOT
 
     class FakeController
-      include Iqvoc::RDFSync::Helper
+      include RDFSyncService::Helper
       delegate :url_helpers, :to => "Rails.application.routes"
 
       def root_url(*args)

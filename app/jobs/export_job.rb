@@ -1,10 +1,8 @@
-require 'iqvoc/skos_exporter'
-
 class ExportJob < Struct.new(:export, :filename, :type, :base_uri)
   def perform
     strio = StringIO.new
 
-    exporter = Iqvoc::SkosExporter.new(filename, type, base_uri, Logger.new(strio))
+    exporter = SkosExporter.new(filename, type, base_uri, Logger.new(strio))
     exporter.run
     @messages = strio.string
   end

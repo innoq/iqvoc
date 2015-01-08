@@ -15,12 +15,11 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'iqvoc/skos_importer'
 
 class ExportTest < ActionDispatch::IntegrationTest
   setup do
     @testdata = File.read(Rails.root.join('test','models', 'testdata.nt')).split("\n")
-    Iqvoc::SkosImporter.new(@testdata, 'http://www.example.com/').run
+    SkosImporter.new(@testdata, 'http://www.example.com/').run
 
     @worker = Delayed::Worker.new
   end

@@ -22,13 +22,13 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
   setup do
     @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
       c.publish
       c.save
     end
 
     @airsoft = Concept::SKOS::Base.new(origin: 'airsoft').tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
     end
