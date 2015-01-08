@@ -61,6 +61,7 @@ group :development, :test do
   platforms :ruby do
     gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
+    gem 'pg'
     gem 'spring'
     gem 'hirb-unicode'
     gem 'cane'
@@ -69,6 +70,7 @@ group :development, :test do
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
     gem 'activerecord-jdbcsqlite3-adapter'
+    gem 'activerecord-jdbcpostgresql-adapter'
   end
 end
 
@@ -83,6 +85,5 @@ group :production do
 end
 
 group :heroku do
-  gem 'pg', platforms: :ruby
   gem 'rails_12factor'
 end

@@ -11,7 +11,8 @@ rvm:
 env:
 - DB=sqlite
 - DB=mysql
-before_install: cp config/database.yml.$DB config/database.yml
+- DB=postgresql
+  before_install: cp config/travis/database.yml.$DB config/database.yml
 before_script:
 - bundle exec rake db:drop RAILS_ENV=test
 - bundle exec rake db:create RAILS_ENV=test
@@ -40,3 +41,5 @@ deploy:
       rvm: 2.0
     run:
       - "rake db:migrate"
+addons:
+  postgresql: "9.3"

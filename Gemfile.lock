@@ -347,6 +347,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
+  activerecord-jdbcpostgresql-adapter
   activerecord-jdbcsqlite3-adapter
   apipie-rails
   authlogic (~> 3.4.2)
