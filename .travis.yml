@@ -12,7 +12,7 @@ env:
 - DB=sqlite
 - DB=mysql
 - DB=postgresql
-  before_install: cp config/travis/database.yml.$DB config/database.yml
+before_install: cp config/travis/database.yml.$DB config/database.yml
 before_script:
 - bundle exec rake db:drop RAILS_ENV=test
 - bundle exec rake db:create RAILS_ENV=test
