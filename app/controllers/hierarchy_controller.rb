@@ -113,6 +113,7 @@ class HierarchyController < ApplicationController
 
     scope = Iqvoc::Concept.base_class
     scope = include_unpublished ? scope.editor_selectable : scope.published
+    scope = scope.ordered_by_pref_label
 
     # validate depth parameter
     if not depth
@@ -176,7 +177,8 @@ class HierarchyController < ApplicationController
 
     rels = scope.where(Concept::Relation::Base.arel_table[:target_id].
         eq(root_concept.id)).references(:concept_relations)
-    return rels.inject({}) do |memo, concept|
+
+    results = rels.inject({}) do |memo, concept|
       if include_siblings
         determine_siblings(concept).each { |sib| memo[sib] = {} }
       end
@@ -184,12 +186,14 @@ class HierarchyController < ApplicationController
           current_depth, include_siblings)
       memo
     end
+
+    results
   end
 
   # NB: includes support for poly-hierarchies -- XXX: untested
   def determine_siblings(concept)
-    return concept.broader_relations.map do |rel|
+    concept.broader_relations.map do |rel|
       rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
-    end.flatten.uniq
+    end.flatten.uniq.sort { |a, b| a.pref_label <=> b.pref_label }
   end
 end

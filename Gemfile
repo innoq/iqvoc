@@ -19,7 +19,7 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '4.1.8'
+gem 'rails', '~> 4.2.0'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'authlogic', '~> 3.4.2'
@@ -28,13 +28,12 @@ gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'jruby-openssl', platforms: :jruby
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap-sass', '~> 3.3.1.0'
 gem 'bootstrap_form', '~> 2.2.0'
 gem 'font-awesome-rails', '~> 4.2.0'
@@ -47,29 +46,31 @@ gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
-  gem 'better_errors'
-  gem 'binding_of_caller', platform: :ruby
   gem 'quiet_assets'
 end
 
 group :development, :test do
   gem 'awesome_print'
 
+  gem 'web-console'
+  gem 'binding_of_caller', '0.7.3.pre1'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
+
   platforms :ruby do
-    gem 'mysql2', '0.3.13'
+    gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
+    gem 'pg'
     gem 'spring'
-    gem 'pry-rails'
-    gem 'pry-remote'
     gem 'hirb-unicode'
     gem 'cane'
   end
 
-  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
-
   platforms :jruby do
     gem 'activerecord-jdbcmysql-adapter'
     gem 'activerecord-jdbcsqlite3-adapter'
+    gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.13'
   end
 end
 
@@ -84,6 +85,5 @@ group :production do
 end
 
 group :heroku do
-  gem 'pg', platforms: :ruby
   gem 'rails_12factor'
 end

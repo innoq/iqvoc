@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'iqvoc/skos_importer'
 
 class SkosImportTest < ActiveSupport::TestCase
   TEST_DATA = (<<-DATA
@@ -53,7 +52,7 @@ class SkosImportTest < ActiveSupport::TestCase
 
   test 'basic_importer_functionality' do
     assert_difference('Concept::SKOS::Base.count', 4) do
-      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
+      SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
 
     concepts = {}
@@ -88,11 +87,14 @@ class SkosImportTest < ActiveSupport::TestCase
   end
 
   test 'incorrect origin' do
-    assert_difference('Concept::SKOS::Base.count', 1) do
-      Iqvoc::SkosImporter.new(['<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.'], 'http://www.example.com/').run
+    assert_difference('Concept::SKOS::Base.count', 0) do
+      SkosImporter.new(
+        [
+          '<http://www.example.com/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.',
+          '<http://www.example.com/fußball> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2008/05/skos#Concept>.'
+        ],
+        'http://www.example.com/').run
     end
-    assert_nil Iqvoc::Concept.base_class.by_origin('1').last
-    assert_not_nil Iqvoc::Concept.base_class.by_origin('_1').last
   end
 
   test 'blank nodes' do
@@ -106,11 +108,11 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Note::SKOS::ChangeNote.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
+      SkosImporter.new(test_data, 'http://www.example.com/').run
     end
 
     assert_difference('Note::Annotated::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
+      SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 
@@ -123,7 +125,7 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Notation::Base.count', 2) do
-      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
+      SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 
@@ -137,7 +139,7 @@ class SkosImportTest < ActiveSupport::TestCase
     ).split("\n")
 
     assert_difference('Concept::SKOS::Base.tops.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
+      SkosImporter.new(test_data, 'http://www.example.com/').run
     end
   end
 end

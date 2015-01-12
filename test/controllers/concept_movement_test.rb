@@ -41,18 +41,18 @@ class ConceptMovementTest < ActionController::TestCase
     # + Sports
     #
     @air_sports = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.publish
       c.save
     end
     @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:narrower', @air_sports
       c.publish
       c.save
     end
     @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
       c.publish
       c.save
     end
@@ -128,16 +128,16 @@ class ConceptMovementTest < ActionController::TestCase
 
     # create unpublished concepts
     @air_sports = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.save
     end
     @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      Iqvoc::RDFAPI.devour c, 'skos:narrower', @air_sports
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:narrower', @air_sports
       c.save
     end
     @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
       c.save
     end
 
@@ -182,8 +182,8 @@ class ConceptMovementTest < ActionController::TestCase
   test 'top term movement' do
     UserSession.create(@admin)
 
-    assert_equal @achievement_hobbies.top_term, true
-    assert_equal @sports.top_term, true
+    assert_equal @achievement_hobbies.top_term?, true
+    assert_equal @sports.top_term?, true
 
     # move achievement_hobbies (includung childs) to sports
     patch :move,
@@ -204,7 +204,7 @@ class ConceptMovementTest < ActionController::TestCase
     refute @achievement_hobbies_version.published?
 
     # is not a top_term anymore
-    assert_equal @achievement_hobbies_version.top_term, false
+    assert_equal @achievement_hobbies_version.top_term?, false
 
     # test relations
     assert_equal 1, @sports_version.narrower_relations.size

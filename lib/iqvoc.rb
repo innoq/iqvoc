@@ -15,7 +15,8 @@
 # limitations under the License.
 
 require 'string'
-require 'iqvoc/instance_configuration'
+require 'iqvoc/configuration/instance_configuration'
+require 'iqvoc/configuration/navigation'
 require 'iqvoc/configuration/core'
 require 'iqvoc/configuration/concept'
 require 'iqvoc/configuration/collection'

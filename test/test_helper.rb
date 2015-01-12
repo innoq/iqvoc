@@ -26,4 +26,3 @@ unless defined?(Iqvoc) && Iqvoc.const_defined?(:Engine)
 end
 
 require 'rails/test_help'
-require 'iqvoc/rdfapi'

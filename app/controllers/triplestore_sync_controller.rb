@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/rdf_sync'
-
 class TriplestoreSyncController < ApplicationController
-  include Iqvoc::RDFSync::Helper
+  include RDFSyncService::Helper
 
   def index
     authorize! :use, :dashboard
@@ -42,7 +40,7 @@ class TriplestoreSyncController < ApplicationController
     end
 
     # per-class pagination
-    @candidates = Iqvoc::RDFSync.candidates.map do |records|
+    @candidates = RDFSyncService.candidates.map do |records|
       records.page(params[:page])
     end
   end

@@ -16,8 +16,6 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-require 'iqvoc/rdf_sync'
-
 class RDFSyncTest < ActiveSupport::TestCase
   setup do
     @rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
@@ -34,7 +32,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     @view_context = FakeViewContext.new
 
-    @sync = Iqvoc::RDFSync.new(@base_url, @target_host, username: @username,
+    @sync = RDFSyncService.new(@base_url, @target_host, username: @username,
         view_context: @view_context)
 
     @concepts = 1.upto(15).map do |i|
@@ -106,7 +104,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     concept_count = concepts.count
     batch_count = 3
 
-    sync = Iqvoc::RDFSync.new(@base_url, @target_host, username: @username,
+    sync = RDFSyncService.new(@base_url, @target_host, username: @username,
         batch_size: (concept_count / batch_count).ceil,
         view_context: @view_context)
 

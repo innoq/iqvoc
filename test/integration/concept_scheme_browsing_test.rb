@@ -50,9 +50,9 @@ class ConceptSchemeBrowsingTest < ActionDispatch::IntegrationTest
     assert !page.has_link?('Tree 2', href: 'http://www.example.com/en/concepts/foo_2.html')
 
     concept1 = Concept::SKOS::Base.new(origin: 'foo_1', top_term: false).publish.tap { |c| c.save }
-    Iqvoc::RDFAPI.devour concept1, 'skos:prefLabel', '"Tree 2"@en'
+    RDFAPI.devour concept1, 'skos:prefLabel', '"Tree 2"@en'
     concept2 = Concept::SKOS::Base.new(origin: 'foo_2', top_term: false).publish.tap { |c| c.save }
-    Iqvoc::RDFAPI.devour concept2, 'skos:prefLabel', '"Tree 2"@en'
+    RDFAPI.devour concept2, 'skos:prefLabel', '"Tree 2"@en'
 
     login 'administrator'
     visit edit_scheme_path(lang: :en, format: :html)

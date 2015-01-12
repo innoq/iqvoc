@@ -34,7 +34,16 @@ class Collection::Base < Concept::Base
 
   include_to_deep_cloning(:members, :collection_members)
 
-  after_save :regenerate_concept_members, :regenerate_collection_members
+  # ********** Hooks
+
+  after_initialize do |collection|
+    if collection.origin.blank?
+      collection.origin = Origin.new.to_s
+    end
+  end
+
+  after_save :regenerate_concept_members,
+             :regenerate_collection_members
 
   validate :circular_subcollections
 
@@ -90,7 +99,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_concept_origins=(origins)
     @member_concept_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+        split(InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_concept_origins
@@ -107,7 +116,7 @@ class Collection::Base < Concept::Base
 
   def inline_member_collection_origins=(origins)
     @member_collection_origins = origins.to_s.
-        split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip)
+        split(InlineDataHelper::SPLITTER).map(&:strip)
   end
 
   def inline_member_collection_origins

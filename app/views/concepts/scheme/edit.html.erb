@@ -17,7 +17,7 @@
   <fieldset>
     <legend><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></legend>
     <%= f.form_group :inline_top_concept_origins, :label => { :text => t('txt.common.type_to_search') } do %>
-      <%= text_field_tag "concept[inline_top_concept_origins]", @scheme.inline_top_concept_origins.join(Iqvoc::InlineDataHelper::JOINER),
+      <%= text_field_tag "concept[inline_top_concept_origins]", @scheme.inline_top_concept_origins.join(InlineDataHelper::JOINER),
       :class => "entity_select",
       :"data-query-url" => concepts_path(:format => :json),
       :"data-entity-uri" => concept_path(:id => "{id}"),

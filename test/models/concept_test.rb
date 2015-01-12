@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'iqvoc/rdfapi'
 
 class ConceptTest < ActiveSupport::TestCase
   test 'blank concept' do
@@ -42,7 +41,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concept with no preflabel' do
-    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
 
     assert concept.save
     refute concept.publishable?
@@ -52,15 +51,15 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concepts without pref_labels should be saveable but not publishable' do
-    concept =  Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    concept =  RDFAPI.devour 'bear', 'a', 'skos:Concept'
     assert_equal [], concept.pref_labels
     assert concept.valid?
     refute concept.publishable?
   end
 
   test 'published concept must have a pref_label of the first pref_label language configured (the main language)' do
-    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
-    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
+    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
 
     assert concept.save
 
@@ -74,13 +73,13 @@ class ConceptTest < ActiveSupport::TestCase
 
   test 'one pref label per language' do
     concept = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Bear"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Bear"@en'
       c.publish
       c.save
     end
 
     assert concept.valid?
-    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Beaaar"@en'
+    RDFAPI.devour concept, 'skos:prefLabel', '"Beaaar"@en'
     concept.pref_labelings.reload
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
@@ -88,23 +87,23 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'unique pref label' do
-    bear_one = Iqvoc::RDFAPI.devour 'bear_one', 'a', 'skos:Concept'
-    Iqvoc::RDFAPI.devour bear_one, 'skos:prefLabel', '"Bear"@en'
+    bear_one = RDFAPI.devour 'bear_one', 'a', 'skos:Concept'
+    RDFAPI.devour bear_one, 'skos:prefLabel', '"Bear"@en'
 
     assert bear_one.save
     assert bear_one.publishable?
 
-    bear_two = Iqvoc::RDFAPI.devour 'bear_two', 'a', 'skos:Concept'
-    Iqvoc::RDFAPI.devour bear_two, 'skos:prefLabel', '"Bear"@en'
+    bear_two = RDFAPI.devour 'bear_two', 'a', 'skos:Concept'
+    RDFAPI.devour bear_two, 'skos:prefLabel', '"Bear"@en'
 
     bear_two.save!
     refute bear_two.publishable?
   end
 
   test 'multiple pref labels' do
-    concept = Iqvoc::RDFAPI.devour 'bear', 'a', 'skos:Concept'
-    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
-    Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', '"Bär"@de'
+    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour concept, 'skos:prefLabel', '"Bär"@de'
 
     assert concept.save
     concept.reload

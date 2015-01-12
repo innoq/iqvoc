@@ -43,6 +43,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
   end
 
   test 'modify and persist configuration' do
+    visit root_url
     assert page.find('.navbar-brand').has_content? 'iQvoc'
 
     login 'administrator'

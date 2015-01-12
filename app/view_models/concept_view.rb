@@ -30,7 +30,7 @@ class ConceptView
   end
 
   def no_content?
-    definition.blank? || alt_labels.none? || related.none? || collections.none?
+    definition.blank? && alt_labels.none? && related.none? && collections.none?
   end
 
   # returns a string

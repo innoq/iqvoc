@@ -15,15 +15,9 @@
 # limitations under the License.
 
 require 'iqvoc'
-require 'iqvoc/origin'
-require 'iqvoc/inline_data_helper'
 require 'iqvoc/version'
-require 'iqvoc/deep_cloning'
-require 'iqvoc/rankable'
-require 'iqvoc/ability'
-require 'iqvoc/navigation'
 
-ActiveRecord::Base.send :include, Iqvoc::DeepCloning
+ActiveRecord::Base.send :include, DeepCloning
 
 ##### INSTANCE SETTINGS #####
 

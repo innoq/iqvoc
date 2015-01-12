@@ -18,14 +18,15 @@ class Note::SKOS::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
-      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name})."
+    # https://github.com/rails/rails/issues/16928
+    unless rdf_subject.class.reflections.include?(self.name.to_relation_name.to_s)
+      raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name.to_s})."
     end
 
-    target_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    target_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     case rdf_object
     when String # Literal
-      unless rdf_object =~ Iqvoc::RDFAPI::LITERAL_REGEXP
+      unless rdf_object =~ RDFAPI::LITERAL_REGEXP
         raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
@@ -50,9 +51,9 @@ class Note::SKOS::Base < Note::Base
     if annotations.any?
       subject.send(rdf_namespace).build_predicate(rdf_predicate) do |blank_node|
         blank_node.Rdfs::comment(value, lang: language || nil) if value
-        annotations.each do |annotation|
+        annotations.order(:namespace, :predicate).each do |annotation|
           if IqRdf::Namespace.find_namespace_class(annotation.namespace)
-            val = if annotation.value =~ Iqvoc::RDFAPI::URI_REGEXP
+            val = if annotation.value =~ RDFAPI::URI_REGEXP
               # Fall back to plain value literal if URI is not parseable
               URI.parse(annotation.value) rescue annotation.value
             else

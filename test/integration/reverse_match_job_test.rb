@@ -22,13 +22,13 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
 
   setup do
     @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
       c.publish
       c.save
     end
 
     @airsoft = Concept::SKOS::Base.new(origin: 'airsoft').tap do |c|
-      Iqvoc::RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
+      RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
     end
@@ -45,6 +45,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       .with(:headers => {'Accept' => 'application/json', 'User-Agent' => 'Faraday v0.9.0'})
       .to_return(status: 200, body: body, headers: {})
 
+    @worker = Delayed::Worker.new
     DatabaseCleaner.start
   end
 
@@ -61,8 +62,10 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
-    assert_equal 0, @airsoft.jobs.size
+    job = Delayed::Job.last
+    @worker.run(job)
+
+    assert_equal 0, @airsoft.job_relations.size
   end
 
   test 'job timeout' do
@@ -72,8 +75,10 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
-    assert_equal 1, @airsoft.jobs.size
+    job = Delayed::Job.last
+    @worker.run(job)
+
+    assert_equal 1, @airsoft.job_relations.size
 
     job_relation = @airsoft.job_relations.first
     assert_equal 'timeout_error', job_relation.response_error
@@ -86,8 +91,10 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
-    assert_equal 1, @airsoft.jobs.size
+    job = Delayed::Job.last
+    @worker.run(job)
+
+    assert_equal 1, @airsoft.job_relations.size
 
     job_relation = @airsoft.job_relations.first
     assert_equal 'resource_not_found', job_relation.response_error
@@ -102,8 +109,10 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = @reverse_match_service.build_job(:add_match, 'airsoft', 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
     @reverse_match_service.add(job)
 
-    Delayed::Worker.new.work_off
-    assert_equal 1, @airsoft.jobs.size
+    job = Delayed::Job.last
+    @worker.run(job)
+
+    assert_equal 1, @airsoft.job_relations.size
 
     job_relation = @airsoft.job_relations.first
     assert_equal 'unknown_match', job_relation.response_error

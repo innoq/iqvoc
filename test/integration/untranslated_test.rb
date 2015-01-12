@@ -25,7 +25,7 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
     ].each do |hsh|
       concept = Concept::SKOS::Base.new
       hsh.each do |lang, value|
-        Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', "\"#{value}\"@#{lang}"
+        RDFAPI.devour concept, 'skos:prefLabel', "\"#{value}\"@#{lang}"
       end
       concept.publish.save
     end

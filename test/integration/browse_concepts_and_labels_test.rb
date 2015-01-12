@@ -21,7 +21,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     @concepts = %w("Tree"@en "Forest"@en "Baum"@de "Forst"@de).map do |literal|
       concept = Concept::SKOS::Base.new.publish
       concept.save
-      Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', literal
+      RDFAPI.devour concept, 'skos:prefLabel', literal
       concept
     end
   end
@@ -60,7 +60,7 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
       concept = Concept::SKOS::Base.create! do |c|
         c.expired_at = 2.days.ago
       end
-      Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', literal
+      RDFAPI.devour concept, 'skos:prefLabel', literal
       concept
     end
 

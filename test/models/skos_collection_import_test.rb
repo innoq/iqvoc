@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'iqvoc/skos_importer'
 
 class SkosCollectionImportTest < ActiveSupport::TestCase
   setup do
@@ -55,7 +54,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
   test 'basic importer functionality' do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
+      SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
     concepts = {}
     ['cow', 'donkey', 'snake'].each do |origin|
@@ -80,7 +79,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
   test 'subcollections importer functionality' do
     assert_difference('Collection::Base.count', 2) do
-      Iqvoc::SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
+      SkosImporter.new(TEST_DATA, 'http://www.example.com/').run
     end
 
     collection_with_subcollections = Iqvoc::Collection.base_class.by_origin('land-animal').last
@@ -97,7 +96,7 @@ class SkosCollectionImportTest < ActiveSupport::TestCase
 
     assert_nothing_raised do
     assert_difference('Collection::Base.count', 1) do
-      Iqvoc::SkosImporter.new(test_data, 'http://www.example.com/').run
+      SkosImporter.new(test_data, 'http://www.example.com/').run
       end
     end
   end

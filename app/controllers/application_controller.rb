@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/controller_extensions'
-
 class ApplicationController < ActionController::Base
-  include Iqvoc::ControllerExtensions
+  include ControllerExtensions
 
   protect_from_forgery
 end

@@ -20,40 +20,40 @@ class InlineDataTest < ActiveSupport::TestCase
   test 'serialization' do
     values = ['foo', 'bar']
     assert_equal 'foo, bar',
-        Iqvoc::InlineDataHelper.generate_inline_values(values)
+        InlineDataHelper.generate_inline_values(values)
 
     values = ['lorem', 'foo, bar', 'ipsum']
     assert_equal 'lorem, "foo, bar", ipsum',
-        Iqvoc::InlineDataHelper.generate_inline_values(values)
+        InlineDataHelper.generate_inline_values(values)
   end
 
   test 'deserialization' do
     inline_values = 'foo, bar'
     assert_equal ['foo', 'bar'],
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+        InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem, "foo, bar", ipsum'
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+        InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem,"foo, bar",ipsum'
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+        InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'foo, bar,baz' # inconsistent whitespace
     assert_equal ['foo', 'bar', 'baz'],
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+        InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem,"foo, bar", ipsum' # inconsistent whitespace
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
-        Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+        InlineDataHelper.parse_inline_values(inline_values)
 
     inline_values = 'lorem, "foo, bar",ipsum' # inconsistent whitespace
     assert_raises(CSV::MalformedCSVError) do
-      Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+      InlineDataHelper.parse_inline_values(inline_values)
     end
 
     inline_values = ''
-    assert_equal [], Iqvoc::InlineDataHelper.parse_inline_values(inline_values)
+    assert_equal [], InlineDataHelper.parse_inline_values(inline_values)
   end
 end

@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'iqvoc/rdf_sync'
-
 class Concepts::VersionsController < ApplicationController
-  include Iqvoc::RDFSync::Helper
+  include RDFSyncService::Helper
 
   def merge
     concept_scope = Iqvoc::Concept.base_class.by_origin(params[:origin])
@@ -72,6 +70,14 @@ class Concepts::VersionsController < ApplicationController
     ActiveRecord::Base.transaction do
       new_version = current_concept.branch(current_user)
       new_version.save!
+      Iqvoc.change_note_class.create! do |note|
+        note.owner = new_version
+        note.language = I18n.locale.to_s
+        note.annotations_attributes = [
+          { namespace: 'dct', predicate: 'creator', value: current_user.name },
+          { namespace: 'dct', predicate: 'modified', value: DateTime.now.to_s }
+        ]
+      end
     end
     flash[:success] = t('txt.controllers.versioning.branched')
     redirect_to edit_concept_path(published: 0, id: new_version)

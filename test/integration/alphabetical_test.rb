@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'iqvoc/rdfapi'
 
 class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
   setup do
@@ -25,10 +24,10 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     ]
 
     data.each_with_index do |hsh, i|
-      concept = Iqvoc::RDFAPI.devour "concept_#{i}", 'a', 'skos:Concept'
+      concept = RDFAPI.devour "concept_#{i}", 'a', 'skos:Concept'
       labelings = []
       hsh.each do |lang, val|
-        Iqvoc::RDFAPI.devour concept, 'skos:prefLabel', "\"#{val}\"@#{lang}"
+        RDFAPI.devour concept, 'skos:prefLabel', "\"#{val}\"@#{lang}"
       end
       concept.publish.save
     end

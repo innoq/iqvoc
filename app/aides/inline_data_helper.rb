@@ -14,12 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'rails/performance_test_help'
+require 'csv'
 
-# Profiling results for each test method are written to tmp/performance.
-class BrowsingTest < ActionDispatch::PerformanceTest
-  def test_homepage
-    get '/'
+class InlineDataHelper
+  JOINER = ', '
+  SPLITTER = /[,\n] */
+
+  CSV_OPTIONS = {
+    col_sep: ', ',
+    quote_char: '"'
+  }
+
+  def self.parse_inline_values(inline_values)
+    options = CSV_OPTIONS.clone
+    options[:col_sep] = options[:col_sep].strip
+    begin
+      values = inline_values.parse_csv(options)
+    rescue CSV::MalformedCSVError => exc
+      values = inline_values.parse_csv(CSV_OPTIONS)
+    end
+    values ? values.map(&:strip) : []
+  end
+
+  def self.generate_inline_values(values)
+    values.to_csv(CSV_OPTIONS).strip
   end
 end

@@ -1,7 +1,5 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
-require 'iqvoc/rdfapi'
 
-RDFAPI = Iqvoc::RDFAPI
 class RDFAPITest < ActiveSupport::TestCase
   test 'should instantiate known class names using strings only' do
     result = RDFAPI.devour 'foobar', 'a', 'Concept::SKOS::Base'

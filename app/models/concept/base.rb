@@ -32,8 +32,15 @@ class Concept::Base < ActiveRecord::Base
   include Versioning
   include Concept::Validations
   include FirstLevelObjectValidations
+  include FirstLevelObjectScopes
 
   # ********** Hooks
+
+  after_initialize do |concept|
+    if concept.origin.blank?
+      concept.origin = Origin.new.to_s
+    end
+  end
 
   before_validation do |concept|
     # Handle save or destruction of inline relations (relations or labelings)
@@ -50,7 +57,7 @@ class Concept::Base < ActiveRecord::Base
         lang_values = { nil => lang_values.first } if lang_values.is_a?(Array) # For language = nil: <input name=bla[labeling_class][]> => Results in an Array! -- XXX: obsolete/dupe (cf `labelings_by_text=`)?
         lang_values.each do |lang, inline_values|
           lang = nil if lang.to_s == 'none'
-          Iqvoc::InlineDataHelper.parse_inline_values(inline_values).each do |value|
+          InlineDataHelper.parse_inline_values(inline_values).each do |value|
             value.squish!
             unless value.blank?
               self.send(relation_name).build(target: labeling_class.label_class.new(value: value, language: lang))
@@ -72,7 +79,7 @@ class Concept::Base < ActiveRecord::Base
     # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
-      new_origins = new_origins.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:squish)
+      new_origins = new_origins.split(InlineDataHelper::SPLITTER).map(&:squish)
 
       # Extract embedded ranks (if any) from origin strings (e.g. "origin1:100")
       # => { 'origin1' => nil, 'origin2' => 90 }
@@ -184,7 +191,7 @@ class Concept::Base < ActiveRecord::Base
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
       # When a Label has only one labeling (the "no skosxl" case) we'll have to
       # clone the label too.
-      if labeling_class_name.constantize.reflections[:target].options[:dependent] == :destroy
+      if labeling_class_name.constantize.reflections['target'].options[:dependent] == :destroy
         include_to_deep_cloning(labeling_class_name.to_relation_name => :target)
       else
         include_to_deep_cloning(labeling_class_name.to_relation_name)
@@ -199,13 +206,13 @@ class Concept::Base < ActiveRecord::Base
       class_name: match_class_name,
       foreign_key: 'concept_id'
 
-    # Serialized setters and getters (\r\n or , separated) -- TODO: use Iqvoc::InlineDataHelper?
+    # Serialized setters and getters (\r\n or , separated) -- TODO: use InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
-      self.send(match_class_name.to_relation_name).map(&:value).join(Iqvoc::InlineDataHelper::JOINER)
+      self.send(match_class_name.to_relation_name).map(&:value).join(InlineDataHelper::JOINER)
     end
 
     define_method("inline_#{match_class_name.to_relation_name}=".to_sym) do |value|
-      urls = value.split(Iqvoc::InlineDataHelper::SPLITTER).map(&:strip).reject(&:blank?)
+      urls = value.split(InlineDataHelper::SPLITTER).map(&:strip).reject(&:blank?)
       self.send(match_class_name.to_relation_name).each do |match|
         if (urls.include?(match.value))
           urls.delete(match.value) # We're done with that one
@@ -319,7 +326,7 @@ class Concept::Base < ActiveRecord::Base
   def labelings_by_text(relation_name, language)
     (@labelings_by_text && @labelings_by_text[relation_name] &&
         @labelings_by_text[relation_name][language]) ||
-        Iqvoc::InlineDataHelper.generate_inline_values(self.send(relation_name).
+        InlineDataHelper.generate_inline_values(self.send(relation_name).
             by_label_language(language).map { |l| l.target.value })
   end
 
@@ -330,7 +337,7 @@ class Concept::Base < ActiveRecord::Base
   def concept_relations_by_id(relation_name)
     (@concept_relations_by_id && @concept_relations_by_id[relation_name]) ||
       self.send(relation_name).map { |l| l.target.origin }.
-      join(Iqvoc::InlineDataHelper::JOINER)
+      join(InlineDataHelper::JOINER)
   end
 
   def concept_relations_by_id_and_rank(relation_name)

@@ -123,7 +123,7 @@ module Iqvoc
 
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
-        self.ability_class_name = 'Iqvoc::Ability'
+        self.ability_class_name = 'Ability'
 
         self.search_sections = [
           'klass',
@@ -158,7 +158,7 @@ module Iqvoc
         # ************** instance configuration **************
 
         def config(&block)
-          cfg = InstanceConfiguration.instance
+          cfg = Iqvoc::Configuration::InstanceConfiguration.instance
           if block
             block.call(cfg)
           else

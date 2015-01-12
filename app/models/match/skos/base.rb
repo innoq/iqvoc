@@ -18,11 +18,11 @@ class Match::SKOS::Base < Match::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
-    raise "#{self.class}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of match (#{self.name} => #{self.name.to_relation_name})." unless rdf_subject.class.reflections.include?(self.name.to_relation_name)
+    raise "#{self.class}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of match (#{self.name} => #{self.name.to_relation_name})." unless rdf_subject.class.reflections.include?(self.name.to_relation_name.to_s)
     raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right?
     uri = $1
 
-    match_class = Iqvoc::RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    match_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
     match_class.new(value: uri).tap do |match|
       rdf_subject.send(self.name.to_relation_name) << match
     end

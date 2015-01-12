@@ -15,7 +15,6 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test_helper')
-require 'iqvoc/rdfapi'
 
 class NoteAnnotationsTest < ActionDispatch::IntegrationTest
   test 'creating and retrieving change notes' do
@@ -54,14 +53,16 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         gsub(/^ *| *$/, ''). # ignore indentation
         gsub(/\d/, '#').     # neutralize timestamps
         gsub(/#\+#/, '#-#')  # neutralize eventually positive timezone shifts (server time)
+
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"lorem ipsum\"@en\n" +
-        ']')
+        ']'), "can't find changeNote 'lorem ipsum'"
+
     assert ttl.include?("skos:changeNote [\n" +
         "rdfs:comment \"dolor sit amet\"@en;\n" +
         "dct:creator \"Test User\";\n" +
         "dct:modified \"####-##-##T##:##:##-##:##\"\n" +
-        ']')
+        ']'), "can't find changeNote 'dolor sit amet'"
 
     visit xml_uri
     xml = page.source.
@@ -83,7 +84,7 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
   end
 
   test 'rdf for localized note annotations' do
-    rdfapi = Iqvoc::RDFAPI
+    rdfapi = RDFAPI
 
     concept = rdfapi.devour *%w(foobar a skos:Concept)
     concept.publish
@@ -97,14 +98,14 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     visit "/#{concept.origin}.ttl"
 
-    ttl = <<RDF
-    rdfs:seeAlso [
-    rdfs:comment "foo"@en;
-    dct:title "Foo Bar"@en;
-    foaf:page <http://google.de/>
+    expected_ttl = <<RDF
+rdfs:seeAlso [
+rdfs:comment "foo"@en;
+dct:title "Foo Bar"@en;
+foaf:page <http://google.de/>
 ].
 RDF
-
-    assert page.body.include?(ttl)
+    ttl = page.source.gsub(/^ *| *$/, '') # ignore indentation
+    assert ttl.include?(expected_ttl), "can't find changeNote 'Foo Bar'"
   end
 end

@@ -16,7 +16,7 @@ module Concept
     # top term and broader relations are mutually exclusive
     def exclusive_top_term
       if validatable_for_publishing?
-        if top_term && broader_relations.any?
+        if top_term? && broader_relations.any?
           errors.add :base, I18n.t('txt.models.concept.top_term_exclusive_error')
         end
       end

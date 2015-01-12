@@ -56,7 +56,7 @@ module ApplicationHelper
 
   def page_header(args = {})
     if title = args[:title]
-      content_for(:title, title)
+      content_for(:title, strip_tags(title))
     end
 
     content_for :page_header do
