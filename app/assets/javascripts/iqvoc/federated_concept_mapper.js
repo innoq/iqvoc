@@ -23,22 +23,21 @@ function FederatedConceptMapper(selector) {
   this.source = $("<select />").addClass("form-control").append(sources).
       insertBefore(this.input);
 
-  // FIXME: fix spinning loading indicator
-  this.indicator = $("<i />").addClass("fa fa-refresh fa-spin").
-    css("visibility", "hidden"); // TODO: use `.indicator[.active]` instead; cf. EntitySelector
-  this.indicatorWrapper.append(this.indicator);
+  this.indicator.append('<i class="fa fa-refresh fa-spin" />');
 
   var self = this;
   var input = this.input.find("input")
 
   IQVOC.autocomplete(input, $.proxy(this, "onChange"), {
-    noResultsMsg: this.root.data("no-results-msg")
+    noResultsMsg: this.root.data("no-results-msg"),
   });
 
 }
 FederatedConceptMapper.prototype = new baseClass();
 FederatedConceptMapper.prototype.onChange = function(query, callback) {
   var self = this;
+
+  self.indicator.addClass("active");
 
   $.ajax({
     type: "GET",
@@ -53,6 +52,9 @@ FederatedConceptMapper.prototype.onChange = function(query, callback) {
       var args = Array.prototype.slice.apply(arguments);
       args.push(callback);
       return self.onResults.apply(self, args);
+    },
+    complete: function() {
+      self.indicator.removeClass("active");
     }
   });
 };
