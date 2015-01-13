@@ -9,6 +9,7 @@ class Ability
 
     # static pages
     can :read, :help
+    can :read, :version
 
     if user # Every logged in user ...
       can :use, :dashboard
