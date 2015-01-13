@@ -1,3 +1,9 @@
+## [4.7.0]
+
+  * Added: Fira Sans as main UI font
+  * Added: Concept teasers in hierarchical view
+  * Bugfixes
+
 ## [4.6.1]
 
 We're planning to release 4.7.0 shortly after this patch release:
