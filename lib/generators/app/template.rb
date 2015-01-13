@@ -29,12 +29,22 @@ end
 EOF
 end
 
+create_file "lib/#{namespaced_app_name.to_s.underscore}/version.rb", <<-EOF
+module #{namespaced_app_name}
+  VERSION = '0.0.1'
+end
+EOF
+
 initializer 'iqvoc.rb', <<-EOF
+require '#{namespaced_app_name.to_s.underscore}/version'
+
 Iqvoc.config do |config|
   config.register_settings({
     "title" => "#{app_const_base.titleize}"
   })
 end
+
+Iqvoc.host_namespace = #{namespaced_app_name}
 
 # Iqvoc::Concept.base_class_name = "MyConceptClass"
 # Iqvoc::Concept.pref_labeling_class_name = "MyLabelingClass"
@@ -55,15 +65,13 @@ EOF
 create_file "app/assets/javascripts/#{app_path}/manifest.js"
 
 remove_file 'app/assets/stylesheets/application.css'
-create_file 'app/assets/stylesheets/manifest.css', <<-EOF
-/*
-*= require framework
-*= require iqvoc/manifest
+create_file 'app/assets/stylesheets/manifest.css.scss', <<-EOF
+@import 'framework';
+@import 'iqvoc/manifest';
+@import '#{app_path}/manifest';
 
-*= require #{app_path}/manifest
-*/
 EOF
-create_file "app/assets/stylesheets/#{app_path}/manifest.css"
+create_file "app/assets/stylesheets/#{app_path}/_manifest.scss"
 
 remove_file 'public/index.html'
 remove_file 'app/controllers/application_controller.rb'
