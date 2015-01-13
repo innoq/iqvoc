@@ -1,6 +1,5 @@
 //= require jquery-1.7.1
 //= require rails
-//= require jquery-ui
 //= require pickadate/picker
 //= require pickadate/picker.date
 //= require tree.jquery.js
