@@ -20,7 +20,8 @@ module Iqvoc
           :search_sections,
           :export_path,
           :upload_path,
-          :truncation_blacklist
+          :truncation_blacklist,
+          :host_namespace
 
         self.localized_routes = [] # routing extensibility hook
 
@@ -93,6 +94,9 @@ module Iqvoc
           }, {
             text: proc { t('txt.views.navigation.about') },
             href: 'http://iqvoc.net/'
+          }, {
+            text: proc { t('txt.views.navigation.version') },
+            href: proc { version_path }
           }]
         }]
 
@@ -203,8 +207,12 @@ module Iqvoc
           self.config.register_setting('title', value)
         end
 
+        def engine?
+          Iqvoc.const_defined?(:Engine)
+        end
+
         def root
-          if Iqvoc.const_defined?(:Engine)
+          if engine?
             Iqvoc::Engine.root
           else
             Rails.root
@@ -215,6 +223,12 @@ module Iqvoc
           lambda do |params, req|
             langs = Iqvoc::Concept.pref_labeling_languages.join('|').presence || 'en'
             return params[:lang].to_s =~ /^#{langs}$/
+          end
+        end
+
+        def host_version
+          if Iqvoc.host_namespace
+            Iqvoc.host_namespace::VERSION
           end
         end
       end

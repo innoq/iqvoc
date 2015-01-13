@@ -1,0 +1,7 @@
+.picker--opened .picker__holder {
+  @include flat-box-shadow();
+}
+
+.picker__holder {
+  border-radius: 0;
+}

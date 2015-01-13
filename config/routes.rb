@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     get 'search' => 'search_results#index', as: 'search'
 
     get 'help' => 'pages#help', as: 'help'
+    get 'version' => 'pages#version', as: 'version'
     get 'components' => 'pages#components', as: 'components'
 
     get '/' => 'frontpage#index'
