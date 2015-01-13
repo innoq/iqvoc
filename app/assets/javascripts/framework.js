@@ -1,7 +1,8 @@
 //= require jquery-1.7.1
 //= require rails
 //= require jquery-ui
-//= require jquery-ui.datepicker-de
+//= require pickadate/picker
+//= require pickadate/picker.date
 //= require tree.jquery.js
 //= require URI.js
 //= require storage
