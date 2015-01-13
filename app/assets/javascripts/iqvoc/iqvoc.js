@@ -67,8 +67,6 @@ return {
 jQuery(document).ready(function($) {
   "use strict";
 
-  IQVOC.quicksearch(".quicksearch");
-
   var locale = document.documentElement.getAttribute("lang");
 
   // language selection
