@@ -1,3 +1,13 @@
+## [4.8.0]
+
+  * Added: Rails 4.2
+  * Added: Foreign key constraints
+  * Changed: `Iqvoc::Origin` is now `Origin` and generates a random value,
+    filter support has been dropped
+  * Changed: Reorganized internal library code under ./app, now gets autoloaded
+  * Improved: Support for PostgreSQL
+  * Fixed: [App template](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine#starting-a-new-app) for engine usage
+
 ## [4.7.0]
 
   * Added: Fira Sans as main UI font
