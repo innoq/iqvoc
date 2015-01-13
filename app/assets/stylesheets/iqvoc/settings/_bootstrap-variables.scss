@@ -270,12 +270,12 @@ $headings-font-family:    'Fira Sans ExtraLight', Helvetica, Arial, sans-serif;
 //
 // Note: These variables are not generated into the Customizer.
 
-// $zindex-navbar:            1000
-// $zindex-dropdown:          1000
-// $zindex-popover:           1060
-// $zindex-tooltip:           1070
-// $zindex-navbar-fixed:      1030
-// $zindex-modal:             1040
+$zindex-navbar:            10000;
+$zindex-dropdown:          10000;
+$zindex-popover:           10600;
+$zindex-tooltip:           10700;
+$zindex-navbar-fixed:      10300;
+$zindex-modal:             10400;
 
 
 //== Media queries breakpoints
