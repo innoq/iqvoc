@@ -4,8 +4,6 @@
 @import 'iqvoc/settings/variables';
 @import 'iqvoc/settings/bootstrap';
 
-@import 'iqvoc/hacks/jquery-ui_extensions';
-
 @import 'iqvoc/components/treeview';
 @import 'iqvoc/components/components';
 @import 'iqvoc/components/panels';
@@ -15,6 +13,7 @@
 @import 'iqvoc/components/entity_select';
 @import 'iqvoc/components/modals';
 @import 'iqvoc/components/label-list';
+@import 'iqvoc/components/typeahead';
 @import 'iqvoc/components/datepicker';
 
 @import 'iqvoc/hacks/hacks';

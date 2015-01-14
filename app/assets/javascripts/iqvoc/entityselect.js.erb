@@ -18,34 +18,16 @@ var EntitySelector = function(node) {
   this.entities = this.getSelection();
   this.uriTemplate = this.el.data("entity-uri");
 
-  var self = this;
-  var noResultsMsg = this.el.data("no-results-msg");
-
   var selection = this.el.data("entities") || [];
+  var self = this;
   selection = $.map(selection, function(entity, i) {
     return self.createEntity(entity);
   });
   selection = $('<ul class="entity_list" />').append(selection);
 
-  this.input = $('<input type="text" class="form-control" />').autocomplete({
-    minLength: 3,
-    source: $.proxy(this, "onInput"), // XXX: discards original `this` context
-    search: function(ev, ui) { self.indicator.addClass("active"); },
-    focus: function(ev, ui) { return false; },
-    select: this.onSelect,
-    response: function(ev, ui) {
-      if(!ui.content.length && noResultsMsg) {
-        ui.content.push({ label: noResultsMsg, value: "" });
-      }
-    }
-  }).on("keydown", function(ev) {
-    if(ev.which === 13) { // Enter; prevent form submission
-      ev.preventDefault();
-    }
-  });
-
+  var input = $('<input type="text" class="form-control" />');
   this.inputGroup = $('<div class="input-group" />').
-    append(this.input, this.indicator);
+    append(input, this.indicator);
   this.container.append(this.inputGroup, selection).
     insertAfter(node).prepend(node);
 
@@ -55,6 +37,12 @@ var EntitySelector = function(node) {
     $('<span class="input-group-addon" />').append(lang).
       prependTo(this.inputGroup);
   }
+
+  IQVOC.autocomplete(input, $.proxy(this, "onInput"), {
+    noResultsMsg: this.el.data("no-results-msg"),
+    onSelect: this.onSelect,
+    displayKey: "label"
+  });
 
   if(this.singular && this.entities.length) {
     this.inputGroup.hide();
@@ -79,27 +67,28 @@ EntitySelector.sourceSelectors = {
   }
 };
 $.extend(EntitySelector.prototype, {
-  onInput: function(req, callback) {
-    var self = this;
+  onInput: function(query, callback) {
+    this.indicator.addClass("active");
 
+    var self = this;
     var responder = function(data, status, xhr) { // TODO: rename, move elsewhere
       data = self.processResponse(data);
-      self.input.autocomplete("option", "autoFocus", data.length === 1);
       callback(data);
       self.indicator.removeClass("active");
     };
 
     var sourceSelector = this.el.data("source-selector") || "default";
     EntitySelector.sourceSelectors[sourceSelector].call(this, function(uri) { // XXX: direct `EntitySelector` reference limits subclassing
-      $.getJSON(uri, { query: req.term }, responder); // TODO: error handling
+      $.getJSON(uri, { query: query }, responder); // TODO: error handling
     });
   },
-  onSelect: function(ev, ui) {
-    var el = $(this).val(""),
-      widget = el.closest(".entity_select").data("widget");
-    if(widget.add(ui.item.value)) {
+  onSelect: function(ev, item) {
+    var el = $(this).val("")
+    var widget = el.closest(".entity_select").data("widget");
+
+    if(widget.add(item.value)) {
       var entity = widget.
-          createEntity({ id: ui.item.value, name: ui.item.label });
+          createEntity({ id: item.value, name: item.label });
       var list = widget.container.find("ul").append(entity);
       // force redraw to work around Safari rendering bug -- FIXME: crude and uninformed
       list.css("overflow", "auto");

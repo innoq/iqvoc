@@ -1,5 +1,4 @@
 //= require iqvoc/iqvoc
-//= require iqvoc/quicksearch
 //= require iqvoc/onebox
 //= require iqvoc/langselect
 //= require iqvoc/entityselect
@@ -9,3 +8,4 @@
 //= require iqvoc/concept_mapping_manager
 //= require iqvoc/label_resolver
 //= require iqvoc/treeview
+//= require iqvoc/autocomplete

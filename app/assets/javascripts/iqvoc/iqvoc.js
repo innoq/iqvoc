@@ -67,8 +67,6 @@ return {
 jQuery(document).ready(function($) {
   "use strict";
 
-  IQVOC.quicksearch(".quicksearch");
-
   var locale = document.documentElement.getAttribute("lang");
 
   // language selection
@@ -151,16 +149,14 @@ jQuery(document).ready(function($) {
 
   // Datepicker
   if (locale === "de") {
-    jQuery.extend( jQuery.fn.pickadate.defaults, {
+    $.extend( $.fn.pickadate.defaults, {
       monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
       monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
       weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
       weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
       today: 'Heute',
       clear: 'Löschen',
-      firstDay: 1,
-      format: 'dddd, dd. mmmm yyyy',
-      formatSubmit: 'yyyy/mm/dd'
+      firstDay: 1
     });
   }
   $("input.datepicker").pickadate({
