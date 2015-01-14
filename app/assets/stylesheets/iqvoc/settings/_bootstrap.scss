@@ -62,3 +62,8 @@ form#search {
   @include flat-box-shadow();
   border-radius: 0;
 }
+
+label, th {
+  font-family: 'Fira Sans Medium';
+  font-weight: 700;
+}
