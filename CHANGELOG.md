@@ -1,3 +1,8 @@
+## [4.8.1]
+
+  * Changed: New, responsive datepicker
+  * Fixed: Several UI glitches
+
 ## [4.8.0]
 
   * Added: Rails 4.2
