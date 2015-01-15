@@ -57,7 +57,7 @@ class Labeling::SKOS::Base < Labeling::Base
       collection = Collection::Unordered.where(:origin => params[:collection_origin]).last
       if collection
         # scope = scope.includes(:owner => :collection_members)
-        scope = scope.joins("LEFT OUTER JOIN `collection_members` ON `collection_members`.`target_id` = `concepts`.`id`")
+        scope = scope.joins("LEFT OUTER JOIN collection_members ON collection_members.target_id = concepts.id")
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection)
       else
         raise "Collection with Origin #{params[:collection_origin]} not found!"
