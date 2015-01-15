@@ -1,7 +1,7 @@
 <% if @datasets.any? %>
   <div class="form-group">
     <%= label_tag 'ds', t('txt.views.search_results.datasets'), :class => 'col-sm-2 control-label' %>
-    <div class="col-sm-4">
+    <div class="checkbox-controls col-sm-4">
       <% @datasets.each do |dataset| %>
         <label class="checkbox-inline">
           <%= check_box_tag "ds[]", dataset.name, search_dataset_selected?(dataset.name) %><%= dataset.name %>
