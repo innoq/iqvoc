@@ -69,7 +69,7 @@ class Labeling::SKOS::Base < Labeling::Base
     when "concept"
       scope.where("concepts.type" => Iqvoc::Concept.base_class_name).merge(Concept::Base.published)
     when "collection"
-      scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
+      scope = scope.where("concepts.type" => Iqvoc::Collection.base_class_name)
       if collection
         scope = scope.where("`collection_members`.`type` = 'Collection::Member::Collection'")
       end
