@@ -43,10 +43,10 @@ dl.note_annotations {
   margin: 0;
   width: 100%;
   dt {
+    @extend %font-bold;
     width: 120px;
     clear: left;
     float: left;
-    font-weight: bold;
     margin-top: 0;
   }
   dd {

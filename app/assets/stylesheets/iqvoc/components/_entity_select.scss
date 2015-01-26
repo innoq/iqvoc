@@ -10,8 +10,8 @@
     width: auto;
   }
   a.remove_entity {
+    @extend %font-bold;
     margin-left: 5px;
-    font-weight: bold;
     color: #A6B3CF;
     cursor: pointer;
   }

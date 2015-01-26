@@ -1,7 +1,11 @@
-@mixin interaction-font {
+%font-interaction {
   font-family: 'Fira Sans Light SC';
   text-transform: lowercase;
-  // font-size: $font-size-small;
+}
+
+%font-bold {
+  font-family: 'Fira Sans Bold';
+  font-weight: 700;
 }
 
 @mixin transitional($property: all, $duration: .25s) {

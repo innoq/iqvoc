@@ -13,27 +13,27 @@ form#search {
 }
 
 .navbar-default .navbar-nav > li > a {
-  @include interaction-font();
+  @extend %font-interaction;
   @include transitional(color);
 }
 
 .btn {
-  @include interaction-font();
+  @extend %font-interaction;
   @include transitional();
 }
 
 .dropdown-menu > li > a {
-  @include interaction-font();
+  @extend %font-interaction;
   @include transitional(background-color);
 }
 
 .list-group-item {
-  @include interaction-font();
+  @extend %font-interaction;
   @include transitional(background-color);
 }
 
 .nav-tabs li > a {
-  @include interaction-font();
+  @extend %font-interaction;
   @include transitional(all);
 }
 
@@ -64,6 +64,5 @@ form#search {
 }
 
 label, th {
-  font-family: 'Fira Sans Bold';
-  font-weight: 700;
+  @extend %font-bold;
 }

@@ -80,7 +80,6 @@ tr.highlightable {
   li {
     a {
       color: #bfbfbf;
-      font-weight: bold;
     }
     border-radius: 4px;
     display: inline-block;
@@ -121,7 +120,7 @@ tr.highlightable {
       margin: 0;
     }
     .concept-item-link {
-      font-weight: bold;
+      @extend %font-bold;
     }
     .concept-item-uri {
       color: green;
@@ -166,7 +165,7 @@ tr.highlightable {
 .search-result {
   margin-top: 10px;
   a {
-    font-weight: bold;
+    @extend %font-bold;
   }
 }
 
@@ -177,7 +176,6 @@ tr.highlightable {
 .search-result-key {
   float: left;
   margin-right: 5px;
-  // font-weight: normal;
   &:after {
     content: ':';
   }
