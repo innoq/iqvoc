@@ -1,6 +1,6 @@
 <%= page_header :title => 'Dashboard' %>
 
-<table class="table">
+<table class="table dashboard-table">
   <thead>
     <tr>
       <th><%= t("txt.views.dashboard.type") %><%= sorting_controls_for(:class) %></th>
@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     <% @items.each do |item| -%>
-      <tr class="highlightable" data-url="<%= link_to_dashboard_item(item) %>">
+      <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
         <td><%= item.class.model_name.human %></td>
         <td>
           <%= render item.class.edit_link_partial_name, :item => item %>
@@ -26,7 +26,7 @@
         <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <td><%= l(item.follow_up) if item.follow_up.present? %></td>
         <td><%= l(item.updated_at, :format => :short) %></td>
-        <td><span class="label"><%= item.state %></span></td>
+        <td><span class="label label-default dashboard-table-item-state"><%= item.state %></span></td>
         <td>
         <%- if params[:check_consistency] == "1" -%>
           <%= consistency_status(item) %>
