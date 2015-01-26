@@ -17,8 +17,11 @@
     <%= button_to t("txt.views.versioning.publishing"),
       concept_versions_merge_path(:origin => @concept.origin), :class => 'btn btn-primary' %>
   <% end %>
+
+  <% if can?(:check_consistency, @concept) %>
   <%= button_to t("txt.views.versioning.consistency_check"),
     concept_versions_consistency_check_path(:origin => @concept.origin), :class => 'btn btn-default', :method => :get %>
+  <% end %>
 
   <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
     <%= button_to t("txt.common.to_review"),
