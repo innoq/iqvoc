@@ -15,6 +15,10 @@ class Ability
       can :use, :dashboard
       can :destroy, UserSession
 
+      if user.owns_role?(:reader)
+        can :read, [::Concept::Base, ::Collection::Base, ::Label::Base]
+      end
+
       if user.owns_role?(:editor) || user.owns_role?(:publisher) || user.owns_role?(:administrator) # Editors and above ...
         can :read, [::Concept::Base, ::Collection::Base, ::Label::Base]
         can :create, [::Concept::Base, ::Collection::Base, ::Label::Base]
