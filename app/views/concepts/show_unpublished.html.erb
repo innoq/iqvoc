@@ -13,7 +13,7 @@
 <% end %>
 
 <div class="editing_versioning_toolbar well">
-  <% if (not @concept.locked?) || @concept.locked_by == @current_user.id %>
+  <% if can?(:merge, @concept) %>
     <%= button_to t("txt.views.versioning.publishing"),
       concept_versions_merge_path(:origin => @concept.origin), :class => 'btn btn-primary' %>
   <% end %>
@@ -23,25 +23,25 @@
     concept_versions_consistency_check_path(:origin => @concept.origin), :class => 'btn btn-default', :method => :get %>
   <% end %>
 
-  <% if (not @concept.in_review?) && @concept.locked_by == @current_user.id %>
+  <% if can?(:send_to_review, @concept) %>
     <%= button_to t("txt.common.to_review"),
       concept_versions_to_review_path(:origin => @concept.origin), :class => 'btn btn-default' %>
   <% end %>
 
-  <% unless @concept.locked? %>
-    <%= button_to t("txt.views.versioning.to_edit_mode"),
-      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' %>
-    <%= button_to t("txt.views.versioning.delete"),
-      concept_path(:published => 0, :id => @concept.origin),
-      :method => :delete,
-      :class => 'btn btn-danger',
-      :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @concept) %>
-  <% else %>
+  <% if @concept.locked? %>
     <%= button_to t("txt.views.versioning.unlock"),
       concept_versions_unlock_path(:origin => @concept.origin), :class => 'btn btn-default' if can?(:unlock, @concept) %>
     <%= link_to t("txt.views.versioning.edit_mode"),
       edit_concept_path(:published => 0, :id => @concept.origin),
       :class => 'btn btn-default' if can?(:update, @concept) %>
+  <% else %>
+    <%= button_to t("txt.views.versioning.to_edit_mode"),
+      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' if can?(:lock, @concept) %>
+    <%= button_to t("txt.views.versioning.delete"),
+      concept_path(:published => 0, :id => @concept.origin),
+        :method => :delete,
+        :class => 'btn btn-danger',
+        :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @concept) %>
   <% end %>
 </div>
 

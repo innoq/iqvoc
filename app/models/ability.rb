@@ -24,7 +24,10 @@ class Ability
         can :create, [::Concept::Base, ::Collection::Base, ::Label::Base]
         can [:update, :destroy, :unlock], [::Concept::Base, ::Collection::Base, ::Label::Base], locked_by: user.id, published_at: nil
         can :lock, [::Concept::Base, ::Collection::Base, ::Label::Base], locked_by: nil, published_at: nil
-        can [:check_consistency, :send_to_review], [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
+        can :check_consistency, [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
+        can :send_to_review, [::Concept::Base, ::Collection::Base, ::Label::Base] do |object|
+          !object.in_review? && object.locked_by == user.id
+        end
         can :branch, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
       end
 
@@ -37,7 +40,9 @@ class Ability
       end
 
       if user.owns_role?(:publisher) || user.owns_role?(:administrator) # Publishers and above ...
-        can :merge, [::Concept::Base, ::Collection::Base, ::Label::Base], published_at: nil
+        can :merge, [::Concept::Base, ::Collection::Base, ::Label::Base] do |object|
+          !object.published? && (!object.locked? || object.locked_by == user.id)
+        end
       end
 
       if user.owns_role?(:administrator)
