@@ -31,8 +31,8 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
   test 'sign out' do
     login
     visit dashboard_path(lang: :de)
-    assert page.has_link?('Abmelden')
-    click_link_or_button 'Abmelden'
+    assert page.has_link?(user.name)
+    click_link_or_button user.name
     assert page.has_content?('Abmeldung erfolgreich')
   end
 end

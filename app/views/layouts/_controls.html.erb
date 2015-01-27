@@ -33,7 +33,7 @@
 
 <li>
   <% if current_user %>
-    <%= link_to user_session_path, method: :delete, data: { confirm: t('txt.common.confirm_sign_out') } do %>
+    <%= link_to user_session_path, method: :delete, class: 'logout', data: { confirm: t('txt.common.confirm_sign_out') } do %>
       <i class="fa fa-sign-out"></i> <%= current_user.name %>
     <% end %>
   <% else %>
