@@ -69,7 +69,7 @@ en:
      inconsistent: "inconsistent"
      state:
        published: "Published"
-       in_review: "In review"
+       in_review: "For review"
        checked_out: "Checked out"
      of: of
      pending: "Loading…"
