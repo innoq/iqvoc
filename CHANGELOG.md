@@ -1,3 +1,12 @@
+## [4.8.2]
+
+  * Changed: We're now using [bower](http://bower.io/) for managaging third
+    party frontend dependencies
+  * Changed: Sign-out link now shows the current user's name
+  * Fixed: Status labels in dashboard
+  * Fixed: Several permission checks
+  * Fixed: UI glitches
+
 ## [4.8.1]
 
   * Changed: New, responsive datepicker
