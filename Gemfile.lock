@@ -61,8 +61,6 @@ GEM
     awesome_print (1.2.0)
     binding_of_caller (0.7.3.pre1)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.3.1.0)
-      sass (~> 3.2)
     bootstrap_form (2.2.0)
     builder (3.2.2)
     byebug (1.8.2)
@@ -203,8 +201,6 @@ GEM
     pry-remote (0.1.8)
       pry (~> 0.9)
       slop (~> 3.0)
-    quiet_assets (1.1.0)
-      railties (>= 3.1, < 5.0)
     rack (1.6.0)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -365,7 +361,6 @@ DEPENDENCIES
   autoprefixer-rails
   awesome_print
   binding_of_caller (= 0.7.3.pre1)
-  bootstrap-sass (~> 3.3.1.0)
   bootstrap_form (~> 2.2.0)
   cancancan
   cane
@@ -391,7 +386,6 @@ DEPENDENCIES
   pry-byebug (~> 1.1.2)
   pry-rails
   pry-remote
-  quiet_assets
   rails (~> 4.2.0)
   rails_12factor
   rails_autolink
