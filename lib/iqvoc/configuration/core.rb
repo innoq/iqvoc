@@ -28,11 +28,8 @@ module Iqvoc
         self.core_assets = %w(
           manifest.css
           manifest.js
-          bootstrap/bootstrap.css
-          bootstrap/bootstrap-responsive.css
           iqvoc/ie_fixes.css
-          bootstrap/bootstrap.js
-          html5.js
+          html5shiv/dist/html5shiv.js
           *.png
           *.jpg
           *.jpeg

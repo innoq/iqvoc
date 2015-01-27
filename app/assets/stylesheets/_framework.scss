@@ -1,8 +1,8 @@
 @import 'iqvoc/settings/bootstrap-variables';
 
-@import 'bootstrap-sprockets';
-@import 'bootstrap';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap-sprockets';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap';
 
 @import 'font-awesome';
-@import 'pickadate/classic';
-@import 'pickadate/classic.date';
+@import 'pickadate/lib/themes/classic';
+@import 'pickadate/lib/themes/classic.date';

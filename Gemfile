@@ -34,9 +34,8 @@ gem 'nokogiri', '~> 1.6.0'
 gem 'linkeddata'
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
-gem 'bootstrap-sass', '~> 3.3.1.0'
 gem 'bootstrap_form', '~> 2.2.0'
-gem 'font-awesome-rails', '~> 4.2.0'
+gem 'font-awesome-rails', '~> 4.3.0'
 gem 'apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
@@ -46,7 +45,6 @@ gem 'autoprefixer-rails'
 
 group :development do
   gem 'view_marker'
-  gem 'quiet_assets'
 end
 
 group :development, :test do

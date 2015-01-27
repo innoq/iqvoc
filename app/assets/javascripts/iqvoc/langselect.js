@@ -13,7 +13,7 @@ var LanguageSelector = function(container, namespace) {
 	this.namespace = namespace;
 	this.langs = getSelection(namespace);
 	this.checkboxes = $("input:checkbox", container)
-		.live("change", this.onChange);
+		.on("change", this.onChange);
 
 	$(container).addClass("widget").data("widget", this);
 	this.init();

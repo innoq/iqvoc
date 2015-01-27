@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
     el.append(label);
     return label[0];
   });
-  $("input:radio", langWidget).live("change", function(ev) {
+  $("input:radio", langWidget).on("change", function(ev) {
     window.location = $(this).closest("label").find("a").attr("href");
   });
   // secondary language
