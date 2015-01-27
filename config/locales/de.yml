@@ -83,6 +83,7 @@ de:
        ttl: "RDF/Turtle"
        nt: "RDF/N-Triples"
        xml: "RDF/XML"
+     confirm_sign_out: "Sind Sie sicher, dass Sie sich abmelden wollen?"
 
    views:
      layouts:

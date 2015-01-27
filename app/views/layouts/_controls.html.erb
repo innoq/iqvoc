@@ -33,7 +33,9 @@
 
 <li>
   <% if current_user %>
-    <%= link_to t("txt.views.layouts.application.logout"), user_session_path, :method => :delete %>
+    <%= link_to user_session_path, method: :delete, data: { confirm: t('txt.common.confirm_sign_out') } do %>
+      <i class="fa fa-sign-out"></i> <%= current_user.name %>
+    <% end %>
   <% else %>
     <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
   <% end %>

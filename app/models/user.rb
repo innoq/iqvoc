@@ -3,4 +3,8 @@ class User < AbstractUser
 
   validates_inclusion_of :role, in: ROLES
   validates_length_of :forename, :surname, within: 2..255
+
+  def name
+    "#{forename} #{surname}"
+  end
 end
