@@ -133,6 +133,8 @@ class ConceptsController < ApplicationController
     # TODO: add reverse match service
     @datasets = datasets_as_json
 
+    @concept.lock_by_user(current_user.id)
+
     if @concept.save
       flash[:success] = I18n.t('txt.controllers.versioned_concept.success')
       redirect_to concept_path(published: 0, id: @concept.origin)

@@ -39,7 +39,7 @@ class ConceptBrowsingTest < ActionDispatch::IntegrationTest
     assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
     assert page.has_css?('#concept_relation_skos_relateds a', count: 2)
 
-    click_link_or_button I18n.t('txt.views.versioning.to_edit_mode')
+    click_link_or_button I18n.t('txt.views.versioning.edit_mode')
     fill_in 'concept_relation_skos_relateds', with: ''
     click_button 'Save'
 
