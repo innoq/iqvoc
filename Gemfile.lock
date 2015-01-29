@@ -308,7 +308,6 @@ GEM
       rdf (~> 1.1)
     spoon (0.0.4)
       ffi
-    spring (1.2.0)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -391,7 +390,6 @@ DEPENDENCIES
   rails_autolink
   sass-rails (~> 5.0.0)
   simplecov
-  spring
   sqlite3
   uglifier
   view_marker

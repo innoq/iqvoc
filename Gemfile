@@ -60,7 +60,6 @@ group :development, :test do
     gem 'mysql2', '~> 0.3.13'
     gem 'sqlite3'
     gem 'pg'
-    gem 'spring'
     gem 'hirb-unicode'
     gem 'cane'
   end
