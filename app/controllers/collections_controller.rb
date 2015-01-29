@@ -91,6 +91,8 @@ class CollectionsController < ApplicationController
 
     @collection = Iqvoc::Collection.base_class.new(concept_params)
 
+    @collection.lock_by_user(current_user.id)
+
     if @collection.save
       flash[:success] = I18n.t('txt.controllers.collections.save.success')
       redirect_to collection_path(published: 0, id: @collection.origin)
