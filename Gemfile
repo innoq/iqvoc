@@ -43,6 +43,12 @@ gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
 gem 'autoprefixer-rails'
 
+# database adapters
+# comment out those you do don't need or use a different Gemfile
+gem 'mysql2', '~> 0.3.13'
+gem 'sqlite3'
+gem 'pg'
+
 group :development do
   gem 'view_marker'
 end
@@ -57,9 +63,6 @@ group :development, :test do
   gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
 
   platforms :ruby do
-    gem 'mysql2', '~> 0.3.13'
-    gem 'sqlite3'
-    gem 'pg'
     gem 'hirb-unicode'
     gem 'cane'
   end
@@ -83,5 +86,4 @@ end
 
 group :heroku do
   gem 'rails_12factor'
-  gem 'pg'
 end
