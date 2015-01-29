@@ -84,4 +84,5 @@ end
 
 group :heroku do
   gem 'rails_12factor'
+  gem 'pg'
 end
