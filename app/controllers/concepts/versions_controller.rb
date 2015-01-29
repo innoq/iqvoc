@@ -146,8 +146,11 @@ class Concepts::VersionsController < ApplicationController
         last!
 
     authorize! :send_to_review, concept
-
     concept.to_review
+
+    authorize! :unlock, concept
+    concept.unlock
+
     concept.save!
     flash[:success] = t('txt.controllers.versioning.to_review_success')
     redirect_to concept_path(published: 0, id: concept)
