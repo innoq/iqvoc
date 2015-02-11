@@ -66,6 +66,7 @@ create_file "app/assets/javascripts/#{app_path}/manifest.js"
 
 remove_file 'app/assets/stylesheets/application.css'
 create_file 'app/assets/stylesheets/manifest.css.scss', <<-EOF
+@import 'iqvoc/settings/bootstrap-variables';
 @import 'framework';
 @import 'iqvoc/manifest';
 @import '#{app_path}/manifest';
