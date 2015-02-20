@@ -217,7 +217,7 @@ de:
        language: "Sprache"
        all: "alle"
        none: "keine"
-       for: "Nach"
+       for: "In"
        mode: "Modus"
        datasets: "Externe Quellen"
      user_sessions:

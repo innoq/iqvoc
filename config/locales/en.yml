@@ -225,7 +225,7 @@ en:
        language: "language"
        all: "all"
        none: "none"
-       for: "For"
+       for: "In"
        mode: "Mode"
        datasets: "External sources"
      user_sessions:
