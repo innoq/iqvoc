@@ -20,7 +20,7 @@ class ConceptMovementTest < ActionController::TestCase
   require 'authlogic/test_case'
 
   setup do
-    @controller = ConceptsController.new
+    @controller = ConceptsMovementController.new
 
     activate_authlogic
 
