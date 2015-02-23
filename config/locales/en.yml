@@ -197,6 +197,7 @@ en:
        collections: "Collections"
        login: "Login"
        sections: "Sections"
+       unrelated_concepts: "Unrelated concepts"
        quick_search: "Quick search"
        help: "Help"
      frontpage:

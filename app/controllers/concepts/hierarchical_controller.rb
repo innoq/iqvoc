@@ -25,6 +25,9 @@ class Concepts::HierarchicalController < ConceptsController
     scope = Iqvoc::Concept.base_class
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
+    # unrelated concepts for sidebar
+    @unrelated_concepts = scope.unrelated
+
     # only select unexpired concepts
     scope = scope.not_expired
 

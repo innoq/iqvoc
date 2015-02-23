@@ -293,6 +293,12 @@ class Concept::Base < ActiveRecord::Base
     unpublished_or_follow_up.includes(:pref_labels, :locking_user)
   end
 
+  def self.unrelated
+    includes(:broader_relations).where(
+      concept_relations: {owner_id: nil},
+      top_term: false
+    )
+  end
   # ********** Class methods
 
   def self.inline_partial_name

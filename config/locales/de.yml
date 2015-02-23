@@ -189,6 +189,7 @@ de:
        collections: "Kollektionen"
        login: "Login"
        sections: "Bereiche"
+       unrelated_concepts: "Beziehungslose Konzepte"
        quick_search: "Schnellsuche"
        help: "Hilfe"
      frontpage:
