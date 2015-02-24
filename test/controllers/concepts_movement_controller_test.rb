@@ -16,12 +16,10 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class ConceptMovementTest < ActionController::TestCase
+class ConceptsMovementControllerTest < ActionController::TestCase
   require 'authlogic/test_case'
 
   setup do
-    @controller = ConceptsMovementController.new
-
     activate_authlogic
 
     @admin = User.create! do |u|
@@ -79,6 +77,7 @@ class ConceptMovementTest < ActionController::TestCase
     UserSession.create(@admin)
 
     assert_equal 1, @achievement_hobbies.narrower_relations.size
+    assert_equal 1, @achievement_hobbies.narrower_relations.published.size
     assert_equal 0, @sports.narrower_relations.size
     assert_equal @air_sports.id, @achievement_hobbies.narrower_relations.first.target.id
 
@@ -98,29 +97,30 @@ class ConceptMovementTest < ActionController::TestCase
     assert_response 200
 
     # assign new concepts versions
-    @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
-    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
     @air_sports_version = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
 
-    # all new concepts are unpublished
+    assert @achievement_hobbies.published?
+    assert @sports.published?
     refute @air_sports_version.published?
-    refute @sports_version.published?
-    refute @achievement_hobbies_version.published?
 
-    assert_equal @air_sports_version.rev, 2
-    assert_equal @sports_version.rev, 2
-    assert_equal @achievement_hobbies_version.rev, 2
+    assert_equal 1, @achievement_hobbies.rev
+    assert_equal 1, @sports.rev
+    assert_equal 2, @air_sports_version.rev
 
     assert_equal @air_sports_version.published_version_id, @air_sports.id
 
     # test relations
-    assert_equal 0, @achievement_hobbies_version.narrower_relations.size
-
-    assert_equal 1, @sports_version.narrower_relations.size
-    assert_equal @sports_version.narrower_relations.first.target, @air_sports_version
-
+    assert_equal 1, @achievement_hobbies.narrower_relations.size
+    assert_equal 1, @achievement_hobbies.narrower_relations.published.size
     assert_equal 1, @air_sports_version.broader_relations.size
-    assert_equal @air_sports_version.broader_relations.first.target, @sports_version
+    assert_equal 1, @air_sports_version.broader_relations.published.size
+    assert_equal @air_sports_version.broader_relations.first.target, @sports
+
+    @air_sports_version.publish
+    assert_equal 1, @achievement_hobbies.narrower_relations.size
+    assert_equal 1, @achievement_hobbies.narrower_relations.published.size
+    assert_equal 1, @air_sports_version.broader_relations.size
+    assert_equal 1, @air_sports_version.broader_relations.published.size
   end
 
   test 'concept movement with unpublished participants' do
@@ -197,10 +197,10 @@ class ConceptMovementTest < ActionController::TestCase
 
     # assign new concepts versions
     @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
-    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
+    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).published.last
 
     # all new concepts are unpublished
-    refute @sports_version.published?
+    assert @sports_version.published?
     refute @achievement_hobbies_version.published?
 
     # is not a top_term anymore

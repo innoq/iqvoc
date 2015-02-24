@@ -27,7 +27,6 @@ class ConceptsMovementController < ApplicationController
     end
 
     new_parent_concept = Iqvoc::Concept.base_class.find(params.require(:new_parent_node_id))
-    new_parent_concept_version = concept_version(new_parent_concept)
 
     ActiveRecord::Base.transaction do
       moved_concept_version = concept_version(moved_concept)
@@ -36,31 +35,26 @@ class ConceptsMovementController < ApplicationController
         if moved_concept.top_term?
           moved_concept_version.update_attribute(:top_term, false)
         else
-          # removed old relations
           old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
-          old_parent_concept_version = concept_version(old_parent_concept)
 
-          moved_concept_version.send(Iqvoc::Concept.broader_relation_class_name.to_relation_name)
-             .destroy_with_reverse_relation(old_parent_concept_version)
+          # find and destroy old relation (old_parent_concept => moved_concept_version)
+          old_moved_concept_relation = old_parent_concept.narrower_relations.find_by(target_id: moved_concept_version.id)
+          old_moved_concept_relation.destroy! if old_moved_concept_relation
 
-          # delete relations which will be created during branching
-          if old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id)
-            old_parent_concept_version.narrower_relations.find_by(target_id: moved_concept.id).destroy!
-          end
-          if moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id)
-            moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id).destroy!
-          end
+          # find and destroy old relation (moved_concept_version => old_parent_concept)
+          old_moved_concept_version_relation = moved_concept_version.broader_relations.find_by(target_id: old_parent_concept.id)
+          old_moved_concept_version_relation.destroy! if old_moved_concept_version_relation
         end
       end
 
       # add new relations to concept version
       Iqvoc::Concept.broader_relation_class.create! do |r|
         r.owner = moved_concept_version
-        r.target = new_parent_concept_version
+        r.target = new_parent_concept
       end
 
       Concept::Relation::SKOS::Narrower::Base.create! do |r|
-        r.owner = new_parent_concept_version
+        r.owner = new_parent_concept
         r.target = moved_concept_version
       end
     end
@@ -88,6 +82,5 @@ class ConceptsMovementController < ApplicationController
 
     version
   end
-
 end
 

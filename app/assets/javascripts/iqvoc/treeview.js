@@ -163,9 +163,8 @@ function Treeview(container) {
       },
       statusCode: {
         200: function() {
-          [movedNodeId, newParentNodeId, oldParentNodeId].forEach(function(nodeId){
-            setToDraft(nodeId, $tree);
-          });
+          // mark moved node to draft
+          setToDraft(movedNodeId, $tree);
 
           // add node to old parent, necessary to see both node directly after movement,
           // this is not necessary if you refresh the page
