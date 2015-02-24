@@ -143,7 +143,7 @@ function Treeview(container) {
 
   // save/copy moved node
   $('ul.hybrid-treeview').on('click', 'button.node-btn', function(event) {
-    var $tree = $('ul.hybrid-treeview');
+    var $tree = $('#content > ul.hybrid-treeview');
     var treeAction = $(this).data('tree-action');
     var updateUrl = $(this).closest('li').data('update-url');
 
