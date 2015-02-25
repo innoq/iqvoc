@@ -5,6 +5,7 @@
 //= require jqtree/tree.jquery.js
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require URIjs/src/URI.js
+//= require sticky-kit/jquery.sticky-kit.js
 //= require storage
 //= require bootstrap-sass/assets/javascripts/bootstrap/collapse
 //= require bootstrap-sass/assets/javascripts/bootstrap/tab
