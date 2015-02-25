@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2011-2014 innoQ Deutschland GmbH
+# Copyright 2011-2015 innoQ Deutschland GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,10 @@ class ConceptsMovementControllerTest < ActionController::TestCase
       c.publish
       c.save
     end
+  end
 
+  def after_setup
+    test_setup
   end
 
   test 'unauthorized node movement request' do
@@ -76,11 +79,6 @@ class ConceptsMovementControllerTest < ActionController::TestCase
   test 'concept movement request' do
     UserSession.create(@admin)
 
-    assert_equal 1, @achievement_hobbies.narrower_relations.size
-    assert_equal 1, @achievement_hobbies.narrower_relations.published.size
-    assert_equal 0, @sports.narrower_relations.size
-    assert_equal @air_sports.id, @achievement_hobbies.narrower_relations.first.target.id
-
     # Move concept:
     #
     # + Achievement Hobbies
@@ -95,6 +93,9 @@ class ConceptsMovementControllerTest < ActionController::TestCase
           old_parent_node_id: @achievement_hobbies.id,
           new_parent_node_id: @sports.id
     assert_response 200
+
+    # reload concepts
+    [@achievement_hobbies, @air_sports, @sports].each(&:reload)
 
     # assign new concepts versions
     @air_sports_version = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
@@ -150,6 +151,9 @@ class ConceptsMovementControllerTest < ActionController::TestCase
           new_parent_node_id: @sports.id
     assert_response 200
 
+    # reload concepts
+    [@achievement_hobbies, @air_sports, @sports].each(&:reload)
+
     # assign new concepts versions
     @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
     @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).unpublished.last
@@ -182,9 +186,6 @@ class ConceptsMovementControllerTest < ActionController::TestCase
   test 'top term movement' do
     UserSession.create(@admin)
 
-    assert_equal @achievement_hobbies.top_term?, true
-    assert_equal @sports.top_term?, true
-
     # move achievement_hobbies (includung childs) to sports
     patch :move,
           lang: 'en',
@@ -195,27 +196,77 @@ class ConceptsMovementControllerTest < ActionController::TestCase
           new_parent_node_id: @sports.id
     assert_response 200
 
+    # reload concepts
+    [@achievement_hobbies, @air_sports, @sports].each(&:reload)
+
     # assign new concepts versions
     @achievement_hobbies_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).unpublished.last
-    @sports_version = Iqvoc::Concept.base_class.by_origin(@sports.origin).published.last
 
-    # all new concepts are unpublished
-    assert @sports_version.published?
+    assert @sports.published?
     refute @achievement_hobbies_version.published?
 
     # is not a top_term anymore
     assert_equal @achievement_hobbies_version.top_term?, false
 
     # test relations
-    assert_equal 1, @sports_version.narrower_relations.size
-    assert_equal @sports_version.narrower_relations.first.target, @achievement_hobbies_version
+    assert_equal 1, @sports.narrower_relations.size
+    assert_equal 0, @sports.narrower_relations.published.size
+    assert_equal @sports.narrower_relations.first.target, @achievement_hobbies_version
 
-    assert_equal 1, @sports_version.narrower_relations.size
-    assert_equal @sports_version.narrower_relations.first.target, @achievement_hobbies_version
     assert_equal 1, @achievement_hobbies_version.broader_relations.size
-    assert_equal @achievement_hobbies_version.broader_relations.first.target, @sports_version
+    assert_equal @achievement_hobbies_version.broader_relations.first.target, @sports
 
     assert_equal 1, @achievement_hobbies_version.narrower_relations.size
+    assert_equal 1, @achievement_hobbies_version.narrower_relations.published.size
     assert_equal @achievement_hobbies_version.narrower_relations.first.target, @air_sports
+
+    @achievement_hobbies_version.publish
   end
+
+  test 'concept to top movement' do
+    UserSession.create(@admin)
+
+    # move air_sports to top concepts
+    patch :move,
+          lang: 'en',
+          origin: @air_sports.origin,
+          tree_action: 'move',
+          moved_node_id: @air_sports.id,
+          old_parent_node_id: @sports.id
+          # new_parent_node_id: '', a top_term has no parent concept
+    assert_response 200
+
+    # reload concepts
+    [@achievement_hobbies, @air_sports, @sports].each(&:reload)
+
+    # assign new concepts versions
+    @air_sports_version = Iqvoc::Concept.base_class.by_origin(@air_sports.origin).unpublished.last
+
+    assert @achievement_hobbies.published?
+    assert @sports.published?
+    refute @air_sports_version.published?
+
+    # is now a top_term
+    assert @air_sports_version.top_term?
+
+    @air_sports_version.publish
+    # no relations after publish (only top terms)
+    assert 0, @air_sports_version.relations.size
+    assert 0, @achievement_hobbies.relations.size
+    assert 0, @sports.relations.size
+  end
+
+  private
+
+  def test_setup
+    assert @achievement_hobbies.top_term?
+    assert @sports.top_term?
+    refute @air_sports.top_term?
+    assert_equal 1, @achievement_hobbies.narrower_relations.size
+    assert_equal @achievement_hobbies.id, @air_sports.broader_relations.first.target.id
+    assert_equal 1, @air_sports.broader_relations.size
+    assert_equal @air_sports.id, @achievement_hobbies.narrower_relations.first.target.id
+    assert_equal 0, @sports.relations.size
+  end
+
 end
