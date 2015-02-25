@@ -162,9 +162,10 @@ function Treeview(container) {
         new_parent_node_id: newParentNodeId
       },
       statusCode: {
-        200: function() {
+        200: function(response) {
           // mark moved node to draft
-          setToDraft(movedNodeId, $tree);
+          var newNodeId = response.new_node_id;
+          setToDraft(movedNodeId, newNodeId, $tree);
 
           // add node to old parent, necessary to see both node directly after movement,
           // this is not necessary if you refresh the page
@@ -193,10 +194,11 @@ function Treeview(container) {
     moveToOldPosition(nodeId, oldPreviousSiblingId, oldParentNodeId, $tree);
   });
 
-  function setToDraft(nodeId, $tree) {
+  function setToDraft(nodeId, newNodeId, $tree) {
     if (typeof nodeId !== 'undefined') {
       var moved_node = $tree.tree('getNodeById', nodeId);
       $tree.tree('updateNode', moved_node, {
+        id: newNodeId,
         moved: false,
         published: false
       });

@@ -26,9 +26,9 @@ class ConceptsMovementController < ApplicationController
       authorize! :update, moved_concept
     end
 
-    ActiveRecord::Base.transaction do
-      moved_concept_version = concept_version(moved_concept)
+    moved_concept_version = concept_version(moved_concept)
 
+    ActiveRecord::Base.transaction do
       if moved_concept_version.top_term?
         # we move a top term deeper into the tree
         moved_concept_version.update_attribute(:top_term, false)
@@ -43,7 +43,6 @@ class ConceptsMovementController < ApplicationController
         # regular inner tree node movement
         if params[:tree_action] == 'move' && Iqvoc::Concept.root_class.instance.mono_hierarchy?
           old_parent_concept = Iqvoc::Concept.base_class.find(params.require(:old_parent_node_id))
-
           destroy_relations(old_parent_concept, moved_concept_version)
         end
 
@@ -53,7 +52,7 @@ class ConceptsMovementController < ApplicationController
       end
     end
 
-    render nothing: true
+    render json: {new_node_id: moved_concept_version.id}
   end
 
   protected
@@ -63,18 +62,19 @@ class ConceptsMovementController < ApplicationController
   end
 
   # get concept to work with
-  # return a new version of the concept or the current draft (if exists)
+  # returns a new version of the concept or the current draft (if exists)
   def concept_version(concept)
-    if concept.published?
-      # create a new version
-      version = concept.branch(current_user)
-      version.save!
+    draft = Iqvoc::Concept.base_class.by_origin(concept.origin).unpublished
+    if draft.any?
+      # use current draft concept, there should be only one
+      result = draft.first
     else
-      # use current draft concept
-      version = concept
+      # create a new version
+      result = concept.branch(current_user)
+      result.save!
     end
 
-    version
+    result
   end
 
   def create_new_relations(moved_concept, new_parent)
