@@ -1,6 +1,6 @@
 class Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor < Dataset::Adaptors::Iqvoc::SearchAdaptor
   def search(prefix, locale)
-    fetch_results("/#{locale}/alphabetical_concepts/#{prefix}.html")
+    fetch_results("#{locale}/alphabetical_concepts/#{prefix}.html")
     @results
   end
 
