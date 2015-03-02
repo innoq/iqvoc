@@ -12,7 +12,7 @@ class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HTTPAd
       page: 1 # hard code the first page as we need to follow pagination links
     }
 
-    fetch_results('/search.html', params)
+    fetch_results('search.html', params)
     @results
   end
 
