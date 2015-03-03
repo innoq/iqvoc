@@ -28,10 +28,10 @@ gem 'iq_rdf', '>= 0.1.15'
 gem 'iq_triplestorage'
 gem 'json'
 gem 'rails_autolink'
-gem 'faraday'
+gem 'faraday', '~> 0.9.0'
 gem 'faraday_middleware'
 gem 'nokogiri', '~> 1.6.0'
-gem 'linkeddata'
+gem 'linkeddata', '~> 1.1.2'
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.2.0'
@@ -75,8 +75,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '~> 2.2.1'
-  gem 'poltergeist', '~> 1.5.0'
+  gem 'capybara', '~> 2.4.0'
+  gem 'poltergeist', '~> 1.6.0'
   gem 'webmock'
   gem 'simplecov'
 end
