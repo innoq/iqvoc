@@ -211,11 +211,4 @@ jQuery(document).ready(function($) {
   $(document.body).on("concept-label", function(ev, container) {
     IQVOC.labelResolver(container);
   });
-
-  // stick sidebar
-  $("#sidebar").stick_in_parent({offset_top: 40});
-  $('ul.hybrid-treeview').bind('tree.open', function(event) {
-    // trigger height calculation on tree view opening
-    $(document.body).trigger("sticky_kit:recalc");
-  });
 });

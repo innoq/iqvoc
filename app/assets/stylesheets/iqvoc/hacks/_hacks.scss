@@ -10,10 +10,3 @@ fieldset > div:first-of-type, ol:first-of-type, p {
 .fa {
   font-family: FontAwesome;
 }
-
-// set #content-div min-height to work with sticky-sidebar
-@media (min-width : 992px){
-  #content {
-    min-height: 400px;
-  }
-}
