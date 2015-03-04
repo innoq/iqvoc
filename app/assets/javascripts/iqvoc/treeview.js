@@ -52,7 +52,7 @@ function Treeview(container) {
         $li.find('.jqtree-title').replaceWith(link);
 
         // mark published/unpublished items
-        if (node && !node.published) {
+        if (typeof node.published !== 'undefined' && !node.published) {
           // modify draft link
           var href = URI(link.attr('href'));
           link.attr('href', href.addQuery('published', 0));
