@@ -31,7 +31,7 @@ function Treeview(container) {
         update_url: item.data('update-url'),
         glance_url: item.data('glance-url'),
         published: item.data('published'),
-        additionalText: item.children('span.additional_info')
+        additionalText: item.children('span.additional_info').html()
       };
     });
 
@@ -48,8 +48,13 @@ function Treeview(container) {
         return uri.normalize().toString();
       },
       onCreateLi: function(node, $li) {
-        var link = buildLink(node.url, node.name, node.additionalText);
+        var link = buildLink(node.url, node.name);
         $li.find('.jqtree-title').replaceWith(link);
+
+        // add aditional info if present (e.g. for collections)
+        if (node.additionalText) {
+          link.after(' ', node.additionalText);
+        }
 
         // mark published/unpublished items
         if (typeof node.published !== 'undefined' && !node.published) {
@@ -63,6 +68,7 @@ function Treeview(container) {
 
         if (link[0]) {
           var teaserLink = buildTeaserLink(node, link[0]);
+          $li.find('.jqtree-element').append(teaserLink);
         }
 
         if (dragabbleSupport) {
@@ -70,13 +76,13 @@ function Treeview(container) {
           if (node && node.locked) {
             // add icon only to the first element of the collection.
             // the second one could be a nodelist for parents nodes.
-            $(link[0]).after(' <i class="fa fa-lock"/>');
+            $li.find('.jqtree-element').append(' <i class="fa fa-lock"/>');
           }
 
           if (node && !node.locked) {
             // add icon only to the first element of the collection.
             // the second one could be a nodelist for parents nodes.
-            $(link[0]).after(' <i class="fa fa-arrows"/>');
+            $li.find('.jqtree-element').append(' <i class="fa fa-arrows"/>');
           }
         }
 
@@ -96,7 +102,7 @@ function Treeview(container) {
 
           // add icon only to the first element of the collection.
           // the second one could be a nodelist for parents nodes.
-          $(link[0]).after(saveButton, undoButton);
+          $li.find('.jqtree-element').append(saveButton, undoButton);
 
           if(polyhierarchySupport) {
             saveButton.after(copyButton);
@@ -221,12 +227,13 @@ function Treeview(container) {
     $tree.tree('updateNode', node, {moved: false});
   }
 
-  function buildLink(url, label, additionalText) {
-    var link = $('<a>').attr('href', url).addClass('tree-element-link').html(label);
+  function buildLink(url, label) {
+    var link = $('<a/>')
 
-    if (additionalText) {
-      link = link.after(' ', additionalText);
-    }
+    link.attr('href', url)
+        .addClass('tree-element-link')
+        .html(label);
+
     return link;
   }
 
@@ -240,8 +247,6 @@ function Treeview(container) {
     teaserLink.addClass('tree-element-teaser-link')
               .attr('href', node.glance_url)
               .append($('<i class="fa fa-search-plus"/>'))
-
-    $(link).after(teaserLink);
 
     teaserLink.click(function(ev) {
       ev.preventDefault();
