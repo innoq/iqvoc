@@ -127,7 +127,7 @@ function Treeview(container) {
   });
 
   // mark moved nodes
-  $('ul.hybrid-treeview').on('tree.move', function(event) {
+  $('#content > ul.hybrid-treeview').on('tree.move', function(event) {
     var moved_node = event.move_info.moved_node;
 
     $(this).tree('updateNode', moved_node, {
@@ -144,7 +144,7 @@ function Treeview(container) {
   });
 
   // save/copy moved node
-  $('ul.hybrid-treeview').on('click', 'button.node-btn', function(event) {
+  $('#content > ul.hybrid-treeview').on('click', 'button.node-btn', function(event) {
     var $tree = $('#content > ul.hybrid-treeview');
     var treeAction = $(this).data('tree-action');
     var updateUrl = $(this).closest('li').data('update-url');
@@ -187,8 +187,8 @@ function Treeview(container) {
   });
 
   // reset moved node
-  $('ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
-    var $tree = $('ul.hybrid-treeview');
+  $('#content > ul.hybrid-treeview').on('click', 'button.reset-node-btn', function(event) {
+    var $tree = $('#content > ul.hybrid-treeview');
     var nodeId = $(this).closest('li').data('node-id');
     var oldPreviousSiblingId = $(this).closest('li').data('old-previous-sibling-id');
     var oldParentNodeId = $(this).closest('li').data('old-parent-node-id');
@@ -208,7 +208,6 @@ function Treeview(container) {
   }
 
   function moveToOldPosition(nodeId, oldPreviousSiblingId, oldParentNodeId, $tree) {
-
     var node = $tree.tree('getNodeById', nodeId);
 
     if (oldPreviousSiblingId) {
