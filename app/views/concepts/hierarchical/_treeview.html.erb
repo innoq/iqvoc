@@ -10,11 +10,15 @@
   <ul class="hybrid-treeview" data-url="<%= hcpath %>">
 <% end %>
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
-    <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
+    <% if params[:published] == '0' %>
+      <% has_children = broader ? concept.broader_relations.any? : concept.narrower_relations.any? %>
+    <% else %>
+      <% has_children = broader ? concept.broader_relations.published.any? : concept.narrower_relations.published.any? %>
+    <% end %>
     <% locked = can?(:branch, concept) || can?(:update, concept) ? false : true %>
 
     <li class="<%= has_children ? "hasChildren" : "" %>" id="<%= concept.id %>"
-      data-has-children="<%= (params[:broader] ? concept.broader_relations.any? : concept.narrower_relations.any?) %>"
+      data-has-children="<%= has_children %>"
       data-update-url="<%= move_concept_url(concept, format: :json) %>"
       data-published="<%= concept.published? %>"
       data-locked="<%= locked %>"
