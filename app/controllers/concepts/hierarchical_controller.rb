@@ -26,7 +26,7 @@ class Concepts::HierarchicalController < ConceptsController
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
     # unrelated concepts for sidebar
-    @loose_concepts = scope.loose
+    @loose_concepts = scope.parentless
 
     # only select unexpired concepts
     scope = scope.not_expired
