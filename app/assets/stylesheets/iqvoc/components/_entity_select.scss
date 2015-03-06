@@ -40,14 +40,9 @@
   padding: 0;
 }
 
-.sections .entity_list li,
-.relation-body .entity_list li {
-  margin-right: 1em;
-}
-
 .sections .entity_list li:after,
 .relation-body .entity_list li:after {
-  content: ",";
+  content: ",\00a0"; // => ', '
 }
 .sections .entity_list li:last-child:after,
 .relation-body .entity_list li:last-child:after {

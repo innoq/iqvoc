@@ -248,8 +248,8 @@ class SkosImporter
     end
     begin
       types[predicate].build_from_rdf(subject, predicate, object)
-    rescue InvalidStringLiteralError => e
-      @logger.warn e.message
+    rescue Exception => e
+      @logger.warn "#{e.class.name}: #{e.message}. Skipping entry ':#{subject} #{predicate} #{object}.'"
     end
   end
 

@@ -30,7 +30,8 @@ class Collection::Base < Concept::Base
       foreign_key: 'target_id',
       dependent: :destroy
   has_many :parent_collections,
-      through: :parent_collection_members
+      through: :parent_collection_members,
+      source: 'collection'
 
   include_to_deep_cloning(:members, :collection_members)
 

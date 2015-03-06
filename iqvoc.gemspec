@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf', '>= 0.1.15'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'faraday'
+  s.add_dependency 'faraday', '0.9.0'
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'sass-rails', '~> 5.0.0'
   s.add_dependency 'bootstrap-sass', '~> 3.3.1.0'

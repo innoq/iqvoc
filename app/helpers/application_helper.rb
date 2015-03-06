@@ -33,7 +33,7 @@ module ApplicationHelper
     return nil if items.empty?
 
     content_tag :ul, class: 'entity_list' do
-      items.map do |item|
+      items.select { |item| can?(:read, item) }.map do |item|
         content_tag :li, class: (items.last == item ? 'last-child' : '') do
           block.call(item)
         end
