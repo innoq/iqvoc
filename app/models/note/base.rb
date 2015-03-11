@@ -55,8 +55,7 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.by_query_value(query)
-    exp = self.arel_table[:value].matches(query.to_s)
-    where(exp)
+    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
   end
 
   def self.by_owner_type(klass)
