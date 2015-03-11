@@ -5,8 +5,8 @@ rvm:
 - 1.9.3
 - 2.2
 - ruby-head
-- jruby-19mode
-- jruby-head
+# - jruby-19mode
+# - jruby-head
 env:
 - DB=sqlite
 - DB=mysql
