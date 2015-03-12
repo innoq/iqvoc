@@ -33,7 +33,7 @@ class Collection::Base < Concept::Base
       through: :parent_collection_members,
       source: 'collection'
 
-  include_to_deep_cloning(:members, :collection_members)
+  include_to_deep_cloning(:members)
 
   # ********** Hooks
 
