@@ -61,6 +61,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
+  gem 'quiet_assets'
 
   platforms :ruby do
     gem 'hirb-unicode'
