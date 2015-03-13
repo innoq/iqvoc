@@ -79,7 +79,7 @@ class Collection::Base < Concept::Base
   end
 
   def concepts
-    members.map(&:target).select { |m| !m.is_a?(::Collection::Base) }
+    members.map(&:target).reject { |m| m.is_a?(::Collection::Base) }
   end
 
   def additional_info
