@@ -102,6 +102,30 @@ class Concept::Base < ActiveRecord::Base
         concept.send(relation_name).create_with_reverse_relation(c, rank: new_origins[c.origin])
       end
     end
+
+    # Process assigned collections
+    if (@assigned_collection_origins ||= {}).any?
+      # Destroy assigned collections
+      existing_collection_origins = concept.collections.map(&:origin).uniq
+      existing_collection_origins.each do |origin|
+        collection = Iqvoc::Collection.base_class.by_origin(origin).published.first
+        relation = Iqvoc::Collection.member_class.find_by(collection: collection, target: concept)
+        relation.destroy! if relation
+      end
+
+      # Rebuild collection relations
+      @assigned_collection_origins.each do |origin|
+        collection = Iqvoc::Collection.base_class.by_origin(origin).published.first
+        if collection
+          Iqvoc::Collection.member_class.create! do |m|
+            m.collection = collection
+            m.target = concept
+          end
+        end
+      end
+
+    end
+
   end
 
   after_save do |concept|
@@ -349,6 +373,15 @@ class Concept::Base < ActiveRecord::Base
   def concept_relations_by_id_and_rank(relation_name)
     self.send(relation_name).each_with_object({}) { |rel, hsh| hsh[rel.target] = rel.rank }
     # self.send(relation_name).map { |l| "#{l.target.origin}:#{l.rank}" }
+  end
+
+  def assigned_collection_origins=(origins)
+    @assigned_collection_origins= origins.to_s
+      .split(InlineDataHelper::SPLITTER).map(&:strip)
+  end
+
+  def assigned_collection_origins
+    @assigned_collection_origins || collections.map(&:origin).uniq
   end
 
   # returns the (one!) preferred label of a concept for the requested language.
