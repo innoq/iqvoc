@@ -1,7 +1,7 @@
 <li class="concept-item">
   <p>
-  <%= link_to result.label.to_s, result.path,
-    :alt => result.concept.origin, :data => { 'resource-path' => result.path }, :class => 'concept-item-link' %>
+  <%= link_to result.label.to_s, rdf_path(result.concept, lang: nil, format: nil),
+    :alt => result.concept.origin, :data => { 'resource-path' => result.path, 'resource-url' => rdf_url(result.concept, lang: nil, format: nil) }, :class => 'concept-item-link' %>
   <% if result.concept.additional_info.present? %>
     <span class="additional_info">(<%= result.concept.additional_info %>)</span>
   <% end %>
