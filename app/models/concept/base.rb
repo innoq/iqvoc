@@ -123,7 +123,36 @@ class Concept::Base < ActiveRecord::Base
           end
         end
       end
+    end
 
+    if (@inline_matches ||= {}).any?
+      @inline_matches.each do |match_class, urls|
+        # destroy old relations
+        self.send(match_class.to_relation_name).each do |match|
+          if (urls.include?(match.value))
+            urls.delete(match.value) # We're done with that one
+          else
+            self.send(match_class.to_relation_name).destroy(match.id) # User deleted this one
+            # TODO: error handling job creation, check _custom param
+            job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class)
+            self.reverse_match_service.add(job)
+          end
+        end
+
+        # create new match relations
+        urls.each do |url|
+          self.send(match_class.to_relation_name) << match_class.constantize.new(value: url)
+          self.save
+
+          # TODO: error handling job creation, check _custom param, sources check should be in job creation
+          iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
+          url_object = URI.parse(url)
+          if self.reverse_match_service && iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
+            job = self.reverse_match_service.build_job(:add_match, origin, url, match_class)
+            self.reverse_match_service.add(job)
+          end
+        end
+      end
     end
 
   end
@@ -238,27 +267,8 @@ class Concept::Base < ActiveRecord::Base
 
     define_method("inline_#{match_class_name.to_relation_name}=".to_sym) do |value|
       urls = value.split(InlineDataHelper::SPLITTER).map(&:strip).reject(&:blank?)
-      self.send(match_class_name.to_relation_name).each do |match|
-        if (urls.include?(match.value))
-          urls.delete(match.value) # We're done with that one
-        else
-          self.send(match_class_name.to_relation_name).destroy(match.id) # User deleted this one
-          # TODO: error handling job creation, check _custom param
-          job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class_name)
-          self.reverse_match_service.add(job)
-        end
-      end
-      urls.each do |url|
-        self.send(match_class_name.to_relation_name) << match_class_name.constantize.new(value: url)
-        # TODO: error handling job creation, check _custom param, sources check should be in job creation
-
-        iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
-        url_object = URI.parse(url)
-        if self.reverse_match_service && iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
-          job = self.reverse_match_service.build_job(:add_match, origin, url, match_class_name)
-          self.reverse_match_service.add(job)
-        end
-      end
+      @inline_matches ||= {}
+      @inline_matches[match_class_name] = urls
     end
 
   end
