@@ -134,7 +134,7 @@ class Concept::Base < ActiveRecord::Base
           else
             self.send(match_class.to_relation_name).destroy(match.id) # User deleted this one
             # TODO: error handling job creation, check _custom param
-            job = self.reverse_match_service.build_job(:remove_match, origin, match.value, match_class)
+            job = self.reverse_match_service.build_job(:remove_match, self, match.value, match_class)
             self.reverse_match_service.add(job)
           end
         end
@@ -148,7 +148,7 @@ class Concept::Base < ActiveRecord::Base
           iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
           url_object = URI.parse(url)
           if self.reverse_match_service && iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
-            job = self.reverse_match_service.build_job(:add_match, origin, url, match_class)
+            job = self.reverse_match_service.build_job(:add_match, self, url, match_class)
             self.reverse_match_service.add(job)
           end
         end
