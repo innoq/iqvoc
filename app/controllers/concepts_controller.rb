@@ -40,16 +40,18 @@ class ConceptsController < ApplicationController
     @datasets = datasets_as_json
     respond_to do |format|
       format.html do
-        if @concept.jobs
+
+        jobs = @concept.jobs
+        if jobs.any?
           match_classes = Iqvoc::Concept.reverse_match_class_names
 
-          @jobs = @concept.job_relations.map do |jr|
-            handler = YAML.load(jr.job.handler)
+          @jobs = jobs.map do |j|
+            handler = YAML.load(j.handler)
             match_class_name = match_classes.key(handler.match_class)
             reverse_match_class_name = match_class_name.constantize.reverse_match_class_name
             reverse_match_class_label = reverse_match_class_name.constantize.rdf_predicate.camelize if reverse_match_class_name
 
-            result = {response_error: jr.response_error}
+            result = {response_error: j.error_message}
             result[:subject] = handler.subject
             result[:type] = handler.type
             result[:match_class] = reverse_match_class_label || reverse_match_class_name

@@ -65,7 +65,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = Delayed::Job.last
     @worker.run(job)
 
-    assert_equal 0, @airsoft.job_relations.size
+    assert_equal 0, @airsoft.jobs.size
   end
 
   test 'job timeout' do
@@ -78,10 +78,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = Delayed::Job.last
     @worker.run(job)
 
-    assert_equal 1, @airsoft.job_relations.size
+    assert_equal 1, @airsoft.jobs.size
 
-    job_relation = @airsoft.job_relations.first
-    assert_equal 'timeout_error', job_relation.response_error
+    assert_equal 'timeout_error', job.error_message
   end
 
   test 'unknown resource' do
@@ -94,10 +93,9 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = Delayed::Job.last
     @worker.run(job)
 
-    assert_equal 1, @airsoft.job_relations.size
+    assert_equal 1, @airsoft.jobs.size
 
-    job_relation = @airsoft.job_relations.first
-    assert_equal 'resource_not_found', job_relation.response_error
+    assert_equal 'resource_not_found', job.error_message
   end
 
   test 'unknown match class' do
@@ -112,9 +110,8 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     job = Delayed::Job.last
     @worker.run(job)
 
-    assert_equal 1, @airsoft.job_relations.size
+    assert_equal 1, @airsoft.jobs.size
 
-    job_relation = @airsoft.job_relations.first
-    assert_equal 'unknown_match', job_relation.response_error
+    assert_equal 'unknown_match', job.error_message
   end
 end

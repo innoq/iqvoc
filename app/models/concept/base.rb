@@ -273,10 +273,6 @@ class Concept::Base < ActiveRecord::Base
 
   end
 
-  # *** Job Relations
-  has_many :job_relations, primary_key: 'origin', foreign_key: 'owner_reference', class_name: 'JobRelation'
-  has_many :jobs, through: :job_relations
-
   # *** Notes
 
   Iqvoc::Concept.note_class_names.each do |class_name|
@@ -470,5 +466,10 @@ class Concept::Base < ActiveRecord::Base
     {
       concept_relations: Concept::Relation::Base.by_owner(id).target_in_edit_mode,
     }
+  end
+
+  def jobs
+    gid = self.to_global_id.to_s
+    Delayed::Backend::ActiveRecord::Job.where(delayed_global_reference_id: gid)
   end
 end

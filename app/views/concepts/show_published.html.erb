@@ -2,7 +2,7 @@
 <%= render 'concepts/sidebars/singular', :concept => @concept %>
 
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
-  <% if @jobs.any? %>
+  <% if @jobs && @jobs.any? %>
     <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>
   <% end %>
     <div class="editing_versioning_toolbar well">

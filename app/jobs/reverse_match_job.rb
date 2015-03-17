@@ -4,7 +4,6 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
     job.delayed_reference_type = concept.class.to_s
     job.delayed_global_reference_id = concept.to_global_id
     job.save!
-    JobRelation.create(owner_reference: concept.origin, job: job)
   end
 
   def perform
@@ -46,16 +45,9 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
     end
 
     unless error_type.nil?
-      reference = JobRelation.find_by(owner_reference: concept.origin, job: job)
-      reference.update_attribute(:response_error, error_type)
       job.error_message = error_type
       job.save!
     end
-  end
-
-  def success(job)
-    reference = JobRelation.find_by(owner_reference: concept.origin, job: job)
-    reference.delete
   end
 
   private
