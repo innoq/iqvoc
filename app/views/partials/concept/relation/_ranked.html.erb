@@ -4,8 +4,9 @@
     <%-
       items = klass.where(:target_id => concept.id).includes(:target).order("rank DESC")
       items = items.merge(Iqvoc::Concept.base_class.published).references(:concepts) if params[:published] != "0"
+      items = items.select { |item| can?(:read, item) }
     -%>
-    <%= item_listing(items) do |rel|
+  <%= item_listing(items) do |rel|
       link_to("#{rel.owner.pref_label} (#{rel.rank})", concept_path(:lang => rel.owner.pref_label.language, :id => rel.owner))
     end %>
   </div>
