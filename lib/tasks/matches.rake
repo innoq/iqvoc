@@ -21,7 +21,7 @@ namespace :iqvoc do
 
         # create jobs if target_base_uri is in iqvoc_sources
         if iqvoc_sources.include?(target_base_uri)
-          job = reverse_match_service.build_job(:add_match, m.concept.origin, m.value, m.type)
+          job = reverse_match_service.build_job(:add_match, m.concept, m.value, m.type)
           reverse_match_service.add(job)
 
           stdout_logger.info "Create #{job.match_class}-job: #{job.subject} => #{job.object}"
@@ -31,13 +31,11 @@ namespace :iqvoc do
       end
     end
 
-    desc 'Delete all reverse matches jobs and job relations'
+    desc 'Delete all reverse matches jobs'
     task :delete_jobs => :environment do
-      JobRelation.find_each do |jr|
-        jr.job.destroy!
-        jr.destroy!
-      end
-      stdout_logger.info "Cleared Jobs and JobRelations"
+      jobs = Delayed::Backend::ActiveRecord::Job.where(queue: 'reverse_matches')
+      jobs.destroy_all
+      stdout_logger.info "Cleared Jobs"
     end
 
     private
