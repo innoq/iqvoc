@@ -39,6 +39,7 @@ deploy:
       branch: master
       rvm: 2.0
     run:
+      - "rake release:create_rev"
       - "rake db:migrate"
 addons:
   postgresql: "9.3"

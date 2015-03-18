@@ -12,4 +12,10 @@ namespace :release do
     system 'git push origin master --tags'
     system 'gem push iqvoc-*.gem'
   end
+
+  desc 'Writes current git head to ./headrev.txt'
+  task :create_rev => :environment do
+    file = Rails.root.join('headrev.txt')
+    system "git rev-parse HEAD > #{file}"
+  end
 end
