@@ -1,6 +1,6 @@
 language: ruby
 cache: bundler
-bundler_args: "--without production heroku"
+bundler_args: "--retry 3 --without production heroku"
 rvm:
 - 1.9.3
 - 2.2
