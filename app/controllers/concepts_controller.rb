@@ -131,8 +131,9 @@ class ConceptsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Concept.base_class
 
-    @concept = Iqvoc::Concept.base_class.new(concept_params)
-    # TODO: add reverse match service
+    @concept = Iqvoc::Concept.base_class.new
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
+    @concept.assign_attributes(concept_params)
     @datasets = datasets_as_json
 
     @concept.lock_by_user(current_user.id)
