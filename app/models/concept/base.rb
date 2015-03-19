@@ -69,6 +69,14 @@ class Concept::Base < ActiveRecord::Base
   end
 
   after_save do |concept|
+    # Generate a origin if none was given yet
+    if concept.origin.blank?
+      raise 'Concept::Base#after_save (generate origin): Unable to set the origin by id!' unless concept.id
+      concept.reload
+      concept.origin = sprintf('_%08d', concept.id)
+      concept.save! # On exception the complete save transaction will be rolled back
+    end
+
     # Process inline relations
     #
     # NB: rankable relations' target origins may include an embedded rank,
@@ -155,16 +163,6 @@ class Concept::Base < ActiveRecord::Base
       end
     end
 
-  end
-
-  after_save do |concept|
-    # Generate a origin if none was given yet
-    if concept.origin.blank?
-      raise 'Concept::Base#after_save (generate origin): Unable to set the origin by id!' unless concept.id
-      concept.reload
-      concept.origin = sprintf('_%08d', concept.id)
-      concept.save! # On exception the complete save transaction will be rolled back
-    end
   end
 
   # ********** "Static"/unconfigureable relations
