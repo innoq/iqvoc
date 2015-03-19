@@ -132,7 +132,6 @@ en:
        classifiers: "Environment classes"
        pending_jobs_header: "Pending jobs"
        pending_jobs_message: "There are pending jobs for this concept."
-       disabled_matches_form_message: "A concept needs to be published before you can assign mapping properties."
        add_match: "Creation:"
        remove_match: "Deletion:"
        job_detail: "%{match_class}-Relation of concept %{subject} from remote ontology to %{target} pending."
