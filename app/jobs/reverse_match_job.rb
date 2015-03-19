@@ -7,6 +7,8 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
   end
 
   def perform
+    raise 'concept_not_published_yet' if concept.unpublished?
+
     conn = connection(subject, { accept: 'application/json' })
     response = conn.get
     link = response.body['links'].detect { |h| h['rel'] == type.to_s }
@@ -42,6 +44,8 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
       body = exception.response[:body] || {}
       message = JSON.parse(body) unless body.empty?
       error_type = message['type']
+    else
+      error_type = exception.message
     end
 
     unless error_type.nil?
