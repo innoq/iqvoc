@@ -9,7 +9,7 @@ function OneBox(container) {
   this.container = container.jquery ? container : $(container);
   this.form = this.container.find('form');
   this.input = $(".onebox-input", this.form); // TODO: document
-  this.results = $('<ol class="results concept-items list-unstyled" />');
+  this.results = $('<ol class="search-results list-unstyled" />');
   this.indicator = $('<i class="fa fa-refresh fa-spin fa-3x onebox-indicator" />').
       appendTo(this.container).hide();
 
@@ -21,7 +21,7 @@ OneBox.prototype.reset = function() {
 };
 OneBox.prototype.renderResults = function(html) {
   var doc = $("<div />").append(html);
-  var items = $(".concept-items > li", doc);
+  var items = $(".search-results > li", doc);
   var pagination = $(".pagination", doc);
 
   this.reset();
