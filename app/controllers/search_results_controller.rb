@@ -166,5 +166,11 @@ class SearchResultsController < ApplicationController
 
     collections = Iqvoc::Collection.base_class.includes(:pref_labels).load
     controller.instance_variable_set(:@collections, collections)
+
+    # default search params
+    controller.params['t'] = 'labels' if controller.params['t'].nil?
+    controller.params['qt'] = 'contains' if controller.params['qt'].nil?
+    controller.params['for'] = 'all' if controller.params['for'].nil?
+    controller.params['l'] = langs.keys if controller.params['l'].nil?
   end
 end

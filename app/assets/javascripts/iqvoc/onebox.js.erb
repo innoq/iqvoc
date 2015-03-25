@@ -9,7 +9,7 @@ function OneBox(container) {
   this.container = container.jquery ? container : $(container);
   this.form = this.container.find('form');
   this.input = $(".onebox-input", this.form); // TODO: document
-  this.results = $('<ol class="results concept-items list-unstyled" />');
+  this.results = $('<ol class="search-results list-unstyled" />');
   this.indicator = $('<i class="fa fa-refresh fa-spin fa-3x onebox-indicator" />').
       appendTo(this.container).hide();
 
@@ -21,20 +21,18 @@ OneBox.prototype.reset = function() {
 };
 OneBox.prototype.renderResults = function(html) {
   var doc = $("<div />").append(html);
-  var items = $(".concept-items > li", doc);
+  var items = $(".search-results > li", doc);
   var pagination = $(".pagination", doc);
 
   this.reset();
   this.results.empty().append(items).appendTo(this.container);
   pagination.appendTo(this.container);
 };
-OneBox.prototype.onSubmit = function(ev) {
-  ev.preventDefault(); // handled by #onInput
-};
 OneBox.prototype.onInput = function(ev) {
   var val = this.input.val();
   this.reset();
-  if(val.length > 0 && val !== this.initialValue) {
+  // start search if there are at least two characters in onebox
+  if(val.length >= 2 && val !== this.initialValue) {
     this.getConcepts();
   }
 };
