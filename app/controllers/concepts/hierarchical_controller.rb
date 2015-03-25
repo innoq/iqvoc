@@ -26,7 +26,7 @@ class Concepts::HierarchicalController < ConceptsController
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
     # unrelated concepts for sidebar
-    @loose_concepts = scope.parentless
+    @loose_concepts = scope.parentless.sort_by { |c| c.pref_label }
 
     # only select unexpired concepts
     scope = scope.not_expired
@@ -54,9 +54,7 @@ class Concepts::HierarchicalController < ConceptsController
     ActiveRecord::Associations::Preloader.new.preload(@concepts,
         Iqvoc::Concept.base_class.default_includes + [:pref_labels])
 
-    @concepts.to_a.sort! do |a, b|
-      a.pref_label.to_s <=> b.pref_label.to_s
-    end
+    @concepts.to_a.sort_by! {|c| c.pref_label }
 
     respond_to do |format|
       format.html
