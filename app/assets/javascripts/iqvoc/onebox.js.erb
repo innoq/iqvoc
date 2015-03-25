@@ -31,7 +31,8 @@ OneBox.prototype.renderResults = function(html) {
 OneBox.prototype.onInput = function(ev) {
   var val = this.input.val();
   this.reset();
-  if(val.length > 0 && val !== this.initialValue) {
+  // start search if there are at least two characters in onebox
+  if(val.length >= 2 && val !== this.initialValue) {
     this.getConcepts();
   }
 };
