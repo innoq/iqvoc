@@ -28,9 +28,6 @@ OneBox.prototype.renderResults = function(html) {
   this.results.empty().append(items).appendTo(this.container);
   pagination.appendTo(this.container);
 };
-OneBox.prototype.onSubmit = function(ev) {
-  ev.preventDefault(); // handled by #onInput
-};
 OneBox.prototype.onInput = function(ev) {
   var val = this.input.val();
   this.reset();
