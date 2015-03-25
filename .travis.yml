@@ -33,6 +33,7 @@ deploy:
   - provider: heroku
     api_key:
       secure: gg/Mb5U2IEVm359R8pP+2hLnU7R80GoJqF+YZliEGf/Fxy2EjYiWzwKJPOCSls+b9py1Xm+rBsFaO4qh5nbmYwX23zpWkETXG+tu0V1X2XH4qsvv+yGJn8IvHt81GibqUYkYLaKrNSHR5GU4K4JlRop1b0OStiHnhfAjLKXUYWU=
+    skip_cleanup: true
     app:
       master: try-iqvoc
     on:
