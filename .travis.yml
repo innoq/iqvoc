@@ -38,7 +38,7 @@ deploy:
       master: try-iqvoc
     on:
       branch: master
-      rvm: 2.2
+      rvm: 2.0
     run:
       - "rake release:create_rev"
       - "rake db:migrate"
