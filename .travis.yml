@@ -3,6 +3,7 @@ cache: bundler
 bundler_args: "--without production heroku --retry 3"
 rvm:
 - 1.9.3
+- 2.0
 - 2.2
 - ruby-head
 # - jruby-19mode
@@ -33,11 +34,12 @@ deploy:
   - provider: heroku
     api_key:
       secure: gg/Mb5U2IEVm359R8pP+2hLnU7R80GoJqF+YZliEGf/Fxy2EjYiWzwKJPOCSls+b9py1Xm+rBsFaO4qh5nbmYwX23zpWkETXG+tu0V1X2XH4qsvv+yGJn8IvHt81GibqUYkYLaKrNSHR5GU4K4JlRop1b0OStiHnhfAjLKXUYWU=
+    skip_cleanup: true
     app:
       master: try-iqvoc
     on:
       branch: master
-      rvm: 2.2
+      rvm: 2.0
     run:
       - "rake release:create_rev"
       - "rake db:migrate"

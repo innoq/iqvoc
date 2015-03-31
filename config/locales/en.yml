@@ -84,6 +84,7 @@ en:
        nt: "RDF/N-Triples"
        xml: "RDF/XML"
      confirm_sign_out: "Are you sure you want to sign out?"
+     menu: "Menu"
 
    views:
      layouts:

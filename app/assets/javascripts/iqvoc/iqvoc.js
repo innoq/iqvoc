@@ -159,8 +159,11 @@ jQuery(document).ready(function($) {
       firstDay: 1
     });
   }
+
   $("input.datepicker").pickadate({
-    editable: true,
+    // currently disabled beacause of a pickadate-bug
+    // https://github.com/amsul/pickadate.js/issues/640
+    // editable: true,
     format: 'yyyy-mm-dd'
   });
 
