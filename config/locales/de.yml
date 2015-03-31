@@ -131,7 +131,6 @@ de:
        classifiers: "Umweltklassen"
        pending_jobs_header: "Austehende Jobs"
        pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
-       disabled_matches_form_message: "Matches können erst nach Veröffentlichung eines Konzepts angelegt werden."
        add_match: "Anlage:"
        remove_match: "Löschung:"
        job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} austehend."

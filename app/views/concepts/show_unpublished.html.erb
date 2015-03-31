@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<% if @jobs.any? %>
+<% if @jobs && @jobs.any? %>
   <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>
 <% end %>
 

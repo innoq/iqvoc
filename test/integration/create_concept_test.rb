@@ -24,7 +24,6 @@ class CreateConceptTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'New Concept'
     click_link_or_button 'New Concept'
 
-    assert page.has_content? 'A concept needs to be published before you can assign mapping properties.'
     # fill in english pref label
     fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en', with: 'Foo'
 
