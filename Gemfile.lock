@@ -56,7 +56,7 @@ GEM
       activesupport (>= 3.2)
       request_store (~> 1.0)
       scrypt (~> 1.2)
-    autoprefixer-rails (5.1.7)
+    autoprefixer-rails (5.1.8)
       execjs
       json
     awesome_print (1.6.1)
@@ -360,7 +360,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   apipie-rails
   authlogic (~> 3.4.2)
-  autoprefixer-rails
+  autoprefixer-rails (~> 5.1.8)
   awesome_print
   binding_of_caller (= 0.7.3.pre1)
   bootstrap_form (~> 2.2.0)
