@@ -125,10 +125,12 @@ class Note::Base < ActiveRecord::Base
     case params[:for]
     when 'concept'
       scope = scope.where('concepts.type' => Iqvoc::Concept.base_class_name)
+                   .includes(:concept)
                    .references(:concepts)
       owner = :concept
     when 'collection'
       scope = scope.where('concepts.type' => Iqvoc::Collection.base_class_name)
+                   .includes(:concept)
                    .references(:concepts)
       owner = :collection
     else
