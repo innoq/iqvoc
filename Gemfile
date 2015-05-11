@@ -36,7 +36,9 @@ gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.2.0'
 gem 'font-awesome-rails', '~> 4.3.0'
-gem 'apipie-rails'
+# switch back to rubygems if v0.3.5 is out
+# https://github.com/Apipie/apipie-rails/pull/350
+gem 'apipie-rails', github: 'mjansing/apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
