@@ -112,6 +112,7 @@ class ConceptTest < ActiveSupport::TestCase
     RDFAPI.devour tiger, 'skos:altLabel', '"Big cat"@en'
 
     tiger.save!
+    tiger.reload
     refute tiger.publishable?, 'There should be no identical alt labels'
   end
 
@@ -126,6 +127,7 @@ class ConceptTest < ActiveSupport::TestCase
     RDFAPI.devour monkey, 'skos:altLabel', '"Monkey"@en'
 
     monkey.save!
+    monkey.reload
     refute monkey.publishable?, 'There should be no duplicates between prefLabel/altLabel'
   end
 

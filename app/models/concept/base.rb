@@ -235,6 +235,14 @@ class Concept::Base < ActiveRecord::Base
     through: :pref_labelings,
     source: :target
 
+  has_many :alt_labelings,
+    foreign_key: 'owner_id',
+    class_name: Iqvoc::Concept.alt_labeling_class_name
+
+  has_many :alt_labels,
+    through: :alt_labelings,
+    source: :target
+
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       foreign_key: 'owner_id',

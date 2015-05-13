@@ -25,6 +25,8 @@ class Label::Base < ActiveRecord::Base
   has_many :pref_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.pref_labeling_class_name
   has_many :pref_labeled_concepts, through: :pref_labelings, source: :owner
 
+  has_many :alt_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.alt_labeling_class_name
+  has_many :alt_labeled_concepts, through: :alt_labelings, source: :owner
   # ********* Scopes
 
   def self.by_language(lang_code)

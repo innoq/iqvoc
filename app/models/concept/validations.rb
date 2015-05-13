@@ -91,7 +91,7 @@ module Concept
 
     def exclusive_pref_label
       if validatable_for_publishing?
-        alt_labels = labeling_skos_alt_labels.collect { |l| l.target }
+        alt_labels = alt_labelings.collect { |l| l.target }
 
         if alt_labels.include? pref_label
             errors.add :base,
@@ -103,13 +103,13 @@ module Concept
 
     def unique_alt_labels
       if validatable_for_publishing?
-        alt_labels = labeling_skos_alt_labels.collect { |l| l.target }
-        duplicates = alt_labels.detect { |e| alt_labels.count(e) > 1 }
+        alt_labels = alt_labelings.collect { |l| l.target }
+        duplicate = alt_labels.detect { |e| alt_labels.count(e) > 1 }
 
-        if duplicates.present?
+        if duplicate
           errors.add :base,
               I18n.t('txt.models.concept.alt_labels_not_unique',
-                label: pref_label.value)
+                label: duplicate.value)
         end
       end
     end
