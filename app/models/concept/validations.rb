@@ -66,8 +66,8 @@ module Concept
       if validatable_for_publishing?
         # checks if there are any existing pref labels with the same
         # language and value
-        conflicting_pref_labels = labels.select do |l|
-          Labeling::Base.
+        conflicting_pref_labels = pref_labels.select do |l|
+          Labeling::SKOS::Base.
             joins(:owner, :target).
             where(labels: { value: l.value, language: l.language }).
             where('labelings.owner_id != ?', id).
