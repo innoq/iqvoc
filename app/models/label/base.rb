@@ -84,6 +84,18 @@ class Label::Base < ActiveRecord::Base
     self.to_s.downcase <=> other.to_s.downcase
   end
 
+  def ==(other)
+    language == other.language && value == other.value
+  end
+
+  def eql?(other)
+    self == other
+  end
+
+  def hash
+    [value, language].hash
+  end
+
   def to_literal
     "\"#{value}\"@#{language}"
   end

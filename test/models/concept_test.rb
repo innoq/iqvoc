@@ -100,6 +100,35 @@ class ConceptTest < ActiveSupport::TestCase
     refute bear_two.publishable?
   end
 
+  test 'unique alt labels' do
+    tiger = RDFAPI.devour 'tiger', 'a', 'skos:Concept'
+    RDFAPI.devour tiger, 'skos:prefLabel', '"Tiger"@en'
+
+    assert tiger.save
+    assert tiger.publishable?
+
+    # two identical alt labels
+    RDFAPI.devour tiger, 'skos:altLabel', '"Big cat"@en'
+    RDFAPI.devour tiger, 'skos:altLabel', '"Big cat"@en'
+
+    tiger.save!
+    refute tiger.publishable?, 'There should be no identical alt labels'
+  end
+
+  test 'distinct labels' do
+    monkey = RDFAPI.devour 'Monkey', 'a', 'skos:Concept'
+    RDFAPI.devour monkey, 'skos:prefLabel', '"Monkey"@en'
+
+    assert monkey.save
+    assert monkey.publishable?
+
+    # identical to pref label
+    RDFAPI.devour monkey, 'skos:altLabel', '"Monkey"@en'
+
+    monkey.save!
+    refute monkey.publishable?, 'There should be no duplicates between prefLabel/altLabel'
+  end
+
   test 'multiple pref labels' do
     concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
     RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'

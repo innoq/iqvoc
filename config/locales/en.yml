@@ -435,3 +435,5 @@ en:
        no_pref_label: "-- no PrefLabel --"
        pref_label_not_unique: "The preferred label '%{label}' is already in use."
        pref_labels_not_unique: "The preferred labels '%{label}' are already in use."
+       pref_label_defined_in_alt_labels: "The alternative label %{label} is already used as a preferred label."
+       alt_labels_not_unique: "The alternative label %{label} is used twice."

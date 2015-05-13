@@ -11,6 +11,8 @@ module Concept
       validate :rooted_top_terms
       validate :valid_rank_for_ranked_relations
       validate :unique_pref_label
+      validate :exclusive_pref_label
+      validate :unique_alt_labels
     end
 
     # top term and broader relations are mutually exclusive
@@ -64,8 +66,8 @@ module Concept
       if validatable_for_publishing?
         # checks if there are any existing pref labels with the same
         # language and value
-        conflicting_pref_labels = pref_labels.select do |l|
-          Labeling::SKOS::PrefLabel.
+        conflicting_pref_labels = labels.select do |l|
+          Labeling::Base.
             joins(:owner, :target).
             where(labels: { value: l.value, language: l.language }).
             where('labelings.owner_id != ?', id).
@@ -83,6 +85,31 @@ module Concept
               I18n.t('txt.models.concept.pref_labels_not_unique',
                 label: conflicting_pref_labels.map(&:value).join(', '))
           end
+        end
+      end
+    end
+
+    def exclusive_pref_label
+      if validatable_for_publishing?
+        alt_labels = labeling_skos_alt_labels.collect { |l| l.target }
+
+        if alt_labels.include? pref_label
+            errors.add :base,
+              I18n.t('txt.models.concept.pref_label_defined_in_alt_labels',
+                label: pref_label.value)
+        end
+      end
+    end
+
+    def unique_alt_labels
+      if validatable_for_publishing?
+        alt_labels = labeling_skos_alt_labels.collect { |l| l.target }
+        duplicates = alt_labels.detect { |e| alt_labels.count(e) > 1 }
+
+        if duplicates.present?
+          errors.add :base,
+              I18n.t('txt.models.concept.alt_labels_not_unique',
+                label: pref_label.value)
         end
       end
     end
