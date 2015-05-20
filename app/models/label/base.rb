@@ -87,7 +87,7 @@ class Label::Base < ActiveRecord::Base
   end
 
   def ==(other)
-    language == other.language && value == other.value
+    language == other.try(:language) && value == other.try(:value)
   end
 
   def eql?(other)
