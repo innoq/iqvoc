@@ -403,7 +403,7 @@ class Concept::Base < ActiveRecord::Base
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
     lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
-    @cached_pref_labels ||= pref_labels.each_with_object({}) do |label, hash|
+    @cached_pref_labels ||= pref_labels.published.each_with_object({}) do |label, hash|
       if hash[label.language]
         Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
       end
