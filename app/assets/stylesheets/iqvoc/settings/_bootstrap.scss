@@ -63,7 +63,7 @@ form#search {
   border-radius: 0;
 }
 
-label, th {
+label, th, dt, strong {
   @extend %font-bold;
 }
 
