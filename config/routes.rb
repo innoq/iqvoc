@@ -82,8 +82,7 @@ Rails.application.routes.draw do
     get 'version' => 'pages#version', as: 'version'
     get 'components' => 'pages#components', as: 'components'
 
-    get '/' => 'frontpage#index'
-    # root to: 'frontpage#index', format: nil
+    get '/' => 'frontpage#index', as: 'localized_root'
   end
 
   patch ':origin/add_match' => 'reverse_matches#add_match', as: 'add_match'
