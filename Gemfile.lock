@@ -399,3 +399,6 @@ DEPENDENCIES
   view_marker
   web-console
   webmock
+
+BUNDLED WITH
+   1.10.2
