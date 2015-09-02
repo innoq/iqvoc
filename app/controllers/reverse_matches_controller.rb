@@ -1,6 +1,7 @@
 class ReverseMatchesController < ApplicationController
   include ReverseMatchErrors
   before_action :prepare_match, only: [:add_match, :remove_match]
+  skip_before_action :verify_authenticity_token
 
   def add_match
     begin
