@@ -20,6 +20,8 @@ require 'database_cleaner'
 require 'delayed_job_active_record'
 require 'carrierwave'
 require 'autoprefixer-rails'
+require 'faraday'
+require 'faraday_middleware'
 
 module Iqvoc
   class Engine < Rails::Engine
