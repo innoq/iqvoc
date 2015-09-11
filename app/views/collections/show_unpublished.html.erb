@@ -33,6 +33,9 @@
     <% else %>
       <%= button_to t("txt.views.versioning.to_edit_mode"),
         collection_versions_lock_path(:origin => @collection.origin), :class => 'btn btn-default' if can?(:lock, @collection) %>
+  <% end %>
+
+  <% if can?(:destroy, @collection) %>
     <%= button_to t("txt.views.versioning.delete"),
       collection_path(:published => 0, :id => @collection.origin),
         :method => :delete,

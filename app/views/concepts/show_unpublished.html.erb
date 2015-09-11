@@ -37,11 +37,14 @@
   <% else %>
     <%= button_to t("txt.views.versioning.to_edit_mode"),
       concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' if can?(:lock, @concept) %>
+  <% end %>
+
+  <% if can?(:destroy, @concept) %>
     <%= button_to t("txt.views.versioning.delete"),
       concept_path(:published => 0, :id => @concept.origin),
         :method => :delete,
         :class => 'btn btn-danger',
-        :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @concept) %>
+        :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } %>
   <% end %>
 </div>
 
