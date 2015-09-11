@@ -146,9 +146,11 @@ class Concept::Base < ActiveRecord::Base
           else
             self.send(match_class.to_relation_name).destroy(match.id) # User deleted this one
 
-            # TODO: error handling job creation, check _custom param
-            job = self.reverse_match_service.build_job(:remove_match, self, match.value, match_class)
-            self.reverse_match_service.add(job)
+            if self.reverse_match_service.present? && federation_match?(match.value)
+              job = self.reverse_match_service.build_job(:remove_match, self, match.value, match_class)
+              self.reverse_match_service.add(job)
+            end
+
           end
         end
 
@@ -157,13 +159,11 @@ class Concept::Base < ActiveRecord::Base
           self.send(match_class.to_relation_name) << match_class.constantize.new(value: url)
           self.save
 
-          # TODO: error handling job creation, check _custom param, sources check should be in job creation
-          iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
-          url_object = URI.parse(url)
-          if self.reverse_match_service && iqvoc_sources.find { |source| source.host == url_object.host && source.port == url_object.port }
+          if self.reverse_match_service.present? && federation_match?(url)
             job = self.reverse_match_service.build_job(:add_match, self, url, match_class)
             self.reverse_match_service.add(job)
           end
+
         end
       end
     end
@@ -483,4 +483,30 @@ class Concept::Base < ActiveRecord::Base
     gid = self.to_global_id.to_s
     Delayed::Backend::ActiveRecord::Job.where(delayed_global_reference_id: gid)
   end
+
+  private
+
+  # checks if provided uri is defined as a federation source
+  # e.g:
+  # iqvoc_sources = ['http://example.org']
+  # http://www.google.com       => false
+  # http://www.example.org/1234 => true
+  def federation_match?(url)
+    result = false
+
+    iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |url| URI.parse(url) }
+    url_object = URI.parse(url)
+
+    # check if uri is part of one iqvoc sources
+    iqvoc_sources.each do |source|
+      # check if base part of the url is defined as a federation source
+      if source.host == url_object.host && source.port == url_object.port
+        result = true
+        break # match found, stop iterating
+      end
+    end
+
+    result
+  end
+
 end
