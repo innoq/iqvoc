@@ -135,12 +135,17 @@ class Concept::Base < ActiveRecord::Base
 
     if (@inline_matches ||= {}).any?
       @inline_matches.each do |match_class, urls|
+        # temp array to check existing match-urls
+        # we cannot use @inline_matches (call by reference)
+        urls_copy = urls.dup
+
         # destroy old relations
         self.send(match_class.to_relation_name).each do |match|
-          if (urls.include?(match.value))
-            urls.delete(match.value) # We're done with that one
+          if (urls_copy.include?(match.value))
+            urls_copy.delete(match.value) # We're done with that one
           else
             self.send(match_class.to_relation_name).destroy(match.id) # User deleted this one
+
             # TODO: error handling job creation, check _custom param
             job = self.reverse_match_service.build_job(:remove_match, self, match.value, match_class)
             self.reverse_match_service.add(job)
@@ -148,7 +153,7 @@ class Concept::Base < ActiveRecord::Base
         end
 
         # create new match relations
-        urls.each do |url|
+        urls_copy.each do |url|
           self.send(match_class.to_relation_name) << match_class.constantize.new(value: url)
           self.save
 
