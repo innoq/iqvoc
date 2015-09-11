@@ -1,3 +1,15 @@
+## [4.9.0]
+
+  * Added: updated to latest Rails release (v4.2.4)
+  * Added: pagination for parentless concepts
+  * Added: onebox search optimizations
+  * Added: Assign collections during concept creation
+  * Added: Treeview optimizations
+  * Fixed: Rescue Importer exceptions
+  * Fixed: Keep collections during editing
+  * Fixed: multiple matches bug ([#345](https://github.com/innoq/iqvoc/issues/345))
+  * Fixed: exclusive label vlaidation ([#340](https://github.com/innoq/iqvoc/issues/340))
+
 ## [4.8.2]
 
   * Changed: We're now using [bower](http://bower.io/) for managing third
