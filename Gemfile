@@ -36,16 +36,14 @@ gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.2.0'
 gem 'font-awesome-rails', '~> 4.3.0'
+# lock on v0.3.3 because of a apipie-rails bug (v0.3.5 is out)
+gem 'apipie-rails', '0.3.3'
+# gem 'apipie-rails', '~> 0.3.5'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
 gem 'autoprefixer-rails', '~> 5.1.8'
-
-# remove if v0.3.5 is out
-# https://github.com/Apipie/apipie-rails/pull/350
-gem 'apipie-rails', git: 'git@github.com:mjansing/apipie-rails.git'
-# gem 'apipie-rails', '~> 0.3.4'
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile

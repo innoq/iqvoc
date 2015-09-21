@@ -1,10 +1,3 @@
-GIT
-  remote: git@github.com:mjansing/apipie-rails.git
-  revision: 4b9bbd30c1233f836851b0303f55adbb93320189
-  specs:
-    apipie-rails (0.3.4)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -55,6 +48,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.7)
+    apipie-rails (0.3.3)
+      json
     arel (6.0.3)
     authlogic (3.4.5)
       activerecord (>= 3.2)
@@ -359,7 +354,7 @@ DEPENDENCIES
   activerecord-jdbcmysql-adapter
   activerecord-jdbcpostgresql-adapter (~> 1.3.13)
   activerecord-jdbcsqlite3-adapter
-  apipie-rails!
+  apipie-rails (= 0.3.3)
   authlogic (~> 3.4.2)
   autoprefixer-rails (~> 5.1.8)
   awesome_print
