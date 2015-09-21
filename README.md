@@ -23,8 +23,13 @@ vocabularies:
 * editorial features for registered users
 * publishing the vocabulary in the Semantic Web
 
-iQvoc is built with state-of-the-art technology and can be easily customized
-according to user's needs.
+iQvoc is built with state-of-the-art technology and can be easily customized according to user's needs.
+
+## Demo
+
+You can try out iQvoc right now! In our [sandbox](http://try.iqvoc.net/) you can play around with the public views.
+If you like to test the collaborative functions simply [request](mailto:iqvoc@innoq.com) your personal demo account.
+
 ## Setup
 
 ### Heroku
@@ -95,6 +100,17 @@ provides a basic overview of the possibilities.
 ## Documentation
 
 Documentation resources can be found in the [wiki](https://github.com/innoq/iqvoc/wiki).
+
+iQvoc provides an (inline) API documentation which can be found on `APP_URI/apidoc`. Check out our sandbox to see it in action: http://try.iqvoc.net/apidoc/
+
+## Related projects
+
+We provide several extensions to add additional features to iQvoc:
+
+* [iqvoc_skosxl](https://github.com/innoq/iqvoc_skosxl): SKOS-XL extension for iQvoc
+* [iqvoc_compound_forms](https://github.com/innoq/iqvoc_compound_forms): Compound labels for iQvoc
+* [iqvoc_inflectionals](https://github.com/innoq/iqvoc_inflectionals): Inflectionals for iQvoc
+* [iqvoc_similar_terms](https://github.com/innoq/iqvoc_similar_terms):  iQvoc engine for similar terms
 
 ## Versioning
 
