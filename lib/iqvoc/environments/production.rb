@@ -80,5 +80,8 @@ module Iqvoc::Environments
     config.active_record.dump_schema_after_migration = false
 
     config.i18n.enforce_available_locales = true
+
+    # Raises error for missing translations
+    config.action_view.raise_on_missing_translations = false
   end
 end

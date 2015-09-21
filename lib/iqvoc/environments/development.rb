@@ -70,10 +70,9 @@ module Iqvoc::Environments
     config.assets.raise_runtime_errors = true
 
     # Raises error for missing translations
-    # config.action_view.raise_on_missing_translations = true
-
-    config.i18n.enforce_available_locales = true
-
     config.action_view.raise_on_missing_translations = true
+
+    # Raises error for missing translations
+    config.i18n.enforce_available_locales = true
   end
 end
