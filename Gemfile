@@ -36,9 +36,7 @@ gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.2.0'
 gem 'font-awesome-rails', '~> 4.3.0'
-# lock on v0.3.3 because of a apipie-rails bug (v0.3.5 is out)
-gem 'apipie-rails', '0.3.3'
-# gem 'apipie-rails', '~> 0.3.5'
+gem 'apipie-rails', '~> 0.3.5'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
