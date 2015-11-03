@@ -1,5 +1,6 @@
 class SearchResult
   extend Forwardable
+  attr_reader :result_object
   def_delegators :@result_object, :build_search_result_rdf, :owner, :target,
       :value, :label, :rdf_namespace, :rdf_predicate
 
