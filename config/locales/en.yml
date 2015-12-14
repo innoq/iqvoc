@@ -109,8 +109,10 @@ en:
          sources: Federation
        settings:
          title: Site title
-         languages_notes: Languages for notes
+         available_languages: available languages
          languages_pref_labeling: Languages for preferred labels
+         languages_notes: Languages for notes
+         languages_further_labelings_Labeling: Languages for alternative labels
          languages_further_labelings_Labeling::SKOS::AltLabel: Languages for alternative labels
          performance_unbounded_hierarchy: Unlimited hierarchy depth
          triplestore_url: Triplestore URL
