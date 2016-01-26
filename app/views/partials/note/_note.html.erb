@@ -2,7 +2,10 @@
   <div class="translation" lang="<%= note.language %>">
     <span class="language_flap"><%= note.language %></span>
     <div class="note_content">
-      <p><%= auto_link(note.value, :html => { :target => '_blank' }) %></p>
+      <% if note.value %>
+        <p><%= auto_link(note.value, :html => { :target => '_blank' }) %></p>
+      <% end %>
+
       <% if note.annotations.any? %>
         <dl class="note_annotations">
           <% note.annotations.each do |annotation| %>
