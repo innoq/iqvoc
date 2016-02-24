@@ -4,9 +4,9 @@
     <% if concept.narrower_relations.any? %>
       <div class="selector">
         <% if(params[:published] == '0') %>
-          <%= treeview(concept.narrower_relations.published_with_newer_versions.map(&:target)) %>
+          <%= treeview(concept.narrower_relations.published_with_newer_versions.map(&:target).sort_by(&:pref_label)) %>
         <% else %>
-          <%= treeview(concept.narrower_relations.published.map(&:target)) %>
+          <%= treeview(concept.narrower_relations.published.map(&:target).sort_by(&:pref_label)) %>
         <% end %>
       </div>
     <% end %>
