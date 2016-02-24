@@ -180,7 +180,7 @@ class Concept::Base < ActiveRecord::Base
   include_to_deep_cloning(:relations, :referenced_relations)
 
   has_many :labelings, foreign_key: 'owner_id', class_name: 'Labeling::Base', dependent: :destroy
-  has_many :labels, through: :labelings, source: :target
+  has_many :labels, -> { order(:value) }, through: :labelings, source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
   has_many :notes, class_name: 'Note::Base', as: :owner, dependent: :destroy
@@ -237,6 +237,7 @@ class Concept::Base < ActiveRecord::Base
     class_name: Iqvoc::Concept.pref_labeling_class_name
 
   has_many :pref_labels,
+    -> { order(:value) },
     through: :pref_labelings,
     source: :target
 
@@ -245,6 +246,7 @@ class Concept::Base < ActiveRecord::Base
     class_name: Iqvoc::Concept.alt_labeling_class_name
 
   has_many :alt_labels,
+    -> { order(:value) },
     through: :alt_labelings,
     source: :target
 
@@ -435,13 +437,13 @@ class Concept::Base < ActiveRecord::Base
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
-    ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{ |l| l.published? || !only_published }
+    ((@labels && @labels[labeling_class] && @labels[labeling_class][lang]) || []).select{ |l| l.published? || !only_published }.sort_by(&:value)
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
     relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
     relations.select { |rel| rel.class.name == relation_class }.map(&:target).
-        select { |c| c.published? || !only_published }
+        select { |c| c.published? || !only_published }.sort_by(&:pref_label)
   end
 
   def matches_for_class(match_class)
