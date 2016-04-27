@@ -15,7 +15,7 @@ function augment(field, source, options) {
   options.displayKey = options.displayKey || "value";
 
   field.typeahead({
-    minLength: 3,
+    minLength: 2,
     highlight: true
   }, {
     source: source,
