@@ -30,7 +30,8 @@ class Concepts::AlphabeticalController < ConceptsController
                           .order("letter").map(&:letter)
 
     if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
-      @search_results = dataset.alphabetical_search(params[:prefix], I18n.locale) || []
+      query = params[:prefix].mb_chars.downcase.to_s
+      @search_results = dataset.alphabetical_search(query, I18n.locale) || []
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else
       @search_results = find_labelings
@@ -54,10 +55,12 @@ class Concepts::AlphabeticalController < ConceptsController
   protected
 
   def find_labelings
+    query = params[:prefix].mb_chars.downcase.to_s
+
     Iqvoc::Concept.pref_labeling_class.
       concept_published.
       concept_not_expired.
-      label_begins_with(params[:prefix]).
+      label_begins_with(query).
       by_label_language(I18n.locale).
       includes(:target).
       order("LOWER(#{Label::Base.table_name}.value)").
