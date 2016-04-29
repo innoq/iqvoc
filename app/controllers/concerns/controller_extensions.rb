@@ -86,7 +86,7 @@ module ControllerExtensions
   def label_widget_data(label)
     {
       id: label.origin,
-      name: label.value
+      name: label.value + ' (' + label.language + ')'
     }
   end
 
