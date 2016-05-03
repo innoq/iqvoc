@@ -31,26 +31,26 @@ class Concepts::VersionsController < ApplicationController
     authorize! :merge, new_version
 
     ActiveRecord::Base.transaction do
-      if current_concept.blank? || current_concept.destroy
-        new_version.rdf_updated_at = nil
-        new_version.publish
-        new_version.unlock
-        if new_version.publishable?
-          new_version.save
+      new_version.rdf_updated_at = nil
+      new_version.publish
+      new_version.unlock
+      if new_version.publishable?
+        new_version.save
 
-          if Iqvoc.config['triplestore.autosync']
-           synced = triplestore_syncer.sync([new_version]) # XXX: blocking
-           flash[:warning] = 'triplestore synchronization failed' unless synced # TODO: i18n
-          end
-
-          flash[:success] = t('txt.controllers.versioning.published')
-          redirect_to concept_path(id: new_version)
-        else
-          flash[:error] = t('txt.controllers.versioning.merged_publishing_error')
+        if current_concept && !current_concept.destroy
+          flash[:error] = t('txt.controllers.versioning.merged_delete_error')
           redirect_to concept_path(published: 0, id: new_version)
         end
+
+        if Iqvoc.config['triplestore.autosync']
+         synced = triplestore_syncer.sync([new_version]) # XXX: blocking
+         flash[:warning] = 'triplestore synchronization failed' unless synced # TODO: i18n
+        end
+
+        flash[:success] = t('txt.controllers.versioning.published')
+        redirect_to concept_path(id: new_version)
       else
-        flash[:error] = t('txt.controllers.versioning.merged_delete_error')
+        flash[:error] = t('txt.controllers.versioning.merged_publishing_error')
         redirect_to concept_path(published: 0, id: new_version)
       end
     end
