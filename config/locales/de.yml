@@ -53,6 +53,7 @@ de:
      welcome: "Hallo %{user_name}"
      move: "Verschieben"
      save: "Speichern"
+     cancel: "Abbrechen"
      copy: "Kopieren"
      reset: "Zurücksetzen"
      language: "Sprache"

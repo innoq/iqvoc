@@ -50,6 +50,7 @@
 <hr />
 <div class="well">
   <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+  <%= link_to t("txt.common.cancel"), collection_path(collection, :published => 0), :class => "btn btn-default" %>
 </div>
 
 <% end %>

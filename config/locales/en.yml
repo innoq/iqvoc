@@ -53,6 +53,7 @@ en:
      welcome: "Hello %{user_name}"
      move: "Move"
      save: "Save"
+     cancel: "Cancel"
      copy: 'Copy'
      reset: "Reset"
      language: "Language"

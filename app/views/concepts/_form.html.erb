@@ -93,6 +93,8 @@
 
   <div class="well">
     <%= f.submit t("txt.common.save"), :class => "btn btn-primary" %>
+
+    <%= link_to t("txt.common.cancel"), concept_path(:published => 0, :id => concept), :class => "btn btn-default" %>
   </div>
 
 <% end %>
