@@ -1,3 +1,8 @@
+## [4.10.0]
+
+  * Fixed: several bugs (i18n, sorting)
+  * Fixed: several UI glitches
+
 ## [4.9.0]
 
   * Added: updated to latest Rails release (v4.2.4)
