@@ -1,13 +1,14 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars"></i> <%= t('txt.common.menu') %>
       </button>
-      <%= link_to Iqvoc.config["title"], localized_root_path, :class => "navbar-brand" %>
+      <%= link_to Iqvoc.config["title"], localized_root_path, class: 'navbar-brand' %>
     </div>
 
-    <div class="navbar-collapse collapse">
+    <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <%= nav_items Iqvoc.navigation_items %>
       </ul>
@@ -15,4 +16,4 @@
       <%= render "layouts/controls" %>
     </div>
   </div>
-</div>
+</nav>

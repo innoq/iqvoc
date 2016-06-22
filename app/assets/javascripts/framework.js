@@ -6,6 +6,4 @@
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require URIjs/src/URI.js
 //= require storage
-//= require bootstrap-sass/assets/javascripts/bootstrap/collapse
-//= require bootstrap-sass/assets/javascripts/bootstrap/tab
-//= require bootstrap-sass/assets/javascripts/bootstrap/modal
+//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
