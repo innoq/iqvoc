@@ -45,3 +45,6 @@ deploy:
   #     - "rake db:migrate"
 addons:
   postgresql: "9.3"
+matrix:
+  allow_failures:
+    - rvm: ruby-head
