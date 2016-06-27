@@ -269,6 +269,7 @@ de:
        current_revision: "Aktuelle Revision %{rev}"
        in_ongoing_editing_by: "in Bearbeitung von %{user}."
        to_review_error: "Konnte nicht in den Freigabeprozess aufgenommen werden"
+       initial_version: "Initiale Version"
      labelings:
        edit:
          header: "Labeling bearbeiten"

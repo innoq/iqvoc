@@ -276,6 +276,7 @@ en:
        consistency_check: "Check consistency"
        current_revision: "Current revision %{rev}"
        in_ongoing_editing_by: "is being edited by %{user}."
+       initial_version: "initial version"
      labelings:
        edit:
          header: "Edit labeling"
