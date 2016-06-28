@@ -1,3 +1,7 @@
+## [4.10.1]
+
+  * Fixed: initial created change note creation
+
 ## [4.10.0]
 
   * Fixed: several bugs (i18n, sorting)
