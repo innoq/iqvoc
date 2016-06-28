@@ -1,4 +1,4 @@
-<div class="<%= html_classes("relation", "panel", (class_name rescue nil)) %>">
+<div id="<%= klass.to_s.to_relation_name %>" class="<%= html_classes("relation", "panel", (class_name rescue nil)) %>">
   <%# Provide support for iqvoc_skosxl %>
   <% object = if defined?(concept)
                 concept
