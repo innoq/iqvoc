@@ -17,6 +17,12 @@
               :label => t("txt.common.language"),
               :include_blank => false %>
 
+            <%= note_form.fields_for :annotations do |na| %>
+              <%= na.hidden_field :namespace %>
+              <%= na.hidden_field :predicate %>
+              <%= na.hidden_field :value %>
+            <% end %>
+
             <%= f.form_group :note_annotations, :label => {:text => Note::Annotated::Base.model_name.human(:count => 2)} do %>
               <dl class="note_annotations">
                 <% note.annotations.each do |na| %>

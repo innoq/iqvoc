@@ -119,6 +119,16 @@ class ConceptsController < ApplicationController
 
     @concept = Iqvoc::Concept.base_class.new
 
+    # initial created-ChangeNote creation
+    @concept.send(Iqvoc::change_note_class_name.to_relation_name).new do |change_note|
+      change_note.value = I18n.t('txt.views.versioning.initial_version')
+      change_note.language = I18n.locale.to_s
+      change_note.annotations_attributes = [
+        { namespace: 'dct', predicate: 'creator', value: current_user.name },
+        { namespace: 'dct', predicate: 'created', value: DateTime.now.to_s }
+      ]
+    end
+
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
     end
