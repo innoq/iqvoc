@@ -29,6 +29,9 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     assert page.has_content? I18n.t('txt.controllers.versioned_concept.success')
 
+    # has initial created note
+    assert page.has_css?('dl.note_annotations', count: 1)
+
     click_link_or_button I18n.t('txt.views.versioning.publishing')
     assert page.has_content? I18n.t('txt.controllers.versioning.published')
 
@@ -37,11 +40,12 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         with: 'dolor sit amet'
     click_button 'Save'
 
-    assert page.has_css?('dl.note_annotations', count: 1)
+    # initial created note and modified note
+    assert page.has_css?('dl.note_annotations', count: 2)
 
     click_link_or_button I18n.t('txt.views.versioning.publishing')
     assert page.has_content? I18n.t('txt.controllers.versioning.published')
-    assert page.has_css?('dl.note_annotations', count: 1)
+    assert page.has_css?('dl.note_annotations', count: 2)
 
     # TTL & RDF/XML
 
@@ -55,7 +59,9 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         gsub(/#\+#/, '#-#')  # neutralize eventually positive timezone shifts (server time)
 
     assert ttl.include?("skos:changeNote [\n" +
-        "rdfs:comment \"lorem ipsum\"@en\n" +
+        "rdfs:comment \"lorem ipsum\"@en;\n" +
+        "dct:created \"####-##-##T##:##:##-##:##\";\n" +
+        "dct:creator \"Test User\"\n" +
         ']'), "can't find changeNote 'lorem ipsum'"
 
     assert ttl.include?("skos:changeNote [\n" +
@@ -69,9 +75,12 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
         gsub(/^ *| *$/, ''). # ignore indentation
         gsub(/\d/, '#').     # neutralize timestamps
         gsub(/#\+#/, '#-#')  # neutralize eventually positive timezone shifts (server time)
+
     assert xml.include?("<skos:changeNote>\n" +
         "<rdf:Description>\n" +
         "<rdfs:comment xml:lang=\"en\">lorem ipsum</rdfs:comment>\n" +
+        "<dct:created>####-##-##T##:##:##-##:##</dct:created>\n" +
+        "<dct:creator>Test User</dct:creator>\n" +
         "</rdf:Description>\n" +
         '</skos:changeNote>')
     assert xml.include?("<skos:changeNote>\n" +
