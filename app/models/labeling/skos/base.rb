@@ -80,7 +80,34 @@ class Labeling::SKOS::Base < Labeling::Base
       scope
     end
 
-    scope = scope.merge(Concept::Base.published)
+    if params[:change_note_date_from].present? || params[:change_note_date_to].present?
+      change_note_relation = Iqvoc::change_note_class_name.to_relation_name
+      concepts = Concept::Base.published
+                              .includes(change_note_relation.to_sym => :annotations)
+                              .references(change_note_relation)
+                              .references('note_annotations')
+
+
+      # change note type filtering
+      concepts = case params[:change_note_type]
+                 when 'created'
+                   concepts.where('note_annotations.predicate = ?', 'created')
+                 when 'modified'
+                   concepts.where('note_annotations.predicate = ?', 'modified')
+                 else
+                   concepts # no change note type assigned
+                 end
+
+      date_from = Date.parse(params[:change_note_date_from]) if params[:change_note_date_from].present?
+      concepts = concepts.where('note_annotations.created_at >= ?', date_from) if date_from
+
+      date_to = Date.parse(params[:change_note_date_to]) if params[:change_note_date_to].present?
+      concepts = concepts.where('note_annotations.created_at <= ?', date_to) if date_to
+    else
+      concepts = Concept::Base.published
+    end
+
+    scope = scope.merge(concepts)
     scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end
