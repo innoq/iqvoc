@@ -16,7 +16,7 @@
     <%= t('txt.views.search_results.change_note.date') %> <%= t('txt.views.search_results.change_note.date_from') %>
   </label>
 	<div class="col-sm-4">
-		<%= text_field_tag :change_note_date_from, params[:change_note_date_from], placeholder: 'z.B.: 2010-05-14', class: 'form-control' %>
+		<%= text_field_tag :change_note_date_from, params[:change_note_date_from], placeholder: 'z.B.: 2010-05-14', class: 'form-control datepicker' %>
 	</div>
 </div>
 
@@ -25,6 +25,6 @@
     <%= t('txt.views.search_results.change_note.date') %> <%= t('txt.views.search_results.change_note.date_to') %>
   </label>
 	<div class="col-sm-4">
-		<%= text_field_tag :change_note_date_to, params[:change_note_date_to], placeholder: 'z.B.: 2010-05-14', class: 'form-control' %>
+		<%= text_field_tag :change_note_date_to, params[:change_note_date_to], placeholder: 'z.B.: 2010-05-14', class: 'form-control datepicker' %>
 	</div>
 </div>

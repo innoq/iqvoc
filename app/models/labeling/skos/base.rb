@@ -87,7 +87,6 @@ class Labeling::SKOS::Base < Labeling::Base
                               .references(change_note_relation)
                               .references('note_annotations')
 
-
       # change note type filtering
       concepts = case params[:change_note_type]
                  when 'created'
