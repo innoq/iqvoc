@@ -133,7 +133,8 @@ module Iqvoc
           'type',
           'collection',
           'languages',
-          'datasets'
+          'datasets',
+          'change_note'
         ]
 
         # ignored database tables during thesaurus truncation
