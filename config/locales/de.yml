@@ -228,6 +228,13 @@ de:
        for: "In"
        mode: "Modus"
        datasets: "Externe Quellen"
+       change_note:
+         type: "Typ"
+         created: 'Erstellungsdatum'
+         modified: 'Änderungsdatum'
+         date: "Datumsbereich"
+         date_from: '(von)'
+         date_to: '(bis)'
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"
