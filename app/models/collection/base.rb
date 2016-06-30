@@ -75,11 +75,11 @@ class Collection::Base < Concept::Base
   end
 
   def subcollections
-    members.map(&:target).select { |m| m.is_a?(::Collection::Base) }
+    members.map(&:target).compact.select { |m| m.is_a?(::Collection::Base) }
   end
 
   def concepts
-    members.map(&:target).reject { |m| m.is_a?(::Collection::Base) }
+    members.map(&:target).compact.reject { |m| m.is_a?(::Collection::Base) }
   end
 
   def additional_info
