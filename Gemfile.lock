@@ -56,9 +56,8 @@ GEM
       activesupport (>= 3.2)
       request_store (~> 1.0)
       scrypt (~> 1.2)
-    autoprefixer-rails (5.1.8)
+    autoprefixer-rails (6.5.1.1)
       execjs
-      json
     awesome_print (1.6.1)
     binding_of_caller (0.7.3.pre1)
       debug_inspector (>= 0.0.1)
@@ -182,6 +181,7 @@ GEM
       mini_portile2 (~> 2.1.0)
     nokogiri (1.6.8.1-java)
     parallel (1.4.1)
+    pg (0.19.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -360,7 +360,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   apipie-rails (~> 0.3.5)
   authlogic (~> 3.4.2)
-  autoprefixer-rails (~> 5.1.8)
+  autoprefixer-rails (~> 6.5.1.1)
   awesome_print
   binding_of_caller (= 0.7.3.pre1)
   bootstrap_form (~> 2.2.0)
@@ -383,6 +383,7 @@ DEPENDENCIES
   maruku
   mysql2 (~> 0.3.13)
   nokogiri (~> 1.6.0)
+  pg
   poltergeist (~> 1.6.0)
   pry-byebug (~> 1.1.2)
   pry-rails
@@ -400,4 +401,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.13.5
+   1.13.6

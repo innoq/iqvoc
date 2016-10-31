@@ -41,7 +41,7 @@ gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.0.1'
 gem 'carrierwave'
-gem 'autoprefixer-rails', '~> 5.1.8'
+gem 'autoprefixer-rails', '~> 6.5.1.1'
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
