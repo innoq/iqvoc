@@ -47,7 +47,9 @@
 
   <!-- Notes -->
   <% Iqvoc::Concept.note_classes.each do |note_class| %>
-    <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
+    <% unless note_class.edit_partial_name(concept).nil? %>
+      <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
+    <% end %>
   <% end %>
   <!-- / Notes -->
 
