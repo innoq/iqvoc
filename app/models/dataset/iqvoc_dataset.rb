@@ -27,13 +27,13 @@ class Dataset::IqvocDataset
 
   private
   def fetch_name
-    return 'unknown' if @repository.nil?
+    return @url.to_s if @repository.nil?
 
     void = RDF::Vocabulary.new('http://rdfs.org/ns/void#')
     query = RDF::Query.new({ dataset: { RDF.type => void.Dataset, RDF::DC.title => :title } })
     results = query.execute(@repository)
 
-    return 'unknown' if results.empty?
+    return @url.to_s if results.empty?
     results.map { |solution| solution.title.to_s }.first
   end
 end
