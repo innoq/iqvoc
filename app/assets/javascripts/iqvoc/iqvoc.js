@@ -48,6 +48,22 @@ var createNote = function(ev) {
   return false;
 };
 
+var debounce = function(fn, delay) {
+  var timer;
+  return function() {
+    var self = this;
+    var args = arguments;
+    if(timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    timer = setTimeout(function() {
+      fn.apply(self, args);
+      timer = null;
+    }, delay);
+  };
+};
+
 // work around apparent capybara-webkit issue:
 // https://github.com/thoughtbot/capybara-webkit/issues/43
 var Storage = localStorage || null;
@@ -59,7 +75,8 @@ if(Storage === null) {
 
 return {
   Storage: Storage,
-  createNote: createNote
+  createNote: createNote,
+  debounce: debounce
 };
 
 }(jQuery));

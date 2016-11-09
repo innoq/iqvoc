@@ -14,7 +14,7 @@ function OneBox(container) {
       appendTo(this.container).hide();
 
   this.form.on("submit", $.proxy(this, "onSubmit"));
-  this.input.on("keyup", debounce($.proxy(this, "onInput"), 300));
+  this.input.on("keyup", IQVOC.debounce($.proxy(this, "onInput"), 300));
 }
 OneBox.prototype.reset = function() {
   this.container.children().not(this.form).not(this.indicator).remove();
@@ -58,21 +58,5 @@ OneBox.prototype.onResults = function(html, status, xhr) {
 return function(selector) {
   return new OneBox(selector); // XXX: returning an instance of a private class seems weird
 };
-
-function debounce(fn, delay) { // TODO: move elsewhere
-  var timer;
-  return function() {
-    var self = this;
-    var args = arguments;
-    if(timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-    timer = setTimeout(function() {
-      fn.apply(self, args);
-      timer = null;
-    }, delay);
-  };
-}
 
 }(jQuery));
