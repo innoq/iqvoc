@@ -28,7 +28,7 @@ function FederatedConceptMapper(selector) {
   var self = this;
   var input = this.input.find("input")
 
-  IQVOC.autocomplete(input, $.proxy(this, "onChange"), {
+  IQVOC.autocomplete(input, IQVOC.debounce($.proxy(this, "onChange"), 500), {
     noResultsMsg: this.root.data("no-results-msg"),
   });
 
