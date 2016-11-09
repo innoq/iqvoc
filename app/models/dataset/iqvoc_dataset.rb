@@ -1,12 +1,19 @@
 require 'linkeddata'
+require 'timeout'
 
 class Dataset::IqvocDataset
+  DEFAULT_TIMEOUT = 5.freeze
+
   attr_reader :name, :url
 
   def initialize(url)
     @url = URI.parse(url)
     dataset_url = URI.join(@url.to_s + '/', 'dataset.rdf')
-    @repository = RDF::Repository.load(dataset_url)
+
+    @repository = Timeout::timeout(DEFAULT_TIMEOUT) do
+      RDF::Repository.load(dataset_url)
+    end
+
     @name = fetch_name
   end
 
@@ -32,9 +39,11 @@ class Dataset::IqvocDataset
 
     void = RDF::Vocabulary.new('http://rdfs.org/ns/void#')
     query = RDF::Query.new({ dataset: { RDF.type => void.Dataset, RDF::DC.title => :title } })
-    results = query.execute(@repository)
+    results = Timeout::timeout(DEFAULT_TIMEOUT) do
+      query.execute(@repository)
+    end
 
-    return @url.to_s if results.empty?
+    return @url.to_s if results.nil? || results.empty?
     results.map { |solution| solution.title.to_s }.first
   end
 end
