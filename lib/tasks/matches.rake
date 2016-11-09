@@ -17,10 +17,7 @@ namespace :iqvoc do
       reverse_match_service = Services::ReverseMatchService.new(host, port)
 
       Match::Base.includes(:concept).find_each do |m|
-        target_base_uri = base_uri(m.value)
-
-        # create jobs if target_base_uri is in iqvoc_sources
-        if iqvoc_sources.include?(target_base_uri)
+        if iqvoc_sources.detect { |url| m.value.starts_with? url.to_s }
           job = reverse_match_service.build_job(:add_match, m.concept, m.value, m.type)
           reverse_match_service.add(job)
 
@@ -36,13 +33,6 @@ namespace :iqvoc do
       jobs = Delayed::Backend::ActiveRecord::Job.where(queue: 'reverse_matches')
       jobs.destroy_all
       stdout_logger.info "Cleared Jobs"
-    end
-
-    private
-
-    def base_uri(url_string)
-      target_uri = URI.parse(url_string)
-      base_uri = URI.parse("#{target_uri.scheme}://#{target_uri.host}:#{target_uri.port}")
     end
 
   end
