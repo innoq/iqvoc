@@ -35,6 +35,7 @@ class RDFAPI
   end
 
   URI_REGEXP = /^https?:\/\/[^\s]+$/
+  URI_LITERAL_REGEXP = /^<(https?:\/\/[^\s]+)>$/
   LITERAL_REGEXP = /^"(.+)"(@(.+))?$/
   BLANK_NODE_REGEXP = /^_:(.+)/
 
