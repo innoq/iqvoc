@@ -57,7 +57,10 @@ class ReverseMatchesController < ApplicationController
     render_response :no_referer and return if request.referer.nil?
     referer = URI.parse(request.referer)
 
-    render_response :unknown_referer and return if iqvoc_sources.exclude? referer
+    if iqvoc_sources.exclude? referer
+      Rails.logger.info "Could not create reverse match - unknown referer: #{referer}"
+      render_response :unknown_referer and return
+    end
 
     @botuser = BotUser.instance
     @published_concept = Iqvoc::Concept.base_class.by_origin(origin).published.last
