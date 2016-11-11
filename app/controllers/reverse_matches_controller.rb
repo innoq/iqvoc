@@ -10,7 +10,7 @@ class ReverseMatchesController < ApplicationController
     matches = @target_match_class.constantize.find_by(concept_id: @published_concept.id, value: @uri)
     render_response :mapping_exists and return if matches
     unpublished_concept = @published_concept.branch(@botuser)
-    unpublished_concept.save
+    unpublished_concept.save!
     @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
     unpublished_concept.publish!
 
@@ -18,19 +18,15 @@ class ReverseMatchesController < ApplicationController
   end
 
   def remove_match
-    begin
-      unpublished_concept = @published_concept.branch(@botuser)
-      unpublished_concept.save
-      match = @target_match_class.constantize.find_by(concept_id: unpublished_concept.id, value: @uri)
-      if match.nil?
-        Rails.logger.info "Could not remove reverse match - match_class: #{@klass}, target_match_class: #{@target_match_class}, unpublished_concept.id: #{unpublished_concept.id}"
-        render_response :unknown_relation and return
-      end
-      match.destroy
-      unpublished_concept.publish!
-    rescue
-      render_response :server_error and return
+    unpublished_concept = @published_concept.branch(@botuser)
+    unpublished_concept.save!
+    match = @target_match_class.constantize.find_by(concept_id: unpublished_concept.id, value: @uri)
+    if match.nil?
+      Rails.logger.info "Could not remove reverse match - match_class: #{@klass}, target_match_class: #{@target_match_class}, unpublished_concept.id: #{unpublished_concept.id}"
+      render_response :unknown_relation and return
     end
+    match.destroy
+    unpublished_concept.publish!
 
     render_response :mapping_removed
   end
