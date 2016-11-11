@@ -51,7 +51,7 @@ class ReverseMatchesController < ApplicationController
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |s| URI.parse(s) }
     render_response :no_referer and return if request.referer.nil?
-    referer = URI.parse(request.referer)
+    referer = URI.parse(request.referer).to_s
 
     unless iqvoc_sources.detect {|url| referer.starts_with?(url.to_s) }
       Rails.logger.info "Could not create reverse match - unknown referer: #{referer}"
