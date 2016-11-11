@@ -7,7 +7,9 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
   end
 
   def perform
-    raise 'concept_not_published_yet' if concept.unpublished?
+    if concept.unpublished?
+      raise MatchedConceptUnpublished, "Matched concept (id: #{concept.id}, origin: #{concept.origin}, rev: #{concept.rev}) is not yet published"
+    end
 
     conn = connection(subject, { accept: 'application/json' })
     response = conn.get
