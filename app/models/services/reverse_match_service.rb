@@ -2,17 +2,17 @@ module Services
   class ReverseMatchService
     include Rails.application.routes.url_helpers
 
-    def initialize(host, port)
-      raise ArgumentError if host.empty?
-      raise ArgumentError unless port.is_a?(Integer)
+    def initialize(host, protocol)
+      raise ArgumentError if host.blank?
+      raise ArgumentError if protocol.blank?
       @host = host
-      @port = port
+      @protocol = protocol
     end
 
     def build_job(type, concept, subject, match_class)
-      raise ArgumentError if type.empty? || concept.nil? || subject.empty? || match_class.empty?
-      referer = root_url(host: @host, port: @port)
-      object = rdf_url(concept.origin, host: @host, port: @port)
+      raise ArgumentError if type.empty? || concept.nil? || subject.blank? || match_class.blank?
+      referer = root_url(host: @host, protocol: @protocol)
+      object = rdf_url(concept.origin, host: @host, protocol: @protocol)
       match_classes = Iqvoc::Concept.reverse_match_class_names
       match_class = match_classes[match_class]
       ReverseMatchJob.new(type, concept, match_class, subject, object, referer)
