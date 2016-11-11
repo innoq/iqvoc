@@ -57,7 +57,7 @@ class ReverseMatchesController < ApplicationController
     render_response :no_referer and return if request.referer.nil?
     referer = URI.parse(request.referer)
 
-    if iqvoc_sources.exclude? referer
+    unless iqvoc_sources.detect {|s| referer.starts_with?(s) }
       Rails.logger.info "Could not create reverse match - unknown referer: #{referer}"
       render_response :unknown_referer and return
     end
