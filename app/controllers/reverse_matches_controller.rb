@@ -12,7 +12,10 @@ class ReverseMatchesController < ApplicationController
     unpublished_concept = @published_concept.branch(@botuser)
     unpublished_concept.save!
     @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
-    unpublished_concept.publish!
+    ActiveRecord::Base.transaction do
+      unpublished_concept.publish!
+      @published_concept.destroy!
+    end
 
     render_response :mapping_added
   end
@@ -25,8 +28,11 @@ class ReverseMatchesController < ApplicationController
       Rails.logger.info "Could not remove reverse match - match_class: #{@klass}, target_match_class: #{@target_match_class}, unpublished_concept.id: #{unpublished_concept.id}"
       render_response :unknown_relation and return
     end
-    match.destroy
-    unpublished_concept.publish!
+    ActiveRecord::Base.transaction do
+      match.destroy!
+      unpublished_concept.publish!
+      @published_concept.destroy!
+    end
 
     render_response :mapping_removed
   end
