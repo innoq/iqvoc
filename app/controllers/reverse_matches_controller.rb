@@ -13,6 +13,7 @@ class ReverseMatchesController < ApplicationController
     unpublished_concept.save!
     @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
     ActiveRecord::Base.transaction do
+      unpublished_concept.unlock
       unpublished_concept.publish!
       @published_concept.destroy!
     end
@@ -30,6 +31,7 @@ class ReverseMatchesController < ApplicationController
     end
     ActiveRecord::Base.transaction do
       match.destroy!
+      unpublished_concept.unlock
       unpublished_concept.publish!
       @published_concept.destroy!
     end
