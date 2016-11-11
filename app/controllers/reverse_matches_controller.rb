@@ -22,7 +22,10 @@ class ReverseMatchesController < ApplicationController
       unpublished_concept = @published_concept.branch(@botuser)
       unpublished_concept.save
       match = @target_match_class.constantize.find_by(concept_id: unpublished_concept.id, value: @uri)
-      render_response :unknown_relation and return if match.nil?
+      if match.nil?
+        Rails.logger.info "Could not remove reverse match - match_class: #{@klass}, target_match_class: #{@target_match_class}, unpublished_concept.id: #{unpublished_concept.id}"
+        render_response :unknown_relation and return
+      end
       match.destroy
       unpublished_concept.publish!
     rescue
@@ -45,8 +48,8 @@ class ReverseMatchesController < ApplicationController
 
     match_classes = Iqvoc::Concept.reverse_match_class_names
     render_response :unknown_match and return if match_classes.values.exclude? match_class
-    klass = match_classes.key(match_class)
-    @target_match_class = klass.constantize.reverse_match_class_name
+    @klass = match_classes.key(match_class)
+    @target_match_class = @klass.constantize.reverse_match_class_name
     render_response :unknown_match and return if @target_match_class.nil?
 
     iqvoc_sources = Iqvoc.config['sources.iqvoc'].map{ |s| URI.parse(s) }
