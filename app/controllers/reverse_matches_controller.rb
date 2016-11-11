@@ -4,19 +4,15 @@ class ReverseMatchesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def add_match
-    begin
-      # NOTE: currently it's only allowed to add matches to published concepts
-      # which are _NOT_ in processing. See older commits how to work with
-      # currently edited concepts
-      matches = @target_match_class.constantize.find_by(concept_id: @published_concept.id, value: @uri)
-      render_response :mapping_exists and return if matches
-      unpublished_concept = @published_concept.branch(@botuser)
-      unpublished_concept.save
-      @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
-      unpublished_concept.publish!
-    rescue
-      render_response :server_error and return
-    end
+    # NOTE: currently it's only allowed to add matches to published concepts
+    # which are _NOT_ in processing. See older commits how to work with
+    # currently edited concepts
+    matches = @target_match_class.constantize.find_by(concept_id: @published_concept.id, value: @uri)
+    render_response :mapping_exists and return if matches
+    unpublished_concept = @published_concept.branch(@botuser)
+    unpublished_concept.save
+    @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
+    unpublished_concept.publish!
 
     render_response :mapping_added
   end
