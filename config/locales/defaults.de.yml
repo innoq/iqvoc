@@ -31,7 +31,7 @@ de:
   time:
     formats:
       default: "%A, %d. %B %Y, %H:%M Uhr"
-      short: "%d. %B, %H:%M Uhr"
+      short: "%d.%m.%Y, %H:%M Uhr"
       long: "%A, %d. %B %Y, %H:%M Uhr"
       time: "%H:%M"
 
