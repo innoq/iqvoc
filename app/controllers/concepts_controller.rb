@@ -25,7 +25,7 @@ class ConceptsController < ApplicationController
     respond_to do |format|
       format.json do # Search for widget
         scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
-            merge(Label::Base.by_query_value("#{params[:query]}%"))
+            merge(Label::Base.by_query_value("%#{params[:query]}%"))
         scope = scope.where(top_term: false) if params[:exclude_top_terms]
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render json: @concepts
