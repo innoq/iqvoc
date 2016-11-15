@@ -24,7 +24,9 @@ class Concepts::AlphabeticalController < ConceptsController
 
     redirect_to(url_for prefix: 'a') unless params[:prefix]
 
-    datasets = init_datasets
+    # only initilaize dataset if dataset param is set
+    # prevent obsolet http request when using matches widget
+    datasets = params[:dataset] ? init_datasets : []
 
     @letters = Label::Base.select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter")
                           .order("letter").map(&:letter)
