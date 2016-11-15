@@ -56,18 +56,20 @@
   <!-- Concept relations -->
   <fieldset>
     <legend><%= Concept::Relation::Base.model_name.human(:count => 2) %></legend>
-    <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
-      <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(concept),
-        :concept => concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class, :f => f %>
-    <%- end -%>
+    <% unless Iqvoc::Concept.broader_relation_class.edit_partial_name(concept).nil? %>
+      <%- if Iqvoc::Concept.broader_relation_class.narrower_editable -%>
+        <%= render Iqvoc::Concept.broader_relation_class.narrower_class.edit_partial_name(concept),
+          :concept => concept, :klass => Iqvoc::Concept.broader_relation_class.narrower_class, :f => f %>
+      <%- end -%>
 
-    <%= f.form_group :top_term do %>
-      <%= f.check_box :top_term,
-        :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) %>
+      <%= f.form_group :top_term do %>
+        <%= f.check_box :top_term,
+          :class => ("exclusive" if Iqvoc::Concept.broader_relation_class.singular?) %>
+      <% end %>
+
+      <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(concept),
+        :concept => concept, :klass => Iqvoc::Concept.broader_relation_class, :f => f %>
     <% end %>
-
-    <%= render Iqvoc::Concept.broader_relation_class.edit_partial_name(concept),
-      :concept => concept, :klass => Iqvoc::Concept.broader_relation_class, :f => f %>
 
     <%- Iqvoc::Concept.further_relation_classes.each do |relation_class| -%>
       <%= render relation_class.edit_partial_name(concept),
