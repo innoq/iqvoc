@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'concerns/dataset_initialization'
+require 'reverse_match_job'
 
 class ConceptsController < ApplicationController
   include DatasetInitialization
