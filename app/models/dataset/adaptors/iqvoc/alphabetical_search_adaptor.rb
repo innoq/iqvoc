@@ -28,7 +28,8 @@ class Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor < Dataset::Adaptors::I
 
       options = {
         definition: element.at_css('.concept-item-definition').try(:content),
-        definition_language: element.at_css('.concept-item-definition').try(:[], :lang)
+        definition_language: element.at_css('.concept-item-definition').try(:[], :lang),
+        additional_info: element.at_css('.additional_info').try(:content)
       }
 
       result = AlphabeticalSearchResultRemote.new(url, path, label, options)
