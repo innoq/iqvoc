@@ -46,6 +46,8 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'Instance copy has been created and locked.'
     collection_origins = [@sports_coll, @hobbies_coll].map(&:origin).join(', ')
     fill_in 'concept_assigned_collection_origins', with: collection_origins
+
+    fill_in 'concept[inline_match_skos_narrow_matches]', with: 'http://example.org/tennis,'
     click_link_or_button 'Save'
 
     # there should be two collections

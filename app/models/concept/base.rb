@@ -153,7 +153,6 @@ class Concept::Base < ActiveRecord::Base
         # create new match relations
         urls_copy.each do |url|
           self.send(match_class.to_relation_name) << match_class.constantize.new(value: url)
-          self.save
 
           if self.reverse_match_service.present? && federation_match?(url)
             job = self.reverse_match_service.build_job(:add_match, self, url, match_class)
