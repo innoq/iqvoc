@@ -1,3 +1,8 @@
+## [4.11.1]
+
+  * Fixed: duplicate concept collection assignment on concept creation when assigning concept matches
+  * Fixed: sprockets deprecations
+
 ## [4.11.0]
 
   * Added: render additional concept info in remote alphabetical search results (federated concept mapper)
