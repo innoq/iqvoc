@@ -48,7 +48,10 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     fill_in 'concept_assigned_collection_origins', with: collection_origins
     click_link_or_button 'Save'
 
-    within('#assigned_collections') do |ref|
+    # there should be two collections
+    assert_equal 2, page.all('#assigned_collections ul li a').size
+
+    within('#assigned_collections') do
       assert page.has_content? 'Sports'
       assert page.has_content? 'Hobbies'
     end
@@ -58,7 +61,10 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     fill_in 'concept_assigned_collection_origins', with: @sports_coll.origin
     click_link_or_button 'Save'
 
-    within('#assigned_collections') do |ref|
+    # there should be one collection left
+    assert_equal 1, page.all('#assigned_collections ul li a').size
+
+    within('#assigned_collections') do
       assert page.has_content? 'Sports'
       refute page.has_content? 'Hobbies'
     end
@@ -68,7 +74,10 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     fill_in 'concept_assigned_collection_origins', with: ''
     click_link_or_button 'Save'
 
-    within('#assigned_collections') do |ref|
+    # there should be no collections anymore
+    assert_equal 0, page.all('#assigned_collections ul li a').size
+
+    within('#assigned_collections') do
       refute page.has_content?('Sports'), 'Sports should be removed'
       refute page.has_content?('Hobbies'), 'Hobbies should be removed'
     end
