@@ -58,6 +58,10 @@ GEM
     autoprefixer-rails (6.5.1.1)
       execjs
     awesome_print (1.6.1)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.3.pre1)
       debug_inspector (>= 0.0.1)
     bootstrap_form (2.2.0)
@@ -361,6 +365,7 @@ DEPENDENCIES
   authlogic (~> 3.4.2)
   autoprefixer-rails (~> 6.5.1.1)
   awesome_print
+  better_errors
   binding_of_caller (= 0.7.3.pre1)
   bootstrap_form (~> 2.2.0)
   cancancan (~> 1.10.0)
@@ -400,4 +405,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.4
+   1.14.5
