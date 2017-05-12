@@ -1,5 +1,6 @@
 .bundle
 .rbenv-version
+.ruby-version
 db/*.sqlite3
 db/schema.rb
 log/*.log
