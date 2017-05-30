@@ -2,5 +2,5 @@
 <%= render "dashboard/sidebar" %>
 
 <%= form_tag reset_path, :method => :post do %>
-  <%= submit_tag t("txt.views.dashboard.reset"), :class => "btn btn-danger" %>
+  <%= submit_tag t("txt.views.dashboard.reset"), class: "btn btn-danger", data: { confirm: t('txt.views.dashboard.reset_confirm') } %>
 <% end %>

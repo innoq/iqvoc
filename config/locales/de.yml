@@ -294,6 +294,7 @@ de:
        reset: Thesaurus löschen
        reset_warning: "Alle Konzepte, Kollektionen und Labels im Thesaurus werden gelöscht."
        jobs_pending_warning: "Einige Hintergrundprozesse sind noch nicht abgeschlossen (z.B. Exports). Ausstehende Prozesse werden ebenfalls gelöscht."
+       reset_confirm: "Soll der Thesaurus wirklich gelöscht werden?"
        reset_success: "Der Thesaurus wurde gelöscht."
        export: "Export"
        import: "Import"
