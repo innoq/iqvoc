@@ -1,4 +1,4 @@
-<%= page_header :title => t('txt.views.users.index.header') %>
+<%= page_header title: t('txt.views.users.index.header') %>
 <div class="table-responsive">
   <table class="table users-table">
     <thead>
@@ -20,8 +20,8 @@
           <td><%= user.role.humanize %></td>
           <td><%= icon(:check) if user.active? %></td>
           <td>
-            <%= link_to t('txt.views.users.edit_link'), edit_user_path(:id => user), :class => 'btn btn-default' %>
-            <%= link_to t('txt.views.users.destroy_link'), user_path(:id => user), :confirm => t('txt.views.users.sure'), :method => :delete, :class => "btn btn-danger" %>
+            <%= link_to t('txt.views.users.edit_link'), edit_user_path(id: user), class: 'btn btn-default' %>
+            <%= link_to t('txt.views.users.destroy_link'), user_path(id: user), data: { confirm: t('txt.views.users.sure')}, method: :delete, class: "btn btn-danger" %>
           </td>
         </tr>
       <% end %>
