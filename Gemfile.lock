@@ -381,7 +381,7 @@ DEPENDENCIES
   iq_rdf (>= 0.1.15)
   iq_triplestorage
   json
-  kaminari
+  kaminari (~> 0.16.3)
   kaminari-bootstrap (~> 3.0.1)
   linkeddata (~> 1.1.2)
   maruku
@@ -405,4 +405,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.5
+   1.14.6

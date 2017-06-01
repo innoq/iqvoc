@@ -20,7 +20,7 @@ source 'https://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '~> 4.2.8'
-gem 'kaminari'
+gem 'kaminari', '~> 0.16.3'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'authlogic', '~> 3.4.2'
 gem 'cancancan', '~> 1.10.0'

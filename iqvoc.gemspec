@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('rails', '>= 4.2.8', '< 5.0')
   s.add_dependency 'bundler'
-  s.add_dependency 'kaminari'
+  s.add_dependency 'kaminari', '~> 0.16.3'
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
   s.add_dependency 'authlogic', '~> 3.4.2'
   s.add_dependency 'cancancan'
