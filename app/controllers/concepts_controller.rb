@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'concerns/dataset_initialization'
+require 'reverse_match_job'
 
 class ConceptsController < ApplicationController
   include DatasetInitialization
@@ -25,7 +26,7 @@ class ConceptsController < ApplicationController
     respond_to do |format|
       format.json do # Search for widget
         scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
-            merge(Label::Base.by_query_value("#{params[:query]}%"))
+            merge(Label::Base.by_query_value("%#{params[:query]}%"))
         scope = scope.where(top_term: false) if params[:exclude_top_terms]
         @concepts = scope.all.map { |concept| concept_widget_data(concept) }
         render json: @concepts
@@ -142,7 +143,7 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new
-    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol)
     @concept.assign_attributes(concept_params)
     @datasets = datasets_as_json
 
@@ -180,7 +181,7 @@ class ConceptsController < ApplicationController
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
     authorize! :update, @concept
-    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.port)
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol)
 
     @datasets = datasets_as_json
 

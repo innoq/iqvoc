@@ -28,8 +28,8 @@ class DashboardController < ApplicationController
     if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
       @items.sort! do |x, y|
         xval, yval = x.send(params[:by]), y.send(params[:by])
-        xval = xval.to_s.downcase unless xval.is_a?(Date)
-        yval = yval.to_s.downcase unless yval.is_a?(Date)
+        xval = xval.to_s.downcase
+        yval = yval.to_s.downcase
         (xval <=> yval) * factor
       end
     else

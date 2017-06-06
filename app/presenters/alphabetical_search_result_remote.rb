@@ -5,10 +5,15 @@ class AlphabeticalSearchResultRemote < AlphabeticalSearchResult
     @label = label
     @definition = options[:definition]
     @definition_language = options[:definition_language]
+    @additional_info = options[:additional_info]
   end
 
   def label
-    @label
+    if @additional_info.present?
+      "#{@label} #{@additional_info}"
+    else
+      @label
+    end
   end
 
   def path

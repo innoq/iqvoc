@@ -308,6 +308,7 @@ en:
        reset: Reset Thesaurus
        reset_warning: "All concepts, collections and labels in the thesaurus will be deleted."
        jobs_pending_warning: "Pending background jobs detected (e.g. exports). Pending Jobs will be deleted too."
+       reset_confirm: "Are you sure you want to reset thesaurus?"
        reset_success: "Thesaurus has been resetted."
        export: "Export"
        import: "Import"

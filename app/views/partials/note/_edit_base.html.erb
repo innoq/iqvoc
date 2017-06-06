@@ -6,7 +6,7 @@
         <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
           <%= note_form.text_area :value %>
           <%= note_form.select :language, Iqvoc.note_languages.map { |l| [l, l]}, :label => t("txt.common.language") %>
-          <% unless note.new_record? %>
+          <% if note.persisted? %>
             <%= note_form.check_box :"_destroy", :label => t("txt.common.delete") %>
           <% end %>
         <% end %>

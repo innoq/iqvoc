@@ -52,4 +52,8 @@ class Match::Base < ActiveRecord::Base
   def self.edit_partial_name(obj)
     'partials/match/edit_base'
   end
+
+  def self.reverse_match_class_name
+    nil
+  end
 end

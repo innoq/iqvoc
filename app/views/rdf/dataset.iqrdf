@@ -5,6 +5,6 @@ end
 
 ns = IqRdf::Namespace.find_namespace_class(:void)
 
-document << IqRdf.build_uri(Iqvoc.config['title'].parameterize, ns.build_uri('Dataset')) do |dataset|
-  dataset.dct.title Iqvoc.config['title']
+document << IqRdf.build_uri(@title.parameterize, ns.build_uri('Dataset')) do |dataset|
+  dataset.dct.title @title
 end

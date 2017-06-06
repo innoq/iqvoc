@@ -132,11 +132,11 @@ de:
        new: "Neues %{concept_class_name}"
        pref_label: "Bevorzugtes Label"
        classifiers: "Umweltklassen"
-       pending_jobs_header: "Austehende Jobs"
-       pending_jobs_message: "Zu diesem Konzept existieren noch austehende Jobs."
+       pending_jobs_header: "Ausstehende Jobs"
+       pending_jobs_message: "Zu diesem Konzept existieren noch ausstehende Jobs."
        add_match: "Anlage:"
        remove_match: "Löschung:"
-       job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} austehend."
+       job_detail: "%{match_class}-Beziehung von Konzept %{subject} aus entfernter Ontologie auf %{target} ausstehend."
        job_state: "(Status: %{state})"
        to_concept: "Zum Konzept"
        teaser:
@@ -301,6 +301,7 @@ de:
        reset: Thesaurus löschen
        reset_warning: "Alle Konzepte, Kollektionen und Labels im Thesaurus werden gelöscht."
        jobs_pending_warning: "Einige Hintergrundprozesse sind noch nicht abgeschlossen (z.B. Exports). Ausstehende Prozesse werden ebenfalls gelöscht."
+       reset_confirm: "Soll der Thesaurus wirklich gelöscht werden?"
        reset_success: "Der Thesaurus wurde gelöscht."
        export: "Export"
        import: "Import"

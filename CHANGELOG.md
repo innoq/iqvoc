@@ -1,5 +1,14 @@
-## [4.10.1]
+## [4.11.1]
 
+  * Fixed: duplicate concept collection assignment on concept creation when assigning concept matches
+  * Fixed: sprockets deprecations
+
+## [4.11.0]
+
+  * Added: render additional concept info in remote alphabetical search results (federated concept mapper)
+  * Fixed: duplicate concept collection assignment bug
+  * Fixed: optimize label search in concept creation/editing (contains)
+  * Fixed: some things related to reverse-matches mirroring
   * Fixed: initial created change note creation
 
 ## [4.10.0]

@@ -56,7 +56,9 @@ module Concept
         lang = pref_label.language.to_s
         origin = (pref_label.origin || pref_label.id || pref_label.value).to_s
         if (languages.keys.include?(lang) && languages[lang] != origin)
+          # there are at least two pref labels for one specific language
           errors.add :pref_labelings, I18n.t('txt.models.concept.pref_labels_with_same_languages_error')
+          break
         end
         languages[lang] = origin
       end

@@ -112,22 +112,18 @@ class Concept::Base < ActiveRecord::Base
     end
 
     # Process assigned collections
-    if (@assigned_collection_origins ||= {}).any?
-      # Destroy assigned collections
-      existing_collection_origins = concept.collections.map(&:origin).uniq
-      existing_collection_origins.each do |origin|
-        collection = Iqvoc::Collection.base_class.by_origin(origin).published.first
-        relation = Iqvoc::Collection.member_class.find_by(collection: collection, target: concept)
-        relation.destroy! if relation
-      end
+    if @assigned_collection_origins
+      transaction do
+        collections.destroy_all
 
-      # Rebuild collection relations
-      @assigned_collection_origins.each do |origin|
-        collection = Iqvoc::Collection.base_class.by_origin(origin).published.first
-        if collection
-          Iqvoc::Collection.member_class.create! do |m|
-            m.collection = collection
-            m.target = concept
+        # Rebuild collection relations
+        @assigned_collection_origins.each do |origin|
+          collection = Iqvoc::Collection.base_class.by_origin(origin).published.first
+          if collection
+            Iqvoc::Collection.member_class.create! do |m|
+              m.collection = collection
+              m.target = concept
+            end
           end
         end
       end
@@ -157,7 +153,6 @@ class Concept::Base < ActiveRecord::Base
         # create new match relations
         urls_copy.each do |url|
           self.send(match_class.to_relation_name) << match_class.constantize.new(value: url)
-          self.save
 
           if self.reverse_match_service.present? && federation_match?(url)
             job = self.reverse_match_service.build_job(:add_match, self, url, match_class)

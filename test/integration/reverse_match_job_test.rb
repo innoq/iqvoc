@@ -33,7 +33,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       c.save
     end
 
-    @reverse_match_service = Services::ReverseMatchService.new('http://try.iqvoc.com', 80)
+    @reverse_match_service = Services::ReverseMatchService.new('try.iqvoc.com', 'http://')
 
     body = {links: [
       { rel: 'self', href: 'http://0.0.0.0:3000/en/concepts/airsoft', method: 'get' },

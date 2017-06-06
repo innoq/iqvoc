@@ -1,11 +1,12 @@
 require 'faraday'
 
 class Dataset::Adaptors::Iqvoc::HTTPAdaptor
+  DEFAULT_TIMEOUT = 5.freeze
   attr_reader :url
 
   def initialize(url)
     @url = url
-    @conn = Faraday.new(url: url) do |conn|
+    @conn = Faraday.new(url: url, request: { timeout: DEFAULT_TIMEOUT }) do |conn|
       #conn.use Faraday::Response::Logger if Rails.env.development?
       conn.adapter Faraday.default_adapter
     end
@@ -15,8 +16,7 @@ class Dataset::Adaptors::Iqvoc::HTTPAdaptor
     begin
       response = @conn.get(path)
     rescue Faraday::Error::ConnectionFailed,
-        Faraday::Error::ResourceNotFound,
-        Faraday::Error::TimeoutError => e
+        Faraday::Error::ResourceNotFound => e
       return failed_request(path)
     end
 

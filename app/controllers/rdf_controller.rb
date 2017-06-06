@@ -51,8 +51,11 @@ class RdfController < ApplicationController
   end
 
   def dataset
-    respond_to do |format|
-      format.any(:rdf, :ttl, :nt)
+    @title = Iqvoc.config['title']
+    if stale?(etag: @title)
+      respond_to do |format|
+        format.any(:rdf, :ttl, :nt)
+      end
     end
   end
 end

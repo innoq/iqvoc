@@ -19,8 +19,8 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '~> 4.2.6'
-gem 'kaminari'
+gem 'rails', '~> 4.2.8'
+gem 'kaminari', '~> 0.16.3'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'authlogic', '~> 3.4.2'
 gem 'cancancan', '~> 1.10.0'
@@ -39,9 +39,9 @@ gem 'font-awesome-rails', '~> 4.3.0'
 gem 'apipie-rails', '~> 0.3.5'
 gem 'maruku', require: false
 gem 'database_cleaner'
-gem 'delayed_job_active_record', '~> 4.0.1'
+gem 'delayed_job_active_record', '~> 4.1.1'
 gem 'carrierwave'
-gem 'autoprefixer-rails', '~> 5.1.8'
+gem 'autoprefixer-rails', '~> 6.5.1.1'
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
@@ -56,6 +56,7 @@ end
 group :development, :test do
   gem 'awesome_print'
 
+  gem 'better_errors'
   gem 'web-console'
   gem 'binding_of_caller', '0.7.3.pre1'
   gem 'pry-rails'
