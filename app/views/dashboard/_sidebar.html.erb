@@ -4,13 +4,16 @@
     <%= sidebar_item { render(klass.new_link_partial_name) } %>
   <% end %>
   <%= sidebar_header 'Extras' %>
-  <%= sidebar_item(:icon => :download, :text => t('txt.views.dashboard.export'),
-    :path => exports_path, :active => params[:controller] == 'exports', :perms => [:export, Concept::Base]) %>
+
   <%= sidebar_item(:icon => :upload, :text => t('txt.views.dashboard.import'),
     :path => imports_path, :active => params[:controller] == 'imports', :perms => [:import, Concept::Base]) %>
-  <%= sidebar_item(:icon => :eraser, :text => t('txt.views.dashboard.reset'),
-    :path => reset_path, :active => params[:action] == "reset",
-    :perms => [:reset, :thesaurus]) %>
+
+  <%= sidebar_item(:icon => :download, :text => t('txt.views.dashboard.export'),
+    :path => exports_path, :active => params[:controller] == 'exports', :perms => [:export, Concept::Base]) %>
+
   <%= sidebar_item(:icon => :refresh, :text => t('txt.views.triplestore_sync.caption'),
-    :path => triplestore_sync_path, :active => params[:controller] == "triplestore_sync") %>
+     :path => triplestore_sync_path, :active => params[:controller] == "triplestore_sync", :perms => [:sync, :triplestore]) %>
+
+  <%= sidebar_item(:icon => :eraser, :text => t('txt.views.dashboard.reset'),
+    :path => reset_path, :active => params[:action] == "reset", :perms => [:reset, :thesaurus]) %>
 <% end %>
