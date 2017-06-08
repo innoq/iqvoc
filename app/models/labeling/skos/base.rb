@@ -81,7 +81,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:change_note_date_from].present? || params[:change_note_date_to].present?
-      change_note_relation = Iqvoc::change_note_class_name.to_relation_name
+      change_note_relation = Iqvoc.change_note_class_name.to_relation_name
       concepts = Concept::Base.published
                               .includes(change_note_relation.to_sym => :annotations)
                               .references(change_note_relation)
@@ -94,19 +94,32 @@ class Labeling::SKOS::Base < Labeling::Base
                  when 'modified'
                    concepts.where('note_annotations.predicate = ?', 'modified')
                  else
-                   concepts # no change note type assigned
+                   concepts.where('note_annotations.predicate = ? OR note_annotations.predicate = ?', 'created', 'modified')
                  end
 
-      date_from = Date.parse(params[:change_note_date_from]) if params[:change_note_date_from].present?
-      concepts = concepts.where('note_annotations.created_at >= ?', date_from) if date_from
+      if params[:change_note_date_from].present?
+        begin
+          DateTime.parse(params[:change_note_date_from])
+          date_from = params[:change_note_date_from]
+          concepts = concepts.where('note_annotations.value >= ?', date_from)
+        rescue ArgumentError
+          Rails.Logger.error "Invalid date was entered for search"
+        end
+      end
 
-      date_to = Date.parse(params[:change_note_date_to]) if params[:change_note_date_to].present?
-      concepts = concepts.where('note_annotations.created_at <= ?', date_to) if date_to
-    else
-      concepts = Concept::Base.published
+      if params[:change_note_date_to].present?
+        begin
+          DateTime.parse(params[:change_note_date_to])
+          date_to = params[:change_note_date_to]
+          concepts = concepts.where('note_annotations.value <= ?', date_to)
+        rescue ArgumentError
+          Rails.Logger.error "Invalid date was entered for search"
+        end
+      end
+
+      scope = scope.includes(:owner).merge(concepts)
     end
 
-    scope = scope.merge(concepts)
     scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end
