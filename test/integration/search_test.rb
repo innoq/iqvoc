@@ -88,6 +88,33 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.has_css?('.search-result')
   end
 
+  test 'date filter' do
+    login 'administrator'
+
+    visit new_concept_path(lang: 'en', format: 'html', published: 0)
+    fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en',
+        with: 'Water'
+    click_button 'Save'
+
+    visit new_concept_path(lang: 'en', format: 'html', published: 0)
+    fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en',
+        with: 'Air'
+    click_button 'Save'
+
+    Iqvoc::Concept.base_class.third.update_attributes published_at: Date.today
+    Iqvoc::Concept.base_class.fourth.update_attributes published_at: Date.today
+    Note::Annotated::Base.where(predicate: "created").first.update_attributes value: (Date.today - 10.days).to_s
+
+    visit search_path(lang: 'en', format: 'html')
+    find('#t').select 'Labels'
+    find('#change_note_type').select 'creation date'
+    fill_in 'change_note_date_from', with: Date.today
+    click_button('Search')
+
+    refute page.find('.search-results').has_content?('Water')
+    assert page.find('.search-results').has_content?('Air')
+  end
+
   test 'searching within collections' do
     visit search_path(lang: 'en', format: 'html')
 
