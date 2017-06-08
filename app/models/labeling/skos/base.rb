@@ -57,7 +57,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Base.where(origin: params[:collection_origin]).last
+      collection = Iqvoc::Collection.base_class.where(origin: params[:collection_origin]).last
       if collection
         scope = scope.includes(owner: :collection_members)
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
@@ -82,7 +82,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
     if params[:change_note_date_from].present? || params[:change_note_date_to].present?
       change_note_relation = Iqvoc.change_note_class_name.to_relation_name
-      concepts = Concept::Base.published
+      concepts = Concept::Base.base_class.published
                               .includes(change_note_relation.to_sym => :annotations)
                               .references(change_note_relation)
                               .references('note_annotations')
