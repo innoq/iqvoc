@@ -315,6 +315,7 @@ de:
        error: "Es ist ein Fehler aufgetreten. Export-Job konnte nicht erstellt werden."
        missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
        missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
+       output: "Log-Ausgabe"
 
    partials:
      note:
