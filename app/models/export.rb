@@ -21,12 +21,12 @@ class Export < ActiveRecord::Base
   end
 
   def build_filename
-    File.join(Iqvoc.export_path, "#{self.token.to_s}.#{self.file_type}")
+    File.join(Iqvoc.export_path, "#{token}.#{file_type}")
   end
 
   private
 
   def delete_dump_file
-    File.delete(self.build_filename)
+    File.delete(build_filename)
   end
 end
