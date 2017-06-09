@@ -104,48 +104,48 @@ class SkosExporter
         :collection_members,
         :notations,
         { relations: :target, labelings: :target, notes: :annotations }
-        ])
+      ])
 
-        concepts.each do |concept|
-          render_concept(document, concept, true)
-        end
-
-        @logger.info "Concepts #{offset+1}-#{offset+limit} exported."
-        offset += concepts.size # Size is important!
+      concepts.each do |concept|
+        render_concept(document, concept, true)
       end
 
-      @logger.info "Finished exporting concepts (#{offset} concepts exported)."
+      @logger.info "Concepts #{offset+1}-#{offset+limit} exported."
+      offset += concepts.size # Size is important!
     end
 
-    def save_file(file_path, type, content)
-      begin
-        @logger.info "Saving export to '#{@file_path}'"
-        create_directory(@file_path)
-        file = File.open(@file_path, 'w')
-        content = serialize_rdf(content, type)
-        file.write(content)
-      rescue IOError => e
-        # some error occur
-        # e.g not writable
-      ensure
-        file.close unless file == nil
-      end
-    end
+    @logger.info "Finished exporting concepts (#{offset} concepts exported)."
+  end
 
-    def create_directory(file_path)
-      dirname = File.dirname(file_path)
-      unless File.directory?(dirname)
-        FileUtils.mkdir_p(dirname)
-      end
-    end
-
-    def serialize_rdf(document, type)
-      if type == 'xml'
-        document.to_xml
-      elsif type == 'ttl'
-        document.to_turtle
-      else
-        document.to_ntriples
-      end
+  def save_file(file_path, type, content)
+    begin
+      @logger.info "Saving export to '#{@file_path}'"
+      create_directory(@file_path)
+      file = File.open(@file_path, 'w')
+      content = serialize_rdf(content, type)
+      file.write(content)
+    rescue IOError => e
+      # some error occur
+      # e.g not writable
+    ensure
+      file.close unless file == nil
     end
   end
+
+  def create_directory(file_path)
+    dirname = File.dirname(file_path)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+  end
+
+  def serialize_rdf(document, type)
+    if type == 'xml'
+      document.to_xml
+    elsif type == 'ttl'
+      document.to_turtle
+    else
+      document.to_ntriples
+    end
+  end
+end
