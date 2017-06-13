@@ -116,7 +116,7 @@ module Iqvoc
         if value == nil
           raise TypeError, 'nil values not supported'
         end
-        unless [TrueClass, FalseClass, String, Fixnum, Float, Array].include?(value.class)
+        unless [TrueClass, FalseClass, String, 0.class, Float, Array].include?(value.class)
           raise TypeError, 'complex values not supported'
         end
       end

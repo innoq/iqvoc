@@ -33,5 +33,7 @@ end
 unless Rails.env.test?
 end
 
+Iqvoc.default_rdf_namespace_helper_modules << IqvocModuleHelper
+
 Iqvoc.export_path = Rails.root.join('public/export')
 Iqvoc.upload_path = Rails.root.join('public/uploads')
