@@ -161,7 +161,8 @@ class SearchResultsController < ApplicationController
     end
     controller.instance_variable_set(:@available_languages, langs)
 
-    collections = Iqvoc::Collection.base_class.includes(:pref_labels).load
+    # AR requires mapping to existing object attributes so taht value is mapping to unused status attribute to keep the value information
+    collections = Iqvoc::Collection.base_class.joins(:pref_labels).order('value').select('value AS status, concepts.origin')
     controller.instance_variable_set(:@collections, collections)
 
     # default search params
