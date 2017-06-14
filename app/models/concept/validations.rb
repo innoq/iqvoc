@@ -10,7 +10,7 @@ module Concept
       validate :exclusive_top_term
       validate :rooted_top_terms
       validate :valid_rank_for_ranked_relations
-      validate :unique_pref_label
+      validate :unique_pref_labels
       validate :exclusive_pref_label
       validate :unique_alt_labels
     end
@@ -64,17 +64,11 @@ module Concept
       end
     end
 
-    def unique_pref_label
+    def unique_pref_labels
       if validatable_for_publishing?
-        # checks if there are any existing pref labels with the same
-        # language and value
+        # checks if any other concept already owns the chosen pref labels
         conflicting_pref_labels = pref_labels.select do |l|
-          Labeling::SKOS::Base.
-            joins(:owner, :target).
-            where(labels: { value: l.value, language: l.language }).
-            where('labelings.owner_id != ?', id).
-            where('concepts.origin != ?', origin).
-            any?
+          Iqvoc::Concept.base_class.joins(:pref_labels).where(labels: { value: l.value, language: l.language }).where('labelings.owner_id != ?', id).where('concepts.origin != ?', origin).any?
         end
 
         if conflicting_pref_labels.any?
