@@ -180,9 +180,9 @@ GEM
     multipart-post (2.0.0)
     mysql2 (0.3.18)
     net-http-persistent (2.9.4)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
-    nokogiri (1.6.8.1-java)
+    nokogiri (1.7.2-java)
     parallel (1.4.1)
     pg (0.19.0)
     poltergeist (1.6.0)
@@ -386,7 +386,7 @@ DEPENDENCIES
   linkeddata (~> 1.1.2)
   maruku
   mysql2 (~> 0.3.13)
-  nokogiri (~> 1.6.0)
+  nokogiri (~> 1.7.2)
   pg
   poltergeist (~> 1.6.0)
   pry-byebug (~> 1.1.2)
@@ -405,4 +405,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.6
+   1.15.1
