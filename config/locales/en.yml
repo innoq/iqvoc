@@ -189,6 +189,10 @@ en:
        back_to_show: "Back to original version"
        back_to_preview: "Back to version preview"
        instance_configuration: "Configuration"
+       import: "import"
+       export: "export"
+       sync: "triplestore sync"
+       reset: "thesaurus reset"
        hierarchical: "Hierarchical"
        alphabetical: "Alphabetical"
        draft: "Draft"
@@ -328,6 +332,7 @@ en:
        success: "Export job was created. Reload page to see current processing status."
        error: "Error occurred while creating Export job."
        missing_file: "An error occurred. Export could not be found."
+       output: "log"
 
    partials:
      note:
