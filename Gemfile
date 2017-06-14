@@ -30,7 +30,7 @@ gem 'json'
 gem 'rails_autolink'
 gem 'faraday', '0.9.0'
 gem 'faraday_middleware'
-gem 'nokogiri', '~> 1.6.0'
+gem 'nokogiri', '~> 1.7.2'
 gem 'linkeddata', '~> 1.1.2'
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
@@ -77,9 +77,9 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '~> 2.4.0'
+  gem 'capybara', '~> 2.14.2'
   gem 'poltergeist', '~> 1.6.0'
-  gem 'webmock'
+  gem 'webmock', '~> 3.0.1'
   gem 'simplecov'
 end
 
