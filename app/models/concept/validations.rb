@@ -129,9 +129,6 @@ module Concept
         narrower_concepts = narrower_relations.map { |n| n.owner }
         relations_union = broader_concepts & narrower_concepts
 
-        broader_concepts = broader_relations.map { |b| b.target }
-        narrower_concepts = narrower_relations.map { |n| n.owner }
-
         unless relations_union.empty?
           errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: relations_union.map{ |u| u.narrower_relations.map { |r| r.target.pref_labels.first  } }.flatten.join(', '))
         end
