@@ -131,7 +131,7 @@ class ConceptTest < ActiveSupport::TestCase
     refute monkey.publishable?, 'There should be no duplicates between prefLabel/altLabel'
   end
 
-  test 'multiple pref labels' do
+  test 'multiple pref labels of different languages' do
     concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
     RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
     RDFAPI.devour concept, 'skos:prefLabel', '"Bär"@de'
