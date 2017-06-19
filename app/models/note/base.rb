@@ -138,6 +138,8 @@ class Note::Base < ActiveRecord::Base
       scope
     end
 
+    scope = scope.joins("INNER JOIN labelings ON notes.owner_id = labelings.owner_id AND labelings.type LIKE '%PrefLabel' INNER JOIN labels ON labelings.target_id = labels.id").order("labels.value ASC")
+
     if params[:collection_origin].present?
       collection = Collection::Base.where(origin: params[:collection_origin]).last
       if collection
