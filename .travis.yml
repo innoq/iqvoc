@@ -2,12 +2,10 @@ language: ruby
 cache: bundler
 bundler_args: "--without production heroku --retry 3"
 rvm:
-# - 1.9.3
-- 2.0
 - 2.2
 - 2.3
+- 2.4
 - ruby-head
-# - jruby-19mode
 # - jruby-head
 env:
 - DB=sqlite
