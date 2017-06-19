@@ -125,7 +125,7 @@ module Concept
 
     def exclusive_broader_and_narrower_concepts
       if validatable_for_publishing?
-        relations_union = broader_relations.map { |b| b.owner } & narrower_relations.map { |n| n.owner }
+        relations_union = broader_relations.map { |b| b.target } & narrower_relations.map { |n| n.target }
 
         unless relations_union.empty?
           errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: relations_union.map{ |u| u.narrower_relations.map { |r| r.target.pref_labels.first  } }.flatten.join(', '))
