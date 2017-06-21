@@ -435,6 +435,7 @@ de:
        top_term_exclusive_error: "Einem Begriff oberster Ebene darf kein allgemeinerer Begriff zugewiesen werden."
        top_term_rooted_error: "Begriffe oberster Ebene dürfen nicht als spezifischere Begriffe verwendet werden."
        invalid_rank_for_ranked_relations: 'Ungültiger Rang für %{relation} "%{relation_target_label}".'
+       no_narrower_and_broader_relations: 'Sowohl allgemeinere als auch spezifischere Beziehungen: %{concepts}'
        main_pref_label_language_missing_error: "Es muss mindestens ein bevorzugtes Label in der Hauptsprache des Thesaurus existieren."
        pref_labels_with_same_languages_error: "Es darf nur jeweils ein bevorzugtes Label zu einer Sprache geben."
        association_pref_labels_unpublished: "Das bevorzugte Label muss veröffentlicht sein."

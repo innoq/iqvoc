@@ -25,7 +25,9 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
         req.params['uri'] = object
       end
     rescue Faraday::ClientError => e
-      if e.response.nil? || response[:status] != 409
+      # do not catch Mapping-Exists errors, just keep job running and do nothing
+      # except delete job
+      if e.response.nil? || e.response[:status] != 409
         raise e
       end
     end

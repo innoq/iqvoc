@@ -30,7 +30,7 @@ class SkosExportTest < ActiveSupport::TestCase
     generated_export = File.read(@export_file)
 
     @testdata.each do |ntriple|
-      assert generated_export.include?(ntriple), "could'n find ntriple '#{ntriple}' in generated_export"
+      assert generated_export.include?(ntriple), "couldn't find ntriple '#{ntriple}' in generated_export"
     end
 
     # delete export

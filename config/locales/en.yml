@@ -441,6 +441,7 @@ en:
        top_term_exclusive_error: "A Top Term must not have any broader terms."
        top_term_rooted_error: "Top Terms must not be used as narrower terms."
        invalid_rank_for_ranked_relations: 'Invalid rank for %{relation} "%{relation_target_label}".'
+       no_narrower_and_broader_relations: 'Both narrower and broader relations: %{concepts}'
        main_pref_label_language_missing_error: "There has to be one preferred Label in the main language of the thesaurus."
        pref_labels_with_same_languages_error: "There must be only one preferred Label per language."
        association_pref_labels_unpublished: "The preferred Label has to be published."
