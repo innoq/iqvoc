@@ -128,7 +128,7 @@ module Concept
         relations_union = broader_relations.map { |b| b.target } & narrower_relations.map { |n| n.target }
 
         if relations_union.any?
-          errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: relations_union.map{ |u| u.narrower_relations.map { |r| r.target.pref_labels.first  } }.flatten.join(', '))
+          errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: relations_union.each { |u| u.narrower_relations.map{ |r| r.owner.pref_labels.first } }.flatten.join(', '))
         end
       end
     end

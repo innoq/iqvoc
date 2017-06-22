@@ -219,5 +219,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 1, concept.narrower_relations.count
     assert_equal 1, concept.broader_relations.count
     refute concept.publishable?
+    assert_equal 1, concept.errors.full_messages_for(:base).count
+    assert_equal "Both narrower and broader relations: Bear", concept.errors.full_messages_for(:base).first
   end
 end
