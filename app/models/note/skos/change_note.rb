@@ -38,7 +38,7 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
       blank_node.Rdfs::comment(self.value, lang: self.language || nil) if self.value
       self.annotations.order(:namespace, :predicate).each do |annotation|
         if (IqRdf::Namespace.find_namespace_class(annotation.namespace))
-          blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, annotation.value)
+          blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, annotation.value.nil? ? '' : annotation.value)
         else
           raise "Note::SKOS::ChangeNote#build_rdf: couldn't find Namespace '#{annotation.namespace}'."
         end
