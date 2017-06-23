@@ -222,7 +222,7 @@ class ConceptTest < ActiveSupport::TestCase
     error_messages = concept.errors.full_messages_for(:base)
     assert_equal 1, error_messages.count
     index = error_messages.first.index(':')
-    assert_equal ": Bear", error_messages.first[index..index + 6]
+    assert_equal ": Bear", error_messages.first[index..index + 5]
     assert_nil error_messages.first.index(',')
   end
 end
