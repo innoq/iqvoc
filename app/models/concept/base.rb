@@ -85,6 +85,7 @@ class Concept::Base < ActiveRecord::Base
     # Examples:
     # regular:  {'relation_name' => ['origin1', 'origin2']}
     # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
+    new_relations = @concept_relations_by_id.values.select { |v| v.present? } if @concept_relations_by_id.present?
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
       new_origins = new_origins.split(InlineDataHelper::SPLITTER).map(&:squish)
@@ -100,7 +101,7 @@ class Concept::Base < ActiveRecord::Base
 
       # Destroy elements of the given concept relation
       concept.send(relation_name).by_target_origin(existing_origins).each do |relation|
-        concept.send(relation_name).destroy_with_reverse_relation(relation.target)
+        concept.send(relation_name).destroy_with_reverse_relation(relation.target) unless new_relations.include? relation.target.origin
       end
 
       # Rebuild concept relations
