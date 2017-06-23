@@ -1,0 +1,30 @@
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="change_note_type">
+    <%= t('txt.views.search_results.change_note.type') %>
+  </label>
+	<div class="col-sm-4">
+		<%= select_tag :change_note_type,
+      options_for_select([[t('txt.views.search_results.change_note.created'), :created], [t('txt.views.search_results.change_note.modified'), :modified]], params[:change_note_type]),
+      class: 'form-control',
+      include_blank: true
+    %>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="date_min">
+    <%= t('txt.views.search_results.change_note.date') %> <%= t('txt.views.search_results.change_note.date_from') %>
+  </label>
+	<div class="col-sm-4">
+		<%= text_field_tag :change_note_date_from, params[:change_note_date_from], placeholder: 'z.B.: 2010-05-14', class: 'form-control datepicker' %>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="date_to">
+    <%= t('txt.views.search_results.change_note.date') %> <%= t('txt.views.search_results.change_note.date_to') %>
+  </label>
+	<div class="col-sm-4">
+		<%= text_field_tag :change_note_date_to, params[:change_note_date_to], placeholder: 'z.B.: 2010-05-14', class: 'form-control datepicker' %>
+	</div>
+</div>

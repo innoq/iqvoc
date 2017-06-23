@@ -236,6 +236,13 @@ en:
        for: "In"
        mode: "Mode"
        datasets: "External sources"
+       change_note:
+         type: "type"
+         created: "creation date"
+         modified: "modification date"
+         date: "Date range"
+         date_from: '(from)'
+         date_to: '(to)'
      user_sessions:
        header: "Login"
        login: "Login"

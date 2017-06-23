@@ -57,7 +57,7 @@ class Labeling::SKOS::Base < Labeling::Base
     end
 
     if params[:collection_origin].present?
-      collection = Collection::Base.where(origin: params[:collection_origin]).last
+      collection = Iqvoc::Collection.base_class.where(origin: params[:collection_origin]).last
       if collection
         scope = scope.includes(owner: :collection_members)
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
@@ -80,7 +80,46 @@ class Labeling::SKOS::Base < Labeling::Base
       scope
     end
 
-    scope = scope.merge(Concept::Base.published)
+    if params[:change_note_date_from].present? || params[:change_note_date_to].present?
+      change_note_relation = Iqvoc.change_note_class_name.to_relation_name
+      concepts = Concept::Base.base_class.published
+                              .includes(change_note_relation.to_sym => :annotations)
+                              .references(change_note_relation)
+                              .references('note_annotations')
+
+      # change note type filtering
+      concepts = case params[:change_note_type]
+                 when 'created'
+                   concepts.where('note_annotations.predicate = ?', 'created')
+                 when 'modified'
+                   concepts.where('note_annotations.predicate = ?', 'modified')
+                 else
+                   concepts.where('note_annotations.predicate = ? OR note_annotations.predicate = ?', 'created', 'modified')
+                 end
+
+      if params[:change_note_date_from].present?
+        begin
+          DateTime.parse(params[:change_note_date_from])
+          date_from = params[:change_note_date_from]
+          concepts = concepts.where('note_annotations.value >= ?', date_from)
+        rescue ArgumentError
+          Rails.Logger.error "Invalid date was entered for search"
+        end
+      end
+
+      if params[:change_note_date_to].present?
+        begin
+          DateTime.parse(params[:change_note_date_to])
+          date_to = params[:change_note_date_to]
+          concepts = concepts.where('note_annotations.value <= ?', date_to)
+        rescue ArgumentError
+          Rails.Logger.error "Invalid date was entered for search"
+        end
+      end
+
+      scope = scope.includes(:owner).merge(concepts)
+    end
+
     scope = yield(scope) if block_given?
     scope.map { |result| SearchResult.new(result) }
   end
