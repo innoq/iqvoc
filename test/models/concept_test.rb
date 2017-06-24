@@ -225,4 +225,26 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ": Bear", error_messages.first[index..index + 5]
     assert_nil error_messages.first.index(',')
   end
+
+  test 'broader self reference fails publishing' do
+    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour bear_concept, 'skos:broader', bear_concept
+    bear_concept.save!
+    assert_equal 1, bear_concept.broader_relations.count
+    refute bear_concept.publishable?
+    error_messages = bear_concept.errors.full_messages_for(:base)
+    assert_equal 1, error_messages.count
+  end
+
+  test 'narrower self reference fails publishing' do
+    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour bear_concept, 'skos:narrower', bear_concept
+    bear_concept.save!
+    assert_equal 1, bear_concept.narrower_relations.count
+    refute bear_concept.publishable?
+    error_messages = bear_concept.errors.full_messages_for(:base)
+    assert_equal 1, error_messages.count
+  end
 end
