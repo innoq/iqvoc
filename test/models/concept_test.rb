@@ -263,4 +263,26 @@ class ConceptTest < ActiveSupport::TestCase
     error_messages = bear_concept.errors.full_messages_for(:base)
     assert_equal 1, error_messages.count
   end
+
+  test 'narrower self reference with another broader reference fails publishing' do
+    car_concept = RDFAPI.devour 'car', 'a', 'skos:Concept'
+    RDFAPI.devour car_concept, 'skos:prefLabel', '"Car"@en'
+    car_concept.save!
+
+    concept = RDFAPI.devour 'forest', 'a', 'skos:Concept'
+    RDFAPI.devour concept, 'skos:prefLabel', '"Forest"@en'
+    concept.save!
+
+    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour bear_concept, 'skos:narrower', concept
+    RDFAPI.devour bear_concept, 'skos:narrower', bear_concept
+    RDFAPI.devour bear_concept, 'skos:broader', car_concept
+    bear_concept.save!
+    assert_equal 2, bear_concept.narrower_relations.count
+    assert_equal 2, bear_concept.broader_relations.count
+    refute bear_concept.publishable?
+    error_messages = bear_concept.errors.full_messages_for(:base)
+    assert_equal 1, error_messages.count
+  end
 end
