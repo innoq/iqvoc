@@ -1,6 +1,7 @@
-## [4.11.2]
+## [4.11.2] (unreleased)
 
   * Added: search for concepts by change notes date ranges (#369)
+  * Fixed: Turtle/N-Triples encoding issues in rdf browser serialisation
   * Ruby 2.4 compatibility
   * drop Ruby 2.0 support (official support ended on 2016-02-24)
   * drop Ruby 2.1 support (official support ended on 2016-03-31)

@@ -131,7 +131,7 @@ GEM
       unicode-display_width (~> 0.1.1)
     htmlentities (4.3.3)
     i18n (0.8.1)
-    iq_rdf (0.1.15)
+    iq_rdf (0.1.16)
       activesupport
       builder
       bundler
@@ -383,7 +383,7 @@ DEPENDENCIES
   faraday_middleware
   font-awesome-rails (~> 4.3.0)
   hirb-unicode
-  iq_rdf (>= 0.1.15)
+  iq_rdf (>= 0.1.16)
   iq_triplestorage
   json
   kaminari (~> 0.16.3)
