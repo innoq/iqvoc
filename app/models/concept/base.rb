@@ -85,7 +85,13 @@ class Concept::Base < ActiveRecord::Base
     # Examples:
     # regular:  {'relation_name' => ['origin1', 'origin2']}
     # rankable: {'relation_name' => ['origin1:100', 'origin2:90']}
-    new_relations = @concept_relations_by_id.values.select { |v| v.present? } if @concept_relations_by_id.present?
+    if @concept_relations_by_id.present? && @concept_relations_by_id[:concept_relation_skos_narrower_bases].present? && @concept_relations_by_id[Iqvoc::Concept::broader_relation_class_name.to_relation_name].present?
+      # fixes the automatic deletion of self references
+      narrower_self_reference = @concept_relations_by_id[:concept_relation_skos_narrower_bases].include? self.origin
+      broader_self_reference = @concept_relations_by_id[Iqvoc::Concept::broader_relation_class_name.to_relation_name].include? self.origin
+      @concept_relations_by_id[Iqvoc::Concept::broader_relation_class_name.to_relation_name] = @concept_relations_by_id[Iqvoc::Concept::broader_relation_class_name.to_relation_name].split(InlineDataHelper::SPLITTER).append(self.origin).join(InlineDataHelper::JOINER) if narrower_self_reference
+      @concept_relations_by_id[:concept_relation_skos_narrower_bases] = @concept_relations_by_id[:concept_relation_skos_narrower_bases].split(InlineDataHelper::SPLITTER).append(self.origin).join(InlineDataHelper::JOINER) if broader_self_reference
+    end
     (@concept_relations_by_id ||= {}).each do |relation_name, new_origins|
       # Split comma-separated origins and clean up parameter strings
       new_origins = new_origins.split(InlineDataHelper::SPLITTER).map(&:squish)
@@ -101,7 +107,7 @@ class Concept::Base < ActiveRecord::Base
 
       # Destroy elements of the given concept relation
       concept.send(relation_name).by_target_origin(existing_origins).each do |relation|
-        concept.send(relation_name).destroy_with_reverse_relation(relation.target) unless new_relations.include? relation.target.origin
+        concept.send(relation_name).destroy_with_reverse_relation(relation.target)
       end
 
       # Rebuild concept relations
