@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
   s.add_dependency 'authlogic', '~> 3.4.2'
   s.add_dependency 'cancancan'
-  s.add_dependency 'iq_rdf', '>= 0.1.15'
+  s.add_dependency 'iq_rdf', '>= 0.1.16'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
   s.add_dependency 'faraday', '0.9.0'
