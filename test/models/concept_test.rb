@@ -235,18 +235,18 @@ class ConceptTest < ActiveSupport::TestCase
 
     RDFAPI.devour wolf_concept, 'skos:narrower', wolf_concept
     refute wolf_concept.publishable?
-    assert wolf_concept.errors.full_messages_for(:base).include? 'Concepts must not reference itself. Please check "relations".'
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
 
     wolf_concept.relations.delete_all
     assert wolf_concept.reload.publishable?
     RDFAPI.devour wolf_concept, 'skos:broader', wolf_concept
     refute wolf_concept.publishable?
-    assert wolf_concept.errors.full_messages_for(:base).include? 'Concepts must not reference itself. Please check "relations".'
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
 
     wolf_concept.relations.delete_all
     assert wolf_concept.reload.publishable?
     RDFAPI.devour wolf_concept, 'skos:related', wolf_concept
     refute wolf_concept.publishable?
-    assert wolf_concept.errors.full_messages_for(:base).include? 'Concepts must not reference itself. Please check "relations".'
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
   end
 end
