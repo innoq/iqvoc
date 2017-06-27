@@ -16,9 +16,11 @@ before_script:
 - bundle exec rake db:drop RAILS_ENV=test
 - bundle exec rake db:create RAILS_ENV=test
 - bundle exec rake db:migrate RAILS_ENV=test
-# branches:
-#   only:
-#   - master
+branches:
+  except:
+  - gh-pages
+  # only:
+  # - master
 notifications:
   email:
   - iqvoc@innoq.com
