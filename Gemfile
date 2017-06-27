@@ -51,14 +51,13 @@ gem 'pg'
 
 group :development do
   gem 'view_marker'
+  gem 'better_errors'
+  gem 'web-console'
+  gem 'binding_of_caller', '0.7.3.pre1'
 end
 
 group :development, :test do
   gem 'awesome_print'
-
-  gem 'better_errors'
-  gem 'web-console'
-  gem 'binding_of_caller', '0.7.3.pre1'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
