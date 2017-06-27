@@ -225,4 +225,28 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal ": Bear", error_messages.first[index..index + 5]
     assert_nil error_messages.first.index(',')
   end
+
+  test 'concept self reference validation' do
+    wolf_concept = RDFAPI.devour 'wolf', 'a', 'skos:Concept'
+    RDFAPI.devour wolf_concept, 'skos:prefLabel', '"Wolf"@en'
+    wolf_concept.save!
+
+    assert wolf_concept.publishable?
+
+    RDFAPI.devour wolf_concept, 'skos:narrower', wolf_concept
+    refute wolf_concept.publishable?
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
+
+    wolf_concept.relations.delete_all
+    assert wolf_concept.reload.publishable?
+    RDFAPI.devour wolf_concept, 'skos:broader', wolf_concept
+    refute wolf_concept.publishable?
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
+
+    wolf_concept.relations.delete_all
+    assert wolf_concept.reload.publishable?
+    RDFAPI.devour wolf_concept, 'skos:related', wolf_concept
+    refute wolf_concept.publishable?
+    assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
+  end
 end
