@@ -102,7 +102,7 @@ module Concept
     def unique_alt_labels
       if validatable_for_publishing?
         alt_labels = alt_labelings.collect { |l| l.target }
-        duplicate = alt_labels.detect { |e| alt_labels.count(e) > 1 }
+        duplicate = alt_labels.detect { |e| alt_labels.select {|al| al.published? }.count(e) > 1 }
 
         if duplicate
           errors.add :base,
