@@ -14,7 +14,7 @@ module Concept
       validate :exclusive_pref_label
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
-      validate :no_self_reference
+      validate :no_self_reference_concept_relation
     end
 
     # top term and broader relations are mutually exclusive
@@ -134,8 +134,9 @@ module Concept
       end
     end
 
-    def no_self_reference
+    def no_self_reference_concept_relation
       if validatable_for_publishing?
+        # check all related concepts (e.g. skos:broader, skos:narrower, skos:related)
         if related_concepts.include?(self)
           errors.add :base, I18n.t('txt.models.concept.no_self_reference')
         end
