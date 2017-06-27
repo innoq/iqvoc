@@ -14,6 +14,7 @@ module Concept
       validate :exclusive_pref_label
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
+      validate :no_self_reference
     end
 
     # top term and broader relations are mutually exclusive
@@ -129,6 +130,14 @@ module Concept
 
         if relations_union.any?
           errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: relations_union.each { |u| u.narrower_relations.map{ |r| r.owner.pref_labels.first } }.flatten.join(', '))
+        end
+      end
+    end
+
+    def no_self_reference
+      if validatable_for_publishing?
+        if related_concepts.include?(self)
+          errors.add :base, I18n.t('txt.models.concept.no_self_reference')
         end
       end
     end
