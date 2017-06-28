@@ -15,6 +15,7 @@ module Concept
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
       validate :no_self_reference_concept_relation
+      validate :no_circular_concept_relations
     end
 
     # top term and broader relations are mutually exclusive
@@ -141,6 +142,25 @@ module Concept
           errors.add :base, I18n.t('txt.models.concept.no_self_reference')
         end
       end
+    end
+
+    def no_circular_concept_relations
+      return unless validatable_for_publishing?
+      broaders = collect_related_concepts(broader_relations, 'broader_relations').flatten
+      narrowers = collect_related_concepts(narrower_relations, 'narrower_relations').flatten
+      circulars = broaders & narrowers
+
+      return unless circulars.any?
+      errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: Iqvoc::Concept.base_class.where(id: circulars).map { |c| c.pref_label }.flatten.join(', '))
+    end
+
+    def collect_related_concepts relations, relation_type
+      return [] if relations.nil? || relations.empty?
+      relation_concepts = relations.select {|r| r.present? && r.target.published? }.collect { |r| r.target }
+      rs = []
+      rs << relation_concepts.map { |r| r.origin }
+      rs << relation_concepts.map { |r| r.concept_relation_skos_relateds.published.map { |rc| rc.target.origin } }
+      rs << collect_related_concepts(relation_concepts.map { |rc| rc.send(relation_type) }.flatten, relation_type)
     end
   end
 end
