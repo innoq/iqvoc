@@ -16,7 +16,7 @@ module WidgetHelper
     Iqvoc::Concept.base_class.
       editor_selectable.
       by_origin(origins).
-      map { |c| concept_widget_data(c) }.
+      map { |c| concept_widget_data(c) }.sort_by { |hash| hash[:name] }.
       to_json
   end
 
