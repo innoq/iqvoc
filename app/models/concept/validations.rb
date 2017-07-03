@@ -146,9 +146,12 @@ module Concept
 
     def no_circular_concept_relations
       return unless validatable_for_publishing?
-      broaders = collect_related_concepts(broader_relations, 'broader_relations').uniq
-      narrowers = collect_related_concepts(narrower_relations, 'narrower_relations').uniq
+      broaders = collect_related_concepts(broader_relations, 'broader_relations')
+      narrowers = collect_related_concepts(narrower_relations, 'narrower_relations')
+      relateds = concept_relation_skos_relateds.map { |r| r.target.origin }
       circulars = broaders & narrowers
+      circulars.push(*broaders & relateds)
+      circulars.push(*narrowers & relateds)
 
       return unless circulars.any?
       errors.add :base, I18n.t('txt.models.concept.no_narrower_and_broader_relations', concepts: Iqvoc::Concept.base_class.where(id: circulars).map { |c| c.pref_label }.flatten.join(', '))
