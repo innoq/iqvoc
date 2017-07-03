@@ -156,6 +156,7 @@ module Concept
 
     def collect_related_concepts relations, relation_type, result_array = []
       return [] if relations.nil? || relations.empty?
+      result_array = result_array.flatten
       relation_concepts = relations.select {|r| r.present? && result_array.exclude?(r.target.origin) }.collect { |r| r.target }
       result_array << relation_concepts.map { |r| r.origin }.flatten
       result_array << relation_concepts.map { |r| r.concept_relation_skos_relateds.map { |rc| rc.target.origin }.flatten }.flatten
