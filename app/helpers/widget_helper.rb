@@ -9,15 +9,15 @@ module WidgetHelper
   end
 
   def widget_entities(concept, relation_class)
-    origins = concept.
-      concept_relations_by_id(relation_class.name.to_relation_name).
-      split(InlineDataHelper::SPLITTER)
+    origins = concept.concept_relations_by_id(relation_class.name.to_relation_name)
+                     .split(InlineDataHelper::SPLITTER)
 
-    Iqvoc::Concept.base_class.
-      editor_selectable.
-      by_origin(origins).
-      map { |c| concept_widget_data(c) }.
-      to_json
+    Iqvoc::Concept.base_class
+                  .editor_selectable
+                  .by_origin(origins)
+                  .map { |c| concept_widget_data(c) }
+                  .sort_by { |hash| hash[:name] }
+                  .to_json
   end
 
   def widget_entities_ranked(concept, relation_class)
@@ -25,9 +25,9 @@ module WidgetHelper
       concept_relations_by_id(relation_class.name.to_relation_name).
       split(InlineDataHelper::SPLITTER)
 
-    allowed_concepts = Iqvoc::Concept.base_class.
-      editor_selectable.
-      by_origin(origins)
+    allowed_concepts = Iqvoc::Concept.base_class
+                                     .editor_selectable
+                                     .by_origin(origins)
 
     concepts_with_ranks = concept.concept_relations_by_id_and_rank(relation_class.name.to_relation_name)
 
