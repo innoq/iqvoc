@@ -154,7 +154,7 @@ module Concept
       circulars.push(*narrowers & relateds)
 
       return unless circulars.any?
-      errors.add :base, I18n.t('txt.models.concept.no_circular_relations', concepts: Iqvoc::Concept.base_class.where(id: circulars).map { |c| c.pref_label }.flatten.join(', '))
+      errors.add :base, I18n.t('txt.models.concept.no_circular_relations', concepts: Iqvoc::Concept.base_class.where(origin: circulars).map { |c| c.pref_label }.flatten.join(', '))
     end
 
     def collect_related_concepts relations, relation_type, result_array = []
