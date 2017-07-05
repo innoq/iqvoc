@@ -203,8 +203,9 @@ class ConceptsController < ApplicationController
     authorize! :destroy, @new_concept
 
     if @new_concept.destroy
+      published_concept = Iqvoc::Concept.base_class.published.by_origin(@new_concept.origin).first
       flash[:success] = I18n.t('txt.controllers.concept_versions.delete')
-      redirect_to dashboard_path
+      redirect_to published_concept.present? ? concept_path(id: published_concept.origin) : dashboard_path
     else
       flash[:success] = I18n.t('txt.controllers.concept_versions.delete_error')
       redirect_to concept_path(published: 0, id: @new_concept)
