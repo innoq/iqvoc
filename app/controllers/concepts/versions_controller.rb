@@ -61,26 +61,27 @@ class Concepts::VersionsController < ApplicationController
     current_concept = concept_scope.published.last!
 
     if draft_concept = concept_scope.unpublished.last
-      raise "There already is an unpublished version for concept '#{draft_concept.origin}'"
-    end
+      flash[:info] = t('txt.controllers.versioning.branch_error')
+      redirect_to concept_path(published: 0, id: draft_concept)
+    else
+      authorize! :branch, current_concept
 
-    authorize! :branch, current_concept
-
-    new_version = nil
-    ActiveRecord::Base.transaction do
-      new_version = current_concept.branch(current_user)
-      new_version.save!
-      Iqvoc.change_note_class.create! do |note|
-        note.owner = new_version
-        note.language = I18n.locale.to_s
-        note.annotations_attributes = [
-          { namespace: 'dct', predicate: 'creator', value: current_user.name },
-          { namespace: 'dct', predicate: 'modified', value: DateTime.now.to_s }
-        ]
+      new_version = nil
+      ActiveRecord::Base.transaction do
+        new_version = current_concept.branch(current_user)
+        new_version.save!
+        Iqvoc.change_note_class.create! do |note|
+          note.owner = new_version
+          note.language = I18n.locale.to_s
+          note.annotations_attributes = [
+            { namespace: 'dct', predicate: 'creator', value: current_user.name },
+            { namespace: 'dct', predicate: 'modified', value: DateTime.now.to_s }
+          ]
+        end
       end
+      flash[:success] = t('txt.controllers.versioning.branched')
+      redirect_to edit_concept_path(published: 0, id: new_version)
     end
-    flash[:success] = t('txt.controllers.versioning.branched')
-    redirect_to edit_concept_path(published: 0, id: new_version)
   end
 
   def lock

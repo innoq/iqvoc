@@ -56,18 +56,19 @@ class Collections::VersionsController < ApplicationController
     current_collection = scope.published.last!
 
     if draft_collection = scope.unpublished.last
-      raise "There already is an unpublished version for collection '#{draft_collection.origin}'"
-    end
+      flash[:info] = t('txt.controllers.versioning.branch_error')
+      redirect_to collection_path(published: 0, id: draft_collection)
+    else
+      authorize! :branch, current_collection
 
-    authorize! :branch, current_collection
-
-    new_version = nil
-    ActiveRecord::Base.transaction do
-      new_version = current_collection.branch(current_user)
-      new_version.save!
+      new_version = nil
+      ActiveRecord::Base.transaction do
+        new_version = current_collection.branch(current_user)
+        new_version.save!
+      end
+      flash[:success] = t('txt.controllers.versioning.branched')
+      redirect_to edit_collection_path(new_version, published: 0)
     end
-    flash[:success] = t('txt.controllers.versioning.branched')
-    redirect_to edit_collection_path(new_version, published: 0)
   end
 
   def lock
