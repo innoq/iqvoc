@@ -36,7 +36,7 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
     assert page.has_content? I18n.t('txt.controllers.versioning.published')
 
     click_link_or_button I18n.t('txt.views.versioning.versioning_mode')
-    fill_in 'concept_note_skos_change_notes_attributes_1_value',
+    fill_in 'concept_note_skos_change_notes_attributes_0_value',
         with: 'dolor sit amet'
     click_button 'Save'
 
