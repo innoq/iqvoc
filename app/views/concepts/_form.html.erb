@@ -31,28 +31,6 @@
   </fieldset>
   <!-- / Labelings -->
 
-  <!-- Collections -->
-  <fieldset>
-    <legend><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></legend>
-    <%= f.form_group :assigned_collection_origins, :label => {:text => t('txt.common.type_to_search')} do %>
-      <%= text_field_tag "concept[assigned_collection_origins]",
-        concept.assigned_collection_origins.join(InlineDataHelper::JOINER),
-        :class => "entity_select",
-        :"data-query-url" => collections_path(:format => :json),
-        :"data-entity-uri" => collection_path(:id => "{id}"),
-        :"data-entities" => concept.collections.map { |c| collection_widget_data(c) }.to_json %>
-    <% end %>
-  </fieldset>
-  <!-- /Collection -->
-
-  <!-- Notes -->
-  <% Iqvoc::Concept.note_classes.each do |note_class| %>
-    <% unless note_class.edit_partial_name(concept).nil? %>
-      <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
-    <% end %>
-  <% end %>
-  <!-- / Notes -->
-
   <!-- Concept relations -->
   <fieldset>
     <legend><%= Concept::Relation::Base.model_name.human(:count => 2) %></legend>
@@ -77,6 +55,28 @@
     <%- end -%>
   </fieldset>
   <!-- / Concept relations -->
+
+  <!-- Collections -->
+  <fieldset>
+    <legend><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></legend>
+    <%= f.form_group :assigned_collection_origins, :label => {:text => t('txt.common.type_to_search')} do %>
+      <%= text_field_tag "concept[assigned_collection_origins]",
+        concept.assigned_collection_origins.join(InlineDataHelper::JOINER),
+        :class => "entity_select",
+        :"data-query-url" => collections_path(:format => :json),
+        :"data-entity-uri" => collection_path(:id => "{id}"),
+        :"data-entities" => concept.collections.map { |c| collection_widget_data(c) }.to_json %>
+    <% end %>
+  </fieldset>
+  <!-- /Collection -->
+
+  <!-- Notes -->
+  <% Iqvoc::Concept.note_classes.each do |note_class| %>
+    <% unless note_class.edit_partial_name(concept).nil? %>
+      <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
+    <% end %>
+  <% end %>
+  <!-- / Notes -->
 
   <!-- Matches -->
   <fieldset class="matches" data-datasets="<%= @datasets %>" data-remote-proxy-url="<%= alphabetical_concepts_path %>" data-translation-other="<%= t('txt.common.other') %>" data-no-results-msg="<%= t('txt.views.search_results.no_results') %>">
