@@ -1,32 +1,30 @@
-<% unless owner_klass.new_record? %>
-  <fieldset class="note_relation" id="<%= assoc_klass.name.to_relation_name %>_data">
-    <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
-    <ol>
-      <% note = owner_klass.send(assoc_klass.name.to_relation_name).last %>
-      <li class="inline_note<%= " new" if note.new_record? %>">
-        <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
-        <%= note_form.text_area :value, :rows => 4 %>
-        <%= note_form.select :language,
-          Iqvoc.note_languages.map { |l| [l, l]},
-          :label => t("txt.common.language"),
-          :include_blank => false %>
+<fieldset class="note_relation" id="<%= assoc_klass.name.to_relation_name %>_data">
+  <legend><%= assoc_klass.model_name.human(:count => 2) %></legend>
+  <ol>
+    <% note = owner_klass.send(assoc_klass.name.to_relation_name).last %>
+    <li class="inline_note">
+      <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
+      <%= note_form.text_area :value, :rows => 4 %>
+      <%= note_form.select :language,
+        Iqvoc.note_languages.map { |l| [l, l]},
+        :label => t("txt.common.language"),
+        :include_blank => false %>
 
-          <%= note_form.fields_for :annotations do |na| %>
-            <%= na.hidden_field :namespace %>
-            <%= na.hidden_field :predicate %>
-            <%= na.hidden_field :value %>
-          <% end %>
-
-          <%= f.form_group :note_annotations, :label => {:text => Note::Annotated::Base.model_name.human(:count => 2)} do %>
-            <dl class="note_annotations">
-              <% note.annotations.each do |na| %>
-                <dt><%= na.identifier %></dt>
-                <dd><%= na.value %></dd>
-              <% end %>
-            </dl>
-          <% end %>
+        <%= note_form.fields_for :annotations do |na| %>
+          <%= na.hidden_field :namespace %>
+          <%= na.hidden_field :predicate %>
+          <%= na.hidden_field :value %>
         <% end %>
-      </li>
-    </ol>
-  </fieldset>
-<% end %>
+
+        <%= f.form_group :note_annotations, :label => {:text => Note::Annotated::Base.model_name.human(:count => 2)} do %>
+          <dl class="note_annotations">
+            <% note.annotations.each do |na| %>
+              <dt><%= na.identifier %></dt>
+              <dd><%= na.value %></dd>
+            <% end %>
+          </dl>
+        <% end %>
+      <% end %>
+    </li>
+  </ol>
+</fieldset>
