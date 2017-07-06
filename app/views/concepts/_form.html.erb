@@ -70,8 +70,8 @@
   </fieldset>
   <!-- /Collection -->
 
-  <!-- Notes -->
-  <% Iqvoc::Concept.note_classes.each do |note_class| %>
+  <!-- Notes ohne Change class -->
+  <% Iqvoc::Concept.note_classes.reject { |n| n == Iqvoc.change_note_class  }.each do |note_class| %>
     <% unless note_class.edit_partial_name(concept).nil? %>
       <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
     <% end %>
@@ -92,6 +92,13 @@
     <%= render notation_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => notation_class, :f => f %>
   <% end %>
   <!-- / Notations -->
+
+  <!-- Notes ohne Change class -->
+  <% note_class = Iqvoc.change_note_class %>
+  <% unless note_class.edit_partial_name(concept).nil? %>
+    <%= render note_class.edit_partial_name(concept), :owner_klass => concept, :assoc_klass => note_class, :f => f %>
+  <% end %>
+  <!-- / Notes -->
 
   <hr />
 
