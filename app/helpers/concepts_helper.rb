@@ -52,9 +52,7 @@ module ConceptsHelper
     render_concept_association(res, concept, Collection::Member::Base)
 
     Iqvoc::Concept.labeling_classes.each do |labeling_class, languages|
-      (languages || Iqvoc.available_languages).each do |lang|
-        render_concept_association(res, concept, labeling_class, lang: lang)
-      end
+      render_concept_association(res, concept, labeling_class, available_languages: languages || Iqvoc.available_languages)
     end
 
     Iqvoc::Concept.relation_classes.each do |relation_class|
