@@ -5,9 +5,7 @@
 <%#= render 'layouts/sections', :sections => ["labels"], :data => concept_view_data(collection) %>
 
 <% Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| %>
-  <% (languages || Iqvoc.available_languages).each do |lang| %>
-    <%= render labeling_class.partial_name(collection), :klass => labeling_class, :concept => collection, :lang => lang %>
-  <% end %>
+    <%= render labeling_class.partial_name(collection), klass: labeling_class, concept: collection, available_languages: languages || Iqvoc.available_languages %>
 <% end %>
 
 <div class="relation panel">

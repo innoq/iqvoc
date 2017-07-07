@@ -9,7 +9,7 @@
 
 <% Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| %>
   <% (languages || Iqvoc.available_languages).each do |lang| %>
-    <%= render labeling_class.partial_name(@scheme), :klass => labeling_class, :concept => @scheme, :lang => lang %>
+    <%= render labeling_class.partial_name(@scheme), klass: labeling_class, concept: @scheme, available_languages: languages || Iqvoc.available_languages %>
   <% end %>
 <% end %>
 
