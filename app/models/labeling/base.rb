@@ -70,11 +70,11 @@ class Labeling::Base < ActiveRecord::Base
   end
 
   def self.view_section(obj)
-    obj.is_a?(Label::Base) ? 'concepts' : 'labels'
+    'main'
   end
 
   def self.view_section_sort_key(obj)
-    200
+    50
   end
 
   def self.partial_name(obj)
