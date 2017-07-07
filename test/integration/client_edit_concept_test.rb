@@ -69,7 +69,7 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
     page.click_link_or_button('Speichern')
     assert page.has_css?('.alert.alert-success')
     # return to edit mode
-    page.click_link_or_button('Bearbeitung fortsetzen')
+    page.click_link_or_button('Weiterbearbeiten')
     assert page.has_css?('#edit_concept')
 
     section = page.find('#note_skos_definitions_data')
