@@ -268,7 +268,7 @@ de:
          header: "Nicht gefunden"
          tip: "Nutzen Sie die %{link}, um Inhalte zu finden."
      versioning:
-       edit_mode: "Bearbeitung fortsetzen"
+       edit_mode: "Weiterbearbeiten"
        to_edit_mode: "In Bearbeitung versetzen"
        publishing: "Veröffentlichen"
        delete: "Kopie löschen"
