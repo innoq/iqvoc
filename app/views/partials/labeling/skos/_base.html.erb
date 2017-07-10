@@ -1,14 +1,21 @@
-<%= content_tag :div, :class => "relation translation panel", :lang => (defined?(concept) ? lang || nil : nil) do %>
+<%= content_tag :div, :class => "relation translation panel" do %>
   <% if defined?(concept) %>
-    <h2><%= klass.model_name.human(:count => 2) %> <small><%= t("languages.#{lang || "-"}") %></small></h2>
+    <h2><%= klass.model_name.human(:count => 2) %></h2>
     <div class="relation-body">
-      <%-
-        items = concept.labels_for_labeling_class_and_language(klass, lang)
-        items = items.select { |item| can?(:read, item) }
-      -%>
-    <%= item_listing(items) do |label|
-        label.value
-      end %>
+      <% available_languages.each do |lang| %>
+        <div class="translation" lang="<%= lang %>">
+          <span class="language_flap"><%= lang %></span>
+          <div class="note_content">
+            <%-
+              items = concept.labels_for_labeling_class_and_language(klass, lang)
+              items = items.select { |item| can?(:read, item) }
+            -%>
+            <%= item_listing(items) do |label|
+              label.value
+            end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% elsif defined?(label) %>
     <h2><%= klass.model_name.human(:count => 2) %> <%= t("txt.common.of") %></h2>
