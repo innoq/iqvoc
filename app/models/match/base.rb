@@ -38,11 +38,11 @@ class Match::Base < ActiveRecord::Base
   # ********** Methods
 
   def self.view_section(obj)
-    'matches'
+    'relations'
   end
 
   def self.view_section_sort_key(obj)
-    100
+    200
   end
 
   def self.partial_name(obj)
