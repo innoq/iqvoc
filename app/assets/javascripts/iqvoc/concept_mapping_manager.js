@@ -80,7 +80,7 @@ ConceptMappingManager.prototype.determineConceptMappings = function() {
 };
 ConceptMappingManager.prototype.readFromLinks = function() { // TODO: rename
   var urisByMatchType = {};
-  $(".relation.panel:not(#concept_relation_skos_relateds)", this.root).each(function(i, node) { // match-type panels
+  $(".relation.panel", this.root).each(function(i, node) { // match-type panels
     var container = $(node);
     var matchType = container.find("h2").text();
     var mappings = container.find(".entity_list a");
