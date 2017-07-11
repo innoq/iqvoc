@@ -218,7 +218,7 @@ jQuery(document).ready(function($) {
   if($("textarea:first").length) { // edit mode
     new IQVOC.ConceptMappingManager(".matches", true);
   } else { // view mode
-    new IQVOC.ConceptMappingManager("#relations", false);
+    new IQVOC.ConceptMappingManager(".panel-body.match", false);
   }
 
   IQVOC.labelResolver();
