@@ -212,12 +212,13 @@ jQuery(document).ready(function($) {
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
   IQVOC.onebox(".onebox");
-  new IQVOC.FederatedConceptMapper(".matches");
+  //.relations:not(#concept_relation_skos_relateds)
+  new IQVOC.FederatedConceptMapper(".relations");
   // XXX: inelegant
   if($("textarea:first").length) { // edit mode
-    new IQVOC.ConceptMappingManager(".matches", true);
+    new IQVOC.ConceptMappingManager(".relations", true);
   } else { // view mode
-    new IQVOC.ConceptMappingManager("#matches", false);
+    new IQVOC.ConceptMappingManager("#relations", false);
   }
 
   IQVOC.labelResolver();
