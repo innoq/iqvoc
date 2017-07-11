@@ -5,7 +5,9 @@
       <%= text_area_tag :q, params[:query], :class => 'form-control' %>
     <% else %>
       <%= text_field_tag :q, params[:query], :class => 'form-control' %>
-      <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+      <span class="form-control-feedback" aria-hidden="true">
+        <i class="fa fa-search"></i>
+      </span>
     <% end %>
   </div>
 </div>
