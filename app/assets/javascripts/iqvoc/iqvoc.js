@@ -194,7 +194,9 @@ jQuery(document).ready(function($) {
   });
   $("select.search_type").change(function() {
     var result_type_filter = $(".result_type_filter");
-    if($(this).val().match(/labeling/)) {
+    var selected = $(this).val();
+    var targets = ['labels', 'pref_labels', 'alt_labels'];
+    if($.inArray(selected, targets) !== -1) {
       result_type_filter.show();
     }
     else {
