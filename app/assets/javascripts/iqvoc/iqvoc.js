@@ -216,10 +216,10 @@ jQuery(document).ready(function($) {
 
   IQVOC.onebox(".onebox");
   //.relations:not(#concept_relation_skos_relateds)
-  new IQVOC.FederatedConceptMapper(".relations");
+  new IQVOC.FederatedConceptMapper(".matches");
   // XXX: inelegant
   if($("textarea:first").length) { // edit mode
-    new IQVOC.ConceptMappingManager(".relations", true);
+    new IQVOC.ConceptMappingManager(".matches", true);
   } else { // view mode
     new IQVOC.ConceptMappingManager("#relations", false);
   }
