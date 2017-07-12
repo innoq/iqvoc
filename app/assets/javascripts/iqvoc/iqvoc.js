@@ -181,14 +181,9 @@ jQuery(document).ready(function($) {
   });
 
   // Dashboard table row highlighting and click handling
-  $("tr.highlightable")
-    .hover(function(ev) {
-      var action = ev.type === "mouseenter" ? "addClass" : "removeClass";
-      $(this)[action]("hover");
-    })
-    .click(function(ev) {
-      window.location = $(this).attr("data-url");
-    });
+  $("tr.highlightable").click(function(ev) {
+    window.location = $(this).attr("data-url");
+  });
 
   // Search
   $(".checkbox-select-all").click(function() {
@@ -199,7 +194,9 @@ jQuery(document).ready(function($) {
   });
   $("select.search_type").change(function() {
     var result_type_filter = $(".result_type_filter");
-    if($(this).val().match(/labeling/)) {
+    var selected = $(this).val();
+    var targets = ['labels', 'pref_labels', 'alt_labels'];
+    if($.inArray(selected, targets) !== -1) {
       result_type_filter.show();
     }
     else {

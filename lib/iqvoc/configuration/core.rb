@@ -147,9 +147,9 @@ module Iqvoc
         self.ability_class_name = 'Ability'
 
         self.search_sections = [
-          'klass',
-          'mode',
           'terms',
+          'mode',
+          'klass',
           'type',
           'collection',
           'languages',

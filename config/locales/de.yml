@@ -233,8 +233,8 @@ de:
          created: 'Erstellungsdatum'
          modified: 'Änderungsdatum'
          date: "Datumsbereich"
-         date_from: '(von)'
-         date_to: '(bis)'
+         date_from: 'von'
+         date_to: 'bis'
      user_sessions:
        header: "Anmelden"
        login: "Anmelden"

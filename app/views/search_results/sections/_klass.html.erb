@@ -1,6 +1,6 @@
 <div class="form-group">
   <%= label_tag 't', t('txt.views.search_results.for'), :class => 'col-sm-2 control-label' %>
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <select name="t" id="t" class="search_type form-control">
       <%= options_for_select(Iqvoc.searchable_class_names.map { |klass, identifier|
           [klass.constantize.model_name.human(:count => 2), identifier]
