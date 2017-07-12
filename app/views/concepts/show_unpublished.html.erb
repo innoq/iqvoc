@@ -34,9 +34,9 @@
     <%= link_to t("txt.views.versioning.edit_mode"),
       edit_concept_path(:published => 0, :id => @concept.origin),
       :class => 'btn btn-default' if can?(:update, @concept) %>
-  <% else %>
+  <% elsif can?(:lock, @concept) %>
     <%= button_to t("txt.views.versioning.to_edit_mode"),
-      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' if can?(:lock, @concept) %>
+      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' %>
   <% end %>
 
   <% if can?(:destroy, @concept) %>
