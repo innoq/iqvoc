@@ -107,15 +107,15 @@ module ConceptsHelper
   end
 
   def render_match_association(hash, concept, association_classes, further_options = {})
-    html = render partial: '/partials/match/panel_start'
+    matches_html = ''
     association_classes.each do |association_class|
-      html += if association_class.respond_to?(:hidden?) && association_class.hidden?(concept)
+      matches_html += if association_class.respond_to?(:hidden?) && association_class.hidden?(concept)
         ''
       else
         render(association_class.partial_name(concept), further_options.merge(concept: concept, klass: association_class))
       end
     end
-    html += render partial: '/partials/match/panel_end'
+    html = render partial: '/partials/match/panel', locals: { body: matches_html }
     if String.new(html).squish.present?
       ((hash[association_classes.first.view_section(concept)] ||= {})[association_classes.first.view_section_sort_key(concept)] ||= '') << html.html_safe
     end
