@@ -212,7 +212,6 @@ jQuery(document).ready(function($) {
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
   IQVOC.onebox(".onebox");
-  //.relations:not(#concept_relation_skos_relateds)
   new IQVOC.FederatedConceptMapper(".matches");
   // XXX: inelegant
   if($("textarea:first").length) { // edit mode
