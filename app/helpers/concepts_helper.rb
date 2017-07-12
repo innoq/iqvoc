@@ -90,7 +90,6 @@ module ConceptsHelper
 
   private
 
-  #FIXME: Problem: spezielle methoden, weil es ganz aussen rum muss
   # Renders a partial taken from the .partial_name method of the objects
   # associated to the concept.
   def render_concept_association(hash, concept, association_class, further_options = {})
