@@ -42,7 +42,7 @@ class Match::Base < ActiveRecord::Base
   end
 
   def self.view_section_sort_key(obj)
-    200
+    300
   end
 
   def self.partial_name(obj)
