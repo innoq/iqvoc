@@ -1,4 +1,3 @@
-<% %>
 <% published_param = concept.published? ? nil : 0 %>
 <%= content_for :head do -%>
   <link href="<%= rdf_url(concept.origin, :format => :ttl, :published => published_param, :lang => nil) %>" type="text/turtle" rel="alternate" title=""/>
