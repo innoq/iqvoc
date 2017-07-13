@@ -8,13 +8,15 @@ module Iqvoc
       included do
         Iqvoc.first_level_class_configuration_modules << self
 
-        mattr_accessor :base_class_name, :member_class_name, :note_class_names
+        mattr_accessor :base_class_name, :member_class_name, :note_class_names, :include_module_names
 
         self.base_class_name = 'Collection::SKOS::Unordered'
 
         self.member_class_name  = 'Collection::Member::SKOS::Base'
 
         self.note_class_names = [ 'Note::SKOS::Definition' ]
+
+        self.include_module_names = []
       end
 
       module ClassMethods
@@ -28,6 +30,10 @@ module Iqvoc
 
         def note_classes
           note_class_names.map(&:constantize)
+        end
+
+        def include_modules
+          include_module_names.map(&:constantize)
         end
       end
     end

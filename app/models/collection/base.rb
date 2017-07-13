@@ -15,6 +15,11 @@
 # limitations under the License.
 
 class Collection::Base < Concept::Base
+
+  Iqvoc::Collection.include_modules.each do |mod|
+    include mod
+  end
+
   has_many Note::SKOS::Definition.name.to_relation_name,
       class_name: 'Note::SKOS::Definition',
       as: :owner,
