@@ -2,7 +2,7 @@
   <h2><%= klass.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
     <%- if concept.collections.any? -%>
-      <ul class="list-unstyled">
+      <ul>
         <%- concept.collections.each do |collection| -%>
           <li><%= link_to collection.label.to_s, collection_path(:id => collection) %></li>
         <%- end -%>
