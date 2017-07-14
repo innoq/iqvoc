@@ -40,7 +40,7 @@ module ConceptsHelper
     content_tag :ul, class: 'letter-selector list-unstyled' do
       letters.map do |letter|
         content_tag :li, link_to(letter, yield(letter)),
-          class: ('active' if highlighted_letter == letter.to_s.downcase)
+          class: ('active' if highlighted_letter.to_s.downcase == letter.to_s.downcase)
       end.join('').html_safe
     end
   end
