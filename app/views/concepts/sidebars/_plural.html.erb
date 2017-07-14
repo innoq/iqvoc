@@ -6,7 +6,7 @@
       :active => params[:controller] == 'concepts/hierarchical' && params[:published] != '0' %>
   <%= sidebar_item :text => t("txt.views.navigation.alphabetical"),
       :icon => 'list-alt',
-      :path => alphabetical_concepts_path(:prefix => 'a'),
+      :path => alphabetical_concepts_path,
       :active => (params[:controller] == 'concepts/alphabetical') %>
   <% if can?(:update, Iqvoc::Concept.base_class) %>
     <%= sidebar_item :text => t("txt.views.navigation.draft"),
@@ -16,7 +16,7 @@
   <% end %>
   <%= sidebar_item :text => t("txt.views.navigation.expired"),
       :icon => 'list-alt',
-      :path => expired_concepts_path(:prefix => 'a'),
+      :path => expired_concepts_path,
       :active => params[:controller] == 'concepts/expired' %>
   <% if I18n.locale.to_s != Iqvoc::Concept.pref_labeling_languages.first %>
     <%= sidebar_item :icon => 'list-alt',
