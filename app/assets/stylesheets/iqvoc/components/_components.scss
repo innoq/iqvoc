@@ -220,7 +220,10 @@ tr.highlightable {
   margin: 8px 0 0 -30px;
 }
 
-.concept-mappings { margin-left: 0; }
+.concept-mappings {
+  margin-left: 0;
+  padding-left: 0;
+}
 
 .concept-mapping {
   %padded { padding: 7px 10px; }
