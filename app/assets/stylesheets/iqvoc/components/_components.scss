@@ -162,6 +162,28 @@ tr.highlightable {
   }
 }
 
+.user-widget {
+  padding: 0 15px 20px 15px;
+
+  .user-widget-header {
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    .fullname {
+      font-size: 18px;
+    }
+
+    .email {
+      color: $gray-light;
+    }
+  }
+
+  .user-widget-item a {
+    padding-left: 0;
+  }
+
+}
+
 .search-result {
   margin-top: 10px;
   a {
