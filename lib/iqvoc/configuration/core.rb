@@ -67,40 +67,6 @@ module Iqvoc
           href: proc { search_path },
           controller: 'search_results'
         }, {
-          text: proc { t('txt.views.navigation.administration') },
-          :authorized? => proc { can? :use, :administration },
-          items: [{
-            text: proc { t('txt.views.navigation.users') },
-            href: proc { users_path },
-            controller: 'users',
-            :authorized? => proc { can? :manage, User }
-          }, {
-            text: proc { t('txt.views.navigation.instance_configuration') },
-            href: proc { instance_configuration_path },
-            controller: 'instance_configuration',
-            :authorized? => proc { can? :manage, Iqvoc.config }
-          }, {
-            text: proc { t('txt.views.navigation.import') },
-            href: proc { imports_path },
-            controller: 'imports',
-            :authorized? => proc { can? [:import, Concept::Base] }
-          }, {
-            text: proc { t('txt.views.navigation.export') },
-            href: proc { exports_path },
-            controller: 'exports',
-            :authorized? => proc { can? [:export, Concept::Base] }
-          }, {
-            text: proc { t('txt.views.navigation.sync') },
-            href: proc { triplestore_sync_path },
-            controller: 'triplestore_sync',
-            :authorized? => proc { can? [:sync, :triplestore] }
-          }, {
-            text: proc { t('txt.views.navigation.reset') },
-            href: proc { reset_path },
-            controller: 'reset',
-            :authorized? => proc { can? [:reset, :thesaurus] }
-          }]
-        }, {
           text: proc { t('txt.views.navigation.help') },
           items: [{
             text: proc { t('txt.views.navigation.help') },
