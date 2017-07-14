@@ -48,7 +48,11 @@ class UsersController < ApplicationController
 
     if @user.update_attributes(user_params)
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
-      redirect_to users_path
+      if can?(:manage, User)
+        redirect_to users_path
+      else
+        redirect_to dashboard_path
+      end
     else
       render action: :edit
     end
