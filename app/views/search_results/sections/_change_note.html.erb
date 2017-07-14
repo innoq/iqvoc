@@ -6,7 +6,7 @@
 	<div class="col-sm-10">
 		<div class="form-inline">
 			<label for="change_note_type" class="sr-only"><%= t('txt.views.search_results.change_note.type') %></label>
-			<%= select_tag :change_note_type, options_for_select([[t('txt.views.search_results.change_note.created'), :created], [t('txt.views.search_results.change_note.modified'), :modified]], params[:change_note_type]), class: 'form-control' %>
+			<%= select_tag :change_note_type, options_for_select([[t('txt.views.search_results.change_note.created'), :created], [t('txt.views.search_results.change_note.modified'), :modified]], params[:change_note_type]), :include_blank => true, class: 'form-control' %>
 
 			<label for="change_note_date_from" class="sr-only"><%= t('txt.views.search_results.change_note.date_from') %></label>
 			<%= text_field_tag :change_note_date_from, params[:change_note_date_from], placeholder: 'z.B.: 2010-05-14', class: 'form-control datepicker' %>
