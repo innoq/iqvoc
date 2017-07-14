@@ -22,8 +22,6 @@ class Concepts::AlphabeticalController < ConceptsController
   def index
     authorize! :read, Concept::Base
 
-    redirect_to(url_for prefix: 'a') unless params[:prefix]
-
     # only initilaize dataset if dataset param is set
     # prevent obsolet http request when using matches widget
     datasets = params[:dataset] ? init_datasets : []
@@ -60,7 +58,7 @@ class Concepts::AlphabeticalController < ConceptsController
   end
 
   def find_labelings
-    query = params[:prefix].mb_chars.downcase.to_s
+    query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
 
     Iqvoc::Concept.pref_labeling_class.
       concept_published.
