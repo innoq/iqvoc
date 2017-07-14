@@ -28,8 +28,7 @@ class Concepts::AlphabeticalController < ConceptsController
     # prevent obsolet http request when using matches widget
     datasets = params[:dataset] ? init_datasets : []
 
-    @letters = Label::Base.select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter")
-                          .order("letter").map(&:letter)
+    identify_used_first_letters
 
     if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
       query = params[:prefix].mb_chars.downcase.to_s
@@ -55,6 +54,10 @@ class Concepts::AlphabeticalController < ConceptsController
   end
 
   protected
+
+  def identify_used_first_letters
+    @letters = Label::Base.where("#{Label::Base.table_name}.language = ?", I18n.locale).joins(:pref_labeled_concepts).where("concepts.published_at IS NOT NULL").where("concepts.expired_at IS NULL OR concepts.expired_at >= ?", Time.now).where("concepts.type = ?", Iqvoc::Concept.base_class_name).select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter").order("letter").map(&:letter)
+  end
 
   def find_labelings
     query = params[:prefix].mb_chars.downcase.to_s
