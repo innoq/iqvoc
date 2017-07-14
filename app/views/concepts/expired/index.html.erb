@@ -1,10 +1,9 @@
-<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
-                :desc => t('txt.views.navigation.expired') %>
+<%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2), :desc => t('txt.views.navigation.expired') %>
 <%= render 'concepts/sidebars/plural' %>
 
 <div class="panel">
   <div class="panel-header centered">
-    <%= letter_selector do |letter| %>
+    <%= letter_selector(@letters) do |letter| %>
         <% expired_concepts_path(:prefix => letter.to_s.downcase) %>
     <% end %>
   </div>

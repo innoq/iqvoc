@@ -17,6 +17,10 @@
 class Concepts::ExpiredController < Concepts::AlphabeticalController
   protected
 
+  def identify_used_first_letters
+    @letters = Label::Base.where("#{Label::Base.table_name}.language = ?", I18n.locale).joins(:pref_labeled_concepts).where("concepts.expired_at < ?", Time.now).where("concepts.type = ?", Iqvoc::Concept.base_class_name).select("DISTINCT UPPER(SUBSTR(value, 1, 1)) AS letter").order("letter").map(&:letter)
+  end
+
   def find_labelings
     Iqvoc::Concept.pref_labeling_class.
       concept_expired.
