@@ -94,6 +94,7 @@ en:
          select_language: "Choose language"
          login: "Login"
          logout: "Logout"
+         profile: "edit profile"
        sections:
          main: Main
          labels: Labels

@@ -14,6 +14,7 @@ class Ability
     if user # Every logged in user ...
       can :use, :dashboard
       can :destroy, UserSession
+      can :update, User, id: user.id # users can update their profile
 
       if user.owns_role?(:reader)
         can :read, [::Concept::Base, ::Collection::Base, ::Label::Base]

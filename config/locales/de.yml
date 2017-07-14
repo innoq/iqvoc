@@ -100,6 +100,7 @@ de:
          select_language: "Sprache auswählen"
          login: "Anmelden"
          logout: "Abmelden"
+         profile: "Profil bearbeiten"
      instance_configuration:
        caption: "Konfiguration"
        groups:
