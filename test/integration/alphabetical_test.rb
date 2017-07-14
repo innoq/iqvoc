@@ -31,6 +31,19 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
       end
       concept.publish.save
     end
+
+    Concept::SKOS::Base.new.tap do |c|
+      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RDFAPI.devour c, 'skos:altLabel', '"Berta"@en'
+      c.publish
+      c.save
+    end
+  end
+
+  test 'showing only letters with concepts' do
+    visit alphabetical_concepts_path(lang: :en, format: :html)
+    assert_equal :en, I18n.locale
+    assert_equal 'AX', page.all('.letter-selector')[0].text
   end
 
   test 'showing only concepts with a pref label in respective language' do
