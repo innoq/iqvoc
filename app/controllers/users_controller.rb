@@ -46,13 +46,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize! :update, @user
 
-    if @user.update_attributes(user_params)
+    # strip out role and active params so that a non admin
+    # could not change his own role and permissions
+    params = can?(:manage, User) ? user_params : user_params.except(:active, :role)
+
+    if @user.update_attributes(params)
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
-      if can?(:manage, User)
-        redirect_to users_path
-      else
-        redirect_to dashboard_path
-      end
+      redirect_to can?(:manage, User) ? users_path : dashboard_path
     else
       render action: :edit
     end
