@@ -31,13 +31,11 @@
 </ul>
 </li>
 
-<li>
-  <% if current_user %>
-    <%= link_to user_session_path, method: :delete, class: 'logout', data: { confirm: t('txt.common.confirm_sign_out') } do %>
-      <i class="fa fa-sign-out"></i> <%= current_user.name %>
-    <% end %>
-  <% else %>
+<% if current_user %>
+  <%= render "layouts/user_navigation" %>
+<% else %>
+  <li>
     <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
-  <% end %>
-</li>
+  </li>
+<% end %>
 </ul>

@@ -5,9 +5,11 @@
   <%= f.text_field :telephone_number %>
   <%= f.password_field :password %>
   <%= f.password_field :password_confirmation %>
-  <%= f.select :role, User::ROLES.map { |r| [r.humanize, r] } %>
-  <%= f.form_group do %>
-    <%= f.check_box :active, :label => User.human_attribute_name(:active) %>
+  <% if can?(:manage, User) %>
+    <%= f.select :role, User::ROLES.map { |r| [r.humanize, r] } %>
+    <%= f.form_group do %>
+      <%= f.check_box :active, :label => User.human_attribute_name(:active) %>
+    <% end %>
   <% end %>
 
   <hr />

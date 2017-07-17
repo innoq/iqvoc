@@ -1,0 +1,60 @@
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <%= current_user.initials %>
+    <i class="fa fa-angle-down"></i>
+  </a>
+  <ul class="user-widget dropdown-menu">
+    <li class="user-widget-header">
+      <b class="fullname"><%= current_user.name %></b>
+      <div class="email"><%= current_user.email %></div>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li class="user-widget-item">
+      <%= link_to t("txt.views.layouts.application.profile"), edit_user_path(current_user) %>
+    </li>
+
+    <% if can? :use, :administration %>
+    <li role="separator" class="divider"></li>
+      <% if can? :manage, User %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.users"), users_path %>
+      </li>
+      <% end %>
+
+      <% if can? :manage, Iqvoc.config %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.instance_configuration"), instance_configuration_path %>
+      </li>
+      <% end %>
+
+      <% if can? :import, Concept::Base %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.import"), imports_path %>
+      </li>
+      <% end %>
+
+      <% if can? :export, Concept::Base %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.export"), exports_path %>
+      </li>
+      <% end %>
+
+      <% if can? :sync, :triplestore %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.sync"), triplestore_sync_path %>
+      </li>
+      <% end %>
+
+      <% if can? :reset, :thesaurus %>
+      <li class="user-widget-item">
+        <%= link_to t("txt.views.navigation.reset"), reset_path %>
+      </li>
+      <% end %>
+    <% end %>
+
+    <li role="separator" class="divider"></li>
+    <li class="user-widget-item">
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path,  method: :delete, class: 'logout' %>
+    </li>
+  </ul>
+</li>

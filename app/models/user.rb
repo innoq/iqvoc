@@ -7,4 +7,8 @@ class User < AbstractUser
   def name
     "#{forename} #{surname}"
   end
+
+  def initials
+    "#{forename[0]}#{surname[0]}"
+  end
 end
