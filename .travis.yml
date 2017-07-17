@@ -25,6 +25,9 @@ notifications:
   email: true
   slack:
     secure: gj0DGf9tUSBfLmjpjvwRuKiUojmWCtP4gfve3vEL1uZ0uzfjNAlibj4jxHO8w2/SNS4PcZ930batya4XoC5/rS19524pZ5brt++p4Xu295spoEqMVoeK+unl1L6ZrazvO5gJkraAqftxiJ2njwJ8OwJS33psXRLb/bZWcLAMb3A=
+    on_success: change
+    on_failure: always
+    on_pull_requests: false
 deploy:
   - provider: rubygems
     api_key:
