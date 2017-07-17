@@ -22,8 +22,9 @@ branches:
   # only:
   # - master
 notifications:
-  email:
-  - iqvoc@innoq.com
+  email: true
+  slack:
+    secure: gj0DGf9tUSBfLmjpjvwRuKiUojmWCtP4gfve3vEL1uZ0uzfjNAlibj4jxHO8w2/SNS4PcZ930batya4XoC5/rS19524pZ5brt++p4Xu295spoEqMVoeK+unl1L6ZrazvO5gJkraAqftxiJ2njwJ8OwJS33psXRLb/bZWcLAMb3A=
 deploy:
   - provider: rubygems
     api_key:
@@ -45,7 +46,7 @@ deploy:
   #     - "rake release:create_rev"
   #     - "rake db:migrate"
 addons:
-  postgresql: "9.3"
+  postgresql: '9.3'
 matrix:
   allow_failures:
     - rvm: ruby-head
