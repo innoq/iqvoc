@@ -15,9 +15,11 @@
 # limitations under the License.
 
 require 'active_support/concern'
+require 'active_record/model_schema'
 
 module DeepCloning
   extend ActiveSupport::Concern
+  extend ActiveRecord::ModelSchema
 
   included do #:nodoc:
     alias_method_chain :dup, :deep_cloning
@@ -54,7 +56,7 @@ module DeepCloning
 
     if options[:except]
       Array(options[:except]).each do |attribute|
-        kopy.write_attribute(attribute, attributes_from_column_definition[attribute.to_s])
+        kopy.send("#{attribute}=", kopy.class.column_defaults[attribute.to_s])
       end
     end
 
