@@ -24,6 +24,8 @@
   -moz-background-clip: padding;
   background-clip: padding-box;
   width:100%;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .tt-dropdown-menu > div > p {
