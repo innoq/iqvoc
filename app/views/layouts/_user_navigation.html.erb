@@ -11,44 +11,44 @@
 
     <li role="separator" class="divider"></li>
 
-    <li class="user-widget-item <%= 'active' if current_page? edit_user_path(current_user) %>">
+    <li class="user-widget-item<%= ' active' if current_page? edit_user_path(current_user) %>">
       <%= link_to t("txt.views.layouts.application.profile"), edit_user_path(current_user) %>
     </li>
 
     <% if can? :use, :administration %>
     <li role="separator" class="divider"></li>
       <% if can? :manage, User %>
-        <li class="user-widget-item <%= 'active' if current_page? users_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? users_path %>">
           <%= link_to t("txt.views.navigation.users"), users_path %>
         </li>
       <% end %>
 
       <% if can? :manage, Iqvoc.config %>
-        <li class="user-widget-item <%= 'active' if current_page? instance_configuration_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? instance_configuration_path %>">
           <%= link_to t("txt.views.navigation.instance_configuration"), instance_configuration_path %>
         </li>
       <% end %>
 
       <% if can? :import, Concept::Base %>
-        <li class="user-widget-item <%= 'active' if current_page? imports_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? imports_path %>">
           <%= link_to t("txt.views.navigation.import"), imports_path %>
         </li>
       <% end %>
 
       <% if can? :export, Concept::Base %>
-        <li class="user-widget-item <%= 'active' if current_page? exports_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? exports_path %>">
           <%= link_to t("txt.views.navigation.export"), exports_path %>
         </li>
       <% end %>
 
       <% if can? :sync, :triplestore %>
-        <li class="user-widget-item <%= 'active' if current_page? triplestore_sync_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? triplestore_sync_path %>">
           <%= link_to t("txt.views.navigation.sync"), triplestore_sync_path %>
         </li>
       <% end %>
 
       <% if can? :reset, :thesaurus %>
-        <li class="user-widget-item <%= 'active' if current_page? reset_path %>">
+        <li class="user-widget-item<%= ' active' if current_page? reset_path %>">
           <%= link_to t("txt.views.navigation.reset"), reset_path %>
         </li>
       <% end %>
