@@ -18,7 +18,7 @@ class TriplestoreSyncController < ApplicationController
   include RDFSyncService::Helper
 
   def index
-    authorize! :reset, :thesaurus
+    authorize! :sync, :triplestore
 
     flash.now[:info] = [I18n.t('txt.controllers.triplestore_sync.batch_hint',
         host: root_url(lang: nil))]
@@ -46,7 +46,7 @@ class TriplestoreSyncController < ApplicationController
   end
 
   def sync
-    authorize! :reset, :thesaurus
+    authorize! :sync, :triplestore
 
     flash[:error] = []
     begin
