@@ -2,7 +2,7 @@ require 'linkeddata'
 require 'timeout'
 
 class Dataset::IqvocDataset
-  DEFAULT_TIMEOUT = 5.freeze
+  DEFAULT_TIMEOUT = 2.freeze
 
   attr_reader :name, :url
 
@@ -10,11 +10,15 @@ class Dataset::IqvocDataset
     @url = URI.parse(url)
     dataset_url = URI.join(@url.to_s + '/', 'dataset.rdf')
 
-    @repository = Timeout::timeout(DEFAULT_TIMEOUT) do
-      RDF::Repository.load(dataset_url)
+    begin
+      @repository = Timeout::timeout(DEFAULT_TIMEOUT) do
+        RDF::Repository.load(dataset_url)
+      end
+    rescue Errno::ECONNREFUSED, Timeout::Error => e
+      Rails.logger.error("Iqvoc source couldn't be resolved: #{@url}, message: #{e.message}")
+    ensure
+      @name = fetch_name
     end
-
-    @name = fetch_name
   end
 
   def to_s
