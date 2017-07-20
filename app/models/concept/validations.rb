@@ -15,6 +15,7 @@ module Concept
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
       validate :no_self_reference_concept_relation
+      validate :top_level_or_child_concept
     end
 
     # top term and broader relations are mutually exclusive
@@ -141,6 +142,11 @@ module Concept
           errors.add :base, I18n.t('txt.models.concept.no_self_reference')
         end
       end
+    end
+
+    def top_level_or_child_concept
+      return if !validatable_for_publishing? || top_term || broader_relations.any?
+      errors.add :base, I18n.t('txt.models.concept.top_level_or_child_error')
     end
   end
 end

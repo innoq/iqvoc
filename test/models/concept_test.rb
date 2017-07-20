@@ -50,6 +50,19 @@ class ConceptTest < ActiveSupport::TestCase
     end
   end
 
+  test 'no concept without top term or relation' do
+    bear = RDFAPI.devour 'bear_one', 'a', 'skos:Concept'
+    RDFAPI.devour bear, 'skos:prefLabel', '"Bear"@en'
+
+    assert bear.save
+    refute bear.publishable?
+    assert bear.errors[:base].include? "The concept must be either a top term or must be assigned to a broader concept."
+
+    bear.update_attributes top_term: true
+    assert bear.publishable?
+    assert_not bear.errors[:base].include? "The concept must be either a top term or must be assigned to a broader concept."
+  end
+
   test 'concepts without pref_labels should be saveable but not publishable' do
     concept =  RDFAPI.devour 'bear', 'a', 'skos:Concept'
     assert_equal [], concept.pref_labels
