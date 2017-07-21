@@ -25,7 +25,7 @@ notifications:
   email: true
   slack:
     secure: ZUBRGeXiogUhZBsAh3VYj25Ived+i2R4Wk565wx8CufZzo1stWUw1WHf6d/rV+SLuJsBA7T3acb2v90HNbG3RIcHYTAFxNk8c0Cf92HRauTxktscpyxNaRzj0atm8b3xAlbfeasSAZnNJzuSnrnc75YdqqQgSTj1Gyg3KwTdnDg=
-    on_success: change
+    on_success: always
     on_failure: always
     on_pull_requests: false
 deploy:
