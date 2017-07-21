@@ -437,6 +437,7 @@ de:
        top_term_rooted_error: "Begriffe oberster Ebene dürfen nicht als spezifischere Begriffe verwendet werden."
        invalid_rank_for_ranked_relations: 'Ungültiger Rang für %{relation} "%{relation_target_label}".'
        no_narrower_and_broader_relations: 'Sowohl allgemeinere als auch spezifischere Beziehungen: %{concepts}'
+       top_level_or_child_error: Das Konzept muss entweder ein Begriff oberster Ebene sein oder einem allgemeineren Konzept zugeordnet sein.
        no_self_reference: 'Konzepte dürfen nicht auf sich selbst verweisen. Bitte "Beziehungen" prüfen.'
        main_pref_label_language_missing_error: "Es muss mindestens ein bevorzugtes Label in der Hauptsprache des Thesaurus existieren."
        pref_labels_with_same_languages_error: "Es darf nur jeweils ein bevorzugtes Label zu einer Sprache geben."
