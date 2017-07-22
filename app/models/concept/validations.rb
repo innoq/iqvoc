@@ -11,7 +11,7 @@ module Concept
       validate :rooted_top_terms
       validate :valid_rank_for_ranked_relations
       validate :unique_pref_labels
-      validate :exclusive_pref_label
+      validate :exclusive_pref_and_alt_labels_per_concept
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
       validate :no_self_reference_concept_relation
@@ -87,7 +87,7 @@ module Concept
       end
     end
 
-    def exclusive_pref_label
+    def exclusive_pref_and_alt_labels_per_concept
       if validatable_for_publishing?
         alt_labels = alt_labelings.collect { |l| l.target }
 
