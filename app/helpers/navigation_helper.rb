@@ -46,7 +46,7 @@ module NavigationHelper
 
   def sidebar(&block)
     content_for :sidebar do
-      content_tag :div, class: 'sidebar' do
+      content_tag :div, class: 'sidebar', 'data-spy': "affix" do
         content_tag :div, class: 'list-group' do
           capture(&block)
         end
