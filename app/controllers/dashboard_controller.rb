@@ -18,9 +18,8 @@ class DashboardController < ApplicationController
   def index
     authorize! :use, :dashboard
 
-    @items = []
     Iqvoc.first_level_classes.each do |klass|
-      @items += klass.for_dashboard.load
+      instance_variable_set("@#{klass.model_name.singular}", klass.for_dashboard.load)
     end
 
     factor = params[:order] == 'desc' ? -1 : 1
@@ -36,7 +35,7 @@ class DashboardController < ApplicationController
       @items.sort! { |x, y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
     end
 
-    @items = Kaminari.paginate_array(@items).page(params[:page])
+    Iqvoc.first_level_classes.map { |k| instance_variable_get("@#{k.model_name.singular}") }.each { |k| instance_variable_set("@#{k.model_name.singular}", Kaminari.paginate_array(k).page(params[:page])) }
   end
 
   def reset
