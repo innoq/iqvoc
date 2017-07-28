@@ -9,3 +9,4 @@
 //= require iqvoc/label_resolver
 //= require iqvoc/treeview
 //= require iqvoc/autocomplete
+//= require iqvoc/moving_sidebar
