@@ -14,7 +14,7 @@ IQVOC.movingSidebar = (function($) {
 
     // recalculate on resize
     $(window).on('resize', IQVOC.debounce(function () {
-      calculateSidebar();
+      calculateSidebar(container);
     }, 250));
   }
 
