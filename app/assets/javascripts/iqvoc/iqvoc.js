@@ -224,4 +224,7 @@ jQuery(document).ready(function($) {
   $(document.body).on("concept-label", function(ev, container) {
     IQVOC.labelResolver(container);
   });
+
+  // initialise moving sidebar
+  IQVOC.movingSidebar(".sidebar");
 });
