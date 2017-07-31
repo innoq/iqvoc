@@ -36,6 +36,8 @@ class DashboardController < ApplicationController
     end
 
     Iqvoc.first_level_classes.map { |k| instance_variable_get("@#{k.model_name.singular}") }.each { |k| instance_variable_set("@#{k.model_name.singular}", Kaminari.paginate_array(k).page(params[:page])) }
+
+    render 'index', locals: {tab: params[:tab]}
   end
 
   def reset
