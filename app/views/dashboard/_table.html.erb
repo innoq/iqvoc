@@ -22,7 +22,7 @@
         <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <td><font color='red'><%= l(item.follow_up) if item.follow_up.present? %></font></td>
         <td><%= l(item.updated_at, :format => :short) %></td>
-        <td><span class="label <%= !item.published? || item.in_review? ? 'label-danger' :'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
+        <td><span class="label <%= !item.published? || item.in_review? ? 'label-danger' : 'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
         <td>
         <%- if params[:check_consistency] == "1" -%>
           <%= consistency_status(item) %>
