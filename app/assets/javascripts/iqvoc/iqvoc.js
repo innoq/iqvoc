@@ -160,24 +160,9 @@ jQuery(document).ready(function($) {
     $(this).closest("li")[action]("deleted");
   });
 
-  // Datepicker
-  if (locale === "de") {
-    $.extend( $.fn.pickadate.defaults, {
-      monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
-      monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
-      weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
-      weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
-      today: 'Heute',
-      clear: 'Löschen',
-      firstDay: 1
-    });
-  }
-
-  $("input.datepicker").pickadate({
-    // currently disabled beacause of a pickadate-bug
-    // https://github.com/amsul/pickadate.js/issues/640
-    // editable: true,
-    format: 'yyyy-mm-dd'
+  $('input.datepicker').datepicker({
+    clearBtn: true,
+    language: locale
   });
 
   // Dashboard table row highlighting and click handling
