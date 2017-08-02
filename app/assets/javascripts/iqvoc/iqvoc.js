@@ -163,7 +163,7 @@ jQuery(document).ready(function($) {
   $('.datepicker').datepicker({
     autoclose: true,
     todayHighlight: true,
-    todayBtn: true,
+    todayBtn: 'linked',
     clearBtn: true,
     format: "yyyy-mm-dd",
     language: locale
