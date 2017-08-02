@@ -160,8 +160,12 @@ jQuery(document).ready(function($) {
     $(this).closest("li")[action]("deleted");
   });
 
-  $('input.datepicker').datepicker({
+  $('.datepicker').datepicker({
+    autoclose: true,
+    todayHighlight: true,
+    todayBtn: true,
     clearBtn: true,
+    format: "yyyy-mm-dd",
     language: locale
   });
 
