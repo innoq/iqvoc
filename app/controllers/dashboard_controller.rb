@@ -42,7 +42,11 @@ class DashboardController < ApplicationController
 
     collections = Iqvoc::Collection.base_class.for_dashboard.load
 
-    if params[:sort]
+    if params[:sort] && params[:sort].include?('state ')
+      sort = params[:sort].split(',').select { |s| s.include? 'state ' }.last.gsub('state ', '')
+      collections = collections.to_a.sort_by { |c| c.state }
+      collections = sort == 'DESC' ? collections.reverse : collections
+    elsif params[:sort]
       order_params = params[:sort]
 
       collections.order(order_params)
