@@ -9,7 +9,7 @@
       <%- if params[:check_consistency] == "1" -%>
         <th><%= t("txt.views.dashboard.consistent") %>?</th>
       <%- else -%>
-        <th><%= link_to t("txt.views.dashboard.check_consistency"), dashboard_url(request.query_parameters.merge(:check_consistency => 1)) %></th>
+        <th><%= link_to t("txt.views.dashboard.check_consistency"), params.merge(:check_consistency => 1) %></th>
       <%- end -%>
     </tr>
   </thead>
