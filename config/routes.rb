@@ -70,7 +70,8 @@ Rails.application.routes.draw do
     get 'hierarchical_concepts' => 'concepts/hierarchical#index', as: 'hierarchical_concepts'
     get 'expired_concepts' => 'concepts/expired#index', as: 'expired_concepts'
 
-    get 'dashboard' => 'dashboard#index', as: 'dashboard'
+    get 'dashboard' => 'dashboard#concept_index', as: 'dashboard'
+    get 'collection_dashboard' => 'dashboard#collection_index', as: 'collection_dashboard'
     match 'dashboard/reset' => 'dashboard#reset', as: 'reset', via: [:get, :post]
 
     get 'config' => 'instance_configuration#index', as: 'instance_configuration'

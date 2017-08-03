@@ -15,29 +15,42 @@
 # limitations under the License.
 
 class DashboardController < ApplicationController
-  def index
+  def concept_index
     authorize! :use, :dashboard
 
-    Iqvoc.first_level_classes.each do |klass|
-      instance_variable_set("@#{klass.model_name.singular}", klass.for_dashboard.load)
+    concepts = Iqvoc::Concept.base_class.for_dashboard.load
+
+    if params[:sort] && params[:sort].include?('state ')
+      sort = params[:sort].split(',').select { |s| s.include? 'state ' }.last.gsub('state ', '')
+      concepts = concepts.to_a.sort_by { |c| c.state }
+      concepts = sort == 'DESC' ? concepts.reverse : concepts
+    elsif params[:sort]
+      order_params = params[:sort]
+      #FIXME: how to order by state in database?
+      order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('follow_up', 'concepts.follow_up').gsub('updated_at', 'concepts.updated_at')
+
+      concepts = concepts.includes(:pref_labels, :locking_user).order(order_params)
     end
 
-    factor = params[:order] == 'desc' ? -1 : 1
+    @items = Kaminari.paginate_array(concepts).page(params[:page])
 
-    if ['class', 'locking_user', 'follow_up', 'updated_at', 'state'].include?(params[:by])
-      @items.sort! do |x, y|
-        xval, yval = x.send(params[:by]), y.send(params[:by])
-        xval = xval.to_s.downcase
-        yval = yval.to_s.downcase
-        (xval <=> yval) * factor
-      end
-    else
-      @items.sort! { |x, y| (x.to_s.downcase <=> y.to_s.downcase) * factor } rescue nil
+    render 'index', locals: {active: Iqvoc.first_level_classes.index(Iqvoc::Concept.base_class)}
+  end
+
+  def collection_index
+    authorize! :use, :dashboard
+
+    collections = Iqvoc::Collection.base_class.for_dashboard.load
+
+    if params[:sort]
+      order_params = params[:sort]
+
+      collections.order(order_params)
     end
 
-    Iqvoc.first_level_classes.map { |k| instance_variable_get("@#{k.model_name.singular}") }.each { |k| instance_variable_set("@#{k.model_name.singular}", Kaminari.paginate_array(k).page(params[:page])) }
+    @items = Kaminari.paginate_array(collections).page(params[:page])
 
-    render 'index', locals: {tab: params[:tab]}
+    render 'index', locals: { active: Iqvoc.first_level_classes.index(Iqvoc::Collection.base_class) }
   end
 
   def reset
