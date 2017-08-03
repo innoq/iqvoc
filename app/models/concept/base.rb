@@ -351,6 +351,10 @@ class Concept::Base < ActiveRecord::Base
     'partials/concept/edit_link_base'
   end
 
+  def self.dashboard_path
+    'dashboard_path'
+  end
+
   # ********** Methods
 
   def labelings_by_text=(hash)
