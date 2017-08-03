@@ -1,20 +1,11 @@
 <%= page_header :title => 'Dashboard' %>
 
-<% active = params[:tab] || 0 %>
-
 <ul class="nav nav-tabs">
   <% Iqvoc.first_level_classes.each_with_index do |klass, index| %>
-    <li <%= "class=active" if index == active.to_i %>><a href=<%= "##{klass.model_name.singular}" %> data-toggle="tab"><%= klass.model_name.human(count: 2) %></a></li>
+    <li <%= "class=active" if index == active.to_i %>><%= link_to klass.model_name.human(count: 2), send(klass.dashboard_path) %></a></li>
   <% end %>
 </ul>
 
-<div class="tab-content">
-  <% Iqvoc.first_level_classes.each_with_index do |klass, index| %>
-    <div id=<%= "#{klass.model_name.singular}" %> class="tab-pane fade in<%= " active" if index == active.to_i %>">
-      <%= render partial: 'table', locals: {items: instance_variable_get("@#{klass.model_name.singular}")} %>
-      <%= paginate instance_variable_get("@#{klass.model_name.singular}"), params: {controller: 'dashboard', action: 'index', tab: "#{index}" } %>
-    </div>
-  <% end %>
-</div>
+<%= render partial: 'table' %>
 
 <%= render 'dashboard/sidebar' %>

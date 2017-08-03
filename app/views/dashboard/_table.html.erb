@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% items.each do |item| -%>
+    <% @items.each do |item| -%>
       <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
         <td>
           <%= render item.class.edit_link_partial_name, :item => item %>
@@ -32,3 +32,5 @@
     <% end -%>
   </tbody>
 </table>
+
+<%= paginate @items %>
