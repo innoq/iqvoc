@@ -7,20 +7,19 @@ IQVOC.movingSidebar = (function($) {
 
   function MovingSidebar(container) {
     this.container = container.jquery ? container : $(container);
+    var sidebar = this.container;
 
     // add data-spy="affix" attribute to activate bootstrap's affix
     this.container.attr('data-spy', 'affix');
-    calculateSidebar(container);
+    calculateSidebar(sidebar);
 
     // recalculate on resize
     $(window).on('resize', IQVOC.debounce(function () {
-      calculateSidebar();
+      calculateSidebar(sidebar);
     }, 250));
   }
 
-  function calculateSidebar(container){
-    var sidebar = $(container);
-
+  function calculateSidebar(sidebar){
     if($(document).innerWidth() > 977){
       var parent = sidebar.parent();
 
