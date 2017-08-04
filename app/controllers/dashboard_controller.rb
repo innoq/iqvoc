@@ -34,7 +34,7 @@ class DashboardController < ApplicationController
 
     @items = Kaminari.paginate_array(concepts).page(params[:page])
 
-    render 'index', locals: {active: Iqvoc.first_level_classes.index(Iqvoc::Concept.base_class)}
+    render 'index', locals: { active: Iqvoc.first_level_classes.index(Iqvoc::Concept.base_class) }
   end
 
   def collection_index
