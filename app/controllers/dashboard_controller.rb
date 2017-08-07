@@ -49,8 +49,8 @@ class DashboardController < ApplicationController
       collections = sort == 'DESC' ? collections.reverse : collections
     elsif params[:sort]
       order_params = params[:sort]
-      order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
       order_params = sanatize_order order_params
+      order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
 
       collections = collections.includes(:pref_labels, :locking_user).order(order_params)
     end
