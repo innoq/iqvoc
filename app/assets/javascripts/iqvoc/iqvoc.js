@@ -171,7 +171,7 @@ jQuery(document).ready(function($) {
 
   // Dashboard table row highlighting and click handling
   $("tr.highlightable").click(function(ev) {
-    window.location = $(this).attr("data-url");
+    window.open($(this).attr("data-url"), '_blank');
   });
 
   // Search
