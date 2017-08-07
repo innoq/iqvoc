@@ -1,19 +1,19 @@
 <div class="form-group result_type_filter">
   <%= label_tag nil, t('txt.views.search_results.for'), :class => 'col-sm-2 control-label' %>
   <div class="col-sm-4">
-    <div class="radio">
+    <div class="radio-inline">
       <label for="for_concept">
         <%= radio_button_tag 'for', 'concept', params[:for] == "concept" %> <%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %>
       </label>
     </div>
 
-    <div class="radio">
+    <div class="radio-inline">
       <label for="for_collection">
         <%= radio_button_tag 'for', 'collection', params[:for] == "collection" %> <%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %>
       </label>
     </div>
 
-    <div class="radio">
+    <div class="radio-inline">
       <label for="for_all">
         <%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]) %> <%= t("txt.views.search_results.all") %>
       </label>
