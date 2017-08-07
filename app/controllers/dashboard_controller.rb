@@ -27,6 +27,7 @@ class DashboardController < ApplicationController
     elsif params[:sort]
       order_params = params[:sort]
       #FIXME: how to order by state in database?
+      order_params = sanatize_order order_params
       order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('follow_up', 'concepts.follow_up').gsub('updated_at', 'concepts.updated_at')
 
       concepts = concepts.includes(:pref_labels, :locking_user).order(order_params)
@@ -49,6 +50,7 @@ class DashboardController < ApplicationController
     elsif params[:sort]
       order_params = params[:sort]
       order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
+      order_params = sanatize_order order_params
 
       collections = collections.includes(:pref_labels, :locking_user).order(order_params)
     end
@@ -72,5 +74,17 @@ class DashboardController < ApplicationController
       flash.now[:danger] = t('txt.views.dashboard.reset_warning')
       flash.now[:error] = t('txt.views.dashboard.jobs_pending_warning') if Delayed::Job.any?
     end
+  end
+
+  private
+
+  def sanatize_order search_params
+    return '' if search_params.include?(';')
+    param_array = search_params.split(',').select do |pa|
+      p = pa.split(' ')
+      result = p.count == 2 && ['value', 'locking_user', 'follow_up', 'updated_at'].include?(p[0]) && ['ASC', 'DESC'].include?(p[1])
+      result
+    end
+    param_array.join(',')
   end
 end
