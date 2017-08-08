@@ -80,7 +80,7 @@ class DashboardController < ApplicationController
 
   def sanatize_order search_params
     return '' if search_params.include?(';')
-    param_array = search_params.split(',').select do |pa|
+    param_array = search_params.split(',').compact.select do |pa|
       p = pa.split(' ')
       result = p.count == 2 && ['value', 'locking_user', 'follow_up', 'updated_at'].include?(p[0]) && ['ASC', 'DESC'].include?(p[1])
       result
