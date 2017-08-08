@@ -33,7 +33,7 @@ class InlineDataHelper
     rescue CSV::MalformedCSVError => exc
       values = inline_values.parse_csv(CSV_OPTIONS)
     end
-    values ? values.map(&:strip) : []
+    values.compact ? values.map(&:strip) : []
   end
 
   def self.generate_inline_values(values)
