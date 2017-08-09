@@ -71,6 +71,10 @@ class Collection::Base < Concept::Base
         where(Collection::Member::Base.arel_table[:collection_id].eq(parent_id))
   end
 
+  def self.dashboard_path
+    'collection_dashboard_path'
+  end
+
   def self.edit_link_partial_name
     'partials/collection/edit_link_base'
   end

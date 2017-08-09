@@ -1,0 +1,40 @@
+<table class="table table-hover dashboard-table">
+  <thead>
+    <tr>
+      <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
+      <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
+      <% unless @items.first.class == Iqvoc::Collection.base_class %>
+        <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
+      <% end %>
+      <th><%= t("txt.views.dashboard.updated_at") %><%= sorting_controls_for(:updated_at) %></th>
+      <th><%= t("txt.views.dashboard.state") %><%= sorting_controls_for(:state) %></th>
+      <%- if params[:check_consistency] == "1" -%>
+        <th><%= t("txt.views.dashboard.consistent") %>?</th>
+      <%- else -%>
+        <th><%= link_to t("txt.views.dashboard.check_consistency"), params.merge(:check_consistency => 1) %></th>
+      <%- end -%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| -%>
+      <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
+        <td>
+          <%= render item.class.edit_link_partial_name, :item => item %>
+        </td>
+        <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
+        <% unless item.class == Iqvoc::Collection.base_class %>
+          <td><font color='red'><%= l(item.follow_up) if item.follow_up.present? %></font></td>
+        <% end %>
+        <td><%= l(item.updated_at, :format => :short) %></td>
+        <td><span class="label <%= !item.published? || item.in_review? ? 'label-danger' : 'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
+        <td>
+        <%- if params[:check_consistency] == "1" -%>
+          <%= consistency_status(item) %>
+        <%- end -%>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<%= paginate @items %>
