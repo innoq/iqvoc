@@ -1,8 +1,8 @@
 <%= page_header :title => 'Dashboard' %>
 
 <ul class="nav nav-tabs">
-  <% Iqvoc.first_level_classes.each_with_index do |klass, index| %>
-    <li <%= "class=active" if index == active.to_i %>><%= link_to klass.model_name.human(count: 2), send(klass.dashboard_path) %></a></li>
+  <% Iqvoc.first_level_classes.each do |klass| %>
+    <li <%= "class=active" if klass == active_class %>><%= link_to klass.model_name.human(count: 2), send(klass.dashboard_path) %></a></li>
   <% end %>
 </ul>
 
