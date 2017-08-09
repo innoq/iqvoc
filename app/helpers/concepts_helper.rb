@@ -77,6 +77,10 @@ module ConceptsHelper
     res
   end
 
+  def delete_button_text(concept)
+    concept.never_published? ? t("txt.views.versioning.delete") : t("txt.views.versioning.delete_copy")
+  end
+
   def concept_header(concept)
     desc = concept.class.model_name.human
 
