@@ -113,6 +113,10 @@ module Versioning
     end
   end
 
+  def never_published?
+    unpublished? && rev == 1
+  end
+
   def locked?
     locked_by?
   end

@@ -36,8 +36,9 @@
   <% end %>
 
   <% if can?(:destroy, @collection) %>
-    <%= button_to t("txt.views.versioning.delete"),
-      collection_path(:published => 0, :id => @collection.origin),
+    <% button_text = @collection.never_published? ? t("txt.views.versioning.delete") : t("txt.views.versioning.delete_copy") %>
+    <%= button_to button_text,
+        collection_path(:published => 0, :id => @collection.origin),
         :method => :delete,
         :class => 'btn btn-danger',
         :data => { :confirm => I18n.t("txt.views.versioning.delete_confirm") } if can?(:destroy, @collection) %>

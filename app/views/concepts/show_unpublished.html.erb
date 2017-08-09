@@ -40,7 +40,8 @@
   <% end %>
 
   <% if can?(:destroy, @concept) %>
-    <%= button_to t("txt.views.versioning.delete"),
+    <% button_text = @concept.never_published? ? t("txt.views.versioning.delete") : t("txt.views.versioning.delete_copy") %>
+    <%= button_to button_text,
       concept_path(:published => 0, :id => @concept.origin),
         :method => :delete,
         :class => 'btn btn-danger',
