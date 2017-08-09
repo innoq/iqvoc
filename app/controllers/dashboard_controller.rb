@@ -48,8 +48,7 @@ class DashboardController < ApplicationController
       collections = collections.to_a.sort_by { |c| c.state }
       collections = sort == 'DESC' ? collections.reverse : collections
     elsif params[:sort]
-      order_params = params[:sort]
-      order_params = sanatize_order order_params
+      order_params = sanatize_order params[:sort]
       order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
 
       collections = collections.includes(:pref_labels, :locking_user).order(order_params)
@@ -80,10 +79,9 @@ class DashboardController < ApplicationController
 
   def sanatize_order search_params
     return '' if search_params.include?(';')
-    param_array = search_params.split(',').compact.select do |pa|
-      p = pa.split(' ')
-      result = p.count == 2 && ['value', 'locking_user', 'follow_up', 'updated_at'].include?(p[0]) && ['ASC', 'DESC'].include?(p[1])
-      result
+    param_array = search_params.split(',').compact.select do |order_column|
+      column_and_order = order_column.split(' ')
+      column_and_order.count == 2 && ['value', 'locking_user', 'follow_up', 'updated_at'].include?(column_and_order[0]) && ['ASC', 'DESC'].include?(column_and_order[1])
     end
     param_array.join(',')
   end
