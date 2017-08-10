@@ -88,6 +88,7 @@ de:
      menu: "Menü"
 
    views:
+     show: "Ansehen"
      layouts:
        sections:
          main: Basisdaten
@@ -311,6 +312,7 @@ de:
        reset_success: "Der Thesaurus wurde gelöscht."
        export: "Export"
        import: "Import"
+       no_editorial_notes: Es gibt keine redaktionellen Anmerkungen.
      collections:
        new: "Neue Kollektion"
      triplestore_sync:

@@ -169,9 +169,16 @@ jQuery(document).ready(function($) {
     language: locale
   });
 
-  // Dashboard table row highlighting and click handling
   $("tr.highlightable").click(function(ev) {
-    window.open($(this).attr("data-url"), '_blank');
+    ev.preventDefault();
+
+    var modal = $("#concept-teaser-modal");
+    var target = $(this).attr("data-url");
+
+    $.get(target, function(data) {
+      modal.html(data);
+      modal.modal();
+    });
   });
 
   // Search

@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     get 'expired_concepts' => 'concepts/expired#index', as: 'expired_concepts'
 
     get 'dashboard' => 'dashboard#concept_index', as: 'dashboard'
+    get 'dashboard_glance' => 'dashboard#glance', as: 'dashboard_glance'
     get 'collection_dashboard' => 'dashboard#collection_index', as: 'collection_dashboard'
     match 'dashboard/reset' => 'dashboard#reset', as: 'reset', via: [:get, :post]
 

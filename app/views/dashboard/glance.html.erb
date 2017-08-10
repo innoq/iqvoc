@@ -1,0 +1,31 @@
+<!-- Modal -->
+<div class="modal-dialog concept-teaser-dialog">
+  <div class="modal-content concept-teaser-content">
+    <div class="modal-header concept-teaser-header">
+      <button type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only"><%= t('txt.views.concepts.teaser.close') %></span>
+      </button>
+      <h1 class="modal-title" id="concept-teaser-title"><%= @title %></h1>
+    </div>
+    <div class="modal-body concept-teaser-body">
+      <h2><%= Note::SKOS::EditorialNote.model_name.human(count: 2) %></h2>
+      <% if @editorial_notes.empty? %>
+        <div class="alert alert-warning" role="alert">
+          <%= t('txt.views.dashboard.no_editorial_notes') %>
+        </div>
+      <% end %>
+      <ul class="label-list">
+        <% @editorial_notes.each do |note| %><!--
+        --><li class="label-list-item">
+             <span class="label-list-item-value"><%= notes.value %></span>
+           </li><!--
+        --><% end %>
+      </ul>
+    </div>
+    <div class="modal-footer concept-teaser-footer">
+      <a href="<%= @path %>" class="btn btn-default"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.show') %></a>
+    </div>
+  </div>
+</div>
+<!-- / Modal -->

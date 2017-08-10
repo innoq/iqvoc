@@ -17,7 +17,7 @@
   </thead>
   <tbody>
     <% @items.each do |item| -%>
-      <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
+      <tr class="highlightable dashboard-table-item" data-url="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>">
         <td>
           <%= render item.class.edit_link_partial_name, :item => item %>
         </td>
