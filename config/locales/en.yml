@@ -220,6 +220,7 @@ en:
        exact: "exact match"
        regexp: "regular expression (advanced)"
        search_term: "Search term(s)"
+       note: with note
        search_term_in_results: "Search term"
        no_results: "No results"
        search_languages: "Languages"

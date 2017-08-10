@@ -116,6 +116,7 @@ module Iqvoc
           'terms',
           'mode',
           'klass',
+          'note',
           'type',
           'collection',
           'languages',

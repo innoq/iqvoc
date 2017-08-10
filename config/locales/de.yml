@@ -212,6 +212,7 @@ de:
        exact: "exakte Übereinstimmung"
        regexp: "regulärer Ausdruck (fortgeschritten)"
        search_term: "Suchbegriff(e)"
+       note: mit Anmerkung
        search_term_in_results: "Suchbegriff"
        no_results: "Keine Ergebnisse"
        search_languages: "Sprachen"
