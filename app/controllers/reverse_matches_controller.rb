@@ -9,10 +9,11 @@ class ReverseMatchesController < ApplicationController
     # currently edited concepts
     matches = @target_match_class.constantize.find_by(concept_id: @published_concept.id, value: @uri)
     render_response :mapping_exists and return if matches
-    unpublished_concept = @published_concept.branch(@botuser)
-    unpublished_concept.save!
-    @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
+
     ActiveRecord::Base.transaction do
+      unpublished_concept = @published_concept.branch(@botuser)
+      unpublished_concept.save!
+      @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
       unpublished_concept.unlock
       unpublished_concept.publish!
       @published_concept.destroy!
