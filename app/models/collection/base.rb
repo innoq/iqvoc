@@ -83,6 +83,10 @@ class Collection::Base < Concept::Base
     'partials/collection/new_link_base'
   end
 
+  def class_path
+    'collection_path'
+  end
+
   def subcollections
     members.map(&:target).compact.select { |m| m.is_a?(::Collection::Base) }
   end

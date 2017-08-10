@@ -357,6 +357,10 @@ class Concept::Base < ActiveRecord::Base
 
   # ********** Methods
 
+  def class_path
+    'concept_path'
+  end
+
   def labelings_by_text=(hash)
     @labelings_by_text = hash
 
