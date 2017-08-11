@@ -138,7 +138,7 @@ class Note::Base < ActiveRecord::Base
       scope
     end
 
-    scope = scope.joins("LEFT OUTER JOIN labelings ON notes.owner_id = labelings.owner_id AND labelings.type LIKE '%PrefLabel' LEFT OUTER JOIN labels ON labelings.target_id = labels.id").order("labels.value ASC")
+    scope = scope.joins("LEFT OUTER JOIN labelings ON notes.owner_id = labelings.owner_id AND labelings.type = '%s' LEFT OUTER JOIN labels ON labelings.target_id = labels.id", Iqvoc::Concept.pref_labeling_class_name).order("labels.value ASC")
 
     if params[:collection_origin].present?
       collection = Collection::Base.where(origin: params[:collection_origin]).last
