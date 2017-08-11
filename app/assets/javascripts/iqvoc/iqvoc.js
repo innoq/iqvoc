@@ -169,11 +169,15 @@ jQuery(document).ready(function($) {
     language: locale
   });
 
-  $("tr.highlightable").click(function(ev) {
+  //$("tr.highlightable").click(function(ev) {
+    //window.open($(this).attr("data-url"), '_blank');
+  //});
+
+  $(".dashboard-glance-link").click(function(ev) {
     ev.preventDefault();
 
     var modal = $("#concept-teaser-modal");
-    var target = $(this).attr("data-url");
+    var target = $(this).attr("href");
 
     $.get(target, function(data) {
       modal.html(data);

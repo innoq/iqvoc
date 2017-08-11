@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
+      <th></th>
       <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
       <% unless @items.first.class == Iqvoc::Collection.base_class %>
         <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
@@ -17,10 +18,11 @@
   </thead>
   <tbody>
     <% @items.each do |item| -%>
-      <tr class="highlightable dashboard-table-item" data-url="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>">
+      <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
         <td>
           <%= render item.class.edit_link_partial_name, :item => item %>
         </td>
+        <th><a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a</th>
         <td><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <% unless item.class == Iqvoc::Collection.base_class %>
           <td><font color='red'><%= l(item.follow_up) if item.follow_up.present? %></font></td>
