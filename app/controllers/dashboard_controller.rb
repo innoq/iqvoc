@@ -30,7 +30,7 @@ class DashboardController < ApplicationController
       order_params = sanatize_order order_params
       order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('follow_up', 'concepts.follow_up').gsub('updated_at', 'concepts.updated_at')
 
-      concepts = concepts.includes(:pref_labels, :locking_user).references(:locking_user).order(order_params)
+      concepts = concepts.includes(:pref_labels, :locking_user).references(:pref_labels).references(:locking_user).order(order_params)
     end
 
     @items = Kaminari.paginate_array(concepts).page(params[:page])
@@ -51,7 +51,7 @@ class DashboardController < ApplicationController
       order_params = sanatize_order params[:sort]
       order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
 
-      collections = collections.includes(:pref_labels, :locking_user).references(:locking_user).order(order_params)
+      collections = collections.includes(:pref_labels, :locking_user).references(:pref_labels).references(:locking_user).order(order_params)
     end
 
     @items = Kaminari.paginate_array(collections).page(params[:page])
