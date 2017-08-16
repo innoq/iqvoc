@@ -55,7 +55,7 @@ class Note::Base < ActiveRecord::Base
   end
 
   def self.by_query_value(query)
-    where(["LOWER(#{table_name}.value) LIKE ?", query.to_s.downcase])
+    where(["LOWER(#{table_name}.value) LIKE ?", query.mb_chars.downcase.to_s])
   end
 
   def self.by_owner_type(klass)
