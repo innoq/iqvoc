@@ -25,7 +25,7 @@
         <th><a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a</th>
         <td class="text-nowrap"><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <% unless item.class == Iqvoc::Collection.base_class %>
-          <td><font color='red'><%= l(item.follow_up) if item.follow_up.present? %></font></td>
+          <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>"><%= l(item.follow_up) if item.follow_up.present? %></td>
         <% end %>
         <td class="text-nowrap"><%= l(item.updated_at, :format => :short) %></td>
         <td><span class="label <%= !item.published? || item.in_review? ? 'label-danger' : 'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
