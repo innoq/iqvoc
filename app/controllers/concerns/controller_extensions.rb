@@ -70,7 +70,8 @@ module ControllerExtensions
   def concept_widget_data(concept, rank = nil)
     data = {
       id: concept.origin,
-      name: (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : '')
+      name: (concept.pref_label && concept.pref_label.value.presence || ":#{concept.origin}") + (concept.additional_info ? " (#{concept.additional_info })" : ''),
+      published: concept.published?
     }
     data[:rank] = rank if rank
     data
@@ -86,7 +87,8 @@ module ControllerExtensions
   def label_widget_data(label)
     {
       id: label.origin,
-      name: label.value + ' (' + label.language + ')'
+      name: label.value + ' (' + label.language + ')',
+      published: label.published?
     }
   end
 

@@ -56,7 +56,7 @@ EntitySelector.preprocessors = {
   "default": function(data, excludes) {
     return $.map(data, function(entity, i) {
       return $.inArray(entity.id, excludes) !== -1 ? null :
-          { value: entity.id, label: entity.name };
+          { value: entity.id, label: entity.name, published: entity.published };
     });
   }
 };
@@ -123,6 +123,10 @@ $.extend(EntitySelector.prototype, {
     var el;
     if(this.uriTemplate) {
       var uri = this.uriTemplate.replace("%7Bid%7D", entity.id); // XXX: not very generic
+      if(entity.published === false) {
+        uri += '?published=0'
+      }
+      console.log(uri)
       el = $('<a target="_blank" />').attr("href", uri).text(entity.name);
     } else {
       el = $('<span />').text(entity.name);
