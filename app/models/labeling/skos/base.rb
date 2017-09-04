@@ -109,8 +109,7 @@ class Labeling::SKOS::Base < Labeling::Base
 
       if params[:change_note_date_to].present?
         begin
-          DateTime.parse(params[:change_note_date_to])
-          date_to = params[:change_note_date_to]
+          date_to = DateTime.parse(params[:change_note_date_to]).end_of_day.to_s
           concepts = concepts.where('note_annotations.value <= ?', date_to)
         rescue ArgumentError
           Rails.logger.error "Invalid date was entered for search"
