@@ -1,7 +1,12 @@
-## [4.11.2] (unreleased)
+## [4.12.0]
 
   * Added: search for concepts by change notes date ranges (#369)
+  * Added: group dashboard entries by type (concepts/collections)
+  * Added: always visible sidebar (sticky positioning)
+  * Added: new designed navbar for logged in users
   * Fixed: Turtle/N-Triples encoding issues in rdf browser serialisation
+  * Fixed: several UI glitches (word wraps)
+  * Fixed: some wrong link for published/unpublished concepts and labels
   * Ruby 2.4 compatibility
   * drop Ruby 2.0 support (official support ended on 2016-02-24)
   * drop Ruby 2.1 support (official support ended on 2016-03-31)
