@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass', '~> 3.3.1.0'
   s.add_dependency 'bootstrap_form', '~> 2.2.0'
   s.add_dependency 'iq_triplestorage'
-  s.add_dependency 'nokogiri', '~> 1.7.2'
+  s.add_dependency 'nokogiri', '~> 1.8.2'
   s.add_dependency 'linkeddata', '~> 1.1.2'
   s.add_dependency 'font-awesome-rails', '~> 4.2.0'
   s.add_dependency 'uglifier', '>= 1.3.0'
