@@ -1,0 +1,19 @@
+public/assets/*
+ /tmp
+/db/*.sqlite3
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-journal
+public/export
+public/uploads
+*.war
+vendor/gems/*.gem
+*.gem
+config/deploy.rb
+config/deploy
+config/initializers/secret_token.rb
+public/assets
+db/schema.rb
+log/*.log
+tmp/**/*
+tmp/*
