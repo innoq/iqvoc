@@ -58,6 +58,9 @@ en:
       labeling/skos/alt_label:
         one:   "Alternative label"
         other: "Alternative labels"
+      labeling/skos/hidden_label:
+        one:   "Hidden label"
+        other: "Hidden labels"
       match/base:
         one:   "Match"
         other: "Matches"
