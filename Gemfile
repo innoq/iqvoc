@@ -67,7 +67,6 @@ group :development, :test do
   platforms :ruby do
     gem 'hirb-unicode'
     gem 'cane'
-    gem 'therubyracer'
   end
 
   platforms :jruby do
@@ -86,7 +85,11 @@ end
 
 group :production do
   gem 'activerecord-nulldb-adapter'
-  gem 'passenger'
+  gem 'passenger', '= 5.3.7'
+end
+
+platforms :ruby do
+  gem 'therubyracer'
 end
 
 group :heroku do
