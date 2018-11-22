@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: postgres:11
+    restart: always
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: iqvoc_production
+      POSTGRES_USER: iqvoc
+      POSTGRES_PASSWORD: iqvoc
+  web:
+    #build:
+    image: innoq/iqvoc_postgresql
+    ports:
+      - "3000:3000"
+    volumes:
+      - /iqvoc/public/export
+      - /iqvoc/public/import
+    environment:
+      DB_HOST: db
+      DB_USER: iqvoc
+      DB_PW: iqvoc
+      SECRET_KEY_BASE: b9a0bec111d1ff8e3c4dedff55bcfaa3a3ae87eb7a282abb642b79bf9095650e4e38f896ddce556d272ee1fb99bdad68eae67e7fd53827d5a6c2fc5755d05440
+    depends_on:
+      - db
