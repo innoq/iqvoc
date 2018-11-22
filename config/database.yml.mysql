@@ -24,6 +24,6 @@ production:
   reconnect: false
   database: iqvoc_production
   pool: 5
-  username: root
-  password:
-  host: 127.0.0.1
+  username: <%= ENV["DB_USER"] %>
+  password: <%= ENV["DB_PW"] %>
+  host: <%= ENV["DB_HOST"] %>
