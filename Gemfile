@@ -42,7 +42,7 @@ gem 'database_cleaner'
 gem 'delayed_job_active_record', '~> 4.1.1'
 gem 'carrierwave'
 gem 'autoprefixer-rails', '~> 6.5.1.1'
-gem 'daemon'
+gem 'daemons'
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
@@ -67,6 +67,7 @@ group :development, :test do
   platforms :ruby do
     gem 'hirb-unicode'
     gem 'cane'
+    gem 'therubyracer'
   end
 
   platforms :jruby do
@@ -84,6 +85,8 @@ group :test do
 end
 
 group :production do
+  gem 'activerecord-nulldb-adapter'
+  gem 'passenger'
 end
 
 group :heroku do

@@ -41,6 +41,8 @@ GEM
     activerecord-jdbcsqlite3-adapter (1.3.14)
       activerecord-jdbc-adapter (~> 1.3.14)
       jdbc-sqlite3 (>= 3.7.2, < 3.9)
+    activerecord-nulldb-adapter (0.3.9)
+      activerecord (>= 2.0.0)
     activesupport (4.2.10)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -88,16 +90,16 @@ GEM
     cliver (0.3.2)
     coderay (1.1.0)
     columnize (0.3.6)
-    concurrent-ruby (1.0.5)
-    concurrent-ruby (1.0.5-java)
+    concurrent-ruby (1.1.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.3)
+    daemons (1.2.6)
     database_cleaner (1.4.0)
     debug_inspector (0.0.3)
     debugger-linecache (1.2.0)
-    delayed_job (4.1.2)
-      activesupport (>= 3.0, < 5.1)
+    delayed_job (4.1.5)
+      activesupport (>= 3.0, < 5.3)
     delayed_job_active_record (4.1.1)
       activerecord (>= 3.0, < 5.1)
       delayed_job (>= 3.0, < 5)
@@ -151,6 +153,7 @@ GEM
     kaminari-bootstrap (3.0.1)
       kaminari (>= 0.13.0)
       rails
+    libv8 (3.16.14.19)
     link_header (0.0.8)
     linkeddata (1.1.2)
       equivalent-xml (~> 0.4)
@@ -185,12 +188,15 @@ GEM
     minitest (5.11.3)
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
+    mysql2 (0.3.21)
     net-http-persistent (2.9.4)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     nokogiri (1.8.2-java)
     parallel (1.4.1)
+    passenger (5.3.7)
+      rack
+      rake (>= 0.8.1)
     pg (0.19.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
@@ -293,6 +299,7 @@ GEM
       rdf (~> 1.1, >= 1.1.4)
     rdf-xsd (1.1.3)
       rdf (~> 1.1, >= 1.1.9)
+    ref (2.0.0)
     request_store (1.1.0)
     safe_yaml (1.0.4)
     sass (3.4.23)
@@ -333,6 +340,9 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.3.10)
     sxp (0.1.5)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
     thor (0.20.0)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
@@ -369,6 +379,7 @@ DEPENDENCIES
   activerecord-jdbcmysql-adapter
   activerecord-jdbcpostgresql-adapter (~> 1.3.13)
   activerecord-jdbcsqlite3-adapter
+  activerecord-nulldb-adapter
   apipie-rails (~> 0.3.5)
   authlogic (~> 3.4.2)
   autoprefixer-rails (~> 6.5.1.1)
@@ -380,6 +391,7 @@ DEPENDENCIES
   cane
   capybara (~> 2.14.2)
   carrierwave
+  daemons
   database_cleaner
   delayed_job_active_record (~> 4.1.1)
   faraday (= 0.9.0)
@@ -395,6 +407,7 @@ DEPENDENCIES
   maruku
   mysql2 (~> 0.3.13)
   nokogiri (~> 1.8.1)
+  passenger
   pg
   poltergeist (~> 1.6.0)
   pry-byebug (~> 1.1.2)
@@ -407,10 +420,11 @@ DEPENDENCIES
   sass-rails (~> 5.0.0)
   simplecov
   sqlite3
+  therubyracer
   uglifier
   view_marker
   web-console
   webmock (~> 3.0.1)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
