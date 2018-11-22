@@ -12,11 +12,11 @@ USER daemon
 
 ENV BUNDLE_PATH /iqvoc/gems
 ENV HOME /iqvoc/home
-RUN gem install bundler && gem install passenger && exec passenger-install-nginx-module
+RUN gem install bundler
 COPY --chown=daemon Gemfile Gemfile.lock ./
 COPY --chown=daemon config/database.yml.postgresql /iqvoc/config/database.yml
 RUN bundle install --without development test
-
+RUN exec passenger-install-nginx-module --auto-download --auto --prefix=/opt/nginx
 COPY --chown=daemon . /iqvoc
 
 RUN DB_ADAPTER=nulldb RAILS_ENV=production bundle exec rake assets:precompile
