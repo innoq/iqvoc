@@ -85,6 +85,7 @@ end
 
 group :production do
   gem 'activerecord-nulldb-adapter'
+  #version updates must be done in the Dockerfile as well
   gem 'passenger', '= 5.3.7'
 end
 
