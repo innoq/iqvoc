@@ -12,8 +12,10 @@ vendor/gems/*.gem
 config/deploy.rb
 config/deploy
 config/initializers/secret_token.rb
+config/database.yml
 public/assets
 db/schema.rb
 log/*.log
 tmp/**/*
 tmp/*
+
