@@ -22,7 +22,7 @@ production:
   adapter: mysql2
   encoding: utf8mb4
   reconnect: false
-  database: iqvoc_production
+  database: <%= ENV["DB_NAME"] %>
   pool: 5
   username: <%= ENV["DB_USER"] %>
   password: <%= ENV["DB_PW"] %>

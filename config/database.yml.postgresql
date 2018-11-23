@@ -17,7 +17,7 @@ test:
 production:
   adapter: <%= ENV['DB_ADAPTER'] ||= 'postgresql' %>
   encoding: unicode
-  database: iqvoc_production
+  database: <%= ENV["DB_NAME"] %>
   pool: 20
   username: <%= ENV["DB_USER"] %>
   password: <%= ENV["DB_PW"] %>

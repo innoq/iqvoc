@@ -20,6 +20,7 @@ services:
     environment:
       PORT: 3000
       DB_HOST: db
+      DB_NAME: iqvoc_production
       DB_USER: iqvoc
       DB_PW: iqvoc
       SECRET_KEY_BASE: b9a0bec111d1ff8e3c4dedff55bcfaa3a3ae87eb7a282abb642b79bf9095650e4e38f896ddce556d272ee1fb99bdad68eae67e7fd53827d5a6c2fc5755d05440
