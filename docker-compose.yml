@@ -18,6 +18,7 @@ services:
       - /iqvoc/public/export
       - /iqvoc/public/import
     environment:
+      PORT: 3000
       DB_HOST: db
       DB_USER: iqvoc
       DB_PW: iqvoc

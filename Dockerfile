@@ -23,4 +23,4 @@ RUN DB_ADAPTER=nulldb RAILS_ENV=production bundle exec rake assets:precompile
 
 EXPOSE 3000
 
-CMD bundle exec rake db:migrate && bin/delayed_job start && exec bundle exec passenger start --port 3000 --environment $RAILS_ENV
+CMD bundle exec rake db:migrate && bundle exec rake db:seed && bin/delayed_job start && exec bundle exec passenger start --port $PORT --environment $RAILS_ENV
