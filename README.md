@@ -52,6 +52,16 @@ $ heroku restart
 
 Remember to visit the Users section and change the default passwords!
 
+### Docker
+
+If you want to try iQvoc using Docker just clone this repository and run:
+
+```
+$ docker-compose up
+```
+
+This Setup uses Postgres as a database. Please make sure that your Docker daemon is running and that you have docker-compose installed. User credentials can be found in https://github.com/innoq/iqvoc/blob/master/db/seeds.rb.
+
 ### Custom
 
 We recommend running [iQvoc as a Rails engine](https://github.com/innoq/iqvoc/wiki/iQvoc-as-a-Rails-Engine).
