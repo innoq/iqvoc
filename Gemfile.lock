@@ -188,7 +188,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.3.21)
+    mysql2 (0.4.10)
     net-http-persistent (2.9.4)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
@@ -405,9 +405,9 @@ DEPENDENCIES
   kaminari-bootstrap (~> 3.0.1)
   linkeddata (~> 1.1.2)
   maruku
-  mysql2 (~> 0.3.13)
+  mysql2 (~> 0.4.0)
   nokogiri (~> 1.8.1)
-  passenger
+  passenger (= 5.3.7)
   pg
   poltergeist (~> 1.6.0)
   pry-byebug (~> 1.1.2)
@@ -427,4 +427,4 @@ DEPENDENCIES
   webmock (~> 3.0.1)
 
 BUNDLED WITH
-   1.16.2
+   1.17.2
