@@ -1,3 +1,7 @@
+## [4.12.1] (unreleases)
+
+* drop Ruby 2.2 support (official support ended on 2018-03-31)
+
 ## [4.12.0]
 
   * Added: search for concepts by change notes date ranges (#369)
