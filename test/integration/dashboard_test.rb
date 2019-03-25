@@ -37,7 +37,7 @@ class DashboardTest < ActionDispatch::IntegrationTest
     find(:xpath, "//a[@href='/en/dashboard.html?sort=value+ASC']").click
     assert 'http://www.example.com/en/dashboard.html?sort=value+ASC', current_url
     assert page.body.include? '/en/dashboard.html?sort=value+ASC'
-    assert page.body.include? '/en/dashboard.html?sort=value+ASC%2Cvalue+DESC'
+    assert page.body.include? '/en/dashboard.html?sort=value+DESC'
 
     tr_elements = page.find('tbody').all('tr')
     Iqvoc::Concept.base_class.includes(:pref_labels).order('labels.value ASC').each_with_index do |c, i|
