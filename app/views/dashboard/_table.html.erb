@@ -22,7 +22,7 @@
         <td>
           <%= render item.class.edit_link_partial_name, :item => item %>
         </td>
-        <th><a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a</th>
+        <td><a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a</td>
         <td class="text-nowrap"><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
         <% unless item.class == Iqvoc::Collection.base_class %>
           <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>"><%= l(item.follow_up) if item.follow_up.present? %></td>
