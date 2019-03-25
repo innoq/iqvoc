@@ -18,9 +18,9 @@ module DashboardHelper
   def sorting_controls_for(name)
     content_tag :div, class: 'sorting-controls' do
       link_to(icon('arrow-circle-o-up', 'sorting-arrow'),
-        params.merge(sort: "#{name} ASC") { |key,oldval,newval| oldval.include?(newval) ? oldval : "#{oldval},#{newval}" }) +
+        dashboard_path(sort: "#{name} ASC")) +
         link_to(icon('arrow-circle-o-down', 'sorting-arrow'),
-        params.merge(sort: "#{name} DESC") { |key,oldval,newval| oldval.include?(newval) ? oldval : "#{oldval},#{newval}" })
+          dashboard_path(sort: "#{name} DESC"))
     end
   end
 
