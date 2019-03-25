@@ -59,7 +59,7 @@ end
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'pry-rails'
+  gem 'pry-rails', require: 'pry'
   gem 'pry-remote'
   gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
   gem 'quiet_assets'
