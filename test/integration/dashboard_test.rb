@@ -30,7 +30,7 @@ class DashboardTest < ActionDispatch::IntegrationTest
     assert page.body.include? '/en/collection_dashboard.html'
     assert 'http://www.example.com/en/dashboard.html', current_url
     tr_elements = page.find('tbody').all('tr')
-    Iqvoc::Concept.base_class.all.each_with_index do |c, i|
+    Iqvoc::Concept.base_class.includes(:pref_labels).order('labels.value ASC').each_with_index do |c, i|
       assert_equal c.pref_label.value, tr_elements[i].first('td').text
     end
 
