@@ -1,13 +1,17 @@
-<%- published_param = concept.published? ? nil : "0" -%>
+<%- published_param = concept.published? ? nil : "0" if defined?(concept) -%>
 
 <%= sidebar do %>
-  <%= sidebar_header t('txt.common.representations') %>
-  <%= sidebar_item :icon => 'link', :text => 'HTML', :path => concept_path(:id => concept, :format => :html, :published => published_param) %>
-  <%= sidebar_item :icon => 'link', :text => 'RDF/XML', :path => concept_path(:id => concept, :format => :rdf, :published => published_param), :id => 'rdf_link_xml' %>
-  <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => concept_path(:id => concept, :format => :ttl, :published => published_param), :id => 'rdf_link_ttl' %>
-  <%= sidebar_item :icon => 'link', :text => 'RDF/NTriples', :path => concept_path(:id => concept, :format => :nt, :published => published_param), :id => 'rdf_link_nt' %>
+  <% if defined?(concept) %>
+    <%= sidebar_header t('txt.common.representations') %>
+    <%= sidebar_item :icon => 'link', :text => 'HTML', :path => concept_path(:id => concept, :format => :html, :published => published_param) %>
+    <%= sidebar_item :icon => 'link', :text => 'RDF/XML', :path => concept_path(:id => concept, :format => :rdf, :published => published_param), :id => 'rdf_link_xml' %>
+    <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => concept_path(:id => concept, :format => :ttl, :published => published_param), :id => 'rdf_link_ttl' %>
+    <%= sidebar_item :icon => 'link', :text => 'RDF/NTriples', :path => concept_path(:id => concept, :format => :nt, :published => published_param), :id => 'rdf_link_nt' %>
+  <% end %>
   <%= sidebar_header 'Links' if can?(:create, Iqvoc::Concept.base_class) %>
-  <%= sidebar_item :icon => 'link', :text => t('txt.models.concept.uri'), :path => rdf_url(concept.origin, :format => nil, :published => published_param, :lang => nil) %>
+  <% if defined?(concept) %>
+    <%= sidebar_item :icon => 'link', :text => t('txt.models.concept.uri'), :path => rdf_url(concept.origin, :format => nil, :published => published_param, :lang => nil) %>
+  <% end %>
   <%= sidebar_item :icon => :edit, :text => t('txt.views.concepts.new', :concept_class_name => Iqvoc::Concept.base_class.model_name.human), :path => new_concept_path,
     :perms => [:create, Iqvoc::Concept.base_class], :active => params[:action] == 'new' %>
 <% end %>
