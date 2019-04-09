@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', '0.9.0'
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'sass-rails', '~> 5.0.0'
-  s.add_dependency 'bootstrap-sass', '~> 3.3.1.0'
+  s.add_dependency 'bootstrap-sass', '~> 3.4.1'
   s.add_dependency 'bootstrap_form', '~> 2.2.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri', '~> 1.8.2'
