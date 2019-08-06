@@ -31,8 +31,8 @@ class UserManagementTest < ActionDispatch::IntegrationTest
     fill_in 'Forename', with: 'Arnulf'
     fill_in 'Surname', with: 'Beckenbauer'
     fill_in 'Email', with: 'arnulf@beckenbauer.com'
-    fill_in 'Password', with: 'secret'
-    fill_in 'Password (Confirmation)', with: 'secret'
+    fill_in 'Password', with: 'secret123'
+    fill_in 'Password (Confirmation)', with: 'secret123'
     click_button 'Save'
 
     assert page.has_content?('Arnulf Beckenbauer')

@@ -19,8 +19,8 @@ if User.where(email: 'admin@iqvoc').none?
     user.forename = 'Admin'
     user.surname  = 'Istrator'
     user.email    = 'admin@iqvoc'
-    user.password = 'admin'
-    user.password_confirmation = 'admin'
+    user.password = 'admin123'
+    user.password_confirmation = 'admin123'
     user.active = true
     user.role = 'administrator'
   end
@@ -31,8 +31,8 @@ if User.where(email: 'demo@iqvoc').none?
     user.forename = 'Demo'
     user.surname  = 'User'
     user.email    = 'demo@iqvoc'
-    user.password = 'cooluri'
-    user.password_confirmation = 'cooluri'
+    user.password = 'cooluri123'
+    user.password_confirmation = 'cooluri123'
     user.active = true
     user.role = 'reader'
   end
