@@ -1,6 +1,7 @@
-## [4.12.1] (unreleases)
+## [4.12.1]
 
 * drop Ruby 2.2 support (official support ended on 2018-03-31)
+* updated to latest Rails patch release (v4.2.11.1)
 
 ## [4.12.0]
 
