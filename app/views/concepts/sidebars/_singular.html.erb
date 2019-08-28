@@ -3,10 +3,10 @@
 <%= sidebar do %>
   <% if defined?(concept) %>
     <%= sidebar_header t('txt.common.representations') %>
-    <%= sidebar_item :icon => 'link', :text => 'HTML', :path => concept_path(:id => concept, :format => :html, :published => published_param) %>
-    <%= sidebar_item :icon => 'link', :text => 'RDF/XML', :path => concept_path(:id => concept, :format => :rdf, :published => published_param), :id => 'rdf_link_xml' %>
-    <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => concept_path(:id => concept, :format => :ttl, :published => published_param), :id => 'rdf_link_ttl' %>
-    <%= sidebar_item :icon => 'link', :text => 'RDF/NTriples', :path => concept_path(:id => concept, :format => :nt, :published => published_param), :id => 'rdf_link_nt' %>
+    <%= sidebar_item :icon => 'share', :text => 'HTML', :path => concept_path(:id => concept, :format => :html, :published => published_param) %>
+    <%= sidebar_item :icon => 'share', :text => 'RDF/XML', :path => concept_path(:id => concept, :format => :rdf, :published => published_param), :id => 'rdf_link_xml' %>
+    <%= sidebar_item :icon => 'share', :text => 'RDF/Turtle', :path => concept_path(:id => concept, :format => :ttl, :published => published_param), :id => 'rdf_link_ttl' %>
+    <%= sidebar_item :icon => 'share', :text => 'RDF/NTriples', :path => concept_path(:id => concept, :format => :nt, :published => published_param), :id => 'rdf_link_nt' %>
   <% end %>
 
   <%= sidebar_header 'Links' %>
