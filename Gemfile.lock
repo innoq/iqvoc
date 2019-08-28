@@ -184,15 +184,15 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_mime (1.0.2)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.4.10)
     net-http-persistent (2.9.4)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
-    nokogiri (1.8.5-java)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.4-java)
     parallel (1.4.1)
     passenger (5.3.7)
       rack
@@ -406,7 +406,7 @@ DEPENDENCIES
   linkeddata (~> 1.1.2)
   maruku
   mysql2 (~> 0.4.0)
-  nokogiri (~> 1.8.1)
+  nokogiri
   passenger (= 5.3.7)
   pg
   poltergeist (~> 1.6.0)
