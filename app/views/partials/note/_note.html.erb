@@ -3,7 +3,7 @@
     <span class="language_flap"><%= note.language %></span>
     <div class="note_content">
       <% if note.value %>
-        <p><%= auto_link(note.value, :html => { :target => '_blank' }) %></p>
+        <%= auto_link(simple_format(note.value), :html => { :target => '_blank' }) %>
       <% end %>
 
       <% if note.annotations.any? %>
