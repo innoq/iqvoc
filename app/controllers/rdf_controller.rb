@@ -55,6 +55,9 @@ class RdfController < ApplicationController
     if stale?(etag: @title)
       respond_to do |format|
         format.any(:rdf, :ttl, :nt)
+        format.html do
+          redirect_to root_path
+        end
       end
     end
   end
