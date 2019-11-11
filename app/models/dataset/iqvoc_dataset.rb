@@ -1,4 +1,5 @@
 require 'linkeddata'
+require "rdf/vocab"
 require 'timeout'
 
 class Dataset::IqvocDataset
@@ -42,7 +43,7 @@ class Dataset::IqvocDataset
     return @url.to_s if @repository.nil?
 
     void = RDF::Vocabulary.new('http://rdfs.org/ns/void#')
-    query = RDF::Query.new({ dataset: { RDF.type => void.Dataset, RDF::DC.title => :title } })
+    query = RDF::Query.new({ dataset: { RDF.type => void.Dataset, RDF::Vocab::DC.title => :title } })
     results = Timeout::timeout(DEFAULT_TIMEOUT) do
       query.execute(@repository)
     end

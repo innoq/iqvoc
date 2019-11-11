@@ -467,6 +467,7 @@ DEPENDENCIES
   rails (~> 4.2.11)
   rails_12factor
   rails_autolink
+  rdf-vocab
   sass-rails (~> 5.0.0)
   simplecov
   sqlite3

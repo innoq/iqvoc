@@ -32,6 +32,7 @@ gem 'faraday', '0.9.0'
 gem 'faraday_middleware'
 gem 'nokogiri'
 gem 'linkeddata'
+gem "rdf-vocab"
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.2.0'
