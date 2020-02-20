@@ -23,6 +23,10 @@ class Note::Base < ActiveRecord::Base
 
   # ********** Validations
 
+  # FIXME: throws validation errors
+  # validates :position, uniqueness: { scope: [:owner_id, :owner_type] }
+  validates :position, numericality: { greater_than: 0, allow_nil: true }
+
   # FIXME: None?? What about language and value?
 
   # ********** Associations
@@ -43,6 +47,8 @@ class Note::Base < ActiveRecord::Base
   accepts_nested_attributes_for :annotations
 
   # ********** Scopes
+
+  default_scope { order(position: :asc) }
 
   def self.by_language(lang_code)
     lang_code = Array.wrap(lang_code).flatten.compact
