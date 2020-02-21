@@ -130,6 +130,7 @@ en:
         language: "Language"
       note/base:
         value: "Value"
+        position: "Position"
       notation/base:
         value: "Value"
         data_type: "Data type (URL)"

@@ -10,6 +10,7 @@
         :label => t("txt.common.language"),
         :include_blank => false %>
 
+        <%= note_form.hidden_field :position %>
         <%= note_form.fields_for :annotations do |na| %>
           <%= na.hidden_field :namespace %>
           <%= na.hidden_field :predicate %>

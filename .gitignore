@@ -21,6 +21,7 @@ config/deploy
 config/initializers/secret_token.rb
 public/assets
 .idea/
+*.iml
 db/schema.rb
 public/export
 public/uploads

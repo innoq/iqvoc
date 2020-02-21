@@ -130,6 +130,7 @@ de:
         language: "Sprache"
       note/base:
         value: "Wert"
+        position: "Position"
       notation/base:
         value: "Wert"
         data_type: "Datentyp (URL)"

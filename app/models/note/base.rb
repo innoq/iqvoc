@@ -25,7 +25,7 @@ class Note::Base < ActiveRecord::Base
 
   # FIXME: throws validation errors
   # validates :position, uniqueness: { scope: [:owner_id, :owner_type] }
-  validates :position, numericality: { greater_than: 0, allow_nil: true }
+  validates :position, numericality: { greater_than: 0 }
 
   # FIXME: None?? What about language and value?
 
