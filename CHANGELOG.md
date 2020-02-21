@@ -1,3 +1,8 @@
+## [4.12.2]
+
+* add explicit note positioning 
+* upgrade dependencies
+
 ## [4.12.1]
 
 * drop Ruby 2.2 support (official support ended on 2018-03-31)
