@@ -214,9 +214,9 @@ GEM
     mysql2 (0.4.10)
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
-    nokogiri (1.10.5)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.5-java)
+    nokogiri (1.10.8-java)
     nokogumbo (1.5.0)
       nokogiri
     parallel (1.4.1)
