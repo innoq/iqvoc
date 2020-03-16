@@ -40,6 +40,10 @@ var createNote = function(ev) {
     if(el.attr("name")) {
       el.attr("name", el.attr("name").replace(/\[\d+\]/, newNameCount));
     }
+    if (el.attr('name').match(/\[position\]/)) {
+      var lastPos = parseInt(count, 10) || 0;
+      el.val(lastPos + 1);
+    }
   });
 
   clone.addClass("new");
