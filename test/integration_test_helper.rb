@@ -20,6 +20,7 @@ require 'capybara/poltergeist'
 require 'webmock'
 require File.expand_path('authentication', File.dirname(__FILE__))
 
+Capybara.server = :webrick
 Capybara.javascript_driver = :poltergeist
 
 WebMock.allow_net_connect! # required for integration tests
