@@ -77,13 +77,13 @@ GEM
     cancancan (1.10.1)
     cane (2.6.2)
       parallel
-    capybara (2.14.2)
+    capybara (2.18.0)
       addressable
-      mime-types (>= 1.16)
+      mini_mime (>= 0.1.3)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
-      xpath (~> 2.0)
+      xpath (>= 2.0, < 4.0)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -132,7 +132,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (0.3.4)
+    hashdiff (1.0.1)
     hirb (0.7.3)
     hirb-unicode (0.0.5)
       hirb (~> 0.5)
@@ -203,9 +203,9 @@ GEM
       mini_mime (>= 0.1.1)
     maruku (0.7.2)
     method_source (0.8.2)
-    mime-types (3.1)
+    mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types-data (3.2019.1009)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -246,7 +246,7 @@ GEM
     pry-remote (0.1.8)
       pry (~> 0.9)
       slop (~> 3.0)
-    public_suffix (4.0.1)
+    public_suffix (4.0.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.13)
@@ -342,7 +342,7 @@ GEM
     ref (2.0.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    safe_yaml (1.0.4)
+    safe_yaml (1.0.5)
     sass (3.4.23)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -409,17 +409,17 @@ GEM
       activemodel (>= 4.2)
       debug_inspector
       railties (>= 4.2)
-    webmock (3.0.1)
+    webmock (3.8.3)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
-      hashdiff
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.5.3)
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.5.3-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    xpath (2.1.0)
-      nokogiri (~> 1.3)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
 
 PLATFORMS
   java
@@ -439,7 +439,7 @@ DEPENDENCIES
   bootstrap_form (~> 2.2.0)
   cancancan (~> 1.10.0)
   cane
-  capybara (~> 2.14.2)
+  capybara
   carrierwave
   daemons
   database_cleaner
@@ -459,7 +459,7 @@ DEPENDENCIES
   nokogiri
   passenger (= 5.3.7)
   pg
-  poltergeist (~> 1.6.0)
+  poltergeist
   pry-byebug (~> 1.1.2)
   pry-rails
   pry-remote
@@ -475,7 +475,7 @@ DEPENDENCIES
   uglifier
   view_marker
   web-console
-  webmock (~> 3.0.1)
+  webmock
 
 BUNDLED WITH
    1.17.3
