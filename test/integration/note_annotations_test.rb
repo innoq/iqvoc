@@ -101,7 +101,7 @@ class NoteAnnotationsTest < ActionDispatch::IntegrationTest
 
     rdfapi.devour concept, 'skos:prefLabel', '"foo"@en'
 
-    note = Note::RDFS::SeeAlso.create owner: concept, value: 'foo', language: 'en'
+    note = Note::RDFS::SeeAlso.create owner: concept, value: 'foo', language: 'en', position: 1
     note.annotations.create namespace: 'dct', predicate: 'title', value: 'Foo Bar', language: 'en'
     note.annotations.create namespace: 'foaf', predicate: 'page', value: 'http://google.de/'
 

@@ -50,6 +50,12 @@ class Note::Base < ActiveRecord::Base
 
   default_scope { order(position: :asc) }
 
+  before_validation(on: :create) do
+    if position.blank?
+      self.position = (self&.owner&.send(Iqvoc.change_note_class_name.to_relation_name)&.maximum(:position) || 0).succ
+    end
+  end
+
   def self.by_language(lang_code)
     lang_code = Array.wrap(lang_code).flatten.compact
 

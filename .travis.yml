@@ -3,8 +3,8 @@ language: ruby
 cache: bundler
 bundler_args: "--without production heroku --retry 3"
 rvm:
-- 2.4
 - 2.5
+- 2.6
 - ruby-head
 env:
 - DB=sqlite

@@ -1,6 +1,6 @@
 ## [4.12.2]
 
-* add explicit note positioning 
+* add explicit note positioning
 * upgrade dependencies
 
 ## [4.12.1]
