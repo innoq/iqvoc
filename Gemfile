@@ -19,7 +19,8 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '~> 4.2.11'
+gem 'rails', '~> 5.0.0'
+gem 'puma', '~> 3.0'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
 gem 'authlogic', '~> 3.8.0'
