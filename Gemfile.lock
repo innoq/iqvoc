@@ -30,17 +30,6 @@ GEM
       activemodel (= 4.2.11.1)
       activesupport (= 4.2.11.1)
       arel (~> 6.0)
-    activerecord-jdbc-adapter (1.3.14)
-      activerecord (>= 2.2)
-    activerecord-jdbcmysql-adapter (1.3.14)
-      activerecord-jdbc-adapter (~> 1.3.14)
-      jdbc-mysql (>= 5.1.22)
-    activerecord-jdbcpostgresql-adapter (1.3.14)
-      activerecord-jdbc-adapter (~> 1.3.14)
-      jdbc-postgres (>= 9.1)
-    activerecord-jdbcsqlite3-adapter (1.3.14)
-      activerecord-jdbc-adapter (~> 1.3.14)
-      jdbc-sqlite3 (>= 3.7.2, < 3.9)
     activerecord-nulldb-adapter (0.3.9)
       activerecord (>= 2.0.0)
     activesupport (4.2.11.1)
@@ -60,23 +49,15 @@ GEM
       scrypt (>= 1.2, < 4.0)
     autoprefixer-rails (6.5.1.1)
       execjs
-    awesome_print (1.6.1)
     bcp47 (0.3.3)
       i18n
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
       rack (>= 0.9.0)
-    binding_of_caller (0.7.3.pre1)
-      debug_inspector (>= 0.0.1)
     bootstrap_form (2.7.0)
     builder (3.2.4)
-    byebug (1.8.2)
-      columnize (~> 0.3.6)
-      debugger-linecache (~> 1.2.0)
     cancancan (1.17.0)
-    cane (2.6.2)
-      parallel
     capybara (3.32.1)
       addressable
       mini_mime (>= 0.1.3)
@@ -92,7 +73,6 @@ GEM
       mime-types (>= 1.16)
     cliver (0.3.2)
     coderay (1.1.0)
-    columnize (0.3.6)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
     crack (0.4.3)
@@ -101,7 +81,6 @@ GEM
     daemons (1.2.6)
     database_cleaner (1.4.0)
     debug_inspector (0.0.3)
-    debugger-linecache (1.2.0)
     delayed_job (4.1.5)
       activesupport (>= 3.0, < 5.3)
     delayed_job_active_record (4.1.1)
@@ -134,10 +113,6 @@ GEM
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     hashdiff (1.0.1)
-    hirb (0.7.3)
-    hirb-unicode (0.0.5)
-      hirb (~> 0.5)
-      unicode-display_width (~> 0.1.1)
     htmlentities (4.3.4)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
@@ -146,9 +121,6 @@ GEM
       builder
       bundler
     iq_triplestorage (0.2.2)
-    jdbc-mysql (5.1.33)
-    jdbc-postgres (9.4.1200)
-    jdbc-sqlite3 (3.8.7)
     json (2.0.3)
     json (2.0.3-java)
     json-ld (3.0.2)
@@ -229,7 +201,6 @@ GEM
     nokogiri (1.10.9-java)
     nokogumbo (1.5.0)
       nokogiri
-    parallel (1.4.1)
     passenger (5.3.7)
       rack
       rake (>= 0.8.1)
@@ -247,17 +218,9 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
       spoon (~> 0.0)
-    pry-byebug (1.1.2)
-      byebug (~> 1.6)
-      pry (~> 0.9.12)
     pry-rails (0.3.3)
       pry (>= 0.9.10)
-    pry-remote (0.1.8)
-      pry (~> 0.9)
-      slop (~> 3.0)
     public_suffix (4.0.4)
-    quiet_assets (1.1.0)
-      railties (>= 3.1, < 5.0)
     rack (1.6.13)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -412,9 +375,6 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    unicode-display_width (0.1.1)
-    view_marker (1.0.0)
-      rails
     web-console (3.3.0)
       activemodel (>= 4.2)
       debug_inspector
@@ -436,19 +396,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbcmysql-adapter
-  activerecord-jdbcpostgresql-adapter (~> 1.3.13)
-  activerecord-jdbcsqlite3-adapter
   activerecord-nulldb-adapter
   apipie-rails (~> 0.3.5)
   authlogic (~> 3.8.0)
   autoprefixer-rails (~> 6.5.1.1)
-  awesome_print
   better_errors
-  binding_of_caller (= 0.7.3.pre1)
   bootstrap_form (~> 2.7.0)
   cancancan (~> 1.17.0)
-  cane
   capybara
   carrierwave
   daemons
@@ -457,7 +411,6 @@ DEPENDENCIES
   faraday (= 0.9.0)
   faraday_middleware
   font-awesome-rails
-  hirb-unicode
   iq_rdf (>= 0.1.16)
   iq_triplestorage
   json
@@ -470,10 +423,7 @@ DEPENDENCIES
   passenger (= 5.3.7)
   pg
   poltergeist
-  pry-byebug (~> 1.1.2)
   pry-rails
-  pry-remote
-  quiet_assets
   rails (~> 4.2.11)
   rails_12factor
   rails_autolink
@@ -483,7 +433,6 @@ DEPENDENCIES
   sqlite3
   therubyracer
   uglifier
-  view_marker
   web-console
   webmock
 

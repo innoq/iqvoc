@@ -52,29 +52,12 @@ gem 'daemons'
 gem 'pg'
 
 group :development do
-  gem 'view_marker'
   gem 'better_errors'
   gem 'web-console'
-  gem 'binding_of_caller', '0.7.3.pre1'
 end
 
 group :development, :test do
-  gem 'awesome_print'
   gem 'pry-rails', require: 'pry'
-  gem 'pry-remote'
-  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
-  gem 'quiet_assets'
-
-  platforms :ruby do
-    gem 'hirb-unicode'
-    gem 'cane'
-  end
-
-  platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
-    gem 'activerecord-jdbcsqlite3-adapter'
-    gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.13'
-  end
 end
 
 group :test do
