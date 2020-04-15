@@ -42,9 +42,7 @@ root:
   test 'individual concept representations' do
     @controller = ConceptsController.new
 
-    params = { lang: 'en', format: 'ttl' }
-
-    get :show, params.merge(id: 'root')
+    get :show, params: { lang: 'en', id: 'root', format: 'ttl' }
     assert_response 200
     assert @response.body.include? ':root a skos:Concept'
     assert @response.body.include? 'skos:narrower :foo'
@@ -53,7 +51,7 @@ root:
     assert @response.body.include? ':foo skos:prefLabel "Foo"@en.'
     assert @response.body.include? ':bar skos:prefLabel "Bar"@en.'
 
-    get :show, params.merge(id: 'foo')
+    get :show, params: { lang: 'en', id: 'foo', format: 'ttl' }
     assert_response 200
     assert @response.body.include? ':foo a skos:Concept'
     assert @response.body.include? 'skos:broader :root'
