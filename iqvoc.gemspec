@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('rails', '>= 4.2.11', '< 5.0')
   s.add_dependency 'bundler'
-  s.add_dependency 'kaminari', '~> 0.16.3'
+  s.add_dependency 'kaminari', '~> 1.2.0'
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
   s.add_dependency 'authlogic', '~> 3.8.0'
   s.add_dependency 'cancancan', '~> 2.3.0'
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'sass-rails', '~> 5.0.0'
   s.add_dependency 'bootstrap-sass', '~> 3.4.1'
-  s.add_dependency 'bootstrap_form', '~> 2.2.0'
+  s.add_dependency 'bootstrap_form', '~> 2.7.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'

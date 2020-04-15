@@ -13,7 +13,7 @@ document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_paramet
   query.Sdc::itemsPerPage(@results.limit_value)
   query.Sdc::searchTerms(params[:query])
   query.Sdc::first(URI.parse(url_for(request.query_parameters.merge(:page => 1, :lang => nil, :only_path => false))))
-  query.Sdc::last(URI.parse(url_for(request.query_parameters.merge(:page => @results.num_pages, :lang => nil, :only_path => false))))
+  query.Sdc::last(URI.parse(url_for(request.query_parameters.merge(:page => @results.total_pages, :lang => nil, :only_path => false))))
   i = 0
   @results.each do
     query.Sdc::result(IqRdf::Search::build_uri("result#{i+=1}"))
@@ -23,7 +23,7 @@ end
 document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page, :lang => nil, :only_path => false))), IqRdf::Sdc::build_uri('Page')) do |page|
   page.Sdc::startIndex((@results.current_page - 1) * @results.limit_value + 1)
   page.Sdc::previous(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page - 1, :lang => nil, :only_path => false)))) if @results.current_page > 1
-  page.Sdc::next(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page + 1, :lang => nil, :only_path => false)))) if @results.current_page < @results.num_pages
+  page.Sdc::next(URI.parse(url_for(request.query_parameters.merge(:page => @results.current_page + 1, :lang => nil, :only_path => false)))) if @results.current_page < @results.total_pages
 end
 
 i = 0
