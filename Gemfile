@@ -66,6 +66,7 @@ group :test do
   gem 'poltergeist'
   gem 'webmock'
   gem 'simplecov'
+  gem 'minitest', '5.10.3' # remove after update to rails v5.2
 end
 
 group :production do

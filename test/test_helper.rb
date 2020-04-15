@@ -26,6 +26,3 @@ unless defined?(Iqvoc) && Iqvoc.const_defined?(:Engine)
 end
 
 require 'rails/test_help'
-
-# drop after rails 4.2 support
-require "#{File.dirname(__FILE__)}/ruby_2_6_rails4_2_test_monkey_patch"
