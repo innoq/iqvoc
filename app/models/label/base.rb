@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Label::Base < ActiveRecord::Base
+class Label::Base < ApplicationRecord
   self.table_name = 'labels'
 
   # ********** Associations

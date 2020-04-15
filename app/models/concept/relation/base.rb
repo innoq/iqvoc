@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Relation::Base < ActiveRecord::Base
+class Concept::Relation::Base < ApplicationRecord
   # ATTENTION:
   # This class (and the inheriting subclasses) should not reference the
   # Concept::Base class directly at load time!

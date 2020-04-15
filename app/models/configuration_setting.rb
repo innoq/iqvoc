@@ -15,6 +15,6 @@
 # limitations under the License.
 
 # NB: not to be used directly, but only through InstanceConfiguration
-class ConfigurationSetting < ActiveRecord::Base # TODO: make private, somehow?
+class ConfigurationSetting < ApplicationRecord # TODO: make private, somehow?
   validates :key, uniqueness: true
 end

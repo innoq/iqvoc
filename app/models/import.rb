@@ -1,4 +1,4 @@
-class Import < ActiveRecord::Base
+class Import < ApplicationRecord
   belongs_to :user
   mount_uploader :import_file, RdfUploader
   validates_presence_of :import_file, :default_namespace

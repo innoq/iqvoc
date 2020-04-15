@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Collection::Member::Base < ActiveRecord::Base
+class Collection::Member::Base < ApplicationRecord
   self.table_name = 'collection_members'
 
   class_attribute :rdf_namespace, :rdf_predicate

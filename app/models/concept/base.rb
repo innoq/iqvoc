@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Base < ActiveRecord::Base
+class Concept::Base < ApplicationRecord
   attr_accessor :reverse_match_service
   self.table_name = 'concepts'
 
@@ -436,7 +436,7 @@ class Concept::Base < ActiveRecord::Base
     elsif lang
       lang = lang.to_s
     end
-    labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
+    labeling_class = labeling_class.name if labeling_class < ApplicationRecord # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
@@ -444,23 +444,23 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
-    relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
+    relation_class = relation_class.name if relation_class < ApplicationRecord # Use the class name string
     relations.select { |rel| rel.class.name == relation_class }.map(&:target).
         select { |c| c.published? || !only_published }.sort_by(&:pref_label)
   end
 
   def matches_for_class(match_class)
-    match_class = match_class.name if match_class < ActiveRecord::Base # Use the class name string
+    match_class = match_class.name if match_class < ApplicationRecord # Use the class name string
     matches.select{ |match| match.class.name == match_class }
   end
 
   def notes_for_class(note_class)
-    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+    note_class = note_class.name if note_class < ApplicationRecord # Use the class name string
     notes.select{ |note| note.class.name == note_class }
   end
 
   def notations_for_class(notation_class)
-    notation_class = notation_class.name if notation_class < ActiveRecord::Base # Use the class name string
+    notation_class = notation_class.name if notation_class < ApplicationRecord # Use the class name string
     notations.select{ |notation| notation.class.name == notation_class }
   end
 

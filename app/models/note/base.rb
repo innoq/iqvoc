@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::Base < ActiveRecord::Base
+class Note::Base < ApplicationRecord
   self.table_name = 'notes'
 
   class_attribute :rdf_namespace, :rdf_predicate

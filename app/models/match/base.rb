@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::Base < ActiveRecord::Base
+class Match::Base < ApplicationRecord
   self.table_name = 'matches'
 
   class_attribute :rdf_namespace, :rdf_predicate
