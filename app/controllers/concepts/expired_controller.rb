@@ -24,15 +24,14 @@ class Concepts::ExpiredController < Concepts::AlphabeticalController
   def find_labelings
     query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
 
-    Iqvoc::Concept.pref_labeling_class.
-      concept_expired.
-      label_begins_with(query).
-      by_label_language(I18n.locale).
-      includes(:target).
-      order("LOWER(#{Label::Base.table_name}.value)").
-      joins(:owner).
-      where(concepts: { type: Iqvoc::Concept.base_class_name }).
-      references(:concepts, :labels, :labelings).
-      page(params[:page])
+    Iqvoc::Concept.pref_labeling_class
+      .concept_expired
+      .label_begins_with(query)
+      .by_label_language(I18n.locale)
+      .includes(:target)
+      .order("LOWER(#{Label::Base.table_name}.value)")
+      .joins(:owner)
+      .where(concepts: { type: Iqvoc::Concept.base_class_name })
+      .references(:concepts, :labels, :labelings)
   end
 end
