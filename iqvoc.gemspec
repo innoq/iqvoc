@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'
   s.add_dependency 'rdf-vocab'
+  s.add_dependency 'deep_cloneable'
   s.add_dependency 'font-awesome-rails', '~> 4.2.0'
   s.add_dependency 'uglifier', '>= 1.3.0'
   s.add_dependency 'apipie-rails'

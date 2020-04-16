@@ -34,6 +34,7 @@ gem 'faraday_middleware'
 gem 'nokogiri'
 gem 'linkeddata'
 gem "rdf-vocab"
+gem "deep_cloneable"
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.7.0'

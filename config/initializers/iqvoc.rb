@@ -17,8 +17,6 @@
 require 'iqvoc'
 require 'iqvoc/version'
 
-ActiveRecord::Base.send :include, DeepCloning
-
 ##### INSTANCE SETTINGS #####
 
 # initialize non-dynamic settings below

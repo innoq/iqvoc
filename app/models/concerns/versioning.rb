@@ -93,7 +93,7 @@ module Versioning
   end # module ClassMethods
 
   def branch(user)
-    new_version = self.dup(include: self.class.includes_to_deep_cloning)
+    new_version = self.deep_clone(include: self.class.includes_to_deep_cloning)
     new_version.lock_by_user(user.id)
     new_version.increment(:rev)
     new_version.published_version_id = self.id
