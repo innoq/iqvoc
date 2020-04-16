@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class RenameCollectionContentsToCollectionMembers < ActiveRecord::Migration
+class RenameCollectionContentsToCollectionMembers < ActiveRecord::Migration[4.2]
   def self.up
     rename_table(:collection_contents, :collection_members)
   end

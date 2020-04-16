@@ -1,4 +1,4 @@
-class AddNotations < ActiveRecord::Migration
+class AddNotations < ActiveRecord::Migration[4.2]
   def change
     create_table :notations do |t|
       t.integer 'concept_id'

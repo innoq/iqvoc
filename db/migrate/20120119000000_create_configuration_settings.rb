@@ -1,4 +1,4 @@
-class CreateConfigurationSettings < ActiveRecord::Migration
+class CreateConfigurationSettings < ActiveRecord::Migration[4.2]
   def up
     create_table :configuration_settings, force: true do |t|
       t.string :key

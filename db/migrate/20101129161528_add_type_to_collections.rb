@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class AddTypeToCollections < ActiveRecord::Migration
+class AddTypeToCollections < ActiveRecord::Migration[4.2]
   def self.up
     add_column :collections, :type, :string
   end

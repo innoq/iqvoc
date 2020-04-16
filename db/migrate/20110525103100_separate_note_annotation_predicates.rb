@@ -1,4 +1,4 @@
-class SeparateNoteAnnotationPredicates < ActiveRecord::Migration
+class SeparateNoteAnnotationPredicates < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :note_annotations, :identifier, :predicate
     add_column :note_annotations, :namespace, :string, limit: 50
