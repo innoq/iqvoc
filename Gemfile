@@ -19,8 +19,8 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '~> 5.1.0'
-gem 'puma', '~> 3.0'
+gem 'rails', '~> 5.2.0'
+gem 'puma', '~> 3.11'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
 gem 'authlogic', '~> 3.8.0'
@@ -47,6 +47,8 @@ gem 'carrierwave'
 gem 'autoprefixer-rails', '~> 6.5.1.1'
 gem 'daemons'
 
+gem 'bootsnap', '>= 1.1.0', require: false
+
 # database adapters
 # comment out those you do don't need or use a different Gemfile
 #gem  'mysql2', '~> 0.4.0'
@@ -69,7 +71,6 @@ group :test do
   gem 'poltergeist'
   gem 'webmock'
   gem 'simplecov'
-  gem 'minitest', '5.10.3' # remove after update to rails v5.2
 end
 
 group :production do
