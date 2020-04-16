@@ -42,8 +42,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    apipie-rails (0.3.7)
-      json
+    apipie-rails (0.5.17)
+      rails (>= 4.1)
     arel (7.1.4)
     authlogic (3.8.0)
       activerecord (>= 3.2, < 5.3)
@@ -237,6 +237,8 @@ GEM
     puma (3.12.4)
     puma (3.12.4-java)
     rack (2.2.2)
+    rack-mini-profiler (2.0.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.7.2)
@@ -418,7 +420,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-nulldb-adapter
-  apipie-rails (~> 0.3.5)
+  apipie-rails
   authlogic (~> 3.8.0)
   autoprefixer-rails (~> 6.5.1.1)
   better_errors
@@ -447,6 +449,7 @@ DEPENDENCIES
   poltergeist
   pry-rails
   puma (~> 3.0)
+  rack-mini-profiler
   rails (~> 5.0.0)
   rails_12factor
   rails_autolink

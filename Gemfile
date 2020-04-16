@@ -38,7 +38,7 @@ gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap_form', '~> 2.7.0'
 gem 'font-awesome-rails'
-gem 'apipie-rails', '~> 0.3.5'
+gem 'apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record'
@@ -59,6 +59,7 @@ end
 
 group :development, :test do
   gem 'pry-rails', require: 'pry'
+  gem 'rack-mini-profiler'
 end
 
 group :test do
