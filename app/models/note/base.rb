@@ -31,18 +31,24 @@ class Note::Base < ApplicationRecord
 
   # ********** Associations
 
-  belongs_to :owner, polymorphic: true
+  belongs_to :owner,
+             polymorphic: true
+
   belongs_to :concept,
              class_name: Iqvoc::Concept.base_class_name,
-             foreign_key: 'owner_id'
+             foreign_key: 'owner_id',
+             optional: true
+
   belongs_to :collection,
              class_name: Iqvoc::Collection.base_class_name,
-             foreign_key: 'owner_id'
+             foreign_key: 'owner_id',
+             optional: true
 
   has_many :annotations,
            class_name: 'Note::Annotated::Base',
            foreign_key: :note_id,
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :note
 
   accepts_nested_attributes_for :annotations
 

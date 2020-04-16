@@ -21,19 +21,23 @@ class Collection::Base < Concept::Base
   end
 
   has_many Note::SKOS::Definition.name.to_relation_name,
-      class_name: 'Note::SKOS::Definition',
-      as: :owner,
-      dependent: :destroy
+           class_name: 'Note::SKOS::Definition',
+           as: :owner,
+           dependent: :destroy,
+           inverse_of: :owner
 
   has_many :members,
       class_name: 'Collection::Member::Base',
       foreign_key: 'collection_id',
-      dependent: :destroy
+      dependent: :destroy,
+      inverse_of: :collection
 
   has_many :parent_collection_members,
       class_name: 'Collection::Member::Base',
       foreign_key: 'target_id',
-      dependent: :destroy
+      dependent: :destroy,
+      inverse_of: :target
+
   has_many :parent_collections,
       through: :parent_collection_members,
       source: 'collection'
