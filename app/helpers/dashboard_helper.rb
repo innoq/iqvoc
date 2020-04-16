@@ -18,9 +18,9 @@ module DashboardHelper
   def sorting_controls_for(name)
     content_tag :div, class: 'sorting-controls' do
       link_to(icon('arrow-circle-o-up', 'sorting-arrow'),
-        params.merge({ sort: "#{name} ASC" })) +
+        sorting_params.merge({ sort: "#{name} ASC" })) +
       link_to(icon('arrow-circle-o-down', 'sorting-arrow'),
-        params.merge({ sort: "#{name} DESC" }))
+        sorting_params.merge({ sort: "#{name} DESC" }))
     end
   end
 
@@ -42,5 +42,9 @@ module DashboardHelper
     else
       item.published? ? concept_path(id: item.origin) : concept_path(published: 0, id: item.origin)
     end
+  end
+
+  def sorting_params
+    sorting_params = params.permit(:sort, :check_consistency)
   end
 end

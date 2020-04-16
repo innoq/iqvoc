@@ -61,6 +61,6 @@ class ExportsController < ApplicationController
   private
 
   def export_params
-    params.require(:export).except!(:user_id, :user).permit!
+    params.require(:export).permit(:file_type, :default_namespace)
   end
 end
