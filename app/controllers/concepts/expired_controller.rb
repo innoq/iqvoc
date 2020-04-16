@@ -29,7 +29,7 @@ class Concepts::ExpiredController < Concepts::AlphabeticalController
       .label_begins_with(query)
       .by_label_language(I18n.locale)
       .includes(:target)
-      .order("LOWER(#{Label::Base.table_name}.value)")
+      .order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
       .joins(:owner)
       .where(concepts: { type: Iqvoc::Concept.base_class_name })
       .references(:concepts, :labels, :labelings)

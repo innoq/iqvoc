@@ -323,7 +323,7 @@ class Concept::Base < ApplicationRecord
     includes(:narrower_relations, :pref_labels).
     where(concept_relations: { id: nil },
       labelings: { type: Iqvoc::Concept.pref_labeling_class_name }).
-    order("LOWER(#{Label::Base.table_name}.value)")
+    order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
   end
 
   def self.with_associations
@@ -334,7 +334,7 @@ class Concept::Base < ApplicationRecord
 
   def self.with_pref_labels
     includes(:pref_labels).
-    order("LOWER(#{Label::Base.table_name}.value)").
+    order(Arel.sql("LOWER(#{Label::Base.table_name}.value)")).
     where(labelings: { type: Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
   end
 
