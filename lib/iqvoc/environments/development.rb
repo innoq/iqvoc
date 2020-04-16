@@ -1,35 +1,5 @@
 require 'iqvoc'
 
-# inject template name
-class ActionView::TemplateRenderer
-  def render_with_source_comment(context, options)
-    res = render_without_source_comment(context, options)
-    template = determine_template(options)
-    if template.formats.include?(:html)
-      "<!-- Template: #{template.inspect} -->\n".html_safe << res <<
-        "<!-- /Template -->\n".html_safe
-    else
-      res
-    end
-  end
-  alias_method_chain :render, :source_comment
-end
-
-# inject partial name
-class ActionView::PartialRenderer
-  def render_with_source_comment(context, options, block)
-    res = render_without_source_comment(context, options, block)
-    template = @template
-    if template.formats.include?(:html)
-      "<!-- Partial: #{template.inspect} -->\n".html_safe << res <<
-        "<!-- /Partial -->\n".html_safe
-    else
-      res
-    end
-  end
-  alias_method_chain :render, :source_comment
-end
-
 module Iqvoc::Environments
   def self.setup_development(config)
     # Settings specified here will take precedence over those in config/application.rb.
@@ -51,7 +21,7 @@ module Iqvoc::Environments
 
       config.cache_store = :memory_store
       config.public_file_server.headers = {
-        'Cache-Control' => 'public, max-age=172800'
+        'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
       }
     else
       config.action_controller.perform_caching = false
@@ -95,6 +65,6 @@ module Iqvoc::Environments
 
     # Use an evented file watcher to asynchronously detect changes in source code,
     # routes, locales, etc. This feature depends on the listen gem.
-    # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+    config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   end
 end

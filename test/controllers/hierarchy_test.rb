@@ -148,7 +148,7 @@ boot:
   test 'RDF representations' do
     # Turtle
 
-    get :show, lang: 'en', params: { format: 'ttl', root: 'root' }
+    get :show, params: { lang: 'en', format: 'ttl', root: 'root' }
     assert_response 200
     assert_equal @response.content_type, 'text/turtle'
     assert @response.body =~ /:root[^\.]+skos:topConceptOf[^\.]+:scheme/m
