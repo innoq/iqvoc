@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = 'iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web'
   s.license     = 'Apache License 2.0'
 
-  s.add_dependency('rails', '>= 5.0.0', '< 6.0')
+  s.add_dependency('rails', '>= 5.2.0', '< 6.0')
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari', '~> 1.2.0'
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'linkeddata'
   s.add_dependency 'rdf-vocab'
   s.add_dependency 'deep_cloneable'
-  s.add_dependency 'font-awesome-rails', '~> 4.2.0'
+  s.add_dependency 'font-awesome-rails'
   s.add_dependency 'uglifier', '>= 1.3.0'
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
