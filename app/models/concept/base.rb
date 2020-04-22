@@ -236,7 +236,8 @@ class Concept::Base < ApplicationRecord
 
   has_many :pref_labelings,
     foreign_key: 'owner_id',
-    class_name: Iqvoc::Concept.pref_labeling_class_name
+    class_name: Iqvoc::Concept.pref_labeling_class_name,
+    inverse_of: :owner
 
   has_many :pref_labels,
     -> { order(:value) },
@@ -245,7 +246,8 @@ class Concept::Base < ApplicationRecord
 
   has_many :alt_labelings,
     foreign_key: 'owner_id',
-    class_name: Iqvoc::Concept.alt_labeling_class_name
+    class_name: Iqvoc::Concept.alt_labeling_class_name,
+    inverse_of: :owner
 
   has_many :alt_labels,
     -> { order(:value) },

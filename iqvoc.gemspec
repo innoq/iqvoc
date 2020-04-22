@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
   s.description = 'iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web'
   s.license     = 'Apache License 2.0'
 
-  s.add_dependency('rails', '>= 5.2.0', '< 6.0')
+  s.add_dependency 'rails', '>= 5.2.0', '< 6.0'
+  s.add_dependency 'puma', '~> 3.11'
+  s.add_dependency 'bootsnap', '>= 1.1.0'
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari', '~> 1.2.0'
   s.add_dependency 'kaminari-bootstrap', '~> 3.0.1'
