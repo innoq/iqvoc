@@ -181,7 +181,8 @@ class Concept::Base < ApplicationRecord
   has_many :notes,
            class_name: 'Note::Base',
            as: :owner,
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :owner
 
   include_to_deep_cloning({ notes: :annotations })
 
@@ -297,7 +298,10 @@ class Concept::Base < ApplicationRecord
 
   Iqvoc::Concept.note_class_names.each do |class_name|
     relation_name = class_name.to_relation_name
-    has_many relation_name, class_name: class_name, as: :owner, inverse_of: :owner
+    has_many relation_name,
+             class_name: class_name,
+             as: :owner,
+             inverse_of: :owner
     @nested_relations << relation_name
   end
 

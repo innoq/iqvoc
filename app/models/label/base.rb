@@ -30,7 +30,8 @@ class Label::Base < ApplicationRecord
 
   has_many :pref_labelings,
            foreign_key: 'target_id',
-           class_name: Iqvoc::Concept.pref_labeling_class_name
+           class_name: Iqvoc::Concept.pref_labeling_class_name,
+           inverse_of: :target
 
   has_many :pref_labeled_concepts,
            through: :pref_labelings,
@@ -38,7 +39,8 @@ class Label::Base < ApplicationRecord
 
   has_many :alt_labelings,
            foreign_key: 'target_id',
-           class_name: Iqvoc::Concept.alt_labeling_class_name
+           class_name: Iqvoc::Concept.alt_labeling_class_name,
+           inverse_of: :target
 
   has_many :alt_labeled_concepts,
            through: :alt_labelings,
