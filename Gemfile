@@ -70,7 +70,6 @@ group :test do
   gem 'capybara'
   gem 'poltergeist'
   gem 'webmock'
-  gem 'simplecov'
 end
 
 group :production do

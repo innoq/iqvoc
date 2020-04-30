@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if ENV['COVERAGE'] == '1'
-  require 'simplecov'
-  SimpleCov.start 'rails'
-end
-
 ENV['RAILS_ENV'] ||= 'test'
 
 unless defined?(Iqvoc) && Iqvoc.const_defined?(:Engine)
