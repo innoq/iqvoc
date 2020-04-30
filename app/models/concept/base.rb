@@ -169,13 +169,32 @@ class Concept::Base < ApplicationRecord
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, foreign_key: 'owner_id', class_name: 'Concept::Relation::Base', dependent: :destroy
-  has_many :related_concepts, through: :relations, source: :target
-  has_many :referenced_relations, foreign_key: 'target_id', class_name: 'Concept::Relation::Base', dependent: :destroy
+  has_many :relations,
+           foreign_key: 'owner_id',
+           class_name: 'Concept::Relation::Base',
+           dependent: :destroy,
+           inverse_of: :owner
+
+  has_many :related_concepts,
+           through: :relations,
+           source: :target
+
+  has_many :referenced_relations,
+           foreign_key: 'target_id',
+           class_name: 'Concept::Relation::Base',
+           dependent: :destroy,
+           inverse_of: :target
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, foreign_key: 'owner_id', class_name: 'Labeling::Base', dependent: :destroy, inverse_of: :owner
-  has_many :labels, -> { order(:value) }, through: :labelings, source: :target
+  has_many :labelings,
+           foreign_key: 'owner_id',
+           class_name: 'Labeling::Base',
+           dependent: :destroy,
+           inverse_of: :owner
+
+  has_many :labels, -> { order(:value) },
+           through: :labelings,
+           source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
   has_many :notes,
@@ -183,18 +202,33 @@ class Concept::Base < ApplicationRecord
            as: :owner,
            dependent: :destroy,
            inverse_of: :owner
-
   include_to_deep_cloning({ notes: :annotations })
 
-  has_many :matches, foreign_key: 'concept_id', class_name: 'Match::Base', dependent: :destroy
+  has_many :matches,
+           foreign_key: 'concept_id',
+           class_name: 'Match::Base',
+           dependent: :destroy,
+           inverse_of: :concept
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, foreign_key: 'target_id', class_name: 'Collection::Member::Base', dependent: :destroy
-  has_many :collections, through: :collection_members, class_name: Iqvoc::Collection.base_class_name
+  has_many :collection_members,
+           foreign_key: 'target_id',
+           class_name: 'Collection::Member::Base',
+           dependent: :destroy,
+           inverse_of: :target
+
+  has_many :collections,
+           through: :collection_members,
+           class_name: Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
-  has_many :notations, class_name: 'Notation::Base', foreign_key: 'concept_id', dependent: :destroy
+  has_many :notations,
+           class_name: 'Notation::Base',
+           foreign_key: 'concept_id',
+           dependent: :destroy,
+           inverse_of: :concept
   include_to_deep_cloning :notations
+
   @nested_relations << :notations
 
   # ************** "Dynamic"/configureable relations
@@ -308,7 +342,11 @@ class Concept::Base < ApplicationRecord
   # *** Further association classes (could be ranks or stuff like that)
 
   Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
-    has_many association_class.name.to_relation_name, class_name: association_class.name, foreign_key: foreign_key, dependent: :destroy
+    binding.pry
+    has_many association_class.name.to_relation_name,
+             class_name: association_class.name,
+             foreign_key: foreign_key,
+             dependent: :destroy # TODO: add inverse_of???
     include_to_deep_cloning(association_class.deep_cloning_relations)
     association_class.referenced_by(self)
   end

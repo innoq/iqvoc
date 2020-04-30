@@ -21,6 +21,9 @@ class Notation::Base < ApplicationRecord
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'notation'
 
+  belongs_to :concept,
+             class_name: 'Concept::Base'
+
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     # TODO: Adopt this to RDFAPI
     data = rdf_object.match /"(?<value>.+)"\^\^<(?<data_type>.+)>/

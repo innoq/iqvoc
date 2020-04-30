@@ -21,8 +21,11 @@ class Collection::Member::Base < ApplicationRecord
   self.rdf_namespace = nil
   self.rdf_predicate = nil
 
-  belongs_to :collection, class_name: 'Collection::Base'
-  belongs_to :target, class_name: 'Concept::Base'
+  belongs_to :collection,
+             class_name: 'Collection::Base'
+
+  belongs_to :target,
+             class_name: 'Concept::Base'
 
   def self.view_section(obj)
     'main'
