@@ -1,7 +1,7 @@
 # iQvoc
 
 [![Gem Version](https://badge.fury.io/rb/iqvoc.png)](http://badge.fury.io/rb/iqvoc)
-[![Build Status](https://secure.travis-ci.org/innoq/iqvoc.png)](http://travis-ci.org/innoq/iqvoc)
+![CI](https://github.com/innoq/iqvoc/workflows/CI/badge.svg?branch=master)
 [![Code Climate](https://codeclimate.com/github/innoq/iqvoc.png)](https://codeclimate.com/github/innoq/iqvoc)
 
 iQvoc is a vocabulary management tool that combines easy-to-use human interfaces

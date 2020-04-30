@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        ruby: ['2.5']
+        ruby: ['2.5', '2.6', '2.7']
     runs-on: ubuntu-latest
     services:
       postgres:
