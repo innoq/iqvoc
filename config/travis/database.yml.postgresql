@@ -1,7 +1,0 @@
-test:
-  adapter: postgresql
-  encoding: unicode
-  database: iqvoc_test
-  pool: 5
-  username: travis
-  password:
