@@ -53,7 +53,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # comment out those you do don't need or use a different Gemfile
 #gem  'mysql2', '~> 0.4.0'
 #gem 'sqlite3'
-gem 'pg'
+gem 'pg', '~> 0.21.0'
 
 group :development do
   gem 'better_errors'
