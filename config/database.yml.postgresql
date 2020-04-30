@@ -1,24 +1,26 @@
 development:
   adapter: postgresql
+  host: localhost
   encoding: unicode
-  database: iqvoc_development
+  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_development' %>
   pool: 5
-  username: root
-  password:
+  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
 
 test:
   adapter: postgresql
+  host: localhost
   encoding: unicode
-  database: iqvoc_test
+  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_test' %>
   pool: 5
-  username: root
-  password:
+  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
 
 production:
-  adapter: <%= ENV['DB_ADAPTER'] ||= 'postgresql' %>
+  adapter: postgresql
+  host: localhost
   encoding: unicode
-  database: <%= ENV["DB_NAME"] %>
-  pool: 20
-  username: <%= ENV["DB_USER"] %>
-  password: <%= ENV["DB_PW"] %>
-  host: <%= ENV["DB_HOST"] %>
+  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_production' %>
+  pool: 5
+  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
+  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
