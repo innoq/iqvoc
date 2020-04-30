@@ -57,10 +57,11 @@ class ReverseMatchTest < ActionController::TestCase
 
   test 'remove non existing match' do
     m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
-    patch :remove_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_relatedmatch',
-          uri: 'http://iqvoc.net'
+    patch :remove_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_relatedmatch',
+      uri: 'http://iqvoc.net'
+    }
     assert_response 400
     body = JSON.parse response.body
     assert_equal body['type'], "unknown_relation"
@@ -68,10 +69,11 @@ class ReverseMatchTest < ActionController::TestCase
 
   test 'remove match' do
     m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
-    patch :remove_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://iqvoc.net'
+    patch :remove_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://iqvoc.net'
+    }
     assert_response 200
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_removed'
@@ -81,10 +83,11 @@ class ReverseMatchTest < ActionController::TestCase
   end
 
   test 'add match' do
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://google.de'
+    }
     assert_response 200
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_added'
@@ -94,10 +97,11 @@ class ReverseMatchTest < ActionController::TestCase
   end
 
   test 'add already existing match' do
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://google.de'
+    }
     assert_response 200
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_added'
@@ -105,10 +109,11 @@ class ReverseMatchTest < ActionController::TestCase
     new_concept_version = Iqvoc::Concept.base_class.by_origin(@achievement_hobbies.origin).last
     assert_equal 2, new_concept_version.rev
 
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://google.de'
+    }
     assert_response 409
     body = JSON.parse response.body
     assert_equal body['type'], 'mapping_exists'
@@ -120,20 +125,22 @@ class ReverseMatchTest < ActionController::TestCase
 
   test 'no referer' do
     @request.env['HTTP_REFERER'] = nil
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://google.de'
+    }
     assert_response 400
     body = JSON.parse response.body
     assert_equal body['type'], "no_referer"
   end
 
   test 'unknown match class' do
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'UnknownMatch',
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'UnknownMatch',
+      uri: 'http://google.de'
+    }
     assert_response 400
     body = JSON.parse response.body
     assert_equal body['type'], "unknown_match"
@@ -141,29 +148,32 @@ class ReverseMatchTest < ActionController::TestCase
 
   test 'unknown referer' do
     @request.env['HTTP_REFERER'] = 'http://iqvoc.net'
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://iqvoc.net'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://iqvoc.net'
+    }
     assert_response 403
     body = JSON.parse response.body
     assert_equal body['type'], "unknown_referer"
   end
 
   test 'concept with a version' do
-    patch :add_match,
-          origin: @airsoft.origin,
-          match_class: 'match_skos_broadmatch',
-          uri: 'http://iqvoc.net'
+    patch :add_match, params: {
+      origin: @airsoft.origin,
+      match_class: 'match_skos_broadmatch',
+      uri: 'http://iqvoc.net'
+    }
     assert_response 403
     body = JSON.parse response.body
     assert_equal body['type'], "in_processing"
   end
 
   test 'missing parameter' do
-    patch :add_match,
-          origin: @achievement_hobbies.origin,
-          uri: 'http://google.de'
+    patch :add_match, params: {
+      origin: @achievement_hobbies.origin,
+      uri: 'http://google.de'
+    }
     assert_response 400
     body = JSON.parse response.body
     assert_equal body['type'], "parameter_missing"

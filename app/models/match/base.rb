@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::Base < ActiveRecord::Base
+class Match::Base < ApplicationRecord
   self.table_name = 'matches'
 
   class_attribute :rdf_namespace, :rdf_predicate
@@ -23,7 +23,9 @@ class Match::Base < ActiveRecord::Base
 
   # ********** Associations
 
-  belongs_to :concept, class_name: 'Concept::Base', foreign_key: 'concept_id'
+  belongs_to :concept,
+             class_name: 'Concept::Base',
+             foreign_key: 'concept_id'
 
   # ********** Validations
 

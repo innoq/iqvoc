@@ -46,6 +46,6 @@ class ImportsController < ApplicationController
 
   private
   def import_params
-    params.require(:import).except!(:user_id, :user).permit!
+    params.require(:import).permit(:import_file, :default_namespace, :publish)
   end
 end

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChangeOriginLengths < ActiveRecord::Migration
+class ChangeOriginLengths < ActiveRecord::Migration[4.2]
   def self.up
     change_column :concepts, :origin, :string, limit: 4000
     change_column :labels, :origin, :string, limit: 4000

@@ -30,7 +30,7 @@ class Concepts::UntranslatedController < ConceptsController
       @labels = []
       flash.now[:error] = I18n.t('txt.views.untranslated_concepts.unavailable')
     else
-      @labels = scope.order('LOWER(labels.value)').page(params[:page])
+      @labels = scope.order(Arel.sql('LOWER(labels.value)')).page(params[:page])
     end
   end
 end

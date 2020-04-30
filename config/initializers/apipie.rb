@@ -12,6 +12,8 @@ Apipie.configure do |config|
   config.validate                = false
   config.validate_value          = false
   config.validate_presence       = false
+  config.translate               = false
+  config.default_locale          = nil
   config.app_info                = <<-EOF
 iQvoc is a Vocabulary Management System for the Semantic Web.
 EOF

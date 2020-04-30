@@ -1,4 +1,4 @@
-class AddNoteAnnotationsIndex < ActiveRecord::Migration
+class AddNoteAnnotationsIndex < ActiveRecord::Migration[4.2]
   def change
     # causes https://github.com/innoq/iqvoc/issues/389
     # outcommented as fix because we either could have had a custom index name

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class CreateCollectionLabels < ActiveRecord::Migration
+class CreateCollectionLabels < ActiveRecord::Migration[4.2]
   def self.up
     create_table :collection_labels, force: true do |t|
       t.references :collection

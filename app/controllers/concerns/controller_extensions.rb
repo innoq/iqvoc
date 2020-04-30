@@ -25,8 +25,11 @@ module ControllerExtensions
   # Force an extension to every url. (LOD)
   def ensure_extension
     unless params[:format] || !request.get?
+      # FIXME: convert to whitelist
+      safe_params = params.except(:host, :port, :protocol, :domain, :subdomain).permit!
+
       flash.keep
-      redirect_to url_for(params.merge(format: (request.format && request.format.symbol) || :html))
+      redirect_to url_for(safe_params.merge(format: (request.format && request.format.symbol) || :html))
     end
   end
 

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class AbstractUser < ActiveRecord::Base
+class AbstractUser < ApplicationRecord
   self.table_name = 'users'
 
   delegate :can?, :cannot?, :to => :ability

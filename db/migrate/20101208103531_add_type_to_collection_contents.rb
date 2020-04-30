@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class AddTypeToCollectionContents < ActiveRecord::Migration
+class AddTypeToCollectionContents < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :collection_members, :concept_id, :target_id
     add_column :collection_members, :type, :string

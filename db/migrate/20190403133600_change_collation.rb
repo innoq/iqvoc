@@ -1,4 +1,4 @@
-class ChangeCollation < ActiveRecord::Migration
+class ChangeCollation < ActiveRecord::Migration[4.2]
   MYSQL_COLLATION_SUPPORT_VERSION = 8
 
   def up

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Labeling::Base < ActiveRecord::Base
+class Labeling::Base < ApplicationRecord
   self.table_name = 'labelings'
 
   class_attribute :rdf_namespace, :rdf_predicate

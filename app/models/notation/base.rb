@@ -14,12 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Notation::Base < ActiveRecord::Base
+class Notation::Base < ApplicationRecord
   self.table_name = 'notations'
 
   class_attribute :rdf_namespace, :rdf_predicate
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'notation'
+
+  belongs_to :concept,
+             class_name: 'Concept::Base'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     # TODO: Adopt this to RDFAPI

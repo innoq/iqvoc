@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::Annotated::Base < ActiveRecord::Base # FIXME: Why isn't this Note::Annotation::Base? This looks like an annotated note - but it is an annotation *for* a note!?
+class Note::Annotated::Base < ApplicationRecord # FIXME: Why isn't this Note::Annotation::Base? This looks like an annotated note - but it is an annotation *for* a note!?
   self.table_name = 'note_annotations'
 
   belongs_to :note, class_name: Note::Base.name

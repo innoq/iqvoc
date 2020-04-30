@@ -20,7 +20,7 @@ require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
 class ClientEditConceptsTest < ActionDispatch::IntegrationTest
-  self.use_transactional_fixtures = false
+  self.use_transactional_tests = false
 
   setup do
     @concept = Concept::SKOS::Base.new.publish

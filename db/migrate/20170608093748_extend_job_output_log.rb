@@ -1,4 +1,4 @@
-class ExtendJobOutputLog < ActiveRecord::Migration
+class ExtendJobOutputLog < ActiveRecord::Migration[4.2]
   def up
     change_column :exports, :output, :text, limit: 1_073_741_823
     change_column :imports, :output, :text, limit: 1_073_741_823

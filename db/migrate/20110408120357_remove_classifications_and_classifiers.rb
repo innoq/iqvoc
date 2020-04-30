@@ -1,4 +1,4 @@
-class RemoveClassificationsAndClassifiers < ActiveRecord::Migration
+class RemoveClassificationsAndClassifiers < ActiveRecord::Migration[4.2]
   def self.up
     drop_table 'classifications'
     drop_table 'classifiers'

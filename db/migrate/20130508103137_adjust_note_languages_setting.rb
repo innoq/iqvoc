@@ -1,5 +1,5 @@
-class AdjustNoteLanguagesSetting < ActiveRecord::Migration
-  class ConfigSettings < ActiveRecord::Base
+class AdjustNoteLanguagesSetting < ActiveRecord::Migration[4.2]
+  class ConfigSettings < ApplicationRecord
     self.table_name = 'configuration_settings'
   end
 

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class AddCollectionTables < ActiveRecord::Migration
+class AddCollectionTables < ActiveRecord::Migration[4.2]
   def self.up
     create_table :collections, force: true do |t|
     end

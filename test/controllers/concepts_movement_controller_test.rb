@@ -61,18 +61,19 @@ class ConceptsMovementControllerTest < ActionController::TestCase
   end
 
   test 'unauthorized node movement request' do
-    patch :move,
-          lang: 'en',
-          origin: @air_sports.origin,
-          tree_action: 'move',
-          moved_node_id: @air_sports.id,
-          old_parent_node_id: @achievement_hobbies.id,
-          new_parent_node_id: @sports.id
+    patch :move, params: {
+      lang: 'en',
+      origin: @air_sports.origin,
+      tree_action: 'move',
+      moved_node_id: @air_sports.id,
+      old_parent_node_id: @achievement_hobbies.id,
+      new_parent_node_id: @sports.id
+    }
     assert_response 401
   end
 
   test 'bad node movement request' do
-    patch :move, lang: 'en', origin: @air_sports.origin
+    patch :move, params: { lang: 'en', origin: @air_sports.origin }
     assert_response 400
   end
 
@@ -85,13 +86,14 @@ class ConceptsMovementControllerTest < ActionController::TestCase
     # + Sports
     #   - Air Sport
     #
-    patch :move,
-          lang: 'en',
-          origin: @air_sports.origin,
-          tree_action: 'move',
-          moved_node_id: @air_sports.id,
-          old_parent_node_id: @achievement_hobbies.id,
-          new_parent_node_id: @sports.id
+    patch :move, params: {
+      lang: 'en',
+      origin: @air_sports.origin,
+      tree_action: 'move',
+      moved_node_id: @air_sports.id,
+      old_parent_node_id: @achievement_hobbies.id,
+      new_parent_node_id: @sports.id
+    }
     assert_response 200
 
     # reload concepts
@@ -142,13 +144,14 @@ class ConceptsMovementControllerTest < ActionController::TestCase
       c.save
     end
 
-    patch :move,
-          lang: 'en',
-          origin: @air_sports.origin,
-          tree_action: 'move',
-          moved_node_id: @air_sports.id,
-          old_parent_node_id: @achievement_hobbies.id,
-          new_parent_node_id: @sports.id
+    patch :move, params: {
+      lang: 'en',
+      origin: @air_sports.origin,
+      tree_action: 'move',
+      moved_node_id: @air_sports.id,
+      old_parent_node_id: @achievement_hobbies.id,
+      new_parent_node_id: @sports.id
+    }
     assert_response 200
 
     # reload concepts
@@ -187,13 +190,14 @@ class ConceptsMovementControllerTest < ActionController::TestCase
     UserSession.create(@admin)
 
     # move achievement_hobbies (includung childs) to sports
-    patch :move,
-          lang: 'en',
-          origin: @achievement_hobbies.origin,
-          tree_action: 'move',
-          moved_node_id: @achievement_hobbies.id,
-          # old_parent_node_id: '', a top_term has no parent concept
-          new_parent_node_id: @sports.id
+    patch :move, params: {
+      lang: 'en',
+      origin: @achievement_hobbies.origin,
+      tree_action: 'move',
+      moved_node_id: @achievement_hobbies.id,
+      # old_parent_node_id: '', a top_term has no parent concept
+      new_parent_node_id: @sports.id
+    }
     assert_response 200
 
     # reload concepts
@@ -227,13 +231,14 @@ class ConceptsMovementControllerTest < ActionController::TestCase
     UserSession.create(@admin)
 
     # move air_sports to top concepts
-    patch :move,
-          lang: 'en',
-          origin: @air_sports.origin,
-          tree_action: 'move',
-          moved_node_id: @air_sports.id,
-          old_parent_node_id: @sports.id
-          # new_parent_node_id: '', a top_term has no parent concept
+    patch :move, params: {
+      lang: 'en',
+      origin: @air_sports.origin,
+      tree_action: 'move',
+      moved_node_id: @air_sports.id,
+      old_parent_node_id: @sports.id
+      # new_parent_node_id: '', a top_term has no parent concept
+    }
     assert_response 200
 
     # reload concepts

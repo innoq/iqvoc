@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Base < ActiveRecord::Base
+class Concept::Base < ApplicationRecord
   attr_accessor :reverse_match_service
   self.table_name = 'concepts'
 
@@ -169,27 +169,66 @@ class Concept::Base < ActiveRecord::Base
 
   @nested_relations = [] # Will be marked as nested attributes later
 
-  has_many :relations, foreign_key: 'owner_id', class_name: 'Concept::Relation::Base', dependent: :destroy
-  has_many :related_concepts, through: :relations, source: :target
-  has_many :referenced_relations, foreign_key: 'target_id', class_name: 'Concept::Relation::Base', dependent: :destroy
+  has_many :relations,
+           foreign_key: 'owner_id',
+           class_name: 'Concept::Relation::Base',
+           dependent: :destroy,
+           inverse_of: :owner
+
+  has_many :related_concepts,
+           through: :relations,
+           source: :target
+
+  has_many :referenced_relations,
+           foreign_key: 'target_id',
+           class_name: 'Concept::Relation::Base',
+           dependent: :destroy,
+           inverse_of: :target
   include_to_deep_cloning(:relations, :referenced_relations)
 
-  has_many :labelings, foreign_key: 'owner_id', class_name: 'Labeling::Base', dependent: :destroy
-  has_many :labels, -> { order(:value) }, through: :labelings, source: :target
+  has_many :labelings,
+           foreign_key: 'owner_id',
+           class_name: 'Labeling::Base',
+           dependent: :destroy,
+           inverse_of: :owner
+
+  has_many :labels, -> { order(:value) },
+           through: :labelings,
+           source: :target
   # Deep cloning has to be done in specific relations. S. pref_labels etc
 
-  has_many :notes, class_name: 'Note::Base', as: :owner, dependent: :destroy
+  has_many :notes,
+           class_name: 'Note::Base',
+           as: :owner,
+           dependent: :destroy,
+           inverse_of: :owner
   include_to_deep_cloning({ notes: :annotations })
 
-  has_many :matches, foreign_key: 'concept_id', class_name: 'Match::Base', dependent: :destroy
+  has_many :matches,
+           foreign_key: 'concept_id',
+           class_name: 'Match::Base',
+           dependent: :destroy,
+           inverse_of: :concept
   include_to_deep_cloning(:matches)
 
-  has_many :collection_members, foreign_key: 'target_id', class_name: 'Collection::Member::Base', dependent: :destroy
-  has_many :collections, through: :collection_members, class_name: Iqvoc::Collection.base_class_name
+  has_many :collection_members,
+           foreign_key: 'target_id',
+           class_name: 'Collection::Member::Base',
+           dependent: :destroy,
+           inverse_of: :target
+
+  has_many :collections,
+           through: :collection_members,
+           class_name: Iqvoc::Collection.base_class_name
   include_to_deep_cloning(:collection_members)
 
-  has_many :notations, class_name: 'Notation::Base', foreign_key: 'concept_id', dependent: :destroy
+  has_many :notations,
+           class_name: 'Notation::Base',
+           foreign_key: 'concept_id',
+           dependent: :destroy,
+           inverse_of: :concept
   include_to_deep_cloning :notations
+
   @nested_relations << :notations
 
   # ************** "Dynamic"/configureable relations
@@ -203,7 +242,8 @@ class Concept::Base < ActiveRecord::Base
   has_many :broader_relations,
     foreign_key: :owner_id,
     class_name: Iqvoc::Concept.broader_relation_class_name,
-    extend: Concept::Relation::ReverseRelationExtension
+    extend: Concept::Relation::ReverseRelationExtension,
+    inverse_of: :owner
 
   # Narrower
   # FIXME: Actually this is not needed anymore.
@@ -212,7 +252,8 @@ class Concept::Base < ActiveRecord::Base
   has_many :narrower_relations,
     foreign_key: :owner_id,
     class_name: Iqvoc::Concept.broader_relation_class.narrower_class.name,
-    extend: Concept::Relation::ReverseRelationExtension
+    extend: Concept::Relation::ReverseRelationExtension,
+    inverse_of: :owner
 
   # Relations
   # e.g. 'concept_relation_skos_relateds'
@@ -222,14 +263,16 @@ class Concept::Base < ActiveRecord::Base
     has_many relation_class_name.to_relation_name,
       foreign_key: :owner_id,
       class_name: relation_class_name,
-      extend: Concept::Relation::ReverseRelationExtension
+      extend: Concept::Relation::ReverseRelationExtension,
+      inverse_of: :owner
   end
 
   # *** Labels/Labelings
 
   has_many :pref_labelings,
     foreign_key: 'owner_id',
-    class_name: Iqvoc::Concept.pref_labeling_class_name
+    class_name: Iqvoc::Concept.pref_labeling_class_name,
+    inverse_of: :owner
 
   has_many :pref_labels,
     -> { order(:value) },
@@ -238,7 +281,8 @@ class Concept::Base < ActiveRecord::Base
 
   has_many :alt_labelings,
     foreign_key: 'owner_id',
-    class_name: Iqvoc::Concept.alt_labeling_class_name
+    class_name: Iqvoc::Concept.alt_labeling_class_name,
+    inverse_of: :owner
 
   has_many :alt_labels,
     -> { order(:value) },
@@ -248,7 +292,9 @@ class Concept::Base < ActiveRecord::Base
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       foreign_key: 'owner_id',
-      class_name: labeling_class_name
+      class_name: labeling_class_name,
+      inverse_of: :owner
+
     # Only clone superclass relations
     unless Iqvoc::Concept.labeling_classes.keys.detect { |klass| labeling_class_name.constantize < klass }
       # When a Label has only one labeling (the "no skosxl" case) we'll have to
@@ -266,7 +312,8 @@ class Concept::Base < ActiveRecord::Base
   Iqvoc::Concept.match_class_names.each do |match_class_name|
     has_many match_class_name.to_relation_name,
       class_name: match_class_name,
-      foreign_key: 'concept_id'
+      foreign_key: 'concept_id',
+      inverse_of: :concept
 
     # Serialized setters and getters (\r\n or , separated) -- TODO: use InlineDataHelper?
     define_method("inline_#{match_class_name.to_relation_name}".to_sym) do
@@ -285,14 +332,21 @@ class Concept::Base < ActiveRecord::Base
 
   Iqvoc::Concept.note_class_names.each do |class_name|
     relation_name = class_name.to_relation_name
-    has_many relation_name, class_name: class_name, as: :owner
+    has_many relation_name,
+             class_name: class_name,
+             as: :owner,
+             inverse_of: :owner
     @nested_relations << relation_name
   end
 
   # *** Further association classes (could be ranks or stuff like that)
 
   Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
-    has_many association_class.name.to_relation_name, class_name: association_class.name, foreign_key: foreign_key, dependent: :destroy
+    binding.pry
+    has_many association_class.name.to_relation_name,
+             class_name: association_class.name,
+             foreign_key: foreign_key,
+             dependent: :destroy # TODO: add inverse_of???
     include_to_deep_cloning(association_class.deep_cloning_relations)
     association_class.referenced_by(self)
   end
@@ -313,7 +367,7 @@ class Concept::Base < ActiveRecord::Base
     includes(:narrower_relations, :pref_labels).
     where(concept_relations: { id: nil },
       labelings: { type: Iqvoc::Concept.pref_labeling_class_name }).
-    order("LOWER(#{Label::Base.table_name}.value)")
+    order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
   end
 
   def self.with_associations
@@ -324,7 +378,7 @@ class Concept::Base < ActiveRecord::Base
 
   def self.with_pref_labels
     includes(:pref_labels).
-    order("LOWER(#{Label::Base.table_name}.value)").
+    order(Arel.sql("LOWER(#{Label::Base.table_name}.value)")).
     where(labelings: { type: Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
   end
 
@@ -436,7 +490,7 @@ class Concept::Base < ActiveRecord::Base
     elsif lang
       lang = lang.to_s
     end
-    labeling_class = labeling_class.name if labeling_class < ActiveRecord::Base # Use the class name string
+    labeling_class = labeling_class.name if labeling_class < ApplicationRecord # Use the class name string
     @labels ||= labelings.each_with_object({}) do |labeling, hash|
       ((hash[labeling.class.name.to_s] ||= {})[labeling.target.language] ||= []) << labeling.target if labeling.target
     end
@@ -444,23 +498,23 @@ class Concept::Base < ActiveRecord::Base
   end
 
   def related_concepts_for_relation_class(relation_class, only_published = true)
-    relation_class = relation_class.name if relation_class < ActiveRecord::Base # Use the class name string
+    relation_class = relation_class.name if relation_class < ApplicationRecord # Use the class name string
     relations.select { |rel| rel.class.name == relation_class }.map(&:target).
         select { |c| c.published? || !only_published }.sort_by(&:pref_label)
   end
 
   def matches_for_class(match_class)
-    match_class = match_class.name if match_class < ActiveRecord::Base # Use the class name string
+    match_class = match_class.name if match_class < ApplicationRecord # Use the class name string
     matches.select{ |match| match.class.name == match_class }
   end
 
   def notes_for_class(note_class)
-    note_class = note_class.name if note_class < ActiveRecord::Base # Use the class name string
+    note_class = note_class.name if note_class < ApplicationRecord # Use the class name string
     notes.select{ |note| note.class.name == note_class }
   end
 
   def notations_for_class(notation_class)
-    notation_class = notation_class.name if notation_class < ActiveRecord::Base # Use the class name string
+    notation_class = notation_class.name if notation_class < ApplicationRecord # Use the class name string
     notations.select{ |notation| notation.class.name == notation_class }
   end
 

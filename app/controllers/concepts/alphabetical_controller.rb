@@ -33,17 +33,19 @@ class Concepts::AlphabeticalController < ConceptsController
       @search_results = dataset.alphabetical_search(query, I18n.locale) || []
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else
-      @search_results = find_labelings
-
       # When in single query mode, AR handles ALL includes to be loaded by that
       # one query. We don't want that! So let's do it manually :-)
       includes = Iqvoc::Concept.base_class.default_includes
       if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
         includes << Note::SKOS::Definition.name.to_relation_name
       end
-      ActiveRecord::Associations::Preloader.new.preload(@search_results, owner: includes)
 
-      @search_results.to_a.map! { |pl| AlphabeticalSearchResult.new(pl) }
+      search_results_size = find_labelings.count
+      search_results = find_labelings.page(params[:page])
+      ActiveRecord::Associations::Preloader.new.preload(search_results, owner: includes)
+
+      @search_results = search_results.to_a.map { |pl| AlphabeticalSearchResult.new(pl) }
+      @search_results = Kaminari.paginate_array(@search_results, total_count: search_results_size).page(params[:page])
     end
 
     respond_to do |format|
@@ -60,16 +62,15 @@ class Concepts::AlphabeticalController < ConceptsController
   def find_labelings
     query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
 
-    Iqvoc::Concept.pref_labeling_class.
-      concept_published.
-      concept_not_expired.
-      label_begins_with(query).
-      by_label_language(I18n.locale).
-      includes(:target).
-      order("LOWER(#{Label::Base.table_name}.value)").
-      joins(:owner).
-      where(concepts: { type: Iqvoc::Concept.base_class_name }).
-      references(:concepts, :labels, :labelings).
-      page(params[:page])
+    Iqvoc::Concept.pref_labeling_class
+      .concept_published
+      .concept_not_expired.
+      label_begins_with(query)
+      .by_label_language(I18n.locale)
+      .includes(:target)
+      .order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
+      .joins(:owner)
+      .where(concepts: { type: Iqvoc::Concept.base_class_name })
+      .references(:concepts, :labels, :labelings)
   end
 end

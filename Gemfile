@@ -19,11 +19,12 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '~> 4.2.11'
-gem 'kaminari', '~> 0.16.3'
-gem 'kaminari-bootstrap', '~> 3.0.1'
+gem 'rails', '~> 5.2.0'
+gem 'puma', '~> 3.11'
+gem 'kaminari'
+gem 'kaminari-bootstrap'
 gem 'authlogic', '~> 3.8.0'
-gem 'cancancan', '~> 1.10.0'
+gem 'cancancan'
 gem 'iq_rdf', '>= 0.1.16'
 gem 'iq_triplestorage'
 gem 'json'
@@ -33,17 +34,20 @@ gem 'faraday_middleware'
 gem 'nokogiri'
 gem 'linkeddata'
 gem "rdf-vocab"
+gem "deep_cloneable"
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
-gem 'bootstrap_form', '~> 2.2.0'
-gem 'font-awesome-rails', '~> 4.3.0'
-gem 'apipie-rails', '~> 0.3.5'
+gem 'bootstrap_form', '~> 2.7.0'
+gem 'font-awesome-rails'
+gem 'apipie-rails'
 gem 'maruku', require: false
 gem 'database_cleaner'
-gem 'delayed_job_active_record', '~> 4.1.1'
+gem 'delayed_job_active_record'
 gem 'carrierwave'
 gem 'autoprefixer-rails', '~> 6.5.1.1'
 gem 'daemons'
+
+gem 'bootsnap', '>= 1.1.0', require: false
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
@@ -52,36 +56,20 @@ gem 'daemons'
 gem 'pg'
 
 group :development do
-  gem 'view_marker'
   gem 'better_errors'
   gem 'web-console'
-  gem 'binding_of_caller', '0.7.3.pre1'
+  gem 'listen'
 end
 
 group :development, :test do
-  gem 'awesome_print'
   gem 'pry-rails', require: 'pry'
-  gem 'pry-remote'
-  gem 'pry-byebug', '~> 1.1.2', platforms: :ruby_20
-  gem 'quiet_assets'
-
-  platforms :ruby do
-    gem 'hirb-unicode'
-    gem 'cane'
-  end
-
-  platforms :jruby do
-    gem 'activerecord-jdbcmysql-adapter'
-    gem 'activerecord-jdbcsqlite3-adapter'
-    gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.13'
-  end
+  gem 'rack-mini-profiler'
 end
 
 group :test do
   gem 'capybara'
   gem 'poltergeist'
   gem 'webmock'
-  gem 'simplecov'
 end
 
 group :production do

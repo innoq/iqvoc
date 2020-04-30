@@ -1,4 +1,4 @@
-class DelayedJobsOptimizations < ActiveRecord::Migration
+class DelayedJobsOptimizations < ActiveRecord::Migration[4.2]
   def change
     # add queue index
     add_index :delayed_jobs, [:queue], :name => 'delayed_jobs_queue'

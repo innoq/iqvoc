@@ -20,8 +20,15 @@ module Versioning
   included do
     alias_method :draft?, :unpublished?
 
-    belongs_to :published_version, foreign_key: 'published_version_id', class_name: name
-    belongs_to :locking_user, foreign_key: 'locked_by', class_name: 'AbstractUser'
+    belongs_to :published_version,
+               foreign_key: 'published_version_id',
+               class_name: name,
+               optional: true
+
+    belongs_to :locking_user,
+               foreign_key: 'locked_by',
+               class_name: 'AbstractUser',
+               optional: true
 
     after_initialize do
       disable_validations_for_publishing
@@ -93,7 +100,7 @@ module Versioning
   end # module ClassMethods
 
   def branch(user)
-    new_version = self.dup(include: self.class.includes_to_deep_cloning)
+    new_version = self.deep_clone(include: self.class.includes_to_deep_cloning)
     new_version.lock_by_user(user.id)
     new_version.increment(:rev)
     new_version.published_version_id = self.id

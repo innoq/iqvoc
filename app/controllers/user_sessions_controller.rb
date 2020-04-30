@@ -15,8 +15,6 @@
 # limitations under the License.
 
 class UserSessionsController < ApplicationController
-  skip_before_action :require_user, only: [:new, :create]
-
   def new
     authorize! :create, UserSession
 

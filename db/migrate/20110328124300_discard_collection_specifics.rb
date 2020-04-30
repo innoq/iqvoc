@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class DiscardCollectionSpecifics < ActiveRecord::Migration
+class DiscardCollectionSpecifics < ActiveRecord::Migration[4.2]
   def self.up
     drop_table :collections
     drop_table :collection_labels

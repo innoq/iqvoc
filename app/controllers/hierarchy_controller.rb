@@ -141,7 +141,7 @@ class HierarchyController < ApplicationController
     # caching -- NB: invalidated on any in-scope concept modifications
     latest = scope.maximum(:updated_at)
     response.cache_control[:public] = !include_unpublished # XXX: this should not be necessary!?
-    return unless stale?(etag: [latest, params], last_modified: latest,
+    return unless stale?(etag: [latest, hierarchy_params.to_h], last_modified: latest,
         public: !include_unpublished)
 
     # NB: order matters due to the `where` clause below
@@ -195,5 +195,11 @@ class HierarchyController < ApplicationController
     concept.broader_relations.map do |rel|
       rel.target.narrower_relations.map { |rel| rel.target } # XXX: expensive
     end.flatten.uniq.sort { |a, b| a.pref_label <=> b.pref_label }
+  end
+
+  private
+
+  def hierarchy_params
+    params.permit(:lang, :format, :root, :dir, :depth, :siblings, :published)
   end
 end

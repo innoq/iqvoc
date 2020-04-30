@@ -1,3 +1,9 @@
+## [4.x.x] unreleased version
+
+* upgrade to Rails v5.2
+* Ruby 2.6 and Ruby 2.7 compatibility
+* Drop Ruby 2.4 support (official support ended on 2020-03-31)
+
 ## [4.12.2]
 
 * add explicit note positioning

@@ -14,19 +14,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Label::Base < ActiveRecord::Base
+class Label::Base < ApplicationRecord
   self.table_name = 'labels'
 
   # ********** Associations
 
-  has_many :labelings, foreign_key: 'target_id', class_name: 'Labeling::Base'
-  has_many :concepts, through: :labelings, source: :owner
+  has_many :labelings,
+           foreign_key: 'target_id',
+           class_name: 'Labeling::Base',
+           inverse_of: :target
 
-  has_many :pref_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.pref_labeling_class_name
-  has_many :pref_labeled_concepts, through: :pref_labelings, source: :owner
+  has_many :concepts,
+           through: :labelings,
+           source: :owner
 
-  has_many :alt_labelings, foreign_key: 'target_id', class_name: Iqvoc::Concept.alt_labeling_class_name
-  has_many :alt_labeled_concepts, through: :alt_labelings, source: :owner
+  has_many :pref_labelings,
+           foreign_key: 'target_id',
+           class_name: Iqvoc::Concept.pref_labeling_class_name,
+           inverse_of: :target
+
+  has_many :pref_labeled_concepts,
+           through: :pref_labelings,
+           source: :owner
+
+  has_many :alt_labelings,
+           foreign_key: 'target_id',
+           class_name: Iqvoc::Concept.alt_labeling_class_name,
+           inverse_of: :target
+
+  has_many :alt_labeled_concepts,
+           through: :alt_labelings,
+           source: :owner
+
   # ********* Scopes
 
   def self.by_language(lang_code)

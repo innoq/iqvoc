@@ -1,4 +1,4 @@
-class Export < ActiveRecord::Base
+class Export < ApplicationRecord
   belongs_to :user
 
   enum file_type: [:ttl, :nt, :xml]

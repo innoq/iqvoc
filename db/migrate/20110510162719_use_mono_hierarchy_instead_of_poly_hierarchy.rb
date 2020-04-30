@@ -1,4 +1,4 @@
-class UseMonoHierarchyInsteadOfPolyHierarchy < ActiveRecord::Migration
+class UseMonoHierarchyInsteadOfPolyHierarchy < ActiveRecord::Migration[4.2]
   def self.up
     ActiveRecord::Base.transaction do
       execute "UPDATE concept_relations SET type = 'Concept::Relation::SKOS::Broader::Mono' WHERE type = 'Concept::Relation::SKOS::Broader::Poly'"

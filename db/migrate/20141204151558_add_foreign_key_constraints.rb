@@ -1,4 +1,4 @@
-class AddForeignKeyConstraints < ActiveRecord::Migration
+class AddForeignKeyConstraints < ActiveRecord::Migration[4.2]
   def change
     # user foreign keys
     add_foreign_key :concepts, :users, column: 'locked_by', on_delete: :nullify, on_update: :cascade

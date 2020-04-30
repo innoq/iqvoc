@@ -1,4 +1,4 @@
-class CreateJobRelations < ActiveRecord::Migration
+class CreateJobRelations < ActiveRecord::Migration[4.2]
   def change
     create_table :job_relations do |t|
       t.string :type

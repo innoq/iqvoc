@@ -1,4 +1,4 @@
-class RemoveXlSpecficStuff < ActiveRecord::Migration
+class RemoveXlSpecficStuff < ActiveRecord::Migration[4.2]
   def self.up
     drop_table 'label_relations'
 
