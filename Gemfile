@@ -47,8 +47,8 @@ gem 'daemons'
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
-gem  'mysql2', '~> 0.4.0'
-gem 'sqlite3'
+#gem  'mysql2', '~> 0.4.0'
+#gem 'sqlite3'
 gem 'pg'
 
 group :development do
