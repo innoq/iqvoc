@@ -5,9 +5,14 @@ on: [push, pull_request]
 jobs:
   build:
     strategy:
-      matrix:
-        ruby: ['2.5', '2.6', '2.7']
       fail-fast: false
+      matrix:
+        ruby: ['2.5', '2.6']
+        experimental: [false]
+        include:
+          - ruby: 2.7 # rails 5.2 does not officially support ruby 2.7
+            experimental: true
+
     runs-on: ubuntu-latest
     services:
       postgres:
