@@ -342,7 +342,6 @@ class Concept::Base < ApplicationRecord
   # *** Further association classes (could be ranks or stuff like that)
 
   Iqvoc::Concept.additional_association_classes.each do |association_class, foreign_key|
-    binding.pry
     has_many association_class.name.to_relation_name,
              class_name: association_class.name,
              foreign_key: foreign_key,
