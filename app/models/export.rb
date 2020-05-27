@@ -27,6 +27,6 @@ class Export < ApplicationRecord
   private
 
   def delete_dump_file
-    File.delete(build_filename)
+    File.delete(build_filename) if File.exists?(build_filename)
   end
 end
