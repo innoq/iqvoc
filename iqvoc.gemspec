@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.license     = 'Apache License 2.0'
 
   s.add_dependency 'rails', '>= 5.2.0', '< 6.0'
-  s.add_dependency 'puma', '~> 3.11'
+  s.add_dependency 'puma', '>= 3.11', '< 5.0'
   s.add_dependency 'bootsnap', '>= 1.1.0'
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari', '~> 1.2.0'
