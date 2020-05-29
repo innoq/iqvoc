@@ -144,6 +144,7 @@ de:
         role: "Rolle"
         telephone_number: "Telefonnummer"
         active: "Aktiv"
+        comment: "Kommentar"
       import:
         user: "Benutzer"
         created_at: "erstellt"

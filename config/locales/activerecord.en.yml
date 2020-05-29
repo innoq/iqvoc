@@ -143,6 +143,7 @@ en:
         active: "active"
         role: "Role"
         telephone_number: "Phone number"
+        comment: "Kommentar"
       import:
         user: "User"
         created_at: "Created at"

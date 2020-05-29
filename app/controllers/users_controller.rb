@@ -48,7 +48,7 @@ class UsersController < ApplicationController
 
     # strip out role and active params so that a non admin
     # could not change his own role and permissions
-    params = can?(:manage, User) ? user_params : user_params.except(:active, :role)
+    params = can?(:manage, User) ? user_params : user_params.except(:active, :role, :comment)
 
     if @user.update_attributes(params)
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
@@ -72,6 +72,6 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:forename, :surname, :email, :password,
                                  :password_confirmation, :active, :role,
-                                 :telephone_number)
+                                 :telephone_number, :comment)
   end
 end
