@@ -35,6 +35,8 @@ module Iqvoc
     end
 
     initializer 'iqvoc.add_assets_to_precompilation' do |app|
+      # add host app assets when mounting iqvoc as a engine
+      app.config.assets.paths << Iqvoc::Engine.root.join('node_modules')
       app.config.assets.precompile += Iqvoc.core_assets
     end
 

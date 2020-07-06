@@ -2,7 +2,7 @@
 //= require jquery-ujs/src/rails
 //= require jqtree/tree.jquery.js
 //= require typeahead.js/dist/typeahead.jquery.js
-//= require URIjs/src/URI.js
+//= require urijs/src/URI.js
 //= require storage
 //= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
 //= require bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker

@@ -1,0 +1,25 @@
+{
+  "name": "iqvoc",
+  "version": "4.12.2",
+  "description": "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innoq/iqvoc.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/innoq/iqvoc/issues"
+  },
+  "homepage": "https://github.com/innoq/iqvoc#readme",
+  "dependencies": {
+    "bootstrap-sass": "^3.4.1",
+    "html5shiv": "^3.7.3",
+    "jqtree": "^1.0.0",
+    "jquery": "^2.2.4",
+    "jquery-ujs": "^1.2.2",
+    "pickadate": "^3.5.6",
+    "typeahead.js": "^0.10.5",
+    "urijs": "^1.16.1"
+  }
+}
