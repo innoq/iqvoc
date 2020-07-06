@@ -250,7 +250,7 @@ GEM
     public_suffix (4.0.4)
     puma (3.12.6)
     puma (3.12.6-java)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-mini-profiler (2.0.1)
       rack (>= 1.2.0)
     rack-test (1.1.0)
@@ -420,7 +420,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.7.2-java)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
