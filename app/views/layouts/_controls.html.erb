@@ -35,7 +35,7 @@
     <%= render "layouts/user_navigation" %>
   <% else %>
   <li>
-    <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
+    <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url), class: 'nav-link' %>
   </li>
 <% end %>
 </ul>
