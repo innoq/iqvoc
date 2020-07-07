@@ -1,7 +1,7 @@
-<ul class="nav navbar-nav navbar-right">
-  <li class="divider-vertical"></li>
+<ul class="nav navbar-nav ml-auto">
+  <div class="dropdown-divider"></div>
   <li id="language_selection" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
       <%= t("txt.views.lang_widget.caption") %>
       <i class="fa fa-angle-down"></i>
     </a>
@@ -14,26 +14,26 @@
           <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), :lang => lang || "none",
               :class => ("current" if lang == I18n.locale.to_s) %>
           </li>
-    <% end %>
-  <% end %>
+        <% end %>
+      <% end %>
 
-  <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
-  <% if secondary_languages.any? %>
-    <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.secondary") %></h2></li>
-    <% secondary_languages.each do |lang| %>
-      <li class="lang-widget-item">
-        <label>
-          <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang.presence || "-"}", :default => lang.presence || "-") %>
-        </label>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
-</li>
+      <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
+        <% if secondary_languages.any? %>
+          <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.secondary") %></h2></li>
+            <% secondary_languages.each do |lang| %>
+          <li class="lang-widget-item">
+            <label>
+              <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang.presence || "-"}", :default => lang.presence || "-") %>
+            </label>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </li>
 
-<% if current_user %>
-  <%= render "layouts/user_navigation" %>
-<% else %>
+  <% if current_user %>
+    <%= render "layouts/user_navigation" %>
+  <% else %>
   <li>
     <%= link_to t("txt.views.layouts.application.login"), new_user_session_path(:back_to => @return_url) %>
   </li>

@@ -1,62 +1,62 @@
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
     <%= current_user.initials %>
     <i class="fa fa-angle-down"></i>
   </a>
-  <ul class="user-widget dropdown-menu">
+  <ul class="user-widget dropdown-menu dropdown-menu-right">
     <li class="user-widget-header">
       <b class="fullname"><%= current_user.name %></b>
       <div class="email"><%= current_user.email %></div>
     </li>
 
-    <li role="separator" class="divider"></li>
+    <div class="dropdown-divider"></div>
 
     <li class="user-widget-item<%= ' active' if current_page? edit_user_path(current_user) %>">
-      <%= link_to t("txt.views.layouts.application.profile"), edit_user_path(current_user) %>
+      <%= link_to t("txt.views.layouts.application.profile"), edit_user_path(current_user), class: 'nav-link' %>
     </li>
 
     <% if can? :use, :administration %>
-    <li role="separator" class="divider"></li>
+    <div class="dropdown-divider"></div>
       <% if can? :manage, User %>
         <li class="user-widget-item<%= ' active' if current_page? users_path %>">
-          <%= link_to t("txt.views.navigation.users"), users_path %>
+          <%= link_to t("txt.views.navigation.users"), users_path, class: 'nav-link' %>
         </li>
       <% end %>
 
       <% if can? :manage, Iqvoc.config %>
         <li class="user-widget-item<%= ' active' if current_page? instance_configuration_path %>">
-          <%= link_to t("txt.views.navigation.instance_configuration"), instance_configuration_path %>
+          <%= link_to t("txt.views.navigation.instance_configuration"), instance_configuration_path, class: 'nav-link' %>
         </li>
       <% end %>
 
       <% if can? :import, Concept::Base %>
         <li class="user-widget-item<%= ' active' if current_page? imports_path %>">
-          <%= link_to t("txt.views.navigation.import"), imports_path %>
+          <%= link_to t("txt.views.navigation.import"), imports_path, class: 'nav-link' %>
         </li>
       <% end %>
 
       <% if can? :export, Concept::Base %>
         <li class="user-widget-item<%= ' active' if current_page? exports_path %>">
-          <%= link_to t("txt.views.navigation.export"), exports_path %>
+          <%= link_to t("txt.views.navigation.export"), exports_path, class: 'nav-link' %>
         </li>
       <% end %>
 
       <% if can? :sync, :triplestore %>
         <li class="user-widget-item<%= ' active' if current_page? triplestore_sync_path %>">
-          <%= link_to t("txt.views.navigation.sync"), triplestore_sync_path %>
+          <%= link_to t("txt.views.navigation.sync"), triplestore_sync_path, class: 'nav-link' %>
         </li>
       <% end %>
 
       <% if can? :reset, :thesaurus %>
         <li class="user-widget-item<%= ' active' if current_page? reset_path %>">
-          <%= link_to t("txt.views.navigation.reset"), reset_path %>
+          <%= link_to t("txt.views.navigation.reset"), reset_path, class: 'nav-link' %>
         </li>
       <% end %>
     <% end %>
 
-    <li role="separator" class="divider"></li>
+    <div class="dropdown-divider"></div>
     <li class="user-widget-item">
-      <%= link_to t("txt.views.layouts.application.logout"), user_session_path,  method: :delete, class: 'logout' %>
+      <%= link_to t("txt.views.layouts.application.logout"), user_session_path,  method: :delete, class: 'nav-link logout' %>
     </li>
   </ul>
 </li>

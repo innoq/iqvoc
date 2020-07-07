@@ -1,7 +1,3 @@
-body {
-  padding-top: 70px;
-}
-
 form#search {
   .btn-group {
     margin-top: 10px;
@@ -70,4 +66,9 @@ label, th, dt, strong {
 .navbar-toggle {
   color: $navbar-light-color;
   text-transform: uppercase;
+}
+
+// disable bootstraps dropdown caret because we use a font awesome caret
+.dropdown-toggle::after {
+  display: none;
 }
