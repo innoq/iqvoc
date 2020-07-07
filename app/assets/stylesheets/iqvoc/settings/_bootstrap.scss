@@ -44,7 +44,7 @@ form#search {
   }
 
   > .close {
-    font-size: $font-size-h3;
+    font-size: $h3-font-size;
     margin: 0;
   }
 }
@@ -68,6 +68,6 @@ label, th, dt, strong {
 }
 
 .navbar-toggle {
-  color: $navbar-default-color;
+  color: $navbar-light-color;
   text-transform: uppercase;
 }

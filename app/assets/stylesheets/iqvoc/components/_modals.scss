@@ -1,6 +1,6 @@
 .concept-teaser-header {
   h1 {
-    font-size: $font-size-h3;
+    font-size: $h3-font-size;
   }
 }
 
@@ -8,7 +8,7 @@
   padding-top: 0;
 
   h2 {
-    font-size: $font-size-h4;
+    font-size: $h4-font-size;
   }
 
   p {
@@ -16,6 +16,6 @@
   }
 
   .alert {
-    margin-top: $line-height-computed;
+    margin-top: $line-height-base;
   }
 }

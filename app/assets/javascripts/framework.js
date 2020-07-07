@@ -4,6 +4,6 @@
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require urijs/src/URI.js
 //= require storage
-//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
+//= require bootstrap/dist/js/bootstrap
 //= require bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker
 //= require bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.de.min.js

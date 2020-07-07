@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/innoq/iqvoc#readme",
   "dependencies": {
-    "bootstrap-sass": "^3.4.1",
+    "bootstrap": "4.3.1",
     "html5shiv": "^3.7.3",
     "jqtree": "^1.0.0",
     "jquery": "^2.2.4",

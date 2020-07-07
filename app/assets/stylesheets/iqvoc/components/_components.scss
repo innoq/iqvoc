@@ -24,8 +24,8 @@
   }
 
   .onebox-input-wrapper {
-    @include make-md-column(8);
-    @include make-md-column-offset(2);
+    @include make-col(8);
+    @include make-col-offset(2);
   }
 
   .onebox-indicator {
@@ -136,7 +136,7 @@ tr.highlightable {
   padding: 0 15px 20px 15px;
 
   h2 {
-    font-size: $font-size-h4;
+    font-size: $h4-font-size;
   }
 
   .lang-widget-item {
@@ -178,7 +178,7 @@ tr.highlightable {
     }
 
     .email {
-      color: $gray-light;
+      color: $gray-600;
     }
   }
 }
