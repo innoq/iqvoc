@@ -2,7 +2,7 @@
 <%= render 'sidebar', :scheme => @scheme %>
 
 <% if can? :update, @scheme %>
-  <div class="editing_versioning_toolbar well">
+  <div class="editing_versioning_toolbar">
     <%= link_to t('txt.common.edit'), edit_scheme_path, :class => 'btn btn-outline-secondary' %>
   </div>
 <% end %>

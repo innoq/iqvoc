@@ -295,3 +295,12 @@ a.unpublished {
 .dashboard-table-item-state {
   text-transform: uppercase;
 }
+
+.editing_versioning_toolbar {
+  background-color: $widget-background-color-dark;
+  border: $card-border-width solid $card-border-color;
+  @include border-radius($card-border-radius);
+
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}

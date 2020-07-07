@@ -12,7 +12,7 @@
   <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>
 <% end %>
 
-<div class="editing_versioning_toolbar well">
+<div class="editing_versioning_toolbar">
   <% if can?(:merge, @concept) %>
     <%= button_to t("txt.views.versioning.publishing"),
       concept_versions_merge_path(:origin => @concept.origin), :class => 'btn btn-primary' %>

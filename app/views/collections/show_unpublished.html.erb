@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<div class="editing_versioning_toolbar well">
+<div class="editing_versioning_toolbar">
   <% if can?(:merge, @collection) %>
     <%= button_to t("txt.views.versioning.publishing"),
       collection_versions_merge_path(:origin => @collection.origin), :class => 'btn btn-primary' %>
