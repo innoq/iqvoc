@@ -30,7 +30,7 @@ function ConceptMapper(selector) {
                   .append(this.indicator)
                   .prependTo(this.container);
 
-  $("<button />").addClass("btn btn-default fa fa-plus").
+  $("<button />").addClass("btn btn-outline-secondary fa fa-plus").
       insertAfter(this.input).click($.proxy(this, "onConfirm"));
 
   this.matchType = $("<select />").addClass("form-control")

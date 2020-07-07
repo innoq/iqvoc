@@ -20,7 +20,7 @@
           <td><%= user.role.humanize %></td>
           <td><%= icon(:check) if user.active? %></td>
           <td class="text-nowrap">
-            <%= link_to t('txt.views.users.edit_link'), edit_user_path(id: user), class: 'btn btn-default' %>
+            <%= link_to t('txt.views.users.edit_link'), edit_user_path(id: user), class: 'btn btn-outline-secondary' %>
             <%= link_to t('txt.views.users.destroy_link'), user_path(id: user), data: { confirm: t('txt.views.users.sure')}, method: :delete, class: "btn btn-danger" %>
           </td>
         </tr>

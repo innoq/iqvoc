@@ -64,7 +64,7 @@ module NavigationHelper
     end
 
     opts[:class] = '' if opts[:class].blank?
-    opts[:class] += ' list-group-item'
+    opts[:class] += ' list-group-item list-group-item-action'
     opts[:class] += ' active' if opts.delete(:active)
 
     content = if block_given?

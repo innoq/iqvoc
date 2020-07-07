@@ -2,7 +2,10 @@
 
 <ul class="nav nav-tabs">
   <% Iqvoc.first_level_classes.each do |klass| %>
-    <li <%= "class=active" if klass == active_class %>><%= link_to klass.model_name.human(count: 2), send(klass.dashboard_path) %></a></li>
+    <li class="nav-item">
+    <% nav_class = (klass == active_class) ? 'nav-link active' : 'nav-link'%>
+    <%= link_to klass.model_name.human(count: 2), send(klass.dashboard_path), class: nav_class %></a>
+    </li>
   <% end %>
 </ul>
 
