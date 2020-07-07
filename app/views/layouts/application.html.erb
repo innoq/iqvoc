@@ -26,7 +26,7 @@
 <%= render 'layouts/modals' %>
 <%= render 'layouts/navigation' %>
 
-<div class="container">
+<main class="container">
   <div class="row">
     <div class="<%= content_for?(:sidebar) ? "col-md-9" : "col-md-12" %>" id="content">
       <%= yield :page_header %>
@@ -43,7 +43,7 @@
     </div>
     <% end %>
   </div>
-</div>
+</main>
 <%= javascript_include_tag "manifest" %>
 <%= yield :scripts %>
 </body>
