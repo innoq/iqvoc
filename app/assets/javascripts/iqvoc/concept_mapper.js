@@ -23,7 +23,7 @@ function ConceptMapper(selector) {
   this.container = $("<div />").addClass("concept-mapper control-group");
 
   this.bootstrapInputGroup = $('<div class="input-group" />');
-  this.indicator = $('<span class="indicator input-group-addon" />');
+  this.indicator = $('<div class="indicator input-group-append" />');
 
   this.input = this.bootstrapInputGroup
                   .append($("<input />").attr("type", "text").addClass("form-control"))
