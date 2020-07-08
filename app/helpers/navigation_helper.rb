@@ -33,8 +33,8 @@ module NavigationHelper
                     content_tag(:i, nil, class: 'fa fa-fw fa-angle-down'), '#',
                     class: 'nav-link dropdown-toggle',
                     data: { toggle: 'dropdown' }) +
-                content_tag(:ul,
-                    item[:items].map { |i| nav_item(i) }.join.html_safe,
+                content_tag(:div,
+                    item[:items].map { |i| dropdown_nav_item(i) }.join.html_safe,
                     class: 'dropdown-menu'))
           end
         else
@@ -88,6 +88,13 @@ module NavigationHelper
     css = 'nav-item'
     css << ' active' if active
     content_tag :li, link_to(element_value(item[:text]), element_value(item[:href]), class: 'nav-link'), class: css
+  end
+
+  def dropdown_nav_item(item)
+    active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
+    css = 'dropdown-item'
+    css << ' active' if active
+    link_to(element_value(item[:text]), element_value(item[:href]), class: css)
   end
 
   def nav_item_authorized?(item)
