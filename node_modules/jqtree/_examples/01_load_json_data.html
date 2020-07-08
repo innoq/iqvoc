@@ -6,8 +6,8 @@ css: example.css
 ---
 
 <p id="nav">
-    <a href="../index.html">&laquo; Documentation</a>
-    <a href="02_load_json_data_from_server.html" class="next">Example 2 &raquo;</a>
+    <a href="../../index.html">&laquo; Documentation</a>
+    <a href="../02_load_json_data_from_server/" class="next">Example 2 &raquo;</a>
 </p>
 
 <h1>Example 1 - load json data</h1>
@@ -19,7 +19,7 @@ css: example.css
     As you can see, the data is an array of objects.
 </p>
 <ul>
-    <li>The <strong>label</strong> property defines the label of the node.</li>
+    <li>The <strong>name</strong> property defines the name of the node.</li>
     <li>The <strong>id</strong> is the unique id of the node.</li>
     <li>The <strong>children</strong> property is an array of nodes.</li>
 </ul>
@@ -27,16 +27,16 @@ css: example.css
 {% highlight js %}
 var data = [
     {
-        label: 'node1', id: 1,
+        name: 'node1', id: 1,
         children: [
-            { label: 'child1', id: 2 },
-            { label: 'child2', id: 3 }
+            { name: 'child1', id: 2 },
+            { name: 'child2', id: 3 }
         ]
     },
     {
-        label: 'node2', id: 4,
+        name: 'node2', id: 4,
         children: [
-            { label: 'child3', id: 5 }
+            { name: 'child3', id: 5 }
         ]
     }
 ];

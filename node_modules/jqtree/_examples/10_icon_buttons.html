@@ -6,14 +6,15 @@ css: example.css
 ---
 
 <p id="nav">
-    <a href="custom_html.html">&laquo; Example 9</a>
+    <a href="../09_custom_html/">&laquo; Example 9</a>
+    <a href="../11_right-to-left/" class="next">Example 11 &raquo;</a>
 </p>
 
 <h1>Example 10 - use icon toggle buttons</h1>
 
 <p>
     You can use the <strong>openedIcon</strong> and <strong>closedIcon</strong> options to use html for
-    the toggle buttons. You can for example use <a href="http://fortawesome.github.io/Font-Awesome/">Fontawesome icons</a>.
+    the toggle buttons. You can for example use <a href="https://github.com/FortAwesome/Font-Awesome">Fontawesome icons</a>.
 </p>
 <div id="tree1" data-url="/example_data/"></div>
 
@@ -21,7 +22,7 @@ css: example.css
 
 {% highlight js %}
 $('#tree1').tree({
-    closedIcon: $('&lt;i class="fa fa-arrow-circle-right"&gt;&lt;/i&gt;'),
-    openedIcon: $('&lt;i class="fa fa-arrow-circle-down"&gt;&lt;/i&gt;')
+    closedIcon: $('<i class="fas fa-arrow-circle-right"></i>'),
+    openedIcon: $('<i class="fas fa-arrow-circle-down"></i>')
 });
 {% endhighlight %}

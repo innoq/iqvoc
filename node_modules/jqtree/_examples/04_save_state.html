@@ -6,8 +6,8 @@ css: example.css
 ---
 
 <p id="nav">
-    <a href="03_drag_and_drop.html">&laquo; Example 3</a>
-    <a href="05_load_on_demand.html" class="next">Example 5 &raquo;</a>    
+    <a href="../03_drag_and_drop/">&laquo; Example 3</a>
+    <a href="../05_load_on_demand/" class="next">Example 5 &raquo;</a>
 </p>
 
 <h1>Example 4 - Save the state</h1>
@@ -20,10 +20,6 @@ css: example.css
 <ul>
     <li>
         JqTree save the state into localStorage.
-        If the browser does not support localStorage, then jqTree saves the state in a cookie.
-    </li>
-    <li>
-        You must include the <a href="https://github.com/carhartl/jquery-cookie">jquery-cookie</a> plugin for cookie support.
     </li>
 </ul>
 
@@ -48,5 +44,5 @@ $('#tree1').tree({
 {% highlight js %}
 $('#tree1').tree({
     saveState: 'my-tree'
-});    
+});
 {% endhighlight %}
