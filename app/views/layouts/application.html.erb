@@ -38,8 +38,10 @@
       <%= yield %>
     </div>
     <% if content_for?(:sidebar) %>
-    <div class="col-md-3" id="sidebar">
-      <%= yield :sidebar %>
+    <div class="col-md-3">
+      <div id="sidebar">
+        <%= yield :sidebar %>
+      </div>
     </div>
     <% end %>
   </div>

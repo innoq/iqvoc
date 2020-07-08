@@ -1,5 +1,9 @@
+#sidebar {
+  position: sticky;
+  top: 6rem;
+}
+
 .sidebar {
-  margin-top: 5px;
   padding: 8px 0;
 
   input[type=checkbox] {
