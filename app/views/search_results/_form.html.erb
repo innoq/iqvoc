@@ -1,10 +1,10 @@
-<%= form_tag(search_path, :method => :get, :class => 'form-horizontal', :id => 'search', :role => 'form') do |f| %>
+<%= form_tag(search_path, method: :get, id:'search', role: 'form', class: 'mb-4') do |f| %>
   <% Iqvoc.search_sections.each do |section| %>
     <%= render "search_results/sections/#{section}" %>
   <% end %>
 
   <hr />
-  <div class="well">
-    <%= submit_tag t('txt.views.search_results.submit'), :class => 'btn btn-primary' %>
-  </div>
+
+  <%= submit_tag t('txt.views.search_results.submit'), :class => 'btn btn-primary' %>
+
 <% end %>
