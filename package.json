@@ -17,7 +17,7 @@
     "bootstrap-datepicker": "^1.9.0",
     "html5shiv": "^3.7.3",
     "jqtree": "^1.0.0",
-    "jquery": "^2.2.4",
+    "jquery": "^3.5.1",
     "jquery-ujs": "^1.2.2",
     "pickadate": "^3.5.6",
     "typeahead.js": "^0.10.5",
