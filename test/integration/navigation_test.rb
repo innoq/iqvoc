@@ -30,7 +30,7 @@ class NavigationTest < ActionDispatch::IntegrationTest
 
     visit '/en'
 
-    nav = page.first('.navbar-fixed-top')
+    nav = page.first('.fixed-top')
 
     assert nav.has_link?('root element 1'),
       'Configured navbar element is missing or not in expected position'
@@ -39,7 +39,7 @@ class NavigationTest < ActionDispatch::IntegrationTest
 
     dropdown = nav.all('.dropdown-menu')[1]
 
-    assert_equal 1, dropdown.all('li').size
-    assert dropdown.first('li').has_link?('extension 1')
+    assert_equal 1, dropdown.all('a').size
+    assert dropdown.has_link?('extension 1')
   end
 end
