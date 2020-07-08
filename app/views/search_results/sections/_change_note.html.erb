@@ -11,16 +11,16 @@
       <div class="input-group date datepicker">
         <label for="change_note_date_from" class="sr-only"><%= t('txt.views.search_results.change_note.date_from') %></label>
         <%= text_field_tag :change_note_date_from, params[:change_note_date_from], placeholder: 'z.B.: 2010-05-14', class: 'form-control', style: 'border-radius: 4px 0px 0px 4px;' %>
-        <div class="input-group-addon">
-            <i class="fa fa-calendar" aria-hidden="true"></i>
+        <div class="input-group-append">
+          <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
         </div>
       </div>
 
       <div class="input-group date datepicker">
         <label for="change_note_date_from" class="sr-only"><%= t('txt.views.search_results.change_note.date_to') %></label>
         <%= text_field_tag :change_note_date_to, params[:change_note_date_to], placeholder: 'z.B.: 2010-05-14', class: 'form-control', style: 'border-radius: 4px 0px 0px 4px;' %>
-        <div class="input-group-addon">
-            <i class="fa fa-calendar" aria-hidden="true"></i>
+        <div class="input-group-append">
+          <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
         </div>
       </div>
     </div>
