@@ -28,7 +28,7 @@
           <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>"><%= l(item.follow_up) if item.follow_up.present? %></td>
         <% end %>
         <td class="text-nowrap"><%= l(item.updated_at, :format => :short) %></td>
-        <td><span class="badge badge-secondary <%= !item.published? || item.in_review? ? 'label-danger' : 'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
+        <td><span class="badge <%= !item.published? || item.in_review? ? 'badge-danger' : 'badge-secondary' %> dashboard-table-item-state"><%= item.state %></span></td>
         <td>
         <%- if params[:check_consistency] == "1" -%>
           <%= consistency_status(item) %>
