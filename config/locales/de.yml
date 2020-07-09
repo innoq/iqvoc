@@ -296,7 +296,7 @@ de:
      dashboard:
        type: "Typ"
        value: "Name"
-       locking_user: "Gesperrt durch"
+       locking_user: "Gesperrt"
        follow_up: "Wiedervorlage"
        updated_at: "Geändert am"
        to_review: "Vorlage zur Freigabe"

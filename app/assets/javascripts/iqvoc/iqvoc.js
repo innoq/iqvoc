@@ -228,4 +228,8 @@ jQuery(document).ready(function($) {
   $(document.body).on("concept-label", function(ev, container) {
     IQVOC.labelResolver(container);
   });
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 });
