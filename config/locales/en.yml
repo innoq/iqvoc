@@ -262,6 +262,7 @@ en:
          header: "Edit user"
        name: "Name"
        email: "Email"
+       contact_info: "Contact info"
        role: "Role"
        active: "activated"
        new_link: "New User"
