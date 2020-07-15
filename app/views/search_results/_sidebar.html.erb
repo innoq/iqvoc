@@ -5,7 +5,9 @@
     <%= sidebar_item :icon => 'link', :text => 'RDF/Turtle', :path => rdf_search_path({:lang => nil, :page => @results.current_page, :format => :ttl}.merge(request.query_parameters)), :id => 'rdf_link_ttl' %>
     <%= sidebar_item :icon => 'link', :text => 'RDF/NTriples', :path => rdf_search_path({:lang => nil, :page => @results.current_page, :format => :nt}.merge(request.query_parameters)), :id => 'rdf_link_nt' %>
   <% end %>
+<% end %>
 
+<%= sidebar do %>
   <%= sidebar_header 'Links' if can?(:create, Iqvoc::Concept.base_class) %>
   <% (Iqvoc.first_level_classes - [Collection::SKOS::Unordered]).each do |klass| %>
     <%= sidebar_item { render(klass.new_link_partial_name) } %>

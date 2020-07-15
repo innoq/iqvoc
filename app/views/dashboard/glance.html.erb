@@ -1,12 +1,12 @@
 <!-- Modal -->
-<div class="modal-dialog concept-teaser-dialog">
+<div class="modal-dialog modal-lg concept-teaser-dialog">
   <div class="modal-content concept-teaser-content">
     <div class="modal-header concept-teaser-header">
-      <button type="button" class="close" data-dismiss="modal">
+      <h1 class="modal-title" id="concept-teaser-title"><%= @title %></h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         <span class="sr-only"><%= t('txt.views.concepts.teaser.close') %></span>
       </button>
-      <h1 class="modal-title" id="concept-teaser-title"><%= @title %></h1>
     </div>
     <div class="modal-body concept-teaser-body">
       <h2><%= Note::SKOS::EditorialNote.model_name.human(count: 2) %></h2>
@@ -24,7 +24,8 @@
       </ul>
     </div>
     <div class="modal-footer concept-teaser-footer">
-      <a href="<%= @path %>" class="btn btn-default"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.show') %></a>
+      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+      <a href="<%= @path %>" class="btn btn-primary"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.show') %></a>
     </div>
   </div>
 </div>

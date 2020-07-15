@@ -5,14 +5,12 @@ require 'rails'
 require 'cancan'
 require 'authlogic'
 require 'kaminari'
-require 'kaminari-bootstrap'
 require 'iq_rdf'
 require 'deep_cloneable'
 require 'json'
 require 'rails_autolink'
 require 'sass'
 require 'sass-rails'
-require 'bootstrap-sass'
 require 'bootstrap_form'
 require 'font-awesome-rails'
 require 'uglifier'
@@ -35,6 +33,8 @@ module Iqvoc
     end
 
     initializer 'iqvoc.add_assets_to_precompilation' do |app|
+      # add host app assets when mounting iqvoc as a engine
+      app.config.assets.paths << Iqvoc::Engine.root.join('node_modules')
       app.config.assets.precompile += Iqvoc.core_assets
     end
 

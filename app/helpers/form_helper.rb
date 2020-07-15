@@ -25,7 +25,7 @@ module FormHelper
     id = options.delete(:id)
 
     label = if label_text
-      label_tag(id, label_text, class: 'control-label')
+      label_tag(id, label_text, class: 'col-form-label')
     else
       ActiveSupport::SafeBuffer.new # empty safe string
     end

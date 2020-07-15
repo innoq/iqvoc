@@ -23,7 +23,8 @@ function FederatedConceptMapper(selector) {
   this.source = $("<select />").addClass("form-control").append(sources).
       insertBefore(this.input);
 
-  this.indicator.append('<i class="fa fa-refresh fa-spin" />');
+  this.indicator.append($('<span class="input-group-text" />')
+    .append('<i class="fa fa-refresh fa-spin" />'));
 
   var self = this;
   var input = this.input.find("input")

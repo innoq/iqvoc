@@ -1,5 +1,5 @@
-body {
-  padding-top: 70px;
+body > .container {
+  padding-top: 5rem;
 }
 
 form#search {
@@ -9,7 +9,13 @@ form#search {
 }
 
 .page-header {
+  @extend .border-bottom;
   margin: 12px 0 18px 0;
+}
+
+small {
+  font-size: 60%;
+  color: $secondary;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -44,8 +50,7 @@ form#search {
   }
 
   > .close {
-    font-size: $font-size-h3;
-    margin: 0;
+    font-size: $h3-font-size;
   }
 }
 
@@ -68,6 +73,11 @@ label, th, dt, strong {
 }
 
 .navbar-toggle {
-  color: $navbar-default-color;
+  color: $navbar-light-color;
   text-transform: uppercase;
+}
+
+// disable bootstraps dropdown caret because we use a font awesome caret
+.dropdown-toggle::after {
+  display: none;
 }

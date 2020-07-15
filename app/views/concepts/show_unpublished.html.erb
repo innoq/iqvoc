@@ -12,7 +12,7 @@
   <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>
 <% end %>
 
-<div class="editing_versioning_toolbar well">
+<div class="editing_versioning_toolbar">
   <% if can?(:merge, @concept) %>
     <%= button_to t("txt.views.versioning.publishing"),
       concept_versions_merge_path(:origin => @concept.origin), :class => 'btn btn-primary' %>
@@ -20,23 +20,23 @@
 
   <% if can?(:check_consistency, @concept) %>
   <%= button_to t("txt.views.versioning.consistency_check"),
-    concept_versions_consistency_check_path(:origin => @concept.origin), :class => 'btn btn-default', :method => :get %>
+    concept_versions_consistency_check_path(:origin => @concept.origin), :class => 'btn btn-outline-secondary', :method => :get %>
   <% end %>
 
   <% if can?(:send_to_review, @concept) %>
     <%= button_to t("txt.common.to_review"),
-      concept_versions_to_review_path(:origin => @concept.origin), :class => 'btn btn-default' %>
+      concept_versions_to_review_path(:origin => @concept.origin), :class => 'btn btn-outline-secondary' %>
   <% end %>
 
   <% if @concept.locked? %>
     <%= button_to t("txt.views.versioning.unlock"),
-      concept_versions_unlock_path(:origin => @concept.origin), :class => 'btn btn-default' if can?(:unlock, @concept) %>
+      concept_versions_unlock_path(:origin => @concept.origin), :class => 'btn btn-outline-secondary' if can?(:unlock, @concept) %>
     <%= link_to t("txt.views.versioning.edit_mode"),
       edit_concept_path(:published => 0, :id => @concept.origin),
-      :class => 'btn btn-default' if can?(:update, @concept) %>
+      :class => 'btn btn-outline-secondary' if can?(:update, @concept) %>
   <% elsif can?(:lock, @concept) %>
     <%= button_to t("txt.views.versioning.to_edit_mode"),
-      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-default' %>
+      concept_versions_lock_path(:origin => @concept.origin), :class => 'btn btn-outline-secondary' %>
   <% end %>
 
   <% if can?(:destroy, @concept) %>

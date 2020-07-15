@@ -1,17 +1,20 @@
 <% if @datasets.any? %>
-  <div class="form-group">
-    <%= label_tag 'ds', t('txt.views.search_results.datasets'), :class => 'col-sm-2 control-label' %>
+  <div class="form-group row">
+    <%= label_tag 'ds', t('txt.views.search_results.datasets'), :class => 'col-sm-2 col-form-label' %>
     <div class="checkbox-controls col-sm-6">
       <% @datasets.each do |dataset| %>
+      <div class="form-check form-check-inline">
         <label class="checkbox-inline">
-          <%= check_box_tag "ds[]", dataset.name, search_dataset_selected?(dataset.name) %><%= dataset.name %>
+          <%= check_box_tag "ds[]", dataset.name, search_dataset_selected?(dataset.name),  class: 'form-check-input' %>
+          <%= dataset.name %>
         </label>
+      </div>
       <% end %>
-      <div class="btn-group btn-group-xs">
-        <button type="button" class="btn btn-default checkbox-select-all">
+      <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-outline-secondary checkbox-select-all">
           <%= t('txt.views.search_results.all') %>
         </button>
-        <button type="button" class="btn btn-default checkbox-select-none">
+        <button type="button" class="btn btn-outline-secondary checkbox-select-none">
           <%= t('txt.views.search_results.none') %>
         </button>
       </div>

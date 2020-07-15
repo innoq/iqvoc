@@ -22,7 +22,6 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.2.0'
 gem 'puma', '~> 3.12'
 gem 'kaminari'
-gem 'kaminari-bootstrap'
 gem 'authlogic', '~> 3.8.0'
 gem 'cancancan'
 gem 'iq_rdf', '>= 0.1.16'
@@ -37,7 +36,7 @@ gem "rdf-vocab"
 gem "deep_cloneable"
 gem 'uglifier'
 gem 'sass-rails', '~> 5.0.0'
-gem 'bootstrap_form', '~> 2.7.0'
+gem "bootstrap_form", "~> 4.0"
 gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', require: false

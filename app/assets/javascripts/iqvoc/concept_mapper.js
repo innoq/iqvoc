@@ -23,14 +23,14 @@ function ConceptMapper(selector) {
   this.container = $("<div />").addClass("concept-mapper control-group");
 
   this.bootstrapInputGroup = $('<div class="input-group" />');
-  this.indicator = $('<span class="indicator input-group-addon" />');
+  this.indicator = $('<div class="indicator input-group-append" />');
 
   this.input = this.bootstrapInputGroup
                   .append($("<input />").attr("type", "text").addClass("form-control"))
                   .append(this.indicator)
                   .prependTo(this.container);
 
-  $("<button />").addClass("btn btn-default fa fa-plus").
+  $("<button />").addClass("btn btn-outline-secondary fa fa-plus").
       insertAfter(this.input).click($.proxy(this, "onConfirm"));
 
   this.matchType = $("<select />").addClass("form-control")

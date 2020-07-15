@@ -1,4 +1,6 @@
-.twitter-typeahead { width:100%; }
+.twitter-typeahead {
+  flex: 1 1 auto;
+}
 
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
@@ -54,5 +56,5 @@
 
 .tt-cursor a { color: #fff; }
 
-.input-group span.twitter-typeahead { display: block !important; }
+//.input-group span.twitter-typeahead { display: block !important; }
 .input-group span.twitter-typeahead .tt-dropdown-menu { top: 32px !important; }

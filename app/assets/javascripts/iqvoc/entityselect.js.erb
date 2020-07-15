@@ -11,8 +11,9 @@ var EntitySelector = function(node) {
   }
   this.el = $(node).hide(); // XXX: rename
   this.container = $('<div class="entity_select" />').data("widget", this);
-  this.indicator = $('<span class="indicator input-group-addon" />').
-    append('<i class="fa fa-refresh fa-spin" />');
+  this.indicator = $('<div class="indicator input-group-append" />')
+    .append($('<span class="input-group-text" />')
+    .append('<i class="fa fa-refresh fa-spin" />'));
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();
@@ -34,8 +35,10 @@ var EntitySelector = function(node) {
   // XXX: does not belong here -- XXX: obsolete?
   var lang = this.el.data("language");
   if(lang) {
-    $('<span class="input-group-addon" />').append(lang).
-      prependTo(this.inputGroup);
+    $('<div class="input-group-prepend" />')
+      .append($('<span class="input-group-text" />')
+      .append(lang)
+    ).prependTo(this.inputGroup);
   }
 
   IQVOC.autocomplete(input, $.proxy(this, "onInput"), {

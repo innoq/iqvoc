@@ -6,7 +6,9 @@
     <%= sidebar_item :icon => 'share', :text => 'RDF/Turtle', :path => rdf_url(collection.origin, :format => :ttl, :lang => nil), :id => 'rdf_link_ttl' %>
     <%= sidebar_item :icon => 'share', :text => 'RDF/NTriples', :path => rdf_url(collection.origin, :format => :nt, :lang => nil), :id => 'rdf_link_nt' %>
   <% end %>
+<% end %>
 
+<%= sidebar do %>
   <% if defined?(collection) || can?(:create, Iqvoc::Collection.base_class) %>
     <%= sidebar_header 'Links' %>
   <% end %>

@@ -1,12 +1,12 @@
 <!-- Modal -->
-<div class="modal-dialog concept-teaser-dialog">
+<div class="modal-dialog modal-lg concept-teaser-dialog" role="document">
   <div class="modal-content concept-teaser-content">
     <div class="modal-header concept-teaser-header">
-      <button type="button" class="close" data-dismiss="modal">
+      <h1 class="modal-title" id="concept-teaser-title"><%= @concept.pref_label %></h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         <span class="sr-only"><%= t('txt.views.concepts.teaser.close') %></span>
       </button>
-      <h1 class="modal-title" id="concept-teaser-title"><%= @concept.pref_label %></h1>
     </div>
     <div class="modal-body concept-teaser-body">
       <% if @view.no_content? %>
@@ -54,7 +54,8 @@
       <% end %>
     </div>
     <div class="modal-footer concept-teaser-footer">
-      <a href="<%= concept_path(@concept) %>" class="btn btn-default"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.concepts.to_concept') %></a>
+      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+      <a href="<%= concept_path(@concept) %>" class="btn btn-primary"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.concepts.to_concept') %></a>
     </div>
   </div>
 </div>

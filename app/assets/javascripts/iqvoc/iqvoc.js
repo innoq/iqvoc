@@ -229,6 +229,7 @@ jQuery(document).ready(function($) {
     IQVOC.labelResolver(container);
   });
 
-  // initialise moving sidebar
-  IQVOC.movingSidebar(".sidebar");
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 });

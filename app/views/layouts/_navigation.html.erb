@@ -1,19 +1,19 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <i class="fa fa-bars"></i> <%= t('txt.common.menu') %>
-      </button>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
       <%= link_to Iqvoc.config["title"], localized_root_path, class: 'navbar-brand' %>
-    </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <%= nav_items Iqvoc.navigation_items %>
-      </ul>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> <%= t('txt.common.menu') %>
+      </button>
 
-      <%= render "layouts/controls" %>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <%= nav_items Iqvoc.navigation_items %>
+        </ul>
+
+        <%= render "layouts/controls" %>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>

@@ -1,7 +1,9 @@
 <%= content_tag :div, :class => "translation", :lang => language || nil do %>
     <%= f.form_group :labelings_by_text, :label => {:text => klass.model_name.human(:count => 2)} do %>
       <div class="input-group">
-        <span class="input-group-addon"><%= language %></span>
+        <div class="input-group-prepend">
+          <span class="input-group-text"><%= language %></span>
+        </div>
         <%= text_field_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]", concept.labelings_by_text(klass.name.to_relation_name, language), :class => 'form-control' %>
       </div>
     <% end %>

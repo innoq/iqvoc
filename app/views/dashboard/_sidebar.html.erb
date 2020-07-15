@@ -3,6 +3,9 @@
   <% Iqvoc.first_level_classes.each do |klass| %>
     <%= sidebar_item { render(klass.new_link_partial_name) } %>
   <% end %>
+<% end %>
+
+<%= sidebar do %>
   <%= sidebar_header 'Extras' %>
 
   <%= sidebar_item(:icon => :upload, :text => t('txt.views.dashboard.import'),

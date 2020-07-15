@@ -254,6 +254,7 @@ de:
          header: "Benutzer bearbeiten"
        name: "Name"
        email: "E-Mail"
+       contact_info: "Kontakt"
        role: "Rolle"
        active: "aktiviert"
        new_link: "Neuer Benutzer"
@@ -296,7 +297,7 @@ de:
      dashboard:
        type: "Typ"
        value: "Name"
-       locking_user: "Gesperrt durch"
+       locking_user: "Gesperrt"
        follow_up: "Wiedervorlage"
        updated_at: "Geändert am"
        to_review: "Vorlage zur Freigabe"

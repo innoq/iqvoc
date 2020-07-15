@@ -214,9 +214,9 @@ class SearchTest < ActionDispatch::IntegrationTest
     click_button('Search')
 
     assert page.has_css?('.search-result', count: 5)
-    assert page.has_css?('.pagination .page', count: 3)
+    assert page.has_css?('.pagination .page-item', count: 5)
 
-    find('.pagination').all('.page').last.find('a').click
+    find('.pagination').all('.page-item').last.find('a').click
 
     assert page.has_css?('.search-result', count: 2)
 

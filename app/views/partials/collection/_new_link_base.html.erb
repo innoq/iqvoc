@@ -1,3 +1,5 @@
-<%= link_to(icon(:edit) + " " +
-  t("txt.views.collections.new"),
-  new_collection_path, :class => 'list-group-item') %>
+<%= sidebar_item icon: 'edit',
+  text: t('txt.views.collections.new', :concept_class_name => Iqvoc::Collection.base_class.model_name.human(:count => 1)),
+  path: new_collection_path(published: 0),
+  perms: [:create, Iqvoc::Collection.base_class]
+%>

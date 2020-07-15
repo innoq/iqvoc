@@ -25,14 +25,18 @@
       :active => params[:controller] == 'concepts/untranslated',
       :id => 'untranslated' %>
   <% end %>
+<% end %>
 
+<%= sidebar do %>
   <% if can?(:create, Iqvoc::Concept.base_class) %>
     <%= sidebar_header 'Links'%>
     <% (Iqvoc.first_level_classes - [Collection::SKOS::Unordered]).each do |klass| %>
       <%= sidebar_item { render(klass.new_link_partial_name) } %>
     <% end %>
   <% end %>
+<% end %>
 
+<%= sidebar do %>
   <% if @loose_concepts.try(:any?) %>
     <%= sidebar_header t('txt.views.navigation.loose_concepts') %>
     <div class="box">
@@ -40,5 +44,4 @@
       <%= paginate @loose_concepts %>
     </div>
   <% end %>
-
 <% end %>

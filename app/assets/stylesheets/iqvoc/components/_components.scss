@@ -24,8 +24,8 @@
   }
 
   .onebox-input-wrapper {
-    @include make-md-column(8);
-    @include make-md-column-offset(2);
+    @include make-col(8);
+    @include make-col-offset(2);
   }
 
   .onebox-indicator {
@@ -136,7 +136,7 @@ tr.highlightable {
   padding: 0 15px 20px 15px;
 
   h2 {
-    font-size: $font-size-h4;
+    font-size: $h4-font-size;
   }
 
   .lang-widget-item {
@@ -178,7 +178,7 @@ tr.highlightable {
     }
 
     .email {
-      color: $gray-light;
+      color: $gray-600;
     }
   }
 }
@@ -216,14 +216,14 @@ tr.highlightable {
 }
 
 .concept-mapper {
+  display: flex;
   margin: 25px 0;
   > * { margin-right: 10px; }
 
   .input-group {
-      display: inline-table;
+      width: inherit;
       vertical-align: middle;
 
-      .input-group-addon,
       .input-group-btn,
       .form-control {
           width: auto !important;
@@ -294,4 +294,13 @@ a.unpublished {
 
 .dashboard-table-item-state {
   text-transform: uppercase;
+}
+
+.editing_versioning_toolbar {
+  background-color: $widget-background-color-dark;
+  border: $card-border-width solid $card-border-color;
+  @include border-radius($card-border-radius);
+
+  padding: 1.2rem;
+  margin-bottom: 1rem;
 }

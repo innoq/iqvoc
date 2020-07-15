@@ -1,5 +1,5 @@
-<div class="form-group result_type_filter">
-  <%= label_tag 'c', Iqvoc::Collection.base_class.model_name.human, :class => 'col-sm-2 control-label' %>
+<div class="form-group row result_type_filter">
+  <%= label_tag 'c', Iqvoc::Collection.base_class.model_name.human, :class => 'col-sm-2 col-form-label' %>
   <div class="col-sm-4">
     <%= select_tag 'c', options_from_collection_for_select(@collections, 'origin', 'status', params[:c]), :class => 'form-control', :prompt => t('txt.views.search_results.all') %>
   </div>

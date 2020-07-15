@@ -5,10 +5,10 @@
       <%= content_tag(:li, :class => "inline_note translation #{" new" if note.new_record?}", :lang => note.language || nil) do %>
         <%= f.fields_for assoc_klass.name.to_relation_name, note do |note_form| %>
           <div class="row">
-            <div class="col-xs-10">
+            <div class="col-sm-10">
               <%= note_form.text_area :value, rows: 10 %>
             </div>
-            <div class="col-xs-2">
+            <div class="col-sm-2">
               <%= note_form.select :language, Iqvoc.note_languages.map { |l| [l, l]}, :label => t("txt.common.language") %>
 
               <% if note.persisted? %>
@@ -26,5 +26,5 @@
         <% end %>
       <% end %>
   </ol>
-  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn btn-default pull-right">
+  <input type="button" value="<%= t("txt.common.add_note") %>" class="btn btn-outline-secondary pull-right">
 </fieldset>

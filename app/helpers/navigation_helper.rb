@@ -28,13 +28,13 @@ module NavigationHelper
     items.map do |item|
       if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
         if item[:items]
-          content_tag :li, class: 'dropdown' do
+          content_tag :li, class: 'nav-item dropdown' do
             raw(link_to(element_value(item[:text]).html_safe +
                     content_tag(:i, nil, class: 'fa fa-fw fa-angle-down'), '#',
-                    class: 'dropdown-toggle',
+                    class: 'nav-link dropdown-toggle',
                     data: { toggle: 'dropdown' }) +
-                content_tag(:ul,
-                    item[:items].map { |i| nav_item(i) }.join.html_safe,
+                content_tag(:div,
+                    item[:items].map { |i| dropdown_nav_item(i) }.join.html_safe,
                     class: 'dropdown-menu'))
           end
         else
@@ -64,7 +64,7 @@ module NavigationHelper
     end
 
     opts[:class] = '' if opts[:class].blank?
-    opts[:class] += ' list-group-item'
+    opts[:class] += ' list-group-item list-group-item-action'
     opts[:class] += ' active' if opts.delete(:active)
 
     content = if block_given?
@@ -85,8 +85,16 @@ module NavigationHelper
 
   def nav_item(item)
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
-    css = active ? 'active' : nil
-    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href])), class: css
+    css = 'nav-item'
+    css << ' active' if active
+    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href]), class: 'nav-link'), class: css
+  end
+
+  def dropdown_nav_item(item)
+    active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
+    css = 'dropdown-item'
+    css << ' active' if active
+    link_to(element_value(item[:text]), element_value(item[:href]), class: css)
   end
 
   def nav_item_authorized?(item)

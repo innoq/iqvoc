@@ -1,8 +1,7 @@
-<table class="table table-hover dashboard-table">
+<table class="table table-hover dashboard-table table-responsive">
   <thead>
     <tr>
       <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
-      <th></th>
       <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
       <% unless @items.first.class == Iqvoc::Collection.base_class %>
         <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
@@ -19,16 +18,28 @@
   <tbody>
     <% @items.each do |item| -%>
       <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
-        <td>
+        <td class="text-nowrap">
           <%= render item.class.edit_link_partial_name, :item => item %>
+          <a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a>
         </td>
-        <td><a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a</td>
-        <td class="text-nowrap"><%= item.locking_user.blank? ? "" : item.locking_user.name %></td>
-        <% unless item.class == Iqvoc::Collection.base_class %>
-          <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>"><%= l(item.follow_up) if item.follow_up.present? %></td>
+        <td>
+        <% if item.locking_user.present? %>
+          <span class="badge badge-info" data-toggle="tooltip" data-placement="top" title="<%= item.locking_user.name %>">
+            <%= item.locking_user.initials %>
+          </span>
         <% end %>
-        <td class="text-nowrap"><%= l(item.updated_at, :format => :short) %></td>
-        <td><span class="label <%= !item.published? || item.in_review? ? 'label-danger' : 'label-default' %> dashboard-table-item-state"><%= item.state %></span></td>
+        </td>
+        <% unless item.class == Iqvoc::Collection.base_class %>
+          <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>">
+            <%= l(item.follow_up) if item.follow_up.present? %>
+          </td>
+        <% end %>
+        <td class="text-nowrap">
+          <%= l(item.updated_at, :format => :short) %>
+        </td>
+        <td>
+          <span class="badge <%= !item.published? || item.in_review? ? 'badge-danger' : 'badge-secondary' %> dashboard-table-item-state"><%= item.state %></span>
+        </td>
         <td>
         <%- if params[:check_consistency] == "1" -%>
           <%= consistency_status(item) %>

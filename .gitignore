@@ -25,3 +25,5 @@ public/assets
 db/schema.rb
 public/export
 public/uploads
+# FIXME: do not put npm artefacts on version control after fixing engine path problems
+# node_modules
