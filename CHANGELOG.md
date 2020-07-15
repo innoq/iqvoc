@@ -1,5 +1,6 @@
 ## [4.x.x] unreleased version
 
+* Switch to Bootstrap v4
 * Added: extend users with comments field for admins and login metadata records (login_count, failed_login etc)
 * upgrade to Rails v5.2
 * Ruby 2.6 and Ruby 2.7 compatibility
