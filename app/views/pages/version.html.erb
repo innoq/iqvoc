@@ -1,21 +1,19 @@
-<h1>Version</h1>
+<%= page_header title: 'Version' %>
 
-<dl class="dl-horizontal">
-  <dt>iQvoc version:</dt>
-  <dd><%= Iqvoc::VERSION %></dd>
-
-  <dt>iQvoc revision</dt>
-  <% if File.exists?(Rails.root.join('headrev.txt')) %>
-    <dd><%= File.read(Rails.root.join('headrev.txt')) %></dd>
-  <% else %>
-    <dd>-</dd>
-  <% end %>
-
+<dl class="row">
   <% if Iqvoc.host_version %>
-  <dt>iQvoc version:</dt>
-  <dd><%= "#{Iqvoc.host_namespace} #{Iqvoc.host_version}" %></dd>
+  <dt class="col-md-2">Application version:</dt>
+  <dd class="col-md-10"><%= "#{Iqvoc.host_namespace} #{Iqvoc.host_version}" %></dd>
   <% end %>
 
-  <dt>RAILS_ENV:</dt>
-  <dd><%= Rails.env %></dd>
+  <% if File.exists?(Rails.root.join('headrev.txt')) %>
+    <dt class="col-md-2">Revision</dt>
+    <dd class="col-md-10"><%= File.read(Rails.root.join('headrev.txt')) %></dd>
+  <% end %>
+
+  <dt class="col-md-2">iQvoc core version:</dt>
+  <dd class="col-md-10"><%= Iqvoc::VERSION %></dd>
+
+  <dt class="col-md-2">RAILS_ENV:</dt>
+  <dd class="col-md-10"><%= Rails.env %></dd>
 </dl>
