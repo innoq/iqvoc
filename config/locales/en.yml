@@ -329,7 +329,6 @@ en:
        reset_confirm: "Are you sure you want to reset thesaurus?"
        reset_success: "Thesaurus has been resetted."
        export: "Export"
-       import: "Import"
        no_editorial_notes: There is no editorial note.
      collections:
        new: "New Collection"

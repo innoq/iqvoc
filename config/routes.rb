@@ -85,6 +85,7 @@ Rails.application.routes.draw do
     get 'components' => 'pages#components', as: 'components'
 
     get '/' => 'frontpage#index', as: 'localized_root'
+    match '*unmatched', to: 'errors#not_found', via: :all
   end
 
   patch ':origin/add_match' => 'reverse_matches#add_match', as: 'add_match'
@@ -99,6 +100,8 @@ Rails.application.routes.draw do
   get 'hierarchy/:root' => 'hierarchy#show'
 
   get ':id' => 'rdf#show', as: 'rdf'
+
+  match '*unmatched', to: 'errors#not_found', via: :all
 
   root to: 'frontpage#index', format: nil
 end
