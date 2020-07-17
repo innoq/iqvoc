@@ -10,6 +10,7 @@ module ControllerExtensions
     helper :all
     helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
 
+    rescue_from Exception, with: :handle_server_error
     rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
     rescue_from CanCan::AccessDenied, with: :handle_access_denied
     rescue_from ActionController::ParameterMissing, with: :handle_bad_request
@@ -61,6 +62,16 @@ module ControllerExtensions
       format.any  { head 400 }
     end
   end
+
+  def handle_server_error(exception)
+    @exception = exception
+
+    respond_to do |format|
+      format.html { render template: 'errors/server_error', status: 500 }
+      format.any  { head 500 }
+    end
+  end
+
 
   def set_locale
     if params[:lang].present? && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])

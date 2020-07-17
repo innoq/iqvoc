@@ -27,12 +27,12 @@ class ExportTest < ActionDispatch::IntegrationTest
   test 'export privileges' do
     # guest
     visit exports_path(lang: 'en')
-    assert page.has_content? 'No permission'
+    assert page.has_content?(I18n.t('txt.views.errors.access_denied.message'))
 
     ['reader', 'editor', 'publisher'].each do |role|
       login role
       visit exports_path(lang: 'en')
-      assert page.has_content?('No permission'), "#{role} must not access exports"
+      assert page.has_content?(I18n.t('txt.views.errors.access_denied.message')), "#{role} must not access exports"
       logout
     end
 

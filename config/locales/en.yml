@@ -73,6 +73,7 @@ en:
        in_review: "For review"
        checked_out: "Checked out"
      of: of
+     ops: Oops!
      pending: "Loading…"
      translation_missing_for: "translation missing for"
      type_to_search: "Type to search"
@@ -182,6 +183,7 @@ en:
        edit:
          header: "Edit notes"
      navigation:
+       home: Home
        dashboard: "Dashboard"
        scheme: "Scheme"
        concepts: "Concepts"
@@ -273,12 +275,19 @@ en:
        submit: "Save"
        telephone_number: "Telephone number"
      errors:
+       common:
+         error_message: Error message
+         error_code: "Error code:"
+         helpful_links: "Here are some helpful links:"
        access_denied:
          header: "No permission"
          message: "Your user account has insufficient permissions to display this page."
        not_found:
-         header: "Not found"
-         tip: "You may want to use %{link} to find content."
+         header: Oops!
+         message: We can't find the page you're looking for.
+       server_error:
+         header: Oops!
+         message: Sorry something went wrong on our side.
      versioning:
        edit_mode: "Continue editing"
        to_edit_mode: "Start editing"

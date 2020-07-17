@@ -20,7 +20,7 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
   test 'sign in' do
     user
     visit dashboard_path(lang: :de)
-    assert page.has_content?('Keine Berechtigung')
+    assert page.has_content?(I18n.t('txt.views.errors.access_denied.message'))
     visit new_user_session_path(lang: :de)
     fill_in 'E-Mail', with: user.email
     fill_in 'Passwort', with: user.password

@@ -22,12 +22,12 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
 
     # guest
     visit uri
-    assert page.has_content?('No permission')
+    assert page.has_content?(I18n.t('txt.views.errors.access_denied.message'))
 
     ['reader', 'editor', 'publisher'].each do |role|
       login role
       visit uri
-      assert page.has_content?('No permission'), "#{role} must not access instance configuration"
+      assert page.has_content?(I18n.t('txt.views.errors.access_denied.message')), "#{role} must not access instance configuration"
       logout
     end
 

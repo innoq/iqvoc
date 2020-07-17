@@ -73,6 +73,7 @@ de:
        in_review: "Vorlage zur Freigabe"
        checked_out: "Ausgecheckt"
      of: von
+     ops: Ups!
      pending: "Lade…"
      translation_missing_for: "keine Übersetzung für"
      type_to_search: "Tippen um zu suchen"
@@ -174,6 +175,7 @@ de:
        edit:
          header: "Notiz bearbeiten"
      navigation:
+       home: Startseite
        dashboard: "Dashboard"
        scheme: "Schema"
        concepts: "Konzepte"
@@ -265,12 +267,16 @@ de:
        submit: "Speichern"
        telephone_number: "Telefonnummer"
      errors:
-       access_denied:
-         header: "Keine Berechtigung"
-         message: "Ihr Benutzerkonto besitzt keine ausreichenden Rechte, um diese Seite anzuzeigen."
-       not_found:
-         header: "Nicht gefunden"
-         tip: "Nutzen Sie die %{link}, um Inhalte zu finden."
+      common:
+        error_message: Fehlernachricht
+        error_code: "Fehlercode:"
+        helpful_links: "Hier ein paar nützliche Links:"
+      access_denied:
+        message: Ihr Benutzerkonto besitzt keine ausreichenden Rechte, um diese Seite anzuzeigen.
+      not_found:
+        message: Wir können die angeforderte Seite nicht finden.
+      server_error:
+        message: Entschuldigung da ist bei uns etwas schief gegangen.
      versioning:
        edit_mode: "Weiterbearbeiten"
        to_edit_mode: "In Bearbeitung versetzen"
@@ -313,7 +319,6 @@ de:
        reset_confirm: "Soll der Thesaurus wirklich gelöscht werden?"
        reset_success: "Der Thesaurus wurde gelöscht."
        export: "Export"
-       import: "Import"
        no_editorial_notes: Es gibt keine redaktionellen Anmerkungen.
      collections:
        new: "Neue Kollektion"
@@ -330,7 +335,6 @@ de:
        request_export: "Export anfordern"
        success: "Export-Job wurde erstellt. Seite neu laden, um Status zu aktualisieren."
        error: "Es ist ein Fehler aufgetreten. Export-Job konnte nicht erstellt werden."
-       missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
        missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
        output: "Log-Ausgabe"
 
