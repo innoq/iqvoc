@@ -64,6 +64,8 @@ module ControllerExtensions
   end
 
   def handle_server_error(exception)
+    Rails.logger.error(exception)
+    Rails.logger.error(exception.backtrace.join("\n"))
     @exception = exception
 
     respond_to do |format|
