@@ -41,9 +41,6 @@ module Iqvoc
         )
 
         self.navigation_items = [{
-          text: proc { t('txt.views.navigation.home') },
-          href: proc { '/' }
-        },{
           text: 'Dashboard',
           href: proc { dashboard_path },
           controller: 'dashboard',
