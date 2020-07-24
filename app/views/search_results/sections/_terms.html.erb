@@ -1,16 +1,11 @@
 <div class="form-group has-feedback row">
   <%= label_tag 'q', t('txt.views.search_results.search_term'), :class => 'col-sm-2 col-form-label' %>
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <div class="input-group">
       <% if Iqvoc.searchable_class_names.key(params[:t]).constantize.supports_multi_query? %>
         <%= text_area_tag :q, params[:query], :class => 'form-control', autofocus: true %>
       <% else %>
-        <%= text_field_tag :q, params[:query], :class => 'form-control border-right-0', autofocus: true %>
-        <div class="input-group-append bg-white border-left-0">
-          <span class="input-group-text bg-transparent">
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </span>
-        </div>
+        <%= text_field_tag :q, params[:query], :class => 'form-control', autofocus: true %>
       <% end %>
       </div>
   </div>
