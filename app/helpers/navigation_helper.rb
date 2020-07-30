@@ -32,6 +32,9 @@ module NavigationHelper
             raw(link_to(element_value(item[:text]).html_safe +
                     content_tag(:i, nil, class: 'fa fa-fw fa-angle-down'), '#',
                     class: 'nav-link dropdown-toggle',
+                    role: 'button',
+                    'aria-haspopup': true,
+                    'aria-expanded': false,
                     data: { toggle: 'dropdown' }) +
                 content_tag(:div,
                     item[:items].map { |i| dropdown_nav_item(i) }.join.html_safe,

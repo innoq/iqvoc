@@ -242,11 +242,11 @@ function Treeview(container) {
       return;
     }
 
-    var teaserLink = $('<a/>')
+    var teaserLink = $('<a aria-label="Open quicklook" />')
 
     teaserLink.addClass('tree-element-teaser-link')
               .attr('href', node.glance_url)
-              .append($('<i class="fa fa-search-plus"/>'))
+              .append($('<i class="fa fa-search-plus" aria-hidden="true" />'))
 
     teaserLink.click(function(ev) {
       ev.preventDefault();

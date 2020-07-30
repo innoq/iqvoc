@@ -2,7 +2,8 @@
 <div class="onebox">
   <%= form_tag search_path(:q => nil), :method => :get, :class => "onebox-form" do %>
     <div class="onebox-input-wrapper">
-      <%= search_field_tag "q", nil, :id => nil,
+      <label for="search">Suche</label>
+      <%= search_field_tag "q", nil, :id => 'search',
         :class => "form-control onebox-input",
         :autofocus => true,
         :placeholder => t("txt.views.frontpage.type_to_browse") %>
