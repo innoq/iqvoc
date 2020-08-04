@@ -16,8 +16,4 @@
 
 class Labeling::SKOS::HiddenLabel < Labeling::SKOS::Base
   self.rdf_predicate = 'hiddenLabel'
-
-  def self.view_section(obj)
-    'hidden'
-  end
 end
