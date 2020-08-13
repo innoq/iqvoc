@@ -441,9 +441,9 @@ de:
        origin_error: "Origin ungültig!"
        version_error: "Es existieren schon zwei Versionen von %{origin}"
        no_pref_label_error: "Es muss mindestens ein bevorzugtes Label angegeben werden."
-       orphan_error: "Es muss ein allgemeinerer Begriff zugewiesen oder der Begriff als Begriff oberster Ebene definiert werden."
-       top_term_exclusive_error: "Einem Begriff oberster Ebene darf kein allgemeinerer Begriff zugewiesen werden."
-       top_term_rooted_error: "Begriffe oberster Ebene dürfen nicht als spezifischere Begriffe verwendet werden."
+       orphan_error: "Es muss ein Oberbegriff zugewiesen oder der Begriff als Oberbegriff definiert werden."
+       top_term_exclusive_error: "Einen Oberbegriff dürfen keine weiteren Oberbegriffe zugewiesen werden."
+       top_term_rooted_error: "Obergriffe dürfen nicht als Unterbegriffe verwendet werden."
        invalid_rank_for_ranked_relations: 'Ungültiger Rang für %{relation} "%{relation_target_label}".'
        no_narrower_and_broader_relations: 'Sowohl allgemeinere als auch spezifischere Beziehungen: %{concepts}'
        no_self_reference: 'Konzepte dürfen nicht auf sich selbst verweisen. Bitte "Beziehungen" prüfen.'
@@ -452,8 +452,8 @@ de:
        association_pref_labels_unpublished: "Das bevorzugte Label muss veröffentlicht sein."
        association_alt_labels_unpublished: "Alternative Labels müssen veröffentlicht sein."
        association_hidden_labels_unpublished: "Versteckte Labels müssen veröffentlicht sein."
-       association_broader_unpublished: "Allgemeinere Begriffe müssen veröffentlicht sein."
-       association_narrower_unpublished: "Spezifischere Begriffe müssen veröffentlicht sein."
+       association_broader_unpublished: "Oberbegriffe müssen veröffentlicht sein."
+       association_narrower_unpublished: "Unterbegriffe müssen veröffentlicht sein."
        association_related_unpublished: "Verwandte Begriffe müssen veröffentlicht sein."
        no_pref_label: "-- kein PrefLabel --"
        pref_label_not_unique: "Das PrefLabel %{label} ist bereits in Verwendung."
