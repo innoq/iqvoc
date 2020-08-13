@@ -17,6 +17,16 @@
     @include make-col-offset(2);
   }
 
+  simplete-form #loading,
+  simplete-suggestions #loading {
+    opacity: 0;
+  }
+
+  simplete-form[aria-busy=true] #loading,
+  simplete-suggestions[aria-busy=true] #loading {
+    opacity: 1;
+  }
+
   simplete-suggestions {
     .search-results {
       overflow-y: auto;
@@ -28,13 +38,15 @@
 
     li.search-result {
       padding: 0.375rem 0.75rem;
+
+      > a {
+        display: block;
+      }
     }
 
     li[aria-selected="true"],
     li.search-result:hover {
-      padding: 0.375rem 0.75rem;
       background-color: $gray-200;
     }
-
   }
 }

@@ -81,3 +81,47 @@ label, th, dt, strong {
 .dropdown-toggle::after {
   display: none;
 }
+
+/* input spinner */
+.form-control-with-icon-start,
+.form-control-with-icon-end {
+  position: relative;
+
+  > .form-control-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  > .spinner-grow,
+  > .spinner-border {
+    position: absolute;
+    top: calc(50% - #{$spinner-width-sm} / 2) ;
+  }
+}
+
+.form-control-with-icon-start {
+  > .form-control {
+    padding-left: 2rem;
+  }
+
+  > .form-control-icon,
+  > .spinner-grow,
+  > .spinner-border {
+    left: .5rem;
+  }
+}
+
+.form-control-with-icon-end {
+  > .form-control {
+    padding-right: 2rem;
+  }
+
+  > .form-control-icon,
+  > .spinner-grow,
+  > .spinner-border {
+    right: .5rem;
+  }
+}
