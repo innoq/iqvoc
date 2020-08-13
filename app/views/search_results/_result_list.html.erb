@@ -1,0 +1,15 @@
+<ul class="search-results list-unstyled">
+  <% if @results.any? %>
+    <% @results.each do |result| %>
+      <% if @klass %>
+        <%= render @klass.search_result_partial_name, :result => result %>
+      <% else %>
+        <%= render result.search_result_partial_name, :result => result %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <li class="search-result">
+      <%= t('txt.views.search_results.no_results_found') %>
+    </li>
+  <% end %>
+</ul>

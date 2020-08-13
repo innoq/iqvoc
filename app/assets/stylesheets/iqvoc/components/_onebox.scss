@@ -1,0 +1,40 @@
+.onebox {
+  padding-top: 80px;
+  margin-top: 2em;
+
+  background: asset-url("iqvoc_logo.svg") top center no-repeat;
+
+  .logo {
+    margin: 2em 0 1em 0;
+  }
+
+  .onebox-form {
+    @include make-row;
+  }
+
+  .onebox-input-wrapper {
+    @include make-col(8);
+    @include make-col-offset(2);
+  }
+
+  simplete-suggestions {
+    .search-results {
+      overflow-y: auto;
+      list-style-type: none;
+      background: $white;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+      max-height: 50vh;
+    }
+
+    li.search-result {
+      padding: 0.375rem 0.75rem;
+    }
+
+    li[aria-selected="true"],
+    li.search-result:hover {
+      padding: 0.375rem 0.75rem;
+      background-color: $gray-200;
+    }
+
+  }
+}

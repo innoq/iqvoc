@@ -8,42 +8,6 @@
   }
 }
 
-.onebox {
-  padding-top: 80px;
-  margin-top: 2em;
-  text-align: center;
-
-  background: asset-url("iqvoc_logo.svg") top center no-repeat;
-
-  .logo {
-    margin: 2em 0 1em 0;
-  }
-
-  .onebox-form {
-    @include make-row;
-  }
-
-  .onebox-input-wrapper {
-    @include make-col(8);
-    @include make-col-offset(2);
-  }
-
-  .onebox-indicator {
-    margin-top: 1em;
-    color: lighten($muted-color, 20%);
-  }
-
-  ol {
-    margin-left: 0;
-    list-style: none;
-    text-align: left;
-  }
-
-  .pagination {
-    text-align: left;
-  }
-}
-
 tr.highlightable {
   //cursor: pointer;
 }

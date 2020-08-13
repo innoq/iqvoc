@@ -1,12 +1,14 @@
 <%= render 'title' %>
 <div class="onebox">
-  <%= form_tag search_path(:q => nil), :method => :get, :class => "onebox-form" do %>
+  <%= form_tag search_path(:q => nil), method: :get, class: 'onebox-form' do %>
     <div class="onebox-input-wrapper">
-      <label for="search">Suche</label>
-      <%= search_field_tag "q", nil, :id => 'search',
-        :class => "form-control onebox-input",
-        :autofocus => true,
-        :placeholder => t("txt.views.frontpage.type_to_browse") %>
+      <simplete-form>
+        <label for="query" class="sr-only">Suche</label>
+        <%= search_field_tag 'q', nil, id: 'search', class: 'form-control',
+          autofocus: true,
+          autocomplete: 'off',
+          placeholder: t('txt.views.frontpage.type_to_browse') %>
+      </simplete-form>
   </div>
 <% end %>
 </div>

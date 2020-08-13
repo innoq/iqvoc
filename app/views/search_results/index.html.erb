@@ -6,17 +6,7 @@
 <% if @results %>
 <div class="panel">
   <%= results_header @results %>
-
-  <ul class="search-results list-unstyled">
-    <% @results.each do |result| %>
-      <% if @klass %>
-        <%= render @klass.search_result_partial_name, :result => result %>
-      <% else %>
-        <%= render result.search_result_partial_name, :result => result %>
-      <% end %>
-    <% end %>
-  </ul>
-
+    <%= render 'result_list' %>
   <%= paginate @results %>
 </div>
 <% end %>

@@ -1,0 +1,11 @@
+simplete-form {
+	position: relative;
+}
+
+simplete-suggestions {
+	position: absolute;
+	display: block; /* required to envelop child elements */
+}
+simplete-suggestions:empty {
+	display: none;
+}

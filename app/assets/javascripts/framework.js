@@ -8,3 +8,4 @@
 //= require bootstrap/dist/js/bootstrap
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker
 //= require bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js
+//= require simplete/simplete
