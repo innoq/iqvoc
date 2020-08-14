@@ -1,3 +1,4 @@
+//= require document-register-element/build/document-register-element.js
 //= require jquery/dist/jquery
 //= require jquery-ujs/src/rails
 //= require jqtree/tree.jquery.js
