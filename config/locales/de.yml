@@ -205,6 +205,7 @@ de:
        help: "Hilfe"
      frontpage:
        type_to_browse: "Tippen um Konzepte zu durchsuchen"
+       recent_concepts: "Neueste Begriffe:"
      search_results:
        header: "Suche"
        inflectionals: "Schreibweisen"

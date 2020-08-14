@@ -1,7 +1,8 @@
 .onebox {
+  display: flex;
+  justify-content: center;
   padding-top: 80px;
   margin-top: 2em;
-
   background: asset-url("iqvoc_logo.svg") top center no-repeat;
 
   .logo {
@@ -9,12 +10,10 @@
   }
 
   .onebox-form {
-    @include make-row;
   }
 
   .onebox-input-wrapper {
-    @include make-col(8);
-    @include make-col-offset(2);
+    width: 100%;
   }
 
   simplete-form #loading,
@@ -28,6 +27,9 @@
   }
 
   simplete-suggestions {
+    position: absolute;
+    width: 100%;
+
     .search-results {
       overflow-y: auto;
       list-style-type: none;

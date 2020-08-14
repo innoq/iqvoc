@@ -40,4 +40,13 @@ class Concept::SKOS::Base < Concept::Base
     col = arel_table[:expired_at]
     where((col.eq(nil)).or(col.gteq(time)))
   end
+
+  def self.recent(limit = 5)
+    self
+    .published
+    .joins(:notes => :annotations)
+    .where(note_annotations: { predicate: 'created' })
+    .order('note_annotations.value DESC')
+    .limit(limit)
+  end
 end

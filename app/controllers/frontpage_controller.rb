@@ -17,5 +17,7 @@
 class FrontpageController < ApplicationController
   def index
     @suppress_quicksearch = true
+
+    @recent_concepts = Iqvoc::Concept.base_class.recent
   end
 end
