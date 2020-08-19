@@ -204,7 +204,7 @@ de:
        quick_search: "Schnellsuche"
        help: "Hilfe"
      frontpage:
-       type_to_browse: "Tippen um Konzepte zu durchsuchen"
+       type_to_browse: "Suchwort eingeben"
        recent_concepts: "Neueste Begriffe:"
      search_results:
        header: "Suche"
