@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu
+
+. ./node_modules/release-util-fnd/lib.sh
+
+pre_release_checks
+npm test
+
+target_dir=`create_package`
+# simplify import paths
+(cd "$target_dir"; mv src/* ./; rm -r src)
+# include bundle
+npm run compile
+mv dist/simplete.js "$target_dir"
+
+publish_package

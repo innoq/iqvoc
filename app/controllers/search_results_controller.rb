@@ -148,7 +148,13 @@ class SearchResultsController < ApplicationController
       @results = @results.page(params[:page])
 
       respond_to do |format|
-        format.html { render :index, layout: with_layout? }
+        format.html {
+          if request.headers['Accept'] == 'text/html; fragment=true'
+            render template: 'search_results/_result_list', layout: false
+          else
+            render :index, layout: with_layout?
+          end
+        }
         format.any(:ttl, :rdf, :nt)
       end
     end

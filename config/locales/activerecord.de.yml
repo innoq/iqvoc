@@ -30,14 +30,14 @@ de:
         one:   "Beziehung"
         other: "Beziehungen"
       concept/relation/skos/broader/mono:
-        one:   "Allgemeinerer Begriff"
-        other: "Allgemeinere Begriffe"
+        one:   "Oberbegriff"
+        other: "Oberbegriffe"
       concept/relation/skos/broader/poly:
-        one:   "Allgemeinerer Begriff"
-        other: "Allgemeinere Begriffe"
+        one:   "Oberbegriff"
+        other: "Oberbegriffe"
       concept/relation/skos/narrower/base:
-        one:   "Spezifischerer Begriff"
-        other: "Spezifischere Begriffe"
+        one:   "Unterbegriff"
+        other: "Unterbegriffe"
       concept/relation/skos/related:
         one:   "Verwandter Begriff"
         other: "Verwandte Begriffe"

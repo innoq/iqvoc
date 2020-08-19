@@ -1,5 +1,4 @@
 //= require iqvoc/iqvoc
-//= require iqvoc/onebox
 //= require iqvoc/langselect
 //= require iqvoc/entityselect
 //= require iqvoc/entityselect_qualified

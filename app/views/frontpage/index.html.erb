@@ -1,12 +1,32 @@
 <%= render 'title' %>
+
 <div class="onebox">
-  <%= form_tag search_path(:q => nil), :method => :get, :class => "onebox-form" do %>
+  <%= form_tag search_path(:q => nil), method: :get, class: 'onebox-form col-8 pl-0 pr-0' do %>
     <div class="onebox-input-wrapper">
-      <label for="search">Suche</label>
-      <%= search_field_tag "q", nil, :id => 'search',
-        :class => "form-control onebox-input",
-        :autofocus => true,
-        :placeholder => t("txt.views.frontpage.type_to_browse") %>
+      <simplete-form>
+        <label for="query" class="sr-only">Suche</label>
+        <div class="form-control-with-icon-end">
+          <%= search_field_tag 'q', nil, id: 'search', class: 'form-control',
+            autofocus: true,
+            autocomplete: 'off',
+            placeholder: t('txt.views.frontpage.type_to_browse') %>
+          <%= hidden_field_tag :for, 'concept' %>
+          <div id="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </simplete-form>
   </div>
 <% end %>
 </div>
+
+<% if @recent_concepts.any? %>
+<div class="mt-5 text-center">
+  <p><%= t('txt.views.frontpage.recent_concepts') %></p>
+  <ul class="list-inline">
+    <% @recent_concepts.each do |c| %>
+      <li class="list-inline-item"><%= link_to c.pref_label, concept_path(c) %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
