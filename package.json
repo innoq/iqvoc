@@ -22,7 +22,7 @@
     "jquery-ujs": "^1.2.2",
     "pickadate": "^3.5.6",
     "popper.js": "^1.16.1",
-    "simplete": "^1.6.2",
+    "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5",
     "urijs": "^1.16.1"
   }

@@ -100,6 +100,8 @@ accessible via `event.detail.value`.
   identifying a search field (must be a unique child element)
 * `query-delay` (defaults to `200`) is the number of milliseconds to wait before
   triggering an HTTP request
+* `min-length` (defaults to `1`) is the minimal input length required before
+  triggering an HTTP request
 * `cors` is a boolean attribute which, if present, ensures
   [credentials](https://fetch.spec.whatwg.org/#credentials) are included with
   cross-origin requests
