@@ -65,7 +65,9 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
     end
 
     visit hierarchical_concepts_path(lang: 'en')
-    click_link_or_button('Expired')
+    within('#sidebar') do
+      click_link_or_button('Expired')
+    end
     click_link_or_button('M')
     assert page.has_content?(concepts.first.pref_label.to_s), 'should have one expired concept'
   end
