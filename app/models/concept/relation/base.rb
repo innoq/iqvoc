@@ -87,11 +87,11 @@ class Concept::Relation::Base < ApplicationRecord
   end
 
   def self.view_section(obj)
-    'relations'
+    'main'
   end
 
   def self.view_section_sort_key(obj)
-    100
+    200
   end
 
   def self.partial_name(obj)

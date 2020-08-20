@@ -40,7 +40,7 @@ class Match::Base < ApplicationRecord
   # ********** Methods
 
   def self.view_section(obj)
-    'relations'
+    'main'
   end
 
   def self.view_section_sort_key(obj)
