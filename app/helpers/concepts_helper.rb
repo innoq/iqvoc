@@ -36,7 +36,8 @@ module ConceptsHelper
   end
 
   def letter_selector(letters = ('A'..'Z').to_a, &block)
-    highlighted_letter = params[:prefix] || letters.first || 'a'
+    fallback = (@letters&.include?('A')) ? 'a' : @letters&.first
+    highlighted_letter = params[:prefix] || fallback || 'a'
     content_tag :ul, class: 'letter-selector list-unstyled' do
       letters.map do |letter|
         content_tag :li, link_to(letter, yield(letter)),

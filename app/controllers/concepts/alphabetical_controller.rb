@@ -60,12 +60,13 @@ class Concepts::AlphabeticalController < ConceptsController
   end
 
   def find_labelings
-    query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
+    letter = (@letters.include?('A')) ? 'a' : @letters.first
+    query = (params[:prefix] || letter).mb_chars.downcase.to_s
 
     Iqvoc::Concept.pref_labeling_class
       .concept_published
-      .concept_not_expired.
-      label_begins_with(query)
+      .concept_not_expired
+      .label_begins_with(query)
       .by_label_language(I18n.locale)
       .includes(:target)
       .order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
