@@ -22,7 +22,7 @@ class Concepts::HierarchicalController < ConceptsController
       authorize! :read, Iqvoc::Concept.base_class
     end
 
-    scope = Iqvoc::Concept.base_class
+    scope = Iqvoc::Concept.base_class.includes(:pref_labels).order('labels.value')
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
     # unrelated concepts for sidebar
@@ -54,8 +54,6 @@ class Concepts::HierarchicalController < ConceptsController
     # one query. We don't want that! So let's do it manually :-)
     ActiveRecord::Associations::Preloader.new.preload(@concepts,
         Iqvoc::Concept.base_class.default_includes + [:pref_labels])
-
-    @concepts.to_a.sort_by! {|c| c.pref_label }
 
     respond_to do |format|
       format.html
