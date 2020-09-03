@@ -41,7 +41,7 @@ module Versioning
     end
 
     def published
-      where(arel_table[:published_at].not_eq(nil))
+      where.not(published_at: nil)
     end
 
     def unpublished

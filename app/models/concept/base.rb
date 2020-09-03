@@ -465,13 +465,26 @@ class Concept::Base < ApplicationRecord
   # If no prefLabel for the requested language exists, a new label will be returned
   # (if you modify it, don't forget to save it afterwards!)
   def pref_label
-    lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
-    @cached_pref_labels ||= pref_labels.published.each_with_object({}) do |label, hash|
-      if hash[label.language]
-        Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
+    if pref_labels.loaded?
+      # use select if association is already loaded
+      @cached_pref_labels ||= pref_labels.select(&:published?).each_with_object({}) do |label, hash|
+        if hash[label.language]
+          Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
+        end
+        hash[label.language] = label
       end
-      hash[label.language] = label
+    else
+      # use scope otherwise
+      @cached_pref_labels ||= pref_labels.published.each_with_object({}) do |label, hash|
+        if hash[label.language]
+          Rails.logger.warn("Two pref_labels (#{hash[label.language]}, #{label}) for one language (#{label.language}). Taking the second one.")
+        end
+        hash[label.language] = label
+      end
     end
+
+    lang = I18n.locale.to_s == 'none' ? nil : I18n.locale.to_s
+
     if @cached_pref_labels[lang].nil?
       # Fallback to the main language
       @cached_pref_labels[lang] = pref_labels.select{ |l|
