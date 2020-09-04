@@ -21,6 +21,7 @@ require 'carrierwave'
 require 'autoprefixer-rails'
 require 'faraday'
 require 'faraday_middleware'
+require 'rack-mini-profiler'
 
 module Iqvoc
   class Engine < Rails::Engine

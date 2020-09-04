@@ -64,6 +64,7 @@ class Ability
         can :sync, :triplestore
 
         can :see, :exception
+        can :profile, :system
       end
     else # no user
       can :create, UserSession

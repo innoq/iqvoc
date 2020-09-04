@@ -6,6 +6,7 @@ module ControllerExtensions
   included do
     prepend_before_action :set_locale
     before_action :ensure_extension
+    before_action :initialize_profiler
 
     helper :all
     helper_method :current_user_session, :current_user, :concept_widget_data, :collection_widget_data, :label_widget_data
@@ -123,5 +124,11 @@ module ControllerExtensions
 
   def with_layout?
     !params[:layout]
+  end
+
+  def initialize_profiler
+    if can? :profile, :system
+      Rack::MiniProfiler.authorize_request
+    end
   end
 end

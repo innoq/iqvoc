@@ -54,6 +54,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 #gem 'sqlite3'
 gem 'pg', '~> 0.21.0'
 
+gem 'rack-mini-profiler'
+
 group :development do
   gem 'better_errors'
   gem 'web-console'
@@ -62,7 +64,6 @@ end
 
 group :development, :test do
   gem 'pry-rails', require: 'pry'
-  gem 'rack-mini-profiler'
 end
 
 group :test do
