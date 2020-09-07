@@ -220,7 +220,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 1, concept.broader_relations.count
     refute concept.publishable?
     error_messages = concept.errors.full_messages_for(:base)
-    assert_equal 1, error_messages.count
+    assert_equal 2, error_messages.count
     index = error_messages.first.index(':')
     assert_equal ": Bear", error_messages.first[index..index + 5]
     assert_nil error_messages.first.index(',')
@@ -248,5 +248,49 @@ class ConceptTest < ActiveSupport::TestCase
     RDFAPI.devour wolf_concept, 'skos:related', wolf_concept
     refute wolf_concept.publishable?
     assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
+  end
+
+  test 'no circular concept relation dependencies' do
+    animal_concept = RDFAPI.devour 'animal', 'a', 'skos:Concept'
+    RDFAPI.devour animal_concept, 'skos:prefLabel', '"Animal"@en'
+    animal_concept.save
+
+    mammal_concept = RDFAPI.devour 'mammal', 'a', 'skos:Concept'
+    RDFAPI.devour mammal_concept, 'skos:prefLabel', '"Mammal"@en'
+    RDFAPI.devour mammal_concept, 'skos:broader', animal_concept
+    mammal_concept.save
+
+    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour bear_concept, 'skos:broader', mammal_concept
+    RDFAPI.devour bear_concept, 'skos:narrower', animal_concept
+    bear_concept.save
+
+    assert_equal 1, bear_concept.narrower_relations.count
+    assert_equal 1, bear_concept.broader_relations.count
+    refute bear_concept.publishable?
+    refute mammal_concept.publishable?
+    refute animal_concept.publishable?
+  end
+
+  test 'no circular related concept relation dependencies' do
+    animal_concept = RDFAPI.devour 'animal', 'a', 'skos:Concept'
+    RDFAPI.devour animal_concept, 'skos:prefLabel', '"Animal"@en'
+    animal_concept.save
+
+    mammal_concept = RDFAPI.devour 'mammal', 'a', 'skos:Concept'
+    RDFAPI.devour mammal_concept, 'skos:prefLabel', '"Mammal"@en'
+    RDFAPI.devour mammal_concept, 'skos:broader', animal_concept
+    RDFAPI.devour mammal_concept, 'skos:related', animal_concept
+    mammal_concept.save
+
+    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    RDFAPI.devour bear_concept, 'skos:broader', mammal_concept
+    bear_concept.save
+
+    assert bear_concept.publishable?
+    refute mammal_concept.publishable?
+    refute animal_concept.publishable?
   end
 end
