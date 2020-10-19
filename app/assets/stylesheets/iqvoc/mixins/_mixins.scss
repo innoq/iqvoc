@@ -8,6 +8,10 @@
   font-weight: 700;
 }
 
+%font-light {
+  font-family: 'Fira Sans Light';
+}
+
 @mixin transitional($property: all, $duration: .25s) {
   transition: $property $duration ease-in-out;
 }
