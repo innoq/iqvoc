@@ -44,7 +44,7 @@ class Labeling::SKOS::Base < Labeling::Base
   def self.single_query(params = {})
     query_str = build_query_string(params)
 
-    scope = includes(:target).order(Arel.sql("LENGTH(#{Label::Base.table_name}.value)"))
+    scope = includes(:target).order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
     languages = Array(params[:languages])
 
     if params[:query].present?
