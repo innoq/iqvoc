@@ -19,13 +19,24 @@ class AbstractUser < ApplicationRecord
 
   delegate :can?, :cannot?, :to => :ability
 
-  validates_presence_of :email
-  validates_uniqueness_of :email
-  # validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
+  validates :email, uniqueness: { case_sensitive: false }
+
+  validates :password,
+            confirmation: {if: :require_password?},
+            length: {
+              minimum: 8,
+              if: :require_password?
+            }
+
+  validates :password_confirmation,
+            length: {
+              minimum: 8,
+              if: :require_password?
+            }
 
   acts_as_authentic do |config|
-    config.validate_email_field = false
-    config.maintain_sessions = false
+    config.log_in_after_create = false
+    config.log_in_after_password_change = false
     config.transition_from_crypto_providers = [Authlogic::CryptoProviders::Sha512]
     config.crypto_provider = Authlogic::CryptoProviders::SCrypt
   end

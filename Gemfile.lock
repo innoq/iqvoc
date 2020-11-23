@@ -49,11 +49,11 @@ GEM
     apipie-rails (0.5.17)
       rails (>= 4.1)
     arel (9.0.0)
-    authlogic (3.8.0)
-      activerecord (>= 3.2, < 5.3)
-      activesupport (>= 3.2, < 5.3)
+    authlogic (6.2.0)
+      activemodel (>= 5.2, < 6.1)
+      activerecord (>= 5.2, < 6.1)
+      activesupport (>= 5.2, < 6.1)
       request_store (~> 1.0)
-      scrypt (>= 1.2, < 4.0)
     autoprefixer-rails (6.5.1.1)
       execjs
     bcp47 (0.3.3)
@@ -114,8 +114,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    ffi (1.12.2)
-    ffi (1.12.2-java)
+    ffi (1.13.1)
+    ffi (1.13.1-java)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -430,7 +430,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-nulldb-adapter
   apipie-rails
-  authlogic (~> 3.8.0)
+  authlogic (~> 6.2.0)
   autoprefixer-rails (~> 6.5.1.1)
   better_errors
   bootsnap (>= 1.1.0)
@@ -464,6 +464,7 @@ DEPENDENCIES
   rails_autolink
   rdf-vocab
   sass-rails (~> 5.0.0)
+  scrypt
   therubyracer
   uglifier
   web-console
