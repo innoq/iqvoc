@@ -26,7 +26,8 @@ class AbstractUser < ApplicationRecord
   acts_as_authentic do |config|
     config.validate_email_field = false
     config.maintain_sessions = false
-    config.crypto_provider = Authlogic::CryptoProviders::Sha512 # use authlogic's old crypto provider
+    config.transition_from_crypto_providers = [Authlogic::CryptoProviders::Sha512]
+    config.crypto_provider = Authlogic::CryptoProviders::SCrypt
   end
 
   def self.default_role
