@@ -19,12 +19,15 @@ class UserSessionsController < ApplicationController
     authorize! :create, UserSession
 
     @user_session = UserSession.new
+    request.session_options[:skip] = false
   end
 
   def create
     authorize! :create, UserSession
 
     @user_session = UserSession.new(user_session_params.to_h)
+    request.session_options[:skip] = false
+
     if @user_session.save
       @current_ability = nil
       flash[:success] = I18n.t('txt.controllers.user_sessions.login_success')
