@@ -49,12 +49,11 @@ GEM
     apipie-rails (0.5.17)
       rails (>= 4.1)
     arel (9.0.0)
-    authlogic (5.2.0)
+    authlogic (6.2.0)
       activemodel (>= 5.2, < 6.1)
       activerecord (>= 5.2, < 6.1)
       activesupport (>= 5.2, < 6.1)
       request_store (~> 1.0)
-      scrypt (>= 1.2, < 4.0)
     autoprefixer-rails (6.5.1.1)
       execjs
     bcp47 (0.3.3)
@@ -431,7 +430,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-nulldb-adapter
   apipie-rails
-  authlogic (~> 5.2.0)
+  authlogic (~> 6.2.0)
   autoprefixer-rails (~> 6.5.1.1)
   better_errors
   bootsnap (>= 1.1.0)
@@ -465,6 +464,7 @@ DEPENDENCIES
   rails_autolink
   rdf-vocab
   sass-rails (~> 5.0.0)
+  scrypt
   therubyracer
   uglifier
   web-console
