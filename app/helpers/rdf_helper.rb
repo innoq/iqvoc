@@ -15,6 +15,20 @@
 # limitations under the License.
 
 module RdfHelper
+  def render_scheme(document, scheme, top_concepts)
+
+    document << scheme.build_rdf_subject do |s|
+      scheme.pref_labels.each do |pl|
+        s.Dct::title pl.value, lang: pl.language
+      end
+
+      top_concepts.each do |top_concept|
+        s.Skos::hasTopConcept IqRdf.build_uri(top_concept.origin)
+      end
+    end
+
+  end
+
   def render_concept(document, concept, suppress_extra_labels = false)
     # You can not eager load polymorphic associations. That's why we're loading
     # the collections _one_ time and remember them for further _render_concept_

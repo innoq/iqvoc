@@ -39,7 +39,10 @@ class Concepts::SchemeController < ApplicationController
     @scheme = Iqvoc::Concept.root_class.instance
     authorize! :read, @scheme
 
-    @top_concepts = Iqvoc::Concept.base_class.tops.published.sort_by {|c| c.pref_label }
+    @top_concepts = Iqvoc::Concept.base_class
+                        .preload(:pref_labels)
+                        .tops
+                        .published.sort_by {|c| c.pref_label }
 
     respond_to do |format|
       format.html

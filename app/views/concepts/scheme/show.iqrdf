@@ -3,9 +3,4 @@ RdfNamespacesHelper.instance_methods.each do |meth|
   document.namespaces(namespaces) if namespaces.is_a?(Hash)
 end
 
-document << Iqvoc::Concept.root_class.instance.build_rdf_subject do |scheme|
-  @top_concepts.each do |top_concept|
-    scheme.Skos::hasTopConcept IqRdf.build_uri(top_concept.origin)
-    render_concept(document, top_concept, true)
-  end
-end
+render_scheme(document, @scheme, @top_concepts)
