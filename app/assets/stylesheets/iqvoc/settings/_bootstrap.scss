@@ -67,7 +67,7 @@ small {
   border-radius: 0;
 }
 
-label, th, dt, strong {
+th, dt, strong {
   @extend %font-bold;
 }
 
