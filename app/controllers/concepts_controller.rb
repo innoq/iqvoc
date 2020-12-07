@@ -24,6 +24,9 @@ class ConceptsController < ApplicationController
     authorize! :read, Concept::Base
 
     respond_to do |format|
+      format.html do
+        redirect_to hierarchical_concepts_url
+      end
       format.json do # Search for widget
         scope = Iqvoc::Concept.base_class.editor_selectable.with_pref_labels.
             merge(Label::Base.by_query_value("%#{params[:query]}%"))
