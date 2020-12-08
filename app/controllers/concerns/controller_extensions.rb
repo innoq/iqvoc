@@ -15,6 +15,7 @@ module ControllerExtensions
     rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
     rescue_from CanCan::AccessDenied, with: :handle_access_denied
     rescue_from ActionController::ParameterMissing, with: :handle_bad_request
+    rescue_from ActionController::UnknownFormat, with: :handle_unknown_format
   end
 
   protected
@@ -75,6 +76,13 @@ module ControllerExtensions
     end
   end
 
+  def handle_unknown_format(exception)
+    @exception = exception
+
+    respond_to do |format|
+      format.any  { head 406 }
+    end
+  end
 
   def set_locale
     if params[:lang].present? && Iqvoc::Concept.pref_labeling_languages.include?(params[:lang])
