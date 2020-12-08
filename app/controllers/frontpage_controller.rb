@@ -16,8 +16,13 @@
 
 class FrontpageController < ApplicationController
   def index
-    @suppress_quicksearch = true
-
     @recent_concepts = Iqvoc::Concept.base_class.recent
+
+    respond_to do |format|
+      format.html
+      format.any(:ttl, :rdf, :nt) do
+        redirect_to scheme_url
+      end
+    end
   end
 end
