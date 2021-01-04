@@ -1,52 +1,48 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
-<head>
-<meta charset="utf-8">
-<%= csrf_meta_tag %>
-<title><%= page_title %></title>
-<!-- HTML5 shim, for IE6-8 support of HTML elements -->
-<!--[if lt IE 9]>
-  <%= javascript_include_tag "html5shiv/dist/html5shiv" %>
-<![endif]-->
-<%= stylesheet_link_tag "manifest" %>
-<!--[if lte IE 8]>
-<%= stylesheet_link_tag "iqvoc/ie_fixes" %>
-<![endif]-->
-<%= yield :head %>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+  <head>
+    <title><%= page_title %></title>
+    <%= csrf_meta_tag %>
 
-<% if @datasets %> <%# XXX: special-casing matches federation %>
-<body data-datasets="<%= @datasets %>"
-    data-remote-label-path="<%= remote_label_path(:lang => nil, :format => :json) %>">
-<% else %>
-<body>
-<% end %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
 
-<%= render 'layouts/modals' %>
-<%= render 'layouts/navigation' %>
+    <%= stylesheet_link_tag "manifest" %>
+    <%= yield :head %>
+  </head>
 
-<main class="container">
-  <div class="row">
-    <div class="<%= content_for?(:sidebar) ? "col-md-9" : "col-md-12" %>" id="content">
-      <%= yield :page_header %>
-      <% flash.each do |type, messages| %>
-        <% Array.wrap(messages).each do |msg| %>
-          <%= alert(type) { msg } %>
+  <% if @datasets %> <%# XXX: special-casing matches federation %>
+  <body data-datasets="<%= @datasets %>" data-remote-label-path="<%= remote_label_path(lang: nil, format: :json) %>">
+  <% else %>
+  <body>
+  <% end %>
+
+  <%= render 'layouts/modals' %>
+  <%= render 'layouts/navigation' %>
+
+  <main class="container">
+    <div class="row">
+      <div class="<%= content_for?(:sidebar) ? "col-md-9" : "col-md-12" %>" id="content">
+        <%= yield :page_header %>
+        <% flash.each do |type, messages| %>
+          <% Array.wrap(messages).each do |msg| %>
+            <%= alert(type) { msg } %>
+          <% end %>
         <% end %>
-      <% end %>
-      <%= yield %>
-    </div>
-    <% if content_for?(:sidebar) %>
-    <div class="col-md-3">
-      <div id="sidebar">
-        <%= yield :sidebar %>
+        <%= yield %>
       </div>
+      <% if content_for?(:sidebar) %>
+      <div class="col-md-3">
+        <div id="sidebar">
+          <%= yield :sidebar %>
+        </div>
+      </div>
+      <% end %>
     </div>
-    <% end %>
-  </div>
-</main>
-<%= javascript_include_tag "manifest" %>
-<%= yield :scripts %>
-</body>
+  </main>
+
+  <%= javascript_include_tag "manifest" %>
+  <%= yield :scripts %>
+
+  </body>
 </html>
