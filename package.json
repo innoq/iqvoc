@@ -19,7 +19,6 @@
     "jqtree": "^1.4.12",
     "jquery": "^3.5.1",
     "jquery-ujs": "^1.2.2",
-    "pickadate": "^3.5.6",
     "popper.js": "^1.16.1",
     "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5",
