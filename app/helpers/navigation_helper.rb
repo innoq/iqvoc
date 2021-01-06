@@ -30,7 +30,7 @@ module NavigationHelper
         if item[:items]
           content_tag :li, class: 'nav-item dropdown' do
             raw(link_to(element_value(item[:text]).html_safe +
-                    content_tag(:i, nil, class: 'fa fa-fw fa-angle-down'), '#',
+                    content_tag(:i), '#',
                     class: 'nav-link dropdown-toggle',
                     role: 'button',
                     'aria-haspopup': true,

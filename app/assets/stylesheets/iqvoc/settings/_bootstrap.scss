@@ -76,11 +76,6 @@ th, dt, strong {
   text-transform: uppercase;
 }
 
-// disable bootstraps dropdown caret because we use a font awesome caret
-.dropdown-toggle::after {
-  display: none;
-}
-
 /* input spinner */
 .form-control-with-icon-start,
 .form-control-with-icon-end {
