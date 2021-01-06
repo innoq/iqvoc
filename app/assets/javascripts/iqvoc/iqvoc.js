@@ -68,17 +68,8 @@ var debounce = function(fn, delay) {
   };
 };
 
-// work around apparent capybara-webkit issue:
-// https://github.com/thoughtbot/capybara-webkit/issues/43
-var Storage = localStorage || null;
-if(Storage === null) {
-  Storage = {};
-  Storage.getItem = function() { return null; };
-  Storage.setItem = $.noop;
-}
 
 return {
-  Storage: Storage,
   createNote: createNote,
   debounce: debounce
 };
@@ -93,10 +84,10 @@ jQuery(document).ready(function($) {
   var langWidget = $("ul.lang-widget")[0];
   // primary language (converting links to radio buttons)
   $("a", langWidget).each(function(i, node) {
-    var link = $(node),
-      el = link.closest("li"),
-      btn = $('<input type="radio" name="primary_language">');
-    if(link.hasClass("current")) {
+    var link = $(node);
+    var el = link.closest("li");
+    var btn = $('<input type="radio" name="primary_language">');
+    if(link.hasClass("active")) {
       btn[0].checked = true;
     }
     var label = $("<label />").append(btn).append(link);
@@ -129,7 +120,7 @@ jQuery(document).ready(function($) {
       });
     });
   };
-  $(document).bind("lang_selected", function(ev, data) {
+  $(document).on("lang_selected", function(ev, data) {
     toggleSections(data.langs);
     updateNoteLangs(data.langs);
   });

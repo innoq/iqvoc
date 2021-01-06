@@ -59,12 +59,12 @@ $.extend(LanguageSelector.prototype, {
 });
 
 getSelection = function(namespace) {
-	var langs = IQVOC.Storage.getItem(namespace);
+	var langs = localStorage.getItem(namespace);
 	return langs === null ? null : (langs ? langs.split(",") : []);
 };
 
 setSelection = function(langs, namespace, context) {
-	IQVOC.Storage.setItem(namespace, langs.join(","));
+	localStorage.setItem(namespace, langs.join(","));
 	context.notify();
 };
 

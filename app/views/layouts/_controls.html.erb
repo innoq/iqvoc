@@ -11,8 +11,7 @@
         <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.primary") %></h2></li>
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
           <li class="lang-widget-item">
-          <%= link_to t("languages.#{lang.presence || "-"}", :default => lang.presence || "-"), :lang => lang || "none",
-              :class => ("current" if lang == I18n.locale.to_s) %>
+          <%= link_to t("languages.#{lang.presence || "-"}", default: lang.presence || "-"), url_for(lang: lang || "none"), class: ("active" if lang == I18n.locale.to_s) %>
           </li>
         <% end %>
       <% end %>
