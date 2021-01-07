@@ -130,11 +130,6 @@ jQuery(document).ready(function($) {
     $(":checkbox", langSelector.container).prop("disabled", true);
   }
 
-  // entity selection (edit mode)
-  $("input.entity_select").each(function(i, node) {
-    new IQVOC.QualifiedEntitySelector(node);
-  });
-
   // hide broader relations for top+ terms (mutually exclusive in mono hierarchies)
   var topTerm = $("#concept_top_term.exclusive");
   var onTopTermToggle = function(ev) {
