@@ -146,11 +146,11 @@ jQuery(document).ready(function($) {
 
   // Label editing (inline notes)
   $("fieldset.note_relation ol li.inline_note.new").hide();
-  $("fieldset.note_relation input[type=button]").click(function(ev) {
+  $("fieldset.note_relation input[type=button]").on('click', function(ev) {
     IQVOC.createNote.apply(this, arguments);
     langSelector.notify(); // trigger updateNoteLangs -- XXX: hacky!?
   });
-  $("li.inline_note input:checkbox").change(function(ev) {
+  $("li.inline_note input:checkbox").on('change', function(ev) {
     var action = this.checked ? "addClass" : "removeClass";
     $(this).closest("li")[action]("deleted");
   });
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
     //window.open($(this).attr("data-url"), '_blank');
   //});
 
-  $(".dashboard-glance-link").click(function(ev) {
+  $(".dashboard-glance-link").on('click', function(ev) {
     ev.preventDefault();
 
     var modal = $("#concept-teaser-modal");
@@ -181,13 +181,13 @@ jQuery(document).ready(function($) {
   });
 
   // Search
-  $(".checkbox-select-all").click(function() {
+  $(".checkbox-select-all").on('click', function() {
     $(this).closest('.checkbox-controls').find("input:checkbox").prop("checked", true);
   });
-  $(".checkbox-select-none").click(function() {
+  $(".checkbox-select-none").on('click', function() {
     $(this).closest('.checkbox-controls').find("input:checkbox").prop("checked", false);
   });
-  $("select.search_type").change(function() {
+  $("select.search_type").on('change', function() {
     var result_type_filter = $(".result_type_filter");
     var selected = $(this).val();
     var targets = ['labels', 'pref_labels', 'alt_labels'];
@@ -198,10 +198,7 @@ jQuery(document).ready(function($) {
       result_type_filter.hide();
     }
   });
-  $("select.search_type").change();
-
-  // hierarchical tree view
-  IQVOC.treeview("ul.hybrid-treeview");
+  $("select.search_type").trigger('change');
 
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
@@ -213,11 +210,6 @@ jQuery(document).ready(function($) {
   } else { // view mode
     new IQVOC.ConceptMappingManager(".panel-body.match", false);
   }
-
-  IQVOC.labelResolver();
-  $(document.body).on("concept-label", function(ev, container) {
-    IQVOC.labelResolver(container);
-  });
 
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
