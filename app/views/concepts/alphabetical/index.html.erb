@@ -1,5 +1,5 @@
 <%= page_header :title => Iqvoc::Concept.base_class.model_name.human(:count => 2),
-  :desc => t('txt.views.navigation.alphabetical') %>
+  :desc => "#{t('txt.views.navigation.alphabetical')} (#{number_with_delimiter(Iqvoc::Concept.base_class.not_expired.size)})" %>
 <%= render 'concepts/sidebars/plural' %>
 
 <div class="panel">
