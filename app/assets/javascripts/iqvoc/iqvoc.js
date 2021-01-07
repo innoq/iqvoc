@@ -203,14 +203,6 @@ jQuery(document).ready(function($) {
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
-  new IQVOC.FederatedConceptMapper(".matches");
-  // XXX: inelegant
-  if($("textarea:first").length) { // edit mode
-    new IQVOC.ConceptMappingManager(".matches", true);
-  } else { // view mode
-    new IQVOC.ConceptMappingManager(".panel-body.match", false);
-  }
-
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   })
