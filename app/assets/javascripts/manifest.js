@@ -1,2 +1,2 @@
-//= require framework
-//= require iqvoc/manifest
+import './framework'
+import './iqvoc/manifest'

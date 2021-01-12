@@ -1,21 +1,21 @@
-@import 'iqvoc/mixins/mixins';
+@import 'mixins/mixins';
 
-@import 'iqvoc/settings/fonts';
-@import 'iqvoc/settings/variables';
-@import 'iqvoc/settings/bootstrap';
+@import 'settings/fonts';
+@import 'settings/variables';
+@import 'settings/bootstrap';
 
-@import 'iqvoc/components/treeview';
-@import 'iqvoc/components/components';
-@import 'iqvoc/components/panels';
-@import 'iqvoc/components/sidebars';
-@import 'iqvoc/components/simplete';
-@import 'iqvoc/components/forms';
-@import 'iqvoc/components/notes';
-@import 'iqvoc/components/entity_select';
-@import 'iqvoc/components/modals';
-@import 'iqvoc/components/label-list';
-@import 'iqvoc/components/typeahead';
-@import 'iqvoc/components/datepicker';
-@import 'iqvoc/components/onebox';
+@import 'components/treeview';
+@import 'components/components';
+@import 'components/panels';
+@import 'components/sidebars';
+@import 'components/simplete';
+@import 'components/forms';
+@import 'components/notes';
+@import 'components/entity_select';
+@import 'components/modals';
+@import 'components/label-list';
+@import 'components/typeahead';
+@import 'components/datepicker';
+@import 'components/onebox';
 
-@import 'iqvoc/hacks/hacks';
+@import 'hacks/hacks';

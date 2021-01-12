@@ -6,7 +6,7 @@ ul.jqtree-tree {
   margin-left: 0;
 
   li {
-    background: url(asset_path('treeview-default-line.gif')) no-repeat;
+    background: asset-url('treeview-default-line.gif') no-repeat;
     background-position: 2px 0px;
     line-height: 1.8em;
     padding-left: 18px;
@@ -98,7 +98,7 @@ ul.jqtree-tree {
   .fa-arrows { cursor: move;}
 
   .jqtree-loading > div.jqtree-element.jqtree_common:after {
-    content: url(asset_path('ajax-loader.gif'));
+    content: asset-url('ajax-loader.gif');
     margin-left: 8px;
   }
 
