@@ -1,4 +1,5 @@
 //= require iqvoc/iqvoc
+//= require iqvoc/create_note
 //= require iqvoc/debounce
 //= require iqvoc/langselect
 //= require iqvoc/entityselect
