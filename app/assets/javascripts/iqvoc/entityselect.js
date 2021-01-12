@@ -129,7 +129,6 @@ $.extend(EntitySelector.prototype, {
       if(entity.published === false) {
         uri += '?published=0'
       }
-      console.log(uri)
       el = $('<a target="_blank" />').attr("href", uri).text(entity.name);
     } else {
       el = $('<span />').text(entity.name);
