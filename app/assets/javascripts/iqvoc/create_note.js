@@ -5,27 +5,27 @@ IQVOC.createNote = (function ($) {
     var container = addButton.closest("fieldset");
     var source = $("ol li:last-child", container);
     var inputSelector = "input, select, textarea";
-  
+
     if(source.is(":hidden")) {
       source.show();
       return false;
     }
-  
+
     var clone = source.clone();
-  
+
     var count = source.find(inputSelector)[0].id
         .match(/_(\d+)_/)[1];
     count = String(parseInt(count, 10) + 1);
     var newIdCount = "_" + count + "_",
       newNameCount = "[" + count + "]";
-  
+
     clone.find("label").each(function(index, element) {
       var el = $(element);
       if(el.attr("for")) {
         el.attr("for", el.attr("for").replace(/_\d+_/, newIdCount));
       }
     });
-  
+
     clone.find(inputSelector).each(function(index, element) {
       var el = $(element);
       el.val("");
@@ -40,10 +40,10 @@ IQVOC.createNote = (function ($) {
         el.val(lastPos + 1);
       }
     });
-  
+
     clone.addClass("new");
     $("ol", container).append(clone);
-  
+
     return false;
   };
 

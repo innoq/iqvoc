@@ -143,7 +143,7 @@
     // init
 
     // XXX: inelegant
-    if($("textarea:first").length) { 
+    if($("textarea:first").length) {
       // edit mode
       new ConceptMappingManager(".matches", true);
     } else {
