@@ -19,6 +19,7 @@ require 'carrierwave'
 require 'faraday'
 require 'faraday_middleware'
 require 'rack-mini-profiler'
+require 'faucet_pipeline_rails'
 
 module Iqvoc
   class Engine < Rails::Engine

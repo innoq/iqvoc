@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'delayed_job_active_record', '~> 4.1.1'
   s.add_dependency 'carrierwave'
   s.add_dependency 'rack-mini-profiler'
+  s.add_dependency 'faucet_pipeline_rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,public,lib,test,vendor}/**/*')
