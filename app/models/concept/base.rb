@@ -555,6 +555,10 @@ class Concept::Base < ApplicationRecord
     Delayed::Backend::ActiveRecord::Job.where(delayed_global_reference_id: gid)
   end
 
+  def expired?
+    self.expired_at && self.expired_at < Date.today
+  end
+
   private
 
   # checks if provided uri is defined as a federation source
