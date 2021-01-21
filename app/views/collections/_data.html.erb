@@ -18,7 +18,14 @@
 </div>
 
 <div class="relation panel">
-  <h2><%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %></h2>
+  <h2>
+    <%= Iqvoc::Concept.base_class.model_name.human(:count => 2) %>
+    <% if can?(:update, Iqvoc::Concept.base_class)%>
+      <small>
+        (<%= collection.concepts.size %>)
+      </small>
+    <% end %>
+  </h2>
   <div class="relation-body">
     <ul>
       <%- collection.concepts.sort {|a, b| a.pref_label.to_s <=> b.pref_label.to_s }.each do |concept| -%>
@@ -31,7 +38,14 @@
 </div>
 
 <div class="relation panel">
-  <h2><%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %></h2>
+  <h2>
+    <%= Iqvoc::Collection.base_class.model_name.human(:count => 2) %>
+    <% if can?(:update, Iqvoc::Collection.base_class)%>
+    <small>
+      (<%= collection.subcollections.size %>)
+    </small>
+  <% end %>  
+  </h2>
   <ul class="hybrid-treeview" data-url="<%= collections_path(:format => :json) %>">
     <%= render :partial => 'collection', :collection => collection.subcollections.sort {|a, b| a.pref_label <=> b.pref_label } %>
   </ul>

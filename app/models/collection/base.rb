@@ -99,10 +99,6 @@ class Collection::Base < Concept::Base
     members.map(&:target).compact.reject { |m| m.is_a?(::Collection::Base) }
   end
 
-  def additional_info
-    concepts.count
-  end
-
   def to_param
     origin
   end

@@ -35,12 +35,15 @@ class CollectionsController < ApplicationController
         response = if params[:root].present?
           collections = Iqvoc::Collection.base_class.with_pref_labels.published.by_parent_id(params[:root])
           collections.map do |collection|
-            { id: collection.id,
+            res = { 
+              id: collection.id,
               url: collection_path(id: collection, format: :html),
               name: CGI.escapeHTML(collection.pref_label.to_s),
-              load_on_demand: collection.subcollections.any?,
-              additionalText: " (#{collection.additional_info})"
+              load_on_demand: collection.subcollections.any?
             }
+            res[:additionalText] = " (#{collection.additional_info})" if collection.additional_info
+
+            res
           end
         else
           collections = Iqvoc::Collection.base_class.with_pref_labels.published.merge(Label::Base.by_query_value("#{params[:query]}%"))
