@@ -1,4 +1,4 @@
-<% 
+<%
   subtitle = t('txt.views.navigation.alphabetical')
   if can?(:update, Iqvoc::Concept.base_class)
     subtitle += " (#{number_with_delimiter(Iqvoc::Concept.base_class.not_expired.size)})"

@@ -44,7 +44,7 @@
     <small>
       (<%= collection.subcollections.size %>)
     </small>
-  <% end %>  
+  <% end %>
   </h2>
   <ul class="hybrid-treeview" data-url="<%= collections_path(:format => :json) %>">
     <%= render :partial => 'collection', :collection => collection.subcollections.sort {|a, b| a.pref_label <=> b.pref_label } %>

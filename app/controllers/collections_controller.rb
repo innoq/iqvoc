@@ -35,7 +35,7 @@ class CollectionsController < ApplicationController
         response = if params[:root].present?
           collections = Iqvoc::Collection.base_class.with_pref_labels.published.by_parent_id(params[:root])
           collections.map do |collection|
-            res = { 
+            res = {
               id: collection.id,
               url: collection_path(id: collection, format: :html),
               name: CGI.escapeHTML(collection.pref_label.to_s),
