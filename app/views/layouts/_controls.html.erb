@@ -1,31 +1,36 @@
 <ul class="nav navbar-nav ml-auto">
-  <div class="dropdown-divider"></div>
-  <li id="language_selection" class="dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+  <li id="language_selection" class="nav-item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
       <%= t("txt.views.lang_widget.caption") %>
     </a>
 
     <ul class="lang-widget dropdown-menu">
       <%- if Iqvoc::Concept.pref_labeling_languages.reject(&:nil?).any? -%>
-        <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.primary") %></h2></li>
+        <li class="lang-widget-header">
+          <h2><%= t("txt.views.lang_widget.primary") %></h2>
+        </li>
         <% Iqvoc::Concept.pref_labeling_languages.each do |lang| %>
           <li class="lang-widget-item">
-          <%= link_to t("languages.#{lang.presence || "-"}", default: lang.presence || "-"), url_for(lang: lang || "none"), class: ("active" if lang == I18n.locale.to_s) %>
+            <%= link_to t("languages.#{lang.presence || "-"}", default: lang.presence || "-"), url_for(lang: lang || "none"), class: ("active" if lang == I18n.locale.to_s) %>
           </li>
         <% end %>
       <% end %>
 
       <% secondary_languages = Iqvoc.all_languages.reject { |lang| lang == I18n.locale.to_s } %>
         <% if secondary_languages.any? %>
-          <li class="lang-widget-header"><h2><%= t("txt.views.lang_widget.secondary") %></h2></li>
-            <% secondary_languages.each do |lang| %>
-          <li class="lang-widget-item">
+          <div class="dropdown-divider"></div>
+
+          <li class="lang-widget-header">
+            <h2><%= t("txt.views.lang_widget.secondary") %></h2>
+          </li>
+          <% secondary_languages.each do |lang| %>
+            <li class="lang-widget-item">
             <label>
               <input type="checkbox" value="<%= lang %>"> <%= t("languages.#{lang.presence || "-"}", :default => lang.presence || "-") %>
             </label>
-          </li>
+            </li>
+          <% end %>
         <% end %>
-      <% end %>
     </ul>
   </li>
 
