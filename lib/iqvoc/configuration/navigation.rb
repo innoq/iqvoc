@@ -33,6 +33,12 @@ module Iqvoc
         end
       end
 
+      # removes first item matching name
+      def self.remove(name)
+        item = items.find { |menu_item| menu_item[:text] == name}
+        items.delete(item)
+      end
+
       def self.add_grouped(item, position = nil)
         index = setup_extension_group(position)
         items[index][:items] << item

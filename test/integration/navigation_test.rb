@@ -42,4 +42,31 @@ class NavigationTest < ActionDispatch::IntegrationTest
     assert_equal 1, dropdown.all('a').size
     assert dropdown.has_link?('extension 1')
   end
+
+  test 'remove navigation element' do
+    Iqvoc::Configuration::Navigation.add({
+      text: 'root element X',
+      href: 'http://foo.local/'
+    })
+    Iqvoc::Configuration::Navigation.add({
+      text: 'root element Y',
+      href: 'http://foo.local/'
+    })
+
+    visit '/en'
+
+    nav = page.first('.fixed-top')
+
+    assert nav.has_link?('root element X'), 'Configured navbar element is missing or not in expected position'
+    assert nav.has_link?('root element Y'), 'Configured navbar element is missing or not in expected position'
+
+    Iqvoc::Configuration::Navigation.remove('root element X')
+
+    visit '/en'
+
+    nav2 = page.first('.fixed-top')
+
+    refute nav2.has_link?('root element X'), 'Removed navbar element is still showing'
+    assert nav2.has_link?('root element Y'), 'Configured navbar element is missing or not in expected position'
+  end
 end
