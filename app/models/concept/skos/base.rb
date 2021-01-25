@@ -44,6 +44,7 @@ class Concept::SKOS::Base < Concept::Base
   def self.recent(limit = 5)
     self
     .published
+    .not_expired
     .joins(:notes => :annotations)
     .where(note_annotations: { predicate: 'created' })
     .order('note_annotations.value DESC')
