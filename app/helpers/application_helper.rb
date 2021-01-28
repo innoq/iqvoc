@@ -30,7 +30,7 @@ module ApplicationHelper
 
   # Formats a list of items or returns a remark if no items where given
   def item_listing(items, &block)
-    return nil if items.empty?
+    return "-#{t('txt.views.search_results.none')}-" if items.empty?
 
     content_tag :ul, class: 'entity_list' do
       items.map do |item|
