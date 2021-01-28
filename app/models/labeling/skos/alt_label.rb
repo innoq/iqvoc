@@ -16,4 +16,8 @@
 
 class Labeling::SKOS::AltLabel < Labeling::SKOS::Base
   self.rdf_predicate = 'altLabel'
+
+  def self.view_section_sort_key(obj)
+    60
+  end
 end
