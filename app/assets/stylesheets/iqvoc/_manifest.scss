@@ -1,8 +1,4 @@
-@import 'mixins/mixins';
-
-@import 'settings/fonts';
-@import 'settings/variables';
-@import 'settings/bootstrap';
+@import 'bootstrap_overrides';
 
 @import 'components/treeview';
 @import 'components/components';
