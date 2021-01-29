@@ -37,7 +37,7 @@ class NavigationTest < ActionDispatch::IntegrationTest
     assert nav.has_link?('Extensions'),
       'Configured navbar element is missing or not in expected position'
 
-    dropdown = nav.all('.dropdown-menu')[2]
+    dropdown = nav.all('.dropdown-menu')[1]
 
     assert_equal 1, dropdown.all('a').size
     assert dropdown.has_link?('extension 1')
