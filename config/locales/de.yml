@@ -96,7 +96,7 @@ de:
          labels: Bezeichner
          relations: Beziehungen
          notes: Anmerkungen
-         matches: Links zu anderen Thesauri und Vokabularen
+         matches: Links zu anderen Vokabularen
        application:
          header: "innoQ Vocabulary Management"
          select_language: "Sprache auswählen"
