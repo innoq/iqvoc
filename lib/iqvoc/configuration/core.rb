@@ -45,7 +45,7 @@ module Iqvoc
           controller: 'dashboard',
           :authorized? => proc { can? :use, :dashboard }
         }, {
-          text: 'Scheme',
+          text: proc { t('txt.views.navigation.scheme') },
           href: proc { scheme_path },
           controller: 'concepts/scheme',
           :authorized? => proc { can? :read, Iqvoc::Concept.root_class.instance }
