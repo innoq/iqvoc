@@ -58,7 +58,7 @@ module NavigationHelper
   end
 
   def sidebar_header(text)
-    content_tag :h4, text, class: 'sidebar-header'
+    content_tag :h3, text, class: 'sidebar-header'
   end
 
   def sidebar_item(opts = {}, &block)
