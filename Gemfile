@@ -39,7 +39,7 @@ gem 'uglifier'
 gem "bootstrap_form", "~> 4.0"
 gem 'apipie-rails'
 gem 'maruku', require: false
-gem 'database_cleaner'
+gem 'database_cleaner', '~> 1.8.5'
 gem 'delayed_job_active_record'
 gem 'carrierwave'
 gem 'daemons'

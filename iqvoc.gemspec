@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'uglifier', '>= 1.3.0'
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
-  s.add_dependency 'database_cleaner'
+  s.add_dependency 'database_cleaner', '~> 1.8.5'
   s.add_dependency 'delayed_job_active_record', '~> 4.1.1'
   s.add_dependency 'carrierwave'
   s.add_dependency 'rack-mini-profiler'
