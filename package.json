@@ -22,6 +22,6 @@
     "popper.js": "^1.16.1",
     "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5",
-    "urijs": "^1.19.5"
+    "urijs": "^1.19.6"
   }
 }
