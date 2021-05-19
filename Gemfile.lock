@@ -251,8 +251,10 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.6)
-    puma (3.12.6)
-    puma (3.12.6-java)
+    puma (4.3.8)
+      nio4r (~> 2.0)
+    puma (4.3.8-java)
+      nio4r (~> 2.0)
     racc (1.5.2)
     racc (1.5.2-java)
     rack (2.2.3)
@@ -464,7 +466,7 @@ DEPENDENCIES
   pg (~> 0.21.0)
   poltergeist
   pry-rails
-  puma (~> 3.12)
+  puma (~> 4.3)
   rack-mini-profiler
   rails (~> 5.2.0)
   rails_12factor
