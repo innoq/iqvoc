@@ -20,7 +20,7 @@ source 'https://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '~> 5.2.0'
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 gem 'kaminari'
 gem 'authlogic', '~> 6.2.0'
 gem 'scrypt'
