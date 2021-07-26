@@ -1,3 +1,6 @@
+import 'jqtree/tree.jquery.js';
+import URI from 'urijs/src/URI.js';
+
 /*jslint vars: true, browser: true, white: true */
 /*global jQuery, IQVOC */
 

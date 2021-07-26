@@ -28,7 +28,6 @@ module Iqvoc
         self.core_assets = %w(
           manifest.css
           manifest.js
-          html5shiv/dist/html5shiv.js
           *.png
           *.jpg
           *.jpeg

@@ -6,22 +6,36 @@
     "type": "git",
     "url": "git+https://github.com/innoq/iqvoc.git"
   },
+  "files": [
+    "app/assets/**/*"
+  ],
+  "scripts": {
+    "watch": "faucet --watch",
+    "compile": "faucet --compact --fingerprint"
+  },
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/innoq/iqvoc/issues"
   },
   "homepage": "https://github.com/innoq/iqvoc#readme",
+  "devDependencies": {
+    "faucet-pipeline-js": "^2.1.7",
+    "faucet-pipeline-jsmin": "^2.1.7",
+    "faucet-pipeline-sass": "^1.4.0",
+    "faucet-pipeline-static": "^1.2.0"
+  },
   "dependencies": {
     "bootstrap": "4.3.1",
     "bootstrap-datepicker": "^1.9.0",
     "document-register-element": "^1.14.5",
+    "font-awesome": "^4.7.0",
     "jqtree": "^1.4.12",
     "jquery": "^3.5.1",
     "jquery-ujs": "^1.2.2",
     "popper.js": "^1.16.1",
     "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5",
-    "urijs": "^1.19.6"
+    "urijs": "^1.19.7"
   }
 }

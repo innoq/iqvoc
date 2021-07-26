@@ -10,19 +10,16 @@ require 'iq_rdf'
 require 'deep_cloneable'
 require 'json'
 require 'rails_autolink'
-require 'sass'
-require 'sass-rails'
 require 'bootstrap_form'
-require 'font-awesome-rails'
 require 'uglifier'
 require 'apipie-rails'
 require 'database_cleaner'
 require 'delayed_job_active_record'
 require 'carrierwave'
-require 'autoprefixer-rails'
 require 'faraday'
 require 'faraday_middleware'
 require 'rack-mini-profiler'
+require 'faucet_pipeline_rails'
 
 module Iqvoc
   class Engine < Rails::Engine
@@ -32,12 +29,6 @@ module Iqvoc
       if Kernel.const_defined?(:ApplicationController)
         ApplicationController.send(:include, Iqvoc::ControllerExtensions)
       end
-    end
-
-    initializer 'iqvoc.add_assets_to_precompilation' do |app|
-      # add host app assets when mounting iqvoc as a engine
-      app.config.assets.paths << Iqvoc::Engine.root.join('node_modules')
-      app.config.assets.precompile += Iqvoc.core_assets
     end
 
     initializer 'iqvoc.load_migrations' do |app|

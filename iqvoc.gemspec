@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.license     = 'Apache License 2.0'
 
   s.add_dependency 'rails', '>= 5.2.0', '< 6.0'
-  s.add_dependency 'puma', '>= 3.11', '< 5.0'
+  s.add_dependency 'puma', '< 6.0'
   s.add_dependency 'bootsnap', '>= 1.1.0'
   s.add_dependency 'bundler'
   s.add_dependency 'kaminari', '~> 1.2.0'
@@ -26,22 +26,20 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails_autolink'
   s.add_dependency 'faraday', '0.9.0'
   s.add_dependency 'faraday_middleware'
-  s.add_dependency 'sass-rails', '~> 5.0.0'
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'
   s.add_dependency 'rdf-vocab'
   s.add_dependency 'deep_cloneable'
-  s.add_dependency 'font-awesome-rails'
   s.add_dependency 'uglifier', '>= 1.3.0'
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
-  s.add_dependency 'database_cleaner'
+  s.add_dependency 'database_cleaner', '~> 1.8.5'
   s.add_dependency 'delayed_job_active_record', '~> 4.1.1'
   s.add_dependency 'carrierwave'
-  s.add_dependency 'autoprefixer-rails', '~> 6.5.1.1'
   s.add_dependency 'rack-mini-profiler'
+  s.add_dependency 'faucet_pipeline_rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,public,lib,test,vendor}/**/*')

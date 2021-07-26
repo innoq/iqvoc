@@ -20,7 +20,7 @@ source 'https://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '~> 5.2.0'
-gem 'puma', '~> 3.12'
+gem 'puma', '< 6.0'
 gem 'kaminari'
 gem 'authlogic', '~> 6.2.0'
 gem 'scrypt'
@@ -36,16 +36,14 @@ gem 'linkeddata'
 gem "rdf-vocab"
 gem "deep_cloneable"
 gem 'uglifier'
-gem 'sass-rails', '~> 5.0.0'
 gem "bootstrap_form", "~> 4.0"
-gem 'font-awesome-rails'
 gem 'apipie-rails'
 gem 'maruku', require: false
-gem 'database_cleaner'
+gem 'database_cleaner', '~> 1.8.5'
 gem 'delayed_job_active_record'
 gem 'carrierwave'
-gem 'autoprefixer-rails', '~> 6.5.1.1'
 gem 'daemons'
+gem 'faucet_pipeline_rails'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 

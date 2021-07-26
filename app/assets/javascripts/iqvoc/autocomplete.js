@@ -1,3 +1,5 @@
+import 'typeahead.js/dist/typeahead.jquery.js'
+
 IQVOC.autocomplete = (function($) {
 
 // `field` is the input field to be augmented
