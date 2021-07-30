@@ -44,7 +44,7 @@ module SearchExtension
     end
 
     def build_query_string(params = {})
-      query_str = params[:query]
+      query_str = params[:query].strip
       query_str = "%#{query_str}" if ['contains', 'ends_with'].include?(params[:query_type].to_s)
       query_str = "#{query_str}%" if ['contains', 'begins_with'].include?(params[:query_type].to_s)
       # Note that 'contains' will add an '%' to the beginning AND to the end
