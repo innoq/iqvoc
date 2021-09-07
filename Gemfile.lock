@@ -56,7 +56,7 @@ GEM
       request_store (~> 1.0)
     bcp47 (0.3.3)
       i18n
-    better_errors (2.6.0)
+    better_errors (2.8.0)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -87,7 +87,7 @@ GEM
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
     cliver (0.3.2)
-    coderay (1.1.2)
+    coderay (1.1.3)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.2)
     crack (0.4.3)
