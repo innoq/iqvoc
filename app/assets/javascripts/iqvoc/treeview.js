@@ -1,5 +1,4 @@
 import 'jqtree/tree.jquery.js';
-import URI from 'urijs/src/URI.js';
 
 /*jslint vars: true, browser: true, white: true */
 /*global jQuery, IQVOC */
@@ -46,8 +45,9 @@ import URI from 'urijs/src/URI.js';
         openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
         data: data,
         dataUrl: function(node) {
-          var uri = URI(url).addQuery('root', node.id);
-          return uri.normalize().toString();
+          var uri = new URL(url, window.location.origin);
+          uri.searchParams.append('root', node.id);
+          return uri.toString();
         },
         onCreateLi: function(node, $li) {
           var link = buildLink(node.url, node.name);
@@ -60,9 +60,6 @@ import URI from 'urijs/src/URI.js';
 
           // mark published/unpublished items
           if (typeof node.published !== 'undefined' && !node.published) {
-            // modify draft link
-            var href = URI(link.attr('href'));
-            link.attr('href', href.addQuery('published', 0));
             link.addClass('unpublished');
           } else {
             link.addClass('published');
