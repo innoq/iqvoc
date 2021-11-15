@@ -1,27 +1,26 @@
 .panel {
   min-height: 20px;
-  padding: 0 19px 19px 19px;
-  margin-bottom: 20px;
+  padding: 32px 0;
+  margin-bottom: 0;
   background-color: #fff;
-  border: 1px solid $widget-border-color-dark;
-  border-radius: $border-radius-default;
+  border-bottom: 1px solid $widget-border-color-dark;
+
   h1, h2, h3, h4, h5, .panel-header {
-    border-bottom: 1px solid #eee;
-    margin: 0 -19px 0 -19px;
-    padding: 5px 10px;
-    margin-bottom: 25px;
-    background-color: $widget-background-color-dark;
+    margin-bottom: 18px;
+
     &.centered {
       text-align: center;
     }
   }
+
   h2 {
+    @extend %font-bold;
     font-size: 18px;
-    line-height: 27px;
     small {
       font-size: 14px;
     }
   }
+
   div:last-child {
     margin-bottom: 0;
   }
