@@ -77,10 +77,6 @@ group :production do
   gem 'passenger', '= 5.3.7'
 end
 
-platforms :ruby do
-  gem 'therubyracer'
-end
-
 group :heroku do
   gem 'rails_12factor'
 end
