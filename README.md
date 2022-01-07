@@ -144,7 +144,7 @@ If you want to help out there are several options:
 If you make changes to existing code please make sure that the test suite stays
 green. Please include tests to your additional contributions.
 
-Tests can be run via `bundle exec rake test`. We're using Poltergeist for
+Tests can be run via `bundle exec rake test`. We're using Cuprite for
 integration tests with JavaScript support.
 
 ## Maintainer & Contributors

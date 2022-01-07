@@ -16,12 +16,12 @@
 require File.expand_path('test_helper', File.dirname(__FILE__))
 require 'capybara/rails'
 require 'capybara/dsl'
-require 'capybara/poltergeist'
+require 'capybara/cuprite'
 require 'webmock'
 require File.expand_path('authentication', File.dirname(__FILE__))
 
 Capybara.server = :webrick
-Capybara.javascript_driver = :poltergeist
+Capybara.javascript_driver = :cuprite
 
 WebMock.allow_net_connect! # required for integration tests
 

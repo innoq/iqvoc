@@ -93,6 +93,9 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
+    cuprite (0.13)
+      capybara (>= 2.1, < 4)
+      ferrum (~> 0.11.0)
     daemons (1.3.1)
     database_cleaner (1.8.5)
     deep_cloneable (3.0.0)
@@ -115,6 +118,11 @@ GEM
       faraday (>= 0.7.4, < 1.0)
     faucet_pipeline_rails (1.0.1)
       rails (>= 4.2.10)
+    ferrum (0.11)
+      addressable (~> 2.5)
+      cliver (~> 0.3)
+      concurrent-ruby (~> 1.1)
+      websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.3)
     ffi (1.15.3-java)
     ffi-compiler (1.0.1)
@@ -234,10 +242,6 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.21.0)
-    poltergeist (1.18.1)
-      capybara (>= 2.1, < 4)
-      cliver (~> 0.3.1)
-      websocket-driver (>= 0.2.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -428,6 +432,7 @@ DEPENDENCIES
   cancancan
   capybara
   carrierwave
+  cuprite
   daemons
   database_cleaner (~> 1.8.5)
   deep_cloneable
@@ -445,7 +450,6 @@ DEPENDENCIES
   nokogiri
   passenger (= 5.3.7)
   pg (~> 0.21.0)
-  poltergeist
   pry-rails
   puma (< 6.0)
   rack-mini-profiler

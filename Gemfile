@@ -67,7 +67,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'cuprite'
   gem 'webmock'
 end
 
