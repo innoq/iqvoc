@@ -37,7 +37,7 @@ module Versioning
 
   module ClassMethods
     def by_origin(origin)
-      where(origin: origin)
+      default_scoped.where(origin: origin)
     end
 
     def published

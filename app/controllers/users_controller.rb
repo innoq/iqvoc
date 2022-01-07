@@ -50,7 +50,7 @@ class UsersController < ApplicationController
     # could not change his own role and permissions
     params = can?(:manage, User) ? user_params : user_params.except(:active, :role, :comment)
 
-    if @user.update_attributes(params)
+    if @user.update(params)
       flash[:success] = I18n.t('txt.controllers.users.successfully_updated')
       redirect_to can?(:manage, User) ? users_path : dashboard_path
     else

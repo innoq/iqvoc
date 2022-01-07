@@ -150,7 +150,7 @@ boot:
 
     get :show, params: { lang: 'en', format: 'ttl', root: 'root' }
     assert_response 200
-    assert_equal @response.content_type, 'text/turtle'
+    assert_equal @response.media_type, 'text/turtle'
     assert @response.body =~ /:root[^\.]+skos:topConceptOf[^\.]+:scheme/m
     assert @response.body =~ /:root[^\.]+skos:prefLabel[^\.]+"Root"@en/m
     assert @response.body =~ /:root[^\.]+skos:narrower[^\.]+:bar/m
@@ -180,7 +180,7 @@ boot:
 
     get :show, params: { lang: 'en', format: 'ttl', root: 'lorem', dir: 'up' }
     assert_response 200
-    assert_equal @response.content_type, 'text/turtle'
+    assert_equal @response.media_type, 'text/turtle'
     assert @response.body.include?(<<-EOS)
 :lorem a skos:Concept;
        skos:prefLabel "Lorem"@en;
@@ -210,7 +210,7 @@ boot:
 
     get :show, params: { lang: 'en', format: 'rdf', root: 'root' }
     assert_response 200
-    assert_equal @response.content_type, 'application/rdf+xml'
+    assert_equal @response.media_type, 'application/rdf+xml'
   end
 
   test 'root parameter handling' do
@@ -357,7 +357,7 @@ boot:
   test 'avoid duplication' do # in response to a bug report
     get :show, params: { lang: 'en', format: 'ttl', root: 'uno', dir: 'up' }
     assert_response 200
-    assert_equal 'text/turtle', @response.content_type
+    assert_equal 'text/turtle', @response.media_type
     assert @response.body.include?(<<-EOS)
 :bravo a skos:Concept;
        skos:prefLabel "Bravo"@en;

@@ -60,7 +60,7 @@ class Concepts::SchemeController < ApplicationController
     @scheme = Iqvoc::Concept.root_class.instance
     authorize! :update, @scheme
 
-    if @scheme.update_attributes(concept_params)
+    if @scheme.update(concept_params)
       flash[:success] = t('txt.controllers.concept_scheme.save.success')
       redirect_to scheme_path
     else
