@@ -19,6 +19,7 @@ module Iqvoc::Environments
     # Run rails dev:cache to toggle caching.
     if Rails.root.join('tmp', 'caching-dev.txt').exist?
       config.action_controller.perform_caching = true
+      config.action_controller.enable_fragment_cache_logging = true
 
       config.cache_store = :memory_store
       config.public_file_server.headers = {
@@ -30,7 +31,7 @@ module Iqvoc::Environments
       config.cache_store = :null_store
     end
 
-    # Store uploaded files on the local file system (see config/storage.yml for options)
+    # Store uploaded files on the local file system (see config/storage.yml for options).
     config.active_storage.service = :local
 
     # Don't care if the mailer can't send.
@@ -47,11 +48,8 @@ module Iqvoc::Environments
     # Highlight code that triggered database queries in logs.
     config.active_record.verbose_query_logs = true
 
-    # Raises error for missing translations
+    # Raises error for missing translations.
     config.action_view.raise_on_missing_translations = true
-
-    # Raises error for missing translations
-    config.i18n.enforce_available_locales = true
 
     # Use an evented file watcher to asynchronously detect changes in source code,
     # routes, locales, etc. This feature depends on the listen gem.

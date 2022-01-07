@@ -19,7 +19,7 @@ source 'https://rubygems.org'
 # TODO: The following dependencies could be included by the "gemspec" command.
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.4'
 gem 'puma', '< 6.0'
 gem 'kaminari'
 gem 'authlogic', '~> 6.2'
@@ -45,7 +45,7 @@ gem 'carrierwave'
 gem 'daemons'
 gem 'faucet_pipeline_rails'
 
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '>= 1.4.2', require: false
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
@@ -57,8 +57,8 @@ gem 'rack-mini-profiler'
 
 group :development do
   gem 'better_errors'
-  gem 'web-console'
-  gem 'listen'
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.2'
 end
 
 group :development, :test do
