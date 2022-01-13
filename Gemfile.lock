@@ -444,7 +444,7 @@ DEPENDENCIES
   iq_triplestorage
   json
   kaminari
-  linkeddata
+  linkeddata (~> 3.1.0)
   listen
   maruku
   nokogiri

@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
-  s.add_dependency 'linkeddata'
+  s.add_dependency 'linkeddata', '~> 3.1.0'
   s.add_dependency 'rdf-vocab'
   s.add_dependency 'deep_cloneable'
   s.add_dependency 'uglifier', '>= 1.3.0'

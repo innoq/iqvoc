@@ -32,7 +32,7 @@ gem 'rails_autolink'
 gem 'faraday', '0.9.0'
 gem 'faraday_middleware'
 gem 'nokogiri'
-gem 'linkeddata'
+gem 'linkeddata', '~> 3.1.0'
 gem "rdf-vocab"
 gem "deep_cloneable"
 gem 'uglifier'
