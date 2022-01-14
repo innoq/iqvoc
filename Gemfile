@@ -31,8 +31,8 @@ gem 'json'
 gem 'rails_autolink'
 gem 'faraday', '0.9.0'
 gem 'faraday_middleware'
-gem 'nokogiri'
-gem 'linkeddata', '~> 3.1.0'
+gem 'nokogiri', '~> 1.12.0' # for ruby 2.5
+gem 'linkeddata', '~> 3.1.0' # for ruby 2.5
 gem "rdf-vocab"
 gem "deep_cloneable"
 gem 'uglifier'

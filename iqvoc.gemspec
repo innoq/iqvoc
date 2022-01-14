@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
-  s.add_dependency 'nokogiri'
+  s.add_dependency 'nokogiri', '~> 1.12.0'
   s.add_dependency 'linkeddata', '~> 3.1.0'
   s.add_dependency 'rdf-vocab'
   s.add_dependency 'deep_cloneable'
