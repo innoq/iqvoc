@@ -147,7 +147,7 @@ class ConceptsController < ApplicationController
     authorize! :create, Iqvoc::Concept.base_class
 
     @concept = Iqvoc::Concept.base_class.new
-    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol)
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol) if match_sync_enabled?
     @concept.assign_attributes(concept_params)
     @datasets = datasets_as_json
 
@@ -185,7 +185,7 @@ class ConceptsController < ApplicationController
   def update
     @concept = Iqvoc::Concept.base_class.by_origin(params[:id]).unpublished.last!
     authorize! :update, @concept
-    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol)
+    @concept.reverse_match_service = Services::ReverseMatchService.new(request.host, request.protocol) if match_sync_enabled?
 
     @datasets = datasets_as_json
 
@@ -246,5 +246,11 @@ class ConceptsController < ApplicationController
       lang: label.language
       # TODO: relations (XL only)
     }
+  end
+
+  private
+
+  def match_sync_enabled?
+    Iqvoc.config['sources.create_reverse_matches']
   end
 end

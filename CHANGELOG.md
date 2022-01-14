@@ -1,5 +1,7 @@
 ## [4.x.x] unreleased version
 
+* add config option to disable creating reverse matches for concept mappings
+
 ## [4.13.0]
 
 * Switch to Bootstrap v4

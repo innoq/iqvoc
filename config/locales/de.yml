@@ -124,6 +124,7 @@ de:
          triplestore_password: Passwort für Triplestore
          triplestore_autosync: automatische Synchronisation mit Triplestore
          sources_iqvoc: Quellen (iQvoc)
+         sources_create_reverse_matches: Links zu anderen Vokabularen automatisch erstellen
      alphabetical_concepts:
      untranslated_concepts:
        caption: "Fehlende Übersetzungen"

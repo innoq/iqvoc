@@ -136,7 +136,8 @@ module Iqvoc
           'languages.further_labelings.Labeling::SKOS::AltLabel' => ['en', 'de'],
           'languages.notes' => ['en', 'de'],
           'performance.unbounded_hierarchy' => false,
-          'sources.iqvoc' => ['']
+          'sources.iqvoc' => [''],
+          'sources.create_reverse_matches' => true
         })
       end
 
