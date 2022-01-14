@@ -477,6 +477,7 @@ DEPENDENCIES
   rails (~> 5.2.0)
   rails_12factor
   rails_autolink
+  rdf (~> 3.1.0)
   rdf-vocab (~> 3.1.0)
   scrypt
   uglifier
