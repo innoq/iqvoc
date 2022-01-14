@@ -1,7 +1,5 @@
 ## [4.x.x] unreleased version
 
-* 
-
 ## [4.13.0]
 
 * Switch to Bootstrap v4
