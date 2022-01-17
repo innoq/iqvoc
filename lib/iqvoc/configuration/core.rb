@@ -133,6 +133,7 @@ module Iqvoc
         # initialize
         self.config.register_settings({
           'title' => 'iQvoc',
+          'concept_modal_preview' => true,
           'languages.pref_labeling' => ['en', 'de'],
           'languages.further_labelings.Labeling::SKOS::AltLabel' => ['en', 'de'],
           'languages.notes' => ['en', 'de'],
@@ -189,6 +190,10 @@ module Iqvoc
         def title=(value)
           ActiveSupport::Deprecation.warn 'title has been moved into instance configuration', caller
           self.config.register_setting('title', value)
+        end
+
+        def concept_modal_preview_enabled?
+          config['concept_modal_preview'] == true
         end
 
         def engine?

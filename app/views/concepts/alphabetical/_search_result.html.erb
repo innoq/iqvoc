@@ -2,7 +2,9 @@
   <p>
     <%= link_to result.label.to_s, rdf_path(result.concept, lang: nil, format: nil),
       alt: result.concept.origin, data: { 'resource-path': result.path, 'resource-url': rdf_url(result.concept, lang: nil, format: nil) }, class: 'concept-item-link' %>
-    <a href="<%= glance_concept_url(result.concept, format: :html) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a>
+    <% if Iqvoc.concept_modal_preview_enabled? %>
+      <a href="<%= glance_concept_url(result.concept, format: :html) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a>
+    <% end %>
 
     <% if result.concept.additional_info.present? %>
       <span class="additional_info">(<%= result.concept.additional_info %>)</span>

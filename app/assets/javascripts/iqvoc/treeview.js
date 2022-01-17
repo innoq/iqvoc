@@ -15,6 +15,7 @@ import 'jqtree/tree.jquery.js';
 
       var dragabbleSupport = $(container).data('dragabble');
       var polyhierarchySupport = $(container).data('polyhierarchy-support');
+      var conceptModalPreviewEnabled = $(container).data('concept-modal-preview-enabled');
       var saveLabel = $(container).data('save-label');
       var copyLabel = $(container).data('copy-label');
       var undoLabel = $(container).data('undo-label');
@@ -65,7 +66,7 @@ import 'jqtree/tree.jquery.js';
             link.addClass('published');
           }
 
-          if (link[0]) {
+          if (link[0] && conceptModalPreviewEnabled) {
             var teaserLink = buildTeaserLink(node, link[0]);
             $li.find('.jqtree-element').append(teaserLink);
           }

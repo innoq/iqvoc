@@ -113,6 +113,7 @@ en:
          sources: Federation
        settings:
          title: Site title
+         concept_modal_preview: Enable concept modal preview
          available_languages: available languages
          languages_pref_labeling: Languages for preferred labels
          languages_notes: Languages for notes

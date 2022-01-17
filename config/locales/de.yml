@@ -113,6 +113,7 @@ de:
          sources: Föderation
        settings:
          title: Titel
+         concept_modal_preview: Konzept Kurzansicht aktivieren
          available_languages: verfügbare Sprachen
          languages_pref_labeling: Sprachen für bevorzugte Labels
          languages_notes: Sprachen für Notes

@@ -3,11 +3,14 @@
 <ul class="hybrid-treeview" data-url="<%= hcpath %>"
   data-dragabble="true"
   data-polyhierarchy-support="<%= Iqvoc::Concept.root_class.instance.poly_hierarchy? %>"
+  data-concept-modal-preview-enabled="<%= Iqvoc.concept_modal_preview_enabled? %>"
   data-save-label="<%= t('txt.common.move') %>"
   data-copy-label="<%= t('txt.common.copy') %>"
   data-undo-label="<%= t('txt.common.reset') %>">
 <% else %>
-  <ul class="hybrid-treeview" data-url="<%= hcpath %>">
+  <ul class="hybrid-treeview"
+      data-url="<%= hcpath %>"
+      data-concept-modal-preview-enabled="<%= Iqvoc.concept_modal_preview_enabled? %>">
 <% end %>
   <% concepts.select { |c| can? :read, c }.each do |concept| %>
     <% if params[:published] == '0' %>
