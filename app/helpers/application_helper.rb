@@ -62,7 +62,7 @@ module ApplicationHelper
     content_for :page_header do
       content_tag :div, class: 'page-header' do
         content_tag :h1 do
-          ("#{title} #{content_tag(:small, args[:desc])}").html_safe
+          ("#{title} #{content_tag(:small, args[:desc]) if args[:desc]}").html_safe
         end
       end
     end
