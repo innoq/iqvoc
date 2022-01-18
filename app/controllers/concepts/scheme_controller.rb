@@ -42,6 +42,7 @@ class Concepts::SchemeController < ApplicationController
     @top_concepts = Iqvoc::Concept.base_class
                         .preload(:pref_labels)
                         .tops
+                        .not_expired
                         .published.sort_by {|c| c.pref_label }
 
     respond_to do |format|
