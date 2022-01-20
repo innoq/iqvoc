@@ -69,16 +69,20 @@ class Labeling::SKOS::Base < Labeling::Base
     scope = scope.includes(:owner)
 
     scope = case params[:for]
-    when 'concept'
-      scope.where('concepts.type' => Iqvoc::Concept.base_class_name).
-        references(:concepts)
-    when 'collection'
-      scope.where('concepts.type' => Iqvoc::Collection.base_class_name).
-        references(:concepts)
-    else
-      # no additional conditions
-      scope
-    end
+            when 'concept'
+              scope.merge(Iqvoc::Concept.base_class.published)
+            when 'collection'
+              scope.merge(Iqvoc::Collection.base_class.published)
+            else
+              # no additional conditions
+              scope
+            end
+
+    scope = if params[:include_expired]
+              scope.merge(Concept::Base.not_expired).or(scope.merge(Concept::Base.expired))
+            else
+              scope.merge(Concept::Base.not_expired)
+            end
 
     if params[:change_note_date_from].present? || params[:change_note_date_to].present?
       change_note_relation = Iqvoc.change_note_class_name.to_relation_name

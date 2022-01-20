@@ -229,6 +229,7 @@ de:
        submit: "Suche"
        type: "Typ"
        used_as: "benutzt als"
+       expired: "stillgelegte einbeziehen?"
        language: "Sprache"
        all: "alle"
        none: "keine"

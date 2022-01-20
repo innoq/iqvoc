@@ -31,16 +31,6 @@ class Concept::SKOS::Base < Concept::Base
     return subject
   end
 
-  # ********** Scopes
-  def self.expired(time = Time.now)
-    where(arel_table[:expired_at].lt(time))
-  end
-
-  def self.not_expired(time = Time.now)
-    col = arel_table[:expired_at]
-    where((col.eq(nil)).or(col.gteq(time)))
-  end
-
   def self.recent(limit = 5)
     self
     .published

@@ -44,6 +44,8 @@ class SearchResultsController < ApplicationController
   param 'ds[]', String ,
       desc: 'Specifies one or more external data sets (connected thesauri)'\
                'to include in search.'
+  param :include_expired, String,
+        desc: 'Specifies if expired concepts should be included (defaults to false).'
   example <<-DOC
     GET /search.ttl
     200
@@ -176,5 +178,6 @@ class SearchResultsController < ApplicationController
     controller.params['qt'] = 'contains' if controller.params['qt'].nil?
     controller.params['for'] = 'all' if controller.params['for'].nil?
     controller.params['l'] = langs.keys if controller.params['l'].nil?
+    controller.params['include_expired'] = (controller.params['include_expired'] == "true")
   end
 end

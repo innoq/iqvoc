@@ -237,6 +237,7 @@ en:
        submit: "Search"
        type: "type"
        used_as: "used as"
+       expired: "include expired?"
        language: "language"
        all: "all"
        none: "none"
