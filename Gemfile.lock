@@ -464,6 +464,7 @@ DEPENDENCIES
   iq_rdf (>= 0.1.16)
   iq_triplestorage
   json
+  json-canonicalization (~> 0.2.0)
   kaminari
   linkeddata (~> 3.1.0)
   listen

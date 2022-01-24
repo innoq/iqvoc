@@ -35,6 +35,7 @@ gem 'nokogiri', '~> 1.12.0' # for ruby 2.5
 gem 'linkeddata', '~> 3.1.0' # for ruby 2.5
 gem 'rdf-vocab', '~> 3.1.0' # for ruby 2.5
 gem 'rdf', '~> 3.1.0' # for ruby 2.5
+gem 'json-canonicalization', '~> 0.2.0' # for ruby 2.5
 gem "deep_cloneable"
 gem 'uglifier'
 gem "bootstrap_form", "~> 4.0"
