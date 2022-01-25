@@ -18,8 +18,7 @@
 
 </div>
 
-<% if can? :see, :exception %>
-<%# only show error details for known, persisted users %>
+<% if can?(:see, :exception) || Rails.env.development? %>
 <div class="card">
   <h5 class="card-header">
     <%= t("txt.views.errors.common.error_message") %>
