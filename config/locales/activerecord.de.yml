@@ -65,8 +65,8 @@ de:
         one:   "Match"
         other: "Matches"
       match/skos/base:
-        one:   "Match"
-        other: "Matches"
+        one:   "Link zu anderem Vokabular"
+        other: "Links zu anderen Vokabularen"
       match/skos/broad_match:
         one:   "Broader Match"
         other: "Broader Matches"

@@ -1,4 +1,4 @@
-<%= content_tag :div, :class => "relation translation panel" do %>
+<%= content_tag :div, class: "relation translation panel", id: klass.name.to_relation_name do %>
   <% if defined?(concept) %>
     <h2><%= klass.model_name.human(:count => 2) %></h2>
     <div class="relation-body">

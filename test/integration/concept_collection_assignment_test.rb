@@ -51,9 +51,9 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Save'
 
     # there should be two collections
-    assert_equal 2, page.all('#assigned_collections ul li a').size
+    assert_equal 2, page.all('#collection_member_bases ul li a').size
 
-    within('#assigned_collections') do
+    within('#collection_member_bases') do
       assert page.has_content? 'Sports'
       assert page.has_content? 'Hobbies'
     end
@@ -64,9 +64,9 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Save'
 
     # there should be one collection left
-    assert_equal 1, page.all('#assigned_collections ul li a').size
+    assert_equal 1, page.all('#collection_member_bases ul li a').size
 
-    within('#assigned_collections') do
+    within('#collection_member_bases') do
       assert page.has_content? 'Sports'
       refute page.has_content? 'Hobbies'
     end
@@ -77,9 +77,9 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     click_link_or_button 'Save'
 
     # there should be no collections anymore
-    assert_equal 0, page.all('#assigned_collections ul li a').size
+    assert_equal 0, page.all('#collection_member_bases ul li a').size
 
-    within('#assigned_collections') do
+    within('#collection_member_bases') do
       refute page.has_content?('Sports'), 'Sports should be removed'
       refute page.has_content?('Hobbies'), 'Hobbies should be removed'
     end

@@ -120,7 +120,7 @@ module ConceptsHelper
         render(association_class.partial_name(concept), further_options.merge(concept: concept, klass: association_class))
       end
     end
-    html = render partial: '/partials/match/panel', locals: { body: matches_html }
+    html = render partial: '/partials/match/panel', locals: { body: matches_html, klass: Match::SKOS::Base }
     if String.new(html).squish.present?
       ((hash[association_classes.first.view_section(concept)] ||= {})[association_classes.first.view_section_sort_key(concept)] ||= '') << html.html_safe
     end
