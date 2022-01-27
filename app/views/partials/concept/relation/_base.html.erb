@@ -1,12 +1,12 @@
 <div class="relation panel" id="<%= klass.model_name.to_s.to_relation_name %>">
   <h2><%= klass.model_name.human(:count => 2) %></h2>
   <div class="relation-body">
-    <%-
+    <%
       items = concept.related_concepts_for_relation_class(klass, params[:published] != "0")
       items = items.select { |item| can?(:read, item) }
     -%>
-    <%= item_listing(items) do |c|
-      link_to(c.pref_label, concept_path(:id => c))
-    end %>
+    <%= item_listing(items) do |concept| %>
+      <%= render(concept.class.inline_partial_name, concept: concept) %>
+    <% end %>
   </div>
 </div>
