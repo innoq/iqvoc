@@ -75,10 +75,11 @@ fork.
 4. Create the necessary tables by running `rake db:migrate`
 5. Load some base data by running `rake db:seed`
 6. Make sure you have got `config/secrets.yml` in place
-7. Boot up the app using `bundle exec rails s` (or `passenger start`
-   if you use passenger)
-8. Log in with "admin@iqvoc" / "admin" or "demo@iqvoc" / "cooluri" (cf. step #5)
-9. Visit the Users section and change the default passwords
+7. Install nodejs dependencies for compiling assets: `npm install` (make sure nodejs is installed)
+8. Compile assets using: `npm run compile` (or `npm run watch` to compile and listen for changes in development)
+8. Boot up the app using `bundle exec rails s` (or `passenger start` if you use passenger)
+9. Log in with "admin@iqvoc" / "admin123" or "demo@iqvoc" / "cooluri123" (cf. step #5)
+10. Visit the Users section and change the default passwords
 
 ## Background Jobs
 
