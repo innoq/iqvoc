@@ -94,7 +94,6 @@ module NavigationHelper
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
 
     css = opts[:class] || 'nav-link'
-    css << ' dropdown-toggle' if opts[:has_children]
     css << ' active' if active
 
     link_opts = {
@@ -104,12 +103,11 @@ module NavigationHelper
     dropdown_opts = {
       role: 'button',
       'aria-haspopup': true,
-      'aria-expanded': false,
-      data: { toggle: 'dropdown' }
+      'aria-expanded': false
     }
     link_opts.merge!(dropdown_opts) if opts[:has_children]
 
-    link_to(element_value(item[:text]), element_value(item[:href]), link_opts)
+    link_to(element_value(item[:text]), element_value(item[:href] || '#'), link_opts)
   end
 
   def nav_item_authorized?(item)
