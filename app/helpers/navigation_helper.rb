@@ -26,18 +26,13 @@ module NavigationHelper
   # :items - a list of hashes to be used as second-level navigation items
   def nav_items(items)
     items.map do |item|
-      if !item.has_key?(:authorized?) || instance_eval(&item[:authorized?])
+      if nav_item_authorized?(item)
         if item[:items]
           content_tag :li, class: 'nav-item dropdown' do
-            raw(link_to(element_value(item[:text]).html_safe +
-                    content_tag(:i), '#',
-                    class: 'nav-link dropdown-toggle',
-                    role: 'button',
-                    'aria-haspopup': true,
-                    'aria-expanded': false,
-                    data: { toggle: 'dropdown' }) +
+            raw(nav_link(item, has_children: true) +
                 content_tag(:div,
-                    item[:items].map { |i| dropdown_nav_item(i) }.join.html_safe,
+                    item[:items].select { |i| nav_item_authorized?(i) }
+                                .map { |i| nav_link(i, class: 'dropdown-item') }.join.html_safe,
                     class: 'dropdown-menu'))
           end
         else
@@ -90,14 +85,31 @@ module NavigationHelper
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
     css = 'nav-item'
     css << ' active' if active
-    content_tag :li, link_to(element_value(item[:text]), element_value(item[:href]), class: 'nav-link'), class: css
+    content_tag :li, class: css do
+      nav_link(item)
+    end
   end
 
-  def dropdown_nav_item(item)
+  def nav_link(item, opts = {})
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
-    css = 'dropdown-item'
+
+    css = opts[:class] || 'nav-link'
+    css << ' dropdown-toggle' if opts[:has_children]
     css << ' active' if active
-    link_to(element_value(item[:text]), element_value(item[:href]), class: css)
+
+    link_opts = {
+      class: css
+    }
+
+    dropdown_opts = {
+      role: 'button',
+      'aria-haspopup': true,
+      'aria-expanded': false,
+      data: { toggle: 'dropdown' }
+    }
+    link_opts.merge!(dropdown_opts) if opts[:has_children]
+
+    link_to(element_value(item[:text]), element_value(item[:href]), link_opts)
   end
 
   def nav_item_authorized?(item)
