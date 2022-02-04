@@ -12,6 +12,7 @@ simplete-suggestions {
   position: absolute;
   width: 100%;
   display: block;
+  z-index: 100;
 
   .search-results {
     overflow-y: auto;
