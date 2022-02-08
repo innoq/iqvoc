@@ -9,52 +9,57 @@ jQuery(document).ready(function($) {
   var locale = document.documentElement.getAttribute("lang");
 
   var langWidget = $("ul.lang-widget")[0];
-  // primary language (converting links to radio buttons)
-  $("a", langWidget).each(function(i, node) {
-    var link = $(node);
-    var el = link.closest("li");
-    var btn = $('<input type="radio" name="primary_language">');
-    if(link.hasClass("active")) {
-      btn[0].checked = true;
-    }
-    var label = $("<label />").append(btn).append(link);
-    el.append(label);
-    return label[0];
-  });
-  $("input:radio", langWidget).on("change", function(ev) {
-    window.location = $(this).closest("label").find("a").attr("href");
-  });
-  // secondary language
-  var toggleSections = function(langSelected) {
-    $(".translation[lang]").each(function(i, node) {
-      var el = $(node),
-        lang = el.attr("lang");
-      if(lang && lang !== locale && $.inArray(lang, langSelected) === -1) {
-        el.addClass("hidden");
-      } else {
-        el.removeClass("hidden");
+
+  if (langWidget) {
+    // primary language (converting links to radio buttons)
+    $("a", langWidget).each(function(i, node) {
+      var link = $(node);
+      var el = link.closest("li");
+      var btn = $('<input type="radio" name="primary_language">');
+      if(link.hasClass("active")) {
+        btn[0].checked = true;
       }
+      var label = $("<label />").append(btn).append(link);
+      el.append(label);
+      return label[0];
     });
-  };
-  var updateNoteLangs = function(langSelected) {
-    $(".inline_note.new select[id*=language]").each(function(i, sel) { // NB: new notes only!
-      $(sel).find("option").each(function(i, opt) {
-        var el = $(opt),
-          lang = el.val();
-        if(lang !== locale && $.inArray(lang, langSelected) === -1) {
-          el.remove();
+
+    $("input:radio", langWidget).on("change", function(ev) {
+      window.location = $(this).closest("label").find("a").attr("href");
+    });
+
+    // secondary language
+    var toggleSections = function(langSelected) {
+      $(".translation[lang]").each(function(i, node) {
+        var el = $(node),
+          lang = el.attr("lang");
+        if(lang && lang !== locale && $.inArray(lang, langSelected) === -1) {
+          el.addClass("hidden");
+        } else {
+          el.removeClass("hidden");
         }
       });
+    };
+    var updateNoteLangs = function(langSelected) {
+      $(".inline_note.new select[id*=language]").each(function(i, sel) { // NB: new notes only!
+        $(sel).find("option").each(function(i, opt) {
+          var el = $(opt),
+            lang = el.val();
+          if(lang !== locale && $.inArray(lang, langSelected) === -1) {
+            el.remove();
+          }
+        });
+      });
+    };
+    $(document).on("lang_selected", function(ev, data) {
+      toggleSections(data.langs);
+      updateNoteLangs(data.langs);
     });
-  };
-  $(document).on("lang_selected", function(ev, data) {
-    toggleSections(data.langs);
-    updateNoteLangs(data.langs);
-  });
-  var langSelector = new IQVOC.LanguageSelector(langWidget, "lang_selected");
-  if($("#new_concept, #edit_concept").length) { // edit mode
-    // disable secondary language selection to avoid excessive state complexity
-    $(":checkbox", langSelector.container).prop("disabled", true);
+    var langSelector = new IQVOC.LanguageSelector(langWidget, "lang_selected");
+    if($("#new_concept, #edit_concept").length) { // edit mode
+      // disable secondary language selection to avoid excessive state complexity
+      $(":checkbox", langSelector.container).prop("disabled", true);
+    }
   }
 
   // hide broader relations for top+ terms (mutually exclusive in mono hierarchies)
