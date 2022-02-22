@@ -99,7 +99,7 @@ $ rake jobs:workoff
 
 ## Compatibility
 
-iQvoc is fully compatible with Ruby 2.5 and 2.6.
+iQvoc is fully compatible with Ruby 2.6.
 
 ## Customization
 

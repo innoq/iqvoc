@@ -1,6 +1,7 @@
 ## [4.x.x] unreleased version
 
 * add config option to disable creating reverse matches for concept mappings
+* Drop Ruby 2.5 support (official support ended on 2021-03-31)
 
 ## [4.13.0]
 
