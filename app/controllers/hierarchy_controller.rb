@@ -164,7 +164,7 @@ class HierarchyController < ApplicationController
     @relation_class = @relation_class.narrower_class unless direction == 'up'
 
     respond_to do |format|
-      format.any(:html, :rdf, :ttl) { render 'hierarchy/show' }
+      format.any(:html, :rdf, :ttl, :nt) { render 'hierarchy/show' }
     end
   end
 
