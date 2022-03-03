@@ -30,8 +30,9 @@
   list-style-type: none;
   margin-top: 5px;
   padding-left: 0;
+
   li {
-    float: left;
+    display: inline-block;
   }
 }
 
@@ -40,11 +41,7 @@
   padding: 0;
 }
 
-.sections .entity_list li:after,
-.relation-body .entity_list li:after {
-  content: ",\00a0"; // => ', '
-}
-.sections .entity_list li:last-child:after,
-.relation-body .entity_list li:last-child:after {
+.relation-body .entity_list li:not(:last-child):after {
   content: "";
+  margin-left: -0.2rem;
 }
