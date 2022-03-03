@@ -42,6 +42,6 @@
 }
 
 .relation-body .entity_list li:not(:last-child):after {
-  content: "";
+  content: ",";
   margin-left: -0.2rem;
 }
