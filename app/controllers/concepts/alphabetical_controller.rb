@@ -61,7 +61,7 @@ class Concepts::AlphabeticalController < ConceptsController
 
   def find_labelings
     letter = (@letters.include?('A')) ? 'a' : @letters.first
-    query = (params[:prefix] || letter).mb_chars.downcase.to_s
+    query = (params[:prefix] || letter)&.mb_chars&.downcase.to_s
 
     Iqvoc::Concept.pref_labeling_class
       .concept_published
