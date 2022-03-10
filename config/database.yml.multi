@@ -1,0 +1,28 @@
+base_db_config: &db_config
+  pool: 5
+<% if ENV["DB_ADAPTER"] == "postgresql" %>
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV["DB_HOST"] || '127.0.0.1' %>
+  username: <%= ENV["DB_USER"] || 'postgres' %>
+  password: <%= ENV["DB_PW"] || 'postgres' %>
+<% elsif ENV["DB_ADAPTER"] == "mysql2" %>
+  adapter: mysql2
+  encoding: utf8mb4
+  reconnect: false
+  host: <%= ENV["DB_HOST"] || '127.0.0.1' %>
+  username: <%= ENV["DB_USER"] || 'root' %>
+  password: <%= ENV["DB_PW"] || '' %>
+<% end %>
+
+development:
+  <<: *db_config
+  database: <%= ENV["DB_NAME"] || 'iqvoc_development' %>
+
+test:
+  <<: *db_config
+  database: <%= ENV["DB_NAME"] || 'iqvoc_test' %>
+
+production:
+  <<: *db_config
+  database: <%= ENV["DB_NAME"] || 'iqvoc_production' %>
