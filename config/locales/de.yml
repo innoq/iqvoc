@@ -282,7 +282,7 @@ de:
       server_error:
         message: Entschuldigung da ist bei uns etwas schief gegangen.
      versioning:
-       edit_mode: "Weiterbearbeiten"
+       edit_mode: "Bearbeiten"
        to_edit_mode: "In Bearbeitung versetzen"
        publishing: "Veröffentlichen"
        delete: "Löschen"
