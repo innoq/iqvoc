@@ -242,7 +242,8 @@ en:
        language: "language"
        all: "all"
        none: "none"
-       for: "In"
+       in: "In"
+       for: "For"
        mode: "Mode"
        datasets: "External sources"
        change_note:
