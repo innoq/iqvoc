@@ -19,7 +19,9 @@ USER daemon
 
 COPY --chown=daemon Gemfile Gemfile.lock ./
 COPY --chown=daemon config/database.yml.multi /iqvoc/config/database.yml
-RUN bundle install --without development test
+
+RUN bundle install --with remote_dbs --without development test passenger
+
 RUN exec passenger-install-nginx-module --auto-download --auto --prefix=/opt/nginx
 COPY --chown=daemon . /iqvoc
 
