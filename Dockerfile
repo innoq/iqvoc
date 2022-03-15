@@ -17,9 +17,8 @@ RUN apt-get update -qq && \
 WORKDIR /iqvoc
 USER daemon
 
-RUN gem install bundler
 COPY --chown=daemon Gemfile Gemfile.lock ./
-COPY --chown=daemon config/database.yml.postgresql /iqvoc/config/database.yml
+COPY --chown=daemon config/database.yml.multi /iqvoc/config/database.yml
 RUN bundle install --without development test
 RUN exec passenger-install-nginx-module --auto-download --auto --prefix=/opt/nginx
 COPY --chown=daemon . /iqvoc
