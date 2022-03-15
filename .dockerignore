@@ -1,4 +1,6 @@
 public/assets/*
+/.git*
+/.dockerignore
  /tmp
 /db/*.sqlite3
 /db/*.sqlite3
