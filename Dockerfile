@@ -10,10 +10,9 @@ ENV RAILS_ENV=production \
     RAILS_SERVE_STATIC_FILES=1
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y -q nodejs npm
-
-RUN mkdir -p /iqvoc /iqvoc/gems /iqvoc/home /usr/sbin/.passenger /opt/nginx
-RUN chown -R daemon /iqvoc /usr/sbin/.passenger /opt/nginx
+    apt-get install --no-install-recommends -y -q nodejs npm && \
+    mkdir -p /iqvoc /iqvoc/gems /iqvoc/home  && \
+    chown -R daemon /iqvoc
 
 WORKDIR /iqvoc
 USER daemon
