@@ -22,11 +22,10 @@ COPY --chown=daemon config/database.yml.multi /iqvoc/config/database.yml
 
 RUN bundle install --with remote_dbs --without development test passenger
 
-RUN exec passenger-install-nginx-module --auto-download --auto --prefix=/opt/nginx
 COPY --chown=daemon . /iqvoc
 
 RUN DB_ADAPTER=nulldb RAILS_ENV=production bundle exec rake assets:precompile
 
 EXPOSE 3000
 
-CMD bundle exec rake db:migrate && bundle exec rake db:seed && bin/delayed_job start && exec bundle exec passenger start --port $PORT --environment $RAILS_ENV
+CMD bundle exec rake db:migrate && bundle exec rake db:seed && bin/delayed_job start && exec bundle exec rails server --port=$PORT --environment=$RAILS_ENV
