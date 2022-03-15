@@ -51,7 +51,18 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # comment out those you do don't need or use a different Gemfile
 #gem  'mysql2', '~> 0.4.0'
 #gem 'sqlite3'
-gem 'pg', '~> 0.21.0'
+
+group :all_db_adapters, :remote_dbs, :pg_db do
+  gem 'pg', '~> 0.21.0'
+end
+
+group :all_db_adapters, :remote_dbs, :mysql_db, optional: true do
+  gem  'mysql2', '~> 0.4.0'
+end
+
+group :all_db_adapters, :sqlite_db, optional: true do
+  gem 'sqlite3'
+end
 
 gem 'rack-mini-profiler'
 
@@ -73,6 +84,9 @@ end
 
 group :production do
   gem 'activerecord-nulldb-adapter'
+end
+
+group :passenger do
   #version updates must be done in the Dockerfile as well
   gem 'passenger', '= 5.3.7'
 end
