@@ -1,6 +1,13 @@
-FROM ruby:2.3
+FROM ruby:2.6
 
-ENV RAILS_ENV production
+ENV RAILS_ENV=production \
+    DB_ADAPTER=postgresql \
+    PORT=3000 \
+    BUNDLE_PATH=/iqvoc/gems \
+    GEM_HOME=/iqvoc/gems \
+    HOME=/iqvoc/home \
+    RAILS_LOG_TO_STDOUT=1 \
+    RAILS_SERVE_STATIC_FILES=1
 
 RUN apt-get update -qq
 
@@ -10,8 +17,6 @@ RUN chown -R daemon /iqvoc /usr/sbin/.passenger /opt/nginx
 WORKDIR /iqvoc
 USER daemon
 
-ENV BUNDLE_PATH /iqvoc/gems
-ENV HOME /iqvoc/home
 RUN gem install bundler
 COPY --chown=daemon Gemfile Gemfile.lock ./
 COPY --chown=daemon config/database.yml.postgresql /iqvoc/config/database.yml
