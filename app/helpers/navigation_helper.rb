@@ -95,6 +95,7 @@ module NavigationHelper
 
     css = opts[:class] || 'nav-link'
     css << ' active' if active
+    css << ' dropdown-toggle' if opts[:has_children]
 
     link_opts = {
       class: css
