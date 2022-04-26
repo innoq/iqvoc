@@ -27,7 +27,7 @@ module Authentication
       u.password_confirmation = 'omgomgomg'
       u.role = 'reader'
       u.active = true
-      u.role = role || User.default_role
+      u.role = role || User.default_user_role
     end
   end
 end
