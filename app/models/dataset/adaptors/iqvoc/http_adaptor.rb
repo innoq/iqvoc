@@ -1,6 +1,6 @@
 require 'faraday'
 
-class Dataset::Adaptors::Iqvoc::HTTPAdaptor
+class Dataset::Adaptors::Iqvoc::HttpAdaptor
   DEFAULT_TIMEOUT = 5.freeze
   attr_reader :url
 

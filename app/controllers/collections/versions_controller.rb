@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class Collections::VersionsController < ApplicationController
-  include RDFSyncService::Helper
+  include RdfSyncService::Helper
 
   def merge
     scope = Iqvoc::Collection.base_class.by_origin(params[:origin])

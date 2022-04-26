@@ -1,4 +1,4 @@
-class Dataset::Adaptors::Iqvoc::LabelAdaptor < Dataset::Adaptors::Iqvoc::HTTPAdaptor
+class Dataset::Adaptors::Iqvoc::LabelAdaptor < Dataset::Adaptors::Iqvoc::HttpAdaptor
   def find(concept_url)
     path = URI.parse(concept_url).path
     if response = http_get(path)

@@ -2,7 +2,5 @@
 Rails.autoloaders.main.inflector.inflect(
   'skos' => 'SKOS',
   'rdfs' => 'RDFS',
-  'rdfapi' => 'RDFAPI',
-  'rdf_sync_service' => 'RDFSyncService',
-  'http_adaptor' => 'HTTPAdaptor'
+  'rdfapi' => 'RDFAPI'
 )
