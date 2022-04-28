@@ -192,7 +192,7 @@ class ConceptsController < ApplicationController
     # set to_review to false if someone edits a concepts
     concept_params["to_review"] = "false"
 
-    if @concept.update_attributes(concept_params)
+    if @concept.update(concept_params)
       flash[:success] = I18n.t('txt.controllers.versioned_concept.update_success')
       redirect_to concept_path(published: 0, id: @concept)
     else

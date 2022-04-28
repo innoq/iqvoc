@@ -16,7 +16,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
-class RDFSyncTest < ActiveSupport::TestCase
+class RdfSyncTest < ActiveSupport::TestCase
   setup do
     @rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
     @skos = 'http://www.w3.org/2004/02/skos/core#'
@@ -32,7 +32,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     end
     @view_context = FakeViewContext.new
 
-    @sync = RDFSyncService.new(@base_url, @target_host, username: @username,
+    @sync = RdfSyncService.new(@base_url, @target_host, username: @username,
         view_context: @view_context)
 
     @concepts = 1.upto(15).map do |i|
@@ -104,7 +104,7 @@ class RDFSyncTest < ActiveSupport::TestCase
     concept_count = concepts.count
     batch_count = 3
 
-    sync = RDFSyncService.new(@base_url, @target_host, username: @username,
+    sync = RdfSyncService.new(@base_url, @target_host, username: @username,
         batch_size: (concept_count / batch_count).ceil,
         view_context: @view_context)
 

@@ -14,7 +14,7 @@ namespace :sync do
     default_url_options[:host] = ROOT
 
     class FakeController
-      include RDFSyncService::Helper
+      include RdfSyncService::Helper
       delegate :url_helpers, :to => "Rails.application.routes"
 
       def root_url(*args)

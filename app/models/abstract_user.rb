@@ -41,7 +41,7 @@ class AbstractUser < ApplicationRecord
     config.crypto_provider = Authlogic::CryptoProviders::SCrypt
   end
 
-  def self.default_role
+  def self.default_user_role
     'reader'
   end
 

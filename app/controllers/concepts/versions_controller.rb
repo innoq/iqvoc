@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class Concepts::VersionsController < ApplicationController
-  include RDFSyncService::Helper
+  include RdfSyncService::Helper
 
   def merge
     concept_scope = Iqvoc::Concept.base_class.by_origin(params[:origin])

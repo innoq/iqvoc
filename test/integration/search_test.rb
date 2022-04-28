@@ -101,9 +101,9 @@ class SearchTest < ActionDispatch::IntegrationTest
         with: 'Air'
     click_button 'Save'
 
-    Iqvoc::Concept.base_class.third.update_attributes published_at: Date.today
-    Iqvoc::Concept.base_class.fourth.update_attributes published_at: Date.today
-    Note::Annotated::Base.where(predicate: "created").first.update_attributes value: (Date.today - 10.days).to_s
+    Iqvoc::Concept.base_class.third.update(published_at: Date.today)
+    Iqvoc::Concept.base_class.fourth.update(published_at: Date.today)
+    Note::Annotated::Base.where(predicate: "created").first.update(value: (Date.today - 10.days).to_s)
 
     visit search_path(lang: 'en', format: 'html')
     find('#t').select 'Labels'

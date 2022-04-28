@@ -15,7 +15,7 @@
 # limitations under the License.
 
 class TriplestoreSyncController < ApplicationController
-  include RDFSyncService::Helper
+  include RdfSyncService::Helper
 
   def index
     authorize! :sync, :triplestore
@@ -40,7 +40,7 @@ class TriplestoreSyncController < ApplicationController
     end
 
     # per-class pagination
-    @candidates = RDFSyncService.candidates.map do |records|
+    @candidates = RdfSyncService.candidates.map do |records|
       records.page(params[:page])
     end
   end

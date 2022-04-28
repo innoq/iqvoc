@@ -125,7 +125,7 @@ class CollectionsController < ApplicationController
     # set to_review to false if someone edits a concepts
     concept_params["to_review"] = "false"
 
-    if @collection.update_attributes(concept_params)
+    if @collection.update(concept_params)
       flash[:success] = I18n.t('txt.controllers.collections.save.success')
       redirect_to collection_path(@collection, published: 0)
     else
