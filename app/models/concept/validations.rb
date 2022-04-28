@@ -91,10 +91,12 @@ module Concept
       if validatable_for_publishing?
         alt_labels = alt_labelings.collect { |l| l.target }
 
-        if alt_labels.include? pref_label
-            errors.add :base,
-              I18n.t('txt.models.concept.pref_label_defined_in_alt_labels',
-                label: pref_label.value)
+        pref_labels.each do |pref_label|
+          if alt_labels.include? pref_label
+              errors.add :base,
+                I18n.t('txt.models.concept.pref_label_defined_in_alt_labels',
+                  label: pref_label.value)
+          end
         end
       end
     end
