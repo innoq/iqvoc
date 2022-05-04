@@ -5,7 +5,7 @@
       <% if Iqvoc.searchable_class_names.key(params[:t]).constantize.supports_multi_query? %>
         <%= text_area_tag :q, params[:query], :class => 'form-control', autofocus: true %>
       <% else %>
-        <%= text_field_tag :q, params[:query], :class => 'form-control', autofocus: true %>
+        <%= text_field_tag :q, params[:query], :class => 'form-control', autofocus: true, autocomplete: 'off'  %>
       <% end %>
       </div>
   </div>

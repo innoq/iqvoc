@@ -4,7 +4,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text"><%= language %></span>
         </div>
-        <%= text_field_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]", concept.labelings_by_text(klass.name.to_relation_name, language), :class => 'form-control' %>
+        <%= text_field_tag "concept[labelings_by_text][#{klass.name.to_relation_name}][#{language}]", concept.labelings_by_text(klass.name.to_relation_name, language),
+                           class: 'form-control', autocomplete: 'off' %>
       </div>
     <% end %>
 <% end %>
