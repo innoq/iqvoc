@@ -82,7 +82,7 @@ module ConceptsHelper
     concept.never_published? ? t("txt.views.versioning.delete") : t("txt.views.versioning.delete_copy")
   end
 
-  def concept_header(concept)
+  def concept_header(concept, &block)
     desc = concept.class.model_name.human
 
     if concept.expired_at
@@ -91,7 +91,7 @@ module ConceptsHelper
 
     title = concept.pref_label || concept.origin
 
-    page_header title: title.to_s, desc: desc.html_safe
+    page_header(title: title.to_s, desc: desc.html_safe, &block)
   end
 
   private

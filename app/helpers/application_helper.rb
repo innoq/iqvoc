@@ -54,16 +54,19 @@ module ApplicationHelper
     end
   end
 
-  def page_header(args = {})
+  def page_header(args = {}, &block)
     if title = args[:title]
       content_for(:title, strip_tags(title))
     end
 
     content_for :page_header do
       content_tag :div, class: 'page-header' do
-        content_tag :h1 do
+        res = content_tag :h1 do
           ("#{title} #{content_tag(:small, args[:desc]) if args[:desc]}").html_safe
         end
+        res << capture(&block) if block_given?
+
+        res
       end
     end
   end
