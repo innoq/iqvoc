@@ -73,7 +73,7 @@ class Note::Base < ApplicationRecord
   end
 
   def self.by_query_value(query)
-    where(["LOWER(#{table_name}.value) LIKE ?", query.mb_chars.downcase.to_s])
+    where(["#{table_name}.value ILIKE ?", query.mb_chars.downcase.to_s])
   end
 
   def self.by_owner_type(klass)
