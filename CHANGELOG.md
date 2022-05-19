@@ -1,7 +1,12 @@
-## [4.x.x] unreleased version
+## [4.13.1]
 
 * add config option to disable creating reverse matches for concept mappings
+* add config option to disable concept modal preview
+* sort concept labels by editors order
+* ignore expired concepts in search
 * Drop Ruby 2.5 support (official support ended on 2021-03-31)
+* upgrade to Rails v6.1
+* fix some style and markup glitches
 
 ## [4.13.0]
 
