@@ -254,10 +254,10 @@ GEM
       connection_pool (~> 2.2)
     nio4r (2.5.8)
     nio4r (2.5.8-java)
-    nokogiri (1.13.5)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.5-java)
+    nokogiri (1.13.6-java)
       racc (~> 1.4)
     passenger (5.3.7)
       rack
