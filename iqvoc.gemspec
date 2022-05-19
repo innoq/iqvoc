@@ -41,8 +41,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'faucet_pipeline_rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
-    Dir.glob('{app,config,db,public,lib,test,vendor}/**/*')
-  s.test_files = s.files.grep(%r{^test/})
+    Dir.glob('{app,bin,config,db,lib}/**/*')
+  s.test_files = Dir['{test}/**/*']
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
 end
