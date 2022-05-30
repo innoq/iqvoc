@@ -1,21 +1,26 @@
-public/assets/*
- /tmp
-/db/*.sqlite3
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/db/*.sqlite3-journal
+.git/
+.gitmodules
+.gitignore
+.ruby-version
+.dockerignore
+.DS_Store
+
+/log
+/tmp/*
+public/assets
 public/export
 public/uploads
-*.war
-vendor/gems/*.gem
-*.gem
-config/deploy.rb
-config/deploy
-config/initializers/secret_token.rb
+
+# prevent leaking secrets
 config/database.yml
-public/assets
-db/schema.rb
-log/*.log
-tmp/**/*
-tmp/*
+README.md
+
+doc/
+
+.idea
+*.iml
+docker-compose.yml
+node_modules
+.env
+*.gem
 

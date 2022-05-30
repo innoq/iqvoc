@@ -18,7 +18,7 @@ test:
 
 production:
   adapter: postgresql
-  host: localhost
+  host: <%= ENV["POSTGRES_HOST"] || 'localhost' %>
   encoding: unicode
   database: <%= ENV["POSTGRES_DB"] || 'iqvoc_production' %>
   pool: 5

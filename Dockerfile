@@ -1,26 +1,54 @@
-FROM ruby:2.3
+FROM ruby:2.6
 
-ENV RAILS_ENV production
+ENV RAILS_ENV="production" \
+    RAILS_LOG_TO_STDOUT="true" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    APP_HOME="/app/" \
+    BUNDLE_JOBS=4 \
+    BUNDLE_PATH="/bundle" \
+    PATH="/app/bin:${PATH}" \
+    PORT=3000
 
-RUN apt-get update -qq
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
-RUN mkdir -p /iqvoc /iqvoc/gems /iqvoc/home /usr/sbin/.passenger /opt/nginx
-RUN chown -R daemon /iqvoc /usr/sbin/.passenger /opt/nginx
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends nodejs && \
+    apt-get autoremove && \
+    apt-get clean &&  \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -m iqvoc && \
+    mkdir "$APP_HOME" && \
+    mkdir "$BUNDLE_PATH" && \
+    chown -R iqvoc:iqvoc "$APP_HOME" "$BUNDLE_PATH" /usr/local/bundle
 
-WORKDIR /iqvoc
-USER daemon
+WORKDIR $APP_HOME
 
-ENV BUNDLE_PATH /iqvoc/gems
-ENV HOME /iqvoc/home
+# copy lockfiles
+COPY --chown=iqvoc:iqvoc Gemfile* ./
+COPY --chown=iqvoc:iqvoc package.json ./
+COPY --chown=iqvoc:iqvoc package-lock.json ./
+
+# install bundler/rubygems/npm deps
 RUN gem install bundler
-COPY --chown=daemon Gemfile Gemfile.lock ./
-COPY --chown=daemon config/database.yml.postgresql /iqvoc/config/database.yml
-RUN bundle install --without development test
-RUN exec passenger-install-nginx-module --auto-download --auto --prefix=/opt/nginx
-COPY --chown=daemon . /iqvoc
+RUN bundle install
+RUN npm install -g npm@latest
+RUN npm install
 
-RUN DB_ADAPTER=nulldb RAILS_ENV=production bundle exec rake assets:precompile
+# copy app files
+COPY --chown=iqvoc:iqvoc . ./
+COPY --chown=iqvoc:iqvoc config/database.yml.postgresql ./config/database.yml
 
-EXPOSE 3000
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE $PORT
 
-CMD bundle exec rake db:migrate && bundle exec rake db:seed && bin/delayed_job start && exec bundle exec passenger start --port $PORT --environment $RAILS_ENV
+# From now on execute commands as non root
+USER iqvoc
+
+# compile assets
+RUN npm run compile
+
+# Start the main process.
+CMD bin/delayed_job start && bin/rails server -b 0.0.0.0 -p $PORT
