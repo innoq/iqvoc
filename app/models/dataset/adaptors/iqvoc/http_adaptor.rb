@@ -15,8 +15,8 @@ class Dataset::Adaptors::Iqvoc::HttpAdaptor
   def http_get(path, redirect_count = 0)
     begin
       response = @conn.get(path)
-    rescue Faraday::Error::ConnectionFailed,
-        Faraday::Error::ResourceNotFound => e
+    rescue Faraday::ConnectionFailed,
+        Faraday::ResourceNotFound => e
       return failed_request(path)
     end
 

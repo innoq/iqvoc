@@ -12,8 +12,8 @@ class Dataset::Adaptors::Iqvoc::AlphabeticalSearchAdaptor < Dataset::Adaptors::I
       while more = @doc.at_css('a[rel=next]')
         fetch_results(more[:href], {})
       end
-    rescue Faraday::Error::ConnectionFailed,
-      Faraday::Error::ResourceNotFound => e
+    rescue Faraday::ConnectionFailed,
+      Faraday::ResourceNotFound => e
         Rails.logger.warn("HTTP error while querying remote source #{url}: #{e.message}")
         return nil
     end

@@ -38,11 +38,15 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
     error_type = nil
 
     case exception
-    when Faraday::Error::ConnectionFailed
-      error_type = 'connection_failed'
-    when Faraday::Error::TimeoutError
+    when Faraday::ConnectionFailed
+      if exception&.wrapped_exception.class == Net::OpenTimeout
+        error_type = 'timeout_error'
+      else
+        error_type = 'connection_failed'
+      end
+    when Faraday::TimeoutError
       error_type = 'timeout_error'
-    when Faraday::Error::ResourceNotFound
+    when Faraday::ResourceNotFound
       error_type = 'resource_not_found'
     when Faraday::ClientError
       body = exception.response[:body] || {}

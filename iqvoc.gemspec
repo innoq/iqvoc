@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'iq_rdf'
   s.add_dependency 'json'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'faraday', '0.9.0'
+  s.add_dependency 'faraday'
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
