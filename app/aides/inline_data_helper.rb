@@ -29,14 +29,14 @@ class InlineDataHelper
     options = CSV_OPTIONS.clone
     options[:col_sep] = options[:col_sep].strip
     begin
-      values = inline_values.parse_csv(options)
+      values = inline_values.parse_csv(**options)
     rescue CSV::MalformedCSVError => exc
-      values = inline_values.parse_csv(CSV_OPTIONS)
+      values = inline_values.parse_csv(**CSV_OPTIONS)
     end
     values ? values.compact.map(&:strip) : []
   end
 
   def self.generate_inline_values(values)
-    values.to_csv(CSV_OPTIONS).strip
+    values.to_csv(**CSV_OPTIONS).strip
   end
 end
