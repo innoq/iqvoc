@@ -385,9 +385,9 @@ class Concept::Base < ApplicationRecord
   end
 
   def self.with_pref_labels
-    includes(:pref_labels).
-    order(Arel.sql("LOWER(#{Label::Base.table_name}.value)")).
-    where(labelings: { type: Iqvoc::Concept.pref_labeling_class_name }) # This line is just a workaround for a Rails Bug. TODO: Delete it when the Bug is fixed
+    preload(:pref_labels)
+      .joins(:pref_labels)
+      .order(Arel.sql("LOWER(#{Label::Base.table_name}.value)"))
   end
 
   def self.for_dashboard
