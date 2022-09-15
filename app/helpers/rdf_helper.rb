@@ -46,7 +46,7 @@ module RdfHelper
       end
 
       c.Schema::expires(concept.expired_at.to_s) if concept.expired_at
-      c.Owl::deprecated(true) if concept.expired_at and concept.expired_at <= Date.new
+      c.Owl::deprecated(true) if concept.expired?
 
       c.Skos::topConceptOf IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin) if concept.top_term?
       c.Skos::inScheme IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin)
