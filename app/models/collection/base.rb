@@ -42,6 +42,16 @@ class Collection::Base < Concept::Base
       through: :parent_collection_members,
       source: 'collection'
 
+  has_many :concepts,
+           -> { where("concepts.type = ?", Iqvoc::Concept.base_class) },
+           through: :members,
+           source: :target
+
+  has_many :subcollections,
+           -> { where("concepts.type = ?", Iqvoc::Collection.base_class) },
+           through: :members,
+           source: :target
+
   include_to_deep_cloning(:members)
 
   # ********** Hooks
@@ -93,14 +103,6 @@ class Collection::Base < Concept::Base
 
   def class_path
     'collection_path'
-  end
-
-  def subcollections
-    members.map(&:target).compact.select { |m| m.is_a?(::Collection::Base) }
-  end
-
-  def concepts
-    members.map(&:target).compact.reject { |m| m.is_a?(::Collection::Base) }
   end
 
   def to_param

@@ -60,14 +60,14 @@ class DeepCloningTest < ActiveSupport::TestCase
 
     @root_collection = Iqvoc::Collection.base_class.new(origin: 'root_collection1').tap do |c|
       RDFAPI.devour c, 'skos:prefLabel', '"Root Collection"@en'
-      RDFAPI.devour c, 'skos:member', @root_concept1
-      RDFAPI.devour c, 'skos:member', @root_concept2
-      RDFAPI.devour c, 'skos:member', @child_concept
-      RDFAPI.devour c, 'skos:member', @sub_collection
       c.publish
       c.save
     end
 
+    @root_collection.concepts << @root_concept1
+    @root_collection.concepts << @root_concept2
+    @root_collection.concepts << @child_concept
+    @root_collection.subcollections << @sub_collection
   end
 
   def after_setup
@@ -78,7 +78,9 @@ class DeepCloningTest < ActiveSupport::TestCase
     assert_equal @root_concept1, @child_concept.broader_relations.first.target
 
     assert_equal 3, @root_collection.concepts.size
-    assert_equal [@root_concept1, @root_concept2, @child_concept], @root_collection.concepts
+    [@root_concept1, @root_concept2, @child_concept].each do |concept|
+      @root_collection.concepts.include? concept
+    end
 
     assert_equal 1, @root_collection.subcollections.size
     assert_equal @sub_collection, @root_collection.subcollections.first
