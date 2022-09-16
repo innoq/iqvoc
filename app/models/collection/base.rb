@@ -68,7 +68,7 @@ class Collection::Base < Concept::Base
   validate :circular_subcollections
 
   def self.with_pref_labels
-    super.includes(:pref_labels)
+    super.references(:collection_members)
   end
 
   def self.by_origin(origin)
