@@ -101,6 +101,10 @@ class Label::Base < ApplicationRecord
     true
   end
 
+  def expired?
+    self.expired_at && self.expired_at < Date.today
+  end
+
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
