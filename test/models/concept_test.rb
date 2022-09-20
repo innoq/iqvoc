@@ -249,4 +249,41 @@ class ConceptTest < ActiveSupport::TestCase
     refute wolf_concept.publishable?
     assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
   end
+
+  test 'expired concepts scopes' do
+    assert_equal 0, Iqvoc::Concept.base_class.not_expired.count
+    assert_equal 0, Iqvoc::Concept.base_class.expired.count
+
+    wolf_concept = Iqvoc::Concept.base_class.new(origin: 'wolf').publish.tap do |c|
+      RDFAPI.devour c, 'skos:prefLabel', '"Wolf"@en'
+      c.save
+    end
+    refute wolf_concept.expired?
+
+    assert_equal 1, Iqvoc::Concept.base_class.not_expired.count
+    assert_equal 0, Iqvoc::Concept.base_class.expired.count
+
+    # expired until tomorrow
+    wolf_concept.expired_at = Date.tomorrow
+    wolf_concept.save
+    refute wolf_concept.expired?
+
+    assert_equal 1, Iqvoc::Concept.base_class.not_expired.count
+    assert_equal 0, Iqvoc::Concept.base_class.expired.count
+
+    # expired from today
+    wolf_concept.expired_at = Date.today
+    wolf_concept.save
+    assert wolf_concept.expired?
+
+    assert_equal 0, Iqvoc::Concept.base_class.not_expired.count
+    assert_equal 1, Iqvoc::Concept.base_class.expired.count
+
+    wolf_concept.expired_at = Date.yesterday
+    wolf_concept.save
+    assert wolf_concept.expired?
+
+    assert_equal 0, Iqvoc::Concept.base_class.not_expired.count
+    assert_equal 1, Iqvoc::Concept.base_class.expired.count
+  end
 end
