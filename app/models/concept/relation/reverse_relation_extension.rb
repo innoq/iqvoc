@@ -25,9 +25,11 @@ module Concept
           attributes = attributes.except(:rank) unless relation_class.rankable?
           scope.any? || scope.create!(attributes)
 
-          # The reverse direction
-          scope = relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id)
-          scope.any? || scope.create!(attributes)
+          if relation_class.bidirectional?
+            # The reverse direction
+            scope = relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id)
+            scope.any? || scope.create!(attributes)
+          end
         end
       end
 
@@ -38,8 +40,10 @@ module Concept
             relation.destroy
           end
 
-          relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id).load.each do |relation|
-            relation.destroy
+          if relation_class.bidirectional?
+            relation_class.reverse_relation_class.where(owner_id: target_concept.id, target_id: proxy_association.owner.id).load.each do |relation|
+              relation.destroy
+            end
           end
         end
       end
