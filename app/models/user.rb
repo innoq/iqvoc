@@ -3,6 +3,8 @@ class User < AbstractUser
 
   validates_inclusion_of :role, in: ROLES
   validates_length_of :forename, :surname, within: 2..255
+  validates_presence_of :email
+  validates_format_of :email, with: URI::MailTo::EMAIL_REGEXP
 
   def name
     "#{forename} #{surname}"
