@@ -25,12 +25,12 @@ class Concepts::HierarchicalController < ConceptsController
     scope = Iqvoc::Concept.base_class.includes(:pref_labels).order('labels.value')
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
+    # only select unexpired concepts
+    scope = scope.not_expired
+
     # unrelated concepts for sidebar
     # TODO: order parentless concepts
     @loose_concepts = scope.parentless.includes(:pref_labels).page(params[:page])
-
-    # only select unexpired concepts
-    scope = scope.not_expired
 
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]
