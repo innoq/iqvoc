@@ -20,7 +20,7 @@ source 'https://rubygems.org'
 # There is only one problem: gemspec puts the dependencies automatically to a
 # group (:development by default). This is not what we need.
 gem 'rails', '~> 6.1.5', '>= 6.1.5.1'
-gem 'puma', '< 6.0'
+gem 'puma', '< 7.0'
 gem 'kaminari'
 gem 'authlogic'
 gem 'scrypt'
@@ -44,7 +44,7 @@ gem 'carrierwave'
 gem 'daemons'
 gem 'faucet_pipeline_rails'
 
-gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bootsnap', require: false
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
