@@ -114,7 +114,6 @@ GEM
     cuprite (0.13)
       capybara (>= 2.1, < 4)
       ferrum (~> 0.11.0)
-    daemons (1.3.1)
     database_cleaner (1.8.5)
     date (3.3.1)
     date (3.3.1-java)
@@ -277,6 +276,8 @@ GEM
     msgpack (1.3.3-java)
     multi_json (1.15.0)
     multipart-post (2.2.3)
+    net-http (0.3.1)
+      uri
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     net-imap (0.3.2)
@@ -471,6 +472,7 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-types (1.7.0)
+    uri (0.12.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -503,7 +505,6 @@ DEPENDENCIES
   capybara
   carrierwave
   cuprite
-  daemons
   database_cleaner (~> 1.8.5)
   deep_cloneable
   delayed_job_active_record
@@ -517,6 +518,7 @@ DEPENDENCIES
   linkeddata
   listen (~> 3.3)
   maruku
+  net-http
   nokogiri
   pg
   pry-rails
@@ -531,4 +533,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.18
+   2.3.26
