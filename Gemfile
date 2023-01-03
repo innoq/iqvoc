@@ -41,10 +41,12 @@ gem 'maruku', require: false
 gem 'database_cleaner', '~> 1.8.5'
 gem 'delayed_job_active_record'
 gem 'carrierwave'
+gem 'carrierwave-i18n'
 gem 'faucet_pipeline_rails'
 gem 'bootsnap', require: false
 
 gem 'net-http' # silence already initialized constant errors for ruby < 3.0: https://github.com/ruby/net-imap/issues/16
+gem 'mail', '~> 2.7.1' # fixes undefined method `eager_autoload!' for Mail:Module
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile

@@ -35,9 +35,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
   s.add_dependency 'net-http'
+  s.add_dependency 'mail', '~> 2.7.1'
   s.add_dependency 'database_cleaner', '~> 1.8.5'
   s.add_dependency 'delayed_job_active_record'
   s.add_dependency 'carrierwave'
+  s.add_dependency 'carrierwave-i18n'
   s.add_dependency 'rack-mini-profiler'
   s.add_dependency 'faucet_pipeline_rails'
 

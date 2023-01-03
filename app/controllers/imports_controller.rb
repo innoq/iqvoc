@@ -29,19 +29,22 @@ class ImportsController < ApplicationController
   end
 
   def create
-    import = Import.new(import_params)
-    import.user = current_user
+    @import = Import.new(import_params)
+    @import.user = current_user
 
-    if import.save
-      job = ImportJob.new(import, import.import_file.current_path, current_user,
-                          import.default_namespace, import.publish)
+    if @import.save
+      job = ImportJob.new(@import, @import.import_file.current_path, current_user,
+                          @import.default_namespace, @import.publish)
 
       Delayed::Job.enqueue(job)
       flash[:success] = t('txt.views.import.success')
+      redirect_to imports_path
     else
+      @imports = Import.order('id DESC')
+
       flash[:error] = t('txt.views.import.error')
+      render :index
     end
-    redirect_to imports_path
   end
 
   private

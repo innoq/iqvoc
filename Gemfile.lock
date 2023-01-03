@@ -104,6 +104,7 @@ GEM
       mimemagic (>= 0.3.0)
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
+    carrierwave-i18n (0.2.0)
     cliver (0.3.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
@@ -115,8 +116,6 @@ GEM
       capybara (>= 2.1, < 4)
       ferrum (~> 0.11.0)
     database_cleaner (1.8.5)
-    date (3.3.1)
-    date (3.3.1-java)
     deep_cloneable (3.0.0)
       activerecord (>= 3.1.0, < 7)
     delayed_job (4.1.10)
@@ -256,11 +255,8 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.8.0)
+    mail (2.7.1)
       mini_mime (>= 0.1.1)
-      net-imap
-      net-pop
-      net-smtp
     marcel (1.0.2)
     maruku (0.7.3)
     matrix (0.4.2)
@@ -280,15 +276,6 @@ GEM
       uri
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
-    net-imap (0.3.2)
-      date
-      net-protocol
-    net-pop (0.1.2)
-      net-protocol
-    net-protocol (0.2.1)
-      timeout
-    net-smtp (0.3.3)
-      net-protocol
     nio4r (2.5.8)
     nio4r (2.5.8-java)
     nokogiri (1.13.10)
@@ -468,7 +455,6 @@ GEM
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.10)
-    timeout (0.3.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-types (1.7.0)
@@ -504,6 +490,7 @@ DEPENDENCIES
   cancancan
   capybara
   carrierwave
+  carrierwave-i18n
   cuprite
   database_cleaner (~> 1.8.5)
   deep_cloneable
@@ -517,6 +504,7 @@ DEPENDENCIES
   kaminari
   linkeddata
   listen (~> 3.3)
+  mail (~> 2.7.1)
   maruku
   net-http
   nokogiri
