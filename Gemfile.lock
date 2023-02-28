@@ -504,7 +504,6 @@ DEPENDENCIES
   kaminari
   linkeddata
   listen (~> 3.3)
-  mail (~> 2.7.1)
   maruku
   net-http
   nokogiri
