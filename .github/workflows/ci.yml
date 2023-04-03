@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.7']
+        ruby: ['2.7', '3.0']
     runs-on: ubuntu-latest
     services:
       postgres:
