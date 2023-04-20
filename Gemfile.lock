@@ -289,10 +289,10 @@ GEM
       net-protocol
     nio4r (2.5.9)
     nio4r (2.5.9-java)
-    nokogiri (1.14.2)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.14.2-java)
+    nokogiri (1.14.3-java)
       racc (~> 1.4)
     pg (1.4.5)
     pry (0.13.1)
