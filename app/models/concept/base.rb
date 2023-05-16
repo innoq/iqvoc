@@ -289,6 +289,16 @@ class Concept::Base < ApplicationRecord
     through: :alt_labelings,
     source: :target
 
+  has_many :hidden_labelings,
+           foreign_key: 'owner_id',
+           class_name: Iqvoc::Concept.hidden_labeling_class_name,
+           inverse_of: :owner
+
+  has_many :hidden_labels,
+           -> { order(:value) },
+           through: :hidden_labelings,
+           source: :target
+
   Iqvoc::Concept.labeling_class_names.each do |labeling_class_name, languages|
     has_many labeling_class_name.to_relation_name,
       foreign_key: 'owner_id',

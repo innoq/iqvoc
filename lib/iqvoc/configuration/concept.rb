@@ -12,6 +12,7 @@ module Iqvoc
             :broader_relation_class_name, :further_relation_class_names,
             :pref_labeling_class_name,
             :alt_labeling_class_name,
+            :hidden_labeling_class_name,
             :match_class_names,
             :note_class_names,
             :notation_class_names,
@@ -27,6 +28,7 @@ module Iqvoc
 
         self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
         self.alt_labeling_class_name      = 'Labeling::SKOS::AltLabel'
+        self.hidden_labeling_class_name   = 'Labeling::SKOS::HiddenLabel'
 
         self.note_class_names             = [
           Iqvoc.change_note_class_name,
