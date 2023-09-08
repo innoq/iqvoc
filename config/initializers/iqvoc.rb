@@ -16,6 +16,7 @@
 
 require 'iqvoc'
 require 'iqvoc/version'
+require 'iqvoc_module_helper'
 
 ##### INSTANCE SETTINGS #####
 

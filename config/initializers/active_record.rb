@@ -14,5 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'search_extension'
+
 ActiveRecord::Base.store_full_sti_class = true
 ActiveRecord::Base.send :include, SearchExtension
