@@ -16,13 +16,15 @@
 
 class Concepts::HierarchicalController < ConceptsController
   def index
+    base_class = Iqvoc::Concept.base_class
+
     if params[:published] == '0'
-      authorize! :update, Iqvoc::Concept.base_class
+      authorize! :update, base_class
     else
-      authorize! :read, Iqvoc::Concept.base_class
+      authorize! :read, base_class
     end
 
-    scope = Iqvoc::Concept.base_class.includes(:pref_labels).order('labels.value')
+    scope = base_class.includes(base_class.default_includes + [:pref_labels]).order('labels.value')
     scope = params[:published] == '0' ? scope.published_with_newer_versions : scope.published
 
     # only select unexpired concepts
@@ -49,11 +51,6 @@ class Concepts::HierarchicalController < ConceptsController
         @concepts = scope.tops.includes(:narrower_relations).references(:concepts)
       end
     end
-
-    # When in single query mode, AR handles ALL includes to be loaded by that
-    # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new.preload(@concepts,
-        Iqvoc::Concept.base_class.default_includes + [:pref_labels])
 
     respond_to do |format|
       format.html

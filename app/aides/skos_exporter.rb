@@ -98,7 +98,7 @@ class SkosExporter
 
       # When in single query mode, AR handles ALL includes to be loaded by that
       # one query. We don't want that! So let's do it manually :-)
-      ActiveRecord::Associations::Preloader.new.preload(concepts,
+      Iqvoc::Concept.base_class.preload(concepts,
       Iqvoc::Concept.base_class.default_includes + [
         :matches,
         :collection_members,

@@ -42,7 +42,7 @@ class Concepts::AlphabeticalController < ConceptsController
 
       search_results_size = find_labelings.count
       search_results = find_labelings.page(params[:page])
-      ActiveRecord::Associations::Preloader.new.preload(search_results, owner: includes)
+      Iqvoc::Concept.pref_labeling_class.preload(search_results, owner: includes)
 
       @search_results = search_results.to_a.map { |pl| AlphabeticalSearchResult.new(pl) }
       @search_results = Kaminari.paginate_array(@search_results, total_count: search_results_size).page(params[:page])

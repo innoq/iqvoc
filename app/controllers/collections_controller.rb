@@ -29,7 +29,7 @@ class CollectionsController < ApplicationController
 
         @top_collections.to_a.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
-        ActiveRecord::Associations::Preloader.new.preload(@top_collections, { members: :target })
+        Iqvoc::Collection.base_class.preload(@top_collections, { members: :target })
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
@@ -72,7 +72,7 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new.preload(@collection,
+    Iqvoc::Collection.base_class.preload(@collection,
       [:pref_labels,
         { members: { target: [:pref_labels] + Iqvoc::Collection.base_class.default_includes } }])
 
@@ -111,7 +111,7 @@ class CollectionsController < ApplicationController
 
     # When in single query mode, AR handles ALL includes to be loaded by that
     # one query. We don't want that! So let's do it manually :-)
-    ActiveRecord::Associations::Preloader.new.preload(@collection, [
+    Iqvoc::Collection.base_class.preload(@collection, [
         :pref_labels,
         { members: { target: [:pref_labels] + Iqvoc::Concept.base_class.default_includes } }])
 
