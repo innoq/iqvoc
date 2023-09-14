@@ -6,7 +6,7 @@
   <dd class="col-md-10"><%= "#{Iqvoc.host_namespace} #{Iqvoc.host_version}" %></dd>
   <% end %>
 
-  <% if File.exists?(Rails.root.join('headrev.txt')) %>
+  <% if File.exist?(Rails.root.join('headrev.txt')) %>
     <dt class="col-md-2">Revision</dt>
     <dd class="col-md-10"><%= File.read(Rails.root.join('headrev.txt')) %></dd>
   <% end %>
