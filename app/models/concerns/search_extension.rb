@@ -22,25 +22,8 @@ module SearchExtension
   end
 
   module ClassMethods
-    def multi_query(params = {})
-      query_terms = params[:query].split(/\r\n/)
-      results     = []
-      query_terms.each do |term|
-        results << { query: term, result: single_query(params.merge({ query: term })) }
-      end
-      results
-    end
-
     def single_query(params = {})
       raise NotImplementedError.new("Implement self.single_query in your specific class (#{self.name}) that should be searchable!")
-    end
-
-    def supports_multi_query?
-      false
-    end
-
-    def forces_multi_query?
-      false
     end
 
     def build_query_string(params = {})

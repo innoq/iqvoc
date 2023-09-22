@@ -2,11 +2,7 @@
   <%= label_tag 'q', t('txt.views.search_results.search_term'), :class => 'col-sm-2 col-form-label' %>
   <div class="col-sm-6">
     <div class="input-group">
-      <% if Iqvoc.searchable_class_names.key(params[:t]).constantize.supports_multi_query? %>
-        <%= text_area_tag :q, params[:query], :class => 'form-control', autofocus: true %>
-      <% else %>
         <%= text_field_tag :q, params[:query], :class => 'form-control', autofocus: true, autocomplete: 'off'  %>
-      <% end %>
       </div>
   </div>
 </div>
