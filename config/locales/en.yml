@@ -219,10 +219,10 @@ en:
      search_results:
        header: "Search"
        inflectionals: "inflectionals"
-       contains: "contains"
-       ends_with: "ends with"
-       begins_with: "begins with"
-       exact: "exact match"
+       contains: "contain keyword"
+       ends_with: "end with keyword"
+       begins_with: "start with keyword"
+       exact: "exactly match"
        regexp: "regular expression (advanced)"
        search_term: "Search term(s)"
        note: with note
@@ -236,23 +236,25 @@ en:
          other: "Your search for <strong>%{query}</strong> yielded the following %{count} results."
        no_results_found: "Your search yielded no results."
        submit: "Search"
+       detailed_search: "Detailed search"
        type: "type"
        used_as: "used as"
        expired: "include expired?"
-       language: "language"
+       language: "Language"
        all: "all"
        none: "none"
-       in: "In"
-       for: "For"
-       mode: "Mode"
+       in: "Search contains"
+       for: "Search in"
+       mode: "Search results"
        datasets: "External sources"
        change_note:
+         all: "Creation and update date"
          type: "type"
          created: "creation date"
          modified: "modification date"
          date: "Date range"
-         date_from: '(from)'
-         date_to: '(to)'
+         date_from: 'From'
+         date_to: 'To'
      user_sessions:
        header: "Login"
        login: "Login"

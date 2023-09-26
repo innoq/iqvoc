@@ -1,10 +1,26 @@
-<%= form_tag(search_path, method: :get, id:'search', role: 'form', class: 'mb-4') do |f| %>
-  <% Iqvoc.search_sections.each do |section| %>
-    <%= render "search_results/sections/#{section}" %>
+<%= form_tag(search_path, method: :get, id: 'search', role: 'form', class: 'mt-3 mb-4') do |f| %>
+  <div class="row">
+    <div class="col">
+      <%= render "search_results/sections/terms" %>
+    </div>
+  </div>
+  <div class="row justify-content-between">
+    <div class="col">
+      <%= render "search_results/sections/languages" %>
+    </div>
+    <% if can?(:show, :detailed_search) %>
+      <div class="col-auto">
+        <button class="btn btn-outline-secondary collapse-toggle" data-toggle="collapse" data-target="#detailedSearch" type="button" aria-expanded="false" aria-controls="detailedSearch">
+          <span class="mr-2"><%= t('txt.views.search_results.detailed_search') %></span>
+          <i class="hide-if-expanded fa fa-chevron-down"></i>
+          <i class="hide-if-collapsed fa fa-chevron-up"></i>
+        </button>
+      </div>
+    <% end %>
+  </div>
+  <% if can?(:show, :detailed_search) %>
+    <div id="detailedSearch" class="collapse">
+      <%= render 'detailed_search' %>
+    </div>
   <% end %>
-
-  <hr />
-
-  <%= submit_tag t('txt.views.search_results.submit'), :class => 'btn btn-primary' %>
-
 <% end %>

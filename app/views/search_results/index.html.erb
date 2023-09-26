@@ -4,9 +4,9 @@
 <%= render 'form' %>
 
 <% if @results %>
-<div class="panel">
-  <%= results_header @results %>
+  <div class="panel">
+    <%= results_header @results %>
     <%= render 'result_list' %>
-  <%= paginate @results %>
-</div>
+    <%= paginate @results %>
+  </div>
 <% end %>

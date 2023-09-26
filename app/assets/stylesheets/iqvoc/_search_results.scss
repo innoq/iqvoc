@@ -1,0 +1,14 @@
+form#search {
+  .collapse-toggle[aria-expanded=false] .hide-if-collapsed {
+    display: none;
+  }
+
+  .collapse-toggle[aria-expanded=true] .hide-if-expanded {
+    display: none;
+  }
+
+  input[type="search"] {
+    -webkit-box-shadow: none;
+    outline: none;
+  }
+}

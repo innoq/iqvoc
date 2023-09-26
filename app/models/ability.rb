@@ -11,6 +11,9 @@ class Ability
     can :read, :help
     can :read, :version
 
+    # Search Results
+    can :show, :detailed_search
+
     if user # Every logged in user ...
       can :use, :dashboard
       can :destroy, UserSession
