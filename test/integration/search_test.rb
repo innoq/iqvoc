@@ -47,9 +47,9 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     [{
-        type: 'Labels', query: 'Forest', query_type: 'contains',
-        amount: 1, result: 'Forest'
-      }].each { |q|
+       type: 'Labels', query: 'Forest', query_type: 'contain keyword',
+       amount: 1, result: 'Forest'
+     }].each { |q|
       find('#t').select q[:type]
       fill_in 'Search term(s)', with: q[:query]
       find('#qt').select q[:query_type]
@@ -62,7 +62,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       click_button('Search')
 
       assert page.has_css?('.search-result', count: q[:amount]),
-      "Page has #{page.all(:css, '.search-result').count} '.search-result' nodes. Should be #{q[:amount]}."
+             "Page has #{page.all(:css, '.search-result').count} '.search-result' nodes. Should be #{q[:amount]}."
 
       within('.search-result') do
         assert page.has_content?(q[:result]), "Could not find '#{q[:result]}' within '.search-result'."
@@ -74,7 +74,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     find('#t').select 'Labels'
-    find('#qt').select 'contains'
+    find('#qt').select 'contain keyword'
     fill_in 'Search term(s)', with: 'Alpha'
     click_button('Search')
     assert page.has_css?('.search-result', count: 1)
@@ -119,7 +119,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     find('#t').select 'Labels'
-    find('#qt').select 'contains'
+    find('#qt').select 'contain keyword'
     fill_in 'Search term(s)', with: 'res'
     find('#c').select @collection.to_s
 
@@ -160,7 +160,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     find('#t').select 'Notes'
-    find('#qt').select 'contains'
+    find('#qt').select 'contain keyword'
     fill_in 'Search term(s)', with: 'ipsum'
     find('#c').select @collection.to_s
 
@@ -179,7 +179,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     find('#t').select 'Labels'
-    find('#qt').select 'exact match'
+    find('#qt').select 'exactly match'
     fill_in 'Search term(s)', with: ''
     find('#c').select @collection.to_s
 
@@ -208,7 +208,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     visit search_path(lang: 'en', format: 'html')
 
     find('#t').select 'Labels'
-    find('#qt').select 'contains'
+    find('#qt').select 'contain keyword'
     fill_in 'Search term(s)', with: 'sample_'
 
     click_button('Search')
