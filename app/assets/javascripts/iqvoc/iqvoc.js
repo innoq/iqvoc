@@ -107,26 +107,6 @@ jQuery(document).ready(function($) {
     });
   });
 
-  // Search
-  $(".checkbox-select-all").on('click', function() {
-    $(this).closest('.checkbox-controls').find("input:checkbox").prop("checked", true);
-  });
-  $(".checkbox-select-none").on('click', function() {
-    $(this).closest('.checkbox-controls').find("input:checkbox").prop("checked", false);
-  });
-  $("select.search_type").on('change', function() {
-    var result_type_filter = $(".result_type_filter");
-    var selected = $(this).val();
-    var targets = ['labels', 'pref_labels', 'alt_labels'];
-    if($.inArray(selected, targets) !== -1) {
-      result_type_filter.show();
-    }
-    else {
-      result_type_filter.hide();
-    }
-  });
-  $("select.search_type").trigger('change');
-
   // unobtrusive tabs
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
