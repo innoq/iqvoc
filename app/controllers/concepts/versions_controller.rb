@@ -137,7 +137,7 @@ class Concepts::VersionsController < ApplicationController
       redirect_to concept_path(published: 0, id: concept)
     else
       flash[:error] = t('txt.controllers.versioning.consistency_check_error')
-      redirect_to edit_concept_path(published: 0, id: concept, full_consistency_check: '1')
+      redirect_to concept_path(published: 0, id: concept, full_consistency_check: '1')
     end
   end
 

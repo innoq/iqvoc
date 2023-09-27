@@ -1,6 +1,8 @@
 <%= render 'header', :concept => @concept %>
 <%= render 'concepts/sidebars/singular', :concept => @concept %>
 
+<%= error_messages_for @concept %>
+
 <% if @new_concept_version.blank? && can?(:branch, @concept) %>
   <% if @jobs && @jobs.any? %>
     <%= render partial: 'partials/concept/reverse_match_notice', locals: {concept: @concept, jobs: @jobs} %>

@@ -47,6 +47,10 @@ class ConceptsController < ApplicationController
     get_concept
     authorize! :read, @concept
 
+    if params[:full_consistency_check] && can?(:check_consistency, @concept)
+      @concept.publishable?
+    end
+
     @datasets = datasets_as_json
     respond_to do |format|
       format.html do
@@ -174,10 +178,6 @@ class ConceptsController < ApplicationController
     authorize! :update, @concept
 
     @association_objects_in_editing_mode = @concept.associated_objects_in_editing_mode
-
-    if params[:full_consistency_check]
-      @concept.publishable?
-    end
 
     Iqvoc::Concept.note_class_names.each do |note_class_name|
       @concept.send(note_class_name.to_relation_name).build if @concept.send(note_class_name.to_relation_name).empty?
