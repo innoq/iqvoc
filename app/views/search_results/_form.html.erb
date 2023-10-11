@@ -8,19 +8,15 @@
     <div class="col">
       <%= render "search_results/sections/languages" %>
     </div>
-    <% if can?(:show, :detailed_search) %>
-      <div class="col-auto">
-        <button class="btn btn-outline-secondary collapse-toggle" data-toggle="collapse" data-target="#detailedSearch" type="button" aria-expanded="false" aria-controls="detailedSearch">
-          <span class="mr-2"><%= t('txt.views.search_results.detailed_search') %></span>
-          <i class="hide-if-expanded fa fa-chevron-down"></i>
-          <i class="hide-if-collapsed fa fa-chevron-up"></i>
-        </button>
-      </div>
-    <% end %>
-  </div>
-  <% if can?(:show, :detailed_search) %>
-    <div id="detailedSearch" class="collapse">
-      <%= render 'detailed_search' %>
+    <div class="col-auto">
+      <button class="btn btn-outline-secondary collapse-toggle" data-toggle="collapse" data-target="#detailedSearch" type="button" aria-expanded="false" aria-controls="detailedSearch">
+        <span class="mr-2"><%= t('txt.views.search_results.detailed_search') %></span>
+        <i class="hide-if-expanded fa fa-chevron-down"></i>
+        <i class="hide-if-collapsed fa fa-chevron-up"></i>
+      </button>
     </div>
-  <% end %>
+  </div>
+  <div id="detailedSearch" class="collapse">
+    <%= render 'detailed_search' %>
+  </div>
 <% end %>
