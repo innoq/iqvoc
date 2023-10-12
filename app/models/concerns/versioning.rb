@@ -25,11 +25,6 @@ module Versioning
                class_name: name,
                optional: true
 
-    belongs_to :locking_user,
-               foreign_key: 'locked_by',
-               class_name: 'AbstractUser',
-               optional: true
-
     after_initialize do
       disable_validations_for_publishing
     end
@@ -48,10 +43,6 @@ module Versioning
       where(published_at: nil)
     end
 
-    def locked
-      where(arel_table[:locked_by].not_eq(nil))
-    end
-
     def published_with_newer_versions
       # published objects without objects which have a new one in editing
       published_objects = arel_table[:published_at].not_eq(nil).and(arel_table[:origin].not_in(unpublished.map(&:origin)))
@@ -68,10 +59,6 @@ module Versioning
           arel_table[:published_at].eq(nil).and(arel_table[:published_version_id].eq(nil)) # this are all unpublished with no published version
         )
       )
-    end
-
-    def in_edit_mode
-      where(arel_table[:locked_by].not_eq(nil))
     end
 
     def unpublished_or_follow_up
@@ -99,9 +86,8 @@ module Versioning
     end
   end # module ClassMethods
 
-  def branch(user)
+  def branch
     new_version = self.deep_clone(include: self.class.includes_to_deep_cloning)
-    new_version.lock_by_user(user.id)
     new_version.increment(:rev)
     new_version.published_version_id = self.id
     new_version.unpublish
@@ -114,18 +100,8 @@ module Versioning
     published? || read_attribute(:published_version_id).blank?
   end
 
-  def lock_by_user(user_id)
-    tap do
-      write_attribute(:locked_by, user_id)
-    end
-  end
-
   def never_published?
     unpublished? && rev == 1
-  end
-
-  def locked?
-    locked_by?
   end
 
   def state
@@ -135,12 +111,6 @@ module Versioning
       I18n.t('txt.common.state.in_review')
     elsif !published? && !in_review?
       I18n.t('txt.common.state.checked_out')
-    end
-  end
-
-  def unlock
-    tap do
-      write_attribute(:locked_by, nil)
     end
   end
 

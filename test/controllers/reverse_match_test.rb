@@ -43,7 +43,7 @@ class ReverseMatchTest < ActionController::TestCase
       RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
-      new_version = c.branch @admin
+      new_version = c.branch
       new_version.save
     end
 

@@ -73,7 +73,7 @@ class Concept::Relation::Base < ApplicationRecord
   end
 
   def self.target_in_edit_mode
-    joins(:target).merge(Concept::Base.in_edit_mode).references(:concepts)
+    joins(:target).merge(Concept::Base.unpublished).references(:concepts)
   end
 
   # ********* Methods

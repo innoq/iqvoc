@@ -401,7 +401,7 @@ class Concept::Base < ApplicationRecord
   end
 
   def self.for_dashboard
-    unpublished_or_follow_up.includes(:pref_labels, :locking_user)
+    unpublished_or_follow_up.includes(:pref_labels)
   end
 
   def self.parentless

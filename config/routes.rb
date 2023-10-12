@@ -51,8 +51,6 @@ Rails.application.routes.draw do
 
     post 'concepts/:origin/branch'      => 'concepts/versions#branch',    as: 'concept_versions_branch'
     post 'concepts/:origin/merge'       => 'concepts/versions#merge',     as: 'concept_versions_merge'
-    post 'concepts/:origin/lock'        => 'concepts/versions#lock',      as: 'concept_versions_lock'
-    post 'concepts/:origin/unlock'      => 'concepts/versions#unlock',    as: 'concept_versions_unlock'
     post 'concepts/:origin/to_review'   => 'concepts/versions#to_review', as: 'concept_versions_to_review'
     get 'concepts/:origin/consistency_check' => 'concepts/versions#consistency_check', as: 'concept_versions_consistency_check'
 
@@ -60,8 +58,6 @@ Rails.application.routes.draw do
 
     post 'collections/:origin/branch'      => 'collections/versions#branch',    as: 'collection_versions_branch'
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
-    post 'collections/:origin/lock'        => 'collections/versions#lock',      as: 'collection_versions_lock'
-    post 'collections/:origin/unlock'      => 'collections/versions#unlock',    as: 'collection_versions_unlock'
     post 'collections/:origin/to_review'   => 'collections/versions#to_review', as: 'collection_versions_to_review'
     get 'collections/:origin/consistency_check' => 'collections/versions#consistency_check', as: 'collection_versions_consistency_check'
 

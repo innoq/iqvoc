@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th><%= t("txt.views.dashboard.value") %><%= sorting_controls_for(:value) %></th>
-      <th><%= t("txt.views.dashboard.locking_user") %><%= sorting_controls_for(:locking_user) %></th>
       <% unless @items.first.class == Iqvoc::Collection.base_class %>
         <th><%= t("txt.views.dashboard.follow_up") %><%= sorting_controls_for(:follow_up) %></th>
       <% end %>
@@ -21,13 +20,6 @@
         <td class="text-nowrap">
           <%= render item.class.edit_link_partial_name, :item => item %>
           <a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a>
-        </td>
-        <td>
-        <% if item.locking_user.present? %>
-          <span class="badge badge-info" data-toggle="tooltip" data-placement="top" title="<%= item.locking_user.name %>">
-            <%= item.locking_user.initials %>
-          </span>
-        <% end %>
         </td>
         <% unless item.class == Iqvoc::Collection.base_class %>
           <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>">

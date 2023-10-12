@@ -28,7 +28,7 @@ class Collections::VersionsController < ApplicationController
     ActiveRecord::Base.transaction do
       new_version.rdf_updated_at = nil
       new_version.publish
-      new_version.unlock
+
       if new_version.publishable?
         new_version.save
 
@@ -63,51 +63,12 @@ class Collections::VersionsController < ApplicationController
 
       new_version = nil
       ActiveRecord::Base.transaction do
-        new_version = current_collection.branch(current_user)
+        new_version = current_collection.branch
         new_version.save!
       end
       flash[:success] = t('txt.controllers.versioning.branched')
       redirect_to edit_collection_path(new_version, published: 0)
     end
-  end
-
-  def lock
-    new_version = Iqvoc::Collection.base_class.
-        by_origin(params[:origin]).
-        unpublished.
-        last!
-
-    if new_version.locked?
-      raise "Collection '#{new_version.origin}' is already locked."
-    end
-
-    authorize! :lock, new_version
-
-    new_version.lock_by_user(current_user.id)
-    new_version.save validate: false
-
-    flash[:success] = t('txt.controllers.versioning.locked')
-    redirect_to edit_collection_path(new_version, published: 0)
-  end
-
-  def unlock
-    new_version = Iqvoc::Collection.base_class.
-        by_origin(params[:origin]).
-        unpublished.
-        last!
-
-    unless new_version.locked?
-      raise "Collection '#{new_version.origin}' is not locked."
-    end
-
-    authorize! :unlock, new_version
-
-    new_version.unlock
-    new_version.save validate: false
-
-    flash[:success] = t('txt.controllers.versioning.unlocked')
-
-    redirect_to collection_path(new_version, published: 0)
   end
 
   def consistency_check
@@ -135,9 +96,6 @@ class Collections::VersionsController < ApplicationController
 
     authorize! :send_to_review, collection
     collection.to_review
-
-    authorize! :unlock, collection
-    collection.unlock
 
     collection.save!
     flash[:success] = t('txt.controllers.versioning.to_review_success')

@@ -11,10 +11,9 @@ class ReverseMatchesController < ApplicationController
     render_response :mapping_exists and return if matches
 
     ActiveRecord::Base.transaction do
-      unpublished_concept = @published_concept.branch(@botuser)
+      unpublished_concept = @published_concept.branch
       unpublished_concept.save!
       @target_match_class.constantize.create(concept_id: unpublished_concept.id, value: @uri)
-      unpublished_concept.unlock
       unpublished_concept.publish!
       @published_concept.destroy!
     end
@@ -23,7 +22,7 @@ class ReverseMatchesController < ApplicationController
   end
 
   def remove_match
-    unpublished_concept = @published_concept.branch(@botuser)
+    unpublished_concept = @published_concept.branch
     unpublished_concept.save!
     match = @target_match_class.constantize.find_by(concept_id: unpublished_concept.id, value: @uri)
     if match.nil?
@@ -32,7 +31,6 @@ class ReverseMatchesController < ApplicationController
     end
     ActiveRecord::Base.transaction do
       match.destroy!
-      unpublished_concept.unlock
       unpublished_concept.publish!
       @published_concept.destroy!
     end

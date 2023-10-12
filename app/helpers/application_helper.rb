@@ -20,14 +20,6 @@ module ApplicationHelper
     no: '&#x2717;'
   }
 
-  def user_details(user)
-    details = mail_to(user.email, user.name)
-    if user.telephone_number?
-      details << ' ' << user.telephone_number
-    end
-    details
-  end
-
   # Formats a list of items or returns a remark if no items where given
   def item_listing(items, &block)
     return '&nbsp;'.html_safe if items.empty?

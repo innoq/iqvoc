@@ -72,8 +72,7 @@ class Concepts::HierarchicalController < ConceptsController
             url: url,
             update_url: move_concept_url(c),
             glance_url: glance_concept_url(c, format: :html),
-            published: (c.published?) ? true : false,
-            locked: (can?(:branch, c) || can?(:update, c) ? false : true)
+            published: (c.published?) ? true : false
           }
         end
         render json: concepts

@@ -87,7 +87,7 @@ class DeepCloningTest < ActiveSupport::TestCase
   end
 
   test 'should deep clone concept' do
-    root_concept_dup = @root_concept1.branch @admin
+    root_concept_dup = @root_concept1.branch
     root_concept_dup.save
 
     # test narrower
@@ -105,7 +105,7 @@ class DeepCloningTest < ActiveSupport::TestCase
   end
 
   test 'should deep clone collection' do
-    root_collection_dup = @root_collection.branch @admin
+    root_collection_dup = @root_collection.branch
     root_collection_dup.save
 
     # test subcollections

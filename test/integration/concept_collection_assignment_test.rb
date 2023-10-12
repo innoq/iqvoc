@@ -43,7 +43,7 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     visit concept_path(concept, lang: 'en', format: 'html')
 
     click_link_or_button 'Create new version'
-    assert page.has_content? 'Instance copy has been created and locked.'
+    assert page.has_content? 'Instance copy has been created.'
     collection_origins = [@sports_coll, @hobbies_coll].map(&:origin).join(', ')
     fill_in 'concept_assigned_collection_origins', with: collection_origins
 

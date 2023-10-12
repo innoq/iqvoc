@@ -28,9 +28,9 @@ class DashboardController < ApplicationController
       order_params = params[:sort]
       #FIXME: how to order by state in database?
       order_params = sanatize_order order_params
-      order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('follow_up', 'concepts.follow_up').gsub('updated_at', 'concepts.updated_at')
+      order_params = order_params.gsub('value', 'labels.value').gsub('follow_up', 'concepts.follow_up').gsub('updated_at', 'concepts.updated_at')
 
-      concepts = concepts.includes(:pref_labels, :locking_user).references(:pref_labels).references(:locking_user).order(order_params)
+      concepts = concepts.includes(:pref_labels).references(:pref_labels).order(order_params)
     else
       concepts = concepts.includes(:pref_labels).order('labels.value')
     end
@@ -51,9 +51,9 @@ class DashboardController < ApplicationController
       collections = sort == 'DESC' ? collections.reverse : collections
     elsif params[:sort]
       order_params = sanatize_order params[:sort]
-      order_params = order_params.gsub('value', 'labels.value').gsub('locking_user', 'users.surname').gsub('updated_at', 'concepts.updated_at')
+      order_params = order_params.gsub('value', 'labels.value').gsub('updated_at', 'concepts.updated_at')
 
-      collections = collections.includes(:pref_labels, :locking_user).references(:pref_labels).references(:locking_user).order(order_params)
+      collections = collections.includes(:pref_labels).references(:pref_labels).order(order_params)
     else
       collections = collections.includes(:pref_labels).order('labels.value')
     end
@@ -102,7 +102,7 @@ class DashboardController < ApplicationController
     return '' if search_params.include?(';')
     param_array = search_params.split(',').compact.select do |order_column|
       column_and_order = order_column.split(' ')
-      column_and_order.count == 2 && ['value', 'locking_user', 'follow_up', 'updated_at'].include?(column_and_order[0]) && ['ASC', 'DESC'].include?(column_and_order[1])
+      column_and_order.count == 2 && ['value', 'follow_up', 'updated_at'].include?(column_and_order[0]) && ['ASC', 'DESC'].include?(column_and_order[1])
     end
     param_array.join(',')
   end

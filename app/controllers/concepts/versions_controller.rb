@@ -33,7 +33,7 @@ class Concepts::VersionsController < ApplicationController
     ActiveRecord::Base.transaction do
       new_version.rdf_updated_at = nil
       new_version.publish
-      new_version.unlock
+
       if new_version.publishable?
         new_version.save
 
@@ -68,7 +68,7 @@ class Concepts::VersionsController < ApplicationController
 
       new_version = nil
       ActiveRecord::Base.transaction do
-        new_version = current_concept.branch(current_user)
+        new_version = current_concept.branch
         new_version.save!
         Iqvoc.change_note_class.create! do |note|
           note.owner = new_version
@@ -83,45 +83,6 @@ class Concepts::VersionsController < ApplicationController
       flash[:success] = t('txt.controllers.versioning.branched')
       redirect_to edit_concept_path(published: 0, id: new_version)
     end
-  end
-
-  def lock
-    new_version = Iqvoc::Concept.base_class.
-        by_origin(params[:origin]).
-        unpublished.
-        last!
-
-    if new_version.locked?
-      raise "Concept with origin '#{new_version.origin}' is already locked."
-    end
-
-    authorize! :lock, new_version
-
-    new_version.lock_by_user(current_user.id)
-    new_version.save validate: false
-
-    flash[:success] = t('txt.controllers.versioning.locked')
-    redirect_to edit_concept_path(published: 0, id: new_version)
-  end
-
-  def unlock
-    new_version = Iqvoc::Concept.base_class.
-        by_origin(params[:origin]).
-        unpublished.
-        last!
-
-    unless new_version.locked?
-      raise "Concept with origin '#{new_version.origin}' is not locked."
-    end
-
-    authorize! :unlock, new_version
-
-    new_version.unlock
-    new_version.save validate: false
-
-    flash[:success] = t('txt.controllers.versioning.unlocked')
-
-    redirect_to concept_path(published: 0, id: new_version)
   end
 
   def consistency_check
@@ -149,9 +110,6 @@ class Concepts::VersionsController < ApplicationController
 
     authorize! :send_to_review, concept
     concept.to_review
-
-    authorize! :unlock, concept
-    concept.unlock
 
     concept.save!
     flash[:success] = t('txt.controllers.versioning.to_review_success')

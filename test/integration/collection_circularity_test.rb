@@ -20,11 +20,11 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
   setup do
     login('administrator')
 
-    @coll1 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap { |c| c.save }
+    @coll1 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
     RDFAPI.devour @coll1, 'skos:prefLabel', '"coll1"@en'
-    @coll2 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap { |c| c.save }
+    @coll2 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
     RDFAPI.devour @coll2, 'skos:prefLabel', '"coll2"@en'
-    @coll3 = Iqvoc::Collection.base_class.new.lock_by_user(@user.id).tap { |c| c.save }
+    @coll3 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
     RDFAPI.devour @coll3, 'skos:prefLabel', '"coll3"@en'
 
     @concept1 = Concept::SKOS::Base.new.publish.tap { |c| c.save }

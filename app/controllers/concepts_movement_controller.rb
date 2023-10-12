@@ -70,7 +70,7 @@ class ConceptsMovementController < ApplicationController
       result = draft.first
     else
       # create a new version
-      result = concept.branch(current_user)
+      result = concept.branch
       result.save!
     end
 
