@@ -109,10 +109,17 @@ class Concepts::VersionsController < ApplicationController
         last!
 
     authorize! :send_to_review, concept
-    concept.to_review
 
-    concept.save!
-    flash[:success] = t('txt.controllers.versioning.to_review_success')
-    redirect_to concept_path(published: 0, id: concept)
+    # Only send the concept to review if it is publishable (e.g. consistency check is OK)
+    if concept.publishable?
+      concept.to_review
+      concept.save!
+
+      flash[:success] = t('txt.controllers.versioning.to_review_success')
+      redirect_to concept_path(published: 0, id: concept)
+    else
+      flash[:error] = t('txt.controllers.versioning.consistency_check_error')
+      redirect_to concept_path(published: 0, id: concept, full_consistency_check: '1')
+    end
   end
 end

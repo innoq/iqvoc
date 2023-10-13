@@ -30,6 +30,21 @@ class CreateConceptTest < ActionDispatch::IntegrationTest
     save_check_and_publish
   end
 
+  test 'send to review with inconsistent concept' do
+    login('administrator')
+    visit dashboard_path(lang: 'en')
+    click_link_or_button 'New Concept'
+
+    # Create invalid preflabel
+    fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en', with: 'Foo,Foo'
+    click_link_or_button 'Save'
+
+    # Consistency check should run when sending the concept to review.
+    click_link_or_button 'Send to review'
+    assert page.has_content? 'Instance is inconsistent.'
+    assert page.has_content? 'There must be only one preferred Label per language.'
+  end
+
   private
 
   def save_check_and_publish

@@ -95,10 +95,17 @@ class Collections::VersionsController < ApplicationController
         last!
 
     authorize! :send_to_review, collection
-    collection.to_review
 
-    collection.save!
-    flash[:success] = t('txt.controllers.versioning.to_review_success')
-    redirect_to collection_path(collection, published: 0)
+    # Only send the concept to review if it is publishable (e.g. consistency check is OK)
+    if collection.publishable?
+      collection.to_review
+
+      collection.save!
+      flash[:success] = t('txt.controllers.versioning.to_review_success')
+      redirect_to collection_path(collection, published: 0)
+    else
+      flash[:error] = t('txt.controllers.versioning.consistency_check_error')
+      redirect_to edit_collection_path(collection, published: 0, full_consistency_check: '1')
+    end
   end
 end
