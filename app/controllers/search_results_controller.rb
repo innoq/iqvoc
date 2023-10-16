@@ -109,6 +109,7 @@ class SearchResultsController < ApplicationController
       klass = klass.constantize
 
       @results = klass.single_query(params.merge({ languages: languages.flatten }))
+                      .filter { |search_result| result_allowed?(search_result) }
 
       if params[:limit] && Iqvoc.unlimited_search_results
         @results = @results.per(params[:limit].to_i)
@@ -162,4 +163,15 @@ class SearchResultsController < ApplicationController
     controller.params['l'] = langs.keys if controller.params['l'].nil?
     controller.params['include_expired'] = (controller.params['include_expired'] == "true")
   end
+
+  private
+
+  def result_allowed?(result)
+    if result.result_object.is_a?(Labeling::Base)
+      can?(:read, result.owner)
+    else
+      can?(:read, result.result_object)
+    end
+  end
+
 end
