@@ -214,7 +214,7 @@ de:
        contains: "enthalten Suchbegriff"
        ends_with: "enden mit Suchbegriff"
        begins_with: "starten mit Suchbegriff"
-       exact: "stimmen exact mit Suchbegriff überein"
+       exact: "stimmen exakt mit Suchbegriff überein"
        regexp: "regulärer Ausdruck (fortgeschritten)"
        search_term: "Suchbegriff"
        note: mit Anmerkung
@@ -240,7 +240,7 @@ de:
        mode: "Suchtreffer"
        datasets: "Externe Quellen"
        change_note:
-         all: "Erstellungs- und Änderungsdatum"
+         all: "Erstellungs- oder Änderungsdatum"
          type: "Typ"
          created: 'Erstellungsdatum'
          modified: 'Änderungsdatum'

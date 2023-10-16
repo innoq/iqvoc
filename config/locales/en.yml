@@ -248,7 +248,7 @@ en:
        mode: "Search results"
        datasets: "External sources"
        change_note:
-         all: "Creation and update date"
+         all: "Creation or update date"
          type: "type"
          created: "creation date"
          modified: "modification date"
