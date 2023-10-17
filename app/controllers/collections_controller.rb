@@ -33,7 +33,12 @@ class CollectionsController < ApplicationController
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
-          collections = Iqvoc::Collection.base_class.with_pref_labels.published.by_parent_id(params[:root])
+          collections = Iqvoc::Collection.base_class
+                                         .with_pref_labels
+                                         .published
+                                         .by_parent_id(params[:root])
+                                         .sort_by { |c| c.pref_label.to_s }
+
           collections.map do |collection|
             res = {
               id: collection.id,
@@ -46,10 +51,12 @@ class CollectionsController < ApplicationController
             res
           end
         else
-          collections = Iqvoc::Collection.base_class.with_pref_labels.published.merge(Label::Base.by_query_value("#{params[:query]}%"))
-          collections.map do |c|
-            collection_widget_data(c)
-          end
+          collections = Iqvoc::Collection.base_class
+                                         .with_pref_labels
+                                         .published
+                                         .merge(Label::Base.by_query_value("#{params[:query]}%"))
+                                         .sort_by { |c| c.pref_label.to_s }
+                                         .map { |c| collection_widget_data(c) }
         end
         render json: response
       end
