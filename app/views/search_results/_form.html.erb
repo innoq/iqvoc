@@ -16,7 +16,7 @@
       </button>
     </div>
   </div>
-  <div id="detailedSearch" class="collapse">
+  <div id="detailedSearch" class="collapse <%= current_user ? 'show' : ''%>">
     <%= render 'detailed_search' %>
   </div>
 <% end %>
