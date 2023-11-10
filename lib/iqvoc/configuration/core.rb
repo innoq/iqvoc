@@ -11,6 +11,7 @@ module Iqvoc
           :default_rdf_namespace_helper_modules,
           :default_rdf_namespace_helper_methods,
           :rdf_namespaces,
+          :rdf_show_change_notes,
           :change_note_class_name,
           :first_level_class_configuration_modules,
           :navigation_items,
@@ -102,6 +103,9 @@ module Iqvoc
           void: 'http://rdfs.org/ns/void#',
           iqvoc: 'http://try.iqvoc.net/schema#'
         }
+
+        # This flag determines if the changes notes should be included in the RDF representation of a Concept/Label/Collection.
+        self.rdf_show_change_notes = true
 
         # The class to use for automatic generation of change notes on every save
         self.change_note_class_name = 'Note::SKOS::ChangeNote'

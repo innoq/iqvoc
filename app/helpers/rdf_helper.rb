@@ -59,8 +59,10 @@ module RdfHelper
         relation.build_rdf(document, c, suppress_extra_labels)
       end
 
-      concept.notes.each do |note|
-        note.build_rdf(document, c)
+      if Iqvoc::rdf_show_change_notes
+        concept.notes.each do |note|
+          note.build_rdf(document, c)
+        end
       end
 
       concept.matches.each do |match|
@@ -93,8 +95,10 @@ module RdfHelper
         labeling.build_rdf(document, c)
       end
 
-      collection.note_skos_definitions.each do |note|
-        note.build_rdf(document, c)
+      if Iqvoc::rdf_show_change_notes
+        collection.note_skos_definitions.each do |note|
+          note.build_rdf(document, c)
+        end
       end
 
       collection.concepts.each do |concept|
