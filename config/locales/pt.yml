@@ -70,7 +70,6 @@ pt:
        checked_out: "Verificado"
      of: de
      pending: "Carregando…"
-     translation_missing_for: "tradução faltando para"
      type_to_search: "Digite para buscar"
      hint_csv_input: " Vários valores podem ser inseridos separados por vírgula."
      form_errors: "Erros"
