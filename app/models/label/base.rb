@@ -126,10 +126,6 @@ class Label::Base < ApplicationRecord
   end
 
   def to_s
-    if (language.presence || 'none') != I18n.locale.to_s
-      value.to_s + " [#{I18n.t('txt.common.translation_missing_for')} '#{I18n.locale}']"
-    else
       value.to_s
-    end
   end
 end
