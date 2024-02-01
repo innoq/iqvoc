@@ -41,12 +41,13 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       { rel: 'remove_match', href: 'http://0.0.0.0:3000/airsoft/remove_match', method: 'patch' }
     ]}.to_json
 
-    stub_request(:get, 'http://try.iqvoc.com/')
-      .with(headers: {
-        'Accept' => 'application/json',
-        'User-Agent'=>'Faraday v1.10.0'
-      })
-      .to_return(status: 200, body: body, headers: {})
+    stub_request(:get, "http://try.iqvoc.com/").
+      with(
+        headers: {
+          'Accept'=>'application/json',
+          'User-Agent'=>"Faraday v#{Faraday::VERSION}"
+        }).
+      to_return(status: 200, body: body, headers: {})
 
     @worker = Delayed::Worker.new
     DatabaseCleaner.start
@@ -63,7 +64,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
         'Accept' => '*/*',
         'Content-Type' => 'application/json',
         'Referer' => 'http://try.iqvoc.com/',
-        'User-Agent'=>'Faraday v1.10.0'
+        'User-Agent'=>"Faraday v#{Faraday::VERSION}"
       })
       .to_return(status: status, body: body.to_json, headers: {})
 
@@ -131,7 +132,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
         'Accept' => '*/*',
         'Content-Type' => 'application/json',
         'Referer' => 'http://try.iqvoc.com/',
-        'User-Agent'=>'Faraday v1.10.0'
+        'User-Agent'=>'Faraday v1.10.3'
       })
       .to_return(status: status, body: body.to_json, headers: {})
 
