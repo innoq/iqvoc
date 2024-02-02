@@ -1,6 +1,6 @@
 {
   "name": "iqvoc",
-  "version": "4.14.0",
+  "version": "4.14.5",
   "description": "iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web",
   "repository": {
     "type": "git",
