@@ -16,6 +16,7 @@ module ControllerExtensions
     rescue_from CanCan::AccessDenied, with: :handle_access_denied
     rescue_from ActionController::ParameterMissing, with: :handle_bad_request
     rescue_from ActionController::UnknownFormat, with: :handle_unknown_format
+    rescue_from ActionController::BadRequest, with: :handle_bad_request
   end
 
   protected
