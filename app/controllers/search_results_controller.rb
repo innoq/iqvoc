@@ -91,7 +91,7 @@ class SearchResultsController < ApplicationController
 
     @remote_result_collections = []
 
-    if params[:query]
+    if params[:query].present?
       # Deal with language parameter patterns
       languages = []
       # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
@@ -141,6 +141,15 @@ class SearchResultsController < ApplicationController
           end
         }
         format.any(:ttl, :rdf, :nt)
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :index
+        end
+        format.any(:ttl) do
+          head :bad_request
+        end
       end
     end
   end
