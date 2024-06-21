@@ -147,7 +147,7 @@ class SearchResultsController < ApplicationController
         format.html do
           render :index
         end
-        format.any(:ttl) do
+        format.any(:ttl, :rdf, :nt) do
           head :bad_request
         end
       end
