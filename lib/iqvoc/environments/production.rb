@@ -25,6 +25,10 @@ module Iqvoc::Environments
     # Disable serving static files from the `/public` folder by default since
     # Apache or NGINX already handles this.
     config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+    config.public_file_server.headers = {
+      'Cache-Control' => "public, s-maxage=#{365.days.to_i}, max-age=#{365.days.to_i}, immutable",
+      'Expires' => 1.year.from_now.to_formatted_s(:rfc822)
+    }
 
     # Enable serving of images, stylesheets, and JavaScripts from an asset server.
     # config.asset_host = "http://assets.example.com"
