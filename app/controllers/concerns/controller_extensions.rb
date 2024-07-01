@@ -21,6 +21,20 @@ module ControllerExtensions
 
   protected
 
+  def append_info_to_payload(payload)
+    super
+
+    # not set by rails because we rescue exceptions using :handle_server_error
+    if @exception.present?
+      payload[:exception] = [@exception.class.name, @exception.message]
+      payload[:exception_object] = @exception
+    end
+
+    if current_user.present?
+      payload[:user_id] = current_user.id
+    end
+  end
+
   def default_url_options(options = nil)
     { format: params[:format], lang: I18n.locale }.
     merge(options || {})
