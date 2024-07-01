@@ -168,7 +168,7 @@ class Note::Base < ApplicationRecord
         scope = scope.where("#{Collection::Member::Base.table_name}.collection_id" => collection.id)
         scope = scope.references(:collection_members)
       else
-        raise "Collection with Origin #{params[:collection_origin]} not found!"
+        Rails.logger.warn "Collection with Origin #{params[:collection_origin]} not found!"
       end
     end
 
