@@ -1,16 +1,22 @@
 require "active_support/core_ext/integer/time"
 require 'iqvoc'
 
+# The test environment is used exclusively to run your application's
+# test suite. You never need to work with it otherwise. Remember that
+# your test database is "scratch space" for the test suite and is wiped
+# and recreated between test runs. Don't rely on the data there!
 module Iqvoc::Environments
   def self.setup_test(config)
     # Settings specified here will take precedence over those in config/application.rb.
 
-    config.cache_classes = true
+    # While tests run files are not watched, reloading is not necessary.
+    config.enable_reloading = false
 
-    # Do not eager load code on boot. This avoids loading your whole application
-    # just for the purpose of running a single test. If you are using a tool that
-    # preloads Rails for running tests, you may have to set it to true.
-    config.eager_load = false
+    # Eager loading loads your entire application. When running a single test locally,
+    # this is usually not necessary, and can slow down your test suite. However, it's
+    # recommended that you enable it in continuous integration systems to ensure eager
+    # loading is working properly before deploying your code.
+    config.eager_load = ENV["CI"].present?
 
     # Configure public file server for tests with Cache-Control for performance.
     config.public_file_server.enabled = true
@@ -19,12 +25,12 @@ module Iqvoc::Environments
     }
 
     # Show full error reports and disable caching.
-    config.consider_all_requests_local       = true
+    config.consider_all_requests_local = true
     config.action_controller.perform_caching = false
     config.cache_store = :null_store
 
-    # Raise exceptions instead of rendering exception templates.
-    config.action_dispatch.show_exceptions = false
+    # Render exception templates for rescuable exceptions and raise for other exceptions.
+    config.action_dispatch.show_exceptions = :rescuable
 
     # Disable request forgery protection in test environment.
     config.action_controller.allow_forgery_protection = false
@@ -53,5 +59,8 @@ module Iqvoc::Environments
 
     # Annotate rendered view with file names.
     # config.action_view.annotate_rendered_view_with_filenames = true
+
+    # Raise error when a before_action's only/except options reference missing actions
+    config.action_controller.raise_on_missing_callback_actions = true
   end
 end
