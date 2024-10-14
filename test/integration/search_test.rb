@@ -239,4 +239,14 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert page.source.include?('#result2">')
     assert !page.source.include?('#result3">') # we're on page 3/3
   end
+
+  test 'api searching with empty search query' do
+    %w(ttl nt rdf).each do |format|
+      get search_url(lang: 'en', format: format)
+      assert_response :bad_request, 'should return bad request without search query'
+
+      get search_url(lang: 'en', format: format, query: '')
+      assert_response :bad_request, 'should return bad request with blank search query'
+    end
+  end
 end
