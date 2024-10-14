@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concerns/dataset_initialization'
-
 class SearchResultsController < ApplicationController
   include DatasetInitialization
 
