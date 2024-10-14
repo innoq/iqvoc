@@ -2,5 +2,6 @@
 Rails.autoloaders.main.inflector.inflect(
   'skos' => 'SKOS',
   'rdfs' => 'RDFS',
-  'rdfapi' => 'RDFAPI'
+  'rdfapi' => 'RDFAPI',
+  'version' => 'VERSION'
 )
