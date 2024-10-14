@@ -91,56 +91,65 @@ class SearchResultsController < ApplicationController
 
     @remote_result_collections = []
 
-    if params[:query].present?
-      # Deal with language parameter patterns
-      languages = []
-      # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
-      if params[:languages].respond_to?(:each) && params[:languages].include?('none')
-        # Special treatment for the "nil language"
-        languages << nil
-      elsif params[:languages].respond_to?(:split)
-        languages = params[:languages].split(',')
-      end
-
-      # Ensure a valid class was selected
-      unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
-        raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
-      end
-      klass = klass.constantize
-
-      @results = klass.single_query(params.merge({ languages: languages.flatten }))
-                      .filter { |search_result| result_allowed?(search_result) }
-
-      if params[:limit] && Iqvoc.unlimited_search_results
-        @results = @results.per(params[:limit].to_i)
-      end
-
-      if params[:datasets] && datasets = @datasets.select { |a| params[:datasets].include?(a.name) }
-        @results = SearchResultCollection.new(@results)
-        datasets.each do |dataset|
-          results = dataset.search(params)
-          if results
-            @results = @results + results
-          else
-            flash.now[:error] ||= []
-            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
+    if params[:query]
+      if params[:query].blank? and request.format.to_sym.in? [:ttl, :nt, :rdf]
+        # support blank searches via web ui, but not for api requests
+        respond_to do |format|
+          format.any(:ttl, :rdf, :nt) do
+            head :bad_request
           end
         end
-        @results = @results.sort { |x, y| x.to_s <=> y.to_s }
-      end
+      else
+        # Deal with language parameter patterns
+        languages = []
+        # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
+        if params[:languages].respond_to?(:each) && params[:languages].include?('none')
+          # Special treatment for the "nil language"
+          languages << nil
+        elsif params[:languages].respond_to?(:split)
+          languages = params[:languages].split(',')
+        end
 
-      @results = Kaminari.paginate_array(@results)
-      @results = @results.page(params[:page])
+        # Ensure a valid class was selected
+        unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
+          raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
+        end
+        klass = klass.constantize
 
-      respond_to do |format|
-        format.html {
-          if request.headers['Accept'] == 'text/html; fragment=true'
-            render template: 'search_results/_result_list', layout: false
-          else
-            render :index, layout: with_layout?
+        @results = klass.single_query(params.merge({ languages: languages.flatten }))
+                        .filter { |search_result| result_allowed?(search_result) }
+
+        if params[:limit] && Iqvoc.unlimited_search_results
+          @results = @results.per(params[:limit].to_i)
+        end
+
+        if params[:datasets] && datasets = @datasets.select { |a| params[:datasets].include?(a.name) }
+          @results = SearchResultCollection.new(@results)
+          datasets.each do |dataset|
+            results = dataset.search(params)
+            if results
+              @results = @results + results
+            else
+              flash.now[:error] ||= []
+              flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
+            end
           end
-        }
-        format.any(:ttl, :rdf, :nt)
+          @results = @results.sort { |x, y| x.to_s <=> y.to_s }
+        end
+
+        @results = Kaminari.paginate_array(@results)
+        @results = @results.page(params[:page])
+
+        respond_to do |format|
+          format.html {
+            if request.headers['Accept'] == 'text/html; fragment=true'
+              render template: 'search_results/_result_list', layout: false
+            else
+              render :index, layout: with_layout?
+            end
+          }
+          format.any(:ttl, :rdf, :nt)
+        end
       end
     else
       respond_to do |format|
