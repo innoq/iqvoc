@@ -114,7 +114,12 @@ GEM
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
-    database_cleaner (1.8.5)
+    database_cleaner (2.0.2)
+      database_cleaner-active_record (>= 2, < 3)
+    database_cleaner-active_record (2.2.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.3.4)
     date (3.3.4-java)
     debug (1.9.1)
@@ -512,7 +517,7 @@ DEPENDENCIES
   carrierwave
   carrierwave-i18n
   cuprite
-  database_cleaner (~> 1.8.5)
+  database_cleaner
   debug
   deep_cloneable
   delayed_job_active_record

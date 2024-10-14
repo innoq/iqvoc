@@ -38,7 +38,7 @@ gem "deep_cloneable"
 gem "bootstrap_form", "~> 4.0"
 gem 'apipie-rails'
 gem 'maruku', require: false
-gem 'database_cleaner', '~> 1.8.5'
+gem 'database_cleaner'
 gem 'delayed_job_active_record'
 gem 'carrierwave'
 gem 'carrierwave-i18n'
