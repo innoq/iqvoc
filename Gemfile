@@ -70,10 +70,3 @@ group :test do
   gem 'cuprite'
   gem 'webmock'
 end
-
-group :production do
-end
-
-group :heroku do
-  gem 'rails_12factor'
-end
