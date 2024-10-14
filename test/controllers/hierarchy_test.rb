@@ -332,7 +332,6 @@ boot:
 
     get :show, params: { lang: 'en', format: 'html', root: 'foo', siblings: 'true' }
     entries = get_all_entries('ul.concept-hierarchy li')
-    # binding.pry
     assert_equal ['Bar', 'Foo'], entries
 
     get :show, params: { lang: 'en', format: 'html', root: 'lorem' }

@@ -56,13 +56,13 @@ gem 'pg'
 gem 'rack-mini-profiler'
 
 group :development do
-  gem 'better_errors'
   gem 'web-console', '>= 4.1.0'
   gem 'listen', '~> 3.3'
 end
 
 group :development, :test do
-  gem 'pry-rails', require: 'pry'
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
 group :test do
