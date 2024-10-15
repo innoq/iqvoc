@@ -131,7 +131,6 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
-    date (3.3.4-java)
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
