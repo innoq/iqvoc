@@ -33,6 +33,7 @@ class Concept::Base < ApplicationRecord
   include Concept::Validations
   include FirstLevelObjectValidations
   include FirstLevelObjectScopes
+  include Expirable
 
   # ********** Hooks
 
@@ -367,15 +368,6 @@ class Concept::Base < ApplicationRecord
   end
 
   # ********** Scopes
-
-  def self.expired(time = Time.now)
-    where(arel_table[:expired_at].lteq(time))
-  end
-
-  def self.not_expired(time = Time.now)
-    col = arel_table[:expired_at]
-    where((col.eq(nil)).or(col.gt(time)))
-  end
 
   def self.tops
     where(top_term: true)
