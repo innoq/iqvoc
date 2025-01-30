@@ -28,6 +28,7 @@ gem 'cancancan'
 gem 'iq_rdf'
 gem 'iq_triplestorage'
 gem 'json'
+gem 'csv'
 gem 'rails_autolink'
 gem 'faraday'
 gem 'faraday_middleware'
@@ -70,4 +71,5 @@ group :test do
   gem 'capybara'
   gem 'cuprite'
   gem 'webmock'
+  gem 'mutex_m'
 end
