@@ -106,7 +106,7 @@ GEM
       ssrf_filter (~> 1.0)
     carrierwave-i18n (3.0.0)
       carrierwave (>= 3.0.0, < 4)
-    concurrent-ruby (1.3.5)
+    concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     crack (0.4.6)
       bigdecimal
@@ -300,7 +300,6 @@ GEM
     net-protocol (0.2.2)
       timeout
     net-smtp (0.5.0)
-      net-protocol
     nio4r (2.7.4)
     nio4r (2.7.4-java)
     nokogiri (1.18.2)
@@ -519,6 +518,7 @@ DEPENDENCIES
   capybara
   carrierwave
   carrierwave-i18n
+  concurrent-ruby (= 1.3.4)
   cuprite
   database_cleaner
   debug

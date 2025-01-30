@@ -46,6 +46,7 @@ gem 'faucet_pipeline_rails'
 gem 'bootsnap', require: false
 
 gem 'net-http' # silence already initialized constant errors for ruby < 3.0: https://github.com/ruby/net-imap/issues/16
+gem 'concurrent-ruby', '1.3.4' # fixes https://github.com/rails/rails/issues/54260, drop with rails 7.0.9
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
