@@ -433,7 +433,7 @@ GEM
       io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
-    rexml (3.3.8)
+    rexml (3.4.0)
     ruby-vips (2.2.2)
       ffi (~> 1.12)
       logger
