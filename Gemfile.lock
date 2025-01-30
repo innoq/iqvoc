@@ -134,6 +134,7 @@ GEM
     delayed_job_active_record (4.1.10)
       activerecord (>= 3.0, < 8.0)
       delayed_job (>= 3.0, < 5)
+    drb (2.2.1)
     ebnf (2.4.0)
       htmlentities (~> 4.3)
       rdf (~> 3.3)
@@ -528,6 +529,7 @@ DEPENDENCIES
   debug
   deep_cloneable
   delayed_job_active_record
+  drb
   faraday
   faraday_middleware
   faucet_pipeline_rails
