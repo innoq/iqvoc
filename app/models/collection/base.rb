@@ -96,6 +96,10 @@ class Collection::Base < Concept::Base
     'collection_dashboard_path'
   end
 
+  def self.inline_partial_name
+    'partials/collection/inline_base'
+  end
+
   def self.edit_link_partial_name
     'partials/collection/edit_link_base'
   end

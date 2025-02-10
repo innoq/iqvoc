@@ -1,0 +1,4 @@
+<%= link_to(concept.pref_label, collection_path(id: concept, published: ((!concept.published? && !concept.published_version_id) ? 0 : nil)), class: concept.published? ? '' : 'unpublished') %>
+<%- if concept.additional_info -%>
+  (<%= concept.additional_info %>)
+<%- end -%>
