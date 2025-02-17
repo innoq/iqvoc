@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Labeling::SKOS::PrefLabel < Labeling::SKOS::Base
+class Labeling::Skos::PrefLabel < Labeling::Skos::Base
   self.rdf_predicate = 'prefLabel'
 
   # if `singular` is true, only a single occurrence is allowed per instance

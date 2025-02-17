@@ -14,5 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Collection::SKOS::Unordered < Collection::SKOS::Base
+class Collection::Skos::Unordered < Collection::Skos::Base
 end

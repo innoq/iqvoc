@@ -112,6 +112,6 @@ module RdfSyncService::Helper # TODO: rename -- XXX: does not belong here!?
     return RdfSyncService.new(base_url, Iqvoc.config['triplestore.url'],
         username: Iqvoc.config['triplestore.username'].presence,
         password: Iqvoc.config['triplestore.password'].presence,
-        view_context: view_context) # fugly, but necessary; cf. RDFSync#serialize
+        view_context: view_context) # fugly, but necessary; cf. RdfSync#serialize
   end
 end

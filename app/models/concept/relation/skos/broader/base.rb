@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Relation::SKOS::Broader::Base < Concept::Relation::SKOS::Base
+class Concept::Relation::Skos::Broader::Base < Concept::Relation::Skos::Base
   self.rdf_predicate = 'broader'
 
   def self.narrower_class
-    Concept::Relation::SKOS::Narrower::Base
+    Concept::Relation::Skos::Narrower::Base
   end
 
   def self.reverse_relation_class

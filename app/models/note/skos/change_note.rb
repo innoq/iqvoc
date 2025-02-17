@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::SKOS::ChangeNote < Note::SKOS::Base
+class Note::Skos::ChangeNote < Note::Skos::Base
   self.rdf_predicate = 'changeNote'
 
   def self.edit_partial_name(obj)
@@ -40,7 +40,7 @@ class Note::SKOS::ChangeNote < Note::SKOS::Base
         if (IqRdf::Namespace.find_namespace_class(annotation.namespace))
           blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, annotation.value.nil? ? '' : annotation.value)
         else
-          raise "Note::SKOS::ChangeNote#build_rdf: couldn't find Namespace '#{annotation.namespace}'."
+          raise "Note::Skos::ChangeNote#build_rdf: couldn't find Namespace '#{annotation.namespace}'."
         end
       end
     end

@@ -35,7 +35,7 @@ class ConceptView
 
   # returns a string
   def definition
-    @definition ||= @concept.notes_for_class(Note::SKOS::Definition)
+    @definition ||= @concept.notes_for_class(Note::Skos::Definition)
       .first # FIXME: hard-coded class, arbitrary pick
       .try(:value)
   end

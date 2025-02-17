@@ -18,18 +18,18 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
 
 class ConceptSchemeTest < ActiveSupport::TestCase
   test 'singleton concept scheme' do
-    assert_equal 0, Concept::SKOS::Scheme.count
+    assert_equal 0, Concept::Skos::Scheme.count
 
-    assert_difference 'Concept::SKOS::Scheme.count' do
-      Concept::SKOS::Scheme.instance
+    assert_difference 'Concept::Skos::Scheme.count' do
+      Concept::Skos::Scheme.instance
     end
 
-    assert_no_difference 'Concept::SKOS::Scheme.count' do
-      Concept::SKOS::Scheme.instance
+    assert_no_difference 'Concept::Skos::Scheme.count' do
+      Concept::Skos::Scheme.instance
     end
 
     assert_raise TypeError do
-      Concept::SKOS::Scheme.create
+      Concept::Skos::Scheme.create
     end
   end
 end

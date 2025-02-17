@@ -21,18 +21,18 @@ class CollectionCircularityTest < ActionDispatch::IntegrationTest
     login('administrator')
 
     @coll1 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
-    RDFAPI.devour @coll1, 'skos:prefLabel', '"coll1"@en'
+    RdfApi.devour @coll1, 'skos:prefLabel', '"coll1"@en'
     @coll2 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
-    RDFAPI.devour @coll2, 'skos:prefLabel', '"coll2"@en'
+    RdfApi.devour @coll2, 'skos:prefLabel', '"coll2"@en'
     @coll3 = Iqvoc::Collection.base_class.new.tap { |c| c.save }
-    RDFAPI.devour @coll3, 'skos:prefLabel', '"coll3"@en'
+    RdfApi.devour @coll3, 'skos:prefLabel', '"coll3"@en'
 
-    @concept1 = Concept::SKOS::Base.new.publish.tap { |c| c.save }
-    RDFAPI.devour @concept1, 'skos:prefLabel', '"concept1"@en'
-    @concept2 = Concept::SKOS::Base.new.publish.tap { |c| c.save }
-    RDFAPI.devour @concept2, 'skos:prefLabel', '"concept2"@en'
-    @concept3 = Concept::SKOS::Base.new.publish.tap { |c| c.save }
-    RDFAPI.devour @concept3, 'skos:prefLabel', '"concept3"@en'
+    @concept1 = Concept::Skos::Base.new.publish.tap { |c| c.save }
+    RdfApi.devour @concept1, 'skos:prefLabel', '"concept1"@en'
+    @concept2 = Concept::Skos::Base.new.publish.tap { |c| c.save }
+    RdfApi.devour @concept2, 'skos:prefLabel', '"concept2"@en'
+    @concept3 = Concept::Skos::Base.new.publish.tap { |c| c.save }
+    RdfApi.devour @concept3, 'skos:prefLabel', '"concept3"@en'
   end
 
   test 'inline assignments are persisted' do

@@ -20,8 +20,8 @@ class Collection::Base < Concept::Base
     include mod
   end
 
-  has_many Note::SKOS::Definition.name.to_relation_name,
-           class_name: 'Note::SKOS::Definition',
+  has_many Note::Skos::Definition.name.to_relation_name,
+           class_name: 'Note::Skos::Definition',
            as: :owner,
            dependent: :destroy,
            inverse_of: :owner

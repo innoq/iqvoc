@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Labeling::SKOS::HiddenLabel < Labeling::SKOS::Base
+class Labeling::Skos::HiddenLabel < Labeling::Skos::Base
   self.rdf_predicate = 'hiddenLabel'
 
   def self.view_section_sort_key(obj)

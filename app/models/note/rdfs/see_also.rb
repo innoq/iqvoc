@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::RDFS::SeeAlso < Note::SKOS::Base
+class Note::Rdfs::SeeAlso < Note::Skos::Base
   self.rdf_namespace = 'rdfs'
   self.rdf_predicate = 'seeAlso'
 end

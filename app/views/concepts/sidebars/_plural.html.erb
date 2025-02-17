@@ -30,7 +30,7 @@
 <%= sidebar do %>
   <% if can?(:create, Iqvoc::Concept.base_class) %>
     <%= sidebar_header 'Links'%>
-    <% (Iqvoc.first_level_classes - [Collection::SKOS::Unordered]).each do |klass| %>
+    <% (Iqvoc.first_level_classes - [Collection::Skos::Unordered]).each do |klass| %>
       <%= sidebar_item { render(klass.new_link_partial_name) } %>
     <% end %>
   <% end %>

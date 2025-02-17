@@ -18,15 +18,15 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class TreeTest < ActionDispatch::IntegrationTest
   test 'browse hierarchical concepts tree' do
-    narrower_concept = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Narrower"@en'
+    narrower_concept = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Narrower"@en'
       c.publish
       c.save
     end
 
-    concept = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Foo"@en'
-      RDFAPI.devour c, 'skos:narrower', narrower_concept
+    concept = Concept::Skos::Base.new(top_term: true).tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Foo"@en'
+      RdfApi.devour c, 'skos:narrower', narrower_concept
       c.publish
       c.save
     end

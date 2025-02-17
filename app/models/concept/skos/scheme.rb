@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::SKOS::Scheme < Concept::Base
+class Concept::Skos::Scheme < Concept::Base
   private_class_method :new
 
   after_update :redeclare_top_concepts
@@ -87,7 +87,7 @@ class Concept::SKOS::Scheme < Concept::Base
 
   def mono_hierarchy?
     Iqvoc::Concept.broader_relation_class.new.kind_of?(
-      Concept::Relation::SKOS::Broader::Mono
+      Concept::Relation::Skos::Broader::Mono
     )
   end
 

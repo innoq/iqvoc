@@ -22,7 +22,7 @@ class Concept::Relation::Base < ApplicationRecord
   # So use Concept::Base ONLY in methods or procs.
   #
   # The reason for this lies in the fact that Concept::Base calls the
-  # Concept::Relation::SKOS::Broader::Base.narrower_class method to create all
+  # Concept::Relation::Skos::Broader::Base.narrower_class method to create all
   # concept_relation relations. This means Concept::Base triggers Rails to load
   # the Concept::Relation::* classes. If this would trigger Rails to load
   # Concept::Base we would have a loop == a problem.

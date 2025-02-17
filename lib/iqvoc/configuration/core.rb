@@ -83,8 +83,8 @@ module Iqvoc
         }]
 
         self.searchable_class_names = {
-          'Labeling::SKOS::Base' => 'labels',
-          'Labeling::SKOS::PrefLabel' => 'pref_labels',
+          'Labeling::Skos::Base' => 'labels',
+          'Labeling::Skos::PrefLabel' => 'pref_labels',
           'Note::Base' => 'notes'
         }
 
@@ -108,7 +108,7 @@ module Iqvoc
         self.rdf_show_change_notes = true
 
         # The class to use for automatic generation of change notes on every save
-        self.change_note_class_name = 'Note::SKOS::ChangeNote'
+        self.change_note_class_name = 'Note::Skos::ChangeNote'
 
         self.first_level_class_configuration_modules = [] # Will be set in the modules
 
@@ -139,7 +139,7 @@ module Iqvoc
           'title' => 'iQvoc',
           'concept_modal_preview' => true,
           'languages.pref_labeling' => ['en', 'de'],
-          'languages.further_labelings.Labeling::SKOS::AltLabel' => ['en', 'de'],
+          'languages.further_labelings.Labeling::Skos::AltLabel' => ['en', 'de'],
           'languages.notes' => ['en', 'de'],
           'performance.unbounded_hierarchy' => false,
           'sources.iqvoc' => [''],

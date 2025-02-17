@@ -34,32 +34,32 @@ class DeepCloningTest < ActiveSupport::TestCase
     #   - Air Sport
     # + Sports
     @child_concept = Iqvoc::Concept.base_class.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Child Concept"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Child Concept"@en'
       c.publish
       c.save
     end
 
     @root_concept1 = Iqvoc::Concept.base_class.new(top_term: true, origin: 'root_concept1').tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Root Concept 1"@en'
-      RDFAPI.devour c, 'skos:narrower', @child_concept
+      RdfApi.devour c, 'skos:prefLabel', '"Root Concept 1"@en'
+      RdfApi.devour c, 'skos:narrower', @child_concept
       c.publish
       c.save
     end
 
     @root_concept2 = Iqvoc::Concept.base_class.new(top_term: true, origin: 'root_concept2').tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Root Concept 2"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Root Concept 2"@en'
       c.publish
       c.save
     end
 
     @sub_collection = Iqvoc::Collection.base_class.new(origin: 'sub_collection').tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Sub Collection"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Sub Collection"@en'
       c.publish
       c.save
     end
 
     @root_collection = Iqvoc::Collection.base_class.new(origin: 'root_collection1').tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Root Collection"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Root Collection"@en'
       c.publish
       c.save
     end

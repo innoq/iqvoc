@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Collection::Member::SKOS::Base < Collection::Member::Base
+class Collection::Member::Skos::Base < Collection::Member::Base
   self.rdf_namespace = 'skos'
   self.rdf_predicate = 'member'
 
@@ -24,7 +24,7 @@ class Collection::Member::SKOS::Base < Collection::Member::Base
 
     member_instance = rdf_subject.members.detect{ |rel| rel.target == rdf_object }
     if member_instance.nil?
-      predicate_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+      predicate_class = RdfApi::PREDICATE_DICTIONARY[rdf_predicate] || self
       member_instance = predicate_class.new(target: rdf_object)
       rdf_subject.members << member_instance
     end

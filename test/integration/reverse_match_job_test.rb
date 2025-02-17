@@ -21,14 +21,14 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
   include ReverseMatchErrors
 
   setup do
-    @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+    @achievement_hobbies = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
       c.publish
       c.save
     end
 
-    @airsoft = Concept::SKOS::Base.new(origin: 'airsoft').tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
+    @airsoft = Concept::Skos::Base.new(origin: 'airsoft').tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
     end
@@ -68,7 +68,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       })
       .to_return(status: status, body: body.to_json, headers: {})
 
-    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
+    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::Skos::BroadMatch')
     @reverse_match_service.add(job)
 
     job = Delayed::Job.last
@@ -82,7 +82,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft')
       .to_timeout
 
-    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
+    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::Skos::BroadMatch')
     @reverse_match_service.add(job)
 
     job = Delayed::Job.last
@@ -98,7 +98,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft')
       .to_raise(Errno::ECONNREFUSED)
 
-    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
+    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::Skos::BroadMatch')
     @reverse_match_service.add(job)
 
     job = Delayed::Job.last
@@ -114,7 +114,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
     stub_request(:patch, 'http://0.0.0.0:3000/airsoft/add_match?match_class=match_skos_broadmatch&uri=http://try.iqvoc.com/airsoft')
       .to_return(status: 404)
 
-    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
+    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::Skos::BroadMatch')
     @reverse_match_service.add(job)
 
     job = Delayed::Job.last
@@ -136,7 +136,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
       })
       .to_return(status: status, body: body.to_json, headers: {})
 
-    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::SKOS::BroadMatch')
+    job = @reverse_match_service.build_job(:add_match, @airsoft, 'http://try.iqvoc.com', 'Match::Skos::BroadMatch')
     @reverse_match_service.add(job)
 
     job = Delayed::Job.last

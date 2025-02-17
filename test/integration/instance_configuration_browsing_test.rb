@@ -36,7 +36,7 @@ class InstanceConfigurationTest < ActionDispatch::IntegrationTest
     assert_equal '/en/config.html', page.current_path
     assert page.has_css?('input#config_title')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.pref_labeling"]')
-    assert page.has_selector?(:xpath, '//input[@id="config_languages.further_labelings.Labeling::SKOS::AltLabel"]')
+    assert page.has_selector?(:xpath, '//input[@id="config_languages.further_labelings.Labeling::Skos::AltLabel"]')
     assert page.has_selector?(:xpath, '//input[@id="config_languages.notes"]')
 
     # TODO: also test POST

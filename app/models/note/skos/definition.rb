@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::SKOS::Definition < Note::SKOS::Base
+class Note::Skos::Definition < Note::Skos::Base
   self.rdf_predicate = 'definition'
 
   def self.view_section(obj)

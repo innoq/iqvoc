@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::RelatedMatch < Match::SKOS::MappingRelation
+class Match::Skos::RelatedMatch < Match::Skos::MappingRelation
   def self.reverse_match_class_name
     self.to_s
   end
