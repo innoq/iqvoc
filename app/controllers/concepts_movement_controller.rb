@@ -83,7 +83,7 @@ class ConceptsMovementController < ApplicationController
       r.target = new_parent
     end
 
-    Concept::Relation::SKOS::Narrower::Base.create! do |r|
+    Concept::Relation::Skos::Narrower::Base.create! do |r|
       r.owner = new_parent
       r.target = moved_concept
     end

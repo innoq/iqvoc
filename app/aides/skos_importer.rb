@@ -269,7 +269,7 @@ class SkosImporter
   end
 
   def blank_node?(str)
-    str.to_s =~ RDFAPI::BLANK_NODE_REGEXP
+    str.to_s =~ RdfApi::BLANK_NODE_REGEXP
   end
 
   def extract_triple(line)

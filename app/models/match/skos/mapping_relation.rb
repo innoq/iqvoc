@@ -14,6 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::MappingRelation < Match::SKOS::Base
+class Match::Skos::MappingRelation < Match::Skos::Base
   self.rdf_predicate = 'mappingRelation'
 end

@@ -23,9 +23,9 @@ class UntranslatedConceptsTest < ActionDispatch::IntegrationTest
       { en: 'Yen1', de: 'Yde1' },
       { en: 'Yen2' }
     ].each do |hsh|
-      concept = Concept::SKOS::Base.new
+      concept = Concept::Skos::Base.new
       hsh.each do |lang, value|
-        RDFAPI.devour concept, 'skos:prefLabel', "\"#{value}\"@#{lang}"
+        RdfApi.devour concept, 'skos:prefLabel', "\"#{value}\"@#{lang}"
       end
       concept.publish.save
     end

@@ -41,7 +41,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concept with no preflabel' do
-    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    concept = RdfApi.devour 'bear', 'a', 'skos:Concept'
 
     assert concept.save
     refute concept.publishable?
@@ -51,15 +51,15 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concepts without pref_labels should be saveable but not publishable' do
-    concept =  RDFAPI.devour 'bear', 'a', 'skos:Concept'
+    concept =  RdfApi.devour 'bear', 'a', 'skos:Concept'
     assert_equal [], concept.pref_labels
     assert concept.valid?
     refute concept.publishable?
   end
 
   test 'published concept must have a pref_label of the first pref_label language configured (the main language)' do
-    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
-    RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
+    concept = RdfApi.devour 'bear', 'a', 'skos:Concept'
+    RdfApi.devour concept, 'skos:prefLabel', '"Bear"@en'
 
     assert concept.save
 
@@ -72,14 +72,14 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'one pref label per language' do
-    concept = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Bear"@en'
+    concept = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Bear"@en'
       c.publish
       c.save
     end
 
     assert concept.valid?
-    RDFAPI.devour concept, 'skos:prefLabel', '"Beaaar"@en'
+    RdfApi.devour concept, 'skos:prefLabel', '"Beaaar"@en'
     concept.pref_labelings.reload
     assert_equal 2, concept.pref_labelings.count
     assert_equal concept.pref_labelings.first.target.language, concept.pref_labelings.second.target.language
@@ -87,29 +87,29 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'unique pref label' do
-    bear_one = RDFAPI.devour 'bear_one', 'a', 'skos:Concept'
-    RDFAPI.devour bear_one, 'skos:prefLabel', '"Bear"@en'
+    bear_one = RdfApi.devour 'bear_one', 'a', 'skos:Concept'
+    RdfApi.devour bear_one, 'skos:prefLabel', '"Bear"@en'
 
     assert bear_one.save
     assert bear_one.publishable?
 
-    bear_two = RDFAPI.devour 'bear_two', 'a', 'skos:Concept'
-    RDFAPI.devour bear_two, 'skos:prefLabel', '"Bear"@en'
+    bear_two = RdfApi.devour 'bear_two', 'a', 'skos:Concept'
+    RdfApi.devour bear_two, 'skos:prefLabel', '"Bear"@en'
 
     bear_two.save!
     refute bear_two.publishable?
   end
 
   test 'unique alt labels' do
-    tiger = RDFAPI.devour 'tiger', 'a', 'skos:Concept'
-    RDFAPI.devour tiger, 'skos:prefLabel', '"Tiger"@en'
+    tiger = RdfApi.devour 'tiger', 'a', 'skos:Concept'
+    RdfApi.devour tiger, 'skos:prefLabel', '"Tiger"@en'
 
     assert tiger.save
     assert tiger.publishable?
 
     # two identical alt labels
-    RDFAPI.devour tiger, 'skos:altLabel', '"Big cat"@en'
-    RDFAPI.devour tiger, 'skos:altLabel', '"Big cat"@en'
+    RdfApi.devour tiger, 'skos:altLabel', '"Big cat"@en'
+    RdfApi.devour tiger, 'skos:altLabel', '"Big cat"@en'
 
     tiger.save!
     tiger.reload
@@ -117,14 +117,14 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'distinct labels' do
-    monkey = RDFAPI.devour 'Monkey', 'a', 'skos:Concept'
-    RDFAPI.devour monkey, 'skos:prefLabel', '"Monkey"@en'
+    monkey = RdfApi.devour 'Monkey', 'a', 'skos:Concept'
+    RdfApi.devour monkey, 'skos:prefLabel', '"Monkey"@en'
 
     assert monkey.save
     assert monkey.publishable?
 
     # identical to pref label
-    RDFAPI.devour monkey, 'skos:altLabel', '"Monkey"@en'
+    RdfApi.devour monkey, 'skos:altLabel', '"Monkey"@en'
 
     monkey.save!
     monkey.reload
@@ -132,9 +132,9 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'multiple pref labels of different languages' do
-    concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
-    RDFAPI.devour concept, 'skos:prefLabel', '"Bear"@en'
-    RDFAPI.devour concept, 'skos:prefLabel', '"Bär"@de'
+    concept = RdfApi.devour 'bear', 'a', 'skos:Concept'
+    RdfApi.devour concept, 'skos:prefLabel', '"Bear"@en'
+    RdfApi.devour concept, 'skos:prefLabel', '"Bär"@de'
 
     assert concept.save
     concept.reload
@@ -145,7 +145,7 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'labelings_by_text setter' do
-    concept = Concept::SKOS::Base.new
+    concept = Concept::Skos::Base.new
 
     concept.labelings_by_text = {
       Iqvoc::Concept.pref_labeling_class_name.to_relation_name => {
@@ -181,11 +181,11 @@ class ConceptTest < ActiveSupport::TestCase
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
 
-    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::Skos::PrefLabel)
     assert_equal 'lipsum',
         concept.labelings_by_text('labeling_skos_pref_labels', 'en')
     assert_equal ['foo', 'bar'],
-        labels_for.call(concept, Labeling::SKOS::AltLabel)
+        labels_for.call(concept, Labeling::Skos::AltLabel)
     assert_equal 'foo, bar',
         concept.labelings_by_text('labeling_skos_alt_labels', 'en')
 
@@ -197,24 +197,24 @@ class ConceptTest < ActiveSupport::TestCase
     }
     concept = Iqvoc::Concept.base_class.create(form_data)
 
-    assert_equal ['lipsum'], labels_for.call(concept, Labeling::SKOS::PrefLabel)
+    assert_equal ['lipsum'], labels_for.call(concept, Labeling::Skos::PrefLabel)
     assert_equal 'lipsum',
         concept.labelings_by_text('labeling_skos_pref_labels', 'en')
     assert_equal ['lorem', 'foo, bar', 'ipsum'],
-        labels_for.call(concept, Labeling::SKOS::AltLabel)
+        labels_for.call(concept, Labeling::Skos::AltLabel)
     assert_equal 'lorem, "foo, bar", ipsum',
         concept.labelings_by_text('labeling_skos_alt_labels', 'en')
   end
 
   test 'no narrower and broader concept relation' do
-    bear_concept = RDFAPI.devour 'bear', 'a', 'skos:Concept'
-    RDFAPI.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
+    bear_concept = RdfApi.devour 'bear', 'a', 'skos:Concept'
+    RdfApi.devour bear_concept, 'skos:prefLabel', '"Bear"@en'
     bear_concept.save
 
-    concept = RDFAPI.devour 'forest', 'a', 'skos:Concept'
-    RDFAPI.devour concept, 'skos:prefLabel', '"Forest"@en'
-    RDFAPI.devour concept, 'skos:narrower', bear_concept
-    RDFAPI.devour concept, 'skos:broader', bear_concept
+    concept = RdfApi.devour 'forest', 'a', 'skos:Concept'
+    RdfApi.devour concept, 'skos:prefLabel', '"Forest"@en'
+    RdfApi.devour concept, 'skos:narrower', bear_concept
+    RdfApi.devour concept, 'skos:broader', bear_concept
     assert concept.save!
     assert_equal 1, concept.narrower_relations.count
     assert_equal 1, concept.broader_relations.count
@@ -227,25 +227,25 @@ class ConceptTest < ActiveSupport::TestCase
   end
 
   test 'concept self reference validation' do
-    wolf_concept = RDFAPI.devour 'wolf', 'a', 'skos:Concept'
-    RDFAPI.devour wolf_concept, 'skos:prefLabel', '"Wolf"@en'
+    wolf_concept = RdfApi.devour 'wolf', 'a', 'skos:Concept'
+    RdfApi.devour wolf_concept, 'skos:prefLabel', '"Wolf"@en'
     wolf_concept.save!
 
     assert wolf_concept.publishable?
 
-    RDFAPI.devour wolf_concept, 'skos:narrower', wolf_concept
+    RdfApi.devour wolf_concept, 'skos:narrower', wolf_concept
     refute wolf_concept.publishable?
     assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
 
     wolf_concept.relations.delete_all
     assert wolf_concept.reload.publishable?
-    RDFAPI.devour wolf_concept, 'skos:broader', wolf_concept
+    RdfApi.devour wolf_concept, 'skos:broader', wolf_concept
     refute wolf_concept.publishable?
     assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
 
     wolf_concept.relations.delete_all
     assert wolf_concept.reload.publishable?
-    RDFAPI.devour wolf_concept, 'skos:related', wolf_concept
+    RdfApi.devour wolf_concept, 'skos:related', wolf_concept
     refute wolf_concept.publishable?
     assert wolf_concept.errors.full_messages_for(:base).include? I18n.t('txt.models.concept.no_self_reference')
   end
@@ -255,7 +255,7 @@ class ConceptTest < ActiveSupport::TestCase
     assert_equal 0, Iqvoc::Concept.base_class.expired.count
 
     wolf_concept = Iqvoc::Concept.base_class.new(origin: 'wolf').publish.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Wolf"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Wolf"@en'
       c.save
     end
     refute wolf_concept.expired?

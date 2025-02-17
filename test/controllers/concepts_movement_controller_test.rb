@@ -36,19 +36,19 @@ class ConceptsMovementControllerTest < ActionController::TestCase
     #   - Air Sport
     # + Sports
     #
-    @air_sports = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+    @air_sports = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.publish
       c.save
     end
-    @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      RDFAPI.devour c, 'skos:narrower', @air_sports
+    @achievement_hobbies = Concept::Skos::Base.new(top_term: true).tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RdfApi.devour c, 'skos:narrower', @air_sports
       c.publish
       c.save
     end
-    @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+    @sports = Concept::Skos::Base.new(top_term: true).tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Sports"@en'
       c.publish
       c.save
     end
@@ -128,17 +128,17 @@ class ConceptsMovementControllerTest < ActionController::TestCase
     UserSession.create(@admin)
 
     # create unpublished concepts
-    @air_sports = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
+    @air_sports = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Air sports"@en'
       c.save
     end
-    @achievement_hobbies = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
-      RDFAPI.devour c, 'skos:narrower', @air_sports
+    @achievement_hobbies = Concept::Skos::Base.new(top_term: true).tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+      RdfApi.devour c, 'skos:narrower', @air_sports
       c.save
     end
-    @sports = Concept::SKOS::Base.new(top_term: true).tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+    @sports = Concept::Skos::Base.new(top_term: true).tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Sports"@en'
       c.save
     end
 

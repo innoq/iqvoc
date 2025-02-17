@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::SKOS::Base < Note::Base
+class Note::Skos::Base < Note::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -23,10 +23,10 @@ class Note::SKOS::Base < Note::Base
       raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be able to receive this kind of note (#{self.name} => #{self.name.to_relation_name.to_s})."
     end
 
-    target_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    target_class = RdfApi::PREDICATE_DICTIONARY[rdf_predicate] || self
     case rdf_object
     when String # Literal
-      unless rdf_object =~ RDFAPI::LITERAL_REGEXP
+      unless rdf_object =~ RdfApi::LITERAL_REGEXP
         raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a string literal"
       end
       lang = $3
@@ -53,7 +53,7 @@ class Note::SKOS::Base < Note::Base
         blank_node.Rdfs::comment(value, lang: language || nil) if value
         annotations.order(:namespace, :predicate).each do |annotation|
           if IqRdf::Namespace.find_namespace_class(annotation.namespace)
-            val = if annotation.value =~ RDFAPI::URI_REGEXP
+            val = if annotation.value =~ RdfApi::URI_REGEXP
               # Fall back to plain value literal if URI is not parseable
               URI.parse(annotation.value) rescue annotation.value
             else

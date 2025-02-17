@@ -21,21 +21,21 @@ class ConceptCollectionAssignmentTest < ActionDispatch::IntegrationTest
     login 'administrator'
 
     @sports_coll = Iqvoc::Collection.base_class.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Sports"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Sports"@en'
       c.publish
       c.save
     end
 
     @hobbies_coll = Iqvoc::Collection.base_class.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Hobbies"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Hobbies"@en'
       c.publish
       c.save
     end
   end
 
   test 'concept collection assignment' do
-    concept = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Testcollection"@en'
+    concept = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Testcollection"@en'
       c.publish
       c.save
     end

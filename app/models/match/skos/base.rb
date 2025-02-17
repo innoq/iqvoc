@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Match::SKOS::Base < Match::Base
+class Match::Skos::Base < Match::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
@@ -22,14 +22,14 @@ class Match::SKOS::Base < Match::Base
     raise "#{self.class}#build_from_rdf: Object (#{rdf_object}) must be a URI" unless rdf_object =~ /^<(.+)>$/ # XXX: this assumes nt-format, right?
     uri = $1
 
-    match_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    match_class = RdfApi::PREDICATE_DICTIONARY[rdf_predicate] || self
     match_class.new(value: uri).tap do |match|
       rdf_subject.send(self.name.to_relation_name) << match
     end
   end
 
   def build_rdf(document, subject)
-    raise "Match::SKOS::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate." unless self.rdf_namespace && self.rdf_predicate
+    raise "Match::Skos::Base#build_rdf: Class #{self.name} needs to define self.rdf_namespace and self.rdf_predicate." unless self.rdf_namespace && self.rdf_predicate
 
     if (IqRdf::Namespace.find_namespace_class(self.rdf_namespace.camelcase))
       subject.send(self.rdf_namespace.camelcase).send(self.rdf_predicate, URI.parse(value))

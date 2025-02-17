@@ -69,7 +69,7 @@ class DashboardController < ApplicationController
     object = objects.send(params[:published] == "1" ? 'published' : 'unpublished').first
 
     @title = object.to_s
-    @editorial_notes = object.notes_for_class(Note::SKOS::EditorialNote)
+    @editorial_notes = object.notes_for_class(Note::Skos::EditorialNote)
 
     @path = send(object.class_path, id: object, published: params[:published])
 

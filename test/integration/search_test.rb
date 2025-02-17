@@ -20,22 +20,22 @@ class SearchTest < ActionDispatch::IntegrationTest
     Kaminari.config.default_per_page = 5
 
     @concepts = %w("Tree"@en "Forest"@en).map do |literal|
-      Concept::SKOS::Base.new.tap do |c|
-        RDFAPI.devour c, 'skos:prefLabel', literal
+      Concept::Skos::Base.new.tap do |c|
+        RdfApi.devour c, 'skos:prefLabel', literal
         c.publish
         c.save
       end
     end
 
-    @collection = Collection::SKOS::Unordered.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Alpha"@en'
+    @collection = Collection::Skos::Unordered.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Alpha"@en'
       c.publish
       c.save
     end
 
     # assign concepts to collection
     @concepts.each do |c|
-      RDFAPI.devour @collection, 'skos:member', c
+      RdfApi.devour @collection, 'skos:member', c
     end
   end
 
@@ -150,12 +150,12 @@ class SearchTest < ActionDispatch::IntegrationTest
   end
 
   test 'searching specific classes within collections' do
-    concept = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:definition', '"lorem ipsum"@en'
+    concept = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:definition', '"lorem ipsum"@en'
       c.publish
       c.save
     end
-    RDFAPI.devour @collection, 'skos:member', concept
+    RdfApi.devour @collection, 'skos:member', concept
 
     visit search_path(lang: 'en', format: 'html')
 
@@ -198,8 +198,8 @@ class SearchTest < ActionDispatch::IntegrationTest
   test 'pagination' do
     # create a large number of concepts
     1.upto(12) do |i|
-      Concept::SKOS::Base.new.tap do |c|
-        RDFAPI.devour c, 'skos:prefLabel', "\"sample_#{sprintf('_%04d', i)}\"@en"
+      Concept::Skos::Base.new.tap do |c|
+        RdfApi.devour c, 'skos:prefLabel', "\"sample_#{sprintf('_%04d', i)}\"@en"
         c.publish
         c.save
       end

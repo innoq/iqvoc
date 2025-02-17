@@ -21,12 +21,12 @@ class CollectionBrowsingTest < ActionDispatch::IntegrationTest
     login('administrator')
 
     @indoor = Iqvoc::Collection.base_class.new.publish.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Indoors"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Indoors"@en'
       c.save
     end
 
     @outdoor = Iqvoc::Collection.base_class.new.publish.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Outdoors"@en'
+      RdfApi.devour c, 'skos:prefLabel', '"Outdoors"@en'
       c.save
     end
   end

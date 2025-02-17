@@ -19,9 +19,9 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
   setup do
     @concepts = %w("Tree"@en "Forest"@en "Baum"@de "Forst"@de).map do |literal|
-      concept = Concept::SKOS::Base.new.publish
+      concept = Concept::Skos::Base.new.publish
       concept.save
-      RDFAPI.devour concept, 'skos:prefLabel', literal
+      RdfApi.devour concept, 'skos:prefLabel', literal
       concept
     end
   end
@@ -57,10 +57,10 @@ class BrowseConceptsAndLabelsTest < ActionDispatch::IntegrationTest
   test 'showing expired concepts' do
     # prepare database with expired concept
     concepts = %w("Method"@en "Methode"@de).map do |literal|
-      concept = Concept::SKOS::Base.create! do |c|
+      concept = Concept::Skos::Base.create! do |c|
         c.expired_at = 2.days.ago
       end
-      RDFAPI.devour concept, 'skos:prefLabel', literal
+      RdfApi.devour concept, 'skos:prefLabel', literal
       concept
     end
 

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::SKOS::Base < Concept::Base
+class Concept::Skos::Base < Concept::Base
   self.rdf_namespace = 'skos'
   self.rdf_class = 'Concept'
 

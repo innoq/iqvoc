@@ -33,14 +33,14 @@ class ReverseMatchTest < ActionController::TestCase
 
     Iqvoc.config['sources.iqvoc'] = ['http://try.iqvoc.net']
 
-    @achievement_hobbies = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
+    @achievement_hobbies = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Achievement hobbies"@en'
       c.publish
       c.save
     end
 
-    @airsoft = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Airsoft"@en'
+    @airsoft = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Airsoft"@en'
       c.publish
       c.save
       new_version = c.branch
@@ -56,7 +56,7 @@ class ReverseMatchTest < ActionController::TestCase
   end
 
   test 'remove non existing match' do
-    m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
+    m = Match::Skos::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
     patch :remove_match, params: {
       origin: @achievement_hobbies.origin,
       match_class: 'match_skos_relatedmatch',
@@ -68,7 +68,7 @@ class ReverseMatchTest < ActionController::TestCase
   end
 
   test 'remove match' do
-    m = Match::SKOS::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
+    m = Match::Skos::NarrowMatch.create concept_id: @achievement_hobbies.id, value: 'http://iqvoc.net'
     patch :remove_match, params: {
       origin: @achievement_hobbies.origin,
       match_class: 'match_skos_broadmatch',

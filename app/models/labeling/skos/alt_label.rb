@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Labeling::SKOS::AltLabel < Labeling::SKOS::Base
+class Labeling::Skos::AltLabel < Labeling::Skos::Base
   self.rdf_predicate = 'altLabel'
 
   def self.view_section_sort_key(obj)

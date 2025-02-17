@@ -20,31 +20,31 @@ module Iqvoc
             :view_sections,
             :include_module_names
 
-        self.base_class_name              = 'Concept::SKOS::Base'
-        self.root_class_name              = 'Concept::SKOS::Scheme'
+        self.base_class_name              = 'Concept::Skos::Base'
+        self.root_class_name              = 'Concept::Skos::Scheme'
 
-        self.broader_relation_class_name  = 'Concept::Relation::SKOS::Broader::Mono'
-        self.further_relation_class_names = [ 'Concept::Relation::SKOS::Related' ]
+        self.broader_relation_class_name  = 'Concept::Relation::Skos::Broader::Mono'
+        self.further_relation_class_names = [ 'Concept::Relation::Skos::Related' ]
 
-        self.pref_labeling_class_name     = 'Labeling::SKOS::PrefLabel'
-        self.alt_labeling_class_name      = 'Labeling::SKOS::AltLabel'
-        self.hidden_labeling_class_name   = 'Labeling::SKOS::HiddenLabel'
+        self.pref_labeling_class_name     = 'Labeling::Skos::PrefLabel'
+        self.alt_labeling_class_name      = 'Labeling::Skos::AltLabel'
+        self.hidden_labeling_class_name   = 'Labeling::Skos::HiddenLabel'
 
         self.note_class_names             = [
           Iqvoc.change_note_class_name,
-          'Note::SKOS::Definition',
-          'Note::SKOS::EditorialNote',
-          'Note::SKOS::Example',
-          'Note::SKOS::HistoryNote',
-          'Note::SKOS::ScopeNote'
+          'Note::Skos::Definition',
+          'Note::Skos::EditorialNote',
+          'Note::Skos::Example',
+          'Note::Skos::HistoryNote',
+          'Note::Skos::ScopeNote'
         ]
 
         self.match_class_names            = [
-          'Match::SKOS::CloseMatch',
-          'Match::SKOS::ExactMatch',
-          'Match::SKOS::RelatedMatch',
-          'Match::SKOS::BroadMatch',
-          'Match::SKOS::NarrowMatch',
+          'Match::Skos::CloseMatch',
+          'Match::Skos::ExactMatch',
+          'Match::Skos::RelatedMatch',
+          'Match::Skos::BroadMatch',
+          'Match::Skos::NarrowMatch',
         ]
 
         self.notation_class_names         = [
@@ -96,7 +96,7 @@ module Iqvoc
         end
 
         # returns hash of class name / languages pairs
-        # e.g. { "Labeling::SKOS::AltLabel" => ["de", "en"] }
+        # e.g. { "Labeling::Skos::AltLabel" => ["de", "en"] }
         def further_labeling_class_names
           # FIXME: mutable object; needs custom hash setters to guard against
           # modification of languages arrays (to highlight deprecated usage)

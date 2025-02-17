@@ -9,7 +9,7 @@
 <% end %>
 
 <div class="relation panel">
-  <h2><%= Note::SKOS::Definition.model_name.human(:count => 2) %></h2>
+  <h2><%= Note::Skos::Definition.model_name.human(:count => 2) %></h2>
   <ul>
     <% collection.note_skos_definitions.each do |definition| %>
       <li><%= definition.value %> (<%= definition.language %>)</li>

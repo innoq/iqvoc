@@ -18,12 +18,12 @@ class AlphabeticalSearchResult
   end
 
   def definition?
-    relation_name = Note::SKOS::Definition.name.to_relation_name
+    relation_name = Note::Skos::Definition.name.to_relation_name
     @labeling.owner.respond_to?(relation_name) && @labeling.owner.send(relation_name).any?
   end
 
   def definition
-    relation_name = Note::SKOS::Definition.name.to_relation_name
+    relation_name = Note::Skos::Definition.name.to_relation_name
     @labeling.owner.send(relation_name).first
   end
 

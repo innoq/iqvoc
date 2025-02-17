@@ -2,7 +2,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class EditCollectionsTest < ActionDispatch::IntegrationTest
   setup do
-    @collection = Collection::SKOS::Unordered.new.publish.tap { |c| c.save }
+    @collection = Collection::Skos::Unordered.new.publish.tap { |c| c.save }
   end
 
   test 'create a new collection version' do

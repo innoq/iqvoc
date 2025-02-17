@@ -24,17 +24,17 @@ class AlphabeticalConceptsTest < ActionDispatch::IntegrationTest
     ]
 
     data.each_with_index do |hsh, i|
-      concept = RDFAPI.devour "concept_#{i}", 'a', 'skos:Concept'
+      concept = RdfApi.devour "concept_#{i}", 'a', 'skos:Concept'
       labelings = []
       hsh.each do |lang, val|
-        RDFAPI.devour concept, 'skos:prefLabel', "\"#{val}\"@#{lang}"
+        RdfApi.devour concept, 'skos:prefLabel', "\"#{val}\"@#{lang}"
       end
       concept.publish.save
     end
 
-    Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"Air sports"@en'
-      RDFAPI.devour c, 'skos:altLabel', '"Berta"@en'
+    Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Air sports"@en'
+      RdfApi.devour c, 'skos:altLabel', '"Berta"@en'
       c.publish
       c.save
     end

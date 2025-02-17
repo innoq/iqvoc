@@ -4,7 +4,7 @@
 <%= bootstrap_form_for @scheme, :as => :concept, :url => scheme_path, :layout => :horizontal do |f| %>
   <fieldset>
     <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
-    <% unless Iqvoc.const_defined?(:SKOSXL) %>
+    <% unless Iqvoc.const_defined?(:Skosxl) %>
       <p><%= t 'txt.common.hint_csv_input' %></p>
     <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>

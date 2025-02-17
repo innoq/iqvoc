@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = 'iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web'
   s.license     = 'Apache-2.0'
 
-  s.add_dependency 'rails', '~> 7.0.8'
+  s.add_dependency 'rails', '~> 7.1.0'
   s.add_dependency 'puma'
   s.add_dependency 'bootsnap'
   s.add_dependency 'bundler'
@@ -35,14 +35,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'deep_cloneable'
   s.add_dependency 'apipie-rails'
   s.add_dependency 'maruku'
-  s.add_dependency 'net-http'
   s.add_dependency 'database_cleaner'
   s.add_dependency 'delayed_job_active_record'
   s.add_dependency 'carrierwave'
   s.add_dependency 'carrierwave-i18n'
   s.add_dependency 'rack-mini-profiler'
   s.add_dependency 'faucet_pipeline_rails'
-  s.add_dependency 'concurrent-ruby', '<= 1.3.4' # fixes https://github.com/rails/rails/issues/54260, drop with rails 7.0.9
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,lib}/**/*')

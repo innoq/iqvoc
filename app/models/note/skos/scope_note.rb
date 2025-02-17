@@ -14,6 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Note::SKOS::ScopeNote < Note::SKOS::Base
+class Note::Skos::ScopeNote < Note::Skos::Base
   self.rdf_predicate = 'scopeNote'
 end

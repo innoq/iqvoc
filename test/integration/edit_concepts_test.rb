@@ -18,8 +18,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '../integration_test
 
 class EditConceptsTest < ActionDispatch::IntegrationTest
   setup do
-    @concept = Concept::SKOS::Base.new.tap do |c|
-      RDFAPI.devour c, 'skos:prefLabel', '"foo"@en'
+    @concept = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"foo"@en'
       c.publish
       c.save
     end

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Relation::SKOS::Broader::Mono < Concept::Relation::SKOS::Broader::Base
+class Concept::Relation::Skos::Broader::Mono < Concept::Relation::Skos::Broader::Base
   def self.partial_name(obj)
     'partials/concept/relation/skos/broader/mono'
   end

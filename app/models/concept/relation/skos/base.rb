@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Concept::Relation::SKOS::Base < Concept::Relation::Base
+class Concept::Relation::Skos::Base < Concept::Relation::Base
   self.rdf_namespace = 'skos'
 
   def self.build_from_rdf(rdf_subject, rdf_predicate, rdf_object)
     raise "#{self.name}#build_from_rdf: Subject (#{rdf_subject}) must be a Concept." unless rdf_subject.is_a? Concept::Base
     raise "#{self.name}#build_from_rdf: Object (#{rdf_object}) must be a Concept."   unless rdf_object.is_a? Concept::Base
 
-    relation_class = RDFAPI::PREDICATE_DICTIONARY[rdf_predicate] || self
+    relation_class = RdfApi::PREDICATE_DICTIONARY[rdf_predicate] || self
 
     relation_instance = rdf_subject.send(self.name.to_relation_name).select{ |rel| rel.target == rdf_object }
     if relation_instance.empty?

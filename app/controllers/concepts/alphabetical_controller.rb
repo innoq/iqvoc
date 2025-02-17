@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'concerns/dataset_initialization'
-
 class Concepts::AlphabeticalController < ConceptsController
   include DatasetInitialization
 
@@ -36,8 +34,8 @@ class Concepts::AlphabeticalController < ConceptsController
       # When in single query mode, AR handles ALL includes to be loaded by that
       # one query. We don't want that! So let's do it manually :-)
       includes = Iqvoc::Concept.base_class.default_includes
-      if Iqvoc::Concept.note_classes.include?(Note::SKOS::Definition)
-        includes << Note::SKOS::Definition.name.to_relation_name
+      if Iqvoc::Concept.note_classes.include?(Note::Skos::Definition)
+        includes << Note::Skos::Definition.name.to_relation_name
       end
 
       search_results_size = find_labelings.count

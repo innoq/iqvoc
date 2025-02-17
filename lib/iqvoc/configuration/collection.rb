@@ -10,11 +10,11 @@ module Iqvoc
 
         mattr_accessor :base_class_name, :member_class_name, :note_class_names, :include_module_names
 
-        self.base_class_name = 'Collection::SKOS::Unordered'
+        self.base_class_name = 'Collection::Skos::Unordered'
 
-        self.member_class_name  = 'Collection::Member::SKOS::Base'
+        self.member_class_name  = 'Collection::Member::Skos::Base'
 
-        self.note_class_names = [ 'Note::SKOS::Definition' ]
+        self.note_class_names = [ 'Note::Skos::Definition' ]
 
         self.include_module_names = []
       end

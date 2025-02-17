@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Label::SKOS::Base < Label::Base
+class Label::Skos::Base < Label::Base
   after_initialize :publish
 
   validates :value, presence: { message: I18n.t('txt.models.label.value_error') }

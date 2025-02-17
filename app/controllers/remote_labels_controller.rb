@@ -1,5 +1,3 @@
-require 'concerns/dataset_initialization'
-
 class RemoteLabelsController < ApplicationController
   include DatasetInitialization
 

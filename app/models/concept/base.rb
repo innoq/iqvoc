@@ -47,7 +47,7 @@ class Concept::Base < ApplicationRecord
     # Handle save or destruction of inline relations (relations or labelings)
     # for use with widgets etc.
 
-    # Inline assigned SKOS::Labels
+    # Inline assigned Skos::Labels
     # @labelings_by_text # => {'relation_name' => {'lang' => 'label1, label2, ...'}}
     (@labelings_by_text ||= {}).each do |relation_name, lang_values|
       relation_name = relation_name.to_s

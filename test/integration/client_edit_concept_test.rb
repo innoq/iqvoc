@@ -23,7 +23,7 @@ class ClientEditConceptsTest < ActionDispatch::IntegrationTest
   self.use_transactional_tests = false
 
   setup do
-    @concept = Concept::SKOS::Base.new.publish
+    @concept = Concept::Skos::Base.new.publish
     @concept.save
 
     Capybara.current_driver = Capybara.javascript_driver
