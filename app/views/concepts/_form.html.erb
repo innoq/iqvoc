@@ -19,7 +19,7 @@
   <!-- Labelings -->
   <fieldset>
     <legend><%= Labeling::Base.model_name.human(:count => 2) %></legend>
-    <% unless Iqvoc.const_defined?(:SKOSXL) %>
+    <% unless Iqvoc.const_defined?(:Skosxl) %>
       <p><%= t 'txt.common.hint_csv_input' %></p>
     <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>

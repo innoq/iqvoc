@@ -7,7 +7,7 @@
 <%= bootstrap_form_for collection, :as => :concept, :url => collection.new_record? ? collections_path : collection_path(collection, :published => 0), :layout => :horizontal, :label_col => 'col-sm-3', :control_col => 'col-sm-9' do |f| %>
 <fieldset>
   <legend><%= t 'txt.views.layouts.sections.labels' %></legend>
-  <% if not Iqvoc.const_defined?(:SKOSXL) %>
+  <% if not Iqvoc.const_defined?(:Skosxl) %>
     <p><%= t 'txt.common.hint_csv_input' %></p>
   <% end %>
     <%- Iqvoc::Concept.labeling_classes.each do |labeling_class, languages| -%>
