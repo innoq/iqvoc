@@ -4,7 +4,7 @@ require 'iqvoc'
 module Iqvoc
   module Environments
     module Development
-      def self.setup_development(config)
+      def self.setup(config)
         # Settings specified here will take precedence over those in config/application.rb.
 
         # In the development environment your application's code is reloaded any time
