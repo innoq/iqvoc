@@ -46,8 +46,6 @@ gem 'carrierwave-i18n'
 gem 'faucet_pipeline_rails'
 gem 'bootsnap', require: false
 
-gem 'concurrent-ruby', '<= 1.3.4' # fixes https://github.com/rails/rails/issues/54260, drop with rails 7.0.9
-
 # database adapters
 # comment out those you do don't need or use a different Gemfile
 #gem  'mysql2', '~> 0.4.0'
