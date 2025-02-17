@@ -553,7 +553,6 @@ DEPENDENCIES
   debug
   deep_cloneable
   delayed_job_active_record
-  drb
   faraday (= 1.10.3)
   faraday_middleware
   faucet_pipeline_rails
@@ -564,7 +563,6 @@ DEPENDENCIES
   linkeddata
   listen (~> 3.3)
   maruku
-  mutex_m
   nokogiri
   pg
   puma (< 7.0)

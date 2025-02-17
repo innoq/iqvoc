@@ -68,6 +68,4 @@ group :test do
   gem 'capybara'
   gem 'cuprite'
   gem 'webmock'
-  gem 'mutex_m'
-  gem 'drb' # FIXME: for some reason this seems to be needed by ruby 3.4
 end
