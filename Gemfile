@@ -28,8 +28,9 @@ gem 'cancancan'
 gem 'iq_rdf'
 gem 'iq_triplestorage'
 gem 'json'
+gem 'csv'
 gem 'rails_autolink'
-gem 'faraday'
+gem 'faraday', '1.10.3'
 gem 'faraday_middleware'
 gem 'nokogiri'
 gem 'linkeddata'
@@ -46,6 +47,7 @@ gem 'faucet_pipeline_rails'
 gem 'bootsnap', require: false
 
 gem 'net-http' # silence already initialized constant errors for ruby < 3.0: https://github.com/ruby/net-imap/issues/16
+gem 'concurrent-ruby', '<= 1.3.4' # fixes https://github.com/rails/rails/issues/54260, drop with rails 7.0.9
 
 # database adapters
 # comment out those you do don't need or use a different Gemfile
@@ -69,4 +71,6 @@ group :test do
   gem 'capybara'
   gem 'cuprite'
   gem 'webmock'
+  gem 'mutex_m'
+  gem 'drb' # FIXME: for some reason this seems to be needed by ruby 3.4
 end

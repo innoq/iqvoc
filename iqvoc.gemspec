@@ -23,8 +23,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'cancancan'
   s.add_dependency 'iq_rdf'
   s.add_dependency 'json'
+  s.add_dependency 'csv'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'faraday'
+  s.add_dependency 'faraday', '1.10.3'
   s.add_dependency 'faraday_middleware'
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
@@ -41,6 +42,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave-i18n'
   s.add_dependency 'rack-mini-profiler'
   s.add_dependency 'faucet_pipeline_rails'
+  s.add_dependency 'concurrent-ruby', '<= 1.3.4' # fixes https://github.com/rails/rails/issues/54260, drop with rails 7.0.9
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,lib}/**/*')

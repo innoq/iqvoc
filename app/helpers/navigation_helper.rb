@@ -83,9 +83,9 @@ module NavigationHelper
 
   def nav_item(item)
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
-    css = 'nav-item'
-    css << ' active' if active
-    content_tag :li, class: css do
+    css = ['nav-item']
+    css << 'active' if active
+    content_tag :li, class: css.join(' ') do
       nav_link(item)
     end
   end
@@ -93,12 +93,12 @@ module NavigationHelper
   def nav_link(item, opts = {})
     active = item[:active?] ? instance_eval(&item[:active?]) : (item[:controller] ? params[:controller] == item[:controller] : false)
 
-    css = opts[:class] || 'nav-link'
-    css << ' active' if active
-    css << ' dropdown-toggle' if opts[:has_children]
+    css = [ opts[:class] || 'nav-link' ]
+    css << 'active' if active
+    css << 'dropdown-toggle' if opts[:has_children]
 
     link_opts = {
-      class: css
+      class: css.join(' ')
     }
 
     dropdown_opts = {

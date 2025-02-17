@@ -26,3 +26,4 @@ db/schema.rb
 public/export
 public/uploads
 node_modules
+Gemfile.lock
