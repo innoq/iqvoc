@@ -38,7 +38,6 @@ gem 'rdf-vocab'
 gem "deep_cloneable"
 gem "bootstrap_form", "~> 4.0"
 gem 'apipie-rails'
-gem 'maruku', require: false
 gem 'database_cleaner'
 gem 'delayed_job_active_record'
 gem 'carrierwave'
