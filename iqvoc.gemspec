@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rdf-vocab'
   s.add_dependency 'deep_cloneable'
   s.add_dependency 'apipie-rails'
+  s.add_dependency 'maruku'
   s.add_dependency 'database_cleaner'
   s.add_dependency 'delayed_job_active_record'
   s.add_dependency 'carrierwave'
