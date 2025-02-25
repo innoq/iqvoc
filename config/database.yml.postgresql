@@ -1,26 +1,19 @@
-development:
+default: &default
   adapter: postgresql
-  host: localhost
   encoding: unicode
-  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_development' %>
-  pool: 5
-  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
-  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
+  host: <%= ENV['POSTGRES_HOST'] || 'localhost' %>
+  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
+  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+
+development:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] || 'iqvoc_development' %>
 
 test:
-  adapter: postgresql
-  host: localhost
-  encoding: unicode
-  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_test' %>
-  pool: 5
-  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
-  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] || 'iqvoc_test' %>
 
 production:
-  adapter: postgresql
-  host: <%= ENV["POSTGRES_HOST"] || 'localhost' %>
-  encoding: unicode
-  database: <%= ENV["POSTGRES_DB"] || 'iqvoc_production' %>
-  pool: 5
-  username: <%= ENV["POSTGRES_USER"] || 'postgres' %>
-  password: <%= ENV["POSTGRES_PASSWORD"] || 'postgres' %>
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] || 'iqvoc_production' %>
