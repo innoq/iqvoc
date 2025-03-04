@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# frozen_string_literal: false
 
 # Copyright 2011-2013 innoQ Deutschland GmbH
 #
