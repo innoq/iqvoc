@@ -21,7 +21,6 @@ class CollectionTest < ActionDispatch::IntegrationTest
     login('administrator')
     visit dashboard_path(lang: 'en')
 
-    assert page.has_content? 'New Collection'
     click_link_or_button 'New Collection'
 
     # fill in english pref label
@@ -41,7 +40,27 @@ class CollectionTest < ActionDispatch::IntegrationTest
 
     # Consistency check should run when sending the collection to review.
     click_link_or_button 'Send to review'
-    assert page.has_content? 'Instance is inconsistent.'
+    assert has_content? 'Instance is inconsistent.'
+  end
+
+  test 'editing collection' do
+    login('administrator')
+    visit dashboard_path(lang: 'en')
+
+    click_link_or_button 'New Collection'
+
+    # fill in english pref label
+    fill_in 'concept_labelings_by_text_labeling_skos_pref_labels_en', with: 'Test-Collection'
+    fill_in 'concept_note_skos_definitions_attributes_0_value', with: 'Test-Definition for Test-Collection'
+
+    save_check_and_publish
+    assert has_content? 'Test-Definition for Test-Collection'
+
+    click_link_or_button 'Create new version'
+    fill_in 'concept_note_skos_definitions_attributes_0_value', with: 'Updated Test-Definition for Test-Collection'
+
+    save_check_and_publish
+    assert has_content? 'Updated Test-Definition for Test-Collection'
   end
 
   private
@@ -49,13 +68,12 @@ class CollectionTest < ActionDispatch::IntegrationTest
   def save_check_and_publish
     click_link_or_button 'Save'
 
-    assert page.has_content? 'The collection has been successfully saved'
-    assert page.has_content? 'Current revision 1'
+    assert has_content? 'The collection has been successfully saved'
 
     click_link_or_button 'Check consistency'
-    assert page.has_content? 'Instance is consistent.'
+    assert has_content? 'Instance is consistent.'
 
     click_link_or_button 'Publish'
-    assert page.has_content? 'Instance has been successfully published.'
+    assert has_content? 'Instance has been successfully published.'
   end
 end

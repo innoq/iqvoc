@@ -99,7 +99,7 @@ class CollectionsController < ApplicationController
   def create
     authorize! :create, Iqvoc::Collection.base_class
 
-    @collection = Iqvoc::Collection.base_class.new(concept_params)
+    @collection = Iqvoc::Collection.base_class.new(collection_params)
 
     if @collection.save
       flash[:success] = I18n.t('txt.controllers.collections.save.success')
@@ -128,9 +128,9 @@ class CollectionsController < ApplicationController
     authorize! :update, @collection
 
     # set to_review to false if someone edits a concepts
-    concept_params["to_review"] = "false"
+    collection_params["to_review"] = "false"
 
-    if @collection.update(concept_params)
+    if @collection.update(collection_params)
       flash[:success] = I18n.t('txt.controllers.collections.save.success')
       redirect_to collection_path(@collection, published: 0)
     else
@@ -154,7 +154,7 @@ class CollectionsController < ApplicationController
 
   private
 
-  def concept_params
+  def collection_params
     params.require(:concept).permit!
   end
 
