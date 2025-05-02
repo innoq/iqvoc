@@ -37,12 +37,12 @@ class Collection::Base < Concept::Base
       source: 'collection'
 
   has_many :concepts,
-           -> { where("concepts.type = ?", Iqvoc::Concept.base_class) },
+           -> { where("concepts.type = ?", Iqvoc::Concept.base_class.name) },
            through: :members,
            source: :target
 
   has_many :subcollections,
-           -> { where("concepts.type = ?", Iqvoc::Collection.base_class) },
+           -> { where("concepts.type = ?", Iqvoc::Collection.base_class.name) },
            through: :members,
            source: :target
 

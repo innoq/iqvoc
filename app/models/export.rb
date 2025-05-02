@@ -1,7 +1,7 @@
 class Export < ApplicationRecord
   belongs_to :user
 
-  enum file_type: [:ttl, :nt, :xml]
+  enum :file_type, [:ttl, :nt, :xml]
 
   validates_presence_of :default_namespace
 
