@@ -41,8 +41,10 @@ module Iqvoc
         # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
         # Log to STDOUT with the current request id as a default log tag.
-        config.log_tags = [ :request_id ]
-        config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+        # config.log_tags = [ :request_id ]
+        # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+
+        config.logger = ActiveSupport::Logger.new(STDOUT)
 
         # Change to "debug" to log everything (including potentially personally-identifiable information!)
         config.log_level = ENV.fetch("LOG_LEVEL", "info")
