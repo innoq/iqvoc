@@ -96,9 +96,9 @@ import 'jqtree/tree.jquery.js';
               'glance-url': node.glance_url
             });
 
-            var saveButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-            var copyButton = $('<button type="button" class="btn btn-primary btn-xs node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
-            var undoButton = $('<button type="button" class="btn btn-primary btn-xs reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
+            var saveButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
+            var copyButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
+            var undoButton = $('<button type="button" class="btn btn-primary btn-sm reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
 
             // add icon only to the first element of the collection.
             // the second one could be a nodelist for parents nodes.
