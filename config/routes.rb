@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
     resources :collections
     resources :imports, only: [:index, :show, :create]
-    resources :exports, only: [:index, :show, :create] do
+    resources :exports, only: [:index, :show, :create, :destroy] do
       get 'download'
     end
 

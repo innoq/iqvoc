@@ -21,12 +21,17 @@ class Export < ApplicationRecord
   end
 
   def build_filename
-    File.join(Iqvoc.export_path, "#{token}.#{file_type}")
+    File.join(Iqvoc.export_path, "#{self.token}.#{self.file_type}")
   end
 
   private
 
   def delete_dump_file
-    File.delete(build_filename) if File.exist?(build_filename)
+    if File.exist?(self.build_filename)
+      Rails.logger.debug "Deleting export file #{self.build_filename}"
+      File.delete(self.build_filename)
+    else
+      Rails.logger.debug "Export file #{self.build_filename} does not exist, cannot delete."
+    end
   end
 end
