@@ -22,6 +22,13 @@ require File.expand_path('authentication', File.dirname(__FILE__))
 
 Capybara.server = :webrick
 Capybara.javascript_driver = :cuprite
+Capybara.register_driver(:cuprite) do |app|
+  if ENV["CI"].present?
+    Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil })
+  else
+    Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
+  end
+end
 
 WebMock.allow_net_connect! # required for integration tests
 
