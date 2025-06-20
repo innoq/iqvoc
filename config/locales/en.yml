@@ -351,6 +351,7 @@ en:
        error: "Error occurred while creating Export job."
        missing_file: "An error occurred. Export could not be found."
        output: "log"
+       delete_confirm: "Are you sure you want to delete this export?"
 
    partials:
      note:

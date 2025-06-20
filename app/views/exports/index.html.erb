@@ -32,7 +32,11 @@
       <td><%= t("txt.common.rdf_serialization.#{export.file_type}") %></td>
       <td><%= l(export.created_at, :format => :short) %></td>
       <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
-      <td><%= link_to('Download', export_download_url(export), :class => 'btn btn-primary btn-xs') if export.success? %></td>
+      <td>
+        <%= link_to('Download', export_download_url(export), class: 'btn btn-primary btn-sm') if export.success? %>
+
+        <%= link_to(t('txt.common.delete'), export_url(export), data: { confirm: t('txt.views.export.delete_confirm')}, method: :delete, class: 'btn btn-danger btn-sm')  %>
+      </td>
     </tr>
   <% end %>
   </tbody>

@@ -5,7 +5,10 @@ class Export < ApplicationRecord
 
   validates_presence_of :default_namespace
 
-  before_destroy :delete_dump_file
+  before_destroy do
+    self.delete_dump_file
+    self.jobs.destroy_all
+  end
 
   def finish!(messages)
     self.output = messages
@@ -22,6 +25,11 @@ class Export < ApplicationRecord
 
   def build_filename
     File.join(Iqvoc.export_path, "#{self.token}.#{self.file_type}")
+  end
+
+  def jobs
+    Rails.logger.debug "Deleting jobs for export #{self.id} (#{self.to_global_id})"
+    Delayed::Backend::ActiveRecord::Job.where(delayed_global_reference_id: self.to_global_id.to_s)
   end
 
   private

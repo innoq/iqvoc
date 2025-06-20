@@ -45,6 +45,16 @@ class ExportsController < ApplicationController
     redirect_to exports_path
   end
 
+  def destroy
+    export = Export.find(params[:id])
+    if export.destroy
+      flash[:success] = t('txt.views.export.delete.success')
+    else
+      flash[:error] = t('txt.views.export.delete.error')
+    end
+    redirect_to exports_path
+  end
+
   def download
     export = Export.find(params[:export_id])
     time = export.finished_at.strftime('%Y-%m-%d_%H-%M')
