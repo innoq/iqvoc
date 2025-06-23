@@ -7,15 +7,12 @@ class ExportJob < Struct.new(:export, :filename, :type, :base_uri)
   end
 
   def perform
-    strio = StringIO.new
-
-    exporter = SkosExporter.new(filename, type, base_uri, Logger.new(strio))
+    exporter = SkosExporter.new(filename, type, base_uri, EntityLogger.new(export))
     exporter.run
-    @messages = strio.string
   end
 
-  def success(job)
-    export.finish!(@messages)
+  def success(_job)
+    export.finish!
   end
 
   def error(job, exception)

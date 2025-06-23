@@ -26,6 +26,7 @@ class ExportsController < ApplicationController
 
   def show
     @export = Export.find(params[:id])
+    flash[:warning] = t('txt.views.export.success') unless @export.finished_at?
   end
 
   def create
@@ -57,15 +58,13 @@ class ExportsController < ApplicationController
 
   def download
     export = Export.find(params[:export_id])
-    time = export.finished_at.strftime('%Y-%m-%d_%H-%M')
+    time = export.finished_at&.strftime('%Y-%m-%d_%H-%M')
 
-    begin
-      Rails.logger.debug("Try to serve export from: #{export.build_filename}")
-      send_file export.build_filename, filename: "export-#{time}.#{export.file_type}"
-    rescue ::ActionController::MissingFile => e
-      flash[:error] = t('txt.views.export.missing_file')
-      redirect_to exports_path
-    end
+    Rails.logger.debug("Try to serve export from: #{export.build_filename}")
+    send_file export.build_filename, filename: "export-#{time}.#{export.file_type}"
+  rescue ::ActionController::MissingFile => e
+    flash[:error] = t('txt.views.export.missing_file')
+    redirect_to exports_path
   end
 
   private

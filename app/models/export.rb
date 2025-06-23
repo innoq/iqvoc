@@ -10,17 +10,16 @@ class Export < ApplicationRecord
     self.jobs.destroy_all
   end
 
-  def finish!(messages)
-    self.output = messages
+  def finish!
     self.success = true
     self.finished_at = Time.now
-    save!
+    self.save!
   end
 
   def fail!(exception)
     self.output = exception.to_s + "\n\n" + exception.backtrace.join("\n")
     self.finished_at = Time.now
-    save!
+    self.save!
   end
 
   def build_filename
