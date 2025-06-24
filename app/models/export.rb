@@ -17,7 +17,7 @@ class Export < ApplicationRecord
   end
 
   def fail!(exception)
-    self.output = exception.to_s + "\n\n" + exception.backtrace.join("\n")
+    self.output += exception.to_s + "\n\n" + exception.backtrace.join("\n")
     self.finished_at = Time.now
     self.save!
   end

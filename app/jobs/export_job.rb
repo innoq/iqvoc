@@ -15,7 +15,7 @@ class ExportJob < Struct.new(:export, :filename, :type, :base_uri)
     export.finish!
   end
 
-  def error(job, exception)
+  def error(_job, exception)
     export.fail!(exception)
   end
 end
