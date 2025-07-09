@@ -1,5 +1,5 @@
 <%= render 'header', :collection => @collection %>
-<%= render 'sidebar', :collection => @collection %>
+<%= render 'collections/sidebars/singular', :collection => @collection %>
 
 <%= alert :info, :header => t('txt.common.unpublished_version') + "." do %>
   <%= t("txt.views.versioning.current_revision", :rev => @collection.rev) %>

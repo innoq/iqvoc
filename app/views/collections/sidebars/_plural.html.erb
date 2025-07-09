@@ -1,0 +1,28 @@
+<%= sidebar do %>
+  <%= sidebar_header t('txt.views.navigation.sections') %>
+
+  <%= sidebar_item text: t("txt.views.navigation.hierarchical"),
+                   icon: 'list-alt',
+                   path: collections_path,
+                   active: params[:controller] == 'collections' && params[:published] != '0' %>
+
+  <%= sidebar_item text: t("txt.views.navigation.alphabetical"),
+                   icon: 'list-alt',
+                   path: alphabetical_collections_path,
+                   active: (params[:controller] == 'collections/alphabetical') %>
+
+  <%= sidebar_item text: t("txt.views.navigation.expired"),
+                   icon: 'list-alt',
+                   path: expired_collections_path,
+                   active: (params[:controller] == 'collections/expired') %>
+<% end %>
+
+<%= sidebar do %>
+  <% if can?(:create, Iqvoc::Collection.base_class) %>
+    <%= sidebar_header 'Links'%>
+    <% Iqvoc.first_level_classes.each do |klass| %>
+      <%= sidebar_item { render(klass.new_link_partial_name) } %>
+    <% end %>
+  <% end %>
+<% end %>
+

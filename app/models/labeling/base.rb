@@ -48,6 +48,18 @@ class Labeling::Base < ApplicationRecord
     includes(:owner).merge(Iqvoc::Concept.base_class.not_expired)
   end
 
+  def self.collection_published
+    includes(:owner).merge(Collection::Base.published)
+  end
+
+  def self.collection_expired
+    includes(:owner).merge(Iqvoc::Collection.base_class.expired)
+  end
+
+  def self.collection_not_expired
+    includes(:owner).merge(Iqvoc::Collection.base_class.not_expired)
+  end
+
   def self.label_published
     includes(:target).merge(Label::Base.published)
   end

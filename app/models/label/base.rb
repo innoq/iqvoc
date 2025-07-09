@@ -46,6 +46,24 @@ class Label::Base < ApplicationRecord
            through: :alt_labelings,
            source: :owner
 
+  has_many :collection_pref_labelings,
+           foreign_key: 'target_id',
+           class_name: Iqvoc::Collection.pref_labeling_class_name,
+           inverse_of: :target
+
+  has_many :pref_labeled_collections,
+           through: :collection_pref_labelings,
+           source: :owner
+
+  has_many :collection_alt_labelings,
+           foreign_key: 'target_id',
+           class_name: Iqvoc::Collection.alt_labeling_class_name,
+           inverse_of: :target
+
+  has_many :alt_labeled_collections,
+           through: :collection_alt_labelings,
+           source: :owner
+
   # ********* Scopes
 
   def self.by_language(lang_code)

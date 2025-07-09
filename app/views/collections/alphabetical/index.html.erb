@@ -1,0 +1,23 @@
+<%
+  subtitle = t('txt.views.navigation.alphabetical')
+  if can?(:update, Iqvoc::Collection.base_class)
+    subtitle += " (#{number_with_delimiter(Iqvoc::Collection.base_class.published.not_expired.size)})"
+  end
+%>
+<%= page_header title: Iqvoc::Collection.base_class.model_name.human(:count => 2), desc: subtitle %>
+<%= render 'collections/sidebars/plural' %>
+
+<div class="panel">
+  <div class="panel-header centered">
+    <%= letter_selector(@letters) do |letter| %>
+      <% alphabetical_collections_path(prefix: letter.to_s.downcase) %>
+    <% end %>
+  </div>
+  <ol class="concept-items list-unstyled">
+    <% @search_results.each do |result| %>
+      <%= render partial: result.partial_name, locals: { result: result } %>
+    <% end %>
+  </ol>
+</div>
+
+<%= paginate @search_results %>

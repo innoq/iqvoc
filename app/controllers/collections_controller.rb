@@ -20,7 +20,7 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @top_collections = Iqvoc::Collection.base_class.with_pref_labels.published
+        @top_collections = Iqvoc::Collection.base_class.with_pref_labels.published.not_expired
         @top_collections = if params[:root].present?
           @top_collections.by_parent_id(params[:root])
         else

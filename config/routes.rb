@@ -60,6 +60,8 @@ Rails.application.routes.draw do
     post 'collections/:origin/merge'       => 'collections/versions#merge',     as: 'collection_versions_merge'
     post 'collections/:origin/to_review'   => 'collections/versions#to_review', as: 'collection_versions_to_review'
     get 'collections/:origin/consistency_check' => 'collections/versions#consistency_check', as: 'collection_versions_consistency_check'
+    get 'alphabetical_collections(/:prefix)' => 'collections/alphabetical#index', as: 'alphabetical_collections'
+    get 'expired_collections'              => 'collections/expired#index',      as: 'expired_collections'
 
     get 'alphabetical_concepts(/:prefix)' => 'concepts/alphabetical#index', as: 'alphabetical_concepts'
     get 'untranslated_concepts/:prefix'   => 'concepts/untranslated#index', as: 'untranslated_concepts'

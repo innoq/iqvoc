@@ -1,5 +1,5 @@
 <%= render 'header', :collection => @collection %>
-<%= render 'sidebar', :collection => @collection %>
+<%= render 'collections/sidebars/singular', :collection => @collection %>
 
 <% if @new_collection_version.blank? && can?(:branch, @collection) %>
     <div class="editing_versioning_toolbar">
