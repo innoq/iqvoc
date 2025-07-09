@@ -16,7 +16,7 @@
     <%= sidebar_item :icon => 'link', :text => t('txt.models.concept.uri'), :path => rdf_url(concept.origin, :format => nil, :published => published_param, :lang => nil) %>
   <% end %>
 
-  <% (Iqvoc.first_level_classes - [Collection::Skos::Unordered]).each do |klass| %>
+  <% (Iqvoc.first_level_classes - [Iqvoc::Collection.base_class]).each do |klass| %>
     <%= sidebar_item { render(klass.new_link_partial_name) } %>
   <% end %>
 <% end %>

@@ -20,7 +20,7 @@
 <%= sidebar do %>
   <% if can?(:create, Iqvoc::Collection.base_class) %>
     <%= sidebar_header 'Links'%>
-    <% Iqvoc.first_level_classes.each do |klass| %>
+    <% (Iqvoc.first_level_classes - [Iqvoc::Concept.base_class]).each do |klass| %>
       <%= sidebar_item { render(klass.new_link_partial_name) } %>
     <% end %>
   <% end %>
