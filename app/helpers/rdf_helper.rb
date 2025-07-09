@@ -90,6 +90,8 @@ module RdfHelper
     end
 
     document << collection.build_rdf_subject do |c|
+      c.Schema::expires(collection.expired_at.to_s) if collection.expired_at
+      c.Owl::deprecated(true) if collection.expired?
 
       collection.labelings.each do |labeling|
         labeling.build_rdf(document, c)
