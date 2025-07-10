@@ -118,6 +118,7 @@ de:
          languages_notes: Sprachen für Notes
          languages_further_labelings_Labeling: Sprachen für alternative Labels
          languages_further_labelings_Labeling::Skos::AltLabel: Sprachen für alternative Labels
+         languages_further_labelings_Labeling::Skos::HiddenLabel: Sprachen für alternative Labels
          performance_unbounded_hierarchy: unbegrenzte Hierarchie-Tiefe
          triplestore_url: Triplestore-URL
          triplestore_username: Benutzername für Triplestore

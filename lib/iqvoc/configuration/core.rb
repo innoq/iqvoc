@@ -114,33 +114,19 @@ module Iqvoc
 
         self.ability_class_name = 'Ability'
 
-        self.search_sections = [
-          'terms',
-          'mode',
-          'klass',
-          'type',
-          'collection',
-          'languages',
-          'change_note',
-          'datasets',
-          'options',
-        ]
+        self.search_sections = %w[terms mode klass type collection languages change_note datasets options]
 
         # ignored database tables during thesaurus truncation
-        self.truncation_blacklist = [
-          'schema_migrations',
-          'users',
-          'exports',
-          'imports'
-        ]
+        self.truncation_blacklist = %w[schema_migrations users exports imports]
 
         # initialize
         self.config.register_settings({
           'title' => 'iQvoc',
           'concept_modal_preview' => true,
-          'languages.pref_labeling' => ['en', 'de'],
-          'languages.further_labelings.Labeling::Skos::AltLabel' => ['en', 'de'],
-          'languages.notes' => ['en', 'de'],
+          'languages.pref_labeling' => %w[en de],
+          'languages.further_labelings.Labeling::Skos::AltLabel' => %w[en de],
+          'languages.further_labelings.Labeling::Skos::HiddenLabel' => %w[en de],
+          'languages.notes' => %w[en de],
           'performance.unbounded_hierarchy' => false,
           'sources.iqvoc' => [''],
           'sources.create_reverse_matches' => true

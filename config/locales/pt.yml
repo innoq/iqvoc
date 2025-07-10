@@ -95,6 +95,7 @@ pt:
          title: "título do sítio"
          languages_pref_labeling: "idiomas para os rótulos preferenciais"
          languages_further_labelings_Labeling::Skos::AltLabel: "idiomas para os rótulos alternativos"
+         languages_further_labelings_Labeling::Skos::HiddenLabel: "idiomas para os etiquetas ocultas"
          triplestore_url: "URL do repositório de triplas"
          triplestore_username: "usuário do repositório de triplas"
          triplestore_password: "senha do repositório de triplas"
