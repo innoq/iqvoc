@@ -83,6 +83,10 @@ module Iqvoc
           alt_labeling_class_name.constantize
         end
 
+        def hidden_labeling_class
+          hidden_labeling_class_name.constantize
+        end
+
         def labeling_class_names
           { pref_labeling_class_name => pref_labeling_languages }.merge(further_labeling_class_names)
         end

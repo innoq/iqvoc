@@ -471,6 +471,7 @@ en:
        pref_label_not_unique: "The preferred label '%{label}' is already in use."
        pref_labels_not_unique: "The preferred labels '%{label}' are already in use."
        pref_label_defined_in_alt_labels: "The alternative label %{label} is already used as a preferred label."
+       hidden_label_defined_in_other_labels: "The hidden label %{label} is already used as a preferred or alternative label."
        alt_labels_not_unique: "The alternative label %{label} is used twice."
      collection:
        uri: "Collection URI"

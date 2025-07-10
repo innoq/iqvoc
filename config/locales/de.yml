@@ -461,6 +461,7 @@ de:
        pref_label_not_unique: "Das PrefLabel %{label} ist bereits in Verwendung."
        pref_labels_not_unique: "Die PrefLabels %{label} sind bereits in Verwendung."
        pref_label_defined_in_alt_labels: "Das AltLabel %{label} wird bereits als PrefLabel verwendet."
+       hidden_label_defined_in_other_labels: "Das HiddenLabel %{label} wird bereits als Pref- oder AltLabel verwendet."
        alt_labels_not_unique: "Das AltLabel %{label} wird zweimal als AltLabel verwendet."
      collection:
        uri: "Kollektion-URI"

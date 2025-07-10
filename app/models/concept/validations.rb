@@ -12,6 +12,7 @@ module Concept
       validate :valid_rank_for_ranked_relations
       validate :unique_pref_labels
       validate :exclusive_pref_and_alt_labels_per_concept
+      validate :exclusive_hidden_labels_per_concept
       validate :unique_alt_labels
       validate :exclusive_broader_and_narrower_concepts
       validate :no_self_reference_concept_relation
@@ -98,6 +99,19 @@ module Concept
                   label: pref_label.value)
           end
         end
+      end
+    end
+
+    def exclusive_hidden_labels_per_concept
+      if self.validatable_for_publishing?
+        relevant_labels = self.labelings.reject { |lbl| lbl.is_a?(Iqvoc::Concept.hidden_labeling_class) }.collect(&:target)
+
+        self.hidden_labels.each do |hidden_label|
+          if relevant_labels.include? hidden_label
+            errors.add :base, I18n.t('txt.models.concept.hidden_label_defined_in_other_labels', label: hidden_label.value)
+          end
+        end
+
       end
     end
 
