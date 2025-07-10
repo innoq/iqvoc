@@ -15,8 +15,6 @@
 # limitations under the License.
 
 class RdfController < ApplicationController
-  skip_before_action :set_locale
-
   def show
     scope = if params[:published] == '0'
       Iqvoc::Concept.base_class.unpublished
