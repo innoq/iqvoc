@@ -36,21 +36,24 @@ class Concepts::HierarchicalController < ConceptsController
 
     # if params[:broader] is given, the action is handling the reversed tree
     root_id = params[:root]
-    if root_id && root_id =~ /\d+/
-      # NB: order matters; see the following `where`
-      if params[:broader]
-        scope = scope.includes(:narrower_relations, :broader_relations).references(:relations)
-      else
-        scope = scope.includes(:broader_relations, :narrower_relations).references(:relations)
-      end
-      @concepts = scope.where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
-    else
-      if params[:broader]
-        @concepts = scope.broader_tops.includes(:broader_relations).references(:concepts)
-      else
-        @concepts = scope.tops.includes(:narrower_relations).references(:concepts)
-      end
-    end
+    broader = params[:broader].present?
+
+    @concepts = if root_id && root_id =~ /\d+/
+                  # NB: order matters; see the following `where`
+                  if broader
+                    scope = scope.includes(:narrower_relations, :broader_relations).references(:relations)
+                  else
+                    scope = scope.includes(:broader_relations, :narrower_relations).references(:relations)
+                  end
+                  scope.where(Concept::Relation::Base.arel_table[:target_id].eq(root_id))
+                else
+                  if broader
+                    scope.broader_tops.includes(:broader_relations).references(:concepts)
+                  else
+                    scope.tops.includes(:narrower_relations).references(:concepts)
+                  end
+                end
+    @concepts = @concepts.sort_by { |c| c.pref_label.to_s }
 
     respond_to do |format|
       format.html
