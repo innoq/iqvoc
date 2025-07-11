@@ -18,14 +18,18 @@ class CollectionsController < ApplicationController
   def index
     authorize! :read, Iqvoc::Collection.base_class
 
+    scope = Iqvoc::Collection.base_class
+                             .with_pref_labels
+                             .published
+                             .not_expired
+
     respond_to do |format|
       format.html do
-        @top_collections = Iqvoc::Collection.base_class.with_pref_labels.published.not_expired
         @top_collections = if params[:root].present?
-          @top_collections.by_parent_id(params[:root])
-        else
-          @top_collections.tops
-        end
+                             scope.by_parent_id(params[:root])
+                           else
+                             scope.tops
+                           end
 
         @top_collections.to_a.sort! { |a, b| a.pref_label.to_s <=> b.pref_label.to_s }
 
@@ -33,30 +37,22 @@ class CollectionsController < ApplicationController
       end
       format.json do # For the widget and treeview
         response = if params[:root].present?
-          collections = Iqvoc::Collection.base_class
-                                         .with_pref_labels
-                                         .published
-                                         .by_parent_id(params[:root])
-                                         .sort_by { |c| c.pref_label.to_s }
+          collections = scope.by_parent_id(params[:root])
+                             .sort_by { |c| c.pref_label.to_s }
 
           collections.map do |collection|
-            res = {
+            {
               id: collection.id,
               url: collection_path(id: collection, format: :html),
               name: CGI.escapeHTML(collection.pref_label.to_s),
-              load_on_demand: collection.subcollections.any?
-            }
-            res[:additionalText] = " (#{collection.additional_info})" if collection.additional_info
-
-            res
+              load_on_demand: collection.subcollections.any?,
+              additionalText: collection.additional_info&.then { |info| " (#{info})" }
+            }.compact
           end
         else
-          collections = Iqvoc::Collection.base_class
-                                         .with_pref_labels
-                                         .published
-                                         .merge(Label::Base.by_query_value("#{params[:query]}%"))
-                                         .sort_by { |c| c.pref_label.to_s }
-                                         .map { |c| collection_widget_data(c) }
+          scope.merge(Label::Base.by_query_value("#{params[:query]}%"))
+               .sort_by { |c| c.pref_label.to_s }
+               .map { |c| collection_widget_data(c) }
         end
         render json: response
       end
