@@ -84,11 +84,12 @@ jQuery(document).ready(function($) {
 
   $('.datepicker').datepicker({
     autoclose: true,
-    todayHighlight: true,
-    todayBtn: 'linked',
     clearBtn: true,
     format: "yyyy-mm-dd",
-    language: locale
+    keyboardNavigation: false,
+    language: locale,
+    todayHighlight: true,
+    todayBtn: 'linked',
   });
 
   //$("tr.highlightable").click(function(ev) {
