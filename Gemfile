@@ -68,4 +68,5 @@ group :test do
   gem 'capybara'
   gem 'cuprite'
   gem 'webmock'
+  gem "minitest", "< 6"
 end
