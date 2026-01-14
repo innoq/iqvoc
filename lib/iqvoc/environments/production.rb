@@ -42,8 +42,6 @@ module Iqvoc
 
         # Log to STDOUT with the current request id as a default log tag.
         # config.log_tags = [ :request_id ]
-        # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
-
         config.logger = ActiveSupport::Logger.new(STDOUT)
 
         # Change to "debug" to log everything (including potentially personally-identifiable information!)
@@ -68,7 +66,7 @@ module Iqvoc
         # Set host to be used by links generated in mailer templates.
         config.action_mailer.default_url_options = { host: "example.com" }
 
-        # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
+        # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
         # config.action_mailer.smtp_settings = {
         #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
         #   password: Rails.application.credentials.dig(:smtp, :password),
