@@ -100,7 +100,7 @@ class Label::Base < ApplicationRecord
   end
 
   def self.by_query_value(query)
-    where(["#{table_name}.value ILIKE ?", query.mb_chars.downcase.to_s])
+    where(["#{table_name}.value ILIKE ?", query.to_s.downcase])
   end
 
   # Attention: This means that even label classes without version controll will also

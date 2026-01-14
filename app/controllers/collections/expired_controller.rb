@@ -22,7 +22,7 @@ class Collections::ExpiredController < Collections::AlphabeticalController
   end
 
   def find_labelings
-    query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
+    query = (params[:prefix] || @letters.first || 'a').to_s.downcase
 
     Iqvoc::Collection.pref_labeling_class
       .collection_expired

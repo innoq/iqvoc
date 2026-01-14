@@ -27,7 +27,7 @@ class Concepts::AlphabeticalController < ConceptsController
     identify_used_first_letters
 
     if dataset = datasets.detect { |dataset| dataset.name == params[:dataset] }
-      query = params[:prefix].mb_chars.downcase.to_s
+      query = params[:prefix].to_s.downcase
       @search_results = dataset.alphabetical_search(query, I18n.locale) || []
       @search_results = Kaminari.paginate_array(@search_results).page(params[:page])
     else
@@ -59,7 +59,7 @@ class Concepts::AlphabeticalController < ConceptsController
 
   def find_labelings
     letter = (@letters.include?('A')) ? 'a' : @letters.first
-    query = (params[:prefix] || letter)&.mb_chars&.downcase.to_s
+    query = (params[:prefix] || letter)&.to_s&.downcase
 
     Iqvoc::Concept.pref_labeling_class
       .concept_published

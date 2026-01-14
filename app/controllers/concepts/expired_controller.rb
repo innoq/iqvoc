@@ -22,7 +22,7 @@ class Concepts::ExpiredController < Concepts::AlphabeticalController
   end
 
   def find_labelings
-    query = (params[:prefix] || @letters.first || 'a').mb_chars.downcase.to_s
+    query = (params[:prefix] || @letters.first || 'a').to_s.downcase
 
     Iqvoc::Concept.pref_labeling_class
       .concept_expired
