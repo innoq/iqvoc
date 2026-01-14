@@ -1,3 +1,14 @@
+## [4.15.0]
+
+* upgrade to Rails v8.1
+* drop EOL rubies (3.2 and older)
+* fix some style and markup glitches
+* datepicker optimisations
+* refactor collection management
+* async logging for exports
+* add ability to delete exports
+* adapt zeitwerk naming
+
 ## [4.13.1]
 
 * add config option to disable creating reverse matches for concept mappings
