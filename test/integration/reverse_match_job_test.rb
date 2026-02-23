@@ -132,7 +132,7 @@ class ReverseMatchJobTest < ActiveSupport::TestCase
         'Accept' => '*/*',
         'Content-Type' => 'application/json',
         'Referer' => 'http://try.iqvoc.com/',
-        'User-Agent'=>'Faraday v1.10.3'
+        'User-Agent' => /\AFaraday v1\.10\.\d+\z/
       })
       .to_return(status: status, body: body.to_json, headers: {})
 
