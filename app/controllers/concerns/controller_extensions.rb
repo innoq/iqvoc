@@ -56,6 +56,9 @@ module ControllerExtensions
     @status = current_user ? 403 : 401
     @user_session = UserSession.new if @status == 401
     @return_url = request.fullpath
+
+    return if self.performed?
+
     respond_to do |format|
       format.html { render template: 'errors/access_denied', status: @status }
       format.any  { head @status }
@@ -66,6 +69,8 @@ module ControllerExtensions
     @exception = exception
     SearchResultsController.prepare_basic_variables(self)
 
+    return if self.performed?
+
     respond_to do |format|
       format.html { render template: 'errors/not_found', status: 404 }
       format.any  { head 404 }
@@ -74,6 +79,8 @@ module ControllerExtensions
 
   def handle_bad_request(exception)
     @exception = exception
+
+    return if self.performed?
 
     respond_to do |format|
       format.any  { head 400 }
@@ -85,6 +92,8 @@ module ControllerExtensions
     Rails.logger.error(exception.backtrace.join("\n"))
     @exception = exception
 
+    return if self.performed?
+
     respond_to do |format|
       format.html { render template: 'errors/server_error', status: 500 }
       format.any  { head 500 }
@@ -93,6 +102,8 @@ module ControllerExtensions
 
   def handle_unknown_format(exception)
     @exception = exception
+
+    return if self.performed?
 
     respond_to do |format|
       format.any  { head 406 }
