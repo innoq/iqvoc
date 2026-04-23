@@ -18,7 +18,7 @@ require 'delayed_job_active_record'
 require 'carrierwave'
 require 'carrierwave-i18n'
 require 'faraday'
-require 'faraday_middleware'
+require 'faraday/follow_redirects'
 require 'rack-mini-profiler'
 require 'faucet_pipeline_rails'
 

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = 'iQvoc - a SKOS(-XL) vocabulary management system built on the Semantic Web'
   s.license     = 'Apache-2.0'
 
-  s.add_dependency 'rails', '~> 8.1.2'
+  s.add_dependency 'rails', '>= 8.1.2', '< 9'
   s.add_dependency 'puma'
   s.add_dependency 'bootsnap'
   s.add_dependency 'bundler'
@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'json'
   s.add_dependency 'csv'
   s.add_dependency 'rails_autolink'
-  s.add_dependency 'faraday', '~>1.10'
-  s.add_dependency 'faraday_middleware'
+  s.add_dependency 'faraday', '~> 2.0'
+  s.add_dependency 'faraday-follow_redirects', '~> 0.5'
   s.add_dependency 'bootstrap_form', '~> 4.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack-mini-profiler'
   s.add_dependency 'faucet_pipeline_rails'
 
-  s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Gemfile.lock Rakefile iqvoc.gemspec) +
+  s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,lib}/**/*')
   s.test_files = Dir['{test}/**/*']
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
