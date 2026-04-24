@@ -9,14 +9,17 @@ class Dataset::IqvocDataset
 
   def initialize(url)
     @url = URI.parse(url)
+    @available = true
     dataset_url = URI.join(@url.to_s + '/', 'dataset.rdf')
 
     begin
       @repository = Timeout::timeout(DEFAULT_TIMEOUT) do
         RDF::Repository.load(dataset_url)
       end
-    rescue IOError, Errno::ECONNREFUSED, Timeout::Error => e
+    rescue IOError, Errno::ECONNREFUSED, Faraday::ConnectionFailed, Timeout::Error => e
       Rails.logger.error("Iqvoc source couldn't be resolved: #{@url}, message: #{e.message}")
+      @repository = nil
+      @available = false  # Merken, aber nicht werfen
     ensure
       @name = fetch_name
     end
@@ -35,10 +38,12 @@ class Dataset::IqvocDataset
   end
 
   def find_label(concept_url)
+    raise ServiceUnavailableError.new("Dataset unavailable", @url) unless @available
     Dataset::Adaptors::Iqvoc::LabelAdaptor.new(url).find(concept_url)
   end
 
   private
+
   def fetch_name
     return @url.to_s if @repository.nil?
 
