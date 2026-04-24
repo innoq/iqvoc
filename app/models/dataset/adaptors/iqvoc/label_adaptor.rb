@@ -9,7 +9,9 @@ class Dataset::Adaptors::Iqvoc::LabelAdaptor < Dataset::Adaptors::Iqvoc::HttpAda
   def extract_label(html)
     doc = Nokogiri::HTML(html)
     node = doc.at_css('h1')
-    node.at_css('small').remove
-    node.text.try(:strip)
+    return nil unless node
+
+    node.at_css('small')&.remove
+    node.text&.strip
   end
 end
