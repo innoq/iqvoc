@@ -11,6 +11,10 @@ module LinkHelper
       collection_url(object, params)
     when Label::Base
       label_url(object, params)
+    when Concept::Skos::Scheme
+      scheme_url
+    when String
+      object
     else
       raise 'Unsupported object type'
     end
