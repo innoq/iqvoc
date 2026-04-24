@@ -17,6 +17,10 @@
 class SearchResultsController < ApplicationController
   include DatasetInitialization
 
+  ALLOWED_QUERY_TYPES = %w[exact contains begins_with ends_with].freeze
+
+  before_action :validate_query_type, only: [:index]
+
   resource_description do
     name 'Search'
   end
@@ -26,7 +30,7 @@ class SearchResultsController < ApplicationController
   param :q, String, required: true,
       desc: 'Query term (URL-encoded, if necessary). Wild cards are not '\
                'supported, see the `qt` parameter below.'
-  param :qt, ['exact', 'contains', 'begins_with', 'ends_with'],
+  param :qt, ALLOWED_QUERY_TYPES,
       desc: 'Query type'
   param :t, %w(labels pref_labels notes),
       required: true,
@@ -181,6 +185,13 @@ class SearchResultsController < ApplicationController
   end
 
   private
+
+  def validate_query_type
+    if params[:qt].present? && !ALLOWED_QUERY_TYPES.include?(params[:qt])
+      Rails.logger.warn("Invalid query_type attempted: #{params[:qt]}")
+      head :bad_request
+    end
+  end
 
   def result_allowed?(result)
     if result.result_object.is_a?(Labeling::Base)
