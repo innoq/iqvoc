@@ -65,9 +65,9 @@ class ReverseMatchJob < Struct.new(:type, :concept,  :match_class, :subject, :ob
   private
 
   def connection(url, headers = {})
-    Faraday::Connection.new(url: url, headers: headers) do |builder|
-      builder.use FaradayMiddleware::ParseJson
-      builder.use FaradayMiddleware::FollowRedirects, limit: 5
+    Faraday.new(url: url, headers: headers) do |builder|
+      builder.response :json, content_type: nil
+      builder.response :follow_redirects, limit: 5
       builder.use Faraday::Response::RaiseError
       builder.adapter Faraday.default_adapter
     end
