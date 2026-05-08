@@ -97,9 +97,7 @@ class SearchResultsController < ApplicationController
       if params[:query].blank? and request.format.to_sym.in? [:ttl, :nt, :rdf]
         # support blank searches via web ui, but not for api requests
         respond_to do |format|
-          format.any(:ttl, :rdf, :nt) do
-            head :bad_request
-          end
+          format.any(:ttl, :rdf, :nt) { head :bad_request }
         end
       else
         # Deal with language parameter patterns
@@ -114,7 +112,13 @@ class SearchResultsController < ApplicationController
 
         # Ensure a valid class was selected
         unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
-          raise "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
+          # TODO: extract inline validation logic
+          Rails.logger.error "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
+          respond_to do |format|
+            format.html { render :index, status: :bad_request }
+            format.any(:ttl, :rdf, :nt) { head :bad_request }
+          end
+          return
         end
         klass = klass.constantize
 
@@ -155,12 +159,8 @@ class SearchResultsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html do
-          render :index
-        end
-        format.any(:ttl, :rdf, :nt) do
-          head :bad_request
-        end
+        format.html { render :index }
+        format.any(:ttl, :rdf, :nt) { head :bad_request }
       end
     end
   end
