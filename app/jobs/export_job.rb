@@ -7,7 +7,7 @@ class ExportJob < Struct.new(:export, :filename, :type, :base_uri)
   end
 
   def perform
-    exporter = SkosExporter.new(filename, type, base_uri, EntityLogger.new(export))
+    exporter = SkosExporter.new(filename, type, base_uri, EntityLogger.new(export), zip: export.zip?, entry_name: export.download_filename.delete_suffix('.zip'))
     exporter.run
   end
 

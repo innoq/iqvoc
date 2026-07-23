@@ -23,7 +23,14 @@ class Export < ApplicationRecord
   end
 
   def build_filename
-    File.join(Iqvoc.export_path, "#{self.token}.#{self.file_type}")
+    base = File.join(Iqvoc.export_path, "#{self.token}.#{self.file_type}")
+    self.zip? ? "#{base}.zip" : base
+  end
+
+  def download_filename
+    time = (created_at || Time.now).strftime('%Y-%m-%d_%H-%M')
+    base = "export-#{time}.#{file_type}"
+    zip? ? "#{base}.zip" : base
   end
 
   def jobs

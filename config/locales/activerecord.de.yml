@@ -159,5 +159,6 @@ de:
         success: "erfolgreich"
         file_type: "Typ"
         default_namespace: "Standard Namespace"
+        zip: "ZIP-Archiv"
 
 

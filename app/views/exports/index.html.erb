@@ -8,6 +8,9 @@
     t("txt.common.rdf_serialization.xml") => :xml})
   %>
   <%= f.text_field :default_namespace, :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
+  <%= f.form_group :options do %>
+    <%= f.check_box :zip %>
+  <% end %>
   <%= f.form_group do %>
     <%= f.submit t('txt.views.export.request_export'), :class => 'btn btn-primary' %>
   <% end %>
@@ -29,13 +32,19 @@
     <tr>
       <td><%= link_to export.id, export_path(:id => export) %></td>
       <td><%= export.user %></td>
-      <td><%= t("txt.common.rdf_serialization.#{export.file_type}") %></td>
+      <td class="text-nowrap">
+        <%= t("txt.common.rdf_serialization.#{export.file_type}") %>
+        <% if export.zip? %>
+          <span class="badge badge-info"><%= Export.human_attribute_name(:zip) %></span>
+        <% end %>
+      </td>
       <td><%= l(export.created_at, :format => :short) %></td>
       <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
       <td>
-        <%= link_to('Download', export_download_url(export), class: 'btn btn-primary btn-sm') if export.success? %>
-
-        <%= link_to(t('txt.common.delete'), export_url(export), data: { confirm: t('txt.views.export.delete_confirm')}, method: :delete, class: 'btn btn-danger btn-sm')  %>
+        <div class="btn-group" role="group">
+          <%= link_to('Download', export_download_url(export), class: 'btn btn-primary btn-sm') if export.success? %>
+          <%= link_to(t('txt.common.delete'), export_url(export), data: { confirm: t('txt.views.export.delete_confirm') }, method: :delete, class: 'btn btn-danger btn-sm') %>
+        </div>
       </td>
     </tr>
   <% end %>

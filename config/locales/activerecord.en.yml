@@ -159,4 +159,5 @@ en:
         success: "Success"
         file_type: "Type"
         default_namespace: "Default namespace"
+        zip: "ZIP archive"
 

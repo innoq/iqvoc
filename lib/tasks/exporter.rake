@@ -10,11 +10,16 @@ namespace :iqvoc do
     stdout_logger.level = Logger::INFO
 
     timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
-    filename = "iqvoc_dump-#{timestamp}.#{ENV['TYPE']}#{ '.zip' if ENV['ZIP'] == 'true'}"
+    zip = ENV['ZIP'] == 'true'
+    filename = "iqvoc_dump-#{timestamp}.#{ENV['TYPE']}#{'.zip' if zip}"
     file_path = ENV['FILE'] || Rails.root.join(Iqvoc.export_path, filename).to_s
+    file_path += '.zip' if zip && !file_path.end_with?('.zip')
 
-    exporter = SkosExporter.new(file_path, ENV['TYPE'], ENV['NAMESPACE'], MultiLogger.new(stdout_logger, Rails.logger), zip: ENV['ZIP'] == 'true')
+    exporter = SkosExporter.new(file_path, ENV['TYPE'], ENV['NAMESPACE'], MultiLogger.new(stdout_logger, Rails.logger), zip: zip)
     exporter.run
+  rescue => e
+    stdout_logger.error "Export failed: #{e.message}"
+    raise
   end
 
 end

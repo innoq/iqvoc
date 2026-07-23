@@ -58,10 +58,8 @@ class ExportsController < ApplicationController
 
   def download
     export = Export.find(params[:export_id])
-    time = export.finished_at&.strftime('%Y-%m-%d_%H-%M')
-
     Rails.logger.debug("Try to serve export from: #{export.build_filename}")
-    send_file export.build_filename, filename: "export-#{time}.#{export.file_type}"
+    send_file export.build_filename, filename: export.download_filename
   rescue ::ActionController::MissingFile => e
     flash[:error] = t('txt.views.export.missing_file')
     redirect_to exports_path
@@ -70,6 +68,6 @@ class ExportsController < ApplicationController
   private
 
   def export_params
-    params.require(:export).permit(:file_type, :default_namespace)
+    params.require(:export).permit(:file_type, :default_namespace, :zip)
   end
 end

@@ -1,13 +1,14 @@
 require 'iq_rdf'
 require 'uri'
 require 'fileutils'
+require 'zip'
 
 class SkosExporter
   include RdfHelper # necessary to use render_concept helper
   include RdfNamespacesHelper
   include Rails.application.routes.url_helpers
 
-  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false)
+  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false, entry_name: nil)
     default_url_options[:port] = URI.parse(default_namespace_url).port
     default_url_options[:host] = URI.parse(default_namespace_url).to_s.gsub(/\/$/, '')
 
@@ -15,6 +16,7 @@ class SkosExporter
     @type = type
     @logger = logger
     @zip = zip
+    @entry_name = entry_name
     @document = IqRdf::Document.new
 
     unless ['ttl', 'nt', 'xml'].include? @type
@@ -122,28 +124,23 @@ class SkosExporter
     serialized = serialize_rdf(content, type)
     create_directory(file_path)
 
+    @logger.info "Saving export to '#{file_path}'"
     if @zip
-      require 'zip'
       save_zipped(file_path, serialized)
     else
-      @logger.info "Saving export to '#{file_path}'"
       File.write(file_path, serialized)
     end
-  rescue IOError => e
+  rescue IOError, SystemCallError, Zip::Error => e
     @logger.error "Failed to save export: #{e.message}"
     raise
   end
 
   def save_zipped(file_path, serialized)
-    zip_path = "#{file_path}.zip"
-    @logger.info "Saving export to '#{zip_path}'"
-    Zip::OutputStream.open(zip_path) do |zos|
-      zos.put_next_entry(File.basename(file_path))
+    entry_name = @entry_name || File.basename(file_path, '.zip')
+    Zip::OutputStream.open(file_path) do |zos|
+      zos.put_next_entry(entry_name)
       zos.write(serialized)
     end
-  rescue Zip::Error => e
-    @logger.error "Failed to save export: #{e.message}"
-    raise
   end
 
   def create_directory(file_path)
