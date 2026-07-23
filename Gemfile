@@ -41,6 +41,7 @@ gem 'apipie-rails'
 gem 'maruku', require: false # needed for apipie documentation
 gem 'database_cleaner'
 gem 'delayed_job_active_record'
+gem 'rubyzip'
 gem 'carrierwave'
 gem 'carrierwave-i18n'
 gem 'faucet_pipeline_rails'
