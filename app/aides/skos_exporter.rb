@@ -9,7 +9,7 @@ class SkosExporter
   include RdfNamespacesHelper
   include Rails.application.routes.url_helpers
 
-  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false, entry_name: nil, link_path: nil)
+  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false, entry_name: nil, link_path: nil, batch_size: 500)
     default_url_options[:port] = URI.parse(default_namespace_url).port
     default_url_options[:host] = URI.parse(default_namespace_url).to_s.gsub(/\/$/, '')
 
@@ -19,6 +19,7 @@ class SkosExporter
     @zip = zip
     @entry_name = entry_name
     @link_path = link_path
+    @batch_size = batch_size
     @document = IqRdf::Document.new
 
     unless ['ttl', 'nt', 'xml'].include? @type
@@ -75,33 +76,22 @@ class SkosExporter
   def add_collections(document)
     @logger.info 'Exporting collections...'
 
-    offset = 0
-    while true
-      collections = Iqvoc::Collection.base_class.published.order('id').limit(100).offset(offset)
-      limit = collections.size < 100 ? collections.size : 100
-      break if collections.size == 0
-
+    total = 0
+    Iqvoc::Collection.base_class.published.order('id').find_in_batches(batch_size: @batch_size) do |collections|
       # Todo: Preloading???
-      collections.each do |collection|
-        render_collection(document, collection)
-      end
-
-      @logger.info "Collections #{offset+1}-#{offset+limit} exported."
-      offset += collections.size # Size is important!
+      collections.each { |collection| render_collection(document, collection) }
+      total += collections.size
+      @logger.info "Collections #{total - collections.size + 1}-#{total} exported."
     end
 
-    @logger.info "Finished exporting collections (#{offset} collections exported)."
+    @logger.info "Finished exporting collections (#{total} collections exported)."
   end
 
   def add_concepts(document)
     @logger.info 'Exporting concepts...'
 
-    offset = 0
-    while true
-      concepts = Iqvoc::Concept.base_class.published.order('id').limit(100).offset(offset)
-      limit = concepts.size < 100 ? concepts.size : 100
-      break if concepts.size == 0
-
+    total = 0
+    Iqvoc::Concept.base_class.published.order('id').find_in_batches(batch_size: @batch_size) do |concepts|
       # When in single query mode, AR handles ALL includes to be loaded by that
       # one query. We don't want that! So let's do it manually :-)
       Iqvoc::Concept.base_class.preload(concepts,
@@ -112,15 +102,12 @@ class SkosExporter
         { relations: :target, labelings: :target, notes: :annotations }
       ])
 
-      concepts.each do |concept|
-        render_concept(document, concept, true)
-      end
-
-      @logger.info "Concepts #{offset+1}-#{offset+limit} exported."
-      offset += concepts.size # Size is important!
+      concepts.each { |concept| render_concept(document, concept, true) }
+      total += concepts.size
+      @logger.info "Concepts #{total - concepts.size + 1}-#{total} exported."
     end
 
-    @logger.info "Finished exporting concepts (#{offset} concepts exported)."
+    @logger.info "Finished exporting concepts (#{total} concepts exported)."
   end
 
   def save_file(file_path, type, content)
