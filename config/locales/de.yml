@@ -343,6 +343,9 @@ de:
        missing_file: "Es ist ein Fehler aufgetreten. Export konnte nicht gefunden werden."
        output: "Log-Ausgabe"
        delete_confirm: "Der Export wird entfernt. Sind Sie sicher?"
+       delete:
+        success: "Der Export wurde erfolgreich gelöscht."
+        error: "Der Export konnte nicht gelöscht werden."
 
    partials:
      note:
