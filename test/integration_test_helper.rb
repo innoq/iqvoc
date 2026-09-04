@@ -20,7 +20,7 @@ require 'capybara/cuprite'
 require 'webmock'
 require File.expand_path('authentication', File.dirname(__FILE__))
 
-Capybara.server = :webrick
+Capybara.server = :puma, { Silent: true }
 Capybara.javascript_driver = :cuprite
 Capybara.register_driver(:cuprite) do |app|
   if ENV["CI"].present?
