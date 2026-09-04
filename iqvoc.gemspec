@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip'
   s.add_dependency 'carrierwave'
   s.add_dependency 'carrierwave-i18n'
+  s.add_dependency 'ruby-vips'
   s.add_dependency 'rack-mini-profiler'
   s.add_dependency 'faucet_pipeline_rails'
 
