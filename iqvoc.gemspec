@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'scrypt'
   s.add_dependency 'cancancan'
   s.add_dependency 'iq_rdf'
-  s.add_dependency 'json'
+  s.add_dependency 'json', '< 3'
   s.add_dependency 'csv'
   s.add_dependency 'rails_autolink'
   s.add_dependency 'faraday', '~> 2.0'
