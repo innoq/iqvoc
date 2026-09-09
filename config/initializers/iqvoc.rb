@@ -35,4 +35,5 @@ end
 Iqvoc.default_rdf_namespace_helper_modules << IqvocModuleHelper
 
 Iqvoc.export_path = Rails.root.join('public/export')
+Iqvoc.export_file_prefix = "iqvoc"
 Iqvoc.upload_path = Rails.root.join('public/uploads')

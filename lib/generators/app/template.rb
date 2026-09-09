@@ -53,6 +53,7 @@ Iqvoc.host_namespace = #{namespaced_app_name}
 # Iqvoc.default_rdf_namespace_helper_modules << MyModule
 
 # Iqvoc.core_assets += []
+# Iqvoc.export_file_prefix = 'my-thesaurus'
 EOF
 
 remove_file 'app/assets/javascripts/application.js'

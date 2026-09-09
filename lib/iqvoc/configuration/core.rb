@@ -20,6 +20,7 @@ module Iqvoc
           :core_assets,
           :search_sections,
           :export_path,
+          :export_file_prefix,
           :upload_path,
           :truncation_blacklist,
           :host_namespace

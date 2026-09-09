@@ -11,7 +11,7 @@ namespace :iqvoc do
 
     timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
     zip = ENV['ZIP'] == 'true'
-    filename = "iqvoc_dump-#{timestamp}.#{ENV['TYPE']}#{'.zip' if zip}"
+    filename = "#{Iqvoc.export_file_prefix}_dump-#{timestamp}.#{ENV['TYPE']}#{'.zip' if zip}"
     file_path = ENV['FILE'] || Rails.root.join(Iqvoc.export_path, filename).to_s
     file_path += '.zip' if zip && !file_path.end_with?('.zip')
 
