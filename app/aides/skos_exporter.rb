@@ -96,13 +96,16 @@ class SkosExporter
       # rather than letting each concept load them one by one. Note that this
       # has to be the Preloader: Model.preload builds a relation and would
       # leave the records passed to it untouched.
-      ActiveRecord::Associations::Preloader.new(records: concepts,
-          associations: Iqvoc::Concept.base_class.default_includes + [
-            :matches,
-            :collection_members,
-            :notations,
-            { relations: :target, labelings: :target, notes: :annotations }
-          ]).call
+      associations = Iqvoc::Concept.base_class.default_includes + [
+        :matches,
+        :collection_members,
+        :notations,
+        { relations: :target, labelings: :target }
+      ]
+      # notes are rendered behind the same condition, see render_concept
+      associations << { notes: :annotations } if Iqvoc.rdf_show_change_notes
+
+      ActiveRecord::Associations::Preloader.new(records: concepts, associations: associations).call
 
       concepts.each { |concept| render_concept(document, concept, true) }
       @logger.info "Concepts #{total + 1}-#{total + concepts.size} exported."
