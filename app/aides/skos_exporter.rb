@@ -77,11 +77,11 @@ class SkosExporter
     @logger.info 'Exporting collections...'
 
     total = 0
-    Iqvoc::Collection.base_class.published.order('id').find_in_batches(batch_size: @batch_size) do |collections|
+    Iqvoc::Collection.base_class.published.find_in_batches(batch_size: @batch_size) do |collections|
       # Todo: Preloading???
       collections.each { |collection| render_collection(document, collection) }
+      @logger.info "Collections #{total + 1}-#{total + collections.size} exported."
       total += collections.size
-      @logger.info "Collections #{total - collections.size + 1}-#{total} exported."
     end
 
     @logger.info "Finished exporting collections (#{total} collections exported)."
@@ -91,7 +91,7 @@ class SkosExporter
     @logger.info 'Exporting concepts...'
 
     total = 0
-    Iqvoc::Concept.base_class.published.order('id').find_in_batches(batch_size: @batch_size) do |concepts|
+    Iqvoc::Concept.base_class.published.find_in_batches(batch_size: @batch_size) do |concepts|
       # When in single query mode, AR handles ALL includes to be loaded by that
       # one query. We don't want that! So let's do it manually :-)
       Iqvoc::Concept.base_class.preload(concepts,
@@ -103,8 +103,8 @@ class SkosExporter
       ])
 
       concepts.each { |concept| render_concept(document, concept, true) }
+      @logger.info "Concepts #{total + 1}-#{total + concepts.size} exported."
       total += concepts.size
-      @logger.info "Concepts #{total - concepts.size + 1}-#{total} exported."
     end
 
     @logger.info "Finished exporting concepts (#{total} concepts exported)."
