@@ -92,15 +92,17 @@ class SkosExporter
 
     total = 0
     Iqvoc::Concept.base_class.published.find_in_batches(batch_size: @batch_size) do |concepts|
-      # When in single query mode, AR handles ALL includes to be loaded by that
-      # one query. We don't want that! So let's do it manually :-)
-      Iqvoc::Concept.base_class.preload(concepts,
-      Iqvoc::Concept.base_class.default_includes + [
-        :matches,
-        :collection_members,
-        :notations,
-        { relations: :target, labelings: :target, notes: :annotations }
-      ])
+      # rendering touches every association below, so preload them per batch
+      # rather than letting each concept load them one by one. Note that this
+      # has to be the Preloader: Model.preload builds a relation and would
+      # leave the records passed to it untouched.
+      ActiveRecord::Associations::Preloader.new(records: concepts,
+          associations: Iqvoc::Concept.base_class.default_includes + [
+            :matches,
+            :collection_members,
+            :notations,
+            { relations: :target, labelings: :target, notes: :annotations }
+          ]).call
 
       concepts.each { |concept| render_concept(document, concept, true) }
       @logger.info "Concepts #{total + 1}-#{total + concepts.size} exported."

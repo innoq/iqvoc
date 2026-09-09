@@ -37,6 +37,35 @@ class SkosExportTest < ActiveSupport::TestCase
     File.delete(@export_file)
   end
 
+  # SkosExporter#add_concepts preloaded nothing for two years, because
+  # Model.preload builds a relation instead of loading the records handed to
+  # it. Nothing about the export broke, it just issued queries per concept, so
+  # guard the property rather than the call.
+  test 'associations are loaded per batch instead of per concept' do
+    concepts = Iqvoc::Concept.base_class.published.count
+    assert_operator concepts, :>, 10, 'fixture too small to tell preloading apart'
+
+    loads = Hash.new(0)
+    subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+      loads[payload[:name].to_s] += 1
+    end
+    begin
+      SkosExporter.new(@export_file, 'nt', 'http://hobbies.com/', Logger.new(IO::NULL)).run
+    ensure
+      ActiveSupport::Notifications.unsubscribe(subscriber)
+      File.delete(@export_file) if File.exist?(@export_file)
+    end
+
+    # the scheme is a singleton whose lookup used to run once per concept
+    names = ['Labeling::Base Load', 'Note::Skos::Definition Load', 'Match::Base Load',
+        "#{Iqvoc::Concept.root_class} Load"]
+
+    names.each do |name|
+      assert_operator loads[name], :<, concepts,
+          "expected '#{name}' to be preloaded, got #{loads[name]} queries for #{concepts} concepts"
+    end
+  end
+
   test 'skos exporter with an unknown export type' do
     assert_raise RuntimeError do
       SkosExporter.new(@export_file, 'txt', 'http://hobbies.com/')
