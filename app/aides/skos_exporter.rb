@@ -1,6 +1,7 @@
 require 'iq_rdf'
 require 'uri'
 require 'fileutils'
+require 'pathname'
 require 'zip'
 
 class SkosExporter
@@ -8,7 +9,7 @@ class SkosExporter
   include RdfNamespacesHelper
   include Rails.application.routes.url_helpers
 
-  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false, entry_name: nil)
+  def initialize(file_path, type, default_namespace_url, logger = Rails.logger, zip: false, entry_name: nil, link_path: nil)
     default_url_options[:port] = URI.parse(default_namespace_url).port
     default_url_options[:host] = URI.parse(default_namespace_url).to_s.gsub(/\/$/, '')
 
@@ -17,6 +18,7 @@ class SkosExporter
     @logger = logger
     @zip = zip
     @entry_name = entry_name
+    @link_path = link_path
     @document = IqRdf::Document.new
 
     unless ['ttl', 'nt', 'xml'].include? @type
@@ -51,6 +53,7 @@ class SkosExporter
 
     # saving export to disk
     save_file(@file_path, @type, @document)
+    update_link(@link_path, @file_path) if @link_path
 
     done = Time.now
     @logger.info "Export Job finished in #{(done - start).to_i} seconds."
@@ -141,6 +144,28 @@ class SkosExporter
       zos.put_next_entry(entry_name)
       zos.write(serialized)
     end
+  end
+
+  # points the symlink at the file just written, so that a stable URL can serve
+  # the most recent export while its file name carries the creation date
+  def update_link(link_path, file_path)
+    link_dir = File.dirname(File.expand_path(link_path))
+    FileUtils.mkdir_p(link_dir)
+
+    # a relative target survives the export directory being moved
+    target = Pathname.new(File.expand_path(file_path)).
+        relative_path_from(Pathname.new(link_dir)).to_s
+
+    # symlink under a temporary name, then rename it into place: rename is
+    # atomic, so a concurrent download never sees a missing link
+    tmp_path = "#{link_path}.tmp#{Process.pid}"
+    File.symlink(target, tmp_path)
+    File.rename(tmp_path, link_path)
+
+    @logger.info "Updated symlink '#{link_path}' -> '#{target}'"
+  rescue IOError, SystemCallError => e
+    @logger.error "Failed to update symlink: #{e.message}"
+    raise
   end
 
   def create_directory(file_path)
