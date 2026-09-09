@@ -24,7 +24,7 @@ Capybara.server = :puma, { Silent: true }
 Capybara.javascript_driver = :cuprite
 Capybara.register_driver(:cuprite) do |app|
   if ENV["CI"].present?
-    Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil })
+    Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil, process_timeout: 30 })
   else
     Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
   end
