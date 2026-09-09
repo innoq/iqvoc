@@ -51,7 +51,7 @@ class Note::Skos::Base < Note::Base
     if annotations.any?
       subject.send(rdf_namespace).build_predicate(rdf_predicate) do |blank_node|
         blank_node.Rdfs::comment(value, lang: language || nil) if value
-        annotations.order(:namespace, :predicate).each do |annotation|
+        sorted_annotations.each do |annotation|
           if IqRdf::Namespace.find_namespace_class(annotation.namespace)
             val = if annotation.value =~ RdfApi::URI_REGEXP
               # Fall back to plain value literal if URI is not parseable

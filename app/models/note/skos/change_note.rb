@@ -36,7 +36,7 @@ class Note::Skos::ChangeNote < Note::Skos::Base
   def build_rdf(document, subject)
     subject.send(self.rdf_namespace).build_predicate(self.rdf_predicate) do |blank_node|
       blank_node.Rdfs::comment(self.value, lang: self.language || nil) if self.value
-      self.annotations.order(:namespace, :predicate).each do |annotation|
+      sorted_annotations.each do |annotation|
         if (IqRdf::Namespace.find_namespace_class(annotation.namespace))
           blank_node.send(annotation.namespace.camelcase).send(annotation.predicate, annotation.value.nil? ? '' : annotation.value)
         else

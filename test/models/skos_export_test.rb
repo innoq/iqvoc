@@ -45,6 +45,14 @@ class SkosExportTest < ActiveSupport::TestCase
     concepts = Iqvoc::Concept.base_class.published.count
     assert_operator concepts, :>, 10, 'fixture too small to tell preloading apart'
 
+    # the fixture carries no annotations, but rendering them used to sort with
+    # order(), which discards the preloaded association again
+    Iqvoc::Concept.base_class.published.limit(concepts).each_with_index do |concept, i|
+      note = Note::Skos::Definition.create!(owner: concept, value: "Definition #{i}", language: 'de')
+      Note::Annotated::Base.create!(note: note, namespace: 'skos', predicate: 'zeta', value: 'z')
+      Note::Annotated::Base.create!(note: note, namespace: 'skos', predicate: 'alpha', value: 'a')
+    end
+
     loads = Hash.new(0)
     subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
       loads[payload[:name].to_s] += 1
@@ -58,7 +66,7 @@ class SkosExportTest < ActiveSupport::TestCase
 
     # the scheme is a singleton whose lookup used to run once per concept
     names = ['Labeling::Base Load', 'Note::Skos::Definition Load', 'Match::Base Load',
-        "#{Iqvoc::Concept.root_class} Load"]
+        'Note::Annotated::Base Load', "#{Iqvoc::Concept.root_class} Load"]
 
     names.each do |name|
       assert_operator loads[name], :<, concepts,

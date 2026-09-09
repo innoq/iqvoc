@@ -100,6 +100,12 @@ class Note::Base < ApplicationRecord
 
   # ********** Methods
 
+  # Sorts in Ruby rather than with order(), which would build a new relation
+  # and discard a preloaded association, costing one query per note.
+  def sorted_annotations
+    annotations.sort_by { |annotation| [annotation.namespace.to_s, annotation.predicate.to_s] }
+  end
+
   def <=>(other)
     self.to_s.downcase <=> other.to_s.downcase
   end
