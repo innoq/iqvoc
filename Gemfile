@@ -44,7 +44,6 @@ gem 'delayed_job_active_record'
 gem 'rubyzip'
 gem 'carrierwave'
 gem 'carrierwave-i18n'
-gem "ruby-vips" # FIXME: needed carrierewave/image_processing
 gem 'faucet_pipeline_rails'
 gem 'bootsnap', require: false
 
