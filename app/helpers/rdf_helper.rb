@@ -48,8 +48,8 @@ module RdfHelper
       c.Schema::expires(concept.expired_at.to_s) if concept.expired_at
       c.Owl::deprecated(true) if concept.expired?
 
-      c.Skos::topConceptOf IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin) if concept.top_term?
-      c.Skos::inScheme IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin)
+      c.Skos::topConceptOf IqRdf.build_uri(rdf_scheme_origin) if concept.top_term?
+      c.Skos::inScheme IqRdf.build_uri(rdf_scheme_origin)
 
       concept.labelings.each do |labeling|
         labeling.build_rdf(document, c)
@@ -79,6 +79,13 @@ module RdfHelper
         end
       end
     end
+  end
+
+  # The scheme is a singleton, but Concept::Skos::Scheme.instance runs a
+  # first_or_create! on every call. Remember its origin for further
+  # _render_concept_ calls, like the collections above.
+  def rdf_scheme_origin
+    @rdf_helper_cached_scheme_origin ||= Iqvoc::Concept.root_class.instance.origin
   end
 
   def render_collection(document, collection)

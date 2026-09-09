@@ -1,7 +1,7 @@
 hierarchy2rdf = lambda do |hash|
   hash.each do |concept, rels|
     document << concept.build_rdf_subject do |sbj|
-      sbj.Skos::topConceptOf IqRdf.build_uri(Iqvoc::Concept.root_class.instance.origin) if concept.top_term?
+      sbj.Skos::topConceptOf IqRdf.build_uri(rdf_scheme_origin) if concept.top_term?
 
       concept.pref_labelings.each do |labeling|
         labeling.build_rdf(document, sbj)
