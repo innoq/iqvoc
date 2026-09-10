@@ -1,3 +1,20 @@
+## [4.16.0]
+
+* export SKOS as a ZIP archive, via `rake iqvoc:export ZIP=true` and the web interface
+* add `LINK` to `rake iqvoc:export`, keeping a symlink on the newest dump
+* add `Iqvoc.export_file_prefix` to name dumps after the hosting application
+* speed up the SKOS export on a large thesaurus
+* restore preloading of concept associations, which had silently become a no-op
+* let additional associations declare their `inverse_of`, so that rendering a
+  child no longer reloads the record it belongs to
+* look up the concept scheme once per export instead of once per concept
+* sort note annotations in Ruby, so that preloaded annotations are used
+* no longer load ActiveStorage and ActionText, which were unused
+* upgrade to Faraday v2
+* render 503 when a remote label target is unreachable
+* fix rendering the concept scheme
+* fix i18n glitches in exports
+
 ## [4.15.0]
 
 * upgrade to Rails v8.1
