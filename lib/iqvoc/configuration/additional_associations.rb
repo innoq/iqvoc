@@ -28,6 +28,19 @@ module Iqvoc
         end
       end
 
+      # Preloader specification for the registered associations. A registration
+      # may name what to preload underneath itself, for associations whose
+      # rendering reaches further than the record itself:
+      #
+      #   'CompoundForm::Base' => { foreign_key: 'domain_id',
+      #                             preload: { compound_form_contents: :label } }
+      def preload_spec(class_names)
+        normalize(class_names).map do |association_class, options|
+          name = association_class.name.to_relation_name
+          options[:preload] ? { name => options[:preload] } : name
+        end
+      end
+
       # A registration that names no inverse is assumed to follow its foreign
       # key. The guess is dropped when no such association exists, so that a
       # registration naming it differently keeps working - slowly, but

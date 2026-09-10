@@ -40,6 +40,18 @@ class AdditionalAssociationsTest < ActiveSupport::TestCase
     assert_nil options[Note::Annotated::Base][:inverse_of]
   end
 
+  test 'preload spec names the association' do
+    assert_equal [:note_annotated_bases],
+        Normalizer.preload_spec(ANNOTATION => 'note_id')
+  end
+
+  test 'preload spec nests what a registration asks for' do
+    spec = Normalizer.preload_spec(
+        ANNOTATION => { foreign_key: 'note_id', preload: :note })
+
+    assert_equal [{ note_annotated_bases: :note }], spec
+  end
+
   test 'additional_association_classes still maps to the bare foreign key' do
     previous = Iqvoc::Concept.additional_association_class_names
     begin

@@ -101,7 +101,7 @@ class SkosExporter
         :collection_members,
         :notations,
         { relations: :target, labelings: :target }
-      ]
+      ] + Iqvoc::Concept.additional_association_preloads
       # notes are rendered behind the same condition, see render_concept
       associations << { notes: :annotations } if Iqvoc.rdf_show_change_notes
 

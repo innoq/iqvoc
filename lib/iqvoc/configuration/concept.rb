@@ -162,6 +162,12 @@ module Iqvoc
               normalize(additional_association_class_names)
         end
 
+        # the registered associations, ready to hand to the Preloader
+        def additional_association_preloads
+          Iqvoc::Configuration::AdditionalAssociations.
+              preload_spec(additional_association_class_names)
+        end
+
         def supports_multi_language_pref_labelings?
           pref_labeling_languages.size > 1
         end
