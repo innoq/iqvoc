@@ -150,10 +150,16 @@ module Iqvoc
           notation_class_names.map(&:constantize)
         end
 
+        # class => foreign key. Kept for callers that only need that; the
+        # full registration is in additional_association_options.
         def additional_association_classes
-          additional_association_class_names.keys.each_with_object({}) do |class_name, hash|
-            hash[class_name.constantize] = additional_association_class_names[class_name]
-          end
+          additional_association_options.transform_values { |options| options[:foreign_key] }
+        end
+
+        # class => { foreign_key:, inverse_of: }
+        def additional_association_options
+          Iqvoc::Configuration::AdditionalAssociations.
+              normalize(additional_association_class_names)
         end
 
         def supports_multi_language_pref_labelings?
