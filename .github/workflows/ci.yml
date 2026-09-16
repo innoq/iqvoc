@@ -7,7 +7,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.3', '3.4']
+        ruby:
+          - '3.3'
+          - '3.4'
+          - '4.0'
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -24,7 +27,7 @@ jobs:
           POSTGRES_DB: postgres
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -32,7 +35,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
 
       - name: Caching dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: vendor/bundle
           key: bundle-use-ruby-${{ runner.os }}-${{ matrix.ruby }}-${{ hashFiles('**/Gemfile.lock') }}
@@ -45,9 +48,9 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Node dependencies
         run: npm install
