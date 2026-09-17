@@ -25,6 +25,12 @@ module Versioning
                class_name: name,
                optional: true
 
+    # the unpublished record being edited on top of this one
+    has_one :draft,
+            foreign_key: 'published_version_id',
+            class_name: name,
+            inverse_of: :published_version
+
     after_initialize do
       disable_validations_for_publishing
     end
