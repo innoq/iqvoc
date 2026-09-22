@@ -1,6 +1,6 @@
 <%- fieldname = "concept[inline_#{assoc_klass.name.to_relation_name}]" -%>
 
-<div class="form-group">
+<div class="mb-3">
   <label class="col-sm-2 col-form-label" for="<%= fieldname %>"><%= assoc_klass.model_name.human(:count => 2) %></label>
   <div class="col-sm-10">
   <%= text_area_tag fieldname, owner_klass.send("inline_#{assoc_klass.name.to_relation_name}"),

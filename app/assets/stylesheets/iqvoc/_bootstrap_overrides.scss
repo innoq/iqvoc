@@ -2,6 +2,15 @@ body > .container {
   padding-top: 5rem;
 }
 
+// Bootstrap 5 floats <legend> (float: left; width: 100%) to work around a
+// Firefox fieldset/flex bug, clearing it only on the very next sibling
+// (`legend + *`). Fieldsets with more than one element after the legend
+// (like ours) leave the float uncleared, which can squeeze later siblings
+// to zero width. We don't need the Firefox fix here, so disable the float.
+legend {
+  float: none;
+}
+
 form#search {
   .btn-group {
     margin-top: 10px;
@@ -48,7 +57,7 @@ small {
     margin-bottom: -0.5em;
   }
 
-  > .close {
+  > .btn-close {
     font-size: $h3-font-size;
   }
 }

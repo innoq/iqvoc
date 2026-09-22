@@ -256,7 +256,7 @@ import 'jqtree/tree.jquery.js';
 
         $.get(target, function(data) {
           modal.html(data);
-          modal.modal();
+          bootstrap.Modal.getOrCreateInstance(modal[0]).show();
         });
       });
 

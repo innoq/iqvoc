@@ -14,7 +14,7 @@ module.exports = {
     {
       source: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
       target: "./public/assets/javascripts/bootstrap.bundle.min.js",
-      externals:  { jquery: "jQuery" },
+      exports: "bootstrap",
       compact: "minify"
     }
   ],

@@ -26,14 +26,13 @@
     "faucet-pipeline-static": "^1.2.0"
   },
   "dependencies": {
-    "bootstrap": "4.3.1",
+    "bootstrap": "^5.3.3",
     "bootstrap-datepicker": "^1.10.1",
     "document-register-element": "^1.14.5",
     "font-awesome": "^4.7.0",
     "jqtree": "^1.4.12",
     "jquery": "^3.6.0",
     "jquery-ujs": "^1.2.3",
-    "popper.js": "^1.16.1",
     "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5"
   }

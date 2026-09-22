@@ -1,5 +1,5 @@
 <% if @datasets.any? %>
-  <div class="form-group">
+  <div class="mb-3">
     <%= label_tag 'ds', t('txt.views.search_results.datasets') %>
     <% @datasets.each_with_index do |dataset, idx| %>
       <div class="form-check">

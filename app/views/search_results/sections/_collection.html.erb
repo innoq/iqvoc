@@ -1,4 +1,4 @@
-<div class="form-group result_type_filter">
+<div class="mb-3 result_type_filter">
   <%= label_tag 'c', Iqvoc::Collection.base_class.model_name.human %>
   <%= select_tag 'c', options_from_collection_for_select(@collections, 'origin', 'status', params[:c]),
                  :class => 'form-control',

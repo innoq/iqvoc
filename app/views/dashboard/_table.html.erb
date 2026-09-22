@@ -30,7 +30,7 @@
           <%= l(item.updated_at, :format => :short) %>
         </td>
         <td>
-          <span class="badge <%= !item.published? || item.in_review? ? 'badge-danger' : 'badge-secondary' %> dashboard-table-item-state"><%= item.state %></span>
+          <span class="badge <%= !item.published? || item.in_review? ? 'bg-danger' : 'bg-secondary' %> dashboard-table-item-state"><%= item.state %></span>
         </td>
         <td>
         <%- if params[:check_consistency] == "1" -%>

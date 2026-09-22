@@ -8,9 +8,9 @@
     t("txt.common.rdf_serialization.xml") => :xml})
   %>
   <%= f.text_field :default_namespace, :value => root_url(:format => nil, :lang => nil, :trailing_slash => true).gsub(/\/\/$/, "/") %>
-  <%= f.form_group :options do %>
-    <%= f.check_box :zip %>
-  <% end %>
+
+  <%= f.check_box :zip %>
+
   <%= f.form_group do %>
     <%= f.submit t('txt.views.export.request_export'), :class => 'btn btn-primary' %>
   <% end %>
@@ -35,7 +35,7 @@
       <td class="text-nowrap">
         <%= t("txt.common.rdf_serialization.#{export.file_type}") %>
         <% if export.zip? %>
-          <span class="badge badge-info"><%= Export.human_attribute_name(:zip) %></span>
+          <span class="badge bg-info"><%= Export.human_attribute_name(:zip) %></span>
         <% end %>
       </td>
       <td><%= l(export.created_at, :format => :short) %></td>

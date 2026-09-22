@@ -2,7 +2,7 @@
   <ul class="nav nav-tabs sections">
   <%- sections.select { |s| data[s] }.each_with_index do |section_key, index| -%>
     <li id="tab-<%= section_key %>" class="nav-item">
-      <a href="#<%= section_key %>" class="nav-link<%= " active" if index == 0 %>" data-toggle="tab"><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></a>
+      <a href="#<%= section_key %>" class="nav-link<%= " active" if index == 0 %>" data-bs-toggle="tab"><%= t("txt.views.layouts.sections.#{section_key}", :default => section_key.humanize) %></a>
     </li>
   <%- end -%>
   </ul>

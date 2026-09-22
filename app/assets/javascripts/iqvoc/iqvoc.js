@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
 
     $.get(target, function(data) {
       modal.html(data);
-      modal.modal();
+      bootstrap.Modal.getOrCreateInstance(modal[0]).show();
     });
   });
 
@@ -112,6 +112,8 @@ jQuery(document).ready(function($) {
   $(".tab-panels").addClass("tab-content"); // the latter is for Bootstrap Tabs
 
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').each(function() {
+      new bootstrap.Tooltip(this);
+    });
   })
 });

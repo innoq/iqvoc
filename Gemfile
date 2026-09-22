@@ -37,7 +37,7 @@ gem 'nokogiri'
 gem 'linkeddata'
 gem 'rdf-vocab'
 gem "deep_cloneable"
-gem "bootstrap_form", "~> 4.0"
+gem "bootstrap_form", "~> 5.0"
 gem 'apipie-rails'
 gem 'maruku', require: false # needed for apipie documentation
 gem 'database_cleaner'

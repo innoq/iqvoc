@@ -3,10 +3,7 @@
   <div class="modal-content concept-teaser-content">
     <div class="modal-header concept-teaser-header">
       <h1 class="modal-title" id="concept-teaser-title"><%= @title %></h1>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        <span class="sr-only"><%= t('txt.views.concepts.teaser.close') %></span>
-      </button>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t('txt.views.concepts.teaser.close') %>"></button>
     </div>
     <div class="modal-body concept-teaser-body">
       <h2><%= Note::Skos::EditorialNote.model_name.human(count: 2) %></h2>
@@ -24,7 +21,7 @@
       </ul>
     </div>
     <div class="modal-footer concept-teaser-footer">
-      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
       <a href="<%= @path %>" class="btn btn-primary"><i class="fa fa-angle-double-right"></i> <%= t('txt.views.show') %></a>
     </div>
   </div>
