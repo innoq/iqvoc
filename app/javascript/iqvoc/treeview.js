@@ -1,4 +1,5 @@
 import 'jqtree/tree.jquery.js';
+import * as bootstrap from 'bootstrap'
 
 /*jslint vars: true, browser: true, white: true */
 /*global jQuery, IQVOC */

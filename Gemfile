@@ -45,7 +45,9 @@ gem 'delayed_job_active_record'
 gem 'rubyzip'
 gem 'carrierwave'
 gem 'carrierwave-i18n'
-gem 'faucet_pipeline_rails'
+gem 'propshaft'
+gem 'cssbundling-rails'
+gem 'jsbundling-rails'
 gem 'bootsnap', require: false
 
 # database adapters
@@ -58,7 +60,6 @@ gem 'rack-mini-profiler'
 
 group :development do
   gem 'web-console', '>= 4.1.0'
-  gem 'listen', '~> 3.3'
 end
 
 group :development, :test do

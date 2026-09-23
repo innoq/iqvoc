@@ -21,7 +21,9 @@ require 'carrierwave-i18n'
 require 'faraday'
 require 'faraday/follow_redirects'
 require 'rack-mini-profiler'
-require 'faucet_pipeline_rails'
+require 'propshaft'
+require 'cssbundling-rails'
+require 'jsbundling-rails'
 
 module Iqvoc
   class Engine < Rails::Engine

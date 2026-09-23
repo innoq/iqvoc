@@ -41,7 +41,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave'
   s.add_dependency 'carrierwave-i18n'
   s.add_dependency 'rack-mini-profiler'
-  s.add_dependency 'faucet_pipeline_rails'
+  s.add_dependency 'propshaft'
+  s.add_dependency 'cssbundling-rails'
+  s.add_dependency 'jsbundling-rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,lib}/**/*')

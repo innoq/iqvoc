@@ -1,6 +1,8 @@
 /*jslint vars: true, unparam: true, browser: true, white: true */
 /*global jQuery */
 
+import * as bootstrap from 'bootstrap'
+
 window.IQVOC = {};
 
 jQuery(document).ready(function($) {

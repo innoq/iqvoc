@@ -6,12 +6,14 @@
     "type": "git",
     "url": "git+https://github.com/innoq/iqvoc.git"
   },
+  "main": "app/javascript/manifest.js",
   "files": [
-    "app/assets/**/*"
+    "app/assets/**/*",
+    "app/javascript/**/*"
   ],
   "scripts": {
-    "watch": "faucet --watch",
-    "compile": "faucet --compact --fingerprint"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "sass ./app/assets/stylesheets/manifest.scss:./app/assets/builds/manifest.css --no-source-map --load-path=node_modules"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -20,19 +22,17 @@
   },
   "homepage": "https://github.com/innoq/iqvoc#readme",
   "devDependencies": {
-    "faucet-pipeline-js": "^2.1.7",
-    "faucet-pipeline-jsmin": "^2.1.7",
-    "faucet-pipeline-sass": "^1.6.0",
-    "faucet-pipeline-static": "^1.2.0"
+    "esbuild": "^0.24.0",
+    "sass": "^1.80.0"
   },
   "dependencies": {
+    "@rails/ujs": "^7.1.600",
     "bootstrap": "^5.3.3",
     "bootstrap-datepicker": "^1.10.1",
     "document-register-element": "^1.14.5",
     "font-awesome": "^4.7.0",
     "jqtree": "^1.4.12",
     "jquery": "^3.6.0",
-    "jquery-ujs": "^1.2.3",
     "simplete": "^1.7.0",
     "typeahead.js": "^0.10.5"
   }

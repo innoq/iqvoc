@@ -1,3 +1,23 @@
+// These placeholders live here (rather than in settings/_mixins.scss, which
+// is imported before Bootstrap) so that Sass's @extend emits their merged
+// selector at this position in the cascade. Bootstrap 5's own .btn rule
+// sets font-family explicitly, so if the merged selector compiled in
+// earlier (pre-Bootstrap), Bootstrap's later same-specificity rule would
+// win and silently override it.
+%font-interaction {
+  font-family: 'Fira Sans Light SC';
+  text-transform: lowercase;
+}
+
+%font-bold {
+  font-family: 'Fira Sans Bold';
+  font-weight: 700;
+}
+
+%font-light {
+  font-family: 'Fira Sans Light';
+}
+
 body > .container {
   padding-top: 5rem;
 }

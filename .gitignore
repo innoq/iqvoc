@@ -27,3 +27,6 @@ public/export
 public/uploads
 node_modules
 Gemfile.lock
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

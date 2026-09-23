@@ -41,9 +41,7 @@
     </div>
   </main>
 
-  <%= javascript_include_tag "jquery.js" %>
-  <%= javascript_include_tag "bootstrap.bundle.min.js" %>
-  <%= javascript_include_tag "manifest.js" %>
+  <%= javascript_include_tag "manifest", type: "module" %>
   <%= yield :scripts %>
 
   </body>
