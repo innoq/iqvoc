@@ -12,7 +12,7 @@ var EntitySelector = function(node) {
   this.el = $(node).hide(); // XXX: rename
   this.container = $('<div class="entity_select" />').data("widget", this);
   this.indicator = $('<span class="indicator input-group-text" />')
-    .append('<i class="fa fa-refresh fa-spin" />');
+    .append('<i class="fa-solid fa-arrows-rotate fa-spin" />');
   this.delimiter = ",";
   this.singular = this.el.data("singular") || false;
   this.entities = this.getSelection();

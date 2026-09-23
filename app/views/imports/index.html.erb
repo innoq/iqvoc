@@ -31,7 +31,7 @@
       <td><%= link_to import.id, import_path(:id => import) %></td>
       <td><%= import.user %></td>
       <td><%= l(import.created_at, :format => :short) %></td>
-      <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+      <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:gear, 'fa-spin') %></td>
       <td><%= icon('thumbs-o-up') if import.success? %></td>
     </tr>
   <% end %>

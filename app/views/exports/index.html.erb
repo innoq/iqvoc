@@ -39,7 +39,7 @@
         <% end %>
       </td>
       <td><%= l(export.created_at, :format => :short) %></td>
-      <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+      <td><%= export.finished_at? ? l(export.finished_at, :format => :short) : icon(:gear, 'fa-spin') %></td>
       <td>
         <div class="btn-group" role="group">
           <%= link_to('Download', export_download_url(export), class: 'btn btn-primary btn-sm') if export.success? %>

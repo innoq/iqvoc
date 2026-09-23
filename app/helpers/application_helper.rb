@@ -86,7 +86,7 @@ module ApplicationHelper
   end
 
   def icon(name, additional_css = '')
-    css_classes = %W(fa fa-#{name})
+    css_classes = %W(fa-solid fa-#{name})
     if additional_css.respond_to?(:split)
       css_classes << additional_css.split(' ')
     end
@@ -111,7 +111,7 @@ module ApplicationHelper
   end
 
   def loading_indicator(label)
-    "<i class=\"fa fa-spin fa-spinner\"></i> #{label}"
+    "<i class=\"fa-solid fa-spin fa-spinner\"></i> #{label}"
   end
 
 end

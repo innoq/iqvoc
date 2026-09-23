@@ -19,7 +19,7 @@
       <tr class="highlightable dashboard-table-item" data-url="<%= link_to_dashboard_item(item) %>">
         <td class="text-nowrap">
           <%= render item.class.edit_link_partial_name, :item => item %>
-          <a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa fa-search-plus"></i></a>
+          <a href="<%= dashboard_glance_path(type: item.class, origin: item.origin, published: item.published? ? 1 : 0) %>" class="dashboard-glance-link"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
         </td>
         <% unless item.class == Iqvoc::Collection.base_class %>
           <td class="<%= 'dashboard-activated-follow-up-column' if item.follow_up.present? %>">

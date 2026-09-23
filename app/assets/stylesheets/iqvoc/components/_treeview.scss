@@ -75,7 +75,7 @@ ul.jqtree-tree {
     border-bottom: 0;
     color: #333;
     cursor: pointer;
-    margin-left: -14px;
+    margin-left: -18px;
     margin-right: .5em;
     text-decoration: none;
 
@@ -96,7 +96,7 @@ ul.jqtree-tree {
     }
   }
 
-  .fa-arrows { cursor: move;}
+  .drag { cursor: move;}
 
   .jqtree-loading > div.jqtree-element.jqtree_common:after {
     content: url('/ajax-loader.gif');

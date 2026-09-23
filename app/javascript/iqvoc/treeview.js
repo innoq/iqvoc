@@ -43,8 +43,8 @@ import * as bootstrap from 'bootstrap'
         autoEscape: false,
         selectable: false,
         useContextMenu: false,
-        closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
-        openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
+        closedIcon: $('<i class="fa-regular fa-square-plus"></i>'),
+        openedIcon: $('<i class="fa-regular fa-square-minus"></i>'),
         data: data,
         dataUrl: function(node) {
           var uri = new URL(url, window.location.origin);
@@ -77,13 +77,13 @@ import * as bootstrap from 'bootstrap'
             if (node && node.locked) {
               // add icon only to the first element of the collection.
               // the second one could be a nodelist for parents nodes.
-              $li.find('.jqtree-element').append(' <i class="fa fa-lock"/>');
+              $li.find('.jqtree-element').append(' <i class="fa-solid fa-lock"/>');
             }
 
             if (node && !node.locked) {
               // add icon only to the first element of the collection.
               // the second one could be a nodelist for parents nodes.
-              $li.find('.jqtree-element').append(' <i class="fa fa-arrows"/>');
+              $li.find('.jqtree-element').append(' <i class="drag fa-solid fa-arrows-up-down-left-right"/>');
             }
           }
 
@@ -97,9 +97,9 @@ import * as bootstrap from 'bootstrap'
               'glance-url': node.glance_url
             });
 
-            var saveButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="move"><i class="fa fa-save"></i> ' + saveLabel + '</button>');
-            var copyButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="copy"><i class="fa fa-copy"></i> ' + copyLabel + '</button>');
-            var undoButton = $('<button type="button" class="btn btn-primary btn-sm reset-node-btn"><i class="fa fa-undo"></i> ' + undoLabel + '</button>');
+            var saveButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="move"><i class="fa-solid fa-floppy-disk"></i> ' + saveLabel + '</button>');
+            var copyButton = $('<button type="button" class="btn btn-primary btn-sm node-btn" data-tree-action="copy"><i class="fa-solid fa-copy"></i> ' + copyLabel + '</button>');
+            var undoButton = $('<button type="button" class="btn btn-primary btn-sm reset-node-btn"><i class="fa-solid fa-arrow-rotate-left"></i> ' + undoLabel + '</button>');
 
             // add icon only to the first element of the collection.
             // the second one could be a nodelist for parents nodes.
@@ -112,7 +112,7 @@ import * as bootstrap from 'bootstrap'
         },
         onIsMoveHandle: function($element) {
           // dom element which acts as move handle
-          return ($element.is('.fa-arrows'));
+          return ($element.is('.fa-arrows-up-down-left-right'));
         },
         onCanMoveTo: function(moved_node, target_node, position){
           // prevent node movement inside parent node
@@ -247,7 +247,7 @@ import * as bootstrap from 'bootstrap'
 
       teaserLink.addClass('tree-element-teaser-link')
                 .attr('href', node.glance_url)
-                .append($('<i class="fa fa-search-plus" aria-hidden="true" />'))
+                .append($('<i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true" />'))
 
       teaserLink.on('click', function(ev) {
         ev.preventDefault();

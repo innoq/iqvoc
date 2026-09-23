@@ -1,9 +1,9 @@
 .indicator {
-  .fa {
+  .fa-solid {
     visibility: hidden;
   }
 
-  &.active .fa {
+  &.active .fa-solid {
     visibility: visible;
   }
 }
