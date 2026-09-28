@@ -1,14 +1,25 @@
-(function($) {
-  "use strict";
+const navbarToggler = document.querySelector('.navbar-toggler');
+const isNavbarCollapsed = () => !!navbarToggler && getComputedStyle(navbarToggler).display !== 'none';
 
-  $(function() {
-    $('ul.navbar-nav li.dropdown').hover(function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(100).show();
-      $(this).find('> .nav-link').addClass('hover')
-    }, function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(100).hide();
-      $(this).find('> .nav-link').removeClass('hover')
-    });
-  });
+document.querySelectorAll('ul.navbar-nav li.dropdown').forEach((dropdown) => {
+  const menu = dropdown.querySelector('.dropdown-menu');
+  const navLink = dropdown.querySelector(':scope > .nav-link');
+  let timer;
 
-}(jQuery));
+  const schedule = (fn) => {
+    clearTimeout(timer);
+    timer = setTimeout(fn, 100);
+  };
+
+  dropdown.addEventListener('mouseenter', () => schedule(() => {
+    if (isNavbarCollapsed()) return;
+    if (menu) menu.style.display = 'block';
+    if (navLink) navLink.classList.add('hover');
+  }));
+
+  dropdown.addEventListener('mouseleave', () => schedule(() => {
+    if (isNavbarCollapsed()) return;
+    if (menu) menu.style.display = '';
+    if (navLink) navLink.classList.remove('hover');
+  }));
+});
