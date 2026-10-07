@@ -3,6 +3,7 @@
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </div>
   <div class="col">
+    <label for="q" class="visually-hidden"><%= t('txt.views.search_results.search_term') %></label>
     <%= search_field_tag :q, params[:query],
                          class: 'form-control form-control-lg form-control-borderless border-0',
                          placeholder: t('txt.views.search_results.search_term'),

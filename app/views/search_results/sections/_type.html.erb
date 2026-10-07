@@ -1,7 +1,5 @@
-<div class="row mb-3">
-  <div class="col-12">
-    <%= label_tag nil, t('txt.views.search_results.in') %>
-  </div>
+<fieldset class="row mb-3">
+  <legend class="col-12 form-label"><%= t('txt.views.search_results.in') %></legend>
   <div class="col-12">
     <div class="form-check form-check-inline">
       <%= radio_button_tag 'for', 'all', !%w(concept collection).include?(params[:for]), class: 'form-check-input' %>
@@ -22,4 +20,4 @@
       </label>
     </div>
   </div>
-</div>
+</fieldset>
