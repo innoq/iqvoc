@@ -116,7 +116,7 @@
       });
 
       urisByLabel[label] = { el: el, values: values };
-    }).closest("div:has(label)").hide(); // XXX: does not belong here
+    }).closest("div:has(label)").addClass("d-none"); // XXX: does not belong here
 
     return urisByLabel;
   };
