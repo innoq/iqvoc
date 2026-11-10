@@ -63,7 +63,7 @@
     dataset = $('<span class="concept-mapping-dataset" />').text(dataset.name);
     if(this.editable) {
       var self = this;
-      var btn = $("<i class='fa fa-times concept-mapping-remove' />").click(function(ev) {
+      var btn = $("<i class='fa-solid fa-xmark concept-mapping-remove' />").click(function(ev) {
         // inject instance
         var args = Array.prototype.slice.apply(arguments);
         args.push(self);

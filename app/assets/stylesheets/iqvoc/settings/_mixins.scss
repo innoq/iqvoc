@@ -1,17 +1,3 @@
-%font-interaction {
-  font-family: 'Fira Sans Light SC';
-  text-transform: lowercase;
-}
-
-%font-bold {
-  font-family: 'Fira Sans Bold';
-  font-weight: 700;
-}
-
-%font-light {
-  font-family: 'Fira Sans Light';
-}
-
 @mixin transitional($property: all, $duration: .25s) {
   transition: $property $duration ease-in-out;
 }

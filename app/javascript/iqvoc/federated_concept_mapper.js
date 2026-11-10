@@ -22,14 +22,14 @@
     this.container = $("<div />").addClass("concept-mapper control-group");
 
     this.bootstrapInputGroup = $('<div class="input-group" />');
-    this.indicator = $('<div class="indicator input-group-append" />');
+    this.indicator = $('<span class="indicator input-group-text" />');
 
     this.input = this.bootstrapInputGroup
                     .append($("<input />").attr("type", "text").addClass("form-control"))
                     .append(this.indicator)
                     .prependTo(this.container);
 
-    $("<button />").addClass("btn btn-outline-secondary fa fa-plus").
+    $("<button />").addClass("btn btn-outline-secondary fa-solid fa-plus").
         insertAfter(this.input).click($.proxy(this, "onConfirm"));
 
     this.matchType = $("<select />").addClass("form-control")
@@ -86,8 +86,7 @@
     this.source = $("<select />").addClass("form-control").append(sources).
         insertBefore(this.input);
 
-    this.indicator.append($('<span class="input-group-text" />')
-      .append('<i class="fa fa-refresh fa-spin" />'));
+    this.indicator.append('<i class="fa-solid fa-arrows-rotate fa-spin" />');
 
     var self = this;
     var input = this.input.find("input")

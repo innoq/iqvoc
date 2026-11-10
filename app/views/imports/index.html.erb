@@ -5,9 +5,8 @@
   <%= f.file_field :import_file %>
   <%= f.text_field :default_namespace, value: root_url(format: nil, lang: nil, trailing_slash: true).gsub(/\/\/$/, "/") %>
 
-  <%= f.form_group do %>
-    <%= f.check_box :publish, value: 1, checked: true %>
-  <% end %>
+  <%= f.check_box :publish, value: 1, checked: true %>
+
   <%= f.form_group do %>
     <%= f.button t('txt.views.import.title'),
         class: 'btn btn-primary',
@@ -32,7 +31,7 @@
       <td><%= link_to import.id, import_path(:id => import) %></td>
       <td><%= import.user %></td>
       <td><%= l(import.created_at, :format => :short) %></td>
-      <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:cog, 'fa-spin') %></td>
+      <td><%= import.finished_at? ? l(import.finished_at, :format => :short) : icon(:gear, 'fa-spin') %></td>
       <td><%= icon('thumbs-o-up') if import.success? %></td>
     </tr>
   <% end %>

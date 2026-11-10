@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails_autolink'
   s.add_dependency 'faraday', '~> 2.0'
   s.add_dependency 'faraday-follow_redirects', '~> 0.5'
-  s.add_dependency 'bootstrap_form', '~> 4.0'
+  s.add_dependency 'bootstrap_form', '~> 5.0'
   s.add_dependency 'iq_triplestorage'
   s.add_dependency 'nokogiri'
   s.add_dependency 'linkeddata'
@@ -41,7 +41,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave'
   s.add_dependency 'carrierwave-i18n'
   s.add_dependency 'rack-mini-profiler'
-  s.add_dependency 'faucet_pipeline_rails'
+  s.add_dependency 'propshaft'
+  s.add_dependency 'cssbundling-rails'
+  s.add_dependency 'jsbundling-rails'
 
   s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Rakefile iqvoc.gemspec) +
     Dir.glob('{app,config,db,lib}/**/*')

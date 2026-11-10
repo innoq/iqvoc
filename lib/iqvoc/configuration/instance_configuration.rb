@@ -109,6 +109,8 @@ module Iqvoc
         end
 
         @initialized = true
+      rescue ActiveRecord::ConnectionNotEstablished
+        false
       end
 
       # checks whether value type is supported

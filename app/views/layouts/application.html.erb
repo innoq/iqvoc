@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <%= stylesheet_link_tag "manifest" %>
+    <%= stylesheet_link_tag "application" %>
     <%= yield :head %>
   </head>
 
@@ -41,9 +41,7 @@
     </div>
   </main>
 
-  <%= javascript_include_tag "jquery.js" %>
-  <%= javascript_include_tag "bootstrap.bundle.min.js" %>
-  <%= javascript_include_tag "manifest.js" %>
+  <%= javascript_include_tag "application", type: "module" %>
   <%= yield :scripts %>
 
   </body>

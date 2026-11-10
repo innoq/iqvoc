@@ -1,10 +1,10 @@
 <%= render 'title' %>
 
 <div class="onebox">
-  <%= form_tag search_path(:q => nil), method: :get, class: 'onebox-form col-8 pl-0 pr-0' do %>
+  <%= form_tag search_path(:q => nil), method: :get, class: 'onebox-form col-8 ps-0 pe-0' do %>
     <div class="onebox-input-wrapper">
       <simplete-form min-length="2" query-delay="300">
-        <label for="query" class="sr-only">Suche</label>
+        <label for="query" class="visually-hidden">Suche</label>
         <div class="form-control-with-icon-end">
           <%= search_field_tag 'q', nil, id: 'search', class: 'form-control',
             autofocus: true,
@@ -12,7 +12,7 @@
             placeholder: t('txt.views.frontpage.type_to_browse') %>
           <%= hidden_field_tag :for, 'concept' %>
           <div id="loading" class="spinner-border spinner-border-sm" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
       </simplete-form>
