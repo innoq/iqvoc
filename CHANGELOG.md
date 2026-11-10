@@ -1,3 +1,17 @@
+## [4.17.0]
+
+* upgrade to Bootstrap v5 (and `bootstrap_form` v5)
+* replace faucet-pipeline with Propshaft, `jsbundling-rails` (esbuild) and
+  `cssbundling-rails` (Sass); JavaScript moved to `app/javascript`
+* upgrade to Font Awesome v7, replace `jquery-ujs` with `@rails/ujs`
+* `bin/dev` now starts all processes from `Procfile.dev` via foreman
+* add a `draft` relation to the `Versioning` concern
+* add an index on `labelings.target_id` (requires migration)
+* rename SKOS dumps to `<export_file_prefix>-<timestamp>.<type>` and default
+  `Iqvoc.export_file_prefix` to `iqvoc-data`
+* drop some inline styles
+* test against Ruby 4 on CI
+
 ## [4.16.0]
 
 * export SKOS as a ZIP archive, via `rake iqvoc:export ZIP=true` and the web interface
