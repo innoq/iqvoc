@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/innoq/iqvoc#readme",
   "devDependencies": {
-    "esbuild": "^0.24.0",
-    "sass": "^1.80.0"
+    "esbuild": "^0.28.2",
+    "sass": "^1.108.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
