@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name        = 'iqvoc'
   s.version     = Iqvoc::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.required_ruby_version = '>= 3.3'
   s.authors     = ['Robert Glaser', 'Till Schulte-Coerne', 'Frederik Dohr', 'Marc Jansing']
   s.email       = ['robert.glaser@innoq.com', 'till.schulte-coerne@innoq.com', 'frederik.dohr@innoq.com', 'marc.jansing@innoq.com']
   s.homepage    = 'http://github.com/innoq/iqvoc'
@@ -45,9 +46,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'cssbundling-rails'
   s.add_dependency 'jsbundling-rails'
 
-  s.files = %w(LICENSE README.md CHANGELOG.md Gemfile Rakefile iqvoc.gemspec) +
-    Dir.glob('{app,config,db,lib}/**/*')
-  s.test_files = Dir['{test}/**/*']
+  s.files = `git ls-files -z -- LICENSE README.md CHANGELOG.md Gemfile Rakefile iqvoc.gemspec app config db lib`.split("\0")
+  s.test_files = `git ls-files -z -- test`.split("\0")
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
 end
