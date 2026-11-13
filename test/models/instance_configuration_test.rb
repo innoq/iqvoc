@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require File.join(File.expand_path(File.dirname(__FILE__)), '../test_helper')
+require 'minitest/mock'
 
 class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
   setup do
@@ -46,6 +47,19 @@ class InstanceConfigurationBrowsingTest < ActiveSupport::TestCase
     @config.register_setting('country', 'germany')
     assert_equal 'germany', @config.deregister_setting('country')
     assert_nil @config['germany']
+  end
+
+  test 'should fall back to defaults if the database does not exist yet' do
+    @config.register_setting('dragon', 'punch')
+    @config.instance_variable_set(:@initialized, false)
+
+    ConfigurationSetting.stub(:table_exists?, -> { raise ActiveRecord::NoDatabaseError }) do
+      assert_equal 'punch', @config['dragon']
+    end
+    assert_not @config.instance_variable_get(:@initialized)
+  ensure
+    @config.deregister_setting('dragon')
+    @config.initialize_cache
   end
 
   test 'should validate values' do

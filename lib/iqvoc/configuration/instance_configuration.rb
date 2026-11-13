@@ -109,7 +109,9 @@ module Iqvoc
         end
 
         @initialized = true
-      rescue ActiveRecord::ConnectionNotEstablished
+      # no database yet, e.g. while the app boots for `rails db:create` or
+      # `db:prepare`: use the defaults and retry on next access
+      rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::NoDatabaseError
         false
       end
 
