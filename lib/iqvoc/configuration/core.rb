@@ -206,10 +206,11 @@ module Iqvoc
           end
         end
 
+        # Version of the host application, `nil` if there is no host namespace or it does not
+        # define a `VERSION` constant.
         def host_version
-          if Iqvoc.host_namespace
-            Iqvoc.host_namespace::VERSION
-          end
+          namespace = Iqvoc.host_namespace
+          namespace::VERSION if namespace&.const_defined?(:VERSION, false)
         end
       end
     end

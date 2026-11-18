@@ -1,3 +1,8 @@
+## [4.17.1]
+
+* `Iqvoc.host_version` returns `nil` instead of raising if the host namespace has no `VERSION`
+* instance configuration also rescues `ActiveRecord::NoDatabaseError` (e.g. on `db:create`)
+
 ## [4.17.0]
 
 * upgrade to Bootstrap v5 (and `bootstrap_form` v5)
