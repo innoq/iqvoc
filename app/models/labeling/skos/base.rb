@@ -41,7 +41,14 @@ class Labeling::Skos::Base < Labeling::Base
     'partials/labeling/skos/edit_base'
   end
 
-  def self.single_query(params = {})
+  def self.single_query(params = {}, &block)
+    search_scope(params, &block).map { |result| SearchResult.new(result) }
+  end
+
+  # Relation with all labelings matching the search parameters (not yet
+  # restricted by permissions, see `readable_by`). A block may extend the scope;
+  # its result is returned (extension point for other gems).
+  def self.search_scope(params = {})
     query_str = build_query_string(params)
 
     scope = includes(:target).order(Arel.sql("LENGTH(#{Label::Base.table_name}.value), #{Label::Base.table_name}.value ASC"))
@@ -124,7 +131,7 @@ class Labeling::Skos::Base < Labeling::Base
     end
 
     scope = yield(scope) if block_given?
-    scope.map { |result| SearchResult.new(result) }
+    scope
   end
 
   def self.search_result_partial_name

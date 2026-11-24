@@ -36,6 +36,13 @@ class Labeling::Base < ApplicationRecord
     where(target_id: label.id)
   end
 
+  # Labelings whose owner may be read according to the ability (SQL
+  # counterpart of `can?(:read, labeling.owner)`).
+  def self.readable_by(ability)
+    includes(:owner).references(Concept::Base.table_name)
+                    .merge(Concept::Base.accessible_by(ability, :read))
+  end
+
   def self.concept_published
     includes(:owner).merge(Concept::Base.published)
   end

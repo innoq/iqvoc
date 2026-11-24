@@ -240,6 +240,82 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert !page.source.include?('#result3">') # we're on page 3/3
   end
 
+  test 'labels of unpublished concepts are only found by users who may read them' do
+    draft = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Hidden"@en'
+      c.publish
+      c.save
+    end
+    draft.update_column(:published_at, nil)
+
+    %w[labels pref_labels].each do |type|
+      get search_path(lang: 'en', format: 'html', q: 'Hidden', t: type, l: ['en'])
+      assert_response :success
+      assert_select '.search-result', 0, "anonymous, #{type}"
+    end
+
+    login 'administrator'
+    %w[labels pref_labels].each do |type|
+      visit search_path(lang: 'en', format: 'html', q: 'Hidden', t: type, l: ['en'])
+      assert_equal 1, page.all('.search-result').size, "administrator, #{type}"
+    end
+  end
+
+  test 'additional parameters are passed on to the search class' do
+    klass = Labeling::Skos::Base
+    original = klass.method(:search_scope)
+    received = nil
+    klass.define_singleton_method(:search_scope) do |params = {}, &block|
+      received = params
+      original.call(params, &block)
+    end
+
+    begin
+      get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'labels', l: ['en'], date_min: '2012-01-01', sorting: 'descending')
+      assert_response :success
+    ensure
+      klass.define_singleton_method(:search_scope, original)
+    end
+
+    assert_equal '2012-01-01', received[:date_min]
+    assert_equal 'descending', received[:sorting]
+    assert_equal 'Tree', received[:query] # long names for the search class
+  end
+
+  test 'number of queries does not depend on the number of results' do
+    count_queries = lambda do |query|
+      count = 0
+      counter = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+        count += 1 unless %w[SCHEMA CACHE].include?(payload[:name])
+      end
+      begin
+        get search_path(lang: 'en', format: 'html', q: query, t: 'labels', l: ['en'])
+      ensure
+        ActiveSupport::Notifications.unsubscribe(counter)
+      end
+      count
+    end
+
+    # both result lists fit on one page (per page = 5)
+    { 'Pine' => 2, 'Elm' => 4 }.each do |name, amount|
+      amount.times do |i|
+        Concept::Skos::Base.new.tap do |c|
+          RdfApi.devour c, 'skos:prefLabel', %("#{name} #{i}"@en)
+          c.publish
+          c.save
+        end
+      end
+    end
+    count_queries.call('Pine') # warm up caches
+
+    few = count_queries.call('Pine')
+    assert_select '.search-result', 2
+    many = count_queries.call('Elm')
+    assert_select '.search-result', 4
+
+    assert_equal few, many, 'queries per result found (N+1)'
+  end
+
   test 'api searching without search parameter' do
     %w(ttl nt rdf).each do |format|
       get search_url(lang: 'en', format: format)

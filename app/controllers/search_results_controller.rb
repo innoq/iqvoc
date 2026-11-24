@@ -85,30 +85,7 @@ class SearchResultsController < ApplicationController
     return render_bad_request unless @search_query.valid?
 
     if @search_query.submitted?
-      @results = @search_query.search_class
-                              .single_query(params.merge(@search_query.to_params))
-                              .filter { |search_result| result_allowed?(search_result) }
-
-      if params[:limit] && Iqvoc.unlimited_search_results
-        @results = @results.per(params[:limit].to_i)
-      end
-
-      if @search_query.datasets && (datasets = @datasets.select { |a| @search_query.datasets.include?(a.name) })
-        @results = SearchResultCollection.new(@results)
-        datasets.each do |dataset|
-          results = dataset.search(params)
-          if results
-            @results = @results + results
-          else
-            flash.now[:error] ||= []
-            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
-          end
-        end
-        @results = @results.sort { |x, y| x.to_s <=> y.to_s }
-      end
-
-      @results = Kaminari.paginate_array(@results)
-      @results = @results.page(params[:page])
+      @results = search_results
 
       respond_to do |format|
         format.html {
@@ -142,6 +119,75 @@ class SearchResultsController < ApplicationController
 
     # AR requires mapping to existing object attributes so that value is mapped to the unused status attribute to keep the information
     @collections = Iqvoc::Collection.base_class.joins(:pref_labels).order('value').select('value AS status, concepts.origin')
+  end
+
+  # Paginated search results. Searchable classes providing `search_scope` are
+  # paginated in SQL, the others (and searches including external datasets) are
+  # loaded completely and paginated in Ruby.
+  def search_results
+    klass = @search_query.search_class
+    datasets = selected_datasets
+
+    if klass.respond_to?(:search_scope) && datasets.empty?
+      # other parameters (e.g. of extensions in other gems) are passed on as well
+      scope = klass.search_scope(params.merge(@search_query.to_params))
+      paginated_scope_results(scope.readable_by(current_ability))
+    else
+      paginated_array_results(klass, datasets)
+    end
+  end
+
+  def selected_datasets
+    return [] unless @search_query.datasets
+
+    @datasets.select { |dataset| @search_query.datasets.include?(dataset.name) }
+  end
+
+  def per_page
+    params[:limit].to_i if params[:limit] && Iqvoc.unlimited_search_results
+  end
+
+  def paginated_scope_results(scope)
+    page = scope.page(params[:page])
+    page = page.per(per_page) if per_page
+    records = page.to_a
+    preload_owners(records)
+    Kaminari.paginate_array(records.map { |record| SearchResult.new(record) },
+                            total_count: page.total_count,
+                            limit: page.limit_value,
+                            offset: page.offset_value)
+  end
+
+  # The result templates show the preferred label of the owning concept. Load
+  # the owners and their labels for the whole page at once instead of one query
+  # per result.
+  def preload_owners(records)
+    with_owner = records.select { |record| record.class.reflect_on_association(:owner) }
+    ActiveRecord::Associations::Preloader.new(records: with_owner, associations: :owner).call
+    concepts = with_owner.map(&:owner).grep(Concept::Base).uniq
+    ActiveRecord::Associations::Preloader.new(records: concepts, associations: :pref_labels).call
+  end
+
+  def paginated_array_results(klass, datasets)
+    results = klass.single_query(params.merge(@search_query.to_params))
+                   .filter { |search_result| result_allowed?(search_result) }
+
+    if datasets.any?
+      results = SearchResultCollection.new(results)
+      datasets.each do |dataset|
+        remote_results = dataset.search(params)
+        if remote_results
+          results = results + remote_results
+        else
+          flash.now[:error] ||= []
+          flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
+        end
+      end
+      results = results.sort { |x, y| x.to_s <=> y.to_s }
+    end
+
+    results = Kaminari.paginate_array(results).page(params[:page])
+    per_page ? results.per(per_page) : results
   end
 
   def build_search_query
