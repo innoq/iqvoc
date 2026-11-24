@@ -151,21 +151,25 @@ class SearchResultsController < ApplicationController
     page = scope.page(params[:page])
     page = page.per(per_page) if per_page
     records = page.to_a
-    preload_owners(records)
+    preload_associations(records)
     Kaminari.paginate_array(records.map { |record| SearchResult.new(record) },
                             total_count: page.total_count,
                             limit: page.limit_value,
                             offset: page.offset_value)
   end
 
-  # The result templates show the preferred label of the owning concept. Load
-  # the owners and their labels for the whole page at once instead of one query
-  # per result.
-  def preload_owners(records)
+  # The result templates show the preferred label of the owning concept, and
+  # notes also render their annotations (e.g. in RDF). Load all of that for the
+  # whole page at once instead of one query per result.
+  def preload_associations(records)
     with_owner = records.select { |record| record.class.reflect_on_association(:owner) }
     ActiveRecord::Associations::Preloader.new(records: with_owner, associations: :owner).call
+
     concepts = with_owner.map(&:owner).grep(Concept::Base).uniq
     ActiveRecord::Associations::Preloader.new(records: concepts, associations: :pref_labels).call
+
+    annotated = records.select { |record| record.class.reflect_on_association(:annotations) }
+    ActiveRecord::Associations::Preloader.new(records: annotated, associations: :annotations).call
   end
 
   def paginated_array_results(klass, datasets)

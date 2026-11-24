@@ -316,6 +316,43 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert_equal few, many, 'queries per result found (N+1)'
   end
 
+  test 'number of queries for annotated notes does not depend on the number of results' do
+    create_notes = lambda do |name, amount|
+      amount.times do |i|
+        concept = Concept::Skos::Base.new.tap do |c|
+          RdfApi.devour c, 'skos:prefLabel', %("Concept #{name} #{i}"@en)
+          c.publish
+          c.save
+        end
+        note = Note::Skos::ChangeNote.create!(owner: concept, value: "#{name} #{i}", language: 'en')
+        note.annotations.create!(namespace: 'dct', predicate: 'creator', value: 'someone')
+        note.annotations.create!(namespace: 'dct', predicate: 'modified', value: '2026-01-01')
+      end
+    end
+    create_notes.call('Pine', 2)
+    create_notes.call('Elm', 4)
+
+    count_queries = lambda do |query|
+      count = 0
+      counter = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+        count += 1 unless %w[SCHEMA CACHE].include?(payload[:name])
+      end
+      begin
+        get search_path(lang: 'en', format: 'ttl', q: query, t: 'notes', l: ['en'])
+        assert_response :success
+      ensure
+        ActiveSupport::Notifications.unsubscribe(counter)
+      end
+      count
+    end
+
+    count_queries.call('Pine') # warm up caches
+    few = count_queries.call('Pine')
+    many = count_queries.call('Elm')
+
+    assert_equal few, many, 'queries per note found (N+1)'
+  end
+
   test 'api searching without search parameter' do
     %w(ttl nt rdf).each do |format|
       get search_url(lang: 'en', format: format)
