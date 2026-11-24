@@ -67,7 +67,6 @@ module ControllerExtensions
 
   def handle_not_found(exception)
     @exception = exception
-    SearchResultsController.prepare_basic_variables(self)
 
     return if self.performed?
 

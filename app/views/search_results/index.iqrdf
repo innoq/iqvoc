@@ -11,7 +11,7 @@ document.namespaces(
 document << IqRdf.build_full_uri_subject(URI.parse(url_for(request.query_parameters.merge(:page => nil, :lang => nil, :only_path => false))), IqRdf::Sdc::build_uri('Query')) do |query|
   query.Sdc::totalResults(@results.total_count)
   query.Sdc::itemsPerPage(@results.limit_value)
-  query.Sdc::searchTerms(params[:query])
+  query.Sdc::searchTerms(@search_query.query)
   query.Sdc::first(URI.parse(url_for(request.query_parameters.merge(:page => 1, :lang => nil, :only_path => false))))
   query.Sdc::last(URI.parse(url_for(request.query_parameters.merge(:page => @results.total_pages, :lang => nil, :only_path => false))))
   i = 0

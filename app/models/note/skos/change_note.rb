@@ -26,11 +26,14 @@ class Note::Skos::ChangeNote < Note::Skos::Base
   end
 
   def self.single_query(params = {})
+    search_scope(params).map { |result| SearchResult.new(result) }
+  end
+
+  def self.search_scope(params = {})
     query_str = build_query_string(params)
 
     scope = includes(:annotations)
-    scope = merge(Note::Annotated::Base.where(Note::Annotated::Base.arel_table[:value].matches(query_str)))
-    scope.map { |result| SearchResult.new(result) }
+    merge(Note::Annotated::Base.where(Note::Annotated::Base.arel_table[:value].matches(query_str)))
   end
 
   def build_rdf(document, subject)

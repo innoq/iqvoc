@@ -1,3 +1,22 @@
+## [Unreleased]
+
+* search: paginate in SQL. Searchable classes may provide `search_scope` (a
+  relation) and `readable_by(ability)`; `single_query` remains
+* search: searches without a query term are possible in all formats (`ttl`,
+  `rdf`, `nt` answered with 400 before); invalid `qt` and `t` answer with 400
+* search: short parameter names (`q`, `t`, `l`, `qt`, `c`, `ds`) are primary,
+  the long ones are still accepted
+* **breaking:** extensions hooking into `single_query` have to hook into
+  `search_scope` instead
+* **breaking:** custom ability classes need an SQL condition for reading concepts:
+
+      can :read, ::Concept::Base, ['concepts.published_at IS NOT NULL'], &@@if_published
+      can :read, ::Label::Base, &@@if_published
+
+* **breaking:** search views read the short names (`params[:q]`, `params[:l]`,
+  ...) instead of `params[:query]`, `params[:languages]`, ...
+* remove `SearchResultsController.prepare_basic_variables`
+
 ## [4.17.1]
 
 * `Iqvoc.host_version` returns `nil` instead of raising if the host namespace has no `VERSION`

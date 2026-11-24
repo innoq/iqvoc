@@ -5,7 +5,9 @@ class Ability
 
   def initialize(user = nil)
     can :read, Iqvoc::Concept.root_class.instance
-    can :read, [::Concept::Base, ::Collection::Base, ::Label::Base], &@@if_published
+    # also for ::Collection::Base subclass
+    can :read, ::Concept::Base, ['concepts.published_at IS NOT NULL'], &@@if_published
+    can :read, ::Label::Base, &@@if_published
     can :read, ::Note::Base
 
     # static pages

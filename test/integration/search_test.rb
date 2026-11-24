@@ -240,13 +240,193 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert !page.source.include?('#result3">') # we're on page 3/3
   end
 
-  test 'api searching with empty search query' do
+  test 'labels of unpublished concepts are only found by users who may read them' do
+    draft = Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Hidden"@en'
+      c.publish
+      c.save
+    end
+    draft.update_column(:published_at, nil)
+
+    %w[labels pref_labels].each do |type|
+      get search_path(lang: 'en', format: 'html', q: 'Hidden', t: type, l: ['en'])
+      assert_response :success
+      assert_select '.search-result', 0, "anonymous, #{type}"
+    end
+
+    login 'administrator'
+    %w[labels pref_labels].each do |type|
+      visit search_path(lang: 'en', format: 'html', q: 'Hidden', t: type, l: ['en'])
+      assert_equal 1, page.all('.search-result').size, "administrator, #{type}"
+    end
+  end
+
+  test 'additional parameters are passed on to the search class' do
+    klass = Labeling::Skos::Base
+    original = klass.method(:search_scope)
+    received = nil
+    klass.define_singleton_method(:search_scope) do |params = {}, &block|
+      received = params
+      original.call(params, &block)
+    end
+
+    begin
+      get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'labels', l: ['en'], date_min: '2012-01-01', sorting: 'descending')
+      assert_response :success
+    ensure
+      klass.define_singleton_method(:search_scope, original)
+    end
+
+    assert_equal '2012-01-01', received[:date_min]
+    assert_equal 'descending', received[:sorting]
+    assert_equal 'Tree', received[:query] # long names for the search class
+  end
+
+  test 'number of queries does not depend on the number of results' do
+    count_queries = lambda do |query|
+      count = 0
+      counter = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+        count += 1 unless %w[SCHEMA CACHE].include?(payload[:name])
+      end
+      begin
+        get search_path(lang: 'en', format: 'html', q: query, t: 'labels', l: ['en'])
+      ensure
+        ActiveSupport::Notifications.unsubscribe(counter)
+      end
+      count
+    end
+
+    # both result lists fit on one page (per page = 5)
+    { 'Pine' => 2, 'Elm' => 4 }.each do |name, amount|
+      amount.times do |i|
+        Concept::Skos::Base.new.tap do |c|
+          RdfApi.devour c, 'skos:prefLabel', %("#{name} #{i}"@en)
+          c.publish
+          c.save
+        end
+      end
+    end
+    count_queries.call('Pine') # warm up caches
+
+    few = count_queries.call('Pine')
+    assert_select '.search-result', 2
+    many = count_queries.call('Elm')
+    assert_select '.search-result', 4
+
+    assert_equal few, many, 'queries per result found (N+1)'
+  end
+
+  test 'number of queries for annotated notes does not depend on the number of results' do
+    create_notes = lambda do |name, amount|
+      amount.times do |i|
+        concept = Concept::Skos::Base.new.tap do |c|
+          RdfApi.devour c, 'skos:prefLabel', %("Concept #{name} #{i}"@en)
+          c.publish
+          c.save
+        end
+        note = Note::Skos::ChangeNote.create!(owner: concept, value: "#{name} #{i}", language: 'en')
+        note.annotations.create!(namespace: 'dct', predicate: 'creator', value: 'someone')
+        note.annotations.create!(namespace: 'dct', predicate: 'modified', value: '2026-01-01')
+      end
+    end
+    create_notes.call('Pine', 2)
+    create_notes.call('Elm', 4)
+
+    count_queries = lambda do |query|
+      count = 0
+      counter = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+        count += 1 unless %w[SCHEMA CACHE].include?(payload[:name])
+      end
+      begin
+        get search_path(lang: 'en', format: 'ttl', q: query, t: 'notes', l: ['en'])
+        assert_response :success
+      ensure
+        ActiveSupport::Notifications.unsubscribe(counter)
+      end
+      count
+    end
+
+    count_queries.call('Pine') # warm up caches
+    few = count_queries.call('Pine')
+    many = count_queries.call('Elm')
+
+    assert_equal few, many, 'queries per note found (N+1)'
+  end
+
+  test 'api searching without search parameter' do
     %w(ttl nt rdf).each do |format|
       get search_url(lang: 'en', format: format)
       assert_response :bad_request, 'should return bad request without search query'
-
-      get search_url(lang: 'en', format: format, query: '')
-      assert_response :bad_request, 'should return bad request with blank search query'
     end
+  end
+
+  test 'api searching with blank search query' do
+    %w(ttl nt rdf).each do |format|
+      get search_url(lang: 'en', format: format, q: '')
+      assert_response :success, "blank search query should be allowed for #{format}"
+    end
+  end
+
+  test 'language parameter accepts lists and comma separated lists' do
+    [{ 'l[]' => 'en' }, { l: 'en' }, { l: 'de,en' }].each do |lang_params|
+      get search_path({ lang: 'en', format: 'html', q: 'Tree', t: 'labels' }.merge(lang_params))
+      assert_response :success
+      assert_select '.search-result', 1, lang_params.inspect
+    end
+  end
+
+  test 'invalid query type is rejected' do
+    %w[html ttl].each do |format|
+      get search_path(lang: 'en', format: format, q: 'Tree', t: 'labels', qt: 'regexp')
+      assert_response :bad_request
+    end
+  end
+
+  test 'invalid search type is rejected' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'nonsense')
+    assert_response :bad_request
+
+    get search_path(lang: 'en', format: 'ttl', q: 'Tree', t: 'nonsense')
+    assert_response :bad_request
+  end
+
+  test 'note results are highlighted in html, fragment and ttl responses' do
+    Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Oak"@en'
+      RdfApi.devour c, 'skos:definition', '"A large tree"@en'
+      c.publish
+      c.save
+    end
+
+    get search_path(lang: 'en', format: 'html', q: 'tree', t: 'notes', l: 'en')
+    assert_response :success
+    assert_includes response.body, '<mark>tree</mark>'
+
+    get search_path(lang: 'en', format: 'html', q: 'tree', t: 'notes', l: 'en'),
+        headers: { 'Accept' => 'text/html; fragment=true' }
+    assert_response :success
+    assert_includes response.body, '<mark>tree</mark>'
+
+    get rdf_search_path(format: 'ttl', q: 'tree', t: 'notes', l: 'en')
+    assert_response :success
+  end
+
+  test 'long parameter names are still supported in URLs' do
+    get search_path(lang: 'en', format: 'html', query: 'Tree', type: 'labels', query_type: 'exact', languages: ['en'])
+    assert_response :success
+    assert_select '.search-result', 1
+    assert_select 'input[name=q][value=Tree]'
+  end
+
+  test 'short parameter names win over long ones' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', query: 'Nothing', t: 'labels', l: ['en'])
+    assert_response :success
+    assert_select '.search-result', 1
+  end
+
+  test 'form is prefilled from short parameter names' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'labels', qt: 'exact')
+    assert_select 'input[name=q][value=Tree]'
+    assert_select 'select#qt option[selected][value=exact]'
   end
 end
