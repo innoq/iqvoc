@@ -1,6 +1,6 @@
 class Dataset::Adaptors::Iqvoc::SearchAdaptor < Dataset::Adaptors::Iqvoc::HttpAdaptor
   def search(raw_params = {})
-    languages = raw_params.fetch(:languages, I18n.locale)
+    languages = raw_params.fetch(:l, I18n.locale)
     languages = Array.wrap(languages).flatten.join(',')
 
     params = {

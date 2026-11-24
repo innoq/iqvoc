@@ -240,13 +240,80 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert !page.source.include?('#result3">') # we're on page 3/3
   end
 
-  test 'api searching with empty search query' do
+  test 'api searching without search parameter' do
     %w(ttl nt rdf).each do |format|
       get search_url(lang: 'en', format: format)
       assert_response :bad_request, 'should return bad request without search query'
-
-      get search_url(lang: 'en', format: format, query: '')
-      assert_response :bad_request, 'should return bad request with blank search query'
     end
+  end
+
+  test 'api searching with blank search query' do
+    %w(ttl nt rdf).each do |format|
+      get search_url(lang: 'en', format: format, q: '')
+      assert_response :success, "blank search query should be allowed for #{format}"
+    end
+  end
+
+  test 'language parameter accepts lists and comma separated lists' do
+    [{ 'l[]' => 'en' }, { l: 'en' }, { l: 'de,en' }].each do |lang_params|
+      get search_path({ lang: 'en', format: 'html', q: 'Tree', t: 'labels' }.merge(lang_params))
+      assert_response :success
+      assert_select '.search-result', 1, lang_params.inspect
+    end
+  end
+
+  test 'invalid query type is rejected' do
+    %w[html ttl].each do |format|
+      get search_path(lang: 'en', format: format, q: 'Tree', t: 'labels', qt: 'regexp')
+      assert_response :bad_request
+    end
+  end
+
+  test 'invalid search type is rejected' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'nonsense')
+    assert_response :bad_request
+
+    get search_path(lang: 'en', format: 'ttl', q: 'Tree', t: 'nonsense')
+    assert_response :bad_request
+  end
+
+  test 'note results are highlighted in html, fragment and ttl responses' do
+    Concept::Skos::Base.new.tap do |c|
+      RdfApi.devour c, 'skos:prefLabel', '"Oak"@en'
+      RdfApi.devour c, 'skos:definition', '"A large tree"@en'
+      c.publish
+      c.save
+    end
+
+    get search_path(lang: 'en', format: 'html', q: 'tree', t: 'notes', l: 'en')
+    assert_response :success
+    assert_includes response.body, '<mark>tree</mark>'
+
+    get search_path(lang: 'en', format: 'html', q: 'tree', t: 'notes', l: 'en'),
+        headers: { 'Accept' => 'text/html; fragment=true' }
+    assert_response :success
+    assert_includes response.body, '<mark>tree</mark>'
+
+    get rdf_search_path(format: 'ttl', q: 'tree', t: 'notes', l: 'en')
+    assert_response :success
+  end
+
+  test 'long parameter names are still supported in URLs' do
+    get search_path(lang: 'en', format: 'html', query: 'Tree', type: 'labels', query_type: 'exact', languages: ['en'])
+    assert_response :success
+    assert_select '.search-result', 1
+    assert_select 'input[name=q][value=Tree]'
+  end
+
+  test 'short parameter names win over long ones' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', query: 'Nothing', t: 'labels', l: ['en'])
+    assert_response :success
+    assert_select '.search-result', 1
+  end
+
+  test 'form is prefilled from short parameter names' do
+    get search_path(lang: 'en', format: 'html', q: 'Tree', t: 'labels', qt: 'exact')
+    assert_select 'input[name=q][value=Tree]'
+    assert_select 'select#qt option[selected][value=exact]'
   end
 end

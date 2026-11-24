@@ -17,9 +17,7 @@
 class SearchResultsController < ApplicationController
   include DatasetInitialization
 
-  ALLOWED_QUERY_TYPES = %w[exact contains begins_with ends_with].freeze
-
-  before_action :validate_query_type, only: [:index]
+  before_action :build_search_query, only: [:index]
 
   resource_description do
     name 'Search'
@@ -30,9 +28,9 @@ class SearchResultsController < ApplicationController
   param :q, String, required: true,
       desc: 'Query term (URL-encoded, if necessary). Wild cards are not '\
                'supported, see the `qt` parameter below.'
-  param :qt, ALLOWED_QUERY_TYPES,
+  param :qt, SearchQuery::ALLOWED_QUERY_TYPES,
       desc: 'Query type'
-  param :t, %w(labels pref_labels notes),
+  param :t, SearchQuery::ALLOWED_TYPES,
       required: true,
       desc: 'Specifies the properties to be searched.'
   param :for, %w(concept collection all),
@@ -69,20 +67,7 @@ class SearchResultsController < ApplicationController
 
   def index
     authorize! :read, Concept::Base
-    # TODO: requires a dedicated :search permission because this covers more
-    # than just concepts
-
-    self.class.prepare_basic_variables(self)
-
-    # Map short params to their log representation
-    { t: :type,
-      q: :query,
-      l: :languages,
-      qt: :query_type,
-      c: :collection_origin,
-      ds: :datasets }.each do |short, long|
-      params[long] ||= params[short]
-    end
+    # TODO: requires a dedicated :search permission because this covers more than just concepts
 
     # Delete parameters which should not be included into generated urls (e.g.
     # in rdf views)
@@ -93,103 +78,90 @@ class SearchResultsController < ApplicationController
 
     @remote_result_collections = []
 
-    if params[:query]
-      if params[:query].blank? and request.format.to_sym.in? [:ttl, :nt, :rdf]
-        # support blank searches via web ui, but not for api requests
-        respond_to do |format|
-          format.any(:ttl, :rdf, :nt) { head :bad_request }
-        end
-      else
-        # Deal with language parameter patterns
-        languages = []
-        # Either "l[]=de&l[]=en" as well as "l=de,en" should be possible
-        if params[:languages].respond_to?(:each) && params[:languages].include?('none')
-          # Special treatment for the "nil language"
-          languages << nil
-        elsif params[:languages].respond_to?(:split)
-          languages = params[:languages].split(',')
-        end
+    # Legacy: views and result partials (also in other gems) still read the
+    # normalized values from params
+    apply_legacy_params
 
-        # Ensure a valid class was selected
-        unless klass = Iqvoc.searchable_class_names.detect { |key, value| value == params[:type] }.try(:first)
-          # TODO: extract inline validation logic
-          Rails.logger.error "'#{params[:type]}' is not a searchable class! Must be one of " + Iqvoc.searchable_class_names.keys.join(', ')
-          respond_to do |format|
-            format.html { render :index, status: :bad_request }
-            format.any(:ttl, :rdf, :nt) { head :bad_request }
+    return render_bad_request unless @search_query.valid?
+
+    if @search_query.submitted?
+      @results = @search_query.search_class
+                              .single_query(params.merge(@search_query.to_params))
+                              .filter { |search_result| result_allowed?(search_result) }
+
+      if params[:limit] && Iqvoc.unlimited_search_results
+        @results = @results.per(params[:limit].to_i)
+      end
+
+      if @search_query.datasets && (datasets = @datasets.select { |a| @search_query.datasets.include?(a.name) })
+        @results = SearchResultCollection.new(@results)
+        datasets.each do |dataset|
+          results = dataset.search(params)
+          if results
+            @results = @results + results
+          else
+            flash.now[:error] ||= []
+            flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
           end
-          return
         end
-        klass = klass.constantize
+        @results = @results.sort { |x, y| x.to_s <=> y.to_s }
+      end
 
-        @results = klass.single_query(params.merge({ languages: languages.flatten }))
-                        .filter { |search_result| result_allowed?(search_result) }
+      @results = Kaminari.paginate_array(@results)
+      @results = @results.page(params[:page])
 
-        if params[:limit] && Iqvoc.unlimited_search_results
-          @results = @results.per(params[:limit].to_i)
-        end
-
-        if params[:datasets] && datasets = @datasets.select { |a| params[:datasets].include?(a.name) }
-          @results = SearchResultCollection.new(@results)
-          datasets.each do |dataset|
-            results = dataset.search(params)
-            if results
-              @results = @results + results
-            else
-              flash.now[:error] ||= []
-              flash.now[:error] << t('txt.controllers.search_results.remote_source_error', source: dataset)
-            end
+      respond_to do |format|
+        format.html {
+          if request.headers['Accept'] == 'text/html; fragment=true'
+            render template: 'search_results/_result_list', layout: false
+          else
+            prepare_form
+            render :index, layout: with_layout?
           end
-          @results = @results.sort { |x, y| x.to_s <=> y.to_s }
-        end
-
-        @results = Kaminari.paginate_array(@results)
-        @results = @results.page(params[:page])
-
-        respond_to do |format|
-          format.html {
-            if request.headers['Accept'] == 'text/html; fragment=true'
-              render template: 'search_results/_result_list', layout: false
-            else
-              render :index, layout: with_layout?
-            end
-          }
-          format.any(:ttl, :rdf, :nt)
-        end
+        }
+        format.any(:ttl, :rdf, :nt)
       end
     else
       respond_to do |format|
-        format.html { render :index }
+        format.html {
+          prepare_form
+          render :index
+        }
         format.any(:ttl, :rdf, :nt) { head :bad_request }
       end
     end
   end
 
-  def self.prepare_basic_variables(controller)
-    langs = Iqvoc.all_languages.each_with_object({}) do |lang, hsh|
-      lang ||= 'none'
-      hsh[lang] = I18n.t("languages.#{lang}", default: lang)
-    end
-    controller.instance_variable_set(:@available_languages, langs)
-
-    # AR requires mapping to existing object attributes so that value is mapped to the unused status attribute to keep the information
-    collections = Iqvoc::Collection.base_class.joins(:pref_labels).order('value').select('value AS status, concepts.origin')
-    controller.instance_variable_set(:@collections, collections)
-
-    # default search params
-    controller.params['t'] = Iqvoc.searchable_class_names.values.first if controller.params['t'].nil?
-    controller.params['qt'] = 'contains' if controller.params['qt'].nil?
-    controller.params['for'] = 'all' if controller.params['for'].nil?
-    controller.params['l'] = langs.keys if controller.params['l'].nil?
-    controller.params['include_expired'] = (controller.params['include_expired'] == "true")
-  end
-
   private
 
-  def validate_query_type
-    if params[:qt].present? && !ALLOWED_QUERY_TYPES.include?(params[:qt])
-      Rails.logger.warn("Invalid query_type attempted: #{params[:qt]}")
-      head :bad_request
+  def prepare_form
+    @available_languages = Iqvoc.all_languages.each_with_object({}) { |lang, hsh|
+      lang ||= 'none'
+      hsh[lang] = I18n.t("languages.#{lang}", default: lang)
+    }
+
+    # AR requires mapping to existing object attributes so that value is mapped to the unused status attribute to keep the information
+    @collections = Iqvoc::Collection.base_class.joins(:pref_labels).order('value').select('value AS status, concepts.origin')
+  end
+
+  def build_search_query
+    @search_query = SearchQuery.from_url_params(params)
+  end
+
+  # Legacy: views and result partials (also in other gems) still read the
+  # normalized values from params (short names).
+  def apply_legacy_params
+    params.merge!(@search_query.to_url_params)
+  end
+
+  def render_bad_request
+    Rails.logger.warn("Invalid search query: #{@search_query.errors.full_messages.to_sentence}")
+    respond_to do |format|
+      format.html {
+        prepare_form
+        render :index, status: :bad_request
+      }
+      format.any { head :bad_request }
     end
   end
 

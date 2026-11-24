@@ -5,5 +5,5 @@
     <%= link_to result.owner.value, label_path(:id => result.owner), :class => 'search-result-link', :data => { 'resource-path' => rdf_path(result.owner.origin, :lang => nil, :format => nil) } %>
   <% end %>
   <span class="badge bg-info"><%= result.model_name.human %></span>
-  <p class="search-result-body"><%= highlight_query(excerpt(result.value, params[:query]), params[:query]) %></p>
+  <p class="search-result-body"><%= highlight_query(excerpt(result.value, params[:q]), params[:q]) %></p>
 </li>
