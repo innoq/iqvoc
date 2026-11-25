@@ -212,6 +212,13 @@ module Iqvoc
           namespace = Iqvoc.host_namespace
           namespace::VERSION if namespace&.const_defined?(:VERSION, false)
         end
+
+        def host_revision
+          return ENV['REVISION'] if ENV['REVISION'].present?
+
+          file = Rails.root.join('headrev.txt')
+          File.read(file).strip if File.exist?(file)
+        end
       end
     end
   end

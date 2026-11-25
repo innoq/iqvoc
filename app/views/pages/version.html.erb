@@ -3,12 +3,14 @@
 <dl class="row">
   <% if Iqvoc.host_version %>
   <dt class="col-md-2">Application version:</dt>
-  <dd class="col-md-10"><%= "#{Iqvoc.host_namespace} #{Iqvoc.host_version}" %></dd>
+  <dd class="col-md-10">
+    <%= "#{Iqvoc.host_namespace} #{Iqvoc.host_version}" %>
+  </dd>
   <% end %>
 
-  <% if File.exist?(Rails.root.join('headrev.txt')) %>
-    <dt class="col-md-2">Revision</dt>
-    <dd class="col-md-10"><%= File.read(Rails.root.join('headrev.txt')) %></dd>
+  <% if Iqvoc.host_revision %>
+    <dt class="col-md-2">Application revision:</dt>
+    <dd class="col-md-10"><%= Iqvoc.host_revision %></dd>
   <% end %>
 
   <dt class="col-md-2">iQvoc core version:</dt>
